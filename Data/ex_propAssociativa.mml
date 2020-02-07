@@ -1,0 +1,28 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<eq>
+		</eq>
+		<apply type="num">
+			<plus>
+			</plus>
+			<apply type="num">
+				<plus>
+				</plus>
+				<cn type="num">1</cn>
+				<cn type="num">2</cn>
+			</apply>
+			<cn type="num">3</cn>
+		</apply>
+		<apply type="num">
+			<times>
+			</times>
+			<cn type="num">1</cn>
+			<apply type="num">
+				<times>
+				</times>
+				<cn type="num">2</cn>
+				<cn type="num">3</cn>
+			</apply>
+		</apply>
+	</apply>
+</math>

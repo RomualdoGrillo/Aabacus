@@ -1,0 +1,5 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML"><apply type="bool">
+					
+				<forall></forall><bvar><ci type="obj">a</ci></bvar>
+				<apply type="bool" gest_l="l" gest_r="r"><eq></eq>
+				<ci type="obj">a</ci><ci type="obj">a</ci></apply></apply></math>

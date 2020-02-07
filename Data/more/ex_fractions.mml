@@ -1,0 +1,1 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML"><apply type="bool"><eq></eq><apply type="num"><divide></divide><ci type="num">a</ci><ci type="num">b</ci></apply><apply type="num"><divide></divide><ci type="num">c</ci><ci type="num">d</ci></apply></apply></math>

@@ -1,0 +1,32 @@
+#divOverlay {
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+	z-index: 100;
+	pointer-events: none;
+}
+
+line.noMatch {
+	stroke: red;
+}
+line, marker{
+	stroke:#959492;
+	fill:#afaeab
+}
+line.matched{
+	stroke:green
+}
+.arrow{
+      stroke-width:1; 
+      marker-end:url(#markerArrow);
+}
+
+}
+svg path {
+  transition: d 0.35s;
+}
+svg:hover path {
+  d: path("M 4 40 l 0 -9 q 0 -16 16 -18 s 16 0 16 18 l 0 24");
+}

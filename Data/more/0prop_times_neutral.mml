@@ -1,0 +1,1 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML"><apply type="bool"><exists></exists><bvar><ci type="num">1</ci></bvar><apply type="bool"><forall></forall><bvar><ci type="num">x</ci></bvar><apply type="bool"><eq></eq><apply type="num"><times></times><ci type="num">x</ci><ci type="num">1</ci></apply><ci type="num">x</ci></apply></apply></apply></math>

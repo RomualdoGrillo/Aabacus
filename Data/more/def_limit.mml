@@ -1,0 +1,29 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML"><apply type="bool">
+					
+				
+					
+				
+					
+				<forall></forall><bvar><ci type="num">dy</ci></bvar><apply type="bool">
+					
+				
+					
+				
+					
+				<exists></exists><bvar><ci type="num">dx</ci></bvar><apply type="bool"><forall></forall>
+				<bvar><ci type="num">x</ci></bvar><apply type="bool">
+					<implies></implies><apply type="bool">
+					<lte></lte><ci type="num">dx</ci><apply type="num"><abs></abs>
+						<apply type="num"><plus></plus>
+							<ci type="num">x</ci>
+							<apply type="num"><minus></minus>
+								<ci type="num">x0</ci>
+								</apply>
+							</apply>
+						</apply></apply><apply type="bool"><lte></lte>
+					<ci type="num">dy</ci>
+					<apply type="num"><abs></abs>
+					<apply type="num"><plus></plus>
+						<apply type="num"><evaln></evaln>
+						<ci type="num">f()</ci><ci type="num">a</ci></apply>
+						<apply type="num"><minus></minus><ci type="num">y0</ci></apply></apply></apply></apply></apply></apply></apply></apply></math>

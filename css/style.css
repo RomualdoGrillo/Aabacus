@@ -1,0 +1,558 @@
+div{
+	display:flex;
+	align-items:center;
+}
+[data-atom] {
+    background-color: white;
+	border: 1px solid #DAD9D9;
+}
+/*[data-atom="eq"].asymmetric sono le definizioni, in quel tipo di atomi
+il bordo del primo membro sporge dal background venendo a "fondersi" con il bordo esterno verde
+per una questione estetica */
+
+[data-atom="eq"].asymmetric *{
+    border-color:white;
+}
+[data-atom].asymmetric,[data-atom="eq"].asymmetric>.firstMember {
+    border: 1px solid #DAD9D9;
+}
+
+
+
+.greyBorders [data-atom].asymmetric,[data-atom="eq"].asymmetric>.firstMember {
+    border: 1px solid #aaa;/* necessario un selector specifico almeno quanto quello usato sopra */
+}
+
+.greyBorders [data-atom] {
+    border-color: #aaa;
+}
+
+
+.greyBorders [class*="_role"].empty {background-color:  #e6e6e6;}
+[data-atom].asymmetric>.firstMember {background-color:  #ffffff;}/*lo sfondo del lucchetto ha sempre sfondo bianco*/
+
+[data-atom] {
+    padding: 3px;
+}
+[data-atom='cn'],[data-atom='ci']{
+    padding: 1px; 
+}
+
+/*[class*="_role"]{
+    padding: 0px;
+    margin:0px;
+}*/
+
+[data-atom],[class*="_role"],#overlay {
+	position:relative;
+	/*border: 1px black solid; just for debug*/
+	border-radius: 15px;
+	font-family: arial;
+	flex-shrink:0;
+	justify-content:center;
+}
+
+/*.name {
+	padding:0;
+}
+*/
+.row {
+	flex-direction:row
+}
+.column{
+	flex-direction:column;
+}
+
+.expandedAsTree [data-atom]{
+	top: 100px;
+}
+
+
+[data-atom="minus"] , [data-atom="m_inverse"] , [data-atom="not"] {
+	padding: 0;
+}
+.unlocked [data-atom="minus"],.unlocked [data-atom="m_inverse"],.unlocked [data-atom="not"] {/* se unlocked scavalca il padding=0 impostato sopra*/
+  padding: 3px;
+}
+
+
+[data-atom]:not(.minus)>.leftDecoration {
+	display:none;
+}
+[data-atom]:not(.inverse)>.topDecoration {
+	display:none;
+}
+
+
+[class*="l_role"].empty ,.s_role {
+    background-color: #ffffff;
+}
+
+
+[data-atom], [class*="_role"]{
+	min-height:20px;
+	min-width:16px;
+	border-width: 1px;
+}
+.exponent [data-atom], .exponent [class*="_role"], .exponent[class*="_role"]{
+	font-size:small;
+	min-height:12px;
+	min-width:10px;
+	border-width: 1px;
+}
+
+
+
+/*************specifici per tipo di ATOMO ***************/
+
+[data-atom="power"]{
+	display: grid;
+	grid-template-columns: minmax(12px, max-content) minmax(8px, max-content);
+	grid-gap: 0px;
+}
+.base{
+	grid-row-start:2;
+	grid-column-start:1;
+}
+.exponent{
+	grid-row-start:1;
+	grid-column-start:2;
+}
+.power_decoration{
+	position: absolute;
+	top: -7;
+	right: -2;}
+
+
+
+[data-atom="and"]:not(#telaAnd)>.ul_role {
+    border-style:solid;
+    border-width: 0 0 0 20px;
+    border-image:url(../images/GullBraceLeft.svg) 0 47 stretch;
+    padding-left:0.5em;
+}
+[data-atom="and"]>.ul_role>[data-atom]{
+	margin:2px;
+}
+/* le definizioni occupano piÃ¹ spazio a causa del sigillo che sporge*/
+/*[data-atom="and"]>.ul_role>[data-atom].asymmetric{
+	margin-top:2px;
+}*/
+
+/*questo per ottenere disposizione verticale in times e and*/
+.vertTimes [data-atom="times"] >[class*="_role"] {
+	 flex-direction:column;
+}
+
+[data-atom="plus"]>.decoration.left {
+	width:5px;
+	height:90%;
+	padding:0px;
+	position: absolute;
+	top: 5%;
+	left:0px;
+}
+
+.minusDecoration, .leftDecoration {/* lefDecoration serve se rappresento segni "alterando" gli elementi numerici*/
+	width: 5px;
+	height: 1.5px;
+	padding:0px;
+	background-color: black;
+	position: absolute;
+	top: 48%;
+	left:-1px;
+}
+
+  .notDecoration , .m_inverseDecoration , .topDecoration {/* topDecoration serve se rappresento segni "alterando" gli elementi numerici*/
+	height: 1.5px;
+	padding:0px;
+	background-color: black;
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	top: 1;
+}
+
+[data-atom="forAll"]{
+	flex-direction:column;
+}
+
+[data-atom="ifThenElse"]{
+	align-items:stretch;
+}
+
+
+
+ 
+[data-atom="divide"]>.decoration {
+	height: 1.5px;
+	align-self:stretch;
+	background-color: black;
+}
+[data-atom="not"]>.decoration {
+	height:2px;
+	padding:0px;
+	background-color: black;
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	top: 1;
+}
+
+.thirdMember[data-type] {/*aggiunto[data-type] per rendere il selettore piu' specifico*/
+	display:none;
+}
+
+[data-atom="eq"] {
+	min-height:12px;
+	min-width:12px;
+    /*colori*/
+}
+[data-atom="eq"]>.decoration{
+	padding:0
+}
+	
+.defSymbol {
+	border-radius: 15px;
+	background-color: black;
+	position: absolute;
+	left: 0;
+	width: 5px;
+	height:5px;
+	padding: 0px;
+	bottom: 0;"
+}
+
+.asymmetric  {
+	/* border-top-left-radius: 8px; */
+	margin-bottom: 5px;
+}
+
+.asymmetric>.firstMember {
+	border-radius: 8px;
+	position: absolute;
+	left: -9px;
+	/* bottom: -7px; */
+	top: -3.5px;
+	min-width: 8px;
+	min-height:8px;
+	padding: 0px;
+}
+.ui-icon-bullet {
+    -webkit-transform: scale(0.8);
+}
+
+.asymmetric  {
+  padding: 0px;
+}
+
+[data-atom="eq"].asymmetric:not(.unlocked)>.secondMember>[data-atom]{
+	border-width:0px;
+}
+.unlocked [data-atom="eq"].asymmetric>.secondMember>[data-atom]{
+	border-width:1px;
+}
+.unlocked [data-atom="eq"].asymmetric,[data-atom="eq"].asymmetric.unlocked {
+	padding:3px;
+}
+
+
+.asymmetric >.decoration {
+	display: none;
+}
+
+.unlocked>.defSymbol {
+	background-color: green;
+	}
+.locked>.defSymbol {
+	background-color: black;
+	}
+
+/*--------------coloredBorders--------------- */
+.coloredBorders [data-type=""][data-atom] {
+    border-color: rgb(140, 112, 103);
+}
+
+
+    
+
+.coloredBorders [data-type="num"] {
+    border-color: rgb(255, 155, 0);
+	/*box-shadow: 0px 0.5px 3px 0px #ff9b00;*/
+}
+.coloredBorders [class*="l_role"][data-type="num"].empty ,.coloredBorders [class*="s_role"][data-type="num"] {
+    background-color: rgb(255, 230, 190);
+}
+.coloredBorders [data-type="bool"][data-atom] {
+    border-color: rgb(119, 134, 119)
+   /*box-shadow: 0px 0.5px 2px 0.5px rgb(125, 125, 125);*/
+    /*box-shadow: 0px 0.5px 3px 0px rgb(9, 132, 9);*/;
+}
+.coloredBorders .asymmetric>.s_role.firstMember {
+    border-color: green;
+}
+.coloredBorders [data-type="point"],.coloredBorders [data-type="line"] {
+    border-color: rgb(70, 92, 188);
+}
+.coloredBorders [class*="l_role"][data-type="point"].empty ,.coloredBorders [class*="s_role"][data-type="point"],
+[class*="l_role"][data-type="line"].empty ,.coloredBorders [class*="s_role"][data-type="line"] {
+    background-color: rgb(190, 195, 255);
+}
+
+#telaRole {background-color: white;justify-content: flex-start;}/* #telaRole root always white*/
+
+.coloredBorders [class*="l_role"][data-type="bool"].empty ,.coloredBorders [class*="s_role"][data-type="bool"] {
+    background-color: rgb(194, 243, 194);
+}
+.coloredBorders [data-type="obj"][data-atom] {
+    border-color: rgb(148, 136, 148);
+	/*box-shadow: 0px 0px 3px 1px rgba(175, 175, 175, 0.6);*/
+}
+.coloredBorders [class*="l_role"][data-type="obj"].empty ,.coloredBorders [class*="s_role"][data-type="obj"],.coloredBorders [class*="bVar_role"][data-type="obj"] {
+    background-color: #e2d9d6;
+}
+
+.selected, .selected[data-atom] {
+    /*border-color: red!important;*/
+ 	background-color:f1f1f1;
+}
+
+.unselected[data-atom]  {
+	/*border-color: blue;*/
+	z-index:1 } 
+
+.waiting {/*grayout all but .waiting DIV */
+	z-index:100;
+	box-shadow: 0 0 0 999px #96959542;
+}
+
+#telaRole .waiting .forallSymbol{
+	display: none
+}
+
+.unlocked, .unlocked [data-atom],.unlocked.asymmetric>.firstMember, .unlocked .asymmetric>.firstMember{
+  border-style: dashed;
+}
+
+/*trucco per far sembrare il sigillo parte del contorno esterno*/
+[data-atom=eq].asymmetric>.firstMember{
+    /* border-top: white; */
+    border-bottom: white;
+    border-right: #ffffff;
+}
+
+.target-associative{
+	/*background-color: #fbfbfb!important;*/
+	/*background-color: green!important;*/
+}
+
+.target-replaced:not(.hover) *{ 
+	background-color: #F9F9F9!important;
+	/*background-color: blue!important;*/
+}
+
+/*
+.target-distributive *{ 
+	background-color: #F9F9F9!important;
+    cursor: url(../images/distributeDown.svg), auto;
+}
+*/
+.hover.target-distributive *{ 
+    cursor: url(../images/distributeDown.svg), auto;
+}
+
+
+.target-collection {
+	background-color: #F9F9F9!important;
+	/*background-color: pink!important;
+    cursor: url(../images/collectUp.svg), auto;*/
+}
+.hover:not(#telaRole),.hover:not(#telaRole)>*{
+    background-color: yellow!important;
+}
+
+#telaRole :not(.empty)>.infix.proto{/*#telaRole ÃƒÆ’Ã‚Â¨ aggiunto per rendere piÃƒÆ’Ã‚Â¹ specifico il selector*/
+	display:none;
+}
+.infix.plus{
+	margin-left: 3px; */
+	margin-right: 3px; */
+}
+
+.infix, .power_decoration{/*workaround: altrimenti .power_decoration risultava misteriosamente sortable*/
+	pointer-events: none;
+}
+
+.times.infix>div{
+	width: 3.5;
+	height: 3.5;
+	padding:0;
+	background-color:black;
+	z-index: 1;
+	border-radius: 3px;
+	margin:-1.5px;
+}
+
+.times.infix{
+	padding:0;
+	border-radius: 3px;
+}
+
+[data-atom="implies"] {
+	flex-direction:column
+}
+
+.decoration.imply {
+	width:12px;
+	height:12px;
+	background-image: url(../images/implyDown.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position-x: center;
+}
+.decoration.midPoint {
+	width:20px;
+	height:20px;
+	background-image: url(../images/midPoint.svg);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position-x: center;
+}
+
+
+.decoration.perpByPoint {
+	width:20px;
+	height:20px;
+	background-image: url(../images/perpByPoint.svg);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position-x: center;
+}
+.functName {
+	display:none;
+}
+.showFuctName .functName {
+	display:flex;
+}
+.showFuctName .decoration.perpByPoint {
+	display:none;
+}
+.decoration.segment {
+	width:20px;
+	height:20px;
+	background-image: url(../images/segment.svg);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position-x: center;
+}
+
+.actions {
+	flex-direction:column
+}
+
+
+.showPar .brackets[data-atom] {
+
+	border-left-color: black;
+	
+
+	border-right-color: black;
+	
+
+	border-left-width: 2px;
+    border-right-width: 2px;
+	
+border-left-style: solid;
+border-right-style: solid;
+}
+    
+  
+/*written here to prevale over all other class css rules*/ 
+
+
+/* roles inside glued atoms must still work*/
+.glued:not(.ol_role):not(.ul_role){ 
+	pointer-events: none;
+}
+.glued{
+	border-width: 0px;	
+}
+
+/*se unlocked prevale sulla regola precedente che fa sparire i contorni ai glued*/
+.unlocked .glued{
+ 	border-width:1px;
+}
+/* overwrites glued state .unloked allows all pointer events even if glued  */
+.unlocked .glued:not(.ol_role):not(.ul_role){
+	pointer-events: auto;
+	
+}
+
+.debug .toBeComposed:not([data-atom]){
+	background-color: #32ABAB;
+}
+
+
+#telaRole.debug .input:not([data-atom]){ 
+	background-color: violet;
+}
+
+#telaRole.debug .inputFocus:not([data-atom]){ 
+	background-color: red!important;
+}
+
+6#telaRole.debug .pattern:not([data-atom]){ 
+	background-color: yellow;
+}
+
+#telaRole.debug .patternFocus:not([data-atom]){ 
+	background-color: yellowgreen;
+}
+
+#telaRole.debug .matched:not([data-atom]){ 
+	background-color: green;
+}
+
+#telaRole.debug .operand:not([data-atom]){ 
+	background-color: lightblue;
+}
+
+
+[data-atom="literal"] { background-color: lightgray ;}
+
+#telaRole [data-atom="defTrue"]:not(.expanded)>*:not(.name){
+	display:none!important;
+}
+#telaRole [data-atom="defTrue"]:not(.expanded){
+	border-bottom-right-radius: 0px;
+}
+#telaRole [data-type="bool"].minimized{
+	/*align-self: stretch;*/
+	min-height:8px;
+	background-image: url(../images/three-dots.svg);
+    background-repeat: no-repeat;
+    background-position: bottom center;
+	transition: all, 0.30s;
+}
+
+#telaRole [data-atom].minimized>*{
+	display:none!important;
+}
+/*
+#telaRole [data-atom].minimized>*:not(.ul_role){
+	display:none!important;
+}
+*/
+
+#overlay {
+    position: absolute;
+    width:100%;
+    height:100%;
+    box-sizing: border-box;/*To prevent padding added to the 100% dimensions.*/
+    background-color: #dd9cff6e;
+    pointer-events: none;
+}

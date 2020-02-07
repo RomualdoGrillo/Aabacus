@@ -1,0 +1,1 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML"><apply type="bool" title="def_minus"><forall></forall><bvar><ci type="num">x</ci></bvar><apply type="bool"><eq></eq><apply type="num"><minus></minus><ci type="num">x</ci></apply><apply type="num"><times></times><ci type="num">x</ci><apply type="num"><minus></minus><cn type="num">1</cn></apply></apply></apply></apply></math>

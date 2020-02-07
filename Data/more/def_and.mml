@@ -1,0 +1,17 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML"><apply type="bool"><and></and><apply type="bool">
+						
+						
+						
+					<eq></eq><apply type="bool"><and></and><ci type="bool">true</ci><ci type="bool">true</ci></apply><ci type="bool">true</ci></apply><apply type="bool">
+						
+						
+						
+					<eq></eq><apply type="bool"><and></and><ci type="bool">true</ci><ci type="bool">false</ci></apply><ci type="bool">false</ci></apply><apply type="bool">
+						
+						
+						
+					<eq></eq><apply type="bool"><and></and><ci type="bool">false</ci><ci type="bool">true</ci></apply><ci type="bool">false</ci></apply><apply type="bool">
+						
+						
+						
+					<eq></eq><apply type="bool"><and></and><ci type="bool">false</ci><ci type="bool">false</ci></apply><ci type="bool">false</ci></apply></apply></math>

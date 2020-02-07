@@ -1,0 +1,91 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<and>
+		</and>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">b</ci>
+				<ci type="num">c</ci>
+				<ci type="num">a</ci>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<apply type="num">
+					<minus>
+					</minus>
+					<ci type="num">x</ci>
+				</apply>
+				<ci type="num">x</ci>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<apply type="num">
+					<plus>
+					</plus>
+					<ci type="num">a</ci>
+					<ci type="num">b</ci>
+				</apply>
+				<ci type="num">c</ci>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<ci type="num">x</ci>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<times>
+				</times>
+				<ci type="num">a</ci>
+				<ci type="num">b</ci>
+				<ci type="num">c</ci>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<times>
+				</times>
+				<ci type="num">a</ci>
+				<apply type="num">
+					<m_inverse>
+					</m_inverse>
+					<ci type="num">a</ci>
+				</apply>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<times>
+				</times>
+				<ci type="num">a</ci>
+				<apply type="num">
+					<times>
+					</times>
+					<ci type="num">b</ci>
+					<ci type="num">c</ci>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+</math>

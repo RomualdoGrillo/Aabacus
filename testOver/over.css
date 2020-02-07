@@ -1,0 +1,20 @@
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #eee;
+  margin: 1px;
+  padding: 5px 10px;
+}
+
+.sortable-ghost {
+  opacity: .6;
+}
+
+#targetElement {
+  height: 500px;
+  width: 100%;
+  background-color: lightblue;
+}

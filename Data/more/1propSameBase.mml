@@ -1,0 +1,52 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<deftrue>
+		</deftrue>
+		<ci type="bool">SameBase</ci>
+		<apply type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci type="num">a</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">n</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">m</ci>
+			</bvar>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="num">
+					<times>
+					</times>
+					<apply type="num">
+						<power>
+						</power>
+						<ci type="num">a</ci>
+						<ci type="num">n</ci>
+					</apply>
+					<apply type="num">
+						<power>
+						</power>
+						<ci type="num">a</ci>
+						<ci type="num">m</ci>
+					</apply>
+				</apply>
+				<apply type="num">
+					<power>
+					</power>
+					<ci type="num">a</ci>
+					<apply type="num">
+						<plus>
+						</plus>
+						<ci type="num">n</ci>
+						<ci type="num">m</ci>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+		<ci type="bool">true</ci>
+	</apply>
+</math>

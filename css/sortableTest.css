@@ -1,0 +1,60 @@
+:root {
+  --num-color: #eb8f00;
+  --num-bgcolor: #fcd598;
+  --bool-color: #62a64b;
+  --bool-bgcolor: #bef0ae;
+}
+
+.fraction>.ul_role{
+	/* display: flow-root; */
+	flex-direction: column;
+	min-height:55px!important;
+	/* align-content: center; */
+}
+
+.fraction>.ul_role>[data-atom=m_inverse]{
+}
+
+.fraction>.ul_role>.infix
+{
+	display:none;
+}
+
+.fraction>.ul_role>.protox{
+	display:block!important;
+	height:20px
+}
+
+
+
+.sortable-ghost.showAsPlaceholder {
+	border-color:white!important;
+}
+
+/*.s_role[data-type=num]>.sortable-ghost,.ul_role[data-type=num]>.sortable-ghost*/
+.sortable-ghost.showAsPlaceholder[data-type=num]{background-color:var(--num-bgcolor);
+}
+.sortable-ghost.showAsPlaceholder[data-type=bool]{
+	background-color:var(--bool-bgcolor);
+}
+
+.sortable-ghost.showAsPlaceholder > * {
+	visibility: hidden;
+}
+
+.name{
+	pointer-events: none;
+	/*height:0px;*/
+	/* margin: 10; */
+}
+
+f_role{
+	position: absolute;
+	visibility: hidden;
+	height: 100%;
+	width: 100%;
+}
+
+.over{
+	background-color:red;
+}

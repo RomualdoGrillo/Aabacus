@@ -1,0 +1,7 @@
+indexjqui.html   
+punta->  jquery-ui.css
+punta->  jquery.js
+punta->  jquery-ui.js
+
+
+jquery-ui.theme.css punta a images

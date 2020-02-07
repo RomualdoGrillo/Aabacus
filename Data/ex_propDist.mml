@@ -1,0 +1,19 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<eq>
+		</eq>
+		<apply type="num">
+			<times>
+			</times>
+			<cn type="num">2</cn>
+			<cn type="num">3</cn>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci title="t" type="num">a</ci>
+				<ci title="t" type="num">b</ci>
+			</apply>
+		</apply>
+		<ci type="num">x</ci>
+	</apply>
+</math>

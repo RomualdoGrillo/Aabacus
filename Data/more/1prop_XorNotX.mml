@@ -1,0 +1,3 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML"><apply type="bool" title="X_or_NotX">
+					
+				<forall></forall><bvar><ci type="bool">x</ci></bvar><apply type="bool"><or></or><ci type="bool">x</ci><apply type="bool"><not></not><ci type="bool">x</ci></apply></apply></apply></math>

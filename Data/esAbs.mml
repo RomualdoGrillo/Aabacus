@@ -1,0 +1,81 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<forall>
+		</forall>
+		<bvar>
+			<ci type="num">a</ci>
+		</bvar>
+		<apply type="bool">
+			<or>
+			</or>
+			<apply type="bool">
+				<and>
+				</and>
+				<apply type="bool">
+					<gt>
+					</gt>
+					<ci type="num">a</ci>
+					<ci type="num">0</ci>
+				</apply>
+				<apply type="bool">
+					<eq>
+					</eq>
+					<apply type="num">
+						<abs>
+						</abs>
+						<ci type="num">a</ci>
+					</apply>
+					<ci type="num">a</ci>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<and>
+				</and>
+				<apply type="bool">
+					<not>
+					</not>
+					<apply type="bool">
+						<gt>
+						</gt>
+						<ci type="num">a</ci>
+						<ci type="num">0</ci>
+					</apply>
+				</apply>
+				<apply type="bool">
+					<eq>
+					</eq>
+					<apply type="num">
+						<abs>
+						</abs>
+						<ci type="num">a</ci>
+					</apply>
+					<apply type="num">
+						<minus>
+						</minus>
+						<ci type="num">a</ci>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<eq>
+		</eq>
+		<apply type="num">
+			<abs>
+			</abs>
+			<ci type="num">x</ci>
+		</apply>
+		<apply type="num">
+			<plus>
+			</plus>
+			<apply type="num">
+				<times>
+				</times>
+				<ci type="num">x</ci>
+				<cn type="num">2</cn>
+			</apply>
+			<cn type="num">2</cn>
+		</apply>
+	</apply>
+</math>

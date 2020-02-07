@@ -1,0 +1,7 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML"><apply type="bool">
+					
+				<forall></forall><bvar><ci type="num">a</ci></bvar><apply type="bool">
+						
+						
+						
+					<eq></eq><apply type="num"><times></times><ci type="num">a</ci><apply type="num"><m_inverse></m_inverse><ci type="num">a</ci></apply></apply><ci type="num">1</ci></apply></apply></math>

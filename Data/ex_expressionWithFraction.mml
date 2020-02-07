@@ -1,0 +1,15 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="num">
+		<plus/>
+		<cn type="num">2</cn>
+		<apply type="num">
+			<divide/>
+			<cn type="num">6</cn>
+			<cn type="num">3</cn>
+		</apply>
+		<apply type="num">
+			<minus/>
+			<cn type="num">1</cn>
+		</apply>
+	</apply>
+</math>

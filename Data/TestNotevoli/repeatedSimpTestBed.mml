@@ -1,0 +1,55 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply title="--s" type="bool">
+		<or>
+		</or>
+		<apply title="--s" type="bool">
+			<and>
+			</and>
+			<apply title="--s" type="bool">
+				<not>
+				</not>
+				<apply title="--s" type="bool">
+					<eq>
+					</eq>
+					<cn type="num">3</cn>
+					<cn type="num">0</cn>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply title="--s" type="num">
+					<times>
+					</times>
+					<cn type="num">2</cn>
+				</apply>
+				<apply type="num">
+					<times>
+					</times>
+					<apply type="num">
+						<m_inverse>
+						</m_inverse>
+						<cn type="num">3</cn>
+					</apply>
+					<ci type="num">y</ci>
+				</apply>
+			</apply>
+		</apply>
+		<apply title="--s" type="bool">
+			<and>
+			</and>
+			<apply title="--s" type="bool">
+				<eq>
+				</eq>
+				<cn type="num">3</cn>
+				<cn type="num">0</cn>
+			</apply>
+			<apply title="--s" type="bool">
+				<eq>
+				</eq>
+				<cn type="num">3</cn>
+				<ci type="num">y</ci>
+			</apply>
+		</apply>
+	</apply>
+</math>

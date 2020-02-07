@@ -1,0 +1,41 @@
+<svg xmlns='http://www.w3.org/2000/svg'
+  viewBox='-5 0 100 100'
+  >
+  <style>
+	svg {
+  width: 200;
+  height: 200;
+}
+svg path {
+  transition: d 0.35s;
+}
+svg:hover path {
+  d: path("M 4 40 l 0 -9 q 0 -16 16 -18 s 16 0 16 18 l 0 24");
+}
+  </style>
+<!-- se vista in grande
+<path stroke-width="6" fill="none" stroke="black" d="
+M 4 28
+l 0 -3
+q 0 -16 16 -18
+s 16 0 16 18
+l 0 24
+"/>
+<circle cx="20" cy="50" r="20" stroke="black" stroke-width="3" fill="black" />
+<circle cx="20" cy="50" r="12" stroke="white" stroke-width="2" fill="black" />
+-->
+
+<!-- se vista in piccolo-->
+<path stroke-width="7" fill="none" stroke="black" d="
+M 4 26
+l 0 -2
+q 0 -16 16 -18
+s 16 0 16 18
+l 0 24
+"/>
+
+<circle cx="20" cy="50" r="20" stroke="black" stroke-width="3" fill="black" />
+<circle cx="20" cy="50" r="12" stroke="white" stroke-width="3" fill="black" />
+
+
+</svg>

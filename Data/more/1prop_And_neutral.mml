@@ -1,0 +1,1 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML"><apply type="bool"><forall></forall><bvar><ci type="bool">x</ci></bvar><apply type="bool" gest_l="l" gest_r="r"><eq></eq><ci type="bool">x</ci><apply type="bool"><and></and><ci type="bool">x</ci><ci type="bool">true</ci></apply></apply></apply></math>

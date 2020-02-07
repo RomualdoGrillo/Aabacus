@@ -1,0 +1,81 @@
+
+.ftimes {
+  display: flex;
+  flex-direction: row;  
+  align-items: center;
+}
+.ftimes {
+  /*colori*/
+  background-color: #000000;
+}
+.yellow {
+  /*colori*/
+  background-color: yellow;
+}
+
+
+.ftimes,[data-atom="and"] >[class*="_role"]{
+	flex-direction: column;	
+}
+
+
+.fci {
+  /*colori*/
+  background-color: red;
+}
+
+[title="system"]{
+	background-image: url(../images/SistemaDiEq1.png);
+	background-size: cover;
+}
+[title="system"] *{
+	opacity:0.3
+}
+
+#myDiv {
+	border: 1px black solid;
+}
+
+
+.label {
+   position: absolute;
+   top: -8px;
+   left: -7px;
+   font-size: xx-small;
+}
+
+.test>.background{
+	background-color: blue!important;
+}
+
+/*#telaRole *:not(.selected) {
+ 	    -webkit-filter: grayscale(25%);
+       -moz-filter: grayscale(25%);
+         -o-filter: grayscale(25%);
+        -ms-filter: grayscale(25%);
+            filter: grayscale(25%);
+     
+}*/
+
+/*[data-atom="m_inverse"]>.s_role[data-type="num"]{
+    border-style:solid;
+    border-width:10 0 0 0px;
+    border-image:url(../images/EgyptNumbers.svg) 100 0 stretch;
+    padding-left:0.5em;
+}
+*/
+/* notazione "antico egitto" egypt
+.m_inversedecoration{
+	height: 10px;
+	padding:0px;
+	background-color: #645ca000;
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	background-image:url(../images/FractEgyptian.svg);
+	background-repeat: no-repeat;
+	/*display:none;*/
+}
+*/

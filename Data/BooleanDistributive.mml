@@ -1,0 +1,13 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<and>
+		</and>
+		<ci type="bool">Diesel</ci>
+		<apply type="bool">
+			<or>
+			</or>
+			<ci type="bool">Audi</ci>
+			<ci type="bool">VW</ci>
+		</apply>
+	</apply>
+</math>
