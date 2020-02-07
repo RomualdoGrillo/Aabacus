@@ -14,7 +14,7 @@ $('body').addClass(this.value)//aggiungi la nuova classe
 //************ inizializza UNDO  ************
 ssnapshot() //inizializza snapshot manager che gestisce UNDO
 //***********************
-//all elements that can be dragged around are initiated by making theyr container Sortable
+//all elements that can be dragged around are initiated by making their container Sortable
 let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable)'
 //let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),[data-atom=ci]';
 let initialSortables = document.querySelectorAll(sortablesSelectorString)
