@@ -1,0 +1,24 @@
+{
+  "name": "Aabacus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"minify": "npx terser -c -m -o MAIN.min.js -- MAIN.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RomualdoGrillo/Aabacus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RomualdoGrillo/Aabacus/issues"
+  },
+  "homepage": "https://github.com/RomualdoGrillo/Aabacus#readme",
+  "dependencies": {
+    "terser": "^4.6.3"
+  }
+}
