@@ -1,0 +1,340 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<eq>
+		</eq>
+		<apply type="num">
+			<abs>
+			</abs>
+			<ci type="num">x</ci>
+		</apply>
+		<apply type="num">
+			<plus>
+			</plus>
+			<ci type="num">x</ci>
+			<cn type="num">2</cn>
+		</apply>
+	</apply>
+	<ci type="bool">true</ci>
+	<apply type="bool">
+		<or>
+		</or>
+		<apply type="bool">
+			<geq>
+			</geq>
+			<ci type="num">x</ci>
+			<cn type="num">0</cn>
+		</apply>
+		<apply type="bool">
+			<not>
+			</not>
+			<apply type="bool">
+				<geq>
+				</geq>
+				<ci type="num">x</ci>
+				<cn type="num">0</cn>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<or>
+		</or>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<geq>
+				</geq>
+				<ci type="num">x</ci>
+				<cn type="num">0</cn>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="num">
+					<abs>
+					</abs>
+					<ci type="num">x</ci>
+				</apply>
+				<ci type="num">x</ci>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<ci type="num">x</ci>
+				<apply type="num">
+					<plus>
+					</plus>
+					<ci type="num">x</ci>
+					<cn type="num">2</cn>
+				</apply>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<not>
+				</not>
+				<apply type="bool">
+					<geq>
+					</geq>
+					<ci type="num">x</ci>
+					<cn type="num">0</cn>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="num">
+					<abs>
+					</abs>
+					<ci type="num">x</ci>
+				</apply>
+				<apply type="num">
+					<minus>
+					</minus>
+					<ci type="num">x</ci>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="num">
+					<minus>
+					</minus>
+					<ci type="num">x</ci>
+				</apply>
+				<apply type="num">
+					<plus>
+					</plus>
+					<ci type="num">x</ci>
+					<cn type="num">2</cn>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<or>
+		</or>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<geq>
+				</geq>
+				<ci type="num">x</ci>
+				<cn type="num">0</cn>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<ci type="num">x</ci>
+				<apply type="num">
+					<plus>
+					</plus>
+					<ci type="num">x</ci>
+					<cn type="num">2</cn>
+				</apply>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<not>
+				</not>
+				<apply type="bool">
+					<geq>
+					</geq>
+					<ci type="num">x</ci>
+					<cn type="num">0</cn>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="num">
+					<minus>
+					</minus>
+					<ci type="num">x</ci>
+				</apply>
+				<apply type="num">
+					<plus>
+					</plus>
+					<ci type="num">x</ci>
+					<cn type="num">2</cn>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<or>
+		</or>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<geq>
+				</geq>
+				<ci type="num">x</ci>
+				<cn type="num">0</cn>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="num">
+					<plus>
+					</plus>
+					<ci type="num">x</ci>
+					<apply type="num">
+						<minus>
+						</minus>
+						<ci type="num">x</ci>
+					</apply>
+				</apply>
+				<cn type="num">2</cn>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<not>
+				</not>
+				<apply type="bool">
+					<geq>
+					</geq>
+					<ci type="num">x</ci>
+					<cn type="num">0</cn>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="num">
+					<plus>
+					</plus>
+					<apply type="num">
+						<minus>
+						</minus>
+						<ci type="num">x</ci>
+					</apply>
+					<apply type="num">
+						<minus>
+						</minus>
+						<ci type="num">x</ci>
+					</apply>
+				</apply>
+				<cn type="num">2</cn>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<or>
+		</or>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<geq>
+				</geq>
+				<ci type="num">x</ci>
+				<cn type="num">0</cn>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<cn type="num">0</cn>
+				<cn type="num">2</cn>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<not>
+				</not>
+				<apply type="bool">
+					<geq>
+					</geq>
+					<ci type="num">x</ci>
+					<cn type="num">0</cn>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="num">
+					<times>
+					</times>
+					<apply type="num">
+						<minus>
+						</minus>
+						<cn type="num">2</cn>
+					</apply>
+					<ci type="num">x</ci>
+				</apply>
+				<cn type="num">2</cn>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<or>
+		</or>
+		<ci type="bool">false</ci>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<not>
+				</not>
+				<apply type="bool">
+					<geq>
+					</geq>
+					<ci type="num">x</ci>
+					<cn type="num">0</cn>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<ci type="num">x</ci>
+				<apply type="num">
+					<minus>
+					</minus>
+					<apply type="num">
+						<divide>
+						</divide>
+						<cn type="num">2</cn>
+						<cn type="num">2</cn>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<or>
+		</or>
+		<ci type="bool">false</ci>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<ci type="num">x</ci>
+			<apply type="num">
+				<minus>
+				</minus>
+				<cn type="num">1</cn>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<eq>
+		</eq>
+		<ci type="num">x</ci>
+		<apply type="num">
+			<minus>
+			</minus>
+			<cn type="num">1</cn>
+		</apply>
+	</apply>
+</math>

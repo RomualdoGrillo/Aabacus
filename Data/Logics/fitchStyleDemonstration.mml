@@ -1,0 +1,90 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<forall>
+		</forall>
+		<bvar>
+			<ci type="bool">P</ci>
+		</bvar>
+		<bvar>
+			<ci type="bool">Q</ci>
+		</bvar>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="bool">
+				<implies>
+				</implies>
+				<ci type="bool">P</ci>
+				<ci type="bool">Q</ci>
+			</apply>
+			<apply type="bool">
+				<not>
+				</not>
+				<apply type="bool">
+					<and>
+					</and>
+					<ci type="bool">P</ci>
+					<apply type="bool">
+						<not>
+						</not>
+						<ci type="bool">Q</ci>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<implies>
+		</implies>
+		<apply type="bool">
+			<implies>
+			</implies>
+			<ci type="bool">P</ci>
+			<ci type="bool">Q</ci>
+		</apply>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<implies>
+				</implies>
+				<apply type="bool">
+					<and>
+					</and>
+					<ci type="bool">P</ci>
+					<apply type="bool">
+						<not>
+						</not>
+						<ci type="bool">Q</ci>
+					</apply>
+				</apply>
+				<apply type="bool">
+					<and>
+					</and>
+					<ci type="bool">P</ci>
+					<apply type="bool">
+						<not>
+						</not>
+						<ci type="bool">Q</ci>
+					</apply>
+					<ci type="bool">Q</ci>
+					<ci type="bool">false</ci>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<not>
+				</not>
+				<apply type="bool">
+					<and>
+					</and>
+					<ci type="bool">P</ci>
+					<apply type="bool">
+						<not>
+						</not>
+						<ci type="bool">Q</ci>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+</math>

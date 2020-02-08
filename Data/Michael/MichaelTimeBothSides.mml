@@ -1,0 +1,129 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<forall>
+		</forall>
+		<bvar>
+			<ci type="num">x</ci>
+		</bvar>
+		<bvar>
+			<ci type="num">y</ci>
+		</bvar>
+		<bvar>
+			<ci type="num">a</ci>
+		</bvar>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="num">
+					<times>
+					</times>
+					<ci title="s" type="num">a</ci>
+					<ci type="num">x</ci>
+				</apply>
+				<ci type="num">y</ci>
+			</apply>
+			<apply title="--c" type="bool">
+				<or>
+				</or>
+				<apply title="--c" type="bool">
+					<and>
+					</and>
+					<apply title="--c" type="bool">
+						<not>
+						</not>
+						<apply title="--c" type="bool">
+							<eq>
+							</eq>
+							<ci type="num">a</ci>
+							<cn type="num">0</cn>
+						</apply>
+					</apply>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<ci type="num">x</ci>
+						<apply type="num">
+							<times>
+							</times>
+							<ci type="num">y</ci>
+							<apply type="num">
+								<m_inverse>
+								</m_inverse>
+								<ci type="num">a</ci>
+							</apply>
+						</apply>
+					</apply>
+				</apply>
+				<apply title="--c" type="bool">
+					<and>
+					</and>
+					<apply title="--c" type="bool">
+						<eq>
+						</eq>
+						<ci type="num">a</ci>
+						<cn type="num">0</cn>
+					</apply>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<cn type="num">0</cn>
+						<ci type="num">y</ci>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<forall>
+		</forall>
+		<bvar>
+			<ci type="num">x</ci>
+		</bvar>
+		<bvar>
+			<ci type="num">y</ci>
+		</bvar>
+		<bvar>
+			<ci type="num">a</ci>
+		</bvar>
+		<apply type="bool">
+			<ifthenelse>
+			</ifthenelse>
+			<apply title="--c" type="bool">
+				<not>
+				</not>
+				<apply title="--c" type="bool">
+					<eq>
+					</eq>
+					<ci type="num">a</ci>
+					<cn type="num">0</cn>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<ci type="num">x</ci>
+				<apply type="num">
+					<times>
+					</times>
+					<ci type="num">y</ci>
+					<apply type="num">
+						<m_inverse>
+						</m_inverse>
+						<ci type="num">a</ci>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<eq>
+		</eq>
+		<apply type="num">
+			<power>
+			</power>
+		</apply>
+	</apply>
+</math>

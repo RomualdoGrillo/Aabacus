@@ -1,0 +1,33 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<deftrue>
+		</deftrue>
+		<ci type="bool">ModusPonens</ci>
+		<apply type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci type="bool">a</ci>
+			</bvar>
+			<bvar>
+				<ci type="bool">b</ci>
+			</bvar>
+			<apply type="bool">
+				<implies>
+				</implies>
+				<apply type="bool">
+					<and>
+					</and>
+					<apply type="bool">
+						<implies>
+						</implies>
+						<ci type="bool">a</ci>
+						<ci type="bool">b</ci>
+					</apply>
+					<ci type="bool">a</ci>
+				</apply>
+				<ci type="bool">b</ci>
+			</apply>
+		</apply>
+	</apply>
+</math>

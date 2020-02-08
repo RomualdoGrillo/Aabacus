@@ -1,0 +1,80 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<and>
+		</and>
+		<apply type="bool">
+			<eventtoaction>
+			</eventtoaction>
+			<ci type="bool">m</ci>
+			<apply minimized="True" type="obj">
+				<callfunction>
+				</callfunction>
+				<ci type="bool">eqPlusMove</ci>
+				<ci type="bool">ltr</ci>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<deftrue>
+			</deftrue>
+			<ci type="bool">eqPlusMove</ci>
+			<apply type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci type="num">a___</ci>
+				</bvar>
+				<bvar>
+					<ci type="num">k</ci>
+				</bvar>
+				<bvar>
+					<ci type="num">b</ci>
+				</bvar>
+				<apply type="bool">
+					<eq>
+					</eq>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<apply type="num">
+							<plus>
+							</plus>
+							<ci title="s--f" type="num">k</ci>
+							<ci type="num">a</ci>
+						</apply>
+						<ci type="num">b</ci>
+					</apply>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<apply type="num">
+							<plus>
+							</plus>
+							<apply title="--s" type="num">
+								<minus>
+								</minus>
+								<ci type="num">k</ci>
+							</apply>
+							<ci type="num">b</ci>
+						</apply>
+						<apply title="--c" type="num">
+							<plus>
+							</plus>
+							<ci type="num">a</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<cn type="num">1</cn>
+				<ci type="num">x</ci>
+			</apply>
+			<cn type="num">1</cn>
+		</apply>
+	</apply>
+</math>

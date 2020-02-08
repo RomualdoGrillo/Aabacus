@@ -1,0 +1,22 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="num">
+		<plus>
+		</plus>
+		<cn type="num">2</cn>
+		<apply type="num">
+			<times>
+			</times>
+			<cn type="num">6</cn>
+			<apply type="num">
+				<m_inverse>
+				</m_inverse>
+				<cn type="num">3</cn>
+			</apply>
+		</apply>
+		<apply type="num">
+			<minus>
+			</minus>
+			<cn type="num">1</cn>
+		</apply>
+	</apply>
+</math>

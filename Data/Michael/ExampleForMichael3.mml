@@ -1,0 +1,35 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<ci type="bool">midpoint is commutative </ci>
+	<apply type="bool">
+		<forall>
+		</forall>
+		<bvar>
+			<ci type="point">A</ci>
+		</bvar>
+		<bvar>
+			<ci type="point">B</ci>
+		</bvar>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="point">
+				<midpoint>
+				</midpoint>
+				<ci type="point">A</ci>
+				<ci type="point">B</ci>
+			</apply>
+			<apply type="point">
+				<midpoint>
+				</midpoint>
+				<ci type="point">B</ci>
+				<ci type="point">A</ci>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="point">
+		<midpoint>
+		</midpoint>
+		<ci type="point">P</ci>
+		<ci type="point">H</ci>
+	</apply>
+</math>

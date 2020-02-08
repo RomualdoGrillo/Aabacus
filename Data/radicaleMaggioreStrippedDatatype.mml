@@ -1,0 +1,144 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<and>
+		</and>
+		<apply type="bool">
+			<deftrue>
+			</deftrue>
+			<ci type="bool">monotoniaQuadrato</ci>
+			<apply type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci type="num">a</ci>
+				</bvar>
+				<bvar>
+					<ci type="num">b</ci>
+				</bvar>
+				<apply type="bool">
+					<implies>
+					</implies>
+					<apply type="bool">
+						<and>
+						</and>
+						<apply type="bool">
+							<gt>
+							</gt>
+							<ci type="num">a</ci>
+							<cn type="num">0</cn>
+						</apply>
+						<apply type="bool">
+							<gt>
+							</gt>
+							<ci type="num">b</ci>
+							<cn type="num">0</cn>
+						</apply>
+						<apply type="bool">
+							<gt>
+							</gt>
+							<ci type="num">a</ci>
+							<ci type="num">b</ci>
+						</apply>
+					</apply>
+					<apply type="bool">
+						<gt>
+						</gt>
+						<apply type="num">
+							<power>
+							</power>
+							<ci type="num">a</ci>
+							<cn type="num">2</cn>
+						</apply>
+						<apply type="num">
+							<power>
+							</power>
+							<ci type="num">b</ci>
+							<cn type="num">2</cn>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<deftrue>
+			</deftrue>
+			<ci type="bool">defRadice</ci>
+			<apply type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci type="num">a</ci>
+				</bvar>
+				<apply type="bool">
+					<implies>
+					</implies>
+					<apply type="bool">
+						<gt>
+						</gt>
+						<ci type="num">a</ci>
+						<cn type="num">0</cn>
+					</apply>
+					<apply type="bool">
+						<and>
+						</and>
+						<apply type="bool">
+							<gt>
+							</gt>
+							<apply type="num">
+								<root>
+								</root>
+								<ci type="num">a</ci>
+							</apply>
+							<cn type="num">0</cn>
+						</apply>
+						<apply type="bool">
+							<eq>
+							</eq>
+							<apply type="num">
+								<power>
+								</power>
+								<apply type="num">
+									<root>
+									</root>
+									<ci type="num">a</ci>
+								</apply>
+								<cn type="num">2</cn>
+							</apply>
+							<ci type="num">a</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<gt>
+			</gt>
+			<apply>
+				<root>
+				</root>
+				<ci type="num">x</ci>
+			</apply>
+			<ci type="num">y</ci>
+		</apply>
+		<apply type="bool">
+			<or>
+			</or>
+			<apply type="bool">
+				<gt>
+				</gt>
+				<ci type="num">y</ci>
+				<cn type="num">0</cn>
+			</apply>
+			<apply type="bool">
+				<not>
+				</not>
+				<apply type="bool">
+					<gt>
+					</gt>
+					<ci type="num">y</ci>
+					<cn type="num">0</cn>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+</math>

@@ -1,0 +1,18 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="line">
+		<perpbypoint>
+		</perpbypoint>
+		<apply type="line">
+			<segment>
+			</segment>
+			<ci type="point">A</ci>
+			<ci type="point">B</ci>
+		</apply>
+		<apply type="point">
+			<midpoint>
+			</midpoint>
+			<ci type="point">A</ci>
+			<ci type="point">B</ci>
+		</apply>
+	</apply>
+</math>

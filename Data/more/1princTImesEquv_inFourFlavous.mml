@@ -1,0 +1,304 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<deftrue>
+		</deftrue>
+		<ci type="bool">eqTimes1</ci>
+		<apply type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci type="num">x</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">y</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">a</ci>
+			</bvar>
+			<bvar>
+				<ci type="bool">others___</ci>
+			</bvar>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="bool">
+					<and>
+					</and>
+					<apply type="bool">
+						<not>
+						</not>
+						<apply type="bool">
+							<eq>
+							</eq>
+							<ci type="num">a</ci>
+							<cn type="num">0</cn>
+						</apply>
+					</apply>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<ci type="num">x</ci>
+						<ci type="num">y</ci>
+					</apply>
+					<ci type="bool">others</ci>
+				</apply>
+				<apply type="bool">
+					<and>
+					</and>
+					<apply type="bool">
+						<not>
+						</not>
+						<apply type="bool">
+							<eq>
+							</eq>
+							<ci type="num">a</ci>
+							<cn type="num">0</cn>
+						</apply>
+					</apply>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<apply type="num">
+							<times>
+							</times>
+							<ci type="num">a</ci>
+							<ci type="num">x</ci>
+						</apply>
+						<apply type="num">
+							<times>
+							</times>
+							<ci type="num">a</ci>
+							<ci type="num">y</ci>
+						</apply>
+					</apply>
+					<ci type="bool">others</ci>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<deftrue>
+		</deftrue>
+		<ci type="bool">eqTimesMove1</ci>
+		<apply type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci type="num">a</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">y</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">others___</ci>
+			</bvar>
+			<apply type="bool">
+				<implies>
+				</implies>
+				<apply type="bool">
+					<not>
+					</not>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<ci type="num">a</ci>
+						<cn type="num">0</cn>
+					</apply>
+				</apply>
+				<apply type="bool">
+					<eq>
+					</eq>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<apply type="num">
+							<times>
+							</times>
+							<ci title="s" type="num">a</ci>
+							<ci type="num">others</ci>
+						</apply>
+						<ci type="num">y</ci>
+					</apply>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<apply title="--c" type="num">
+							<times>
+							</times>
+							<ci type="num">others</ci>
+						</apply>
+						<apply type="num">
+							<times>
+							</times>
+							<ci type="num">y</ci>
+							<apply type="num">
+								<m_inverse>
+								</m_inverse>
+								<ci type="num">a</ci>
+							</apply>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<deftrue>
+		</deftrue>
+		<ci type="bool">eqTimesMove2</ci>
+		<apply type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci type="num">a</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">y</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">others___</ci>
+			</bvar>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="bool">
+					<eq>
+					</eq>
+					<apply type="num">
+						<times>
+						</times>
+						<ci title="s" type="num">a</ci>
+						<ci type="num">others</ci>
+					</apply>
+					<ci type="num">y</ci>
+				</apply>
+				<apply title="--c" type="bool">
+					<or>
+					</or>
+					<apply title="--c" type="bool">
+						<and>
+						</and>
+						<apply title="--c" type="bool">
+							<not>
+							</not>
+							<apply title="--c" type="bool">
+								<eq>
+								</eq>
+								<ci type="num">a</ci>
+								<cn type="num">0</cn>
+							</apply>
+						</apply>
+						<apply type="bool">
+							<eq>
+							</eq>
+							<apply title="--c" type="num">
+								<times>
+								</times>
+								<ci type="num">others</ci>
+							</apply>
+							<apply type="num">
+								<times>
+								</times>
+								<ci type="num">y</ci>
+								<apply type="num">
+									<m_inverse>
+									</m_inverse>
+									<ci type="num">a</ci>
+								</apply>
+							</apply>
+						</apply>
+					</apply>
+					<apply title="--c" type="bool">
+						<and>
+						</and>
+						<apply title="--c" type="bool">
+							<eq>
+							</eq>
+							<ci type="num">a</ci>
+							<cn type="num">0</cn>
+						</apply>
+						<apply type="bool">
+							<eq>
+							</eq>
+							<cn type="num">0</cn>
+							<ci type="num">y</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<deftrue>
+		</deftrue>
+		<ci type="bool">eqTimesMove3</ci>
+		<apply type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci type="num">a</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">y</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">others___</ci>
+			</bvar>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="bool">
+					<eq>
+					</eq>
+					<apply type="num">
+						<times>
+						</times>
+						<ci title="s" type="num">a</ci>
+						<ci type="num">others</ci>
+					</apply>
+					<ci type="num">y</ci>
+				</apply>
+				<apply type="bool">
+					<ifthenelse>
+					</ifthenelse>
+					<apply title="--c" type="bool">
+						<not>
+						</not>
+						<apply title="--c" type="bool">
+							<eq>
+							</eq>
+							<ci type="num">a</ci>
+							<cn type="num">0</cn>
+						</apply>
+					</apply>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<apply title="--c" type="num">
+							<times>
+							</times>
+							<ci type="num">others</ci>
+						</apply>
+						<apply type="num">
+							<times>
+							</times>
+							<ci type="num">y</ci>
+							<apply type="num">
+								<m_inverse>
+								</m_inverse>
+								<ci type="num">a</ci>
+							</apply>
+						</apply>
+					</apply>
+					<apply type="bool">
+						<eq>
+						</eq>
+						<cn type="num">0</cn>
+						<ci type="num">y</ci>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<ci type="bool">eqTimesMove3</ci>
+</math>
