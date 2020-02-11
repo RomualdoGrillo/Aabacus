@@ -1,0 +1,52 @@
+[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag){
+	margin-left: 9px; /*space for infix symbol*/
+}
+
+[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag)::before {
+	/*background-color: red;*/
+	position: absolute;
+	content: "+";
+	left:-10.2;
+}
+/*[data-atom=plus]>.ul_role>[data-atom=minus]:not(:first-of-type):not(.sortable-drag)::before{
+	content: "-";	
+}*/
+[data-atom=times]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag)::before {
+	background-color: black;
+	position: absolute;
+	content: "";
+	left:-3;
+	width: 3.5;
+	height: 3.5;
+	z-index: 100;
+	border-radius: 3px;
+}
+[data-atom=times]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag){
+	margin-left: 0.5px; /*space for infix symbol*/
+}
+
+.vertTimes [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag){
+	margin-top: 0.5px; /*space for infix symbol*/
+}
+
+.vertTimes [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag)::before {
+	top:-3;
+	left:unset;
+}
+
+[data-atom="and"]:not(#telaAnd){
+	padding-left:20px;
+}
+
+[data-atom="and"]:not(#telaAnd):not(.sortable-ghost)::before{
+	content:"";
+	/*content:attr(data-atom);*/
+	position: absolute;
+	left: 2px;
+	background-image: url(../images/GullBraceLeft.svg);
+	/*background-color:red;*/
+	width:17px;
+	height:90%;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
