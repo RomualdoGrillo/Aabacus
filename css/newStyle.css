@@ -3,7 +3,7 @@
 }
 
 div{
-	display:flex;
+	display: flex;
 	align-items:center;
 }
 [data-atom] {
@@ -129,12 +129,13 @@ per una questione estetica */
 
 
 
-[data-atom="and"]:not(#telaAnd)>.ul_role {
+/*[data-atom="and"]:not(#telaAnd)>.ul_role {
     border-style:solid;
     border-width: 0 0 0 20px;
     border-image:url(../images/GullBraceLeft.svg) 0 47 stretch;
     padding-left:0.5em;
-}
+}*/
+
 [data-atom="and"]>.ul_role>[data-atom]{
 	margin:2px;
 }
@@ -405,7 +406,7 @@ per una questione estetica */
 	pointer-events: none;
 }
 
-.times.infix>div{
+/*.times.infix>div{
 	width: 3.5;
 	height: 3.5;
 	padding:0;
@@ -418,7 +419,7 @@ per una questione estetica */
 .times.infix{
 	padding:0;
 	border-radius: 3px;
-}
+}*/
 
 [data-atom="implies"] {
 	flex-direction:column
@@ -576,9 +577,6 @@ border-right-style: solid;
 }
 
 
-[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type){
-	margin-left: 9px; /*space for infix symbol*/
-}
 
 .toBeUpdated>.infix{
 	display:none;

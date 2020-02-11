@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "minify": "terser -c -m -o js/MAIN.min.js -- js/MAIN.js",
+    "minify": "terser -c -m -o js/newPatternMatching.min.js -- js/newPatternMatching.js && terser -c -m -o js/MAIN.min.js -- js/MAIN.js && terser -c -m -o js/Atom.min.js -- js/Atom.js && terser -c -m -o js/HardWiredProperties.min.js -- js/HardWiredProperties.js",
 	"say-hello": "echo 'Hello Ald!'"
   },
   "repository": {
