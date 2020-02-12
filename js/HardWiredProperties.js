@@ -165,25 +165,27 @@ function opIsDistDop(op,opD){// string ex: plus times
 }
 
 
-/*
 
-function opIsDistDop(op){// string ex: plus times 
-	if(op === "times"){return "plus"}
-	else if(op === "and"){return "or"}
-	else{return undefined}// se non è distributiva
-}
-
-*/
-function validForPartDist(mouseDownNode){
+function validForPartDist(dragged){
 	let $dragged = $(dragged)
 	let $parent = ATOMparent($dragged);
-	let validTargets = $();
-	let op = undefined;
-	if ($parent !== undefined){op = $parent.attr("data-atom")}
-	let opD = opIsDistDop(op);
-
-
-	return validTargets;
+	let opD = undefined;
+	if ($parent !== undefined){opD = $parent.attr("data-atom")}
+	let op = opIsDistDop("",opD);
+	if(op){
+		return ATOMparent(ATOMparent($parent))
+	}
+	/*
+	if(op && ATOMparent($parent).attr("data-atom") === op){//check if parent of parent is the right op
+		if(ATOMparent(ATOMparent($parent))){
+			return ATOMparent(ATOMparent($parent))
+		}
+		else{
+			return encaseWithOperation($siblingsT,op)
+		}
+	}
+	*/
+	return $()
 }
 
 

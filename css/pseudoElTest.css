@@ -50,3 +50,7 @@
 	background-size: contain;
 	background-repeat: no-repeat;
 }
+
+*::before{
+		pointer-events: none;
+}

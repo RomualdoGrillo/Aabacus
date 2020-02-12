@@ -126,19 +126,27 @@ function onEndHandler(event){
 	}
 	let dropTarget
 	//Mouse
-	if( event.originalEvent.type == 'drop'){
-		dropTarget= event.originalEvent.target
+	if( event.originalEvent.type == 'drop'){// event.originalEvent.target è più facile, ma non distingue tra elemento e suo pseudoelemento ::before
+		let x=event.originalEvent.clientX;
+		let y=event.originalEvent.clientY;
+		dropTarget = document.elementFromPoint(x,y);
+		if(!dropTarget.getAttribute('data-atom')){//if it's not an atom get the parent atom
+			dropTarget = ATOMparent($(dropTarget))[0];	
+		}
 	}
 	//Touch
 	else{
 		let x=event.originalEvent.changedTouches[0].clientX;
 		let y=event.originalEvent.changedTouches[0].clientY;
-		dropTarget = document.elementFromPoint(x,y)
-	} 
+		dropTarget = document.elementFromPoint(x,y);
+		if(!dropTarget.getAttribute('data-atom')){//if it's not an atom get the parent atom
+			dropTarget = ATOMparent($(dropTarget))[0];	
+		}
+	}
+	/* 
 	let parentTarget
 	if(dropTarget){
-		//risalgo fino a che non trovo un parent marcato		
-		parentTarget = dropTarget.closest('[data-atom][target]:not([target=""])')
+		parentTarget = dropTarget.closest('[data-atom][target]:not([target=""])')//risalgo fino a che non trovo un parent marcato
 	}
 	if(parentTarget){
 	    //apply property
@@ -147,6 +155,17 @@ function onEndHandler(event){
 	    let property = propertiesDnD.find(function(el){return el.name == targetProperty });
 	    if(property){
 	    	let PActx = property.apply($(event.item),$(parentTarget))
+			if(PActx){PActxConclude(PActx)}	    
+	    }
+	}
+	*/
+	if($(dropTarget).is('[data-atom][target]:not([target=""])')){
+	    //apply property
+	    let targetProperty = dropTarget.getAttribute('target');
+	    console.log(' ------------> found target ' + targetProperty );
+	    let property = propertiesDnD.find(function(el){return el.name == targetProperty });
+	    if(property){
+	    	let PActx = property.apply($(event.item),$(dropTarget))
 			if(PActx){PActxConclude(PActx)}	    
 	    }
 	}
