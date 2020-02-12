@@ -300,30 +300,36 @@ function validForPartColl(mouseDownNode){
 
 function ATOMPartCollect($dragged,$target){
 	let $targetParent = ATOMparent($target);
+	let $siblingsT = $target.siblings('[data-atom]')
 	let opt = $targetParent.attr("data-atom")
 	
 	let $draggedParent = ATOMparent($dragged);
-	let $siblings = $dragged.siblings('[data-atom]')
+	let $siblingsD = $dragged.siblings('[data-atom]')
 	let opd = $draggedParent.attr("data-atom")
 	
-	
-	/*
-	let $parent = ATOMparent($dragged);
-	let op = undefined;
-	if ($parent !== undefined){op = $parent.attr("data-atom")}
-	console.log("collect")
-	var extOp 
-	extOp = encaseIfNeeded($target,op)
-	$cloneDragged = ATOMclone($dragged);
-	ATOMparent($(".couldBeCollected")).addClass("cleanPointless")
-	$cloneDragged.removeClass("couldBeCollected")
-	attachEventsAndExtend($cloneDragged);
-	$cloneDragged.insertBefore($target);
-	$cloneDragged.css({display:""});
-	//$(".toBeCollected").remove();//removing elements while sorting causes an error message
-	$(".couldBeCollected").remove()
-	$target.addClass("cleanPointless");
-	*/
+	if(opt==opd && opIsDistDop(opt)){//both have same distributable op
+		var opPlus = opIsDistDop(opt)//opPlus may be plus,or, other operation over wich you distribute 
+		var $prototype = prototypeSearch(opPlus)// for example search for "#timesPrototype"
+		var $opPlus = ATOMclone($prototype)//create times
+		$siblingsT.replaceWith($opPlus);
+		attachEventsAndExtend($opPlus);
+		var $plusRole = $opPlus[0].ATOM_getRoles() 
+		if($siblingsT.length>1){
+			$siblingsT=(encaseWithOperation($siblingsT,opt));	
+		}
+		if($siblingsD.length>1){
+			$siblingsD=(encaseWithOperation($siblingsD,opt));	
+		}
+		if($targetParent.index()>$draggedParent.index()){//order of terms is inherited from order of oarents
+			$plusRole.append($siblingsD);
+			$plusRole.append($siblingsT);	
+		}
+		else{
+			$plusRole.append($siblingsT);
+			$plusRole.append($siblingsD);
+		}
+		$draggedParent.remove()
+	}
 }
 
 
