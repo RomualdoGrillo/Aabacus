@@ -227,9 +227,14 @@ function ATOMdistribute(dragged,target){
 		attachEventsAndExtend($clone);// dai vita a clone ed al suo albero
 		attachEventsAndExtend($cloneDragged);
 		$clone.insertBefore($(this));
-		$clone[0].ATOM_getRoles().append($(this));
-		$cloneDragged.css({display:""})
 		$clone[0].ATOM_getRoles().append($cloneDragged);
+		if(dragged.index()>target.index()){
+			$clone[0].ATOM_getRoles().prepend($(this));
+		}
+		else{
+			$clone[0].ATOM_getRoles().append($(this));	
+		}
+		//$cloneDragged.css({display:""})
 	})
 	var $draggedParent = dragged[0].ATOMparent(); 
 	$draggedParent.addClass("cleanPointless");//mark external operation as remove if pointless
