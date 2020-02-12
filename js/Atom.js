@@ -486,14 +486,13 @@ function prototypeSearch2(className,symbolname,dataType,loadedFile){//alcune cla
 
 
 function encaseWithOperation($ATOMelement,op){
-	//create external operation
+	//create external operation to $ATOMelement, $ATOMelement is 1 element or a list of adjacent elements 
 	var $prototype = prototypeSearch(op);
 	var $clone = ATOMclone($prototype)
 	attachEventsAndExtend($clone);// dai vita a clone ed al suo albero
 	//ATOMparent($ATOMelement).replaceWith($clone);//replace provoca la distruzione degli eventi nel replaced
-	$clone.insertBefore($ATOMelement);
+	$clone.insertBefore($ATOMelement.eq(0));
 	$ATOMelement.appendTo($clone[0].ATOM_getRoles());
-	ssnapshot.take();
 	return $clone
 }
 

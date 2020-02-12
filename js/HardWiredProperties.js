@@ -317,23 +317,52 @@ function ATOMPartCollect($dragged,$target){
 	if(opt==opd && opIsDistDop(opt)){//both have same distributable op
 		var opPlus = opIsDistDop(opt)//opPlus may be plus,or, other operation over wich you distribute 
 		var $prototype = prototypeSearch(opPlus)// for example search for "#timesPrototype"
-		var $opPlus = ATOMclone($prototype)//create times
-		$siblingsT.replaceWith($opPlus);
-		attachEventsAndExtend($opPlus);
-		var $plusRole = $opPlus[0].ATOM_getRoles() 
-		if($siblingsT.length>1){
-			$siblingsT=(encaseWithOperation($siblingsT,opt));	
-		}
-		if($siblingsD.length>1){
-			$siblingsD=(encaseWithOperation($siblingsD,opt));	
-		}
-		if($targetParent.index()>$draggedParent.index()){//order of terms is inherited from order of oarents
-			$plusRole.append($siblingsD);
-			$plusRole.append($siblingsT);	
+		var $opPlus
+		var $termT
+		var $termD
+		if($siblingsT.length==1){
+			if($siblingsT.eq(0).attr("data-atom")==opPlus){//if 'plus' ther's no need to create a new plus container
+				$opPlus = $siblingsT
+				$termT = $siblingsT[0].ATOM_getChildren()
+				$termT.remove();//svuoto il target plus e poi lo riempio ordinatamente
+				//il plus si trova già all'interno del target, quindi non lo sposto
+			}
+			else{
+				$termT = $siblingsT;
+			}
 		}
 		else{
-			$plusRole.append($siblingsT);
-			$plusRole.append($siblingsD);
+			$termT =(encaseWithOperation($siblingsT,opt));	
+		}
+		if($siblingsD.length==1){
+			if(!$opPlus && $siblingsD.eq(0).attr("data-atom")==opPlus){//if 'plus' ther's no need to create a new plus container
+				$opPlus = $siblingsD
+				$termD = $siblingsD[0].ATOM_getChildren()
+				$termD.remove();//svuoto il target plus e poi lo riempio ordinatamente
+				$opPlus.insertBefore($termT);//preferisco mettere sempre il plus all'interno del target 
+				$termT.remove();
+			}
+			else{
+				$termD= $siblingsD;
+			}
+		}
+		else{
+			$termD=(encaseWithOperation($siblingsD,opt));	
+		}
+		if(!$opPlus){//if a suitable "plus" container has not been found create a new one
+			$opPlus= ATOMclone($prototype)//create times
+			attachEventsAndExtend($opPlus);
+			$opPlus.insertBefore($termT);
+			$termT.remove();
+		}
+		var $plusRole = $opPlus[0].ATOM_getRoles() 
+		if($targetParent.index()>$draggedParent.index()){//order of terms is inherited from order of oarents
+			$plusRole.append($termD);
+			$plusRole.append($termT);	
+		}
+		else{
+			$plusRole.append($termT);
+			$plusRole.append($termD);
 		}
 		$draggedParent.remove()
 	}
@@ -778,4 +807,10 @@ function forThisPar_focus_nofocus($specificValue,$parameter){
 			$parameter=$(GetforAllHeader($forall).children()[index])
 		}
 		ATOMForThisPar($parameter,$specificValue)
+}
+
+function clearTragets(){
+	clearTarget(["target-opened","toBeCloned"]);//debug 
+	document.querySelectorAll(sortablesSelectorString).forEach(function(el){el.setAttribute('target','')});
+	document.querySelectorAll('[data-atom]').forEach(function(el){el.setAttribute('target','')});
 }

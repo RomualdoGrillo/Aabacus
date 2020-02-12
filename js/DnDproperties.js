@@ -45,8 +45,6 @@ function makeSortable(sortables){
 
 }
 
-
-
 function newOnStartHandler(event,AtomDragged){
 	//debug newOnStartHandler(undefined,AtomDragged) 
 	let dragged
@@ -57,9 +55,7 @@ function newOnStartHandler(event,AtomDragged){
 	//********select*****************
 	clickHandler(event)
 	//********clear all targets*****************
-	clearTarget(["target-opened","toBeCloned"]);//debug 
-	document.querySelectorAll(sortablesSelectorString).forEach(function(el){el.setAttribute('target','')});
-	document.querySelectorAll('[data-atom]').forEach(function(el){el.setAttribute('target','')});
+	if(debugMode){clearTragets()}
 
 	if(!event.originalEvent.ctrlKey){//move!
 		event.item.classList.add('showAsPlaceholder');//will be removed in onEndHandler
@@ -165,6 +161,7 @@ function onEndHandler(event){
 	RefreshEmptyInfixBraketsGlued(ATOMparent($(this)),true,"ei")
 	RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 	$(sortablesSelectorString).removeClass('toBeUpdated');
+	if(!debugMode){clearTragets()}
 }
 
 function onChangeHandler(event){
