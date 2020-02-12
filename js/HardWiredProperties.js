@@ -19,7 +19,7 @@ let propertiesDnD = [
 //new PropertyDnD('openedDnD',validTargetsFromOpened,),  // come gestisco il +ctrl?
 new PropertyDnD('associativeDnD',immediateAssValid,ATOMassociate,associateOnAdd),
 new PropertyDnD('distributiveDnD',validForDist,ATOMdistribute,""),
-new PropertyDnD('partDistributDnD',validForPartDist,/*ATOMPartDistribute,""*/),
+new PropertyDnD('partDistributDnD',validForPartDist,ATOMPartDistribute,""),
 new PropertyDnD('collectDnD',validForColl,ATOMcollect,""),
 new PropertyDnD('partCollectDnD',validForPartColl,ATOMPartCollect,""),
 new PropertyDnD('replaceDnD',validReplaced,ATOMLinkReplace,""),
@@ -212,6 +212,28 @@ function validForDist(mouseDownNode){//op2 è il tipo di operazione sulla quale 
 		return $validAtoms
 	}
 	return [] //empty array
+}
+
+function ATOMPartDistribute(dragged,target){
+	let $dragged = $(dragged)
+	let $parent = ATOMparent($dragged);
+	let opD = undefined;
+	if ($parent !== undefined){opD = $parent.attr("data-atom")}
+	let op = opIsDistDop("",opD);
+	var $siblings = $parent.siblings('[data-atom]'); // ottieni la lista degli altri fattori
+	$extOp = encaseIfNeeded( ATOMparent($parent),opD);//se necessario crea una operazione container
+	let $prototype = prototypeSearch(op);
+	let $clone = ATOMclone($prototype)//create times
+	attachEventsAndExtend($clone);
+	$clone.insertBefore(ATOMparent($parent));
+	$clone[0].ATOM_getRoles().append($dragged);
+	$siblings.each(function(i,e){
+		var $siblingClone = ATOMclone($(e));
+		attachEventsAndExtend($siblingClone);
+		$clone[0].ATOM_getRoles().append($siblingClone);
+	});
+	$parent.addClass("cleanPointless");
+		
 }
 
 function ATOMdistribute(dragged,target){
