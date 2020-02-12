@@ -1,6 +1,7 @@
 function newPActx(){
 	//msg: in caso data di matchedTF=true contiene il nome della proprietà applicata
 	//in caso contrario dovrebbe contenere il motivo del noMatch.
+	//$transform deve contenere il più grande elemento trasformato
 	return {matchedTF:false, msg:"", $newProp: undefined , $pattern: undefined, $operand: undefined,
 			$transform: undefined, $equation: undefined, replacedAlready: false , lineList:$()}
 }
@@ -128,10 +129,16 @@ function immediateAssValid(mouseDownNode){
 }
 
 function ATOMassociate(dragged,target){
+	var PActx = newPActx();
 	//create a clone of the dragged
 	dragged.appendTo($(target))
 	dragged.css({position:"relative", top:0 , left:0})
-	ATOMcleanIfPointless(target.parent().parent())
+	//ATOMcleanIfPointless(target.parent().parent())
+	PActx.matchedTF=false;
+	PActx.replacedAlready = true;
+	PActx.msg = "associated";
+	//PActx.$transform = target.parent().parent()//not optimized, should update the older closest common parent
+	return PActx
 }
 
 function opIsDistDop(op/* string ex: plus times*/){ 

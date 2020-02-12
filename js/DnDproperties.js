@@ -150,7 +150,8 @@ function onEndHandler(event){
 	    console.log(' ------------> found target ' + targetProperty );
 	    let property = propertiesDnD.find(function(el){return el.name == targetProperty });
 	    if(property){
-	    	property.apply($(event.item),$(parentTarget))
+	    	let PActx = property.apply($(event.item),$(parentTarget))
+			if(PActx){PActxConclude(PActx)}	    
 	    }
 	}
 	

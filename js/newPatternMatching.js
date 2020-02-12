@@ -458,7 +458,7 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
 function postRefine($transformed){
 	//********** selected in uscita ***********************************************
 	let $markedAsSelected = searchForMarkedInSubtree($transformed,"s",'p')//??? "p"
-	if($markedAsSelected.length != 0){//solo se trvi elementi marcati imponi nuova marcatura
+	if($markedAsSelected.length != 0){//solo se torvi elementi marcati imponi nuova marcatura
 		$transformed.find('[data-atom]').addBack().each(function(){
     	$(this).removeClass('selected')
     	})

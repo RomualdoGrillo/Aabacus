@@ -114,12 +114,7 @@ $(document).on('keydown', function ( e ) {
 						
 		}
 		//*************** operazioni conclusive (dopo tutti i tentativi)*******************
-		if(PActx.matchedTF == true ){		         		    
-			refreshAndReplace(PActx);
-			//********** Post ******************************************************
-			postRefine(PActx.$transform)
-			ssnapshot.take();
-		}					
+		PActxConclude(PActx)				
 	}
 });
 
@@ -386,4 +381,14 @@ function swapElements(obj1, obj2) {
 
     // remove temporary marker node
     temp.parentNode.removeChild(temp);
+}
+
+
+function PActxConclude(PActx){
+	if(PActx.matchedTF == true ){		         		    
+		refreshAndReplace(PActx);
+		//********** Post *************
+			postRefine(PActx.$transform)
+			ssnapshot.take();
+	}
 }
