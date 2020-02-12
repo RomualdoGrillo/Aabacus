@@ -19,6 +19,7 @@ let propertiesDnD = [
 //new PropertyDnD('openedDnD',validTargetsFromOpened,),  // come gestisco il +ctrl?
 new PropertyDnD('associativeDnD',immediateAssValid,ATOMassociate,associateOnAdd),
 new PropertyDnD('distributiveDnD',validForDist,ATOMdistribute,""),
+new PropertyDnD('partDistributDnD',validForPartDist,/*ATOMPartDistribute,""*/),
 new PropertyDnD('collectDnD',validForColl,ATOMcollect,""),
 new PropertyDnD('partCollectDnD',validForPartColl,ATOMPartCollect,""),
 new PropertyDnD('replaceDnD',validReplaced,ATOMLinkReplace,""),
@@ -141,11 +142,51 @@ function ATOMassociate(dragged,target){
 	return PActx
 }
 
-function opIsDistDop(op/* string ex: plus times*/){ 
+
+
+function getKeyByValue(dictionary,value ) {
+    for( var prop in dictionary ) {
+        if( dictionary.hasOwnProperty( prop ) ) {
+             if( dictionary[ prop ] === value )
+                 return prop;
+        }
+    }
+}
+
+function opIsDistDop(op,opD){// string ex: plus times 
+	let key_distributesOver_Val = {'times':'plus','and':'or'}
+	if(op != ""){
+		return key_distributesOver_Val[op]	
+	}
+	else if(opD){
+		return getKeyByValue(key_distributesOver_Val,opD)
+	}
+	
+}
+
+
+/*
+
+function opIsDistDop(op){// string ex: plus times 
 	if(op === "times"){return "plus"}
 	else if(op === "and"){return "or"}
 	else{return undefined}// se non è distributiva
 }
+
+*/
+function validForPartDist(mouseDownNode){
+	let $dragged = $(dragged)
+	let $parent = ATOMparent($dragged);
+	let validTargets = $();
+	let op = undefined;
+	if ($parent !== undefined){op = $parent.attr("data-atom")}
+	let opD = opIsDistDop(op);
+
+
+	return validTargets;
+}
+
+
 
 function validForDist(mouseDownNode){//op2 è il tipo di operazione sulla quale si distribuisce
 	var $mouseDownNode=$(mouseDownNode);
@@ -172,7 +213,7 @@ function validForDist(mouseDownNode){//op2 è il tipo di operazione sulla quale 
 }
 
 function ATOMdistribute(dragged,target){
-	var $dragged = $(dragged)
+	let $dragged = $(dragged)
 	let $parent = ATOMparent($dragged);
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
