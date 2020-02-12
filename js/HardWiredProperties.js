@@ -419,13 +419,9 @@ function ATOMcollect($dragged,$target){
 	console.log("collect")
 	var extOp 
 	extOp = encaseIfNeeded($target,op)
-	$cloneDragged = ATOMclone($dragged);
+	ATOMparent($dragged).addClass("cleanPointless")
 	ATOMparent($(".couldBeCollected")).addClass("cleanPointless")
-	$cloneDragged.removeClass("couldBeCollected")
-	attachEventsAndExtend($cloneDragged);
-	$cloneDragged.insertBefore($target);
-	$cloneDragged.css({display:""});
-	//$(".toBeCollected").remove();//removing elements while sorting causes an error message
+	$dragged.insertBefore($target);
 	$(".couldBeCollected").remove()
 	$target.addClass("cleanPointless");
 }
