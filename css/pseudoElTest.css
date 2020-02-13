@@ -18,7 +18,7 @@
 	left:-3;
 	width: 3.5;
 	height: 3.5;
-	z-index: 100;
+	z-index: 2;
 	border-radius: 3px;
 }
 [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/{
