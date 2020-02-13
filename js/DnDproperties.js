@@ -9,7 +9,6 @@ function makeSortable(sortables){
 				if(dragEvent.ctrlKey){return 'clone'}
 				else{return true}
 			},
-			
 			put: function (to) {
 					//let result = to.el.matches('[class*="target"]');
 					if( to.el.getAttribute('target')){
@@ -23,6 +22,7 @@ function makeSortable(sortables){
 			animation: 150,
 			fallbackOnBody: true,
 			swapThreshold: 0.65,
+
 			
 			onMove: function (evt) {
 				// et.to will always be the list you are over but evt.related

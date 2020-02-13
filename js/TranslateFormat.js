@@ -96,18 +96,20 @@ function refreshGlued($startNode){//marca con classe glued gli atomi contenuti i
 				//
 				var $glueATOM = $containerNode.find( "[data-atom='"+ glueFunctions[j] +"']" );
 				$glueATOM.each(function(i,val){
-					var $toBePasted = this.ATOM_getRoles().children().filter('[data-atom]');//get the ATOM contained to be pasted
-					if( $toBePasted.length == 1){
-						$toBePasted[0].ATOM_getNodes().addClass("glued");	
-					}
+					var $toBeGlued = this.ATOM_getRoles().children().filter('[data-atom]');//get the ATOM contained to be Glued
+					$toBeGlued.addClass('glued')
+					/*if( $toBeGlued.length == 1){
+						$toBeGlued[0].ATOM_getNodes().addClass("glued");	
+					}*/
 					
 				});
 	}
-	var $glueATOM = $containerNode.find( "[data-atom=eq].asymmetric");
+
+	var $glueATOM = $containerNode.find( "[data-atom=eq].asymmetric:not(#tela)");
 	$glueATOM.each(function(i,val){
-		var $toBePasted = this.ATOM_getRoles().children().filter('[data-atom]');//get the ATOM contained to be pasted
-		if( $toBePasted.length == 1){
-			$toBePasted[0].ATOM_getNodes().addClass("glued");	
+		var $toBeGlued = this.ATOM_getRoles().children().filter('[data-atom]');//get the ATOM contained to be Glued
+		if( $toBeGlued.length == 1){
+			$toBeGlued[0].ATOM_getNodes().addClass("glued");	
 		}
 	});			
 }

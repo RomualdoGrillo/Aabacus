@@ -139,7 +139,7 @@ per una questione estetica */
 [data-atom="and"]>.ul_role>[data-atom]{
 	margin:2px;
 }
-/* le definizioni occupano piÃƒÆ’Ã‚Â¹ spazio a causa del sigillo che sporge*/
+/* le definizioni occupano piÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ spazio a causa del sigillo che sporge*/
 /*[data-atom="and"]>.ul_role>[data-atom].asymmetric{
 	margin-top:2px;
 }*/
@@ -392,7 +392,7 @@ per una questione estetica */
 
 .infix{ z-index:100}
 
-#telaRole :not(.empty)>.infix.proto{/*#telaRole ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨ aggiunto per rendere piÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¹ specifico il selector*/
+#telaRole :not(.empty)>.infix.proto{/*#telaRole ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨ aggiunto per rendere piÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¹ specifico il selector*/
 	display:none;
 }
 .infix.plus{
@@ -493,10 +493,16 @@ border-right-style: solid;
 /*written here to prevale over all other class css rules*/ 
 
 
-/* roles inside glued atoms must still work*/
-.glued:not(.ol_role):not(.ul_role){ 
+/*roles inside glued atoms must still work */
+.glued,.glued>*{ 
 	pointer-events: none;
 }
+.glued>*>*{ 
+	pointer-events: auto;
+}
+
+
+
 .glued{
 	border-width: 0px;	
 }
@@ -506,7 +512,7 @@ border-right-style: solid;
  	border-width:1px;
 }
 /* overwrites glued state .unloked allows all pointer events even if glued  */
-.unlocked .glued:not(.ol_role):not(.ul_role){
+.unlocked .glued{
 	pointer-events: auto;
 	
 }
@@ -606,8 +612,11 @@ border-right-style: solid;
 	margin:0!important;
 }
 
-/*{float:right!important;}*/
 
 .name {
 	pointer-events: none;
 }
+
+
+
+
