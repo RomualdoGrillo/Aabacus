@@ -34,23 +34,28 @@
 	left:unset;
 }
 
+*::before{
+		pointer-events: none;
+}
+
+/*
+using ::before and ::after for prefix and postfix notation does not offer advantages
+disadvantage: mixfix notation needs a different approach
+disadvantage: building new prototypes is less intuitive
 [data-atom="and"]:not(#telaAnd){
 	padding-left:20px;
 }
 
+
 [data-atom="and"]:not(#telaAnd):not(.sortable-ghost)::before{
 	content:"";
-	/*content:attr(data-atom);*/
 	position: absolute;
 	left: 2px;
 	background-image: url(../images/GullBraceLeft.svg);
-	/*background-color:red;*/
+	background-color:red;
 	width:17px;
 	height:90%;
 	background-size: contain;
 	background-repeat: no-repeat;
 }
-
-*::before{
-		pointer-events: none;
-}
+*/
