@@ -42,11 +42,6 @@
 	visibility: hidden;
 }
 
-.name{
-	pointer-events: none;
-	/*height:0px;*/
-	/* margin: 10; */
-}
 
 f_role{
 	position: absolute;
@@ -58,3 +53,4 @@ f_role{
 .over{
 	background-color:red;
 }
+
