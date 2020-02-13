@@ -1,9 +1,9 @@
-[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag){
+[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/{
 	margin-left: 9px; /*space for infix symbol*/
 }
 
-[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag)::before {
-	/*background-color: red;*/
+[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
+	/* background-color: red; */
 	position: absolute;
 	content: "+";
 	left:-10.2;
@@ -11,7 +11,7 @@
 /*[data-atom=plus]>.ul_role>[data-atom=minus]:not(:first-of-type):not(.sortable-drag)::before{
 	content: "-";	
 }*/
-[data-atom=times]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag)::before {
+[data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
 	background-color: black;
 	position: absolute;
 	content: "";
@@ -21,17 +21,20 @@
 	z-index: 100;
 	border-radius: 3px;
 }
-[data-atom=times]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag){
+[data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/{
 	margin-left: 0.5px; /*space for infix symbol*/
 }
 
-.vertTimes [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag){
+.vertTimes [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/{
 	margin-top: 0.5px; /*space for infix symbol*/
 }
 
-.vertTimes [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type):not(.sortable-drag)::before {
+.vertTimes [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
 	top:-3;
 	left:unset;
+}
+.sortable-drag::before{/*if before is removed you get a flickering, so it is just hidden*/
+	visibility:hidden;
 }
 
 *::before{
