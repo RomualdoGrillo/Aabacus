@@ -172,7 +172,7 @@ function validForPartDist(dragged){
 	let opD = undefined;
 	if ($parent !== undefined){opD = $parent.attr("data-atom")}
 	let op = opIsDistDop("",opD);
-	if(op){
+	if(op && ATOMparent($parent).attr("data-atom")==op){
 		return ATOMparent(ATOMparent($parent))
 	}
 	/*
@@ -217,7 +217,7 @@ function validForDist(mouseDownNode){//op2 è il tipo di operazione sulla quale 
 function ATOMPartDistribute(dragged,target){
 	let $dragged = $(dragged)
 	let $parent = ATOMparent($dragged);
-	let opD = undefined;
+	let opD ;
 	if ($parent !== undefined){opD = $parent.attr("data-atom")}
 	let op = opIsDistDop("",opD);
 	var $siblings = $parent.siblings('[data-atom]'); // ottieni la lista degli altri fattori

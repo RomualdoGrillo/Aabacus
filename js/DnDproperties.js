@@ -135,7 +135,7 @@ function onEndHandler(event){
 		}
 	}
 	//Touch
-	else{
+	else if(event.originalEvent.changedTouches){//sometimes a touch event is detected without changed touches!
 		let x=event.originalEvent.changedTouches[0].clientX;
 		let y=event.originalEvent.changedTouches[0].clientY;
 		dropTarget = document.elementFromPoint(x,y);

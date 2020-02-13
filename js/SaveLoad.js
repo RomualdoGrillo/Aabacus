@@ -67,7 +67,7 @@ function inject(MMLstring,$targetNode)
 	}
 	$target.append($convertedTree);
 	attachEventsAndExtend($convertedTree,true);
-	RefreshEmptyInfixBraketsGlued($convertedTree,true,"eibg")
+	RefreshEmptyInfixBraketsGlued(ATOMparent($convertedTree),true,"eibg")
 	insertHtmlByRef($targetNode)
 	ssnapshot.take(); 
 }
