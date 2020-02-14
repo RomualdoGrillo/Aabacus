@@ -387,11 +387,28 @@ function swapElements(obj1, obj2) {
 function PActxConclude(PActx){
 	if(PActx.matchedTF == true ){		         		    
 		refreshAndReplace(PActx);
+		PActxVisualize(PActx);
 		//********** Post *************
 			postRefine(PActx.$transform)
 			ssnapshot.take();
 	}
-}    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+}
+
+
+function PActxVisualize(PActx){
+	if(PActx.visualization==""){
+		PActx.visualization="images/Brackets.png"
+	}
+	let $visualization = $('<img src=' + PActx.visualization + ' height="20">')
+	if(PActx.$operand){
+		$visualization.insertAfter(PActx.$operand)
+	}
+	else{
+		$(tela).append($visualization)
+	}
+	/*
+	var svgdiv = document.createElement('div');
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('height', heightVar);
     svg.setAttribute('width', widthVar);
     //Add all your elements to the SVG
