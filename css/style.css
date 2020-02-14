@@ -10,6 +10,7 @@ div{
     background-color: white;
     border: 1px solid #DAD9D9;
 }
+
 /*[data-atom="eq"].asymmetric sono le definizioni, in quel tipo di atomi
 il bordo del primo membro sporge dal background venendo a "fondersi" con il bordo esterno verde
 per una questione estetica */
@@ -139,7 +140,7 @@ per una questione estetica */
 [data-atom="and"]>.ul_role>[data-atom]{
 	margin:2px;
 }
-/* le definizioni occupano piÃƒÆ’Ã‚Â¹ spazio a causa del sigillo che sporge*/
+/* le definizioni occupano piÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¹ spazio a causa del sigillo che sporge*/
 /*[data-atom="and"]>.ul_role>[data-atom].asymmetric{
 	margin-top:2px;
 }*/
@@ -392,7 +393,7 @@ per una questione estetica */
 
 .infix{ z-index:100}
 
-#telaRole :not(.empty)>.infix.proto{/*#telaRole ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨ aggiunto per rendere piÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¹ specifico il selector*/
+#telaRole :not(.empty)>.infix.proto{/*#telaRole ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨ aggiunto per rendere piÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¹ specifico il selector*/
 	display:none;
 }
 .infix.plus{
@@ -618,6 +619,14 @@ border-right-style: solid;
 	pointer-events: none;
 }
 
+.visualization{
+	position:absolute;
+	top:120%;
+	background-color:#f8e9f7;
+	border-radius:10px;
+}
 
-
-
+.visualization>img{
+	padding:10;
+	height:30px;
+}

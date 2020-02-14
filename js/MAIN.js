@@ -399,21 +399,17 @@ function PActxVisualize(PActx){
 	if(PActx.visualization==""){
 		PActx.visualization="images/Brackets.png"
 	}
-	let $visualization = $('<img src=' + PActx.visualization + ' height="20">')
+	let $visualization = $('<div class="visualization"><img src="' + PActx.visualization + '"></div>')
 	if(PActx.$operand){
-		$visualization.insertAfter(PActx.$operand)
+		$visualization.insertAfter(PActx.$transform)
 	}
 	else{
 		$(tela).append($visualization)
 	}
-	/*
-	var svgdiv = document.createElement('div');
-    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('height', heightVar);
-    svg.setAttribute('width', widthVar);
-    //Add all your elements to the SVG
-    svgdiv.appendChild(svg)
-    //the following shows it in a pop-up window, but the write() and html() functions should be what you need.
-    window.open().document.write(svgdiv.html());
-	*/
+	setTimeout(removeVisualization, 3000);
 }
+
+function removeVisualization(){
+	$('.visualization').remove()
+}
+
