@@ -131,6 +131,7 @@ function immediateAssValid(mouseDownNode){
 
 function ATOMassociate(dragged,target){
 	var PActx = newPActx();
+	PActx.visualization = "images/properties/associative.png"
 	//create a clone of the dragged
 	dragged.appendTo($(target))
 	dragged.css({position:"relative", top:0 , left:0})
@@ -215,6 +216,9 @@ function validForDist(mouseDownNode){//op2 è il tipo di operazione sulla quale 
 }
 
 function ATOMPartDistribute(dragged,target){
+	var PActx = newPActx();
+	PActx.replacedAlready = true;
+	PActx.visualization = "images/properties/distributive.png"
 	let $dragged = $(dragged)
 	let $parent = ATOMparent($dragged);
 	let opD ;
@@ -233,10 +237,15 @@ function ATOMPartDistribute(dragged,target){
 		$clone[0].ATOM_getRoles().append($siblingClone);
 	});
 	$parent.addClass("cleanPointless");
-		
+	PActx.$transform =  $parent;
+	PActx.matchedTF=true
+	return PActx
 }
 
 function ATOMdistribute(dragged,target){
+	var PActx = newPActx();
+	PActx.replacedAlready = true;
+	PActx.visualization = "images/properties/distributive.png"
 	let $dragged = $(dragged)
 	let $parent = ATOMparent($dragged);
 	let op = undefined;
@@ -261,6 +270,9 @@ function ATOMdistribute(dragged,target){
 	var $draggedParent = dragged[0].ATOMparent(); 
 	$draggedParent.addClass("cleanPointless");//mark external operation as remove if pointless
 	dragged.remove();
+	PActx.$transform =  $parent;
+	PActx.matchedTF=true
+	return PActx
 }
 
 function validForColl(mouseDownNode){
@@ -376,6 +388,9 @@ function validForPartColl(mouseDownNode){
 }
 
 function ATOMPartCollect($dragged,$target){
+	var PActx = newPActx();
+	PActx.replacedAlready = true;
+	PActx.visualization = "images/properties/collect.png"
 	let $targetParent = ATOMparent($target);
 	let $siblingsT = $target.siblings('[data-atom]')
 	let opt = $targetParent.attr("data-atom")
@@ -434,12 +449,18 @@ function ATOMPartCollect($dragged,$target){
 			$plusRole.append($termT);
 			$plusRole.append($termD);
 		}
+		PActx.$transform =  ATOMparent($draggedParent);
 		$draggedParent.remove()
+		PActx.matchedTF=true
+		return PActx
 	}
 }
 
 
 function ATOMcollect($dragged,$target){
+	var PActx = newPActx();
+	PActx.replacedAlready = true;
+	PActx.visualization = "images/properties/collect.png"
 	let $parent = ATOMparent($dragged);
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
@@ -451,6 +472,10 @@ function ATOMcollect($dragged,$target){
 	$dragged.insertBefore($target);
 	$(".couldBeCollected").remove()
 	$target.addClass("cleanPointless");
+	PActx.$transform =  $target;
+	PActx.matchedTF=true
+	return PActx
+
 }
 
 

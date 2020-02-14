@@ -622,8 +622,9 @@ border-right-style: solid;
 .visualization{
 	position:absolute;
 	top:120%;
-	background-color:#f8e9f7;
+	background-color:#ffffff;
 	border-radius:10px;
+	box-shadow:3px 3px 9px 4px #b8b8b8;
 }
 
 .visualization>img{

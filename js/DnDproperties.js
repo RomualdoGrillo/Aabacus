@@ -176,10 +176,9 @@ function onEndHandler(event){
 		event.clone.removeAttribute('id')
 		attachEventsAndExtend($(event.clone),true)
 	}
-	$(".cleanPointless").each(function(i,el){ATOMcleanIfPointless($(this),false)});
-	RefreshEmptyInfixBraketsGlued(ATOMparent($(this)),true,"ei")
-	RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
-	$(sortablesSelectorString).removeClass('toBeUpdated');
+	
+	//RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
+	//$(sortablesSelectorString).removeClass('toBeUpdated');
 	if(!debugMode){clearTragets()}
 }
 

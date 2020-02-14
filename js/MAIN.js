@@ -387,10 +387,14 @@ function swapElements(obj1, obj2) {
 function PActxConclude(PActx){
 	if(PActx.matchedTF == true ){		         		    
 		refreshAndReplace(PActx);
-		PActxVisualize(PActx);
+		
 		//********** Post *************
+		if(PActx.$transform){
+			$(".cleanPointless").each(function(i,el){ATOMcleanIfPointless($(this),false)});
 			postRefine(PActx.$transform)
-			ssnapshot.take();
+		}	
+		ssnapshot.take();
+		PActxVisualize(PActx);
 	}
 }
 
@@ -400,7 +404,7 @@ function PActxVisualize(PActx){
 		PActx.visualization="images/Brackets.png"
 	}
 	let $visualization = $('<div class="visualization"><img src="' + PActx.visualization + '"></div>')
-	if(PActx.$operand){
+	if(PActx.$transform){
 		$visualization.insertAfter(PActx.$transform)
 	}
 	else{
