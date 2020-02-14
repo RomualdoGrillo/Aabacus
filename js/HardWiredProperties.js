@@ -2,7 +2,7 @@ function newPActx(){
 	//msg: in caso data di matchedTF=true contiene il nome della proprietà applicata
 	//in caso contrario dovrebbe contenere il motivo del noMatch.
 	//$transform deve contenere il più grande elemento trasformato
-	return {matchedTF:false, msg:"", $newProp: undefined , $pattern: undefined, $operand: undefined,
+	return {matchedTF:false, msg:"",visualization:"", $newProp: undefined , $pattern: undefined, $operand: undefined,
 			$transform: undefined, $equation: undefined, replacedAlready: false , lineList:$()}
 }
 

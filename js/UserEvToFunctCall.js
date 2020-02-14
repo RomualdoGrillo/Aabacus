@@ -133,7 +133,7 @@ function keyboardEvToFC($atom, keyPressed){
 		PActx = TryPropByName("name",actionString, $atom ,firstValString);
 			}
 		if( PActx.matchedTF ){//proprietà applicata con successo
-			PActx.msg = actionString 
+			PActx.msg = actionString +" "+ firstValString
 			break
 		}
 	}

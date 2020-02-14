@@ -391,4 +391,12 @@ function PActxConclude(PActx){
 			postRefine(PActx.$transform)
 			ssnapshot.take();
 	}
+}    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('height', heightVar);
+    svg.setAttribute('width', widthVar);
+    //Add all your elements to the SVG
+    svgdiv.appendChild(svg)
+    //the following shows it in a pop-up window, but the write() and html() functions should be what you need.
+    window.open().document.write(svgdiv.html());
+	*/
 }
