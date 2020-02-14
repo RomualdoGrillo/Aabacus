@@ -655,7 +655,6 @@ function compose($toBeComp){
 function decompose($toBeDec,direction){//"up" for factorize
 	var PActx = newPActx();
 	PActx.$operand = $toBeDec;
-	PActx.$transform = ATOMparent( $toBeDec )//non ottimizzato: rinfresca sempre il parent dell'operando, a volte basterebbe meno
 	var op = ""
 	var $extOp = ""
 	//var $toBeDec=$('.selected')
@@ -787,7 +786,8 @@ function decompose($toBeDec,direction){//"up" for factorize
 	}
 	*/
 	if(PActx.matchedTF){
-		RefreshEmptyInfixBraketsGlued($extOp,true,"eibg")
+		//RefreshEmptyInfixBraketsGlued($extOp,true,"eibg")
+		PActx.$transform = ATOMparent( $extOp )
 		ssnapshot.take();
 		//elementi sostituiti internamente
 		PActx.replacedAlready = true;
