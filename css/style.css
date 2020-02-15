@@ -179,6 +179,7 @@ per una questione estetica */
 	left: 0;
 	right: 0;
 	top: 1;
+	z-index:1;
 }
 
 [data-atom="forAll"]{
@@ -630,4 +631,8 @@ border-right-style: solid;
 .visualization>img{
 	padding:10;
 	height:30px;
+}
+
+[data-atom=m_inverse]{
+	flex-direction:column;
 }

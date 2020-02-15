@@ -403,6 +403,7 @@ function PActxVisualize(PActx){
 	if(PActx.visualization==""){
 		PActx.visualization="images/Brackets.png"
 	}
+	removeVisualization()
 	let $visualization = $('<div class="visualization"><img src="' + PActx.visualization + '"></div>')
 	if(PActx.$transform){
 		$visualization.insertAfter(PActx.$transform)
