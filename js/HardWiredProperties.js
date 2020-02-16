@@ -252,7 +252,8 @@ function ATOMdistribute(dragged,target){
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
 	let opD = opIsDistDop(op);
 	var $prototype = prototypeSearch(op)// for example search for "#timesPrototype"
-	$(target)[0].ATOM_getChildren().each(function(){
+	$(target)[0].ATOM_getChildren().each(function(i,e){
+		e.classList.add("cleanPointless");
 		var $clone = ATOMclone($prototype)//create times
 		var $cloneDragged = ATOMclone($dragged)// clone dragged
 		attachEventsAndExtend($clone);// dai vita a clone ed al suo albero
