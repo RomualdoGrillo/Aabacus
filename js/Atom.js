@@ -843,12 +843,26 @@ function ATOMcleanIfPointless(startNode,applyToSubtree){//per applicarlo all'alb
 
 	}
 }
+/*
 
 function ATOM_checkIfPointlessSingleNode(){
 	return ($(this).is('[data-atom="plus"],[data-atom="times"],[data-atom="or"],[data-atom="and"]') 
 			&&
 			this.ATOM_getChildren().length == 1)
+}*/
+
+
+
+
+function ATOM_checkIfPointlessSingleNode(){
+	if(!$(this).is('[data-atom="plus"],[data-atom="times"],[data-atom="or"],[data-atom="and"]')){return false}
+	if(this.ATOM_getChildren().length <= 1){return true}
+	if( ATOMparent($(this)).attr('data-atom')==$(this).attr('data-atom') ){return true}
 }
+
+
+
+
 
 /*
 function ATOMassociativeTargets($ATOMNode,selector){//example '[data-atom="or"]'
