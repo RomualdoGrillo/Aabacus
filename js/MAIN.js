@@ -146,7 +146,7 @@ $('#fileToLoad').change(function() {
 
 function ATOMNselectable(startElement){
 	//risali passo passo la struttura DOM fino a trovare un elemento ATOM
-	return ATOMtarget = startElement.closest('[data-atom]:not(.unselectable)');	
+	return ATOMtarget = startElement.closest('[data-atom]:not(.unselectable):not(.glued)');	
 }
 
 

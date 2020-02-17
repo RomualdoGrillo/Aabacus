@@ -495,14 +495,14 @@ border-right-style: solid;
 /*written here to prevale over all other class css rules*/ 
 
 
-/* roles inside glued atoms must still work*/
+/* roles inside glued atoms must still work
 .glued,.glued>*{ 
 	pointer-events: none;
 }
 .glued>*>*{ 
 	pointer-events: auto;
 }
-
+*/
 
 
 .glued{

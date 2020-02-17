@@ -7,6 +7,7 @@ function makeSortable(sortables){
 			pull:function (to, from, item, dragEvent) {
 				//clone does not work when target list = starting list
 				if(dragEvent.ctrlKey){return 'clone'}
+				else if( item.classList.contains('glued')){return false}
 				else{return true}
 			},
 			put: function (to) {
@@ -18,7 +19,7 @@ function makeSortable(sortables){
 						return false}					
    				}
 			},
-			
+			filter:'.glued',
 			animation: 150,
 			fallbackOnBody: true,
 			swapThreshold: 0.65,
