@@ -18,8 +18,11 @@ function makeSortable(sortables){
 					else{
 						return false}					
    				}
+			},			
+			filter:function (event,b,sortable,d){
+				let $draggedATOM = ATOMparent($(event.target));
+				if($draggedATOM.hasClass('glued') && ATOMclosedDef($draggedATOM[0])){return "*"}
 			},
-			filter:'.glued',
 			animation: 150,
 			fallbackOnBody: true,
 			swapThreshold: 0.65,
