@@ -626,6 +626,7 @@ border-right-style: solid;
 	background-color:#ffffff;
 	border-radius:10px;
 	box-shadow:3px 3px 9px 4px #b8b8b8;
+	z-index:2
 }
 
 .visualization>img{
