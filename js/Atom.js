@@ -593,27 +593,6 @@ function createForThis($forall,$placeHolder){
 
 
 
-/*
-function createForThis($forall,$placeHolder){
-//crea uno specifico caso dal forall
-				if( GetforAllContent($forall).children().length != 0 ){//se For each non vuoto
-					var $clone= ATOMclone($forall);
-					$clone.addClass('exclusiveFocus'); //metti il clone in stato exclusiveFocus
-					attachEventsAndExtend($clone);
-					//****inserisci la nuova proposizione*****
-					if($placeHolder == undefined){
-						ATOMCreateSpaceForDeduction($forall).append($clone);
-						ssnapshot.take();	
-					}
-					else{
-						$clone.insertAfter($placeHolder);
-						$placeHolder.remove();
-					}
-				
-				}
-	return $clone
-}
-*/
 
 //start to peel Onion($currAtom)
 function AtomsToVal($currAtom,res){//espressioni tipo (-(/(-(a)))) funzione ricorsiva
@@ -852,12 +831,12 @@ function ATOM_checkIfPointlessSingleNode(){
 }*/
 
 
-
-
 function ATOM_checkIfPointlessSingleNode(){
-	if(!$(this).is('[data-atom="plus"],[data-atom="times"],[data-atom="or"],[data-atom="and"]')){return false}
+	let op = $(this).attr('data-atom')
+	if( !OpIsAssociative(op) ){return false}
 	if(this.ATOM_getChildren().length <= 1){return true}
-	if( ATOMparent($(this)).attr('data-atom')==$(this).attr('data-atom') ){return true}
+	let opP = ATOMparent($(this)).attr('data-atom')
+	if( opP == op ){return true}
 }
 
 

@@ -257,7 +257,7 @@ per una questione estetica */
   padding: 0px;
 }
 
-[data-atom="eq"].asymmetric:not(.unlocked)>.secondMember>[data-atom]{
+[data-atom="eq"]:not(#tela).asymmetric:not(.unlocked)>.secondMember>[data-atom]{
 	border-width:0px;
 }
 .unlocked [data-atom="eq"].asymmetric>.secondMember>[data-atom]{

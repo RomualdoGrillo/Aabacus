@@ -26,6 +26,28 @@ new PropertyDnD('replaceDnD',validReplaced,ATOMLinkReplace,""),
 new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,"")
 ]
 
+
+function opIsDistDop(op,opD){// string ex: plus times 
+	let key_distributesOver_Val = {'times':'plus','and':'or'}
+	if(op != ""){
+		return key_distributesOver_Val[op]	
+	}
+	else if(opD){
+		return getKeyByValue(key_distributesOver_Val,opD)
+	}
+	
+}
+
+
+
+
+function OpIsAssociative(op/* string ex: plus times*/){
+	var associatives=["plus","times","or","and"]
+	return associatives.indexOf(op) !== -1 //class is in list of associatives?
+}
+
+
+
 function openOnSort(event){//default onAdd
 	if(event.item.classList.contains('toBeCloned')){
 		if(event.from.isSameNode(event.to)){
@@ -78,15 +100,6 @@ function revert(event){//revert a sortablejs onAdd event
 		event.from.append(event.item)
 	}
 	event.clone.remove();
-}
-
-
-
-
-
-function OpIsAssociative(op/* string ex: plus times*/){
-	var associatives=["plus","times","or","and"]
-	return associatives.indexOf(op) !== -1 //class is in list of associatives?
 }
 function forThisValid(mouseDownNode){
 let dataType = mouseDownNode[0].getAttribute('data-type');
@@ -154,16 +167,6 @@ function getKeyByValue(dictionary,value ) {
     }
 }
 
-function opIsDistDop(op,opD){// string ex: plus times 
-	let key_distributesOver_Val = {'times':'plus','and':'or'}
-	if(op != ""){
-		return key_distributesOver_Val[op]	
-	}
-	else if(opD){
-		return getKeyByValue(key_distributesOver_Val,opD)
-	}
-	
-}
 
 
 
@@ -789,7 +792,7 @@ function decompose($toBeDec,direction){//"up" for factorize
 	if(PActx.matchedTF){
 		//RefreshEmptyInfixBraketsGlued($extOp,true,"eibg")
 		PActx.$transform = ATOMparent( $extOp )
-		ssnapshot.take();
+		//ssnapshot.take();
 		//elementi sostituiti internamente
 		PActx.replacedAlready = true;
 		PActx.msg = "decompose" 	
