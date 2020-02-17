@@ -19,15 +19,10 @@ function makeSortable(sortables){
 						return false}					
    				}
 			},			
-			filter:function (event,b,sortable,d){
-				let $draggedATOM
-				if($(event.target).attr('data-atom')){
-					$draggedATOM = $(event.target);
-				}
-				else{
-					$draggedATOM = ATOMparent($(event.target));
-				} 
-				if($draggedATOM.hasClass('glued') && ATOMclosedDef($draggedATOM[0])){
+			filter:function (event,sortable){
+				console.log('filtering');
+				console.log(event);
+				if(sortable.classList.contains('glued') && ATOMclosedDef(sortable)){
 					return "*"}
 			},
 			animation: 150,
