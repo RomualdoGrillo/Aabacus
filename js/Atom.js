@@ -804,7 +804,7 @@ function ATOMcleanIfPointless(startNode,applyToSubtree){//per applicarlo all'alb
 	if(applyToSubtree){
 		for(i=0;i<100;i++){//messo un limite solo per evitare loop infiniti in caso di errori nel codice
 			//trova i contenitori da rimuovere: vuoti o con un solo figlio
-			var $pointlessElements = $extOp.parent().find('[data-atom].cleanPointless').filter(function(){ 
+			var $pointlessElements = $extOp.parent().find('[data-atom].cleanifpointless').filter(function(){ 
 				return this.ATOM_checkIfPointlessSingleNode() 
 				 })
 			//agisci sul primo trovato, poi ripeti la ricerca.
@@ -821,7 +821,7 @@ function ATOMcleanIfPointless(startNode,applyToSubtree){//per applicarlo all'alb
 		}
 	}
 	else{
-		if( $extOp.is('[data-atom].cleanPointless')  &&  $extOp[0].ATOM_checkIfPointlessSingleNode()){
+		if( $extOp.is('[data-atom].cleanifpointless')  &&  $extOp[0].ATOM_checkIfPointlessSingleNode()){
 			return $extOp[0].ATOM_dissolveContainer();
 		}
 

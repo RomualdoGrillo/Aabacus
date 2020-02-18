@@ -238,7 +238,7 @@ function ATOMPartDistribute(dragged,target){
 		attachEventsAndExtend($siblingClone);
 		$clone[0].ATOM_getRoles().append($siblingClone);
 	});
-	$parent.addClass("cleanPointless");
+	$parent.addClass("cleanifpointless");
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
 	return PActx
@@ -255,7 +255,7 @@ function ATOMdistribute(dragged,target){
 	let opD = opIsDistDop(op);
 	var $prototype = prototypeSearch(op)// for example search for "#timesPrototype"
 	$(target)[0].ATOM_getChildren().each(function(i,e){
-		e.classList.add("cleanPointless");
+		e.classList.add("cleanifpointless");
 		var $clone = ATOMclone($prototype)//create times
 		var $cloneDragged = ATOMclone($dragged)// clone dragged
 		attachEventsAndExtend($clone);// dai vita a clone ed al suo albero
@@ -271,7 +271,7 @@ function ATOMdistribute(dragged,target){
 		//$cloneDragged.css({display:""})
 	})
 	var $draggedParent = dragged[0].ATOMparent(); 
-	$draggedParent.addClass("cleanPointless");//mark external operation as remove if pointless
+	$draggedParent.addClass("cleanifpointless");//mark external operation as remove if pointless
 	dragged.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
@@ -470,11 +470,11 @@ function ATOMcollect($dragged,$target){
 	console.log("collect")
 	var extOp 
 	extOp = encaseIfNeeded($target,op)
-	ATOMparent($dragged).addClass("cleanPointless")
-	ATOMparent($(".couldBeCollected")).addClass("cleanPointless")
+	ATOMparent($dragged).addClass("cleanifpointless")
+	ATOMparent($(".couldBeCollected")).addClass("cleanifpointless")
 	$dragged.insertBefore($target);
 	$(".couldBeCollected").remove()
-	$target.addClass("cleanPointless");
+	$target.addClass("cleanifpointless");
 	PActx.$transform =  extOp;
 	PActx.matchedTF=true
 	return PActx
