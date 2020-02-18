@@ -388,11 +388,13 @@ function PActxConclude(PActx){
 	if(PActx.matchedTF == true ){		         		    
 		//********** Post *************
 		if(PActx.$transform){
-			postRefine(PActx.$transform)
 			$children = ATOMcleanIfPointless(PActx.$transform,true)
 			if($children){//in case the $transform "dissolved" you need to consider his child 
 				PActx.$transform=$children
 			}
+			let $targetParent = ATOMparent(PActx.$transform)
+			postPatternMatching(PActx.$transform)
+			postRefine($targetParent)//repeated clenup may rplace the original target
 		}
 		refreshAndReplace(PActx);	
 		ssnapshot.take();
