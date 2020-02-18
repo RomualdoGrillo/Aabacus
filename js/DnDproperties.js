@@ -20,9 +20,7 @@ function makeSortable(sortables){
    				}
 			},			
 			filter:function (event,sortable){
-				console.log('filtering');
-				console.log(event);
-				if(sortable.classList.contains('glued') && ATOMclosedDef(sortable)){
+				if(sortable && sortable.classList.contains('glued') && ATOMclosedDef(sortable)){
 					return "*"}
 			},
 			animation: 150,

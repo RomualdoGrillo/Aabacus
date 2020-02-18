@@ -316,8 +316,8 @@ function refreshAndReplace(PActx){
 
 	if( $toBeRefreshed !== undefined &&  $toBeRefreshed.length != 0 ){
 				
-		RefreshEmptyInfixBraketsGlued($toBeRefreshed,true,"gi");
-		ATOMcleanIfPointless( $toBeRefreshed ,false);
+		
+		RefreshEmptyInfixBraketsGlued($toBeRefreshed,true,"egip");
 	}
 	return PActx
 }
@@ -386,13 +386,15 @@ function swapElements(obj1, obj2) {
 
 function PActxConclude(PActx){
 	if(PActx.matchedTF == true ){		         		    
-		refreshAndReplace(PActx);
-		
 		//********** Post *************
 		if(PActx.$transform){
-			$(".cleanPointless").each(function(i,el){ATOMcleanIfPointless($(this),false)});
 			postRefine(PActx.$transform)
-		}	
+			$children = ATOMcleanIfPointless(PActx.$transform,true)
+			if($children){//in case the $transform "dissolved" you need to consider his child 
+				PActx.$transform=$children
+			}
+		}
+		refreshAndReplace(PActx);	
 		ssnapshot.take();
 		PActxVisualize(PActx);
 	}

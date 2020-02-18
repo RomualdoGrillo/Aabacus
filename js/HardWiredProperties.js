@@ -148,7 +148,6 @@ function ATOMassociate(dragged,target){
 	//create a clone of the dragged
 	dragged.appendTo($(target))
 	dragged.css({position:"relative", top:0 , left:0})
-	//ATOMcleanIfPointless(target.parent().parent())
 	PActx.matchedTF=false;
 	PActx.replacedAlready = true;
 	PActx.msg = "associated";
@@ -476,7 +475,7 @@ function ATOMcollect($dragged,$target){
 	$dragged.insertBefore($target);
 	$(".couldBeCollected").remove()
 	$target.addClass("cleanPointless");
-	PActx.$transform =  $target;
+	PActx.$transform =  extOp;
 	PActx.matchedTF=true
 	return PActx
 
