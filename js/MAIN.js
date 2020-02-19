@@ -393,7 +393,7 @@ function PActxConclude(PActx){
 				PActx.$transform=$children
 			}
 			let $targetParent = ATOMparent(PActx.$transform)
-			postPatternMatching(PActx.$transform)
+			repetedCleanViaPattMatch(PActx.$transform)
 			postRefine($targetParent)//repeated clenup may rplace the original target
 		}
 		refreshAndReplace(PActx);	
