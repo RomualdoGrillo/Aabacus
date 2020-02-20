@@ -465,7 +465,7 @@ function postRefine($transformed){
 		$markedAsSelected.addClass('selected');
 	}
 	//********** post clean **************************************************
-    //repetedCleanViaPattMatch($transformed)
+    //postPatternMatching($transformed)
     //********** ripulisci da tutte le  marcature *********************************
     if($transformed){
 	    $transformed.find('[data-atom]').addBack().each(function(){
