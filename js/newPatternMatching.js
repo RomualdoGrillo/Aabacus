@@ -468,7 +468,8 @@ function postRefine($transformed){
     //repetedCleanViaPattMatch($transformed)
     //********** ripulisci da tutte le  marcature *********************************
     if($transformed){
-	    $transformed.find('[data-atom]').addBack().each(function(){
+	    $transformed.find('[data-atom]').addBack().filter(function(){//exclude everithing is into a forall maybe they are properties
+			return !$(this).is('[data-atom=forAll] *')}).each(function(){
     		ATOMSmarkUnmark($(this),"","all");
     		$(this).removeClass('taken')
     	})
