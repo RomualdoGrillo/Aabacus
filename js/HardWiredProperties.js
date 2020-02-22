@@ -2,8 +2,15 @@ function newPActx(){
 	//msg: in caso data di matchedTF=true contiene il nome della proprietà applicata
 	//in caso contrario dovrebbe contenere il motivo del noMatch.
 	//$transform deve contenere il più grande elemento trasformato
-	return {matchedTF:false, msg:"",visualization:"", $newProp: undefined , $pattern: undefined, $operand: undefined,
-			$transform: undefined, $equation: undefined, replacedAlready: false , lineList:$()}
+	return {matchedTF:false,
+		msg:"",visualization:"",
+		$newProp: undefined ,
+		$pattern: undefined,
+		$operand: undefined,
+		$transform: undefined,//must be the the biggest element changed, his parent will be considered when upadating infix ecc..
+		$equation: undefined,
+		replacedAlready: false ,
+		lineList:$()}
 }
 
 class PropertyDnD  {

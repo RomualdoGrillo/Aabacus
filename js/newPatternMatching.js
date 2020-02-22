@@ -455,25 +455,43 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
 
 }
 
-function postPMselectCleanCUnmark($transformed){
-	//********** selected in uscita ***********************************************
-	let $markedAsSelected = searchForMarkedInSubtree($transformed,"s",'p')//??? "p"
-	if($markedAsSelected.length != 0){//solo se torvi elementi marcati imponi nuova marcatura
-		$transformed.find('[data-atom]').addBack().each(function(){
-    	$(this).removeClass('selected')
-    	})
-		$markedAsSelected.addClass('selected');
+
+function PMclean(PActx){
+	//things to clean immediately after a succesfull PM property has been applied
+	//************select***********
+	//post selection must happen only if the operand was selected
+	if( PActx && PActx.$operand && PActx.$operand.parent().find('.selected').length != 0){
+		let $markedAsSelected = searchForMarkedInSubtree(PActx.$transform,"s",'p')//??? "p"
+		if($markedAsSelected.length != 0){//solo se torvi elementi marcati imponi nuova marcatura
+			PActx.$transform.find('[data-atom]').addBack().each(function(){
+    		$(this).removeClass('selected')
+    		})
+			$markedAsSelected.addClass('selected');
+		}
 	}
-	//********** post clean **************************************************
-    PMrepeatedCleanupOfMArked($transformed)
-    //********** ripulisci da tutte le  marcature *********************************
-    if($transformed){
-	    $transformed.find('[data-atom]').addBack().each(function(){
-    		ATOMSmarkUnmark($(this),"","all");
+	if(PActx.$transform){
+	    PActx.$transform.find('[data-atom]').addBack().each(function(){
+	    	if(ATOMSmarkUnmark($(this),undefined,"p") == "c"){
+				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
+	    		$(this).addClass('cleanifpointless');
+	    	}
+	    	//************remove all PM marks***********
     		$(this).removeClass('taken')
+    		ATOMSmarkUnmark($(this),"","all");
+    		
     	})
     }   
 }
+
+
+function postPMselectCleanCUnmark(PActx){
+	PMclean(PActx);
+    PMrepeatedCleanupOfMArked(PActx)
+}
+
+
+
+
 
 //function ($originalInput, $originalPattern, $span) 
 function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)

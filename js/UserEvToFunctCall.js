@@ -140,12 +140,12 @@ function keyboardEvToFC($atom, keyPressed){
 	return PActx
 }
 
-function PMrepeatedCleanupOfMArked($transformed){
+function PMrepeatedCleanupOfMArked(PActx){
 	var i=0
 	var semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
 	while(semplificEffettuata == true && i<20){//limito il numero di tentativi per evitare loop infiniti
 		//cerca atomi marcati "c"
-		var $toBesemplified = $transformed.find('[data-atom]').addBack().filter(function(){ return ATOMSmarkUnmark($(this),undefined,"p") == "c"})
+		var $toBesemplified = PActx.$transform.find('[data-atom]').addBack().filter('cleanifpointless')
     	var j= ($toBesemplified.length - 1)
     	semplificEffettuata = false;
     	while( j>=0){//prova a semplificare il j-esimo atomo, parti dal fondo
