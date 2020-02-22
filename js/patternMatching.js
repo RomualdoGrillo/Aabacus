@@ -220,6 +220,15 @@ function findAndCloneProp(field,propName,mode){
     if(debugMode){$('#telaRole').append(res.$newProp)}//debug 
     //attachEventsAndExtend(res.$newProp);
     ATOMextend(res.$newProp,true)
+    //***********marca TUTTI I CLONI clone ************************************************
+    res.$newProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone
+
+    //res.$newProp.find('[data-atom]').addBack().each(function(){
+	    	//if(ATOMSmarkUnmark($(this),undefined,"p") == "c"){
+				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
+	    		//$(this).addClass('cleanifpointless');
+	    	//}
+    //}); 
     //***********trova l'equazione ************************************************
     var $equation
     if( propCdsClass === "forAll" ){

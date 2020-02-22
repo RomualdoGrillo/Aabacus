@@ -470,13 +470,14 @@ function PMclean(PActx){
 		}
 	}
 	if(PActx.$transform){
-	    PActx.$transform.find('[data-atom]').addBack().each(function(){
+	    PActx.$transform.find('[data-atom].PMclone').addBack().each(function(){
 	    	if(ATOMSmarkUnmark($(this),undefined,"p") == "c"){
 				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
 	    		$(this).addClass('cleanifpointless');
 	    	}
 	    	//************remove all PM marks***********
-    		$(this).removeClass('taken')
+    		$(this).removeClass('taken');
+    		$(this).removeClass('PMclone');
     		ATOMSmarkUnmark($(this),"","all");
     		
     	})
