@@ -455,7 +455,7 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
 
 }
 
-function postRefine($transformed){
+function postPMselectCleanCUnmark($transformed){
 	//********** selected in uscita ***********************************************
 	let $markedAsSelected = searchForMarkedInSubtree($transformed,"s",'p')//??? "p"
 	if($markedAsSelected.length != 0){//solo se torvi elementi marcati imponi nuova marcatura
@@ -465,7 +465,7 @@ function postRefine($transformed){
 		$markedAsSelected.addClass('selected');
 	}
 	//********** post clean **************************************************
-    repeatedCleanup($transformed)
+    PMrepeatedCleanupOfMArked($transformed)
     //********** ripulisci da tutte le  marcature *********************************
     if($transformed){
 	    $transformed.find('[data-atom]').addBack().each(function(){
