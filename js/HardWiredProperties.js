@@ -865,7 +865,7 @@ function evaluateComparison($exp){
 			var prototype=prototypeSearch("bool")
 			var result
 			if(atomClass="eq"){
-				result = firstMember.computedVal = secondMember.computedVal;
+				result = firstMember.computedVal == secondMember.computedVal;
 			}
 			else if(atomClass="gt"){
 				result = firstMember.computedVal > secondMember.computedVal;
@@ -897,6 +897,8 @@ function evaluateComparison($exp){
 }
 
 function forThisPar_focus_nofocus($specificValue,$parameter){
+		var PActx = newPActx();
+		
 		//a parameter in a forall is specific by a $specificValue
 		let $forall
 		if(ATOMparent($parameter).hasClass('exclusiveFocus')){//the forall is in focus
@@ -907,7 +909,11 @@ function forThisPar_focus_nofocus($specificValue,$parameter){
 			$forall=createForThis(ATOMparent($parameter),ATOMparent($parameter));
 			$parameter=$(GetforAllHeader($forall).children()[index])
 		}
-		ATOMForThisPar($parameter,$specificValue)
+		PActx.$transform = ATOMForThisPar($parameter,$specificValue)
+		PActx.matchedTF = true;		
+		PActx.replacedAlready = true;
+		PActx.msg = "forThis"
+		return PActx
 }
 
 function clearTragets(){
