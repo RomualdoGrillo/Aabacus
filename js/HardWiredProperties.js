@@ -649,10 +649,21 @@ function compose($toBeComp){
 	//if( partial.canBeReplaced){ 
 	if( PActx.matchedTF == true){
 		///****Create Result********
-		PActx.$transform = ValToAtoms(partial);
-		PActx.$transform.addClass('selected');//selezione in uscita
+		
+		$composed= ValToAtoms(partial);
+
+		$composed = ValToAtoms(partial);
+		$composed.addClass('selected');//selezione in uscita
 		PActx.$operand = $toBeComp;
 		PActx.msg = "compose";
+		
+		
+		PActx.replacedAlready=true;
+		$composed.insertBefore(PActx.$operand[0]);
+		PActx.$operand.remove()
+		attachEventsAndExtend($composed,true,true);
+		$parent.addClass('cleanifpointless');
+		PActx.$transform = $parent; 
 	}
 	else {//rimetti le cose come stavano tranne le semplificazioni iniziali
 		$('.selected').removeClass('selected')
