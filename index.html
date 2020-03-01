@@ -57,10 +57,13 @@
 					<input type="checkbox" id="cb_vertTimes" onclick="$('body').toggleClass('vertTimes')" title="dispose multiplication and conjunction vertically ">
 					cross
 				</div>
-				<div class="checkbox">
+				<!--<div class="checkbox">
 					<input type="checkbox" id="cb_showFuctName" onclick="$('body').toggleClass('showFuctName')" title="show names of function instad of icons (when both are available) ">
-					txt
-				</div>
+					show txt
+				</div>-->
+				<input type="button" onclick="alert('Questa funzione dovrebbe consentire di scegliere e caricare un file di testo');tela.append('dummy text')" value="load">
+				<input type="button" onclick="alert('save file')" value="save">
+				
 			</div>
 
 		</div>	
@@ -520,7 +523,7 @@
 		
 		
 	</div>
-<div id="tela" data-atom="eq" class="atom asymmetric undraggable unselectable" data-type="bool">
+<div id="tela" data-atom="eq" class="atom asymmetric undraggable unselectable unlocked" data-type="bool">
 		<div class="s_role firstMember ui-icon" data-accept="1"></div>
 		<div class="decoration">=</div>
 		<div class="s_role secondMember unsortable" data-type="obj" data-accept="1">
