@@ -33,7 +33,10 @@ $(document).on('keydown', function ( e ) {
 	var keyPressed = keyToCharacter(e.which).toLowerCase();
 	console.log('key pressed:' + keyPressed + ' code: ' + e.which )
    	//ctrl+a 
-   	if ( e.ctrlKey && (  keyPressed === 'a'   ) ) {
+   	if (keyPressed == ""){
+   		//console.log("ctrl alone key discarded")
+   	}
+   	else if ( e.ctrlKey && (  keyPressed === 'a'   ) ) {
 		$('#telaRole *').removeClass('selected');
 		$('#telaRole>[data-atom]').addClass('selected');// select all: all the atoms in telaRole
 	}
