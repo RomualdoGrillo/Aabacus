@@ -166,7 +166,7 @@ function keyboardEvToFC($atom, keyPressed){
 	return PActx
 }
 
-function PMrepeatedCleanupOfMArked(PActx){
+function RefineRepeatedOfMArked(PActx){
 	var i=0
 	var semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
 	while(semplificEffettuata == true && i<20){//limito il numero di tentativi per evitare loop infiniti

@@ -487,7 +487,7 @@ function PMclean(PActx){
 
 function postPMselectCleanCUnmark(PActx){
 	PMclean(PActx);
-    PMrepeatedCleanupOfMArked(PActx)
+    RefineRepeatedOfMArked(PActx)
 }
 
 

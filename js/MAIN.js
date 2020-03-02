@@ -33,8 +33,8 @@ $(document).on('keydown', function ( e ) {
 	var keyPressed = keyToCharacter(e.which).toLowerCase();
 	console.log('key pressed:' + keyPressed + ' code: ' + e.which )
    	//ctrl+a 
-   	if (keyPressed == ""){
-   		//console.log("ctrl alone key discarded")
+   	if (e.which == 16 || e.which == 17){
+   		//console.log("filter ctrl and Maiusc if alone")
    	}
    	else if ( e.ctrlKey && (  keyPressed === 'a'   ) ) {
 		$('#telaRole *').removeClass('selected');

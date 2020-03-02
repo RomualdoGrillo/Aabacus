@@ -124,12 +124,12 @@ border: 1px solid #000000;
   background: #f9f9f9;
   opacity: 0.75;
   border-left: 20px solid transparent;
-  width: 100px;
-  /*transition: width 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;*/
+  /*width: 100px;*/
+  transition: width 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
   transition-delay: 0.35s;
 }
 
-/*
+
 #tavolozza:hover {
   position: fixed;
 
@@ -142,4 +142,4 @@ border: 1px solid #000000;
 
 #tavolozza:not(:hover) {
   width: 2px;  
-}*/
+}
