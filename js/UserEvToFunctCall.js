@@ -85,8 +85,10 @@ function searchEventHandler(event){// trova la definizione della proprietà
     return  res
 }
 
+
+
 //searchForProperty('firstMember','distTimes')
-function searchForProperty(field,value,returnedField){
+function OLDsearchForProperty(field,value,returnedField){
 	// trova la definizione della proprietà
    var res
    if( value == undefined){ return "undefined"}
@@ -108,6 +110,30 @@ function searchForProperty(field,value,returnedField){
     else{ res = undefined}
     return  res
 }
+
+
+
+
+
+//searchForProperty('firstMember','distTimes')
+function searchForProperty(field,value,returnedField){
+	// trova la definizione della proprietà
+	if( value == undefined){ return undefined}
+	let candidates = Array.from( tela.querySelectorAll('[data-atom=defTrue]') );
+	let i=0;
+	while(candidates[i]){
+		let $role = candidates[i].ATOM_getRoles().filter('.' + field)
+		if($role.length !== 1){
+			console.warn('Role not found' + field);
+		}
+		let ATOMvalue = $role.children()[0]
+		if(ATOMvalue !== undefined && ATOMvalue.ATOM_getName().toLowerCase() === value.toLowerCase() ){
+		    //case insensitive
+        	return   $( candidates[i].ATOM_getRoles().filter("." + returnedField ).children()[0] ) 
+		}	
+	i++}
+}
+
 
 function keyboardEvToFC($atom, keyPressed){
 	var $actions = searchEventHandler(keyPressed);
@@ -140,12 +166,12 @@ function keyboardEvToFC($atom, keyPressed){
 	return PActx
 }
 
-function PMrepeatedCleanupOfMArked($transformed){
+function RefineRepeatedOfMArked(PActx){
 	var i=0
 	var semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
 	while(semplificEffettuata == true && i<20){//limito il numero di tentativi per evitare loop infiniti
 		//cerca atomi marcati "c"
-		var $toBesemplified = $transformed.find('[data-atom]').addBack().filter(function(){ return ATOMSmarkUnmark($(this),undefined,"p") == "c"})
+		var $toBesemplified = PActx.$transform.find('[data-atom]').addBack().filter('cleanifpointless')
     	var j= ($toBesemplified.length - 1)
     	semplificEffettuata = false;
     	while( j>=0){//prova a semplificare il j-esimo atomo, parti dal fondo

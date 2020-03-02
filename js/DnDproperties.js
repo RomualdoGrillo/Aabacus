@@ -164,7 +164,7 @@ function onEndHandler(event){
 	}
 	*/
 	if($(dropTarget).is('[data-atom][target]:not([target=""])')){
-	    //apply property
+	    //apply property from propertiesDnD
 	    let targetProperty = dropTarget.getAttribute('target');
 	    console.log(' ------------> found target ' + targetProperty );
 	    let property = propertiesDnD.find(function(el){return el.name == targetProperty });
@@ -173,7 +173,11 @@ function onEndHandler(event){
 			if(PActx){PActxConclude(PActx)}	    
 	    }
 	}
-	
+	else{
+		//  no need for a specific function in propertiesDnD
+		// edit, commute, distribute are simply movement in connected lists  
+		ssnapshot.take()
+	}
 
 	clickSound.play();//repositioned
 	if(event.clone.parentElement != null){

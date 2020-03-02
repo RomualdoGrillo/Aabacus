@@ -14,6 +14,7 @@ function ssnapshot() {
 ssnapshot.take = function(){
 		var $cloneTela = ATOMclone( $("#tela>.secondMember"),false )
 		FILO.push($cloneTela)
+		
 		//----test------------------inserire due span in "index.html" per vedere i risultati
 		//var snap= $.trim($("#test").html())
 		//var SnapshotName = prompt('SnapshotName')
@@ -21,7 +22,7 @@ ssnapshot.take = function(){
 		//$("#test").html(SnapshotName)
 		//$("#undoNames").html(testSnapshotNames.toString())
 		//----------------------------
-		//console.log('Stored snapshot. Number of snapshots= '+ FILO.length  )
+		console.log('Stored snapshot. Number of snapshots= '+ FILO.length  )
 		//console.log($cloneTela)
 }
 
@@ -39,8 +40,8 @@ ssnapshot.undo = function(){
 			//$("#undoNames").html(testSnapshotNames.toString())
 			//-------------------------------------
 			attachEventsAndExtend(toBeRestored)
-			console.log('restored tela')
-			console.log(toBeRestored)
+			//console.log('restored tela')
+			//console.log(toBeRestored)
 		}
 		else {
 			console.log('no older status')

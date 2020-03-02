@@ -637,3 +637,7 @@ border-right-style: solid;
 [data-atom=m_inverse]{
 	flex-direction:column;
 }
+
+.debug [data-atom].taken{
+	background-color:red;
+}

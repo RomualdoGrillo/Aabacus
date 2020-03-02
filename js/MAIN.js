@@ -33,7 +33,10 @@ $(document).on('keydown', function ( e ) {
 	var keyPressed = keyToCharacter(e.which).toLowerCase();
 	console.log('key pressed:' + keyPressed + ' code: ' + e.which )
    	//ctrl+a 
-   	if ( e.ctrlKey && (  keyPressed === 'a'   ) ) {
+   	if (e.which == 16 || e.which == 17){
+   		//console.log("filter ctrl and Maiusc if alone")
+   	}
+   	else if ( e.ctrlKey && (  keyPressed === 'a'   ) ) {
 		$('#telaRole *').removeClass('selected');
 		$('#telaRole>[data-atom]').addClass('selected');// select all: all the atoms in telaRole
 	}
@@ -388,7 +391,7 @@ function PActxConclude(PActx){
 	if(PActx.matchedTF == true ){		         		    
 		//********** Post *************
 		if(PActx.$transform){
-			postPMselectCleanCUnmark(PActx.$transform)
+			postPMselectCleanCUnmark(PActx)
 			$children = ATOMcleanIfPointless(PActx.$transform,true)
 			if($children){//in case the $transform "dissolved" you need to consider his child 
 				PActx.$transform=$children

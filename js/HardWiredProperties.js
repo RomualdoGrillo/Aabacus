@@ -2,8 +2,15 @@ function newPActx(){
 	//msg: in caso data di matchedTF=true contiene il nome della proprietà applicata
 	//in caso contrario dovrebbe contenere il motivo del noMatch.
 	//$transform deve contenere il più grande elemento trasformato
-	return {matchedTF:false, msg:"",visualization:"", $newProp: undefined , $pattern: undefined, $operand: undefined,
-			$transform: undefined, $equation: undefined, replacedAlready: false , lineList:$()}
+	return {matchedTF:false,
+		msg:"",visualization:"",
+		$newProp: undefined ,
+		$pattern: undefined,
+		$operand: undefined,
+		$transform: undefined,//must be the the biggest element changed, his parent will be considered when upadating infix ecc..
+		$equation: undefined,
+		replacedAlready: false ,
+		lineList:$()}
 }
 
 class PropertyDnD  {
@@ -642,10 +649,21 @@ function compose($toBeComp){
 	//if( partial.canBeReplaced){ 
 	if( PActx.matchedTF == true){
 		///****Create Result********
-		PActx.$transform = ValToAtoms(partial);
-		PActx.$transform.addClass('selected');//selezione in uscita
+		
+		$composed= ValToAtoms(partial);
+
+		$composed = ValToAtoms(partial);
+		$composed.addClass('selected');//selezione in uscita
 		PActx.$operand = $toBeComp;
 		PActx.msg = "compose";
+		
+		
+		PActx.replacedAlready=true;
+		$composed.insertBefore(PActx.$operand[0]);
+		PActx.$operand.remove()
+		attachEventsAndExtend($composed,true,true);
+		$parent.addClass('cleanifpointless');
+		PActx.$transform = $parent; 
 	}
 	else {//rimetti le cose come stavano tranne le semplificazioni iniziali
 		$('.selected').removeClass('selected')
@@ -858,7 +876,7 @@ function evaluateComparison($exp){
 			var prototype=prototypeSearch("bool")
 			var result
 			if(atomClass="eq"){
-				result = firstMember.computedVal = secondMember.computedVal;
+				result = firstMember.computedVal == secondMember.computedVal;
 			}
 			else if(atomClass="gt"){
 				result = firstMember.computedVal > secondMember.computedVal;
@@ -890,6 +908,8 @@ function evaluateComparison($exp){
 }
 
 function forThisPar_focus_nofocus($specificValue,$parameter){
+		var PActx = newPActx();
+		
 		//a parameter in a forall is specific by a $specificValue
 		let $forall
 		if(ATOMparent($parameter).hasClass('exclusiveFocus')){//the forall is in focus
@@ -900,7 +920,11 @@ function forThisPar_focus_nofocus($specificValue,$parameter){
 			$forall=createForThis(ATOMparent($parameter),ATOMparent($parameter));
 			$parameter=$(GetforAllHeader($forall).children()[index])
 		}
-		ATOMForThisPar($parameter,$specificValue)
+		PActx.$transform = ATOMForThisPar($parameter,$specificValue)
+		PActx.matchedTF = true;		
+		PActx.replacedAlready = true;
+		PActx.msg = "forThis"
+		return PActx
 }
 
 function clearTragets(){
