@@ -349,7 +349,6 @@ function attachEventsAndExtend($startElement,processDiscendence/*default is true
 		if(extend != false){ATOMextend($startElement,true)}
 		$Elements = $startElement[0].ATOM_getNodes();
 	}
-	
 	//initialize lock icons
 	$Elements.filter('[data-atom].asymmetric').each(function(i,e){ refreshAsymmEq($(e))})
 	$Elements.filter('[data-atom].asymmetric').each(function(i,e){ refreshAsymmEq($(e))})
@@ -390,14 +389,14 @@ function swapElements(obj1, obj2) {
 function PActxConclude(PActx){
 	if(PActx.matchedTF == true ){		         		    
 		//********** Post *************
+		refreshAndReplace(PActx);
 		if(PActx.$transform){
-			postPMselectCleanCUnmark(PActx)
+			postPMselectRefineCUnmark(PActx)
 			$children = ATOMcleanIfPointless(PActx.$transform,true)
 			if($children){//in case the $transform "dissolved" you need to consider his child 
 				PActx.$transform=$children
 			}
-		}
-		refreshAndReplace(PActx);	
+		}	
 		ssnapshot.take();
 		PActxVisualize(PActx);
 	}

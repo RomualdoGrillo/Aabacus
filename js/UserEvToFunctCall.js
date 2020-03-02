@@ -60,81 +60,6 @@ function DropEvToFC($draggable,$target){
 }
 
 
-function searchEventHandler(event){// trova la definizione della proprietà
-   var res
-   var $found = $('#telaRole').find('[data-atom="eventToAction"]').filter(function(index){
-        var $role = this.ATOM_getRoles('.event');
-        if($role.length !== 1){
-            console.warn('Role not found' + field);
-            res = $()
-            return res
-        }
-        var ATOM = $role.children()[0]
-        if( ATOM !== undefined){
-            return ATOM.ATOM_getName().toLowerCase() === event.toLowerCase()//case insensitive
-        }
-        else{
-        	res = $()
-        	return res
-        }
-    })
-    if ($found.length !== 0){
-        res = $found[0].ATOM_getRoles('.actions').children()
-    }
-    else{ res = $()}
-    return  res
-}
-
-
-
-//searchForProperty('firstMember','distTimes')
-function OLDsearchForProperty(field,value,returnedField){
-	// trova la definizione della proprietà
-   var res
-   if( value == undefined){ return "undefined"}
-   var $found = $('#telaRole').find('[data-atom="defTrue"]').filter(function(index){
-        var $role = this.ATOM_getRoles().filter('.' + field)
-        if($role.length !== 1){
-            console.warn('Role not found' + field);
-            return false
-        }
-        var ATOMvalue = $role.children()[0]
-        if(ATOMvalue !== undefined){
-            return ATOMvalue.ATOM_getName().toLowerCase() === value.toLowerCase()//case insensitive
-        }
-        else{return false}
-    })
-    if ($found.length !== 0){
-        res = $( $found[0].ATOM_getRoles().filter("." + returnedField ).children()[0] )
-    }
-    else{ res = undefined}
-    return  res
-}
-
-
-
-
-
-//searchForProperty('firstMember','distTimes')
-function searchForProperty(field,value,returnedField){
-	// trova la definizione della proprietà
-	if( value == undefined){ return undefined}
-	let candidates = Array.from( tela.querySelectorAll('[data-atom=defTrue]') );
-	let i=0;
-	while(candidates[i]){
-		let $role = candidates[i].ATOM_getRoles().filter('.' + field)
-		if($role.length !== 1){
-			console.warn('Role not found' + field);
-		}
-		let ATOMvalue = $role.children()[0]
-		if(ATOMvalue !== undefined && ATOMvalue.ATOM_getName().toLowerCase() === value.toLowerCase() ){
-		    //case insensitive
-        	return   $( candidates[i].ATOM_getRoles().filter("." + returnedField ).children()[0] ) 
-		}	
-	i++}
-}
-
-
 function keyboardEvToFC($atom, keyPressed){
 	var $actions = searchEventHandler(keyPressed);
 	var PActx = newPActx()
@@ -165,6 +90,57 @@ function keyboardEvToFC($atom, keyPressed){
 	}
 	return PActx
 }
+
+
+function searchEventHandler(event){// trova la definizione della proprietà
+   var res
+   var $found = $('#telaRole').find('[data-atom="eventToAction"]').filter(function(index){
+        var $role = this.ATOM_getRoles('.event');
+        if($role.length !== 1){
+            console.warn('Role not found' + field);
+            res = $()
+            return res
+        }
+        var ATOM = $role.children()[0]
+        if( ATOM !== undefined){
+            return ATOM.ATOM_getName().toLowerCase() === event.toLowerCase()//case insensitive
+        }
+        else{
+        	res = $()
+        	return res
+        }
+    })
+    if ($found.length !== 0){
+        res = $found[0].ATOM_getRoles('.actions').children()
+    }
+    else{ res = $()}
+    return  res
+}
+
+
+
+
+//searchForProperty('firstMember','distTimes')
+function searchForProperty(field,value,returnedField){
+	// trova la definizione della proprietà
+	if( value == undefined){ return undefined}
+	let candidates = Array.from( tela.querySelectorAll('[data-atom=defTrue]') );
+	let i=0;
+	while(candidates[i]){
+		let $role = candidates[i].ATOM_getRoles().filter('.' + field)
+		if($role.length !== 1){
+			console.warn('Role not found' + field);
+		}
+		let ATOMvalue = $role.children()[0]
+		if(ATOMvalue !== undefined && ATOMvalue.ATOM_getName().toLowerCase() === value.toLowerCase() ){
+		    //case insensitive
+        	return   $( candidates[i].ATOM_getRoles().filter("." + returnedField ).children()[0] ) 
+		}	
+	i++}
+}
+
+
+
 
 function RefineRepeatedOfMArked(PActx){
 	var i=0

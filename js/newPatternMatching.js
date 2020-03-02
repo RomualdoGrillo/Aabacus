@@ -235,6 +235,7 @@ function ATOMdescForPath($atom){
 	}
 }
 
+
 function ATOMSmarkUnmark($Atom,value,attrName){
 //la funzione scrive o legge marcature atomi in modo permanente: le marcature passano nel file mml. 
 //attrname può assumere i valori m,l,p corrispondenti al formato della stringa mark-link-post
@@ -266,6 +267,7 @@ function ATOMSmarkUnmark($Atom,value,attrName){
 		}
 	}
 	//********************mode: WRITE**************************
+	// ATOMSmarkUnmark($atom,"","all"); cancella tutte le marcature
 	if( attrName=="all" ){//scrivi tutto in una volta
 		$Atom.attr('title',value);
 		return value
@@ -485,7 +487,7 @@ function PMclean(PActx){
 }
 
 
-function postPMselectCleanCUnmark(PActx){
+function postPMselectRefineCUnmark(PActx){
 	PMclean(PActx);
     RefineRepeatedOfMArked(PActx)
 }
@@ -531,7 +533,10 @@ function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)
     //---------------------->
     
     PActx = adaptMatch(PActx,PActx.$operand, $pattern, $span);
-    
+    //************RemoveMarksFromTransform*****************************************
+    PActx.$transform.find('.taken').removeClass('taken');
+	//let $atomsInTransform = PActx.$transform.find('[data-atom]').addBack()    
+	//ATOMSmarkUnmark($atomsInTransform,"","all");//cancel all marks in transform
     //************Riordina******************************************************************
     if(order){
     	orderUL(PActx.$transform)//futuribile: riordinare solo ciò che verrà poi utilizzato, cioè il transform
