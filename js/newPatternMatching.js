@@ -531,11 +531,6 @@ function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)
     //----------------------------------------------->
     
     PActx = adaptMatch(PActx,PActx.$operand, $pattern, $span);
-    //************RemoveMarksFromTransform*****************************************
-    PActx.$transform.find('.taken').removeClass('taken');
-	PMclean(PActx);
-	//let $atomsInTransform = PActx.$transform.find('[data-atom]').addBack()    
-	//ATOMSmarkUnmark($atomsInTransform,"","all");//cancel all marks in transform
     //************Riordina******************************************************************
     if(order){
     	orderUL(PActx.$transform)//futuribile: riordinare solo ciò che verrà poi utilizzato, cioè il transform

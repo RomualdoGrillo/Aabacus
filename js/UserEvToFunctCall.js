@@ -85,6 +85,9 @@ function keyboardEvToFC($atom, keyPressed){
 			}
 		if( PActx.matchedTF ){//proprietà applicata con successo
 			PActx.msg = actionString +" "+ firstValString
+			//************RemoveMarksFromTransform*****************************************
+    		PActx.$transform.find('.taken').removeClass('taken');// "taken" non dovrebbe passare al transform, provvisoriamente lo ripulisco quì
+			PMclean(PActx);
 			break
 		}
 	}
