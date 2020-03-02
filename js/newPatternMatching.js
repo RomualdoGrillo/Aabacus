@@ -473,7 +473,9 @@ function PMclean(PActx){
 	}
 	if(PActx.$transform){
 	    PActx.$transform.find('[data-atom].PMclone').addBack().each(function(){
-	    	if(ATOMSmarkUnmark($(this),undefined,"p") == "c"){
+
+	    	let postMarks = ATOMSmarkUnmark($(this),undefined,"p");
+	    	if(postMarks.indexOf('c') != -1){// is "c" one of the post markings?
 				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
 	    		$(this).addClass('cleanifpointless');
 	    	}
@@ -487,10 +489,6 @@ function PMclean(PActx){
 }
 
 
-function postPMselectRefineCUnmark(PActx){
-	PMclean(PActx);
-    RefineRepeatedOfMArked(PActx)
-}
 
 
 
@@ -530,11 +528,12 @@ function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)
     }
     */
     //*********** chiama il PatternMatch ricorsivo dandogli le liste iniziali
-    //---------------------->
+    //----------------------------------------------->
     
     PActx = adaptMatch(PActx,PActx.$operand, $pattern, $span);
     //************RemoveMarksFromTransform*****************************************
     PActx.$transform.find('.taken').removeClass('taken');
+	PMclean(PActx);
 	//let $atomsInTransform = PActx.$transform.find('[data-atom]').addBack()    
 	//ATOMSmarkUnmark($atomsInTransform,"","all");//cancel all marks in transform
     //************Riordina******************************************************************

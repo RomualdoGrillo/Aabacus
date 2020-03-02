@@ -128,6 +128,12 @@
 					<apply type="obj">
 						<callfunction>
 						</callfunction>
+						<ci type="bool">OppositeOfOpposite</ci>
+						<ci type="bool">ltr</ci>
+					</apply>
+					<apply type="obj">
+						<callfunction>
+						</callfunction>
 						<ci type="bool">evaluateComparison</ci>
 						<ci type="bool">int</ci>
 					</apply>
@@ -632,7 +638,7 @@
 								<apply type="num">
 									<plus>
 									</plus>
-									<apply title="--s" type="num">
+									<apply title="--cs" type="num">
 										<minus>
 										</minus>
 										<ci type="num">k</ci>
