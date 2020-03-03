@@ -926,3 +926,4 @@ function ATOMnodesAddClass($atom,newClass,mode/* true = remove*/){
         })
     }
 }
+

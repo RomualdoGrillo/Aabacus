@@ -923,7 +923,7 @@
 									<ci type="num">x</ci>
 								</apply>
 							</apply>
-							<ci type="num">x</ci>
+							<ci title="--s" type="num">x</ci>
 						</apply>
 					</apply>
 				</apply>

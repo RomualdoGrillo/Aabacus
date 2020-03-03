@@ -460,6 +460,8 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
 
 function PMclean(PActx){
 	//things to clean immediately after a succesfull PM property has been applied
+	//************RemoveMarksFromTransform*****************************************
+	removeClassStartNodeAndDiscendence('taken',PActx.$transform);
 	//************select***********
 	//post selection must happen only if the operand was selected
 	if( PActx && PActx.$operand && PActx.$operand.parent().find('.selected').length != 0){
@@ -485,7 +487,8 @@ function PMclean(PActx){
     		ATOMSmarkUnmark($(this),"","all");
     		
     	})
-    }   
+    }
+    return PActx
 }
 
 

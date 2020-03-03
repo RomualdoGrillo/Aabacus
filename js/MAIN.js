@@ -264,18 +264,6 @@ function dblclickHandler(event){
 }
 
 
-/*function clearClass(Classes){// for example clearClass(['selected','unselected'])   or clearClass(['unselected')
-	if (typeof(Classes)=="string"){Classes=[Classes]}//if input is a srting, create a one element array
-	nestedSortablesBool.forEach(function(e){e.classList.remove(...Classes)});//clear an array of classes
-}*/
-
-function clearTarget(Classes){// for example clearTarget(['selected','unselected'])   or clearTarget(['unselected')
-	if (typeof(Classes)=="string"){Classes=[Classes]}//if input is a srting, create a one element array
-	document.querySelectorAll(sortablesSelectorString).forEach(function(e){e.classList.remove(...Classes)});//clear an array of classes
-}
-
-
-
 
 function refreshAsymmEq($atom){// adegua l'icona del lucchetto allo stato unlocked/non unlocked
 	var $firstMember = $atom.find('>.firstMember')
