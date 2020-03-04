@@ -290,6 +290,7 @@ function ATOMForThisPar($parameter,$newVal){// atom
 		$f.remove()
 		$root = $content //se si dissolve il forall, ilpiù esterno rimane il suo contenuto
 	}
+	removeClassStartNodeAndDiscendence('selected',$root);
 	return $root
 }
 

@@ -378,7 +378,9 @@ function tryReconfigurableProp(PActx,$par1,$par2){
     }
     // l'uguaglianza "usa e getta"che contiene il pattern è rimossa dal documento
     // una volta utilizzata finirà nel garbage collection
-    if(debugMode){PActx.$newProp.remove()}//debug 
+    if(debugMode){PActx.$newProp.remove()
+    		PActx.$operand.removeClass('expandedAsTree');
+		}//debugMode
     return PActx
 }
 
