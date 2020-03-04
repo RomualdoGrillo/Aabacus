@@ -93,11 +93,13 @@ $(document).on('keydown', function ( e ) {
 	}
 	else{//****************applica proprietà***********
 		var PActx =  newPActx();
+		
 		var $selected = $('.selected')
+		
 		//code of "arrowup" = 38 
 		if ( e.which === 38) {
 			//console.log("decompose up")
-			PActx = decompose($selected,"up"/*up for factorize*/);
+			PActx = decompose($selected,"up");//up for factorize
 		}
 		//code of "arrowright" = 39
 		else if ( e.which === 39) {
@@ -392,6 +394,7 @@ function PActxConclude(PActx){
 
 
 function PActxVisualize(PActx){
+	
 	if(PActx.visualization==""){
 		PActx.visualization="images/Brackets.png"
 	}

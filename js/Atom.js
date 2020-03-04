@@ -775,6 +775,12 @@ function showAllMarks(showPath){
 	
 }
 
+
+function hideAllMarks(){
+	$('.label').remove()	
+}
+
+
 function ATOMEqual(node1,node2,checkType,neglectRootSign){ //node1/2 HTMLnode. Flat to simil mathml e paragona
 	if( node1 == undefined || node2 == undefined ){ return false};
 	return (node1.ATOM_createMathmlString(checkType , neglectRootSign) === node2.ATOM_createMathmlString(checkType, neglectRootSign));

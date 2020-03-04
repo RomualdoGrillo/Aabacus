@@ -376,10 +376,13 @@ function tryReconfigurableProp(PActx,$par1,$par2){
    		 
 		PActx.$transform = PActx.$equation[0].ATOM_getRoles('.secondMember').children();//alla fine degli adapt match riaggiorno transform
     }
+    ATOMSmarkUnmark(PActx.$operand,"","all")//l'operando vieme inizialmente marcato come "s" selected 
+    //"s" è usato come punto di partenza
     // l'uguaglianza "usa e getta"che contiene il pattern è rimossa dal documento
     // una volta utilizzata finirà nel garbage collection
     if(debugMode){PActx.$newProp.remove()
     		PActx.$operand.removeClass('expandedAsTree');
+    		hideAllMarks()
 		}//debugMode
     return PActx
 }

@@ -42,6 +42,7 @@
    top: -8px;
    left: -7px;
    font-size: xx-small;
+   pointer-events: none;
 }
 
 .test>.background{
