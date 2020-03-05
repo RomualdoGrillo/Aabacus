@@ -1,3 +1,24 @@
+function preload(myUrl) {
+	//preloadAjax('./Data/Preload/preload.mml')
+	  $.ajax({    
+			type: "GET",              
+			url: myUrl,
+			dataType: "text",
+			error: function (e) {
+				alert("AJAX/get fallita : verificare da Chrome");
+				console.log("Ajax/GET fallita : ", e);
+			},
+			success: function(response) {
+				//alert("lettura file " + myUrl + " tramite Ajax OK - risposta : " + response);
+				inject(response,$("#telaRole"))
+			}
+	  });
+}
+
+
+
+
+
 
 //getAjax('text')
 function getAjax(fileType) {
@@ -22,7 +43,7 @@ function getAjax(fileType) {
 	  // CARICAMENTO TRAMITE GET/Ajax
 	  $.ajax({    
 			type: "GET",              
-			url: "./test.txt",
+			url: "./Data/Preload/preload.mml",
 			dataType: myDataType,
 	
 			error: function (e) {
@@ -35,27 +56,25 @@ function getAjax(fileType) {
 				elaboraRisposta(myDataType, response)
 			}
 	  });
+}
 	
-	
-	}
-	
-	function elaboraRisposta(fileType, response){
-	  alert(fileType);
-	  switch(fileType) {
-		case "xml":
-		  var stringa = XMLToString(response)  // converte il file XML in una stringa di testo
-		  $("#textAjax").text(stringa);       // carica il testo nel div <id="contenuto">
-		  break;
-		case "html":
-		  $("#textAjax").html(response);     // rispetta la formattazione html
+function elaboraRisposta(fileType, response){
+	alert(fileType);
+	switch(fileType) {
+	case "xml":
+	  var stringa = XMLToString(response)  // converte il file XML in una stringa di testo
+	  $("#textAjax").text(stringa);       // carica il testo nel div <id="contenuto">
+	  break;
+	case "html":
+		$("#textAjax").html(response);     // rispetta la formattazione html
 		break;
-		case "text":
-		  $("#textAjax").text(response);     // testo del <div>
-		break;
-		default:
-		  alert("Errore di sistema [inelaboraRisposta]: parametro 'fileType' invalido");
-		  return;
-	  }
+	case "text":
+	  $("#textAjax").text(response);     // testo del <div>
+	break;
+	default:
+	  alert("Errore di sistema [inelaboraRisposta]: parametro 'fileType' invalido");
+	  return;
+}
 	
 	
 	}

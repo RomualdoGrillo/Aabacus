@@ -11,6 +11,7 @@ console.log(this.value);
 $('body').removeClass('whiteBorders greyBorders coloredBorders');//ripulisci valori precedenti
 $('body').addClass(this.value)//aggiungi la nuova classe
 });
+
 //************ inizializza UNDO  ************
 ssnapshot() //inizializza snapshot manager che gestisce UNDO
 //***********************
@@ -18,6 +19,9 @@ ssnapshot() //inizializza snapshot manager che gestisce UNDO
 let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable)'
 //let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),[data-atom=ci]';
 let initialSortables = document.querySelectorAll(sortablesSelectorString)
+//************ Preload  ************
+preload('./Data/Preload/preload.mml')
+
 makeSortable(initialSortables);
 $('[data-atom].asymmetric').each(function(i,e){ refreshAsymmEq($(e))})//initialize lock icons??
 ATOMextend($('body'),true);
