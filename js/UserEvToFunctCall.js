@@ -60,55 +60,6 @@ function DropEvToFC($draggable,$target){
 }
 
 
-function searchEventHandler(event){// trova la definizione della proprietà
-   var res
-   var $found = $('#telaRole').find('[data-atom="eventToAction"]').filter(function(index){
-        var $role = this.ATOM_getRoles('.event');
-        if($role.length !== 1){
-            console.warn('Role not found' + field);
-            res = $()
-            return res
-        }
-        var ATOM = $role.children()[0]
-        if( ATOM !== undefined){
-            return ATOM.ATOM_getName().toLowerCase() === event.toLowerCase()//case insensitive
-        }
-        else{
-        	res = $()
-        	return res
-        }
-    })
-    if ($found.length !== 0){
-        res = $found[0].ATOM_getRoles('.actions').children()
-    }
-    else{ res = $()}
-    return  res
-}
-
-//searchForProperty('firstMember','distTimes')
-function searchForProperty(field,value,returnedField){
-	// trova la definizione della proprietà
-   var res
-   if( value == undefined){ return "undefined"}
-   var $found = $('#telaRole').find('[data-atom="defTrue"]').filter(function(index){
-        var $role = this.ATOM_getRoles().filter('.' + field)
-        if($role.length !== 1){
-            console.warn('Role not found' + field);
-            return false
-        }
-        var ATOMvalue = $role.children()[0]
-        if(ATOMvalue !== undefined){
-            return ATOMvalue.ATOM_getName().toLowerCase() === value.toLowerCase()//case insensitive
-        }
-        else{return false}
-    })
-    if ($found.length !== 0){
-        res = $( $found[0].ATOM_getRoles().filter("." + returnedField ).children()[0] )
-    }
-    else{ res = undefined}
-    return  res
-}
-
 function keyboardEvToFC($atom, keyPressed){
 	var $actions = searchEventHandler(keyPressed);
 	var PActx = newPActx()
@@ -134,18 +85,70 @@ function keyboardEvToFC($atom, keyPressed){
 			}
 		if( PActx.matchedTF ){//proprietà applicata con successo
 			PActx.msg = actionString +" "+ firstValString
+			PActx = PMclean(PActx);
 			break
 		}
 	}
 	return PActx
 }
 
-function repeatedCleanup($transformed){
+
+function searchEventHandler(event){// trova la definizione della proprietà
+   var res
+   var $found = $('#telaRole').find('[data-atom="eventToAction"]').filter(function(index){
+        var $role = this.ATOM_getRoles('.event');
+        if($role.length !== 1){
+            console.warn('Role not found' + field);
+            res = $()
+            return res
+        }
+        var ATOM = $role.children()[0]
+        if( ATOM !== undefined){
+            return ATOM.ATOM_getName().toLowerCase() === event.toLowerCase()//case insensitive
+        }
+        else{
+        	res = $()
+        	return res
+        }
+    })
+    if ($found.length !== 0){
+        res = $found[0].ATOM_getRoles('.actions').children()
+    }
+    else{ res = $()}
+    return  res
+}
+
+
+
+
+//searchForProperty('firstMember','distTimes')
+function searchForProperty(field,value,returnedField){
+	// trova la definizione della proprietà
+	if( value == undefined){ return undefined}
+	let candidates = Array.from( tela.querySelectorAll('[data-atom=defTrue]') );
+	let i=0;
+	while(candidates[i]){
+		let $role = candidates[i].ATOM_getRoles().filter('.' + field)
+		if($role.length !== 1){
+			console.warn('Role not found' + field);
+		}
+		let ATOMvalue = $role.children()[0]
+		if(ATOMvalue !== undefined && ATOMvalue.ATOM_getName().toLowerCase() === value.toLowerCase() ){
+		    //case insensitive
+        	return   $( candidates[i].ATOM_getRoles().filter("." + returnedField ).children()[0] ) 
+		}	
+	i++}
+}
+
+
+
+
+function RefineRepeatedOfMArked(PActx){
 	var i=0
 	var semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
 	while(semplificEffettuata == true && i<20){//limito il numero di tentativi per evitare loop infiniti
 		//cerca atomi marcati "c"
-		var $toBesemplified = $transformed.find('[data-atom]').addBack().filter(function(){ return ATOMSmarkUnmark($(this),undefined,"p") == "c"})
+		var $toBesemplified = PActx.$transform.find('[data-atom]').addBack().filter('.cleanifpointless')
     	var j= ($toBesemplified.length - 1)
     	semplificEffettuata = false;
     	while( j>=0){//prova a semplificare il j-esimo atomo, parti dal fondo

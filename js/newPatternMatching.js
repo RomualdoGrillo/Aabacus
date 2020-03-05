@@ -235,6 +235,7 @@ function ATOMdescForPath($atom){
 	}
 }
 
+
 function ATOMSmarkUnmark($Atom,value,attrName){
 //la funzione scrive o legge marcature atomi in modo permanente: le marcature passano nel file mml. 
 //attrname può assumere i valori m,l,p corrispondenti al formato della stringa mark-link-post
@@ -266,6 +267,7 @@ function ATOMSmarkUnmark($Atom,value,attrName){
 		}
 	}
 	//********************mode: WRITE**************************
+	// ATOMSmarkUnmark($atom,"","all"); cancella tutte le marcature
 	if( attrName=="all" ){//scrivi tutto in una volta
 		$Atom.attr('title',value);
 		return value
@@ -374,9 +376,14 @@ function tryReconfigurableProp(PActx,$par1,$par2){
    		 
 		PActx.$transform = PActx.$equation[0].ATOM_getRoles('.secondMember').children();//alla fine degli adapt match riaggiorno transform
     }
+    ATOMSmarkUnmark(PActx.$operand,"","all")//l'operando vieme inizialmente marcato come "s" selected 
+    //"s" è usato come punto di partenza
     // l'uguaglianza "usa e getta"che contiene il pattern è rimossa dal documento
     // una volta utilizzata finirà nel garbage collection
-    if(debugMode){PActx.$newProp.remove()}//debug 
+    if(debugMode){PActx.$newProp.remove()
+    		PActx.$operand.removeClass('expandedAsTree');
+    		hideAllMarks()
+		}//debugMode
     return PActx
 }
 
@@ -455,25 +462,45 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
 
 }
 
-function postRefine($transformed){
-	//********** selected in uscita ***********************************************
-	let $markedAsSelected = searchForMarkedInSubtree($transformed,"s",'p')//??? "p"
-	if($markedAsSelected.length != 0){//solo se torvi elementi marcati imponi nuova marcatura
-		$transformed.find('[data-atom]').addBack().each(function(){
-    	$(this).removeClass('selected')
-    	})
-		$markedAsSelected.addClass('selected');
+
+function PMclean(PActx){
+	//things to clean immediately after a succesfull PM property has been applied
+	//************RemoveMarksFromTransform*****************************************
+	removeClassStartNodeAndDiscendence('taken',PActx.$transform);
+	//************select***********
+	//post selection must happen only if the operand was selected
+	if( PActx && PActx.$operand && PActx.$operand.parent().find('.selected').length != 0){
+		let $markedAsSelected = searchForMarkedInSubtree(PActx.$transform,"s",'p')//??? "p"
+		if($markedAsSelected.length != 0){//solo se torvi elementi marcati imponi nuova marcatura
+			PActx.$transform.find('[data-atom]').addBack().each(function(){
+    		$(this).removeClass('selected')
+    		})
+			$markedAsSelected.addClass('selected');
+		}
 	}
-	//********** post clean **************************************************
-    repeatedCleanup($transformed)
-    //********** ripulisci da tutte le  marcature *********************************
-    if($transformed){
-	    $transformed.find('[data-atom]').addBack().each(function(){
+	if(PActx.$transform){
+	    PActx.$transform.find('[data-atom].PMclone').addBack().each(function(){
+
+	    	let postMarks = ATOMSmarkUnmark($(this),undefined,"p");
+	    	if(postMarks.indexOf('c') != -1){// is "c" one of the post markings?
+				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
+	    		$(this).addClass('cleanifpointless');
+	    	}
+	    	//************remove all PM marks***********
+    		$(this).removeClass('taken');
+    		$(this).removeClass('PMclone');
     		ATOMSmarkUnmark($(this),"","all");
-    		$(this).removeClass('taken')
+    		
     	})
-    }   
+    }
+    return PActx
 }
+
+
+
+
+
+
 
 //function ($originalInput, $originalPattern, $span) 
 function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)
@@ -509,10 +536,9 @@ function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)
     }
     */
     //*********** chiama il PatternMatch ricorsivo dandogli le liste iniziali
-    //---------------------->
+    //----------------------------------------------->
     
     PActx = adaptMatch(PActx,PActx.$operand, $pattern, $span);
-    
     //************Riordina******************************************************************
     if(order){
     	orderUL(PActx.$transform)//futuribile: riordinare solo ciò che verrà poi utilizzato, cioè il transform

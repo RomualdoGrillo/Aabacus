@@ -111,14 +111,13 @@ function ATOMclosedDef(Node){
 
 function ATOM_dissolveContainer(){
 	if( this.ATOM_getChildren().length > 0){
-		var children = this.ATOM_getRoles().children().filter('[data-atom]')
-		$(this).replaceWith(children)
+		var $children = this.ATOM_getRoles().children().filter('[data-atom]')
+		$(this).replaceWith($children)
 	}
 	else{
 		$(this).remove()	
 	}
-	console.log('removed container')
-	console.log(this) 
+	return  $children
 }
 
 //per creazione automatica def: $(".SelectedDef")[0]ATOMCreateDefinition()
@@ -291,6 +290,7 @@ function ATOMForThisPar($parameter,$newVal){// atom
 		$f.remove()
 		$root = $content //se si dissolve il forall, ilpiù esterno rimane il suo contenuto
 	}
+	removeClassStartNodeAndDiscendence('selected',$root);
 	return $root
 }
 
@@ -775,6 +775,12 @@ function showAllMarks(showPath){
 	
 }
 
+
+function hideAllMarks(){
+	$('.label').remove()	
+}
+
+
 function ATOMEqual(node1,node2,checkType,neglectRootSign){ //node1/2 HTMLnode. Flat to simil mathml e paragona
 	if( node1 == undefined || node2 == undefined ){ return false};
 	return (node1.ATOM_createMathmlString(checkType , neglectRootSign) === node2.ATOM_createMathmlString(checkType, neglectRootSign));
@@ -801,23 +807,29 @@ function compareExtATOM($input,$pattern,checkAtomTypeAndName/*defaul=true*/,chec
 }
 
 function ATOMcleanIfPointless(startNode,applyToSubtree){//per applicarlo all'albero applica prima a subtree e poi a root
+	let $extOp = $(startNode);
 	if(applyToSubtree){
 		for(i=0;i<100;i++){//messo un limite solo per evitare loop infiniti in caso di errori nel codice
 			//trova i contenitori da rimuovere: vuoti o con un solo figlio
-			var $pointlessElements = $(startNode).find('[data-atom]').filter(function(){ return this.ATOM_checkIfPointlessSingleNode() })
+			var $pointlessElements = $extOp.parent().find('[data-atom].cleanifpointless').filter(function(){ 
+				return this.ATOM_checkIfPointlessSingleNode() 
+				 })
 			//agisci sul primo trovato, poi ripeti la ricerca.
 			if($pointlessElements.length > 0){
-				$pointlessElements[0].ATOM_dissolveContainer()	
+				let $children = $pointlessElements[0].ATOM_dissolveContainer()
+				if($pointlessElements.eq(0).is($extOp)){
+				$extOp=$children
+				} 	
 			}
 			else{
 			//console.log('no more pointless subnodes')
-			return
+			return $extOp
 			}
 		}
 	}
 	else{
-		if( $(startNode).is('[data-atom]')  &&  $(startNode)[0].ATOM_checkIfPointlessSingleNode()){
-			$(startNode)[0].ATOM_dissolveContainer()
+		if( $extOp.is('[data-atom].cleanifpointless')  &&  $extOp[0].ATOM_checkIfPointlessSingleNode()){
+			return $extOp[0].ATOM_dissolveContainer();
 		}
 
 	}
@@ -921,3 +933,4 @@ function ATOMnodesAddClass($atom,newClass,mode/* true = remove*/){
         })
     }
 }
+

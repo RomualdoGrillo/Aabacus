@@ -128,6 +128,18 @@
 					<apply type="obj">
 						<callfunction>
 						</callfunction>
+						<ci type="bool">OppositeOfOpposite</ci>
+						<ci type="bool">ltr</ci>
+					</apply>
+					<apply type="obj">
+						<callfunction>
+						</callfunction>
+						<ci type="bool">InvOfOpposite</ci>
+						<ci type="bool">ltr</ci>
+					</apply>
+					<apply type="obj">
+						<callfunction>
+						</callfunction>
 						<ci type="bool">evaluateComparison</ci>
 						<ci type="bool">int</ci>
 					</apply>
@@ -589,7 +601,7 @@
 				</apply>
 			</apply>
 		</apply>
-		<apply title="d" type="bool">
+		<apply type="bool">
 			<deftrue>
 			</deftrue>
 			<ci type="bool">derived</ci>
@@ -632,7 +644,7 @@
 								<apply type="num">
 									<plus>
 									</plus>
-									<apply title="--s" type="num">
+									<apply title="--cs" type="num">
 										<minus>
 										</minus>
 										<ci type="num">k</ci>
@@ -898,6 +910,40 @@
 				<apply type="bool">
 					<deftrue>
 					</deftrue>
+					<ci type="bool">InvOfOpposite</ci>
+					<apply type="bool">
+						<forall>
+						</forall>
+						<bvar>
+							<ci type="num">x</ci>
+						</bvar>
+						<apply type="bool">
+							<eq>
+							</eq>
+							<apply type="num">
+								<m_inverse>
+								</m_inverse>
+								<apply type="num">
+									<minus>
+									</minus>
+									<ci type="num">x</ci>
+								</apply>
+							</apply>
+							<apply type="num">
+								<minus>
+								</minus>
+								<apply type="num">
+									<m_inverse>
+									</m_inverse>
+									<ci type="num">x</ci>
+								</apply>
+							</apply>
+						</apply>
+					</apply>
+				</apply>
+				<apply type="bool">
+					<deftrue>
+					</deftrue>
 					<ci type="bool">OppositeOfOpposite</ci>
 					<apply type="bool">
 						<forall>
@@ -917,7 +963,7 @@
 									<ci type="num">x</ci>
 								</apply>
 							</apply>
-							<ci type="num">x</ci>
+							<ci title="--s" type="num">x</ci>
 						</apply>
 					</apply>
 				</apply>

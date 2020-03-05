@@ -90,11 +90,18 @@ function refreshGlued($startNode){//marca con classe glued gli atomi contenuti i
 		$containerNode = ATOMparent($startNode);
 	} 
 	//Clear previous Glued
-	$startNode.find(".glued").removeClass("glued")
+	$containerNode.find(".glued").removeClass("glued")
 	//search for Gluing elements
 	for (j = 0; j < glueFunctions.length ; j++){
 				//
-				var $stickyParents = $containerNode.find( "[data-atom='"+ glueFunctions[j] +"']" );
+				//var $stickyParents = $containerNode.parent().find( "[data-atom='"+ glueFunctions[j] +"']" );
+				var $stickyParents = $containerNode.parent().find( "[data-atom]" ).filter(function(i,e){
+					let op = e.getAttribute("data-atom");
+					if(glueFunctions.indexOf(op)!=-1){return true}
+					else if(op='eq' && e.classList.contains('asymmetric')){return true}
+				});
+
+
 				$stickyParents.each(function(i,val){
 					var $toBeGlued = this.ATOM_getRoles().children().filter('[data-atom]');//get the ATOM contained to be Glued
 					$toBeGlued.addClass('glued')

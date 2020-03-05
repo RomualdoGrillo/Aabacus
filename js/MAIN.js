@@ -33,7 +33,10 @@ $(document).on('keydown', function ( e ) {
 	var keyPressed = keyToCharacter(e.which).toLowerCase();
 	console.log('key pressed:' + keyPressed + ' code: ' + e.which )
    	//ctrl+a 
-   	if ( e.ctrlKey && (  keyPressed === 'a'   ) ) {
+   	if (e.which == 16 || e.which == 17){
+   		//console.log("filter ctrl and Maiusc if alone")
+   	}
+   	else if ( e.ctrlKey && (  keyPressed === 'a'   ) ) {
 		$('#telaRole *').removeClass('selected');
 		$('#telaRole>[data-atom]').addClass('selected');// select all: all the atoms in telaRole
 	}
@@ -90,11 +93,13 @@ $(document).on('keydown', function ( e ) {
 	}
 	else{//****************applica proprietà***********
 		var PActx =  newPActx();
+		
 		var $selected = $('.selected')
+		
 		//code of "arrowup" = 38 
 		if ( e.which === 38) {
 			//console.log("decompose up")
-			PActx = decompose($selected,"up"/*up for factorize*/);
+			PActx = decompose($selected,"up");//up for factorize
 		}
 		//code of "arrowright" = 39
 		else if ( e.which === 39) {
@@ -261,18 +266,6 @@ function dblclickHandler(event){
 }
 
 
-/*function clearClass(Classes){// for example clearClass(['selected','unselected'])   or clearClass(['unselected')
-	if (typeof(Classes)=="string"){Classes=[Classes]}//if input is a srting, create a one element array
-	nestedSortablesBool.forEach(function(e){e.classList.remove(...Classes)});//clear an array of classes
-}*/
-
-function clearTarget(Classes){// for example clearTarget(['selected','unselected'])   or clearTarget(['unselected')
-	if (typeof(Classes)=="string"){Classes=[Classes]}//if input is a srting, create a one element array
-	document.querySelectorAll(sortablesSelectorString).forEach(function(e){e.classList.remove(...Classes)});//clear an array of classes
-}
-
-
-
 
 function refreshAsymmEq($atom){// adegua l'icona del lucchetto allo stato unlocked/non unlocked
 	var $firstMember = $atom.find('>.firstMember')
@@ -316,8 +309,8 @@ function refreshAndReplace(PActx){
 
 	if( $toBeRefreshed !== undefined &&  $toBeRefreshed.length != 0 ){
 				
-		RefreshEmptyInfixBraketsGlued($toBeRefreshed,true,"gi");
-		ATOMcleanIfPointless( $toBeRefreshed ,false);
+		
+		RefreshEmptyInfixBraketsGlued($toBeRefreshed,true,"egip");
 	}
 	return PActx
 }
@@ -346,7 +339,6 @@ function attachEventsAndExtend($startElement,processDiscendence/*default is true
 		if(extend != false){ATOMextend($startElement,true)}
 		$Elements = $startElement[0].ATOM_getNodes();
 	}
-	
 	//initialize lock icons
 	$Elements.filter('[data-atom].asymmetric').each(function(i,e){ refreshAsymmEq($(e))})
 	$Elements.filter('[data-atom].asymmetric').each(function(i,e){ refreshAsymmEq($(e))})
@@ -386,12 +378,14 @@ function swapElements(obj1, obj2) {
 
 function PActxConclude(PActx){
 	if(PActx.matchedTF == true ){		         		    
-		refreshAndReplace(PActx);
-		
 		//********** Post *************
+		refreshAndReplace(PActx);
 		if(PActx.$transform){
-			$(".cleanPointless").each(function(i,el){ATOMcleanIfPointless($(this),false)});
-			postRefine(PActx.$transform)
+		    RefineRepeatedOfMArked(PActx);
+			$children = ATOMcleanIfPointless(PActx.$transform,true);
+			if($children){//in case the $transform "dissolved" you need to consider his child 
+				PActx.$transform=$children
+			}
 		}	
 		ssnapshot.take();
 		PActxVisualize(PActx);
@@ -400,6 +394,7 @@ function PActxConclude(PActx){
 
 
 function PActxVisualize(PActx){
+	
 	if(PActx.visualization==""){
 		PActx.visualization="images/Brackets.png"
 	}
