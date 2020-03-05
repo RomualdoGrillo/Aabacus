@@ -151,7 +151,12 @@ $('#fileToLoad').change(function() {
 
 function ATOMNselectable(startElement){
 	//risali passo passo la struttura DOM fino a trovare un elemento ATOM
-	return ATOMtarget = startElement.closest('[data-atom]:not(.unselectable):not(.glued)');	
+	if(ATOMclosedDef(startElement)){
+		return startElement.closest('[data-atom]:not(.unselectable):not(.glued)');		
+	}
+	else{
+		return startElement.closest('[data-atom]');
+	}
 }
 
 
