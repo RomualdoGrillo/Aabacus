@@ -2,20 +2,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!--  CDN di bootstrap4 
-      spostato in testa lo script di jQuaery
--->
-
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
 <!--  -->
 <link rel="stylesheet" type="text/css" href="css/styleIDE.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -75,12 +61,7 @@
 					<input type="checkbox" id="cb_showFuctName" onclick="$('body').toggleClass('showFuctName')" title="show names of function instad of icons (when both are available) ">
 					show txt
 				</div>-->
-				<!-- <input type="button" onclick="alert('Questa funzione dovrebbe consentire di scegliere e caricare un file di testo');tela.append('dummy text')" value="load"> -->
-
-				<!-- Button to Open the Modal -->
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-					Carica
-				</button>
+				<input type="button" onclick="alert('Questa funzione dovrebbe consentire di scegliere e caricare un file di testo');tela.append('dummy text')" value="load">
 				<input type="button" onclick="alert('save file')" value="save">
 				
 			</div>
@@ -726,10 +707,10 @@
 </div>
 
 
-<!-- <script
+<script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script> -->
+  crossorigin="anonymous"></script>
 
 
 
@@ -765,172 +746,6 @@
 <script type="text/javascript" src="js/MAIN.min.js"></script>
 -->
 
-
-
-<!--
-	O G G E T T I    D I    S E R V I Z I O
--->
-
-<!-- The Modal -->
-<div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">File da elaborare</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-
-			<div class="container">
-				<div class="row">
-					<div class="col-4">
-						<div class="card bg-light">
-							<div class="card-body text-center">								
-								<div class="btn-group-vertical">
-									<button type="button" class="btn btn-primary" onclick="getAjax('xml')">file xml</button>
-									<button type="button" class="btn btn-primary" onclick="getAjax('html')">file html</button>
-									<button type="button" class="btn btn-primary" onclick="getAjax('text')">file text</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-							<div class="card bg-light">
-							  <div class="card-body text-center">
-								<div id="textAjax" class="card-text">scegli il file, e carica il contenuto</div>
-							  </div>
-							</div>
-					</div>
-				</div>
-
-			  </div>
-
-
-
-	<!-- 		<div class="container">
-				<div class="row">
-				  <div class="col-4">
-
-					<p>Use the .btn-group-vertical class to create a vertical button group:</p>
-					<div class="btn-group-vertical">
-					  <button type="button" class="btn btn-primary">Apple</button>
-					  <button type="button" class="btn btn-primary">Samsung</button>
-					  <button type="button" class="btn btn-primary">Sony</button>
-					</div>
-
-
-
-
-
-
-
-					<div class="list-group" id="list-tab" role="tablist">
-					  <a class="list-group-item list-group-item-action active" id="list-prince-list" data-toggle="list" href="#list-prince" role="tab" aria-controls="prince">The Little Prince</a>
-					  <a class="list-group-item list-group-item-action" id="list-wild-list" data-toggle="list" href="#list-wild" role="tab" aria-controls="wild">Where the Wild Things Are</a>
-					  <a class="list-group-item list-group-item-action" id="list-solitude-list" data-toggle="list" href="#list-solitude" role="tab" aria-controls="messages">One Hundred Years of Solitude</a>
-					</div>
-				  </div>
-				  <div class="col-6">
-					<div class="tab-content" id="nav-tabContent">
-					  <div class="tab-pane fade show active" id="list-prince" role="tabpanel" aria-labelledby="list-prince-list">Moral allegory and spiritual autobiography, The Little Prince is the most translated book in the French language. With a timeless charm it tells the story of a little boy who leaves the safety of his own tiny planet to travel the universe, learning the vagaries of adult behaviour through a series of extraordinary encounters.</div>
-					  <div class="tab-pane fade" id="list-wild" role="tabpanel" aria-labelledby="list-wild-list">One night Max puts on his wolf suit and makes mischief of one kind and another, so his mother calls him 'Wild Thing' and sends him to bed without his supper. That night a forest begins to grow in Max's room and an ocean rushes by with a boat to take Max to the place where the wild things are. Max tames the wild things and crowns himself as their king, and then the wild rumpus begins.</div>
-					  <div class="tab-pane fade" id="list-solitude" role="tabpanel" aria-labelledby="list-solitude-list">The brilliant, bestselling, landmark novel that tells the story of the Buendia family, and chronicles the irreconcilable conflict between the desire for solitude and the need for love—in rich, imaginative prose that has come to define an entire genre known as "magical realism."</div>
-					</div>
-				  </div>
-				</div>
-				
-			  </div> -->
-			
-
-
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">esci</button>
-        </div>
-        
-      </div>
-	</div>
-	
-	<script>
-		function getAjax(fileType) {
-		  let myType = "GET";       // variabili per Ajax
-		  let myUrl = "./demo.mnl";
-		  let myDataType = fileType;
-		
-		  switch(fileType) {
-			case "xml":
-			  myUrl = "./demo.xml"; // trasposizione del suffisso
-			  break;
-			case "html":
-			  myUrl = "./demo.html";
-			  break;
-			case "text":
-			  myUrl = "./demo.txt";
-			  break;
-			default:
-			  alert("Errore di sistema : parametro 'fileType'  : [" + fileType + "] invalido");
-			  return;
-		  }
-		  // CARICAMENTO TRAMITE GET/Ajax
-		  $.ajax({    
-				type: "GET",              
-				url: myUrl,
-				dataType: myDataType,
-		
-				error: function (e) {
-					alert("AJAX/get fallita : verificare da Chrome");
-					console.log("Ajax/GET fallita : ", e);
-				},
-		
-				success: function (response) {
-					alert("lettura file " + myUrl + " tramite Ajax OK - risposta : " + response)
-					elaboraRisposta(myDataType, response)
-				}
-		  });
-		
-		
-		}
-		
-		function elaboraRisposta(fileType, response){
-		  alert(fileType);
-		  switch(fileType) {
-			case "xml":
-			  var stringa = XMLToString(response)  // converte il file XML in una stringa di testo
-			  $("#textAjax").text(stringa);       // carica il testo nel div <id="contenuto">
-			  break;
-			case "html":
-			  $("#textAjax").html(response);     // rispetta la formattazione html
-			break;
-			case "text":
-			  $("#textAjax").text(response);     // testo del <div>
-			break;
-			default:
-			  alert("Errore di sistema [inelaboraRisposta]: parametro 'fileType' invalido");
-			  return;
-		  }
-		
-		
-		}
-		
-		function XMLToString(oXML)
-		{
-			//code for IE
-			if (window.ActiveXObject) {
-				var oString = oXML.xml; return oString;
-			} 
-			// code for Chrome, Safari, Firefox, Opera, etc.
-			else {
-				return (new XMLSerializer()).serializeToString(oXML);
-			}
-		 }
-		
-		</script>
 
 </body>
 </html>
