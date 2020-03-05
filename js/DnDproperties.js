@@ -19,9 +19,9 @@ function makeSortable(sortables){
 						return false}					
    				}
 			},			
-			filter:function (event,sortable){
-				if(sortable && sortable.classList.contains('glued') && ATOMclosedDef(sortable)){
-					return "*"}
+			filter:function (event,b,sortable,d){
+				let $draggedATOM = ATOMparent($(event.target));
+				if($draggedATOM.hasClass('glued') && ATOMclosedDef($draggedATOM[0])){return "*"}
 			},
 			animation: 150,
 			fallbackOnBody: true,
