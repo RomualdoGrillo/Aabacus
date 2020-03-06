@@ -1,5 +1,5 @@
 {
-   "prototypes":"ugo",
+   "prototypes":"./prototypes.html",
    "content":"../Foundation.mml",
    "answer":null,
    "settings":null

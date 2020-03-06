@@ -22,10 +22,11 @@ function injectAll(response,rootUrl){
 	else if(all.content){
 		preloadAjax(buildPath(rootUrl,all.content))
 	}
+
 }
 
 
-function preloadAjax(myUrl) {
+function preloadAjax(myUrl,target) {
 	//preloadAjax('./Data/Preload/preload.mml')
 	if(myUrl){
 	//altrimenti un url vuoto verrebbe interpretato come path relativo,
@@ -40,7 +41,8 @@ function preloadAjax(myUrl) {
 			},
 			success: function(response) {
 			//alert("lettura file " + myUrl + " tramite Ajax OK - risposta : " + response);
-			inject(response, $("#telaRole"))
+			if(!target){target=$("#telaRole")}
+			inject(response, target)
 			}
 		});
 	}
