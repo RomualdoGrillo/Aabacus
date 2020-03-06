@@ -20,7 +20,8 @@ let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable)'
 //let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),[data-atom=ci]';
 let initialSortables = document.querySelectorAll(sortablesSelectorString)
 //************ Preload  ************
-preload('./Data/Preload/preload.mml')
+//preloadAjax('./Data/Preload/preload.mml')
+preloadAll('./Data/Preload/preload.json');
 
 makeSortable(initialSortables);
 $('[data-atom].asymmetric').each(function(i,e){ refreshAsymmEq($(e))})//initialize lock icons??

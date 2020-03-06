@@ -1,5 +1,5 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply type="bool">
+	<apply minimized="True" type="bool">
 		<and>
 		</and>
 		<apply title="s" type="bool">
@@ -887,7 +887,7 @@
 										</apply>
 									</apply>
 								</apply>
-								<apply title="--c" type="bool">
+								<apply minimized="True" title="--c" type="bool">
 									<and>
 									</and>
 									<apply title="--c" type="bool">

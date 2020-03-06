@@ -31,11 +31,15 @@
 	border-color:white!important;
 }
 
-/*.s_role[data-type=num]>.sortable-ghost,.ul_role[data-type=num]>.sortable-ghost*/
-.sortable-ghost.showAsPlaceholder[data-type=num]{background-color:var(--num-bgcolor);
+.sortable-ghost.showAsPlaceholder[data-type=num]{
+	background-color:var(--num-bgcolor);
+	background-image: none!important;
+	color:transparent!important;
 }
-.sortable-ghost.showAsPlaceholder[data-type=bool]{
+.sortable-ghost.showAsPlaceholder[data-type=bool][data-atom]{
 	background-color:var(--bool-bgcolor);
+	background-image: none!important;
+	color:transparent!important;
 }
 
 .sortable-ghost.showAsPlaceholder > * {
