@@ -887,7 +887,7 @@
 										</apply>
 									</apply>
 								</apply>
-								<apply title="--c" type="bool">
+								<apply minimized="True" title="--c" type="bool">
 									<and>
 									</and>
 									<apply title="--c" type="bool">
