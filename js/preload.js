@@ -15,12 +15,12 @@ function injectAll(response,rootUrl){
 	console.log(response);
 	let all = JSON.parse(response);
 	//console.log(all);
-	if(all.content.mml){
+	if(all.content_mml.string){
 		//console.log('string!')
-		inject(all.content.mml, $("#telaRole"))
+		inject(all.content_mml.string, $("#telaRole"))
 		}
-	else if(all.content){
-		preloadAjax(buildPath(rootUrl,all.content))
+	else if(all.content_mml){
+		preloadAjax(buildPath(rootUrl,all.content_mml))
 	}
 
 }
