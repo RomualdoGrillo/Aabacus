@@ -7,10 +7,10 @@
 		<link rel="stylesheet" type="text/css" href="css/styleIDE.css">
 		<link rel="stylesheet" type="text/css" href="css/SVGstyle.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<!--<link rel="stylesheet" type="text/css" href="css/styleForTest.css">
-	<link rel="stylesheet" type="text/css" href="css/fromJQExamples.css">
-	<link rel="stylesheet" type="text/css" href="css/sortableTest.css">
-	<link rel="stylesheet" type="text/css" href="css/pseudoElTest.css">-->
+		<link rel="stylesheet" type="text/css" href="css/styleForTest.css">
+		<link rel="stylesheet" type="text/css" href="css/fromJQExamples.css">
+		<link rel="stylesheet" type="text/css" href="css/sortableTest.css">
+		<link rel="stylesheet" type="text/css" href="css/pseudoElTest.css">
 	</head>
 	<body class="greyBorders">
 		<svg id="prototypeContainer" width="0%" height="0%">
@@ -23,17 +23,23 @@
 			<!-- alla DIV posso dare "position:absolute" all SVG no -->
 			<svg id="svgContainer" width="100%" height="100%"></svg>
 		</div>
-		<div id="leftColumn" class="column">
-			<div id="leftContent" class="row">
-				<input type="checkbox" class="fix" onclick="this.parentElement.parentElement.classList.toggle('fixed')">a
+		<!--<div id="leftColumn" class="column">
+			<div id="leftContent" class="row ide">
+				<input type="checkbox" class="fixButton" onclick="this.parentElement.parentElement.classList.toggle('fixed')">a
 	
 			
 			</div>
-		</div>
+		</div>-->
 		<div id="centralColumn" class="column">
-			<div id="prototypes" class="row">
-				<input type="checkbox" class="fix" onclick="this.parentElement.classList.toggle('fixed')">
+			<div id="tavolozza" class="ol_role row ide">
+				<input type="checkbox" class="fixButton" onclick="this.parentElement.classList.toggle('fixed')">
 		
+
+				<div data-atom="eq" id="asymmeqPrototype" class="asymmetric unlocked atom" data-type="bool">
+					<div class="s_role firstMember ui-icon ui-icon-unlocked" data-accept="1"></div>
+					<div class="decoration">:=</div>
+					<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
+				</div>
 			
 			</div>
 			<div id="tela" data-atom="eq" class="atom asymmetric undraggable unselectable unlocked" data-type="bool">
@@ -48,13 +54,13 @@
 					</div>
 				</div>
 			</div>
-			<div id="result" class="row">results
+			<div id="result" class="row ide">
 
 			</div>
 		</div>
 		<div id="rightColumn" class="column">
 			<div id="settings" class="row">
-				<input type="checkbox" class="fix" onclick="this.parentElement.parentElement.classList.toggle('fixed')">
+				<input type="checkbox" class="fixButton" onclick="this.parentElement.parentElement.classList.toggle('fixed')">
 				<input type="file" id="fileToLoad">
 				<div id="testSpan"></div>
 				<!-- <button id="create-link" class="">Define!</button> -->

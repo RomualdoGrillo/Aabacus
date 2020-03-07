@@ -12,17 +12,26 @@ function preloadAll(myUrl) {
 	});
 }
 function injectAll(response,rootUrl){
-	console.log(response);
+	//console.log(response);
 	let all = JSON.parse(response);
-	//console.log(all);
-	if(all.content_mml.string){
-		//console.log('string!')
+	if(all.tavolozza_html && all.tavolozza_html.string){//string data
+		inject(all.tavolozza_html.string, $("#tavolozza"))
+		}
+	else if(all.tavolozza_html){//url
+		preloadAjax(buildPath(rootUrl,all.tavolozza_html),$("#tavolozza"))
+	}
+	if(all.content_mml && all.content_mml.string){//string data
 		inject(all.content_mml.string, $("#telaRole"))
 		}
-	else if(all.content_mml){
-		preloadAjax(buildPath(rootUrl,all.content_mml))
+	else if(all.content_mml){//url
+		preloadAjax(buildPath(rootUrl,all.content_mml),$("#telaRole"))
 	}
-
+	if(all.result_mml && all.result_mml.string){//string data
+		inject(all.result_mml.string, $('#result'))
+		}
+	else if(all.result_mml){//url
+		preloadAjax(buildPath(rootUrl,all.result_mml),$('#result'))
+	}
 }
 
 

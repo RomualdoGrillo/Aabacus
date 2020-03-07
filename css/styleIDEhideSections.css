@@ -2,7 +2,7 @@ body{
 	display:flex;
 	margin:0px;
 }
-div{
+div.ide{
 	display:flex;
 	border-style: solid;
 	/*border-color:#0b0b0b;*/
@@ -21,13 +21,16 @@ div{
 	border-width:0px;
 	z-index:1;
 }
-#rightColumn,#leftColumn{
+#leftColumn,#rightColumn{
 	width: 200px;
-	position:absolute;
 	transition: width 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
 	transition-delay: 0.15s;
 	z-index:2;
 }
+#leftColumn:not(.fixed),#rightColumn:not(.fixed),#tavolozza:not(.fixed){
+	position:absolute;
+}
+
 #rightColumn{
 	right:0px;
 }
@@ -35,22 +38,27 @@ div{
 	left:0px;
 }
 
-#prototypes:not(:hover):not(.fixed){
-	height:5px;
+#tavolozza:not(:hover):not(.fixed){
+	height:10px;
 	z-index:1;
+	opacity:0;
 }
-#prototypes:not(:hover):not(.fixed) *{
+#tavolozza:not(:hover):not(.fixed) *{
 	display:none;
 }
 
-#prototypes{
+#tavolozza{
 	height:100px;
-	position:absolute;
-	left:10px;
-	right:10px;
 	transition: height 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
 	transition-delay: 0.15s;
 	z-index:2;
+}
+#tavolozza:not(.fixed){
+	left:10px;
+	right:10px;
+}
+.fixed{
+	position:relative;
 }
 
 #tela{
@@ -63,7 +71,7 @@ div{
 	/*border-color:red;*/
 	border-width:0px;
 }
-#prototypes,#leftContent,#settings{
+#tavolozza,#leftContent,#settings{
 	background-color:white;
 }
 
@@ -71,7 +79,8 @@ div{
 	flex-grow:1;
 }
 
-.fix{
+.fixButton{
 	position:absolute;
-	right: 5px;
+	right: 0px;
+	top: 5px;
 }

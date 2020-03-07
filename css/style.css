@@ -14,6 +14,10 @@ div{
 #tela div,#tavolozza div,#tavolozza{
 	align-items:center;
 }
+#telaAnd,#tela > .secondMember{
+	align-items:normal!important;
+}
+
 
 /*[data-atom="eq"].asymmetric sono le definizioni, in quel tipo di atomi
 il bordo del primo membro sporge dal background venendo a "fondersi" con il bordo esterno verde
@@ -28,7 +32,7 @@ per una questione estetica */
 
 
 
-.greyBorders [data-atom].asymmetric,[data-atom="eq"].asymmetric>.firstMember {
+.greyBorders [data-atom].asymmetric,[data-atom="eq"].asymmetric>.firstMember,.ide {
     border: 1px solid #aaa;/* necessario un selector specifico almeno quanto quello usato sopra */
 }
 

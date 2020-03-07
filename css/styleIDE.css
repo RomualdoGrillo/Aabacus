@@ -62,7 +62,6 @@ border: 1px solid #000000;
   overflow-y:auto;
   margin: 0px;
   padding: 15px;
-  height: 90vh;
   }
 
 
@@ -74,7 +73,7 @@ border: 1px solid #000000;
 
 #tela, #tela>.secondMember, #telaAnd {
     flex-grow: 1;/*eccezione: deve occupare tutto il container, non adattarsi al contenuto*/
-    }
+}
     
 #telaAnd{
 	border:none;
@@ -112,32 +111,3 @@ border: 1px solid #000000;
     background-color: transparent;
 }
 
-#tavolozza{
-  flex-direction:  column;
-  right: 0;
-  padding: 0px;
-  z-index: 100;
-  position: absolute;
-  height: 96vh;
-  background: #f9f9f9;
-  opacity: 0.75;
-  border-left: 20px solid transparent;
-  /*width: 100px;*/
-  transition: width 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
-  transition-delay: 0.35s;
-}
-
-
-#tavolozza:hover {
-  position: fixed;
-
-  padding: 0px;
-  width: 200px;
-  opacity: 1;
-  transition: inherit inherit inherit;
-  transition-delay: 0s;
-}
-
-#tavolozza:not(:hover) {
-  width: 2px;  
-}

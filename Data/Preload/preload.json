@@ -1,6 +1,6 @@
 {
-   "prototypes_html":"./prototypes.html",
+   "tavolozza_html":"./tavolozza.html",
    "content_mml":"../Foundation.mml",
-   "answer_mml":null,
+   "result_mml":"./minus-2.mml",
    "settings":null
 }
