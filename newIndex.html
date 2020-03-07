@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="Resources/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="css/styleIDEhideSections.css">
+		<link rel="stylesheet" type="text/css" href="css/styleIDE.css">
+		<link rel="stylesheet" type="text/css" href="css/SVGstyle.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<!--<link rel="stylesheet" type="text/css" href="css/styleForTest.css">
+	<link rel="stylesheet" type="text/css" href="css/fromJQExamples.css">
+	<link rel="stylesheet" type="text/css" href="css/sortableTest.css">
+	<link rel="stylesheet" type="text/css" href="css/pseudoElTest.css">-->
+	</head>
+	<body class="greyBorders">
+		<svg id="prototypeContainer" width="0%" height="0%">
+			<marker id="triangle" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto">
+				<path d="M 0 0 L 10 5 L 0 10 z"/>
+			</marker>
+			<line id="protoLine" x1="100" y1="50.5" x2="300" y2="50.5" marker-end="url(#triangle)" stroke="black" stroke-width="3"/>
+		</svg>
+		<div id="divOverlay">
+			<!-- alla DIV posso dare "position:absolute" all SVG no -->
+			<svg id="svgContainer" width="100%" height="100%"></svg>
+		</div>
+		<div id="leftColumn" class="column">
+			<div id="leftContent" class="row">
+				<input type="checkbox" class="fix" onclick="this.parentElement.parentElement.classList.toggle('fixed')">a
+	
+			
+			</div>
+		</div>
+		<div id="centralColumn" class="column">
+			<div id="prototypes" class="row">
+				<input type="checkbox" class="fix" onclick="this.parentElement.classList.toggle('fixed')">
+		
+			
+			</div>
+			<div id="tela" data-atom="eq" class="atom asymmetric undraggable unselectable unlocked" data-type="bool">
+				<div class="s_role firstMember ui-icon" data-accept="1"></div>
+				<div class="decoration">=</div>
+				<div class="s_role secondMember unsortable" data-type="obj" data-accept="1">
+					<div id="telaAnd" class="atom undraggable unselectable " data-atom="and" data-type="bool">
+						<div id="telaRole" class="ul_role " data-type="bool">
+						<!-- ************inizio contenuto************* aggiungi qui classe "debug" -->
+						</div>
+						<!-- questa fine div non fa parte del contenuto************************* -->
+					</div>
+				</div>
+			</div>
+			<div id="result" class="row">results
+
+			</div>
+		</div>
+		<div id="rightColumn" class="column">
+			<div id="settings" class="row">
+				<input type="checkbox" class="fix" onclick="this.parentElement.parentElement.classList.toggle('fixed')">
+				<input type="file" id="fileToLoad">
+				<div id="testSpan"></div>
+				<!-- <button id="create-link" class="">Define!</button> -->
+				<div id="settings">
+					<!--
+			<button id="help-link" class=""><div class="ui-icon ui-icon-newwin"></div>Help</button>
+		-->
+					<div id="visSetup">
+						<div class="checkbox">
+							<input type="checkbox" id="cb_showPar" onclick="$('body').toggleClass('showPar')" title="show brackets">brackets
+				
+						
+						</div>
+						<div>
+							<input type="radio" name="color" value="whiteBorders">
+							<input type="radio" name="color" value="greyBorders" checked="checked">
+							<input type="radio" name="color" value="coloredBorders">
+						</div>
+						<div class="checkbox">
+							<input type="checkbox" id="cb_vertTimes" onclick="$('body').toggleClass('vertTimes')" title="dispose multiplication and conjunction vertically ">cross
+				
+						
+						</div>
+						<!--<div class="checkbox">
+					<input type="checkbox" id="cb_showFuctName" onclick="$('body').toggleClass('showFuctName')" title="show names of function instad of icons (when both are available) ">
+					show txt
+				</div>-->
+						<input type="button" onclick="alert('Questa funzione dovrebbe consentire di scegliere e caricare un file di testo');tela.append('dummy text')" value="load">
+						<input type="button" onclick="alert('save file')" value="save">
+					</div>
+				</div>
+			</div>
+			<!--<script type="text/javascript" src="Resources/jquery341.js"></script>-->
+			<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+			<script type="text/javascript" src="Resources/sortablejs/Sortable.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+			<script type="text/javascript" src="js/sound.js"></script>
+			<script type="text/javascript" src="js/inflatedeflate.js"></script>
+			<script type="text/javascript" src="js/UserEvToFunctCall.js"></script>
+			<script type="text/javascript" src="js/Undo.js"></script>
+			<script type="text/javascript" src="js/SaveLoad.js"></script>
+			<script type="text/javascript" src="js/infix.js"></script>
+			<script type="text/javascript" src="js/math.js"></script>
+			<script type="text/javascript" src="js/patternMatching.js"></script>
+			<script type="text/javascript" src="js/TranslateFormat.js"></script>
+			<script type="text/javascript" src="js/formatXML.js"></script>
+			<script type="text/javascript" src="js/preload.js"></script>
+			<script type="text/javascript" src="js/SVGlines.js"></script>
+			<script type="text/javascript" src="js/WorkaroundLoadMMLwithHtml.js"></script>
+			<script type="text/javascript" src="js/DnDhtml5Test.js"></script>
+			<script type="text/javascript" src="js/DnDproperties.js"></script>
+			<script type="text/javascript" src="js/InteractJStests.js"></script>
+			<script type="text/javascript" src="js/AldoUtilities.js"></script>
+			<script type="text/javascript" src="js/Ajax.js"></script>
+			<script type="text/javascript" src="js/newPatternMatching.js"></script>
+			<script type="text/javascript" src="js/Atom.js"></script>
+			<script type="text/javascript" src="js/HardWiredProperties.js"></script>
+			<script type="text/javascript" src="js/MAIN.js"></script>
+			<!--
+<script type="text/javascript" src="js/newPatternMatching.min.js"></script>
+<script type="text/javascript" src="js/Atom.min.js"></script>
+<script type="text/javascript" src="js/HardWiredProperties.min.js"></script>
+<script type="text/javascript" src="js/MAIN.min.js"></script>
+-->
+	</body>
+</html>

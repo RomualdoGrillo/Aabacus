@@ -26,10 +26,7 @@ button>.ui-icon {
 
 /*#tavolozza, #tela{ border: 1px solid #C9C9C9; }*/
 
-#fileToLoad{
-position:absolute;
-visibility:hidden;
-}
+#fileToLoad{visibility:hidden;}
 #create, #help {
 border: 1px solid #000000;
 }
