@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="test-withWrappers.css">
+</head>
+<body>
+<div id="leftColumn" class="column">
+	<div id="leftContent" class="row">
+	<input type="checkbox" class="fix" onclick="this.parentElement.parentElement.classList.toggle('fixed')">
+	a
+	</div>
+</div>
+<div id="centralColumn" class="column">
+	<div id="prototypes" class="row">
+	<input type="checkbox" class="fix" onclick="this.parentElement.classList.toggle('fixed')">
+	prototypes
+	</div>
+	<div id="tela" class="row">b</div>
+	<div id="result" class="row">results</div>
+</div>
+<div id="rightColumn" class="column">
+	<div id="settings" class="row">
+	<input type="checkbox" class="fix" onclick="this.parentElement.parentElement.classList.toggle('fixed')">
+	a
+	</div>
+</div>
+</body>
+</html>

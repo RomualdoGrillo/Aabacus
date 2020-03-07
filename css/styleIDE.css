@@ -60,11 +60,12 @@ border: 1px solid #000000;
 /*#telaRole{height:820px;flex-grow: 1;}
 */
 
-#telaRole{flex-grow: 1;
+#telaRole{
+  flex-grow: 1;
   overflow-y:auto;
   margin: 0px;
   padding: 15px;
-  height:90vh;
+  height: 90vh;
   }
 
 

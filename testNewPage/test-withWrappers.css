@@ -1,0 +1,70 @@
+body{
+	display:flex;
+	margin:0px;
+}
+div{
+	display:flex;
+	border-style: solid;
+	border-color:#0b0b0b;
+	border-width: 1px;
+	border-radius:5px;
+	background-color:white;	
+}
+#centralColumn{
+	flex-grow: 1;
+	margin-left:10px;
+	margin-right:10px;
+}
+#rightColumn:not(:hover):not(.fixed),#leftColumn:not(:hover):not(.fixed) {
+	width: 10px;
+	opacity:0.1;
+	border-width:0px;
+}
+#rightColumn,#leftColumn{
+	width: 200px;
+	position:absolute;
+	transition: width 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
+	transition-delay: 0.15s;
+	z-index:2;
+}
+#rightColumn{
+	right:0px;
+}
+#leftColumn{
+	left:0px;
+}
+
+#prototypes:not(:hover):not(.fixed){
+	height:5px;
+}
+#prototypes:not(:hover):not(.fixed) *{
+	display:none;
+}
+
+#prototypes{
+	height:100px;
+	position:absolute;
+	left:10px;
+	right:10px;
+	transition: height 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
+	transition-delay: 0.15s;
+}
+
+#tela{
+	flex-grow:1;
+	margin-top:5px;
+}
+.column{
+	flex-direction: column;
+	height: 99vh;
+	/*border-color:red;*/
+	border-width:0px;
+}
+#leftContent,#settings{
+	flex-grow:1;
+}
+
+.fix{
+	position:absolute;
+	right: 5px;
+}
