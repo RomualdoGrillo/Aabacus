@@ -1,21 +1,28 @@
 {
-	"debug":"false",
-	"mode":"game",
-	"telaLocked":"false",
-	"gameMode":"false",
-	"resultHidden":"true",
+	"debug":false,
+	"gameMode":true,
+	"telaLocked":false,
+	"resultHidden":true,
+	"visSettingSelected":1,
 	"visSettings":[
 		{
 		"name":"classic",
-		"colors":"",
-		"brackets":"true",
-		"timesVert":"false"
+		"colors":"whiteBorders",
+		"brackets":true,
+		"timesVert":false
 		},
 		{
-		"name":"classic",
-		"colors":"",
-		"brackets":"true",
-		"timesVert":"false"
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+		"timesVert":false
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+		"timesVert":true
 		}
 	]
 }
+

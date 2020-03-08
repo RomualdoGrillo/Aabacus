@@ -5,7 +5,15 @@ body{
 div.ide{
 	border-width: 1px;
 	border-radius:5px;
-	/* background-color:white; */
+	background-color:white;
+	border: 1px solid #c3c3c3;
+	border-radius: 15px;
+}
+
+#tavolozza, #settings {
+	overflow-y: hidden;
+	overflow-x:scroll;
+	
 }
 #centralColumn{
 	flex-grow: 1;
@@ -24,7 +32,7 @@ div.ide{
 	transition-delay: 0.15s;
 	z-index:2;
 }
-#leftColumn:not(.fixed),#rightColumn:not(.fixed),#tavolozza:not(.fixed){
+#leftColumn:not(.fixed),#rightColumn:not(.fixed),#tavolozzaRow:not(.fixed){
 	position:absolute;
 }
 
@@ -35,25 +43,32 @@ div.ide{
 	left:0px;
 }
 
-#tavolozza:not(:hover):not(.fixed){
+#tavolozzaRow:not(:hover):not(.fixed){
 	height:10px;
 	z-index:1;
 	opacity:0;
 }
-#tavolozza:not(:hover):not(.fixed) *{
+#tavolozzaRow:not(:hover):not(.fixed) *{
 	display:none;
 }
 
-#tavolozza{
-	height:100px;
+#tavolozzaRow{
+	flex-direction:column;
 	transition: height 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
 	transition-delay: 0.15s;
 	z-index:2;
 }
+
+#tavolozza{
+flex-grow:1;
+flex-flow:wrap;
+}
+
+
 #tavolozza>*{
 	padding:3px;
 }
-#tavolozza:not(.fixed){
+#tavolozzaRow:not(.fixed){
 	left:10px;
 	right:10px;
 }
@@ -85,4 +100,9 @@ div.ide{
 	position:absolute;
 	right: 0px;
 	top: 5px;
+	z-index:2;
+}
+
+select,input{
+	max-width:93px!important;
 }

@@ -1,16 +1,12 @@
 //************************Init*******************************
+let GLBsettings
 let debugMode = false//debug,normal
 let tela = document.getElementById('telaRole');
 let exclusiveFocus
 let sorting = false;//usato solo per gestire gli eventi di dragover
 //************preload***********
 //inject(preload,$('#telaRole'))
-//************ radio Buttons  ************
-$('input[type=radio][name=color]').change(function() {
-console.log(this.value);
-$('body').removeClass('whiteBorders greyBorders coloredBorders');//ripulisci valori precedenti
-$('body').addClass(this.value)//aggiungi la nuova classe
-});
+
 
 //************ inizializza UNDO  ************
 ssnapshot() //inizializza snapshot manager che gestisce UNDO

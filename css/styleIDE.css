@@ -42,12 +42,11 @@ button>.ui-icon {
 	background-color: whitesmoke;
 }
 
-#tavolozza, #settings {
-	overflow-y: hidden;
-	overflow-x: scroll;
-	border: 1px solid #c3c3c3;
-	border-radius: 15px;
+#tavolozzaRow {
+	/* overflow-x: hidden; */
 }
+
+
 
 #settings {
 	flex-direction: column;

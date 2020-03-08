@@ -2,5 +2,5 @@
    "tavolozza_html":"./tavolozza.html",
    "content_mml":"../Foundation.mml",
    "result_mml":"./minus-2.mml",
-   "settings":"./defaultSettings.json"
+   "settings_json":"./defaultSettings.json"
 }

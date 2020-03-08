@@ -5,7 +5,7 @@
 
 div{
 	display: flex;
-	/*align-items:center;*/
+	/* align-items:center; */
 }
 [data-atom] {
     background-color: white;
@@ -65,7 +65,7 @@ per una questione estetica */
 	justify-content:center;
 }
 #tavolozza{
-	justify-content:normal;
+	justify-content: normal;
 }
 
 /*.name {
