@@ -1,0 +1,21 @@
+{
+	"debug":"false",
+	"mode":"game",
+	"telaLocked":"false",
+	"gameMode":"false",
+	"resultHidden":"true",
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"",
+		"brackets":"true",
+		"timesVert":"false"
+		},
+		{
+		"name":"classic",
+		"colors":"",
+		"brackets":"true",
+		"timesVert":"false"
+		}
+	]
+}

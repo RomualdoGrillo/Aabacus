@@ -1,113 +1,112 @@
-Body{
-    display:flex;
-    font-family: arial;
-    background-color: #ffffff;
-    /*overflow:hidden*/
-    user-select: none; /* supported by Chrome and Opera */
-   -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-   -moz-user-select: none; /* Firefox */
-   -ms-user-select: none; /* Internet Explorer/Edge */
-    }
+Body {
+	display: flex;
+	font-family: arial;
+	background-color: #ffffff;
+	/*overflow:hidden*/
+	user-select: none;
+	/* supported by Chrome and Opera */
+	-webkit-user-select: none;
+	/* Safari */
+	-khtml-user-select: none;
+	/* Konqueror HTML */
+	-moz-user-select: none;
+	/* Firefox */
+	-ms-user-select: none;
+	/* Internet Explorer/Edge */
+}
 
-#tavolozza [data-atom] {
-    margin: 2px;
+#help-link {
+	background-color: whitesmoke;
+	margin: 3px;
 }
-#help-link{
-    background-color:whitesmoke;
-    margin:3px;
+
+.title {
+	flex-shrink: 0;
 }
-.title{
-   	flex-shrink:0;
-}
+
 button>.ui-icon {
- display:inline-block;
+	display: inline-block;
 }
 
-/*#tavolozza, #tela{ border: 1px solid #C9C9C9; }*/
+#fileToLoad {
+	visibility: hidden;
+}
 
-#fileToLoad{visibility:hidden;}
 #create, #help {
-border: 1px solid #000000;
+	border: 1px solid #000000;
 }
 
-#help-link{
-    border-radius: 8px;
-    border-width: 1;
-    background-color: whitesmoke;
+#help-link {
+	border-radius: 8px;
+	border-width: 1;
+	background-color: whitesmoke;
 }
 
-#tavolozza, #settings{
-    background-color:#ffffff;
-    overflow-x:hidden;
-    overflow-y:scroll;
-    border: 1px solid #c3c3c3;
-    border-radius: 15px;
+#tavolozza, #settings {
+	overflow-y: hidden;
+	overflow-x: scroll;
+	border: 1px solid #c3c3c3;
+	border-radius: 15px;
 }
-#settings{
-    min-height:90px;
-    flex-direction:column;
-}
-#visSetup{
-    flex-direction: column;
-}
-#tavolozza.hidden{
-    display:none;
-}
-/*#telaRole{height:820px;flex-grow: 1;}
-*/
 
-#telaRole{
-  flex-grow: 1;
-  overflow-y:auto;
-  margin: 0px;
-  padding: 15px;
-  }
+#settings {
+	flex-direction: column;
+}
 
+#visSetup {
+	flex-direction: column;
+}
 
-#telaRole.debug{
-    background-color: rgb(255, 234, 251);
-    border-color: pink;
-    border-width: 3px;
-    }
+#telaRole {
+	flex-grow: 1;
+	overflow-y: auto;
+	margin: 0px;
+	padding: 15px;
+}
+
+#telaRole.debug {
+	background-color: rgb(255, 234, 251);
+	border-color: pink;
+	border-width: 3px;
+}
 
 #tela, #tela>.secondMember, #telaAnd {
-    flex-grow: 1;/*eccezione: deve occupare tutto il container, non adattarsi al contenuto*/
-}
-    
-#telaAnd{
-	border:none;
+	flex-grow: 1;
+	/*eccezione: deve occupare tutto il container, non adattarsi al contenuto*/
 }
 
+#telaAnd {
+	border: none;
+}
 
-
-
-.DefButtonOn{
+.DefButtonOn {
 	opacity: 1;
 }
 
 .hide {
-    display:none;
+	display: none;
 }
 
 ::-webkit-scrollbar {
-    width: 22px;
-    height: 18px;
-}
-::-webkit-scrollbar-thumb {
-    height: 6px;
-    border: 8px solid rgba(165, 187, 82, 0);
-    background-clip: padding-box;
-    -webkit-border-radius: 12px;
-    background-color: rgba(0, 0, 0, 0.15);
-    -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
-}
-::-webkit-scrollbar-button {
-    width: 0;
-    height: 0;
-    display: none;
-}
-::-webkit-scrollbar-corner {
-    background-color: transparent;
+	width: 22px;
+	height: 18px;
 }
 
+::-webkit-scrollbar-thumb {
+	height: 6px;
+	border: 8px solid rgba(165, 187, 82, 0);
+	background-clip: padding-box;
+	-webkit-border-radius: 12px;
+	background-color: rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-button {
+	width: 0;
+	height: 0;
+	display: none;
+}
+
+::-webkit-scrollbar-corner {
+	background-color: transparent;
+}

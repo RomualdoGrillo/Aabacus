@@ -3,9 +3,6 @@ body{
 	margin:0px;
 }
 div.ide{
-	display:flex;
-	border-style: solid;
-	/*border-color:#0b0b0b;*/
 	border-width: 1px;
 	border-radius:5px;
 	/* background-color:white; */
@@ -22,7 +19,7 @@ div.ide{
 	z-index:1;
 }
 #leftColumn,#rightColumn{
-	width: 200px;
+	width: 95px;
 	transition: width 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
 	transition-delay: 0.15s;
 	z-index:2;
@@ -53,6 +50,9 @@ div.ide{
 	transition-delay: 0.15s;
 	z-index:2;
 }
+#tavolozza>*{
+	padding:3px;
+}
 #tavolozza:not(.fixed){
 	left:10px;
 	right:10px;
@@ -65,7 +65,7 @@ div.ide{
 	flex-grow:1;
 	margin-top:5px;
 }
-.column{
+.columnSection{
 	flex-direction: column;
 	height: 99vh;
 	/*border-color:red;*/
@@ -74,7 +74,9 @@ div.ide{
 #tavolozza,#leftContent,#settings{
 	background-color:white;
 }
-
+#result{
+		justify-content: center;
+}
 #leftContent,#settings{
 	flex-grow:1;
 }

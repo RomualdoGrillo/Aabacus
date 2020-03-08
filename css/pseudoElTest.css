@@ -6,7 +6,7 @@
 	/* background-color: red; */
 	position: absolute;
 	content: "+";
-	left:-10.2;
+	left:-10.2px;
 }
 /*[data-atom=plus]>.ul_role>[data-atom=minus]:not(:first-of-type):not(.sortable-drag)::before{
 	content: "-";	
