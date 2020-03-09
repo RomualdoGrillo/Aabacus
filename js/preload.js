@@ -5,10 +5,13 @@ function preloadAll(myUrl) {
 		url: myUrl,
 		dataType: "text",
 		error: function(e) {
-			alert("AJAX/get fallita : verificare da Chrome");
+			alert("AJAX/ errore nel caricare:" + myUrl);
 			console.log("Ajax/GET fallita : ", e);
 		},
-		success: function(response){injectAll(response,myUrl)}
+		//success: function(response){injectAll(response,myUrl)}
+		//Al momento quando scelgo un file da file explorer non viene passato l'url
+		//quindi tutti i path in file JSON sono a partire dal root dell'applicazione
+		success: function(response){injectAll(response)}
 	});
 }
 function injectAll(response,rootUrl){
@@ -25,6 +28,12 @@ function injectAll(response,rootUrl){
 		}
 	else if(all.content_mml){//url
 		preloadAjax(buildPath(rootUrl,all.content_mml),$("#telaRole"))
+	}
+	if(all.result_mml && all.result_mml.string){//string data
+		inject(all.result_mml.string, $('#result'))
+		}
+	else if(all.result_mml){//url
+		preloadAjax(buildPath(rootUrl,all.result_mml),$('#result'))
 	}
 	if(all.settings_json && all.settings_json.mode){//JSON
 			//updateSettings(all.settings_json)
@@ -52,7 +61,7 @@ function preloadAjax(myUrl,target) {
 			url: myUrl,
 			dataType: "text",
 			error: function(e) {
-				alert("AJAX/get fallita : verificare da Chrome");
+				alert("AJAX/ errore nel caricare:" + myUrl);
 				console.log("Ajax/GET fallita : ", e);
 			},
 			success: function(response) {

@@ -31,19 +31,18 @@ function destroyClickedElement(event)
 	document.body.removeChild(event.target);
 }
 
-function loadFileConvert(fileToLoadPar,$targetNode,from_to)
+function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 {
 	var fileToLoad = document.getElementById("fileToLoad").files[0];
 	var fileReader = new FileReader();
 	fileReader.onload = function(fileLoadedEvent) 
 	{
 		var textFromFileLoaded = fileLoadedEvent.target.result;
-		if(from_to === "mml_aab"){
+		if(fileSuffix === "mml"){
 			inject(textFromFileLoaded,$targetNode)
-
 		}
-		else{
-			$(targetNode).html(textFromFileLoaded)
+		else if(fileSuffix === "json"){
+			injectAll(textFromFileLoaded);
 		}
 	};
 	fileReader.readAsText(fileToLoad, "UTF-8");

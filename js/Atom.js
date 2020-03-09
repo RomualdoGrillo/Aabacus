@@ -444,7 +444,7 @@ function prototypeSearch(className,dataType){//alcune classi, ad esempio "ci", p
 		$prototype.attr("data-type",dataType);
 		//addTypeDecorations($prototype);
 	}
-	return $prototype
+	return $prototype.last()//in case you find more prototypes
 }
 /*
 function prototypeSearch(className,dataType,loadedFile){//alcune classi, ad esempio "ci", possono avere vari datatype 

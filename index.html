@@ -39,6 +39,19 @@
 						<div class="decoration">:=</div>
 						<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
 					</div>
+					<div data-atom="deftrue" id="deftruePrototype" class="atom" data-type="bool">
+						<div class="s_role name" data-type="obj" data-accept="1"></div>
+						<div class="decoration">≡</div>
+						<div class="s_role prop" data-type="obj" data-accept="1"></div>
+						<div class="s_role shortCutLtr" data-type="obj" data-accept="1"></div>
+						<div class="s_role shortCutRtl" data-type="obj" data-accept="1"></div>
+					</div>
+					<div data-atom="eventtoaction" id="eventtoactionPrototype" data-type="bool" class="atom">
+						events
+						<div class="ul_role event" data-type="obj" data-accept="1"></div>
+						actions
+						<div class="ol_role actions" data-type="obj" data-accept="-1"></div>
+					</div>
 				</div>
 			</div>
 			<div id="tela" data-atom="eq" class="atom asymmetric undraggable unselectable unlocked" data-type="bool">
@@ -60,29 +73,31 @@
 			<div id="testSpan"></div>
 			<!-- <button id="create-link" class="">Define!</button> -->
 			<!-- <button id="help-link" class=""><div class="ui-icon ui-icon-newwin"></div>Help</button> -->
-			<div id="settings" >
+			<div id="settings">
 				<input type="checkbox" class="fixButton" onclick="this.parentElement.parentElement.classList.toggle('fixed')">
 				<!-- Rectangular switch -->
 				<input id="gameModeButton" type="checkbox" onclick="" value="game mode">
 				<form id="mySettings">
-					<select id="visSettingSelected" name="visualization">
-					</select>
+					<select id="visSettingSelected" name="visualization"></select>
 					<div id="visSetup">
 						<div class="checkbox">
-							<input type="checkbox" id="cb_showPar"  title="show brackets">brackets
+							<input type="checkbox" id="cb_showPar" title="show brackets">brackets
+						
+						
 						
 						
 						
 						</div>
-						
 						<div class="checkbox">
-							<input type="checkbox" id="cb_vertTimes"  title="dispose multiplication and conjunction vertically ">cross
+							<input type="checkbox" id="cb_vertTimes" title="dispose multiplication and conjunction vertically ">cross
+						
+						
 						
 						
 						
 						</div>
 						<select id="select_colors" name="colors">
-							<option id="whiteBorders">B&W</option>
+							<option id="whiteBorders">B &W</option>
 							<option id="greyBorders">grey</option>
 							<option id="coloredBorders">Rainbow</option>
 						</select>

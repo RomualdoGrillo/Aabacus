@@ -4,10 +4,6 @@ let debugMode = false//debug,normal
 let tela = document.getElementById('telaRole');
 let exclusiveFocus
 let sorting = false;//usato solo per gestire gli eventi di dragover
-//************preload***********
-//inject(preload,$('#telaRole'))
-
-
 //************ inizializza UNDO  ************
 ssnapshot() //inizializza snapshot manager che gestisce UNDO
 //***********************
@@ -89,7 +85,7 @@ $(document).on('keydown', function ( e ) {
 	//shift+l load file
 	else if ( e.shiftKey && (  keyPressed === 'l' ) ) {
 		console.log("Shift + l");
-		$('#fileToLoad').trigger('click');// #fileToLoad: ad esso è associato un evento
+		$('#fileToLoad').trigger('click');// #fileToLoad: ad esso è associato un evento vedi sotto
 	}
 	else{//****************applica proprietà***********
 		var PActx =  newPActx();
@@ -131,12 +127,15 @@ $( "#help-link" ).click(function( event ) {
 	window.open('./Help/Help.html');
 });
 	//***** auto load file after a file is choosen***************
-$('#fileToLoad').change(function() {
+$('#fileToLoad').change(function(e) {
+	console.log(e);
 	//passa di qui dopo che l'utente ha selezionato un nuovo file, non se l'utente preme annulla
 	console.log('fileTOLoad change');
 	var fileToLoad = jQuery('#fileToLoad')[0].files[0];
 	var $target = $('#telaRole');
-	loadFileConvert(fileToLoad, $($target[0]),"mml_aab");
+	var fileName = fileToLoad.name;
+	var fileSuffix = fileName.split(".")[fileName.split(".").length-1]
+	loadFileConvert(fileToLoad, $($target[0]),fileSuffix);
 	//forse la chiamata sopra è asincrona? ssnapshot scatta prima dell'effettivo caricamento
 	//ssnapshot.take(); //todo: snapshot solo in base a risultato di loadFileConvert()
 	this.value = "";//cancella il vecchio path altrimenti se carico due volte lo stesso file non si accorge del cambiamento

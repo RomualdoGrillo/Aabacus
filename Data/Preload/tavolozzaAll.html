@@ -1,0 +1,239 @@
+			<div data-atom="eq" id="asymmeqPrototype" class="asymmetric unlocked atom" data-type="bool">
+				<div class="s_role firstMember ui-icon ui-icon-unlocked" data-accept="1"></div>
+				<div class="decoration">:=</div>
+				<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
+			</div>
+			<div class="title hide" title="defTrue">
+				<div data-atom="deftrue" id="deftruePrototype" class="atom" data-type="bool">
+					<div class="s_role name" data-type="obj" data-accept="1"></div>
+					<div class="decoration">≡</div>
+					<div class="s_role prop" data-type="obj" data-accept="1"></div>
+					<div class="s_role shortCutLtr" data-type="obj" data-accept="1"></div>
+					<div class="s_role shortCutRtl" data-type="obj" data-accept="1"></div>
+				</div>
+			</div>
+			<div data-atom="eq" id="eqPrototype" data-type="bool" class="atom">
+				<div class="s_role firstMember" data-type="obj" data-accept="1"></div>
+				<div class="decoration">=</div>
+				<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
+			</div>
+			<div id="pointPrototype" data-atom="ci" data-type="point" class="atom ">
+				<div class="name">A</div>
+			</div>
+			<div class="title hide">
+				<div data-atom="midPoint" id="midPointPrototype" data-type="point" class="atom">
+					<div class="s_role firstMember" data-type="point" data-accept="1"></div>
+					<div class="decoration midPoint"></div>
+					<div class="s_role secondMember" data-type="point" data-accept="1"></div>
+				</div>
+				<div data-atom="perpByPoint" id="perpByPointPrototype" data-type="line" class="atom">
+					<div class="functName perpByPoint">PerpendicularLine(</div>
+					<div class="s_role firstMember" data-type="line" data-accept="1"></div>
+					<div class="decoration perpByPoint"></div>
+					<div class="functName perpByPoint">,</div>
+					<div class="s_role secondMember" data-type="point" data-accept="1"></div>
+					<div class="functName perpByPoint">)</div>
+				</div>
+				<div data-atom="segment" id="segmentPrototype" data-type="line" class="atom">
+					<div class="s_role firstMember" data-type="point" data-accept="1"></div>
+					<div class="decoration segment"></div>
+					<div class="s_role secondMember" data-type="point" data-accept="1"></div>
+				</div>
+				<div data-atom="identical" id="identicalPrototype" data-type="bool" class="atom">
+					<div class="s_role firstMember" data-type="obj" data-accept="1"></div>
+					<div class="decoration">≡</div>
+					<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
+				</div>
+			</div>
+			<div id="numPrototype" data-atom="ci" data-type="num" class="atom ">
+				<div class="name">x</div>
+			</div>
+			<div data-atom="cn" data-type="num" class="atom">
+				<div class="name">1</div>
+			</div>
+			<!--
+			<div data-atom="cn" data-type="num" class="atom" style=" background-image: url(./images/EgyptNumber3.svg);
+			background-size: 100% 100%;">
+					<div class="name" style="display:none">3</div>
+			</div>
+			-->
+			<div class="title" title="plus">
+				<div id="plusPrototype" data-atom="plus" data-type="num" class="atom ">
+					<div class="ul_role" data-type="num"></div>
+				</div>
+			</div>
+			<div class="title" title="times">
+				<div id="timesPrototype" data-atom="times" data-type="num" class="atom">
+					<div class="ul_role" data-type="num"></div>
+				</div>
+			</div>
+			<div class="title" title="-x">
+				<div id="minusPrototype" data-atom="minus" data-type="num" class="atom">
+					<div class="s_role" data-type="num"></div>
+					<div class="minusDecoration"></div>
+				</div>
+			</div>
+			<div class="title" title="1/x">
+				<div id="m_inversePrototype" data-atom="m_inverse" data-type="num" class="atom">
+					<div class="numerator1">1</div>
+					<div class="s_role" data-type="num">
+						<div class="m_inverseDecoration"></div>
+					</div>
+				</div>
+			</div>
+			<div class="title" title="fraction">
+				<div id="dividePrototype" data-atom="divide" class="atom column" data-type="num">
+					<div class="s_role numeratore" data-type="num"></div>
+					<div class="decoration"></div>
+					<div class="s_role denominatore" data-type="num" data-accept="1"></div>
+				</div>
+			</div>
+			<div class="title" title="power">
+				<div id="powerPrototype" data-atom="power" class="atom" data-type="num">
+					<div class="s_role base" data-type="num" data-accept="1">
+						<div class="power_decoration"></div>
+					</div>
+					<div class="s_role exponent" data-type="num"></div>
+				</div>
+			</div>
+			<div class="title" title="greater than">
+				<div data-atom="gt" id="gtPrototype" data-type="bool" class="atom">
+					<div class="s_role firstMember" data-type="num" data-accept="1"></div>
+					<div class="decoration">></div>
+					<div class="s_role secondMember" data-type="num" data-accept="1"></div>
+				</div>
+			</div>
+			<div class="title" title="greater than">
+				<div data-atom="geq" id="geqPrototype" data-type="bool" class="atom">
+					<div class="s_role firstMember" data-type="num" data-accept="1"></div>
+					<div class="decoration">&#x2265;</div>
+					<div class="s_role secondMember" data-type="num" data-accept="1"></div>
+				</div>
+			</div>
+			<div data-atom="ci" id="boolPrototype" data-type="bool" class="atom">
+				<div class="name">true</div>
+			</div>
+			<div class="title" title="or">
+				<div id="orPrototype" data-atom="or" data-type="bool" class="atom">
+					<div class="ul_role" data-type="bool"></div>
+				</div>
+			</div>
+			<div id="andPrototype" data-atom="and" data-type="bool" class="atom">
+				<div class="ul_role" data-type="bool"></div>
+			</div>
+			<div class="title" title="not">
+				<div id="notPrototype" data-atom="not" data-type="bool" class="atom">
+					<div class="s_role" data-type="bool"></div>
+					<div class="notDecoration"></div>
+				</div>
+			</div>
+			<div id="forallPrototype" data-atom="forAll" class="atom" data-type="bool">
+				<div class="row">
+					<div class="forallSymbol">∀</div>
+					<div class="bVar_role forAllHeader" data-type="obj"></div>
+				</div>
+				<div class="s_role forAllContent" data-type="bool" data-accept="1"></div>
+			</div>
+			<div id="ifThenElsePrototype" data-atom="ifThenElse" class="atom" data-type="bool">
+				<div class="column">
+					<div class="s_role if" data-type="bool"></div>
+					<div class="decoration imply"></div>
+					<div class="s_role then" data-type="bool"></div>
+				</div>
+				<div class="column">
+					<div>else</div>
+					<div class="s_role else" data-type="bool"></div>
+				</div>
+			</div>
+			<div id="existsPrototype" data-atom="exists" class="atom" data-type="bool">
+				<div class="row">
+					<div class="existsSymbol">∃</div>
+					<div class="bVar_role existsHeader" data-type="obj"></div>
+					<div class="decoration">|</div>
+				</div>
+				<div class="s_role existsContent" data-type="bool" data-accept="1"></div>
+			</div>
+			<div id="rootPrototype" data-atom="root" data-type="obj" class="atom">
+				√<div class="s_role" data-type="num"></div>
+			</div>
+			<!-- root andrebbe inserito anche l'esponente, vedi specifiche mathml -->
+			<div id="absPrototype" data-atom="abs" data-type="num" class="atom">
+				|<div class="s_role" data-type="num"></div>
+				|
+			
+			</div>
+			<div id="suchThatPrototype" data-atom="suchThat" data-type="obj" class="atom">
+				<div class="s_role" data-type="obj"></div>
+				:
+			
+			</div>
+			<div id="literalPrototype" data-atom="literal" data-type="obj" class="atom">
+				"<div class="s_role" data-type="obj"></div>
+				"
+			
+			</div>
+			<div data-atom="eq" id="symmdefPrototype" class="unlocked atom" data-type="bool">
+				<div class="s_role firstMember" data-type="obj" data-accept="1"></div>
+				<div class="decoration">:=</div>
+				<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
+			</div>
+			<div data-atom="implies" id="impliesPrototype" data-type="bool" class="atom">
+				<div class="s_role firstMember" data-type="bool" data-accept="1"></div>
+				<div class="decoration imply"></div>
+				<div class="s_role secondMember" data-type="bool" data-accept="1"></div>
+			</div>
+			<div id="setPrototype" data-atom="set" data-type="set" class="atom">
+				{
+				
+				<div class="ul_role" data-type="obj">
+					<span class="infix proto">;</span>
+				</div>
+				}
+			
+			
+			</div>
+			<div id="listPrototype" data-atom="list" data-type="list" class="atom">
+				(
+				
+				<div class="ol_role" data-type="obj">
+					<span class="infix proto">;</span>
+				</div>
+				)
+			
+			
+			</div>
+			<div data-atom="" id="Prototype" data-type="" class="atom">
+				<div class="name"></div>
+			</div>
+			<div data-atom="in" id="inPrototype" data-type="bool" class="atom">
+				<div class="s_role" data-type="obj" data-accept="1"></div>
+				<div class="decoration">ϵ</div>
+				<div class="s_role" data-type="set" data-accept="1"></div>
+			</div>
+			<div data-atom="applyProp" id="applyPropPrototype" data-type="obj" class="atom">
+				prop
+						<div class="s_role property" data-type="bool" data-accept="1"></div>
+				mode
+						<div class="ol_role mode" data-type="obj" data-accept="-1"></div>
+			</div>
+			<div data-atom="callFunction" id="callfunctionPrototype" data-type="obj" class="atom">
+				call
+						<div class="s_role function" data-type="bool" data-accept="1"></div>
+				values
+						<div class="ol_role values" data-type="obj" data-accept="-1"></div>
+			</div>
+			<div data-atom="eventtoaction" id="eventtoactionPrototype" data-type="bool" class="atom">
+				events
+						<div class="ul_role event" data-type="obj" data-accept="1"></div>
+				actions
+						<div class="ol_role actions" data-type="obj" data-accept="-1"></div>
+			</div>
+			<div data-atom="ci" id="ciPrototype" data-type="" class="atom">
+				<div class="name"></div>
+			</div>
+			<div data-atom="ci" id="functionPrototype" data-type="function" class="atom">
+				<div class="name"></div>
+			</div>
+			<div data-atom="ci" id="setPrototype" data-type="set" class="atom">
+				<div class="name"></div>
+			</div>
