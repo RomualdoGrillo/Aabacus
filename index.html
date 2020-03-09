@@ -1,582 +1,156 @@
+<!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--  -->
-<link rel="stylesheet" type="text/css" href="css/styleIDE.css">
-<link rel="stylesheet" type="text/css" href="css/style.css">
-<link rel="stylesheet" type="text/css" href="css/styleForTest.css">
-<link rel="stylesheet" type="text/css" href="css/fromJQExamples.css">
-<link rel="stylesheet"  href="Resources/jquery-ui.css" >
-<link rel="stylesheet" type="text/css" href="css/SVGstyle.css">
-<link rel="stylesheet" type="text/css" href="css/sortableTest.css">
-<link rel="stylesheet" type="text/css" href="css/pseudoElTest.css">
-</head>
-<body class="greyBorders">
-<svg id="prototypeContainer" width="0%" height="0%">
-	    <marker id="triangle" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto">
-      <path d="M 0 0 L 10 5 L 0 10 z"/>
-    </marker>
-	<line id="protoLine" x1="100" y1="50.5" x2="300" y2="50.5" marker-end="url(#triangle)" stroke="black" stroke-width="3"/>
-
-</svg>
-<div id="divOverlay"><!-- alla DIV posso dare "position:absolute" all SVG no -->
-	<svg id="svgContainer" width="100%" height="100%"></svg>
-</div>
-<div id="tavolozza">
-		
-		
-				<input type="file" id="fileToLoad">
-				
-		
-		<div id="testSpan"></div>
-		
-		
-				<!-- <button id="create-link" class="">Define!</button> -->
-		<div id="settings">
-		<!--
-			<button id="help-link" class=""><div class="ui-icon ui-icon-newwin"></div>Help</button>
-		-->
-				
-		
-		
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="Resources/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="css/styleIDEhideSections.css">
+		<link rel="stylesheet" type="text/css" href="css/styleIDE.css">
+		<link rel="stylesheet" type="text/css" href="css/SVGstyle.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="css/styleForTest.css">
+		<link rel="stylesheet" type="text/css" href="css/fromJQExamples.css">
+		<link rel="stylesheet" type="text/css" href="css/sortableTest.css">
+		<link rel="stylesheet" type="text/css" href="css/pseudoElTest.css">
+	</head>
+	<body class="greyBorders">
+		<svg id="prototypeContainer" width="0%" height="0%">
+			<marker id="triangle" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto">
+				<path d="M 0 0 L 10 5 L 0 10 z"/>
+			</marker>
+			<line id="protoLine" x1="100" y1="50.5" x2="300" y2="50.5" marker-end="url(#triangle)" stroke="black" stroke-width="3"/>
+		</svg>
+		<div id="divOverlay">
+			<!-- alla DIV posso dare "position:absolute" all SVG no -->
+			<svg id="svgContainer" width="100%" height="100%"></svg>
+		</div>
+		<!--<div id="leftColumn" class="columnSection">
+			<div id="leftContent" class="row ide">
+				<input type="checkbox" class="fixButton" onclick="this.parentElement.parentElement.classList.toggle('fixed')">a
+	
 			
-			<div id="visSetup">
-				
-				<div class="checkbox">
-					<input type="checkbox" id="cb_showPar" onclick="$('body').toggleClass('showPar')" title="show brackets">
-					brackets
+			</div>
+		</div>-->
+		<div id="centralColumn" class="columnSection">
+			<div id="tavolozzaRow" class="row ide">
+				<input type="checkbox" class="fixButton" onclick="this.parentElement.classList.toggle('fixed')">
+				<div id="tavolozza" class="ol_role">
+					<div data-atom="eq" id="asymmeqPrototype" class="asymmetric unlocked atom" data-type="bool">
+						<div class="s_role firstMember ui-icon ui-icon-unlocked" data-accept="1"></div>
+						<div class="decoration">:=</div>
+						<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
+					</div>
+					<div data-atom="deftrue" id="deftruePrototype" class="atom" data-type="bool">
+						<div class="s_role name" data-type="obj" data-accept="1"></div>
+						<div class="decoration">≡</div>
+						<div class="s_role prop" data-type="obj" data-accept="1"></div>
+						<div class="s_role shortCutLtr" data-type="obj" data-accept="1"></div>
+						<div class="s_role shortCutRtl" data-type="obj" data-accept="1"></div>
+					</div>
+					<div data-atom="eventtoaction" id="eventtoactionPrototype" data-type="bool" class="atom">
+						events
+						<div class="ul_role event" data-type="obj" data-accept="1"></div>
+						actions
+						<div class="ol_role actions" data-type="obj" data-accept="-1"></div>
+					</div>
 				</div>
-				
-				<div>
-					<input type="radio" name="color" value="whiteBorders"> 
-					<input type="radio" name="color" value="greyBorders"  checked="checked"> 
-					<input type="radio" name="color" value="coloredBorders"> 
+			</div>
+			<div id="tela" data-atom="eq" class="atom asymmetric undraggable unselectable unlocked" data-type="bool">
+				<div class="s_role firstMember ui-icon" data-accept="1"></div>
+				<div class="decoration">=</div>
+				<div class="s_role secondMember unsortable" data-type="obj" data-accept="1">
+					<div id="telaAnd" class="atom undraggable unselectable " data-atom="and" data-type="bool">
+						<div id="telaRole" class="ul_role " data-type="bool">
+						<!-- ************inizio contenuto************* aggiungi qui classe "debug" -->
+						</div>
+						<!-- questa fine div non fa parte del contenuto************************* -->
+					</div>
 				</div>
-				<div class="checkbox">
-					<input type="checkbox" id="cb_vertTimes" onclick="$('body').toggleClass('vertTimes')" title="dispose multiplication and conjunction vertically ">
-					cross
-				</div>
-				<!--<div class="checkbox">
+			</div>
+			<div id="result" class="row ide"></div>
+		</div>
+		<div id="rightColumn" class="columnSection ide">
+			<input type="file" id="fileToLoad">
+			<div id="testSpan"></div>
+			<!-- <button id="create-link" class="">Define!</button> -->
+			<!-- <button id="help-link" class=""><div class="ui-icon ui-icon-newwin"></div>Help</button> -->
+			<div id="settings">
+				<input type="checkbox" class="fixButton" onclick="this.parentElement.parentElement.classList.toggle('fixed')">
+				<!-- Rectangular switch -->
+				<input id="gameModeButton" type="checkbox" onclick="" value="game mode">
+				<form id="mySettings">
+					<select id="visSettingSelected" name="visualization"></select>
+					<div id="visSetup">
+						<div class="checkbox">
+							<input type="checkbox" id="cb_showPar" title="show brackets">brackets
+						
+						
+						
+						
+						
+						</div>
+						<div class="checkbox">
+							<input type="checkbox" id="cb_vertTimes" title="dispose multiplication and conjunction vertically ">cross
+						
+						
+						
+						
+						
+						</div>
+						<select id="select_colors" name="colors">
+							<option id="whiteBorders">B &W</option>
+							<option id="greyBorders">grey</option>
+							<option id="coloredBorders">Rainbow</option>
+						</select>
+						<!--<form id="myForm">
+							<label for="fname">First name:</label>
+							<br>
+							<input type="text" id="fname" name="fname" value="John">
+							<br>
+							<label for="lname">Last name:</label>
+							<br>
+							<input type="text" id="lname" name="lname" value="Doe">
+						</form> -->
+						<!--<div class="checkbox">
 					<input type="checkbox" id="cb_showFuctName" onclick="$('body').toggleClass('showFuctName')" title="show names of function instad of icons (when both are available) ">
 					show txt
-				</div>-->
-				<input type="button" onclick="alert('Questa funzione dovrebbe consentire di scegliere e caricare un file di testo');tela.append('dummy text')" value="load">
-				<input type="button" onclick="alert('save file')" value="save">
-				
-			</div>
-
-		</div>	
-		
-			
-			
-			
-		<div data-atom="eq" id="asymmeqPrototype" class="asymmetric unlocked atom" data-type="bool">
-					<div class="s_role firstMember ui-icon ui-icon-unlocked" data-accept="1">
-						
+				</div>
+						<input type="button" onclick="alert('Questa funzione dovrebbe consentire di scegliere e caricare un file di testo');tela.append('dummy text')" value="load">
+						<input type="button" onclick="alert('save file')" value="save">
+					-->
 					</div>
-					<div class="decoration">:=</div>
-					<div class="s_role secondMember" data-type="obj" data-accept="1">
-						
-					</div>
-		</div>
-			
-		
-
-		<div class="title hide" title="defTrue">
-			<div data-atom="defTrue" id="defTruePrototype" class="atom" data-type="bool">
-						<div class="s_role name" data-type="obj" data-accept="1">
-						
-						</div>
-						<div class="decoration">≡</div>
-						<div class="s_role prop" data-type="obj" data-accept="1">
-						
-						</div>
-						<div class="s_role shortCutLtr" data-type="obj" data-accept="1">
-						
-						</div>
-						<div class="s_role shortCutRtl" data-type="obj" data-accept="1">
-						
-						</div>
-			</div>				
-						
-						
-		</div>
-			
-		
-		
-		
-			
-				<div data-atom="eq" id="eqPrototype" data-type="bool" class="atom">
-						<div class="s_role firstMember" data-type="obj" data-accept="1">
-						
-						</div>
-						<div class="decoration">=</div>
-						<div class="s_role secondMember" data-type="obj" data-accept="1">
-						
-						</div>
-				</div>
-		
-				
-				
-				<div id="pointPrototype" data-atom="ci" data-type="point" class="atom ">
-					
-						<div class="name">A</div>
-					
-				</div>
-			
-			<div class="title hide">	
-				
-				<div data-atom="midPoint" id="midPointPrototype" data-type="point" class="atom">
-						<div class="s_role firstMember" data-type="point" data-accept="1"></div>
-						<div class="decoration midPoint"></div>
-						<div class="s_role secondMember" data-type="point" data-accept="1">
-						</div>
-				</div>
-		
-				<div data-atom="perpByPoint" id="perpByPointPrototype" data-type="line" class="atom">
-						<div class="functName perpByPoint">PerpendicularLine(</div>						
-						<div class="s_role firstMember" data-type="line" data-accept="1"></div>
-						<div class="decoration perpByPoint"></div>
-						<div class="functName perpByPoint">,</div>
-						<div class="s_role secondMember" data-type="point" data-accept="1"></div>
-						<div class="functName perpByPoint">)</div>
-				</div>
-				<div data-atom="segment" id="segmentPrototype" data-type="line" class="atom">
-						<div class="s_role firstMember" data-type="point" data-accept="1"></div>
-						<div class="decoration segment"></div>
-						<div class="s_role secondMember" data-type="point" data-accept="1">
-						</div>
-				</div>
-		
-		
-		
-		
-			<div data-atom="identical" id="identicalPrototype" data-type="bool" class="atom">
-					<div class="s_role firstMember" data-type="obj" data-accept="1">
-						
-					</div>
-					<div class="decoration">≡</div>
-					<div class="s_role secondMember" data-type="obj" data-accept="1">
-					
-					</div>
+				</form>
 			</div>
-		</div>
-		
-			<div id="numPrototype" data-atom="ci" data-type="num" class="atom ">
-				
-				<div class="name">x</div>
-				
-			</div>
-		
-		
-		
-			<div data-atom="cn" data-type="num" class="atom">
-					<div class="name">1</div>
-			</div>
-			
+			<!--<script type="text/javascript" src="Resources/jquery341.js"></script>-->
+			<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+			<script type="text/javascript" src="Resources/sortablejs/Sortable.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+			<script type="text/javascript" src="js/sound.js"></script>
+			<script type="text/javascript" src="js/inflatedeflate.js"></script>
+			<script type="text/javascript" src="js/UserEvToFunctCall.js"></script>
+			<script type="text/javascript" src="js/Undo.js"></script>
+			<script type="text/javascript" src="js/SaveLoad.js"></script>
+			<script type="text/javascript" src="js/infix.js"></script>
+			<script type="text/javascript" src="js/math.js"></script>
+			<script type="text/javascript" src="js/patternMatching.js"></script>
+			<script type="text/javascript" src="js/TranslateFormat.js"></script>
+			<script type="text/javascript" src="js/formatXML.js"></script>
+			<script type="text/javascript" src="js/preload.js"></script>
+			<script type="text/javascript" src="js/SVGlines.js"></script>
+			<script type="text/javascript" src="js/WorkaroundLoadMMLwithHtml.js"></script>
+			<script type="text/javascript" src="js/DnDhtml5Test.js"></script>
+			<script type="text/javascript" src="js/DnDproperties.js"></script>
+			<script type="text/javascript" src="js/InteractJStests.js"></script>
+			<script type="text/javascript" src="js/AldoUtilities.js"></script>
+			<script type="text/javascript" src="js/Ajax.js"></script>
+			<script type="text/javascript" src="js/newPatternMatching.js"></script>
+			<script type="text/javascript" src="js/Atom.js"></script>
+			<script type="text/javascript" src="js/HardWiredProperties.js"></script>
+			<script type="text/javascript" src="js/MAIN.js"></script>
 			<!--
-			<div data-atom="cn" data-type="num" class="atom" style=" background-image: url(./images/EgyptNumber3.svg);
-			background-size: 100% 100%;">
-					<div class="name" style="display:none">3</div>
-			</div>
-			-->
-			
-			
-			
-		
-		
-		<div class="title" title="plus">
-		
-			<div  id="plusPrototype" data-atom="plus" data-type="num" class="atom ">
-				
-					<div class="ul_role" data-type="num">
-					</div>
-				
-			</div>	
-			
-		</div>
-			
-		<div class="title" title="times">
-					
-			<div  id="timesPrototype" data-atom="times" data-type="num" class="atom">
-					<div class="ul_role" data-type="num">
-					</div>
-			</div>
-			
-		</div>
-		
-		<div class="title" title="-x" >
-		
-			<div  id="minusPrototype" data-atom="minus" data-type="num" class="atom">
-					<div class="s_role" data-type="num">
-					</div>
-					<div class="minusDecoration"></div>
-			</div>
-			
-		</div>
-		
-		<div class="title" title="1/x" >
-		
-			<div  id="m_inversePrototype" data-atom="m_inverse" data-type="num" class="atom">
-					<div class="numerator1">1</div>
-					<div class="s_role" data-type="num">
-					<div class="m_inverseDecoration"></div>
-					</div>
-			</div>
-			
-		</div>
-		
-		
-		
-		<div class="title" title="fraction" >
-		
-			<div id="dividePrototype" data-atom="divide" class="atom column" data-type="num">
-				<div class="s_role numeratore" data-type="num"></div>
-				<div class="decoration"></div>
-				<div class="s_role denominatore" data-type="num" data-accept="1"></div>
-				
-			</div>
-		</div>
-		
-		
-		
-		
-		<div class="title" title="power" >
-		
-			<div id="powerPrototype" data-atom="power" class="atom" data-type="num">
-				<div class="s_role base" data-type="num" data-accept="1"><div class="power_decoration"></div></div>
-				<div class="s_role exponent" data-type="num"></div>
-			</div>
-		</div>
-		
-		
-		<div class="title" title="greater than">
-			
-				<div data-atom="gt" id="gtPrototype" data-type="bool" class="atom">
-					
-						<div class="s_role firstMember" data-type="num" data-accept="1">
-						
-						</div>
-						<div class="decoration">></div>
-						<div class="s_role secondMember" data-type="num" data-accept="1">
-						
-						</div>
-					
-				</div>
-		</div>
-		
-		<div class="title" title="greater than">
-			
-				<div data-atom="geq" id="geqPrototype" data-type="bool" class="atom">
-					
-						<div class="s_role firstMember" data-type="num" data-accept="1">
-						
-						</div>
-						<div class="decoration">&#x2265;</div>
-						<div class="s_role secondMember" data-type="num" data-accept="1">
-						
-						</div>
-					
-				</div>
-		</div>
-		
-		
-			
-		
-		
-			<div data-atom="ci" id="boolPrototype" data-type="bool" class="atom"><div class="name">true</div></div>
-		
-		
-		<div class="title" title="or">
-		
-			<div id="orPrototype" data-atom="or" data-type="bool" class="atom" ><div class="ul_role" data-type="bool"></div></div>
-		
-		</div>
-		
-		
-		
-			<div id="andPrototype" data-atom="and" data-type="bool" class="atom" ><div class="ul_role" data-type="bool"></div></div>
-		
-			
-		
-		<div class="title" title="not" >
-		
-			<div  id="notPrototype" data-atom="not" data-type="bool" class="atom" >
-				
-					<div class="s_role" data-type="bool">
-					</div>
-					<div class="notDecoration"></div>
-				
-			</div>
-			
-		</div>
-		
-		
-		
-			<div id="forallPrototype" data-atom="forAll" class="atom" data-type="bool">
-				<div class="row">
-					<div  class="forallSymbol" >∀</div>
-					<div class="bVar_role forAllHeader" data-type="obj"></div>
-				</div>
-				<div class="s_role forAllContent" data-type="bool" data-accept="1">
-				</div>
-			</div>
-			
-			
-			
-		
-		
-		
-		
-			<div id="ifThenElsePrototype" data-atom="ifThenElse" class="atom" data-type="bool">
-				<div class="column">
-					<div class="s_role if" data-type="bool"></div>
-					<div class="decoration imply"></div>
-					<div class="s_role then" data-type="bool"></div>
-				</div>
-				<div class="column">
-					<div >else</div>
-					<div class="s_role else" data-type="bool"></div>
-				</div>
-			</div>
-			
-			
-			
-			
-			
-			<div id="existsPrototype" data-atom="exists" class="atom" data-type="bool">
-					<div class="row">
-						<div  class="existsSymbol" >∃</div>
-						<div class="bVar_role existsHeader" data-type="obj"></div>
-						<div class="decoration">|</div>
-					</div>
-					<div class="s_role existsContent" data-type="bool" data-accept="1"></div>
-					
-			</div>
-			
-		
-		
-		
-			
-				
-		
-		
-		
-			<div  id="rootPrototype" data-atom="root" data-type="obj" class="atom">√<div class="s_role" data-type="num"></div></div>
-			
-		
-		<!-- root andrebbe inserito anche l'esponente, vedi specifiche mathml -->
-		
-		
-		
-		
-		
-			<div  id="absPrototype" data-atom="abs" data-type="num" class="atom">|<div class="s_role" data-type="num"></div>|</div>
-			
-		
-		
-		
-		
-			<div  id="suchThatPrototype" data-atom="suchThat" data-type="obj" class="atom"><div class="s_role" data-type="obj"></div>:</div>
-			
-		
-		
-		
-		
-			<div  id="literalPrototype" data-atom="literal" data-type="obj" class="atom">"<div class="s_role" data-type="obj"></div>"</div>
-			
-		
-		
-		
-		
-			<div data-atom="eq" id="symmdefPrototype" class="unlocked atom" data-type="bool">
-						<div class="s_role firstMember" data-type="obj" data-accept="1">
-						
-						</div>
-						<div class="decoration">:=</div>
-						<div class="s_role secondMember" data-type="obj" data-accept="1">
-						
-						</div>
-			</div>
-			
-		
-		
-		
-			
-				<div data-atom="implies" id="impliesPrototype" data-type="bool" class="atom">
-						<div class="s_role firstMember" data-type="bool" data-accept="1">
-						
-						</div>
-						<div class="decoration imply"></div>
-						<div class="s_role secondMember" data-type="bool" data-accept="1">
-						
-						</div>
-				</div>
-			
-		
-		
-		
-			<div  id="setPrototype" data-atom="set" data-type="set" class="atom">
-			{<div class="ul_role" data-type="obj"><span class="infix proto">;</span></div>}
-			</div>
-			
-		
-		
-		
-		
-			<div  id="listPrototype" data-atom="list" data-type="list" class="atom">
-			
-			(<div class="ol_role" data-type="obj"><span class="infix proto">;</span></div>)
-			</div>
-			
-		
-		
-			
-				<div data-atom="" id="Prototype" data-type="" class="atom"><div class="name"></div></div>
-				
-		
-		
-			
-				<div data-atom="in" id="inPrototype" data-type="bool" class="atom">
-						<div class="s_role" data-type="obj" data-accept="1">
-						
-						</div>
-						<div class="decoration">ϵ</div>
-						<div class="s_role" data-type="set" data-accept="1">
-						
-						</div>
-				</div>
-			
-		
-		
-		
-		
-			
-				<div data-atom="applyProp" id="applyPropPrototype" data-type="obj" class="atom">
-						prop
-						<div class="s_role property" data-type="bool" data-accept="1">
-						
-						</div>
-						mode
-						<div class="ol_role mode" data-type="obj" data-accept="-1">
-						
-						</div>
-				</div>
-			
-		
-		
-		
-			
-				<div data-atom="callFunction" id="callFunctionPrototype" data-type="obj" class="atom">
-						call
-						<div class="s_role function" data-type="bool" data-accept="1">
-						
-						</div>
-						values
-						<div class="ol_role values" data-type="obj" data-accept="-1">
-						
-						</div>
-				</div>
-			
-		
-		
-		
-			
-				<div data-atom="eventToAction" id="eventToActionPrototype" data-type="bool" class="atom">
-						events
-						<div class="ul_role event" data-type="obj" data-accept="1">
-						
-						</div>
-						actions
-						<div class="ol_role actions" data-type="obj" data-accept="-1">
-						
-						</div>
-				</div>
-			
-		
-				
-		
-			
-				<div data-atom="ci" id="ciPrototype" data-type="" class="atom">
-						<div class="name">
-						</div>
-				</div>
-				
-		
-		
-		
-			
-				<div data-atom="ci" id="functionPrototype" data-type="function" class="atom">
-						<div class="name">
-						</div>
-				</div>
-				
-				<div data-atom="ci" id="setPrototype" data-type="set" class="atom">
-						<div class="name">
-						</div>
-				</div>
-				
-		
-		
-		
-	</div>
-<div id="tela" data-atom="eq" class="atom asymmetric undraggable unselectable unlocked" data-type="bool">
-		<div class="s_role firstMember ui-icon" data-accept="1"></div>
-		<div class="decoration">=</div>
-		<div class="s_role secondMember unsortable" data-type="obj" data-accept="1">
-		
-			<div id="telaAnd" class="atom undraggable unselectable " data-atom="and" data-type="bool">
-			
-					<div id="telaRole" class="ul_role " data-type="bool" ><!-- ************inizio contenuto************* aggiungi qui classe "debug" -->
-			
-			</div><!-- questa fine div non fa parte del contenuto************************* -->
-		
-		</div>
-	
-</div>
-
-<!--<script type="text/javascript" src="Resources/jquery341.js"></script>-->	
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-<script type="text/javascript" src="Resources/sortablejs/Sortable.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-
-<script type="text/javascript" src="js/sound.js"></script>	
-<script type="text/javascript" src="js/inflatedeflate.js"></script>	
-
-<script type="text/javascript" src="js/UserEvToFunctCall.js"></script>
-<script type="text/javascript" src="js/Undo.js"></script>
-<script type="text/javascript" src="js/SaveLoad.js"></script>
-<script type="text/javascript" src="js/infix.js"></script>
-<script type="text/javascript" src="js/math.js"></script>
-<script type="text/javascript" src="js/patternMatching.js"></script>
-<script type="text/javascript" src="js/TranslateFormat.js"></script>
-<script type="text/javascript" src="js/formatXML.js"></script>
-<script type="text/javascript" src="js/preload.js"></script>
-<script type="text/javascript" src="js/SVGlines.js"></script>
-<script type="text/javascript" src="js/WorkaroundLoadMMLwithHtml.js"></script>
-<script type="text/javascript" src="js/DnDhtml5Test.js"></script>
-<script type="text/javascript" src="js/DnDproperties.js"></script>
-<script type="text/javascript" src="js/InteractJStests.js"></script>
-<script type="text/javascript" src="js/AldoUtilities.js"></script>
-<script type="text/javascript" src="js/Ajax.js"></script>
-
-<script type="text/javascript" src="js/newPatternMatching.js"></script>
-<script type="text/javascript" src="js/Atom.js"></script>
-<script type="text/javascript" src="js/HardWiredProperties.js"></script>
-<script type="text/javascript" src="js/MAIN.js"></script>
-<!--
 <script type="text/javascript" src="js/newPatternMatching.min.js"></script>
 <script type="text/javascript" src="js/Atom.min.js"></script>
 <script type="text/javascript" src="js/HardWiredProperties.min.js"></script>
 <script type="text/javascript" src="js/MAIN.min.js"></script>
 -->
-
-
-</body>
+	</body>
 </html>
-

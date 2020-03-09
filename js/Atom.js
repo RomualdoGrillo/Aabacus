@@ -431,6 +431,22 @@ function ATOMclone($node,removeID){// di default rimuove ID
 }
 
 
+function prototypeSearch(className,dataType){//alcune classi, ad esempio "ci", possono avere vari datatype 
+	//search in dom
+	var dataTypeString = (dataType === undefined )?  "[data-type]"  :  "[data-type=" + dataType + "]"
+	var $prototype = $("#tavolozza").find("#" + className.toLowerCase() + "Prototype" + dataTypeString );
+	
+	//if not found adapt generic prototype 
+	if ($prototype.length === 0 ){
+		//console.warn('ATOM prototype not found:className:' + className + ", dataType:" + dataType);//Warning!!
+		$prototype = ATOMclone($("#Prototype"));
+		$prototype.attr("data-atom",className);
+		$prototype.attr("data-type",dataType);
+		//addTypeDecorations($prototype);
+	}
+	return $prototype.last()//in case you find more prototypes
+}
+/*
 function prototypeSearch(className,dataType,loadedFile){//alcune classi, ad esempio "ci", possono avere vari datatype 
 	//search in dom
 	var dataTypeString = (dataType === undefined )?  "[data-type]"  :  "[data-type=" + dataType + "]"
@@ -446,8 +462,7 @@ function prototypeSearch(className,dataType,loadedFile){//alcune classi, ad esem
 		//addTypeDecorations($prototype);
 	}
 	return $prototype
-}
-
+}*/
 var symbols=["ci","cn","csymbol"]
 function prototypeSearch2(className,symbolname,dataType,loadedFile){//alcune classi, ad esempio "ci", possono avere vari datatype 
 	//search in dom

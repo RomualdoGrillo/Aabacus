@@ -1,0 +1,28 @@
+{
+	"debug":false,
+	"gameMode":true,
+	"telaLocked":false,
+	"resultHidden":true,
+	"visSettingSelected":1,
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+		"timesVert":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+		"timesVert":false
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+		"timesVert":true
+		}
+	]
+}
+

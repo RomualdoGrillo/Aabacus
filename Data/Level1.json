@@ -1,5 +1,5 @@
 {
-   "tavolozza_html":"./Data/preload/tavolozzaAll.html",
+   "tavolozza_html":"./Data/preload/tavolozza.html",
    "content_mml":"./Data/Foundation.mml",
    "result_mml":"./Data/preload/minus-2.mml",
    "settings_json":"./Data/preload/defaultSettings.json",

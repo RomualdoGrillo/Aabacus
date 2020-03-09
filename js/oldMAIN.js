@@ -1,9 +1,17 @@
 //************************Init*******************************
-let GLBsettings
 let debugMode = false//debug,normal
 let tela = document.getElementById('telaRole');
 let exclusiveFocus
 let sorting = false;//usato solo per gestire gli eventi di dragover
+//************preload***********
+//inject(preload,$('#telaRole'))
+//************ radio Buttons  ************
+$('input[type=radio][name=color]').change(function() {
+console.log(this.value);
+$('body').removeClass('whiteBorders greyBorders coloredBorders');//ripulisci valori precedenti
+$('body').addClass(this.value)//aggiungi la nuova classe
+});
+
 //************ inizializza UNDO  ************
 ssnapshot() //inizializza snapshot manager che gestisce UNDO
 //***********************
@@ -12,7 +20,8 @@ let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable)'
 //let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),[data-atom=ci]';
 let initialSortables = document.querySelectorAll(sortablesSelectorString)
 //************ Preload  ************
-preloadAll('./Data/Preload/preload.json');
+//preloadAjax('./Data/Preload/preload.mml')
+//preloadAll('./Data/Preload/preload.json');
 
 makeSortable(initialSortables);
 $('[data-atom].asymmetric').each(function(i,e){ refreshAsymmEq($(e))})//initialize lock icons??
@@ -85,7 +94,7 @@ $(document).on('keydown', function ( e ) {
 	//shift+l load file
 	else if ( e.shiftKey && (  keyPressed === 'l' ) ) {
 		console.log("Shift + l");
-		$('#fileToLoad').trigger('click');// #fileToLoad: ad esso è associato un evento vedi sotto
+		$('#fileToLoad').trigger('click');// #fileToLoad: ad esso è associato un evento
 	}
 	else{//****************applica proprietà***********
 		var PActx =  newPActx();
@@ -127,15 +136,12 @@ $( "#help-link" ).click(function( event ) {
 	window.open('./Help/Help.html');
 });
 	//***** auto load file after a file is choosen***************
-$('#fileToLoad').change(function(e) {
-	console.log(e);
+$('#fileToLoad').change(function() {
 	//passa di qui dopo che l'utente ha selezionato un nuovo file, non se l'utente preme annulla
 	console.log('fileTOLoad change');
 	var fileToLoad = jQuery('#fileToLoad')[0].files[0];
 	var $target = $('#telaRole');
-	var fileName = fileToLoad.name;
-	var fileSuffix = fileName.split(".")[fileName.split(".").length-1]
-	loadFileConvert(fileToLoad, $($target[0]),fileSuffix);
+	loadFileConvert(fileToLoad, $($target[0]),"mml_aab");
 	//forse la chiamata sopra è asincrona? ssnapshot scatta prima dell'effettivo caricamento
 	//ssnapshot.take(); //todo: snapshot solo in base a risultato di loadFileConvert()
 	this.value = "";//cancella il vecchio path altrimenti se carico due volte lo stesso file non si accorge del cambiamento

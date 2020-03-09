@@ -31,19 +31,18 @@ function destroyClickedElement(event)
 	document.body.removeChild(event.target);
 }
 
-function loadFileConvert(fileToLoadPar,$targetNode,from_to)
+function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 {
 	var fileToLoad = document.getElementById("fileToLoad").files[0];
 	var fileReader = new FileReader();
 	fileReader.onload = function(fileLoadedEvent) 
 	{
 		var textFromFileLoaded = fileLoadedEvent.target.result;
-		if(from_to === "mml_aab"){
+		if(fileSuffix === "mml"){
 			inject(textFromFileLoaded,$targetNode)
-
 		}
-		else{
-			$(targetNode).html(textFromFileLoaded)
+		else if(fileSuffix === "json"){
+			injectAll(textFromFileLoaded);
 		}
 	};
 	fileReader.readAsText(fileToLoad, "UTF-8");
@@ -54,7 +53,7 @@ function inject(MMLstring,$targetNode)
 {
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab");
 	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
-	if(  ATOMclosedDef( $targetNode )  || $convertedTree.attr("data-type") !== "bool" ){
+	if(  $targetNode.is('#telaRole') && (ATOMclosedDef( $targetNode )  || $convertedTree.attr("data-type") !== "bool") ){
 		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
 		var $newDef = ATOMclone(prototypeSearch('asymmEq'));
 		$newDef.removeClass("unlocked")//cio' che viene caticato e' di default unlocked
