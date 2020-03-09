@@ -62,6 +62,7 @@ div.ide{
 #tavolozza{
 flex-grow:1;
 flex-flow:wrap;
+margin-right:11px;
 }
 
 
