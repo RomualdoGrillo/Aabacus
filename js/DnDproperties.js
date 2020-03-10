@@ -3,7 +3,7 @@ function makeSortable(sortables){
 	for (var i = 0; i < sortables.length; i++) {
 		s = new Sortable(sortables[i], {
 			group: {
-			name: 'sort',
+			//name: 'sort',
 			pull:function (to, from, item, dragEvent) {
 				//clone does not work when target list = starting list
 				if(dragEvent.ctrlKey){return 'clone'}
@@ -31,7 +31,8 @@ function makeSortable(sortables){
 			onMove: function (evt) {
 				// et.to will always be the list you are over but evt.related
 				// will be === only the very first time evt.to changes
-				console.log('move!!!!')
+				console.log('move!!!!');
+				ssnapshot.take();
 				if (evt.related === evt.to) {
 				  Sortable.utils.toggleClass(evt.to, 'over', true);
 				}
@@ -176,7 +177,7 @@ function onEndHandler(event){
 	else{
 		//  no need for a specific function in propertiesDnD
 		// edit, commute, distribute are simply movement in connected lists  
-		ssnapshot.take()
+		//ssnapshot.take()
 	}
 
 	clickSound.play();//repositioned
