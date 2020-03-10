@@ -373,7 +373,7 @@ return $newNode
 
 function validTargetsFromOpened($ATOMdragged){
 		var numOfPlaces
-		var valids = $('#telarole, #telarole [class*="_role"]').filter(function( index ) {
+		var valids = $('#telaRole, #telaRole [class*="_role"]').filter(function( index ) {
 			//*****determine number of places********
 			numOfPlaces = getNumOfPlaces($(this));
 			//*****valid?***********
