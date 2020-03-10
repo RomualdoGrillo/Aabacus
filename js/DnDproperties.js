@@ -73,7 +73,7 @@ function newOnStartHandler(event,AtomDragged){
 	
 	
 	
-	if( event.originalEvent.ctrlKey ||!ATOMclosedDef($(dragged)) ){
+	if( event.originalEvent.ctrlKey ||!ATOMclosedDef($(dragged))|| $(dragged).is('#tavolozza *') ){
 		let $validTgT = validTargetsFromOpened($(dragged)); 
 		$validTgT.addClass("target-opened");
 		$validTgT.toArray().forEach(function(el){
