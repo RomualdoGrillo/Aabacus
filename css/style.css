@@ -1,6 +1,11 @@
 :root {
   --div-radius: 16px;
   --div-smallradius: 10px;
+  --num-color: #eb8f00;
+  --default-bgcolor:#e2d9d6;
+  --num-bgcolor: #fcd598;
+  --bool-color: #62a64b;
+  --bool-bgcolor: #bef0ae;
 }
 
 div{
@@ -331,7 +336,7 @@ per una questione estetica */
 	/*box-shadow: 0px 0px 3px 1px rgba(175, 175, 175, 0.6);*/
 }
 .coloredBorders [class*="l_role"][data-type="obj"].empty ,.coloredBorders [class*="s_role"][data-type="obj"],.coloredBorders [class*="bVar_role"][data-type="obj"] {
-    background-color: #e2d9d6;
+    background-color: var(--default-bgcolor);
 }
 
 /*.selected[data-atom], .selected[data-atom]>.s_role>.glued ,.selected[data-atom]>.s_role>.glued[data-atom]>*{*/
