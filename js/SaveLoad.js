@@ -46,7 +46,7 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 		}
 		else if(fileSuffix === "prt"){
 			if(confirm('replace existing list of prototypes?')){
-				t.children().remove();
+				$('#tavolozza').children(':not(.fundamental)').remove();
 			}
 			inject(textFromFileLoaded,$('#tavolozza'))
 

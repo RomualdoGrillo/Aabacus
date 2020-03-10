@@ -67,7 +67,7 @@ margin-right:11px;
 
 
 #tavolozza>*{
-	padding:3px;
+	margin:2px;
 }
 #tavolozzaRow:not(.fixed){
 	left:10px;

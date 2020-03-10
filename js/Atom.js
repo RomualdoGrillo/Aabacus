@@ -418,7 +418,9 @@ function ATOMclone($node,removeID){// di default rimuove ID
 	$toBeCleaned = $clone.add($clone.find('*'))//clean discendence too
 	//$toBeCleaned = $clone//clean just the start Node
 	if(removeID !== false){
-		$toBeCleaned.removeAttr("id")//ripulisci id	
+		$toBeCleaned.removeAttr("id");//ripulisci id	
+		$toBeCleaned.removeClass("hide");
+		$toBeCleaned.removeClass("fundamental");
 	}
 	$toBeCleaned.removeClass (function (index, css) {
 		return (css.match (/(^|\s)ui-\S+/g) || []).join(' ');

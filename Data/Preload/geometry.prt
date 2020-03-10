@@ -1,0 +1,27 @@
+<div id="pointPrototype" data-atom="ci" data-type="point" class="atom ">
+				<div class="name">A</div>
+			</div>
+				<div data-atom="midPoint" id="midPointPrototype" data-type="point" class="atom">
+					<div class="s_role firstMember" data-type="point" data-accept="1"></div>
+					<div class="decoration midPoint"></div>
+					<div class="s_role secondMember" data-type="point" data-accept="1"></div>
+				</div>
+				<div data-atom="perpByPoint" id="perpByPointPrototype" data-type="line" class="atom">
+					<div class="functName perpByPoint">PerpendicularLine(</div>
+					<div class="s_role firstMember" data-type="line" data-accept="1"></div>
+					<div class="decoration perpByPoint"></div>
+					<div class="functName perpByPoint">,</div>
+					<div class="s_role secondMember" data-type="point" data-accept="1"></div>
+					<div class="functName perpByPoint">)</div>
+				</div>
+				<div data-atom="segment" id="segmentPrototype" data-type="line" class="atom">
+					<div class="s_role firstMember" data-type="point" data-accept="1"></div>
+					<div class="decoration segment"></div>
+					<div class="s_role secondMember" data-type="point" data-accept="1"></div>
+				</div>
+				<div data-atom="identical" id="identicalPrototype" data-type="bool" class="atom">
+					<div class="s_role firstMember" data-type="obj" data-accept="1"></div>
+					<div class="decoration">≡</div>
+					<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
+				</div>
+			
