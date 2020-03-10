@@ -39,10 +39,17 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 	{
 		var textFromFileLoaded = fileLoadedEvent.target.result;
 		if(fileSuffix === "mml"){
-			inject(textFromFileLoaded,$targetNode)
+			inject(textFromFileLoaded,$targetNode);
 		}
 		else if(fileSuffix === "json"){
 			injectAll(textFromFileLoaded);
+		}
+		else if(fileSuffix === "prt"){
+			if(confirm('replace existing list of prototypes?')){
+				t.children().remove();
+			}
+			inject(textFromFileLoaded,$('#tavolozza'))
+
 		}
 	};
 	fileReader.readAsText(fileToLoad, "UTF-8");
