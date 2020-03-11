@@ -8,7 +8,7 @@ let sorting = false;//usato solo per gestire gli eventi di dragover
 ssnapshot() //inizializza snapshot manager che gestisce UNDO
 //***********************
 //all elements that can be dragged around are initiated by making their container Sortable
-let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable)'
+let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_role'
 //let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),[data-atom=ci]';
 let initialSortables = document.querySelectorAll(sortablesSelectorString)
 //************ Preload  ************

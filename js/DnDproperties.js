@@ -1,150 +1,172 @@
-function makeSortable(sortables){
+function makeSortable(sortables) {
 
 	for (var i = 0; i < sortables.length; i++) {
-		s = new Sortable(sortables[i], {
+		s = new Sortable(sortables[i],{
 			group: {
-			name: 'sort',
-			pull:function (to, from, item, dragEvent) {
-				//clone does not work when target list = starting list
-				if(dragEvent.ctrlKey){return 'clone'}
-				else if( item.classList.contains('glued')){return false}
-				else{return true}
-			},
-			put: function (to) {
+				//name: 'sort',
+				pull: function(to, from, item, dragEvent) {
+					//clone does not work when target list = starting list
+					if (dragEvent.ctrlKey) {
+						return 'clone'
+					} else if (item.classList.contains('glued')) {
+						return false
+					} else {
+						return true
+					}
+				},
+				put: function(to) {
 					//let result = to.el.matches('[class*="target"]');
-					if( to.el.getAttribute('target')){
+					if (to.el.getAttribute('target')) {
 						console.log('valid target');
-						return true}
-					else{
-						return false}					
-   				}
-			},			
-			filter:function (event,b,sortable,d){
+						return true
+					} else {
+						return false
+					}
+				}
+			},
+			sort:false,
+			filter: function(event, b, sortable, d) {
 				let $draggedATOM = ATOMparent($(event.target));
-				if($draggedATOM.hasClass('glued') && ATOMclosedDef($draggedATOM[0])){return "*"}
+				if ($draggedATOM.hasClass('glued') && ATOMclosedDef($draggedATOM[0])) {
+					return "*"
+				}
 			},
 			animation: 150,
 			fallbackOnBody: true,
 			swapThreshold: 0.65,
 
-			
-			onMove: function (evt) {
+			onMove: function(evt) {
 				// et.to will always be the list you are over but evt.related
 				// will be === only the very first time evt.to changes
 				console.log('move!!!!')
 				if (evt.related === evt.to) {
-				  Sortable.utils.toggleClass(evt.to, 'over', true);
+					Sortable.utils.toggleClass(evt.to, 'over', true);
 				}
 			},
-		
-			onStart:newOnStartHandler,
-			onEnd:onEndHandler,
 
-			onChange:onChangeHandler,
-			onAdd:openOnAdd,
-			onSort:openOnSort
-			
+			onStart: newOnStartHandler,
+			onEnd: onEndHandler,
+
+			onChange: onChangeHandler,
+			onAdd: openOnAdd,
+			onSort: openOnSort
+
 		});
 	}
 
 }
 
-function newOnStartHandler(event,AtomDragged){
+function newOnStartHandler(event, AtomDragged) {
 	//debug newOnStartHandler(undefined,AtomDragged) 
 	let dragged
 	let cloning = false;
 	sorting = true;
-	if(event){dragged = event.item} 
-	else{dragged=AtomDragged}//debug
+	if (event) {
+		dragged = event.item
+	} else {
+		dragged = AtomDragged
+	}
+	//debug
 	//********select*****************
 	clickHandler(event)
 	//********clear all targets*****************
-	if(debugMode){clearTragets()}
-
-	if(!event.originalEvent.ctrlKey){//move!
-		event.item.classList.add('showAsPlaceholder');//will be removed in onEndHandler
+	if (debugMode) {
+		clearTragets()
 	}
-	else{
+
+	if (!event.originalEvent.ctrlKey) {
+		//move!
+		event.item.classList.add('showAsPlaceholder');
+		//will be removed in onEndHandler
+	} else {
 		event.item.classList.add('toBeCloned');
 		cloning = true
 		//event.item.classList.remove('showAsPlaceholder');
-	}//clone
+	}
+	//clone
 
-	
-	
-	
-	if( event.originalEvent.ctrlKey ||!ATOMclosedDef($(dragged))|| $(dragged).is('#tavolozza *') ){
-		let $validTgT = validTargetsFromOpened($(dragged)); 
-		$validTgT.addClass("target-opened");
-		$validTgT.toArray().forEach(function(el){
-			el.setAttribute('target','opened')});
-		makeSortable($validTgT.toArray());
+	if (event.originalEvent.ctrlKey || !ATOMclosedDef($(dragged)) || $(dragged).is('#tavolozza *')) {
+		let $validTgT = validTargetsFromOpened($(dragged));
 		
+		addRoleToConnectedGroup(dragged.parentElement)
+		
+		$validTgT.addClass("target-opened");
+		$validTgT.toArray().forEach(function(el) {
+			addRoleToConnectedGroup(el);
+			
+			el.setAttribute('target', 'opened')
+		});
+		//makeSortable($validTgT.toArray());
+
 	}
 
-	if(ATOMclosedDef($(dragged))&& event.from.classList.contains('ol_role')){
-			// if closed ordered list the not a good target
-			event.from.setAttribute('target','');//not a good target
-			event.from.classList.remove("target-opened");
-			//let sortable = Sortable.get(event.from)
-			thisSortable = Sortable.get(event.from);
-			thisSortable.option('sort',false);   
-	}
-
-
-	else{//apply properties
-		let i=0
-		while(propertiesDnD[i]){	
-			let classname = 'target-'+ propertiesDnD[i].name
+	if (ATOMclosedDef($(dragged)) && event.from.classList.contains('ol_role')) {
+		// if closed ordered list the not a good target
+		event.from.setAttribute('target', '');
+		//not a good target
+		event.from.classList.remove("target-opened");
+		//let sortable = Sortable.get(event.from)
+		thisSortable = Sortable.get(event.from);
+		thisSortable.option('sort', false);
+	} else {
+		//apply properties
+		let i = 0
+		while (propertiesDnD[i]) {
+			let classname = 'target-' + propertiesDnD[i].name
 			clearTarget(classname)
 			let targets = propertiesDnD[i].findTgt($(event.item));
 			let j = 0;
-			while(targets[j]) {
-				let role=targets[j];
+			while (targets[j]) {
+				let role = targets[j];
 				role.classList.add(classname);
-				role.setAttribute('target',propertiesDnD[i].name)
+				role.setAttribute('target', propertiesDnD[i].name)
 				let sortable = Sortable.get(role);
-				if(sortable ){//&&check that the target is not assigned already ???	
+				if (sortable) {
+					//&&check that the target is not assigned already ???	
 					//sortable.option('group',property.name);
 					//sortable.option('put',function(event){property(event.from,event.to)})
 					//sortable.option('onAdd',"function(event){console.log('put in target:');console.log(targets[i])}")
 					//sortable.option('onAdd',propertiesDnD[i].apply)
-					sortable.option('onAdd',propertiesDnD[i].onAdd)
-					sortable.option('onSort','')
+					sortable.option('onAdd', propertiesDnD[i].onAdd)
+					sortable.option('onSort', '')
 				}
-			j++;	
+				j++;
 			}
-		i++	
+			i++
 		}
-	}	 
+	}
 }
-function onEndHandler(event){
-	sorting = false;//used for over class
-	console.log('end!')	
+function onEndHandler(event) {
+	sorting = false;
+	//used for over class
+	console.log('end!')
 	console.log(event)
 	event.item.classList.remove('showAsPlaceholder');
-	
-	if(event.item.classList.contains('toBeCloned')){
+
+	if (event.item.classList.contains('toBeCloned')) {
 		event.item.classList.remove('toBeCloned');
 		let myClone = ATOMclone($(event.item))
 	}
 	let dropTarget
 	//Mouse
-	if( event.originalEvent.type == 'drop'){// event.originalEvent.target è più facile, ma non distingue tra elemento e suo pseudoelemento ::before
-		let x=event.originalEvent.clientX;
-		let y=event.originalEvent.clientY;
-		dropTarget = document.elementFromPoint(x,y);
-		if(!dropTarget.getAttribute('data-atom')){//if it's not an atom get the parent atom
-			dropTarget = ATOMparent($(dropTarget))[0];	
+	if (event.originalEvent.type == 'drop') {
+		// event.originalEvent.target è più facile, ma non distingue tra elemento e suo pseudoelemento ::before
+		let x = event.originalEvent.clientX;
+		let y = event.originalEvent.clientY;
+		dropTarget = document.elementFromPoint(x, y);
+		if (!dropTarget.getAttribute('data-atom')) {
+			//if it's not an atom get the parent atom
+			dropTarget = ATOMparent($(dropTarget))[0];
 		}
-	}
-	//Touch
-	else if(event.originalEvent.changedTouches){//sometimes a touch event is detected without changed touches!
-		let x=event.originalEvent.changedTouches[0].clientX;
-		let y=event.originalEvent.changedTouches[0].clientY;
-		dropTarget = document.elementFromPoint(x,y);
-		if(!dropTarget.getAttribute('data-atom')){//if it's not an atom get the parent atom
-			dropTarget = ATOMparent($(dropTarget))[0];	
+	}//Touch
+	else if (event.originalEvent.changedTouches) {
+		//sometimes a touch event is detected without changed touches!
+		let x = event.originalEvent.changedTouches[0].clientX;
+		let y = event.originalEvent.changedTouches[0].clientY;
+		dropTarget = document.elementFromPoint(x, y);
+		if (!dropTarget.getAttribute('data-atom')) {
+			//if it's not an atom get the parent atom
+			dropTarget = ATOMparent($(dropTarget))[0];
 		}
 	}
 	/* 
@@ -163,38 +185,64 @@ function onEndHandler(event){
 	    }
 	}
 	*/
-	if($(dropTarget).is('[data-atom][target]:not([target=""])')){
-	    //apply property from propertiesDnD
-	    let targetProperty = dropTarget.getAttribute('target');
-	    console.log(' ------------> found target ' + targetProperty );
-	    let property = propertiesDnD.find(function(el){return el.name == targetProperty });
-	    if(property){
-	    	let PActx = property.apply($(event.item),$(dropTarget))
-			if(PActx){PActxConclude(PActx)}	    
-	    }
-	}
-	else{
+	if ($(dropTarget).is('[data-atom][target]:not([target=""])')) {
+		//apply property from propertiesDnD
+		let targetProperty = dropTarget.getAttribute('target');
+		console.log(' ------------> found target ' + targetProperty);
+		let property = propertiesDnD.find(function(el) {
+			return el.name == targetProperty
+		});
+		if (property) {
+			let PActx = property.apply($(event.item), $(dropTarget))
+			if (PActx) {
+				PActxConclude(PActx)
+			}
+		}
+	} else {
 		//  no need for a specific function in propertiesDnD
 		// edit, commute, distribute are simply movement in connected lists  
 		ssnapshot.take()
 	}
 
-	clickSound.play();//repositioned
-	if(event.clone.parentElement != null){
+	clickSound.play();
+	//repositioned
+	if (event.clone.parentElement != null) {
 		event.clone.removeAttribute('id')
-		attachEventsAndExtend($(event.clone),true)
+		attachEventsAndExtend($(event.clone), true)
 	}
-	
 	//RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 	//$(sortablesSelectorString).removeClass('toBeUpdated');
-	if(!debugMode){clearTragets()}
+	clearConnectedGroup();
+	if (!debugMode) {
+		clearTragets()
+	}
 }
 
-function onChangeHandler(event){
+function onChangeHandler(event) {
 	//RefreshEmptyInfixBraketsGlued($(event.target),true,"eib");
 	blipSound.play();
 	//console.log('Change!')
 	//console.log(event)
-	event.target.classList.add('toBeUpdated')//hide infix decorations while sorting
+	event.target.classList.add('toBeUpdated')
+	//hide infix decorations while sorting
 }
 
+let connectedSortables = []
+function addRoleToConnectedGroup(role) {
+	let s = Sortable.get(role);//dragged.parentElement
+	try {
+		s.option('group', 'connected');
+		connectedSortables.push[s];
+	} catch {
+		console.log('error when setting group on role')
+		console.log(role)
+	}
+}
+
+function clearConnectedGroup() {
+	connectedSortables.forEach(function() {
+		
+		s.options.group.name = "undefined";
+	})
+	connectedSortables = [];
+}
