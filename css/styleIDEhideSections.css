@@ -90,6 +90,12 @@ margin-right:11px;
 #tavolozza,#leftContent,#settings{
 	background-color:white;
 }
+
+#leftContent{
+flex-direction: column;
+	align-items: center;
+}
+
 #result{
 		justify-content: center;
 }

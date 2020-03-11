@@ -341,7 +341,7 @@ per una questione estetica */
 
 /*.selected[data-atom], .selected[data-atom]>.s_role>.glued ,.selected[data-atom]>.s_role>.glued[data-atom]>*{*/
 .selected[data-atom], .selected[data-atom] [data-atom]{
-    background-color:f1f1f1;
+    background-color: #eaeaea;
 }
 .unselected[data-atom], .unselected[data-atom] [data-atom]{
 	background-color:white!important;
