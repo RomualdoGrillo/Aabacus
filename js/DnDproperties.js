@@ -3,33 +3,8 @@ function makeSortable(sortables) {
 	for (var i = 0; i < sortables.length; i++) {
 		new Sortable(sortables[i],{
 			group: {
-				//name: 'sort',
 				pull: 'clone',
 				put: false ,
-				/*
-				// !!!!!!!!!! not the right place to
-				// pull function is not overwritten and it will prevale on when you set pull:false
-				pull: function(to, from, item, dragEvent) {
-					//clone does not work when target list = starting list
-					if (dragEvent.ctrlKey) {
-						return 'clone'
-					} else if (item.classList.contains('glued')) {
-						return false
-					} else {
-						return true
-					}
-				},
-
-				put: function(to) {
-					//let result = to.el.matches('[class*="target"]');
-					if (to.el.getAttribute('target')) {
-						console.log('valid target');
-						return true
-					} else {
-						return false
-					}
-				}
-				*/
 			},
 			sort: false,
 			filter: function(event, b, sortable, d) {
@@ -270,66 +245,3 @@ function clearConnectedGroup() {
 	connectedSortables = [];
 
 }
-/*
-function testStartHandler(event, AtomDragged) {
-	// se il dragged è un booleano consenti sort, altrimenti no.
-	let dragged;
-	if (event) {
-		dragged = event.item
-	} else {
-		dragged = AtomDragged
-	}
-	let s = Sortable.get(dragged.parentElement);
-	if (dragged.matches('[data-type=bool]')) {
-		s.option('group', 'connected');
-
-		//s.option('put', !closedol_role);
-		// Do not allow items to be put into this list
-		s.option('sort', true);
-		//addRoleToConnectedGroup(dragged.parentElement, false)
-		// To disable sorting: set sort to false
-		//connectedSortables.push(s);
-		console.log('set NO sort');
-	} else {
-		s.option('group', 'disconnected');
-		s.option('pull', 'clone');
-		s.option('put', false);
-		s.option('sort', false);
-		//addRoleToConnectedGroup(dragged.parentElement, true)
-		console.log('set sort');
-
-	}
-	console.log(dragged.parentElement);
-	console.log(s);
-}
-*/
-/*
-function testStartHandler(event, AtomDragged) {
-	// se il dragged è un booleano consenti sort, altrimenti no.
-	let dragged;
-	if (event) {
-		dragged = event.item
-	} else {
-		dragged = AtomDragged
-	}
-	let s = Sortable.get(dragged.parentElement);
-	if (dragged.matches('[data-type=bool]')) {
-		s.option('group', 'connected');
-
-		//s.option('put', !closedol_role);
-		// Do not allow items to be put into this list
-		s.option('sort', true);
-		//addRoleToConnectedGroup(dragged.parentElement, false)
-		// To disable sorting: set sort to false
-		//connectedSortables.push(s);
-		console.log('set NO sort');
-	} else {
-		s.option('sort', false);
-		//addRoleToConnectedGroup(dragged.parentElement, true)
-		console.log('set sort');
-
-	}
-	console.log(dragged.parentElement);
-	console.log(s);
-}
-*/
