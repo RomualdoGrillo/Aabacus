@@ -10,13 +10,14 @@ ssnapshot() //inizializza snapshot manager che gestisce UNDO
 //all elements that can be dragged around are initiated by making their container Sortable
 let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_role'
 //let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),[data-atom=ci]';
-let initialSortables = document.querySelectorAll(sortablesSelectorString)
+let $initialSortables = $(tela).find( sortablesSelectorString ).addBack().add($('#tavolozza'));
+//let $initialSortables = $(tela).find( sortablesSelectorString ).addBack();
+let initialSortables = $initialSortables.toArray()
+makeSortable(initialSortables);
+ATOMextend($('body'),true);//preload will trigger the usual extend and make sortable chain of events 
 //************ Preload  ************
 preloadAll('./Data/Preload/preload.json');
-
-makeSortable(initialSortables);
 $('[data-atom].asymmetric').each(function(i,e){ refreshAsymmEq($(e))})//initialize lock icons??
-ATOMextend($('body'),true);
 RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 ssnapshot.take();
 document.addEventListener("click",clickHandler);

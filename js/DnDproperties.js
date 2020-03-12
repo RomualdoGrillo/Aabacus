@@ -1,9 +1,13 @@
 function makeSortable(sortables) {
 
 	for (var i = 0; i < sortables.length; i++) {
-		s = new Sortable(sortables[i],{
+		new Sortable(sortables[i],{
 			group: {
 				//name: 'sort',
+				pull: 'clone',
+				/*
+				// !!!!!!!!!! not the right place to
+				// pull function is not overwritten and it will prevale on when you set pull:false
 				pull: function(to, from, item, dragEvent) {
 					//clone does not work when target list = starting list
 					if (dragEvent.ctrlKey) {
@@ -14,6 +18,7 @@ function makeSortable(sortables) {
 						return true
 					}
 				},
+
 				put: function(to) {
 					//let result = to.el.matches('[class*="target"]');
 					if (to.el.getAttribute('target')) {
@@ -23,8 +28,9 @@ function makeSortable(sortables) {
 						return false
 					}
 				}
+				*/
 			},
-			sort:false,
+			sort: false,
 			filter: function(event, b, sortable, d) {
 				let $draggedATOM = ATOMparent($(event.target));
 				if ($draggedATOM.hasClass('glued') && ATOMclosedDef($draggedATOM[0])) {
@@ -33,7 +39,7 @@ function makeSortable(sortables) {
 			},
 			animation: 150,
 			fallbackOnBody: true,
-			swapThreshold: 0.65,
+			swapThreshold: 0.25,
 
 			onMove: function(evt) {
 				// et.to will always be the list you are over but evt.related
@@ -44,20 +50,20 @@ function makeSortable(sortables) {
 				}
 			},
 
-			onStart: newOnStartHandler,
+			onStart: testStartHandler,
 			onEnd: onEndHandler,
-
+			/*
 			onChange: onChangeHandler,
 			onAdd: openOnAdd,
 			onSort: openOnSort
-
+			*/
 		});
 	}
 
 }
 
-function newOnStartHandler(event, AtomDragged) {
-	//debug newOnStartHandler(undefined,AtomDragged) 
+function StartHandler(event, AtomDragged) {
+	//debug StartHandler(undefined,AtomDragged) 
 	let dragged
 	let cloning = false;
 	sorting = true;
@@ -85,18 +91,23 @@ function newOnStartHandler(event, AtomDragged) {
 	}
 	//clone
 
-	if (event.originalEvent.ctrlKey || !ATOMclosedDef($(dragged)) || $(dragged).is('#tavolozza *')) {
+	if (event.originalEvent.ctrlKey || !ATOMclosedDef($(dragged)) || $(dragged).is('#tavolozza>*')) {
+		let role = dragged.parentElement
+
+		let closedol_role = (role.classList.contains('ol_role') && ATOMclosedDef(dragged)) || //if ol_role
+		role.matches('#tavolozza');
+		//tavolozza
+
+		addRoleToConnectedGroup(dragged.parentElement, closedol_role)
+
 		let $validTgT = validTargetsFromOpened($(dragged));
-		
-		addRoleToConnectedGroup(dragged.parentElement)
-		
 		$validTgT.addClass("target-opened");
 		$validTgT.toArray().forEach(function(el) {
 			addRoleToConnectedGroup(el);
-			
+
 			el.setAttribute('target', 'opened')
 		});
-		//makeSortable($validTgT.toArray());
+		makeSortable($validTgT.toArray());
 
 	}
 
@@ -105,9 +116,10 @@ function newOnStartHandler(event, AtomDragged) {
 		event.from.setAttribute('target', '');
 		//not a good target
 		event.from.classList.remove("target-opened");
-		//let sortable = Sortable.get(event.from)
+		/*
 		thisSortable = Sortable.get(event.from);
 		thisSortable.option('sort', false);
+		*/
 	} else {
 		//apply properties
 		let i = 0
@@ -120,6 +132,7 @@ function newOnStartHandler(event, AtomDragged) {
 				let role = targets[j];
 				role.classList.add(classname);
 				role.setAttribute('target', propertiesDnD[i].name)
+				/*
 				let sortable = Sortable.get(role);
 				if (sortable) {
 					//&&check that the target is not assigned already ???	
@@ -130,6 +143,7 @@ function newOnStartHandler(event, AtomDragged) {
 					sortable.option('onAdd', propertiesDnD[i].onAdd)
 					sortable.option('onSort', '')
 				}
+				*/
 				j++;
 			}
 			i++
@@ -228,21 +242,94 @@ function onChangeHandler(event) {
 }
 
 let connectedSortables = []
-function addRoleToConnectedGroup(role) {
-	let s = Sortable.get(role);//dragged.parentElement
+function addRoleToConnectedGroup(role, closedol_role) {
+	let s = Sortable.get(role);
 	try {
 		s.option('group', 'connected');
-		connectedSortables.push[s];
+
+		//s.option('put', !closedol_role);
+		// Do not allow items to be put into this list
+		if(closedol_role){
+			s.option('sort', false);	
+		}
+		
+		// To disable sorting: set sort to false
+		connectedSortables.push(s);
+		console.log('added to connected as: ' + (closedol_role ? 'unsortable' : 'normal'));
+		console.log(role)
 	} catch {
-		console.log('error when setting group on role')
+		console.log('error when setting group on role  !!!!!!!!!!!!!!!!!!!!!!!!')
 		console.log(role)
 	}
 }
 
 function clearConnectedGroup() {
-	connectedSortables.forEach(function() {
-		
-		s.options.group.name = "undefined";
+	connectedSortables.forEach(function(e) {
+
+		e.options.group.name = undefined;
 	})
 	connectedSortables = [];
+
+}
+/*
+function testStartHandler(event, AtomDragged) {
+	// se il dragged è un booleano consenti sort, altrimenti no.
+	let dragged;
+	if (event) {
+		dragged = event.item
+	} else {
+		dragged = AtomDragged
+	}
+	let s = Sortable.get(dragged.parentElement);
+	if (dragged.matches('[data-type=bool]')) {
+		s.option('group', 'connected');
+
+		//s.option('put', !closedol_role);
+		// Do not allow items to be put into this list
+		s.option('sort', true);
+		//addRoleToConnectedGroup(dragged.parentElement, false)
+		// To disable sorting: set sort to false
+		//connectedSortables.push(s);
+		console.log('set NO sort');
+	} else {
+		s.option('group', 'disconnected');
+		s.option('pull', 'clone');
+		s.option('put', false);
+		s.option('sort', false);
+		//addRoleToConnectedGroup(dragged.parentElement, true)
+		console.log('set sort');
+
+	}
+	console.log(dragged.parentElement);
+	console.log(s);
+}
+*/
+
+function testStartHandler(event, AtomDragged) {
+	// se il dragged è un booleano consenti sort, altrimenti no.
+	let dragged;
+	if (event) {
+		dragged = event.item
+	} else {
+		dragged = AtomDragged
+	}
+	let s = Sortable.get(dragged.parentElement);
+	if (dragged.matches('[data-type=bool]')) {
+		s.option('group', 'connected');
+
+		//s.option('put', !closedol_role);
+		// Do not allow items to be put into this list
+		s.option('sort', true);
+		//addRoleToConnectedGroup(dragged.parentElement, false)
+		// To disable sorting: set sort to false
+		//connectedSortables.push(s);
+		console.log('set NO sort');
+	} else {
+		s.option('sort', false);
+		//addRoleToConnectedGroup(dragged.parentElement, true)
+		console.log('set sort');
+
+	}
+	console.log(dragged.parentElement);
+	console.log(s);
 }
