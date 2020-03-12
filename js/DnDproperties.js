@@ -5,6 +5,7 @@ function makeSortable(sortables) {
 			group: {
 				//name: 'sort',
 				pull: 'clone',
+				put: false ,
 				/*
 				// !!!!!!!!!! not the right place to
 				// pull function is not overwritten and it will prevale on when you set pull:false
@@ -50,7 +51,7 @@ function makeSortable(sortables) {
 				}
 			},
 
-			onStart: testStartHandler,
+			onStart: StartHandler,
 			onEnd: onEndHandler,
 			/*
 			onChange: onChangeHandler,
@@ -249,9 +250,7 @@ function addRoleToConnectedGroup(role, closedol_role) {
 
 		//s.option('put', !closedol_role);
 		// Do not allow items to be put into this list
-		if(closedol_role){
-			s.option('sort', false);	
-		}
+		//if(closedol_role){s.option('sort', false);}
 		
 		// To disable sorting: set sort to false
 		connectedSortables.push(s);
@@ -304,7 +303,7 @@ function testStartHandler(event, AtomDragged) {
 	console.log(s);
 }
 */
-
+/*
 function testStartHandler(event, AtomDragged) {
 	// se il dragged è un booleano consenti sort, altrimenti no.
 	let dragged;
@@ -333,3 +332,4 @@ function testStartHandler(event, AtomDragged) {
 	console.log(dragged.parentElement);
 	console.log(s);
 }
+*/
