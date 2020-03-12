@@ -14,8 +14,9 @@ let $initialSortables = $(tela).find( sortablesSelectorString ).addBack().add($(
 //let $initialSortables = $(tela).find( sortablesSelectorString ).addBack();
 let initialSortables = $initialSortables.toArray()
 makeSortable(initialSortables);
-ATOMextend($('body'),true);//preload will trigger the usual extend and make sortable chain of events 
+ATOMextend($('body'),true);
 //************ Preload  ************
+//preload will trigger the usual extend and make sortable chain of events 
 preloadAll('./Data/Preload/preload.json');
 $('[data-atom].asymmetric').each(function(i,e){ refreshAsymmEq($(e))})//initialize lock icons??
 RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
