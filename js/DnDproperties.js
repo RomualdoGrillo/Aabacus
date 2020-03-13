@@ -1,26 +1,29 @@
 function makeSortable(sortables) {
-	for (var i = 0; i < sortables.length; i++) {
-		new Sortable(sortables[i],{
 
-			group: {
-				//name: 'shared',
-				//pull: 'clone',
-				//put:true,
-			},
-			animation: 150,
-			onStart: StartHandler,
-			onEnd: onEndHandler
-
-		});
-	}
-	/*/
 	for (var i = 0; i < sortables.length; i++) {
 		new Sortable(sortables[i],{
 			group: {
-				name:'shared',
-				//pull: 'clone',
+				name: 'sort',
+				pull: function(to, sortableFrom, item, dragEvent) {
+					//clone does not work when target list = starting list
+					if (dragEvent.ctrlKey || sortableFrom.el.matches('#tavolozza')) {
+						return 'clone'
+					} else if (item.classList.contains('glued')) {
+						return false
+					} else {
+						return true
+					}
+				},
+				put: function(to) {
+					//let result = to.el.matches('[class*="target"]');
+					if (to.el.getAttribute('target')) {
+						//console.log('valid target');
+						return true
+					} else {
+						return false
+					}
+				}
 			},
-			//sort: true,
 			filter: function(event, b, sortable, d) {
 				let $draggedATOM = ATOMparent($(event.target));
 				if ($draggedATOM.hasClass('glued') && ATOMclosedDef($draggedATOM[0])) {
@@ -30,7 +33,7 @@ function makeSortable(sortables) {
 			animation: 150,
 			fallbackOnBody: true,
 			swapThreshold: 0.65,
-			
+
 			onMove: function(evt) {
 				// et.to will always be the list you are over but evt.related
 				// will be === only the very first time evt.to changes
@@ -39,140 +42,96 @@ function makeSortable(sortables) {
 					Sortable.utils.toggleClass(evt.to, 'over', true);
 				}
 			},
-
-			onStart: StartHandler,
+			onStart: startHandler,
 			onEnd: onEndHandler,
-			
-			//onChange: onChangeHandler,
-			//onAdd: openOnAdd,
-			//onSort: openOnSort
-			
+			onChange: onChangeHandler,
+			onAdd: openOnAdd,
+			onSort: openOnSort
+
 		});
 	}
-/*/
 }
 
-//StartHandler(undefined,$('#tavolozza').children()[3] ,false)
-function StartHandler(event, AtomDragged, ctrlKey) {
-	//debug StartHandler(undefined,AtomDragged) 
-	let cloning = false
+function startHandler(event, AtomDragged) {
+	//debug newOnStartHandler(undefined,AtomDragged) 
+	let dragged
+	let cloning = false;
 	sorting = true;
 	if (event) {
-		AtomDragged = event.item;
-		ctrlKey = event.originalEvent.ctrlKey;
+		dragged = event.item
+	} else {
+		dragged = AtomDragged
 	}
-	let role = AtomDragged.parentElement
 	//debug
 	//********select*****************
-	//clickHandler(event)
+	clickHandler(event)
 	//********clear all targets*****************
 	if (debugMode) {
 		clearTragets()
 	}
-
-	if (ctrlKey || AtomDragged.closest('#tavolozza')) {
+	if (event.originalEvent.ctrlKey|| event.from.matches('#tavolozza')) {
 		//clone!
-		AtomDragged.classList.add('toBeCloned');
+		event.item.classList.add('toBeCloned');
 		cloning = true
-		//AtomDragged.classList.remove('showAsPlaceholder');
+		//event.item.classList.remove('showAsPlaceholder');
 	} else {
 		//move!
-		AtomDragged.classList.add('showAsPlaceholder');
+		event.item.classList.add('showAsPlaceholder');
 		//will be removed in onEndHandler
+
+
+
+
+
 	}
 	//clone
 
-	if (ctrlKey || !ATOMclosedDef($(AtomDragged)) || $(AtomDragged).is('#tavolozza>*')) {
-		let role = AtomDragged.parentElement
-
-		let closedol_role = (role.classList.contains('ol_role') && ATOMclosedDef(AtomDragged)) || //if ol_role
-		role.matches('#tavolozza');
-		//tavolozza
-		//if(closedol_role){role.classList.add('tempdisable')}//stupid workaround
-		addRoleToConnectedGroup(AtomDragged.parentElement, closedol_role)
-
-		let $validTgT = validTargetsFromOpened($(AtomDragged));
-		console.log('tgt list');
-		console.log($validTgT);
+	if (event.originalEvent.ctrlKey || !ATOMclosedDef($(dragged)) || $(dragged).is('#tavolozza>*')) {
+		let $validTgT = validTargetsFromOpened($(dragged));
 		$validTgT.addClass("target-opened");
 		$validTgT.toArray().forEach(function(el) {
-			addRoleToConnectedGroup(el);
-
 			el.setAttribute('target', 'opened')
 		});
 		makeSortable($validTgT.toArray());
 
 	}
-	/*COMMENTATO PROVVISORIAMENTE non dovrebbe scattare se il dragged è da open!!!!
-	if (ATOMclosedDef($(AtomDragged)) && role.classList.contains('ol_role')) {
+
+	if (ATOMclosedDef($(dragged)) && event.from.classList.contains('ol_role')) {
 		// if closed ordered list the not a good target
-		role.setAttribute('target', '');
+		event.from.setAttribute('target', '');
 		//not a good target
-		role.classList.remove("target-opened");
-		
-		//thisSortable = Sortable.get(role);
-		//thisSortable.option('sort', false);
-		
-	} 
+		event.from.classList.remove("target-opened");
+		//let sortable = Sortable.get(event.from)
+		thisSortable = Sortable.get(event.from);
+		thisSortable.option('sort', false);
+	}
 	else {
 		//apply properties
 		let i = 0
 		while (propertiesDnD[i]) {
 			let classname = 'target-' + propertiesDnD[i].name
 			clearTarget(classname)
-			let targets = propertiesDnD[i].findTgt($(AtomDragged));
+			let targets = propertiesDnD[i].findTgt($(event.item));
 			let j = 0;
 			while (targets[j]) {
 				let role = targets[j];
 				role.classList.add(classname);
 				role.setAttribute('target', propertiesDnD[i].name)
-				
-				//let sortable = Sortable.get(role);
-				//if (sortable) {
+				let sortable = Sortable.get(role);
+				if (sortable) {
 					//&&check that the target is not assigned already ???	
 					//sortable.option('group',property.name);
-					//sortable.option('put',function(event){property(role,event.to)})
+					//sortable.option('put',function(event){property(event.from,event.to)})
 					//sortable.option('onAdd',"function(event){console.log('put in target:');console.log(targets[i])}")
 					//sortable.option('onAdd',propertiesDnD[i].apply)
 					sortable.option('onAdd', propertiesDnD[i].onAdd)
 					sortable.option('onSort', '')
-				//}
-				
+				}
 				j++;
 			}
 			i++
 		}
 	}
-	*/
-}
-
-let connectedSortables = []
-function addRoleToConnectedGroup(role, closedol_role) {
-	let s = Sortable.get(role);
-	try {
-		s.option('group', 'shared');
-		//s.option('put', true);
-		// Do not allow items to be put into this list
-		//if(closedol_role){s.option('sort', false);}
-
-		// To disable sorting: set sort to false
-		connectedSortables.push(s);
-		console.log('added to connected as: ' + (closedol_role ? 'unsortable' : 'normal'));
-		console.log(role)
-	} catch {
-		console.log('error when setting group on role  !!!!!!!!!!!!!!!!!!!!!!!!')
-		console.log(role)
-	}
-}
-
-function clearConnectedGroup() {
-	connectedSortables.forEach(function(e) {
-
-		//s.option('put', false);
-		e.options.group.name = undefined;
-	})
-	connectedSortables = [];
-
 }
 
 function onEndHandler(event) {
@@ -252,7 +211,7 @@ function onEndHandler(event) {
 	}
 	//RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 	//$(sortablesSelectorString).removeClass('toBeUpdated');
-	clearConnectedGroup();
+
 	if (!debugMode) {
 		clearTragets()
 	}
@@ -266,4 +225,3 @@ function onChangeHandler(event) {
 	event.target.classList.add('toBeUpdated')
 	//hide infix decorations while sorting
 }
-
