@@ -1,24 +1,29 @@
 function makeSortable(sortables) {
-	
+
 	for (var i = 0; i < sortables.length; i++) {
 		new Sortable(sortables[i],{
-		    group: {
-			name: 'sort',
-			pull:function (to, from, item, dragEvent) {
-				//clone does not work when target list = starting list
-				if(dragEvent.ctrlKey){return 'clone'}
-				else if( item.classList.contains('glued')){return false}
-				else{return true}
-			},
-			put: function (to) {
+			group: {
+				name: 'sort',
+				pull: function(to, sortableFrom, item, dragEvent) {
+					//clone does not work when target list = starting list
+					if (dragEvent.ctrlKey || sortableFrom.el.matches('#tavolozza')) {
+						return 'clone'
+					} else if (item.classList.contains('glued')) {
+						return false
+					} else {
+						return true
+					}
+				},
+				put: function(to) {
 					//let result = to.el.matches('[class*="target"]');
-					if( to.el.getAttribute('target')){
+					if (to.el.getAttribute('target')) {
 						//console.log('valid target');
-						return true}
-					else{
-						return false}					
-   				}
-			},			
+						return true
+					} else {
+						return false
+					}
+				}
+			},
 			filter: function(event, b, sortable, d) {
 				let $draggedATOM = ATOMparent($(event.target));
 				if ($draggedATOM.hasClass('glued') && ATOMclosedDef($draggedATOM[0])) {
@@ -28,7 +33,7 @@ function makeSortable(sortables) {
 			animation: 150,
 			fallbackOnBody: true,
 			swapThreshold: 0.65,
-			
+
 			onMove: function(evt) {
 				// et.to will always be the list you are over but evt.related
 				// will be === only the very first time evt.to changes
@@ -38,86 +43,96 @@ function makeSortable(sortables) {
 				}
 			},
 			onStart: startHandler,
-			onEnd: onEndHandler,					
+			onEnd: onEndHandler,
 			onChange: onChangeHandler,
 			onAdd: openOnAdd,
 			onSort: openOnSort
-			
+
 		});
-  }
+	}
 }
 
-function startHandler(event,AtomDragged){
+function startHandler(event, AtomDragged) {
 	//debug newOnStartHandler(undefined,AtomDragged) 
 	let dragged
 	let cloning = false;
 	sorting = true;
-	if(event){dragged = event.item} 
-	else{dragged=AtomDragged}//debug
+	if (event) {
+		dragged = event.item
+	} else {
+		dragged = AtomDragged
+	}
+	//debug
 	//********select*****************
 	clickHandler(event)
 	//********clear all targets*****************
-	if(debugMode){clearTragets()}
-
-	if(!event.originalEvent.ctrlKey){//move!
-		event.item.classList.add('showAsPlaceholder');//will be removed in onEndHandler
+	if (debugMode) {
+		clearTragets()
 	}
-	else{
+	if (event.originalEvent.ctrlKey|| event.from.matches('#tavolozza')) {
+		//clone!
 		event.item.classList.add('toBeCloned');
 		cloning = true
 		//event.item.classList.remove('showAsPlaceholder');
-	}//clone
+	} else {
+		//move!
+		event.item.classList.add('showAsPlaceholder');
+		//will be removed in onEndHandler
 
-	
-	
-	
-	if( event.originalEvent.ctrlKey ||!ATOMclosedDef($(dragged))|| $(dragged).is('#tavolozza *') ){
-		let $validTgT = validTargetsFromOpened($(dragged)); 
+
+
+
+
+	}
+	//clone
+
+	if (event.originalEvent.ctrlKey || !ATOMclosedDef($(dragged)) || $(dragged).is('#tavolozza>*')) {
+		let $validTgT = validTargetsFromOpened($(dragged));
 		$validTgT.addClass("target-opened");
-		$validTgT.toArray().forEach(function(el){
-			el.setAttribute('target','opened')});
+		$validTgT.toArray().forEach(function(el) {
+			el.setAttribute('target', 'opened')
+		});
 		makeSortable($validTgT.toArray());
-		
+
 	}
 
-	if(ATOMclosedDef($(dragged))&& event.from.classList.contains('ol_role')){
-			// if closed ordered list the not a good target
-			event.from.setAttribute('target','');//not a good target
-			event.from.classList.remove("target-opened");
-			//let sortable = Sortable.get(event.from)
-			thisSortable = Sortable.get(event.from);
-			thisSortable.option('sort',false);   
+	if (ATOMclosedDef($(dragged)) && event.from.classList.contains('ol_role')) {
+		// if closed ordered list the not a good target
+		event.from.setAttribute('target', '');
+		//not a good target
+		event.from.classList.remove("target-opened");
+		//let sortable = Sortable.get(event.from)
+		thisSortable = Sortable.get(event.from);
+		thisSortable.option('sort', false);
 	}
-
-
-	else{//apply properties
-		let i=0
-		while(propertiesDnD[i]){	
-			let classname = 'target-'+ propertiesDnD[i].name
+	else {
+		//apply properties
+		let i = 0
+		while (propertiesDnD[i]) {
+			let classname = 'target-' + propertiesDnD[i].name
 			clearTarget(classname)
 			let targets = propertiesDnD[i].findTgt($(event.item));
 			let j = 0;
-			while(targets[j]) {
-				let role=targets[j];
+			while (targets[j]) {
+				let role = targets[j];
 				role.classList.add(classname);
-				role.setAttribute('target',propertiesDnD[i].name)
+				role.setAttribute('target', propertiesDnD[i].name)
 				let sortable = Sortable.get(role);
-				if(sortable ){//&&check that the target is not assigned already ???	
+				if (sortable) {
+					//&&check that the target is not assigned already ???	
 					//sortable.option('group',property.name);
 					//sortable.option('put',function(event){property(event.from,event.to)})
 					//sortable.option('onAdd',"function(event){console.log('put in target:');console.log(targets[i])}")
 					//sortable.option('onAdd',propertiesDnD[i].apply)
-					sortable.option('onAdd',propertiesDnD[i].onAdd)
-					sortable.option('onSort','')
+					sortable.option('onAdd', propertiesDnD[i].onAdd)
+					sortable.option('onSort', '')
 				}
-			j++;	
+				j++;
 			}
-		i++	
+			i++
 		}
-	}	 
+	}
 }
-
-
 
 function onEndHandler(event) {
 	sorting = false;
@@ -196,7 +211,7 @@ function onEndHandler(event) {
 	}
 	//RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 	//$(sortablesSelectorString).removeClass('toBeUpdated');
-	
+
 	if (!debugMode) {
 		clearTragets()
 	}
@@ -210,4 +225,3 @@ function onChangeHandler(event) {
 	event.target.classList.add('toBeUpdated')
 	//hide infix decorations while sorting
 }
-
