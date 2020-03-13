@@ -9,19 +9,29 @@
 		"name":"classic",
 		"colors":"whiteBorders",
 		"brackets":true,
-		"timesVert":false
+		"timesVert":false,
+		"fixBorders":false
 		},
 		{
 		"name":"beauty",
 		"colors":"greyBorders",
 		"brackets":true,
-		"timesVert":false
+		"timesVert":false,
+		"fixBorders":false
 		},
 		{
 		"name":"advanced",
 		"colors":"coloredBorders",
 		"brackets":false,
-		"timesVert":true
+		"timesVert":true,
+		"fixBorders":false
+		},
+		{
+		"name":"tooColored",
+		"colors":"tooColored",
+		"brackets":false,
+		"timesVert":true,
+		"fixBorders":true
 		}
 	]
 }

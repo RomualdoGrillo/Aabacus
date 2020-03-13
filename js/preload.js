@@ -89,6 +89,9 @@ function GLBsettingsToInterface() {
 		$('#cb_vertTimes')[0].checked = visSetting.timesVert;
 		updateBodyClass('vertTimes',visSetting.timesVert);
 		
+		$('#cb_fixBorders')[0].checked = visSetting.fixBorders;
+		updateBodyClass('fixBorders',visSetting.fixBorders);
+		
 		if (dd_colors && dd_colors.namedItem(visSetting.colors) != null) {
 			let index = dd_colors.namedItem(visSetting.colors).index;
 			dd_colors.selectedIndex = index;
@@ -136,6 +139,7 @@ mySettings.addEventListener('change', function(event) {
 			GLBsettings.gameMode = $('#gameModeButton')[0].checked;
 			visSetting.brackets = $('#cb_showPar')[0].checked;
 			visSetting.timesVert = $('#cb_vertTimes')[0].checked;
+			visSetting.fixBorders = $('#cb_fixBorders')[0].checked;
 			let index = dd_colors.selectedIndex
 			visSetting.colors=dd_colors.selectedOptions[0].id
 		}
