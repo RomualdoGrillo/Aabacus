@@ -10,7 +10,7 @@ ssnapshot() //inizializza snapshot manager che gestisce UNDO
 //all elements that can be dragged around are initiated by making their container Sortable
 let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_role'
 //let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),[data-atom=ci]';
-let $initialSortables = $(tela).find( sortablesSelectorString ).addBack().add($('#tavolozza'));
+let $initialSortables = $(tela).find( sortablesSelectorString ).addBack();
 //let $initialSortables = $(tela).find( sortablesSelectorString ).addBack();
 let initialSortables = $initialSortables.toArray()
 makeSortable(initialSortables);

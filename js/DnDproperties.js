@@ -1,12 +1,26 @@
 function makeSortable(sortables) {
-//*/
+	for (var i = 0; i < sortables.length; i++) {
+		new Sortable(sortables[i],{
+
+			group: {
+				//name: 'shared',
+				//pull: 'clone',
+				//put:true,
+			},
+			animation: 150,
+			onStart: StartHandler,
+			onEnd: onEndHandler
+
+		});
+	}
+	/*/
 	for (var i = 0; i < sortables.length; i++) {
 		new Sortable(sortables[i],{
 			group: {
-				pull: 'clone',
-				put: false ,
+				name:'shared',
+				//pull: 'clone',
 			},
-			//sort: false,
+			//sort: true,
 			filter: function(event, b, sortable, d) {
 				let $draggedATOM = ATOMparent($(event.target));
 				if ($draggedATOM.hasClass('glued') && ATOMclosedDef($draggedATOM[0])) {
@@ -15,8 +29,8 @@ function makeSortable(sortables) {
 			},
 			animation: 150,
 			fallbackOnBody: true,
-			swapThreshold: 0.25,
-
+			swapThreshold: 0.65,
+			
 			onMove: function(evt) {
 				// et.to will always be the list you are over but evt.related
 				// will be === only the very first time evt.to changes
@@ -35,11 +49,11 @@ function makeSortable(sortables) {
 			
 		});
 	}
-//*/
+/*/
 }
 
 //StartHandler(undefined,$('#tavolozza').children()[3] ,false)
-function StartHandler(event, AtomDragged,ctrlKey) {
+function StartHandler(event, AtomDragged, ctrlKey) {
 	//debug StartHandler(undefined,AtomDragged) 
 	let cloning = false
 	sorting = true;
@@ -56,7 +70,7 @@ function StartHandler(event, AtomDragged,ctrlKey) {
 		clearTragets()
 	}
 
-	if (ctrlKey || AtomDragged.closest('#tavolozza') ){
+	if (ctrlKey || AtomDragged.closest('#tavolozza')) {
 		//clone!
 		AtomDragged.classList.add('toBeCloned');
 		cloning = true
@@ -78,6 +92,8 @@ function StartHandler(event, AtomDragged,ctrlKey) {
 		addRoleToConnectedGroup(AtomDragged.parentElement, closedol_role)
 
 		let $validTgT = validTargetsFromOpened($(AtomDragged));
+		console.log('tgt list');
+		console.log($validTgT);
 		$validTgT.addClass("target-opened");
 		$validTgT.toArray().forEach(function(el) {
 			addRoleToConnectedGroup(el);
@@ -87,17 +103,18 @@ function StartHandler(event, AtomDragged,ctrlKey) {
 		makeSortable($validTgT.toArray());
 
 	}
-
+	/*COMMENTATO PROVVISORIAMENTE non dovrebbe scattare se il dragged è da open!!!!
 	if (ATOMclosedDef($(AtomDragged)) && role.classList.contains('ol_role')) {
 		// if closed ordered list the not a good target
 		role.setAttribute('target', '');
 		//not a good target
 		role.classList.remove("target-opened");
-		/*
-		thisSortable = Sortable.get(role);
-		thisSortable.option('sort', false);
-		*/
-	} else {
+		
+		//thisSortable = Sortable.get(role);
+		//thisSortable.option('sort', false);
+		
+	} 
+	else {
 		//apply properties
 		let i = 0
 		while (propertiesDnD[i]) {
@@ -109,9 +126,9 @@ function StartHandler(event, AtomDragged,ctrlKey) {
 				let role = targets[j];
 				role.classList.add(classname);
 				role.setAttribute('target', propertiesDnD[i].name)
-				/*
-				let sortable = Sortable.get(role);
-				if (sortable) {
+				
+				//let sortable = Sortable.get(role);
+				//if (sortable) {
 					//&&check that the target is not assigned already ???	
 					//sortable.option('group',property.name);
 					//sortable.option('put',function(event){property(role,event.to)})
@@ -119,25 +136,25 @@ function StartHandler(event, AtomDragged,ctrlKey) {
 					//sortable.option('onAdd',propertiesDnD[i].apply)
 					sortable.option('onAdd', propertiesDnD[i].onAdd)
 					sortable.option('onSort', '')
-				}
-				*/
+				//}
+				
 				j++;
 			}
 			i++
 		}
 	}
+	*/
 }
 
 let connectedSortables = []
 function addRoleToConnectedGroup(role, closedol_role) {
 	let s = Sortable.get(role);
 	try {
-		s.option('group', 'connected');
-
-		//s.option('put', !closedol_role);
+		s.option('group', 'shared');
+		//s.option('put', true);
 		// Do not allow items to be put into this list
 		//if(closedol_role){s.option('sort', false);}
-		
+
 		// To disable sorting: set sort to false
 		connectedSortables.push(s);
 		console.log('added to connected as: ' + (closedol_role ? 'unsortable' : 'normal'));
@@ -151,6 +168,7 @@ function addRoleToConnectedGroup(role, closedol_role) {
 function clearConnectedGroup() {
 	connectedSortables.forEach(function(e) {
 
+		//s.option('put', false);
 		e.options.group.name = undefined;
 	})
 	connectedSortables = [];

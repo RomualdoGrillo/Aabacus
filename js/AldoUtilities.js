@@ -8,14 +8,11 @@ function makeSortableDEBUG(sortables) {
 
 			group: {
 				name: 'shared',
-				pull: 'clone',
-				//put: false // Do not allow items to be put into this list
+				//pull: 'clone',
 			},
-			animation: 150,
-			sort: true // To disable sorting: set sort to false
-			
+			fallbackOnBody: true,	
+			animation: 150,		
 		});
-
 	}
 }
 /*

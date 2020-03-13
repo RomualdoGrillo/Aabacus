@@ -390,7 +390,7 @@ function validTargetsFromOpened($ATOMdragged){
 			
 			return result
 		})
-	  	return valids
+	  	return valids.not($ATOMdragged.parent())
 }
 
 function getNumOfPlaces($role){

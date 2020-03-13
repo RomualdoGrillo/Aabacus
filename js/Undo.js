@@ -22,7 +22,7 @@ ssnapshot.take = function(){
 		//$("#test").html(SnapshotName)
 		//$("#undoNames").html(testSnapshotNames.toString())
 		//----------------------------
-		console.log('Stored snapshot. Number of snapshots= '+ FILO.length  )
+		//console.log('Stored snapshot. Number of snapshots= '+ FILO.length  )
 		//console.log($cloneTela)
 }
 

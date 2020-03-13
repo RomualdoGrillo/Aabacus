@@ -42,7 +42,7 @@ function injectAll(response,rootUrl){
 		}
 	else if(all.settings_json){//url
 		$.getJSON(buildPath(rootUrl,all.settings_json), function(parsedJSON){
-			console.log(parsedJSON);
+			//console.log(parsedJSON);
 			GLBsettings = parsedJSON
 			GLBsettingsToInterface();
 		});
@@ -91,7 +91,6 @@ function GLBsettingsToInterface() {
 		
 		if (dd_colors && dd_colors.namedItem(visSetting.colors) != null) {
 			let index = dd_colors.namedItem(visSetting.colors).index;
-			console.log(visSetting.colors);
 			dd_colors.selectedIndex = index;
 			$('body').removeClass('whiteBorders greyBorders coloredBorders');//ripulisci valori precedenti
 			$('body').addClass(visSetting.colors)
