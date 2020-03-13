@@ -28,7 +28,7 @@
 		},
 		{
 		"name":"tooColored",
-		"colors":"tooColored",
+		"colors":"coloredBorders",
 		"brackets":false,
 		"timesVert":true,
 		"fixBorders":true

@@ -24,12 +24,13 @@ function makeSortable(sortables) {
 					}
 				}
 			},
-			filter: function(event, b, sortable, d) {
+			/*filter: function(event, b, sortable, d) {
 				let $draggedATOM = ATOMparent($(event.target));
 				if ($draggedATOM.hasClass('glued') && ATOMclosedDef($draggedATOM[0])) {
 					return "*"
 				}
-			},
+			},*/
+			//filter:"[data-type=num]",
 			animation: 150,
 			fallbackOnBody: true,
 			swapThreshold: 0.65,
