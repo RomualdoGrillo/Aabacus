@@ -2,7 +2,7 @@
 	"debug":false,
 	"gameMode":true,
 	"gameModeSurpriseRes":false,
-	"telaLocked":true,
+	"lockTela":true,
 	"visSettingSelected":3,
 	"visSettings":[
 		{

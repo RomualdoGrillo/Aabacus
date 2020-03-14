@@ -1,6 +1,8 @@
 body{
 	display:flex;
 	margin:0px;
+	overflow:hidden;
+
 }
 div.ide{
 	border-width: 1px;
@@ -12,13 +14,14 @@ div.ide{
 
 #tavolozza, #settings {
 	overflow-y: hidden;
-	overflow-x:scroll;
-	
+	overflow-x: auto;
 }
 #centralColumn{
 	flex-grow: 1;
-	margin-left:10px;
+	margin-left: 10px;
 	margin-right:10px;
+	width:100px;/*??? senza di questo la colonna centrale si espande
+	a seconda del contenuto*/
 }
 #rightColumn:not(:hover):not(.fixed),#leftColumn:not(:hover):not(.fixed) {
 	width: 20px;
@@ -26,6 +29,10 @@ div.ide{
 	border-width:0px;
 	z-index:1;
 }
+#leftColumn:not(:hover):not(.fixed){
+	margin-top: 300px;
+}
+
 #leftColumn,#rightColumn{
 	width: 95px;
 	transition: width 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
@@ -47,6 +54,7 @@ div.ide{
 	height:10px;
 	z-index:1;
 	opacity:0;
+		margin-left: 50px;
 }
 #tavolozzaRow:not(:hover):not(.fixed) *{
 	display:none;
@@ -60,10 +68,8 @@ div.ide{
 }
 
 #tavolozza{
-flex-grow:1;
-flex-flow:wrap;
-margin-right:11px;
-}
+	padding-left:10px;
+	}
 
 
 #tavolozza>*{
