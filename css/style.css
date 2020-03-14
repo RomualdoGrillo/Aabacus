@@ -584,9 +584,8 @@ border-right-style: solid;
 }
 
 
-#telaRoleX [data-atom=and]>.ul_role>*{
-	
-
+#telaRole [data-atom=or]>.ul_role>*{
+	align-self: stretch;
 }
 
 #telaRole [data-atom=or]>.ul_role>.minimized{
@@ -594,6 +593,25 @@ border-right-style: solid;
 	background-image: url(../images/three-dots-vert.svg);
 	background-position: center center;
 }
+#telaRole [data-atom=or]{
+	padding:0px;
+}
+#telaRole [data-atom=or]>.ul_role>[data-atom]{
+	margin:-1px;
+	border-radius:0px;
+}
+#telaRole [data-atom=or]>.ul_role>[data-atom]:first-child{
+	border-bottom-left-radius: var(--div-smallradius);
+	border-top-left-radius: var(--div-smallradius);
+}
+#telaRole [data-atom=or]>.ul_role>[data-atom]:last-child{
+	border-bottom-right-radius: var(--div-smallradius);
+	border-top-right-radius: var(--div-smallradius);
+}
+
+
+
+
 
 
 #telaRole [data-atom].minimized>*{
@@ -671,7 +689,7 @@ border-right-style: solid;
 	background-color:red;
 }
 
-#telaRole [data-atom][data-type=num]:not(:hover){
+body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover){
 border-color:transparent;
 }
 

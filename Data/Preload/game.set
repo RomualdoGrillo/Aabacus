@@ -2,9 +2,8 @@
 	"debug":false,
 	"gameMode":true,
 	"gameModeSurpriseRes":false,
-	"LockTela":false,
-	"resultHidden":true,
-	"visSettingSelected":1,
+	"telaLocked":true,
+	"visSettingSelected":3,
 	"visSettings":[
 		{
 		"name":"classic",

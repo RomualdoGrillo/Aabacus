@@ -30,12 +30,14 @@ function injectAll(response,rootUrl){
 		preloadAjax(buildPath(rootUrl,all.content_mml),$("#telaRole"))
 	}
 	if(all.result_mml && all.result_mml.string){//string data
+		$('#result').children().remove();
 		inject(all.result_mml.string, $('#result'))
 		}
 	else if(all.result_mml){//url
+		$('#result').children().remove();
 		preloadAjax(buildPath(rootUrl,all.result_mml),$('#result'))
 	}
-	if(all.settings_json && all.settings_json.mode){//JSON
+	if(all.settings_json && all.settings_json.string){//JSON
 			//updateSettings(all.settings_json)
 			GLBsettings = all.settings_json;
 			GLBsettingsToInterface();
@@ -46,6 +48,11 @@ function injectAll(response,rootUrl){
 			GLBsettings = parsedJSON
 			GLBsettingsToInterface();
 		});
+	}
+	if(GLBsettings.lockTela != undefined){
+				if(GLBsettings.lockTela){$('#tela').removeClass('unlocked')}
+				else{$('#tela').addClass('unlocked')}
+				refreshAsymmEq($('#tela'));
 	}
 }
 
@@ -76,8 +83,10 @@ function preloadAjax(myUrl,target) {
 let dd_colors = $('#select_colors')[0]
 let $dd_visSelection = $('#visSettingSelected');
 function GLBsettingsToInterface() {
-	$('#gameModeButton')[0].checked = GLBsettings.gameMode;
+	$('#BUTT_gameMode')[0].checked = GLBsettings.gameMode;
 	updateBodyClass('gameMode',GLBsettings.gameMode);
+	$('#BUTT_gameModeSurpriseRes')[0].checked = GLBsettings.gameModeSurpriseRes;
+	updateBodyClass('gameModeSurpriseRes',GLBsettings.gameModeSurpriseRes);
 	populateDropdown(GLBsettings.visSettings);
 	let visIndex = GLBsettings.visSettingSelected;
 	$dd_visSelection[0].selectedIndex = visIndex;
@@ -136,7 +145,8 @@ mySettings.addEventListener('change', function(event) {
 		let visIndex = GLBsettings.visSettingSelected;
 		if (GLBsettings.visSettings[visIndex]) {
 			let visSetting = GLBsettings.visSettings[visIndex];
-			GLBsettings.gameMode = $('#gameModeButton')[0].checked;
+			GLBsettings.gameMode = $('#BUTT_gameMode')[0].checked;
+			GLBsettings.gameModeSurpriseRes = $('#BUTT_gameModeSurpriseRes')[0].checked;		
 			visSetting.brackets = $('#cb_showPar')[0].checked;
 			visSetting.timesVert = $('#cb_vertTimes')[0].checked;
 			visSetting.fixBorders = $('#cb_fixBorders')[0].checked;

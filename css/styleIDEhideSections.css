@@ -113,3 +113,23 @@ flex-direction: column;
 select,input{
 	max-width:93px!important;
 }
+body:not(.gameMode) #result{
+	display:none;
+} 
+body.gameModeSurpriseRes #result *{
+  visibility: hidden;
+  pointer-events:none;
+} 
+body.gameModeSurpriseRes #result{
+  min-width:3px;
+   background-image: url(../images/questionMarke.png);
+	background-position: center center;
+	 background-repeat: no-repeat;
+	 background-size: contain;
+}
+
+
+
+
+
+} 
