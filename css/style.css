@@ -196,12 +196,13 @@ per una questione estetica */
 	margin-right: auto;
 	left: 2px;
 	right: 3px;
-	top: 3px;
+	top: 1.5px;
 	z-index:1;
 	border-left-width: 0px;
 	border-top-width:1px;
 	border-right-width:1px;
 	border-bottom-width:0px;
+	border-radius:1.5px
 }
 
 [data-atom="forAll"]{
