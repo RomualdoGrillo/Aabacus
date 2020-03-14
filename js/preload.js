@@ -40,11 +40,11 @@ function injectAll(response,rootUrl){
 
 
 	if(all.gestToAction_mml && all.gestToAction_mml.string){//string data
-		$('#leftContent').children().remove();
+		$('#leftContent').children(':not(input)').remove();
 		inject(all.gestToAction_mml.string, $('#leftContent'))
 		}
 	else if(all.gestToAction_mml){//url
-		$('#leftContent').children().remove();
+		$('#leftContent').children(':not(input)').remove();
 		preloadAjax(buildPath(rootUrl,all.gestToAction_mml),$('#leftContent'))
 	}
 	
