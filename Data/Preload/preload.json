@@ -1,7 +1,8 @@
 {
-   "tavolozza_html":"./Data/preload/tavolozza.prt",
    "content_mml":"./Data/Foundation.mml",
    "result_mml":"./Data/preload/minus-2.mml",
+   "tavolozza_html":"./Data/preload/tavolozza.prt",
+   "gestToAction_mml":"./Data/preload/gestToAction.mml",
    "settings_json":"./Data/preload/default.set",
    "eventsToHandlers_mml":"./Data/preload/eventsToHandlers.mml"
 }

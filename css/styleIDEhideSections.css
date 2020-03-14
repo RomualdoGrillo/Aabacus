@@ -17,7 +17,7 @@ div.ide{
 }
 #centralColumn{
 	flex-grow: 1;
-	margin-left:10px;
+	margin-left: 20px;
 	margin-right:10px;
 	width:100px;/*??? senza di questo la colonna centrale si espande
 	a seconda del contenuto*/
@@ -27,7 +27,9 @@ div.ide{
 	opacity:0;
 	border-width:0px;
 	z-index:1;
+	margin-top: 50px;
 }
+
 #leftColumn,#rightColumn{
 	width: 95px;
 	transition: width 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
@@ -49,6 +51,7 @@ div.ide{
 	height:10px;
 	z-index:1;
 	opacity:0;
+		margin-left: 50px;
 }
 #tavolozzaRow:not(:hover):not(.fixed) *{
 	display:none;

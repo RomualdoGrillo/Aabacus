@@ -568,11 +568,11 @@ border-right-style: solid;
 
 [data-atom="literal"] { background-color: lightgray ;}
 
-#telaRole [data-atom="defTrue"]:not(.expanded)>*:not(.name){
+#telaRole [data-atom="deftrue"]:not(.expanded)>*:not(.name){
 	display:none!important;
 }
-#telaRole [data-atom="defTrue"]:not(.expanded){
-	border-bottom-right-radius: 0px;
+#telaRole [data-atom="deftrue"]:not(.expanded){
+	border-bottom-right-radius: 0px!important;
 }
 #telaRole .minimized{
 	align-self: stretch;

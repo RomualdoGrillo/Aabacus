@@ -257,7 +257,7 @@ function dblclickHandler(event){
 
 	//closed or opened
 		//******** expand collapse ***********
-		else if(atomClass === 'defTrue'){
+		else if(atomClass === 'deftrue'){
 			$atomDblclicked.toggleClass('expanded');
 		}
 		else if( atomClass != 'ci' && atomClass != 'cn' && atomClass != 'plus'){
