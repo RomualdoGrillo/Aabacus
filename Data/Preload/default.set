@@ -1,8 +1,8 @@
 {
 	"debug":false,
-	"gameMode":true,
+	"gameMode":false,
 	"gameModeSurpriseRes":false,
-	"LockTela":false,
+	"lockTela":false,
 	"resultHidden":true,
 	"visSettingSelected":1,
 	"visSettings":[

@@ -37,7 +37,7 @@ function injectAll(response,rootUrl){
 		$('#result').children().remove();
 		preloadAjax(buildPath(rootUrl,all.result_mml),$('#result'))
 	}
-	if(all.settings_json && all.settings_json.string){//JSON
+	if(all.settings_json && all.settings_json.mode){//JSON
 			//updateSettings(all.settings_json)
 			GLBsettings = all.settings_json;
 			GLBsettingsToInterface();
@@ -49,11 +49,7 @@ function injectAll(response,rootUrl){
 			GLBsettingsToInterface();
 		});
 	}
-	if(GLBsettings.lockTela != undefined){
-				if(GLBsettings.lockTela){$('#tela').removeClass('unlocked')}
-				else{$('#tela').addClass('unlocked')}
-				refreshAsymmEq($('#tela'));
-	}
+	
 }
 
 function updateSettings(parsedJSON){}
@@ -108,6 +104,11 @@ function GLBsettingsToInterface() {
 			$('body').addClass(visSetting.colors)
 
 		}
+	}
+	if(GLBsettings.lockTela != undefined){
+				if(GLBsettings.lockTela){$('#tela').removeClass('unlocked')}
+				else{$('#tela').addClass('unlocked')}
+				refreshAsymmEq($('#tela'));
 	}
 }
 
