@@ -87,7 +87,9 @@ $(document).on('keydown', function ( e ) {
 	//shift+l load file
 	else if ( e.shiftKey && (  keyPressed === 'l' ) ) {
 		console.log("Shift + l");
-		$('#fileToLoad').trigger('click');// #fileToLoad: ad esso è associato un evento vedi sotto
+		//if(confirm("Load will overwrite existing content")){
+			$('#fileToLoad').trigger('click');// #fileToLoad: ad esso è associato un evento vedi sotto	
+		//}
 	}
 	else{//****************applica proprietà***********
 		var PActx =  newPActx();

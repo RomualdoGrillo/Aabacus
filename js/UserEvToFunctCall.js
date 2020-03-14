@@ -95,7 +95,7 @@ function keyboardEvToFC($atom, keyPressed){
 
 function searchEventHandler(event){// trova la definizione della proprietà
    var res
-   var $found = $('#telaRole').find('[data-atom="eventToAction"]').filter(function(index){
+   var $found = $('#leftContent').find('[data-atom="eventtoaction"]').filter(function(index){
         var $role = this.ATOM_getRoles('.event');
         if($role.length !== 1){
             console.warn('Role not found' + field);
@@ -125,7 +125,7 @@ function searchEventHandler(event){// trova la definizione della proprietà
 function searchForProperty(field,value,returnedField){
 	// trova la definizione della proprietà
 	if( value == undefined){ return undefined}
-	let candidates = Array.from( tela.querySelectorAll('[data-atom=defTrue]') );
+	let candidates = Array.from( tela.querySelectorAll('[data-atom=deftrue]') );
 	let i=0;
 	while(candidates[i]){
 		let $role = candidates[i].ATOM_getRoles().filter('.' + field)

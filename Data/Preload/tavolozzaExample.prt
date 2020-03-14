@@ -9,7 +9,7 @@
 					</div>
 		</div>
 		
-		<div data-atom="defTrue" id="defTruePrototype" class="atom" data-type="bool">
+		<div data-atom="deftrue" id="defTruePrototype" class="atom" data-type="bool">
 						<div class="s_role name" data-type="obj" data-accept="1">
 						
 						</div>
