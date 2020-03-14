@@ -12,8 +12,8 @@ div.ide{
 }
 
 #tavolozza, #settings {
-	/* overflow-y: hidden; */
-	overflow-x:scroll;
+	overflow-y: hidden;
+	overflow-x: auto;
 }
 #centralColumn{
 	flex-grow: 1;
@@ -61,7 +61,9 @@ div.ide{
 	z-index:2;
 }
 
-#tavolozza{/* flex-grow:1; *//*flex-flow:wrap;*//* margin-right:11px; */}
+#tavolozza{
+	padding-left:10px;
+	}
 
 
 #tavolozza>*{
