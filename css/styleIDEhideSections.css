@@ -1,6 +1,7 @@
 body{
 	display:flex;
 	margin:0px;
+	overflow:hidden;
 
 }
 div.ide{
@@ -27,7 +28,9 @@ div.ide{
 	opacity:0;
 	border-width:0px;
 	z-index:1;
-	margin-top: 50px;
+}
+#leftColumn:not(:hover):not(.fixed){
+	margin-top: 300px;
 }
 
 #leftColumn,#rightColumn{
