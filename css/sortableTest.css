@@ -34,7 +34,7 @@
 }
 
 .sortable-ghost.showAsPlaceholder > * {
-	visibility: hidden;
+	visibility: hidden!important;
 }
 
 

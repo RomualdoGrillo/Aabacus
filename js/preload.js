@@ -24,21 +24,21 @@ function injectAll(response,rootUrl){
 		preloadAjax(buildPath(rootUrl,all.tavolozza_html),$("#tavolozza"))
 	}
 	if(all.content_mml && all.content_mml.string){//string data
+		$('#telaRole').children().remove();
 		inject(all.content_mml.string, $("#telaRole"))
 		}
 	else if(all.content_mml){//url
-		preloadAjax(buildPath(rootUrl,all.content_mml),$("#telaRole"))
+		$('#telaRole').children().remove();
+		preloadAjax(buildPath(rootUrl,all.content_mml),$("#telaRole"));
 	}
 	if(all.result_mml && all.result_mml.string){//string data
 		$('#result').children().remove();
-		inject(all.result_mml.string, $('#result'))
-		}
+		inject(all.result_mml.string, $('#result'));
+	}
 	else if(all.result_mml){//url
 		$('#result').children().remove();
 		preloadAjax(buildPath(rootUrl,all.result_mml),$('#result'))
 	}
-
-
 	if(all.gestToAction_mml && all.gestToAction_mml.string){//string data
 		$('#leftContent').children(':not(input)').remove();
 		inject(all.gestToAction_mml.string, $('#leftContent'))

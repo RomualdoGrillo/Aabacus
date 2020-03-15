@@ -59,6 +59,8 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 function inject(MMLstring,$targetNode)
 {
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab");
+	
+	/*
 	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
 	if(  $targetNode.is('#telaRole') && (ATOMclosedDef( $targetNode )  || $convertedTree.attr("data-type") !== "bool") ){
 		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
@@ -71,6 +73,10 @@ function inject(MMLstring,$targetNode)
 	else{
 		$target = $targetNode
 	}
+	*/
+	$target = $targetNode
+
+
 	$target.append($convertedTree);
 	attachEventsAndExtend($convertedTree,true);
 	RefreshEmptyInfixBraketsGlued(ATOMparent($convertedTree),true,"eibg")
