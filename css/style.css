@@ -210,10 +210,10 @@ per una questione estetica */
 	top:-1px;
 	z-index:1;
 	border-left-width: 0px;
-	border-top-width:1.5px;
+	border-top-width:2px;
 	border-right-width: 2px;
 	border-bottom-width:0px;
-	border-radius:1.5px;
+	border-radius:2px;
 }
 
 [data-atom="forAll"]{
@@ -254,7 +254,7 @@ per una questione estetica */
     /*colori*/
 }
 [data-atom="eq"]>.decoration{
-	padding:0px;
+	padding:1px;
 }
 	
 .defSymbol {
@@ -604,8 +604,13 @@ border-right-style: solid;
 
 
 #telaRole [data-atom=or]>.ul_role>*{
-	align-self: stretch;
+	align-self:stretch;
 }
+.unlocked [data-atom=or]>.ul_role>*{
+	align-self:auto!important;
+}
+
+
 
 #telaRole [data-atom=or]>.ul_role>.minimized{
 	min-width:3px;
@@ -615,10 +620,18 @@ border-right-style: solid;
 #telaRole [data-atom=or]{
 	padding:0px;
 }
+.unlocked [data-atom=or]{
+	padding:3px!important;
+}
 #telaRole [data-atom=or]>.ul_role>[data-atom]{
 	margin:-1px;
 	border-radius:0px;
 }
+.unlocked [data-atom=or]>.ul_role>[data-atom]{
+	margin:0px!important;
+}
+
+
 #telaRole [data-atom=or]>.ul_role>[data-atom]:first-child{
 	border-bottom-left-radius: var(--div-smallradius);
 	border-top-left-radius: var(--div-smallradius);
@@ -628,6 +641,9 @@ border-right-style: solid;
 	border-top-right-radius: var(--div-smallradius);
 }
 
+.unlocked [data-atom=or]>.ul_role>[data-atom]{
+	border-radius:var(--div-smallradius)!important;
+}
 
 
 
@@ -714,4 +730,8 @@ border-color:transparent;
 
 #telaRole [data-atom][data-type=bool]{
 	border-radius:var(--div-smallradius);
+}
+
+#telaRole [data-atom=not]{
+	border-top-right-radius:1px!important;
 }
