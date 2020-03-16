@@ -1,4 +1,27 @@
+[data-atom=and].medium>*{
+	flex-direction:row!important;
+	border-width:0px!important;
+}
 
+
+
+
+[data-atom]:not(.expanded)>*>.emb{
+	min-width:45px;
+	font-size: 0px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+	border-width:0px;
+}
+
+[data-atom].expanded>*>.emb{
+	padding-left:45px!important;
+	background-repeat: no-repeat;
+	background-position: center left;
+	padding-left: 0px;
+	background-size:contain;
+}
 .ftimes {
   display: flex;
   flex-direction: row;  
@@ -79,4 +102,5 @@
 	background-repeat: no-repeat;
 	/*display:none;*/
 }
-*/
+
+

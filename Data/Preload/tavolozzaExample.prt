@@ -1,4 +1,8 @@
 
+		<div data-atom="ci" id="imgPrototype" data-type="bool" class="atom"  style="background-image: url(../Aabacus/images/three-dots.svg);
+	background-repeat: no-repeat;
+	background-position: bottom center;" >
+			</div>
 		<div data-atom="eq" id="asymmeqPrototype" class="asymmetric unlocked atom" data-type="bool">
 					<div class="s_role firstMember ui-icon ui-icon-unlocked" data-accept="1">
 						

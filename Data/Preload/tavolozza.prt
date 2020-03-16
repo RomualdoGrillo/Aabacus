@@ -1,10 +1,8 @@
-			
-			<div data-atom="eq" id="eqPrototype" data-type="bool" class="atom">
+<div data-atom="eq" id="eqPrototype" data-type="bool" class="atom">
 				<div class="s_role firstMember" data-type="obj" data-accept="1"></div>
 				<div class="decoration">=</div>
 				<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
 			</div>
-			
 			
 			<div id="numPrototype" data-atom="ci" data-type="num" class="atom ">
 				<div class="name">x</div>
@@ -13,15 +11,13 @@
 				<div class="name">1</div>
 			</div>
 			
+			<div id="plusPrototype" data-atom="plus" data-type="num" class="atom ">
+				<div class="ul_role" data-type="num"></div>
+			</div>
 			
-				<div id="plusPrototype" data-atom="plus" data-type="num" class="atom ">
-					<div class="ul_role" data-type="num"></div>
-				</div>
-			
-			
-				<div id="timesPrototype" data-atom="times" data-type="num" class="atom">
-					<div class="ul_role" data-type="num"></div>
-				</div>
+			<div id="timesPrototype" data-atom="times" data-type="num" class="atom">
+				<div class="ul_role" data-type="num"></div>
+			</div>
 			
 			
 				<div id="minusPrototype" data-atom="minus" data-type="num" class="atom">

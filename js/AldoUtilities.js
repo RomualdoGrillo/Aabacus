@@ -75,3 +75,16 @@ function buildPath(base, relative) {
 		return relative
 	}
 }
+/*
+let timeout
+$(document).mouseup(function(){
+  clearTimeout(pressTimer);
+  // Clear timeout
+  return false;
+}).mousedown(function(){
+  // Set timeout
+  pressTimer = window.setTimeout(function() { alert('long press!')},1000);
+  return false; 
+});
+*/
+

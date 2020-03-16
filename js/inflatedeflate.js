@@ -70,6 +70,7 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 	var dataType
 	var ATOMtype
 	var isMinimized
+	var isMedium
 	var title
 	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
 		dataType = $(node).attr('data-type')
@@ -77,6 +78,7 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 		title = $(node).attr('title')
 		//
 		isMinimized = $(node).hasClass('minimized')
+		isMedium = $(node).hasClass('medium')
 		if (!neglectSign) {//signsAsClasses($(node),"SignsAsClasses_to_MinusOp") // converti   	
 		}
 		var nodeText = ""
@@ -106,6 +108,9 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 		if (isMinimized) {
 			$newNode.attr("minimized", "True")
 		}
+		if (isMedium) {
+			$newNode.attr("medium", "True")
+		}
 		//if(title != undefined){	$newNode.attr('title',title)}//se presente salva anche il titolo
 		if (title) {
 			$newNode.attr('title', title)
@@ -119,6 +124,7 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 		//inflate: =first child tag; if tag==csymbol or ci or cn allora considera il contenuto
 		dataType = $(node).attr('type')
 		isMinimized = ($(node).attr('minimized') == "True")
+		isMedium = ($(node).attr('medium') == "True")
 		title = $(node).attr('title')
 		var nodeText = $(node).clone()//clone the element
 		.children()//select all the children
@@ -187,6 +193,9 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 		}
 		if (isMinimized) {
 			$newNode.addClass("minimized")
+		}
+		if (isMedium) {
+			$newNode.addClass("medium")
 		}
 		if (title !== undefined) {
 			$newNode.attr('title', title)
