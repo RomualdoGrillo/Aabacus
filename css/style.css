@@ -4,7 +4,7 @@
   --num-color: #eb8f00;
   --default-bgcolor:#e2d9d6;
   --num-bgcolor: #fcd598;
-  --bool-color: #62a64b;
+  --bool-color:  rgb(119, 134, 119);
   --bool-bgcolor: #bef0ae;
 }
 
@@ -329,7 +329,8 @@ per una questione estetica */
     background-color: rgb(255, 230, 190);
 }
 .coloredBorders [data-type="bool"][data-atom] {
-    border-color: rgb(119, 134, 119)
+    border-color:var(--bool-color)
+
    /*box-shadow: 0px 0.5px 2px 0.5px rgb(125, 125, 125);*/
     /*box-shadow: 0px 0.5px 3px 0px rgb(9, 132, 9);*/;
 }
@@ -618,10 +619,14 @@ border-right-style: solid;
 	background-position: center center;
 }
 #telaRole [data-atom=or]{
-	padding:0px;
+	/*background-color: red;*/
+	margin: 0px!important;
+	border-color: transparent;
 }
 .unlocked [data-atom=or]{
-	padding:3px!important;
+	background-color: white!important;
+	margin: -3px;
+	border-color:var(--bool-color)!important;
 }
 #telaRole [data-atom=or]>.ul_role>[data-atom]{
 	margin:-1px;

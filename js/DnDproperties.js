@@ -70,7 +70,7 @@ function startHandler(event, AtomDragged) {
 	if (debugMode) {
 		clearTragets()
 	}
-	if (event.originalEvent.ctrlKey|| event.from.matches('#tavolozza')) {
+	if (event.originalEvent.ctrlKey || event.from.matches('#tavolozza')) {
 		//clone!
 		event.item.classList.add('toBeCloned');
 		cloning = true
@@ -79,10 +79,6 @@ function startHandler(event, AtomDragged) {
 		//move!
 		event.item.classList.add('showAsPlaceholder');
 		//will be removed in onEndHandler
-
-
-
-
 
 	}
 	//clone
@@ -105,8 +101,7 @@ function startHandler(event, AtomDragged) {
 		//let sortable = Sortable.get(event.from)
 		thisSortable = Sortable.get(event.from);
 		thisSortable.option('sort', false);
-	}
-	else {
+	} else {
 		//apply properties
 		let i = 0
 		while (propertiesDnD[i]) {
@@ -169,7 +164,7 @@ function onEndHandler(event) {
 			dropTarget = ATOMparent($(dropTarget))[0];
 		}
 	}
-	/* 
+	 
 	let parentTarget
 	if(dropTarget){
 		parentTarget = dropTarget.closest('[data-atom][target]:not([target=""])')//risalgo fino a che non trovo un parent marcato
@@ -184,7 +179,7 @@ function onEndHandler(event) {
 			if(PActx){PActxConclude(PActx)}	    
 	    }
 	}
-	*/
+	/*
 	if ($(dropTarget).is('[data-atom][target]:not([target=""])')) {
 		//apply property from propertiesDnD
 		let targetProperty = dropTarget.getAttribute('target');
@@ -198,7 +193,10 @@ function onEndHandler(event) {
 				PActxConclude(PActx)
 			}
 		}
-	} else {
+	}
+	*/
+
+	else {
 		//  no need for a specific function in propertiesDnD
 		// edit, commute, distribute are simply movement in connected lists  
 		ssnapshot.take()
