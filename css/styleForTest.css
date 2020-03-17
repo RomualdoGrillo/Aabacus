@@ -1,10 +1,22 @@
-[data-atom=and].medium>*{
-	flex-direction:row!important;
-	border-width:0px!important;
+/*forAll hack: inside a forall all variables names must be 1 char lenght!*/
+[data-atom=forAll] .name{
+	font-size:0px;
+	display:block;
+}
+[data-atom=forAll] .name::first-letter{
+	font-size:16px;
+}
+[data-atom=forAll]>*:not(.forAllContent){
+	display:none
 }
 
 
 
+
+[data-atom=and].medium>*{
+	flex-direction:row!important;
+	border-width:0px!important;
+}
 
 [data-atom]:not(.expanded)>*>.emb{
 	min-width:45px;
@@ -71,7 +83,15 @@
 .test>.background{
 	background-color: blue!important;
 }
+.blink {
+  animation: blinker 1s linear infinite;
+}
 
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
 /*#telaRole *:not(.selected) {
  	    -webkit-filter: grayscale(25%);
        -moz-filter: grayscale(25%);
