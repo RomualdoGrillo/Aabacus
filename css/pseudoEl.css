@@ -7,6 +7,7 @@
 	position: absolute;
 	content: "+";
 	left:-10.2px;
+	pointer-events: none;
 }
 /*[data-atom=plus]>.ul_role>[data-atom=minus]:not(:first-of-type):not(.sortable-drag)::before{
 	content: "-";	
@@ -32,14 +33,13 @@
 .vertTimes [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
 	top:-3;
 	left:unset;
+	pointer-events: none;
 }
 .sortable-drag::before{/*if before is removed you get a flickering, so it is just hidden*/
 	visibility:hidden;
 }
 
-*::before{
-		pointer-events: none;
-}
+
 
 /*
 using ::before and ::after for prefix and postfix notation does not offer advantages
@@ -61,4 +61,38 @@ disadvantage: building new prototypes is less intuitive
 	background-size: contain;
 	background-repeat: no-repeat;
 }
+[data-atom="deftrue"]::before{
+	content:attr(data-decoration);
+	position: absolute;
+	left: -200px;
+	background-image: url(../images/GullBraceLeft.svg);
+	background-color:red;
+	width:17px;
+	height:90%;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
 */
+
+embeddeddiv::before, [data-tag]::before{
+	bottom: 80%;
+	position: absolute;
+	right: 80%;
+	background-image: inherit;
+	background-color: lightcyan;
+	width: 40px;
+	height: 100%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center left;
+	padding-left: 40px;
+	border: 1px solid gray;
+	border-radius: 5px;
+}
+embeddeddiv::before{
+	content:attr(data-id);
+}
+[data-tag]::before{
+	content:attr(data-tag);
+}
+

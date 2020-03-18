@@ -71,6 +71,8 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 	var ATOMtype
 	var isMinimized
 	var isMedium
+	var dataTag
+	var dataTagImg
 	var title
 	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
 		dataType = $(node).attr('data-type')
@@ -122,10 +124,12 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 		}
 	} else if (from_to === "mml_aab") {
 		//inflate: =first child tag; if tag==csymbol or ci or cn allora considera il contenuto
-		dataType = $(node).attr('type')
-		isMinimized = ($(node).attr('minimized') == "True")
-		isMedium = ($(node).attr('medium') == "True")
-		title = $(node).attr('title')
+		dataType = $(node).attr('type');
+		isMinimized = ($(node).attr('minimized') == "True");
+		isMedium = ($(node).attr('medium') == "True");
+		title = $(node).attr('title');
+		dataTag = $(node).attr('data-tag');
+		dataTagImg = $(node).attr('data-tagimg');
 		var nodeText = $(node).clone()//clone the element
 		.children()//select all the children
 		.remove()//remove all the children
@@ -196,6 +200,12 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 		}
 		if (isMedium) {
 			$newNode.addClass("medium")
+		}
+		if (dataTag !== undefined) {
+			$newNode.attr('data-tag', dataTag)
+			if(dataTagImg){
+				$newNode.css('background-image'," url(" + dataTagImg +")")	
+			}
 		}
 		if (title !== undefined) {
 			$newNode.attr('title', title)

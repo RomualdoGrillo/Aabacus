@@ -6,8 +6,22 @@
 [data-atom=forAll] .name::first-letter{
 	font-size:16px;
 }
-[data-atom=forAll]>*:not(.forAllContent){
-	display:none
+[data-atom=forAll].medium>.row>.forAllHeader{
+	display:none;
+}
+[data-atom=forAll].medium>.row>.forallSymbol{
+	top: -0.7px;
+	left: 8px;
+	height: 6px;
+	width: 8px;
+	position: absolute;
+	z-index:2;
+	font-size:0px;
+	background-image: url(../images/triangleDownward.svg);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	/*display:none!important;*/
 }
 
 
@@ -28,10 +42,10 @@
 }
 
 [data-atom].expanded>*>.emb{
-	padding-left:45px!important;
+	width:40px;
+	/* padding-left:45px!important; */
 	background-repeat: no-repeat;
-	background-position: center left;
-	padding-left: 0px;
+	background-position: center center;
 	background-size:contain;
 }
 .ftimes {
