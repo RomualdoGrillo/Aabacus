@@ -73,26 +73,52 @@ disadvantage: building new prototypes is less intuitive
 	background-repeat: no-repeat;
 }
 */
-
-embeddeddiv::before, [data-tag]::before{
-	bottom: 80%;
+[data-tag]::before{
+	content:attr(data-tag);
+	z-index: 1;
+	bottom: 95%;
 	position: absolute;
-	right: 80%;
+	right: 60%;
 	background-image: inherit;
-	background-color: lightcyan;
-	width: 40px;
-	height: 100%;
+	background-color: white;
+	/* width: 40px;*/
+	min-height:25px;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center left;
-	padding-left: 40px;
+	padding-left: 45px;
+	padding-right:2px;
 	border: 1px solid gray;
-	border-radius: 5px;
-}
-embeddeddiv::before{
-	content:attr(data-id);
-}
-[data-tag]::before{
-	content:attr(data-tag);
+	border-radius: 8px;
+	border-bottom-right-radius: 0px;
 }
 
+[data-tag]{
+	margin-left:15px!important;
+	margin-right:15px!important;
+}
+[data-tag]:not(.minimized){
+ background-position:-9999px;
+ background-repeat: no-repeat;
+ margin-left:20px!important;
+}
+
+
+.minimized[data-tag]>*{
+	display:none;
+}
+.minimized[data-tag]{
+	width:20px;
+	height: 20px;
+	border-width:0px;
+	align-self: center!important;
+}
+.minimized[data-tag]::before{
+	position:relative;
+	bottom:0px;
+	right:0px;
+	font-size:0px;
+}
+[data-atom="and"].medium>.ul_role{
+	padding:2px!important;
+}

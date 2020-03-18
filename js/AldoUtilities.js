@@ -88,3 +88,13 @@ $(document).mouseup(function(){
 });
 */
 
+function wrapUnwrapUrlString(string,unwrap){
+	//wrap wrapUnwrapString("../Aabacus/images/a.png")
+	//unwrap wrapUnwrapString("url(../Aabacus/images/a.png)",true)
+	if(unwrap){
+		return string.replace('url(','').replace(')','').replace(/"/g,'');		
+	}
+	else{
+		return "url(" + string +")";
+	}		
+}

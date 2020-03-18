@@ -159,7 +159,7 @@ function ATOMassociate(dragged,target){
 	PActx.replacedAlready = true;
 	PActx.msg = "associated";
 	//PActx.$transform = target.parent().parent()//not optimized, should update the older closest common parent
-	return PActx
+	return PActx;
 }
 
 

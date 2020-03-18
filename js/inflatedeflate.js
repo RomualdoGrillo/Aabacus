@@ -78,7 +78,13 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 		dataType = $(node).attr('data-type')
 		ATOMtype = $(node).attr('data-atom')
 		title = $(node).attr('title')
-		//
+		
+		if( $(node).attr('data-tag') ) {
+			dataTag = $(node).attr('data-tag')
+			if($(node).attr('data-tagimg')){
+				dataTagImg = wrapUnwrapUrlString( $(node).css('background-image') , true );
+			}
+		}
 		isMinimized = $(node).hasClass('minimized')
 		isMedium = $(node).hasClass('medium')
 		if (!neglectSign) {//signsAsClasses($(node),"SignsAsClasses_to_MinusOp") // converti   	
@@ -122,6 +128,13 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 			$newNode.attr('type', dataType)
 			// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
 		}
+		if (dataTag) {
+			$newNode.attr("data-tag", dataTag )
+		}
+		if (dataTagImg) {
+			$newNode.attr("data-tagimg", dataTagImg)
+		}
+		
 	} else if (from_to === "mml_aab") {
 		//inflate: =first child tag; if tag==csymbol or ci or cn allora considera il contenuto
 		dataType = $(node).attr('type');
@@ -202,9 +215,10 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 			$newNode.addClass("medium")
 		}
 		if (dataTag !== undefined) {
-			$newNode.attr('data-tag', dataTag)
+			$newNode.attr('data-tag', dataTag);
 			if(dataTagImg){
-				$newNode.css('background-image'," url(" + dataTagImg +")")	
+				$newNode.attr('data-tagimg', dataTagImg)
+				$newNode.css('background-image',wrapUnwrapUrlString(dataTagImg))	
 			}
 		}
 		if (title !== undefined) {
