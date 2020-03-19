@@ -1,7 +1,5 @@
 //makeSortableDEBUG( $(tela).find( sortablesSelectorString ).addBack().add($('#tavolozza')).toArray() );
 
-
-
 function makeSortableDEBUG(sortables) {
 	for (var i = 0; i < sortables.length; i++) {
 		new Sortable(sortables[i],{
@@ -10,8 +8,8 @@ function makeSortableDEBUG(sortables) {
 				name: 'shared',
 				//pull: 'clone',
 			},
-			fallbackOnBody: true,	
-			animation: 150,		
+			fallbackOnBody: true,
+			animation: 150,
 		});
 	}
 }
@@ -88,13 +86,33 @@ $(document).mouseup(function(){
 });
 */
 
-function wrapUnwrapUrlString(string,unwrap){
-	//wrap wrapUnwrapString("../Aabacus/images/a.png")
-	//unwrap wrapUnwrapString("url(../Aabacus/images/a.png)",true)
-	if(unwrap){
-		return string.replace('url(','').replace(')','').replace(/"/g,'');		
+function wrapUnwrapUrlString(string, unwrap){
+	//wrap wrapUnwrapUrlString("../Aabacus/images/a.png")
+	//unwrap wrapUnwrapUrlString("url(../Aabacus/images/a.png)",true)
+	//cutFirstDir wrapUnwrapUrlString("url(../Aabacus/images/a.png)",'cutFirstDir')
+	if (unwrap == 'cutFirstDir') {
+		let arr = string.replace('../','').split('/');
+		part = arr[1]
+		for (i = 2; i < arr.length; i++) {
+			part = part + '/' + arr[i]
+		}
+		return part
+	} else if (unwrap != undefined) {
+		return string.replace('url(', '').replace(')', '').replace(/"/g, '');
+	} else {
+		return "url(" + string + ")";
 	}
-	else{
-		return "url(" + string +")";
-	}		
 }
+
+/*
+var count = 0
+function serialNumber(mode){
+    if(mode ==="init"){
+        count = -1 //in questo modo alla prima richiesta il SN sarà 0     
+    }
+    else{
+        count++
+    }
+    return count
+}
+*/

@@ -390,7 +390,7 @@ function PActxConclude(PActx){
 		refreshAndReplace(PActx);
 		if(PActx.$transform){
 		    RefineRepeatedOfMArked(PActx);
-			$children = ATOMcleanIfPointless(PActx.$transform,true);
+			 $children = ATOMcleanIfPointless(PActx.$transform,true);
 			if($children){//in case the $transform "dissolved" you need to consider his child 
 				PActx.$transform=$children
 			}

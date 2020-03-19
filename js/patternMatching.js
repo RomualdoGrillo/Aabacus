@@ -203,22 +203,24 @@ function levelsToAncestor($marked,$patternMember){
 
 
 function findSwapMembersClone(propName,mode){
-    var res = {foundTF:false, msg:"", $newProp: ""}
+    var res = {foundTF:false, msg:"", $newProp: "",visualization:""}
     //********** trova prop ********************************************** 
     
     //var $prop = searchForProperty("name",propName,"prop") vecchio formato
 	var	$prop = $('[data-tag=' + propName + ']') 
-    if( $prop == undefined){ 
+    if( $prop.length == 0){ 
+    	console.log('property not found:' + propName)
         res.msg="unknown property: " + propName;
         if(debugMode){
             //throw({'unknown property': propName })
-            }
+        }
         return res
     };
     //********* CLONA prop ************************************************
     var propCdsClass = $prop.attr('data-atom');
     //createForThis($forall,$placeHolder)//todo: utilizzare stessa funzione rispetto a forThis manuale
     res.$newProp = ATOMclone($prop);
+    res.visualization =    wrapUnwrapUrlString( $prop[0].style.backgroundImage ,'cutFirstDir')
     if(debugMode){$('#telaRole').append(res.$newProp)}//debug 
     //attachEventsAndExtend(res.$newProp);
     ATOMextend(res.$newProp,true)
@@ -264,16 +266,3 @@ function findSwapMembersClone(propName,mode){
     //else{//futuribile: ricava n-esimo ed m-esimo membro di eq a=b=n=m };
     return res
 }
-
-/*
-var count = 0
-function serialNumber(mode){
-    if(mode ==="init"){
-        count = -1 //in questo modo alla prima richiesta il SN sarà 0     
-    }
-    else{
-        count++
-    }
-    return count
-}
-*/

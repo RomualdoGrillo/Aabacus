@@ -343,13 +343,14 @@ function TryPropByName(propName, $par1 ,firstVal){
     */
     
     //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
-    var cloningRes = findAndCloneProp(propName,firstVal);
+    var cloningRes = findSwapMembersClone(propName,firstVal);
 	if( cloningRes.foundTF ){
 	    //ATOMSmarkUnmark($('.selected'),"s");
 	    ATOMSmarkUnmark( $par1 ,"s");
 	    //res = checkProp(cloningRes.$newProp,$('.selected'))//$operando verrà determinato all'interno della funz'
 		PActx.$newProp = cloningRes.$newProp
 		PActx = tryReconfigurableProp(PActx, $par1 )//operando verrà determinato all'interno della funz'
+		PActx.visualization =  	cloningRes.visualization
 	}
 	return PActx
 }
@@ -389,7 +390,7 @@ function tryReconfigurableProp(PActx,$par1,$par2){
 
 //dr=$('.selected')
 //tr=$('.selected') //selezionare gli addendi uno per uno
-//PActxFromAttackPoints(findAndCloneProp("timesAssociate","rtl").$newProp,undefined,dr,tr)
+//PActxFromAttackPoints(findSwapMembersClone("timesAssociate","rtl").$newProp,undefined,dr,tr)
 function PActxFromAttackPoints(PActx,$par1,$par2){
     //PActx.$newProp è la proprietà che si intende applicare, già preparata con pattern a sx
     //$par1 e $par2 possono essere selected e undefined       oppure dagged e target o altro
