@@ -81,8 +81,8 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 		
 		if( $(node).attr('data-tag') ) {
 			dataTag = $(node).attr('data-tag')
-			if($(node).attr('data-tagimg')){
-				dataTagImg = wrapUnwrapUrlString( $(node).css('background-image') , true );
+			if($(node)[0].style.backgroundImage){ 
+				dataTagImg = wrapUnwrapUrlString( $(node)[0].style.backgroundImage , true );
 			}
 		}
 		isMinimized = $(node).hasClass('minimized')

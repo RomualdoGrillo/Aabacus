@@ -73,12 +73,16 @@ disadvantage: building new prototypes is less intuitive
 	background-repeat: no-repeat;
 }
 */
+[data-tag]:not(.minimized)::before{
+	position: absolute;
+	bottom: 95%;
+	right: 60%;
+	box-shadow: 2px 3px 5px 0px grey;
+}
+
 [data-tag]::before{
 	content:attr(data-tag);
 	z-index: 1;
-	bottom: 95%;
-	position: absolute;
-	right: 60%;
 	background-image: inherit;
 	background-color: white;
 	/* width: 40px;*/
@@ -86,21 +90,18 @@ disadvantage: building new prototypes is less intuitive
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center left;
-	padding-left: 45px;
 	padding-right:2px;
 	border: 1px solid gray;
 	border-radius: 8px;
 	border-bottom-right-radius: 0px;
 }
-
-[data-tag]{
-	margin-left:15px!important;
-	margin-right:15px!important;
+[data-tag][data-tagimg]::before{
+	padding-left: 45px;
 }
+
 [data-tag]:not(.minimized){
- background-position:-9999px;
+ background-position:-9999px -9999px;
  background-repeat: no-repeat;
- margin-left:20px!important;
 }
 
 
@@ -108,15 +109,17 @@ disadvantage: building new prototypes is less intuitive
 	display:none;
 }
 .minimized[data-tag]{
-	width:20px;
+	/*width:20px;*/
 	height: 20px;
 	border-width:0px;
 	align-self: center!important;
 }
-.minimized[data-tag]::before{
-	position:relative;
-	bottom:0px;
-	right:0px;
+
+.minimized[data-tag]:not([data-tagimg])::before{
+	background:white;
+	padding-left:0px;
+}
+.minimized[data-tag][data-tagimg]::before{
 	font-size:0px;
 }
 [data-atom="and"].medium>.ul_role{
