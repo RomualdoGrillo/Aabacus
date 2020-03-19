@@ -202,11 +202,11 @@ function levelsToAncestor($marked,$patternMember){
 }
 
 
-function findAndCloneProp(field,propName,mode){
+function findSwapMembersClone(propName,mode){
     var res = {foundTF:false, msg:"", $newProp: ""}
     //********** trova prop ********************************************** 
     
-    //var $prop = searchForProperty(field,propName,"prop") vecchio formato
+    //var $prop = searchForProperty("name",propName,"prop") vecchio formato
 	var	$prop = $('[data-tag=' + propName + ']') 
     if( $prop == undefined){ 
         res.msg="unknown property: " + propName;

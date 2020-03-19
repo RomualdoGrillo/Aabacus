@@ -323,7 +323,7 @@ function ATOMappendInABSPosition($atom,$refATOM,relativePosition){
 
 
 //  TryPropByName("name",actionString,firstValString)
-function TryPropByName(field,propName, $par1 ,firstVal){
+function TryPropByName(propName, $par1 ,firstVal){
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
     //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
     //"apre un fascicolo" e tenta di "dare seguito" all'ordine
@@ -331,7 +331,7 @@ function TryPropByName(field,propName, $par1 ,firstVal){
   	/*
     // ********************** prova ad applicare FUNZIONE INTERNA **************
     //cerca una definizione di proprietà  "interna"
-    var $funct = searchForProperty(field,propName,"prop")
+    var $funct = searchForProperty("name",propName,"prop")
     if( $funct == undefined){return PActx}
     if( $funct.attr("data-atom") === "ci" ){
         //chiamata ad una funzione interna
@@ -343,7 +343,7 @@ function TryPropByName(field,propName, $par1 ,firstVal){
     */
     
     //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
-    var cloningRes = findAndCloneProp(field,propName,firstVal);
+    var cloningRes = findAndCloneProp(propName,firstVal);
 	if( cloningRes.foundTF ){
 	    //ATOMSmarkUnmark($('.selected'),"s");
 	    ATOMSmarkUnmark( $par1 ,"s");
@@ -389,7 +389,7 @@ function tryReconfigurableProp(PActx,$par1,$par2){
 
 //dr=$('.selected')
 //tr=$('.selected') //selezionare gli addendi uno per uno
-//PActxFromAttackPoints(findAndCloneProp("name","timesAssociate","rtl").$newProp,undefined,dr,tr)
+//PActxFromAttackPoints(findAndCloneProp("timesAssociate","rtl").$newProp,undefined,dr,tr)
 function PActxFromAttackPoints(PActx,$par1,$par2){
     //PActx.$newProp è la proprietà che si intende applicare, già preparata con pattern a sx
     //$par1 e $par2 possono essere selected e undefined       oppure dagged e target o altro

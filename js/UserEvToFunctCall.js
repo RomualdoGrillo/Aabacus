@@ -81,7 +81,7 @@ function keyboardEvToFC($atom, keyPressed){
 			}//usa il risultato a meno che non sia "undefined"
 			}
 		else{//chiamata a funzione configurabile
-		PActx = TryPropByName("name",actionString, $atom ,firstValString);
+		PActx = TryPropByName(actionString, $atom ,firstValString);
 			}
 		if( PActx.matchedTF ){//proprietà applicata con successo
 			PActx.msg = actionString +" "+ firstValString
