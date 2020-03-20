@@ -116,3 +116,20 @@ function serialNumber(mode){
     return count
 }
 */
+function lookForResult(){
+	let $expressions = $('#telaRole>*');
+	let found = false;
+	for(i=0;i<$expressions.length;i++){
+		found = compareWithResult($expressions.eq(i),$('#result>*'))
+		console.log(found)
+		if(found){break} 
+	}
+	return found
+}
+
+function compareWithResult($expression,$result){
+	var MyPActx = newPActx();
+	MyPActx.$operand = $expression;
+	MyPActx.$pattern = $result;
+	return cloneOrderMatch(MyPActx,true,false,true).matchedTF
+}

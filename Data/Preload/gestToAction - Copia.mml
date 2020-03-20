@@ -1,0 +1,251 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+
+			<apply type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci type="bool">t</ci>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">OrNeutral</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci type="bool">u</ci>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">compose</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">composeXorNotX</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci title="d" type="bool">←</ci>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">compose</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">composeXorNotX</ci>
+					<ci type="bool">rtl</ci>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci type="bool">↑</ci>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci title="d" type="bool">decompose in a product</ci>
+					<ci type="bool">up</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">Reciprocal</ci>
+					<ci type="bool">rtl</ci>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci title="d" type="bool">→</ci>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">decompose in a sum</ci>
+					<ci type="bool">right</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">Opposite</ci>
+					<ci type="bool">rtl</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">defZero</ci>
+					<ci type="bool">rtl</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">composeXorNotX</ci>
+					<ci type="bool">rtl</ci>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci type="bool">m</ci>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">eqPlusMove</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">eqPlusMoveAlone</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">eqTimesMove</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci type="bool">c</ci>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">OppositeOfOpposite</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">InvOfOpposite</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">evaluateComparison</ci>
+					<ci type="bool">int</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">simpPlusSingleTerm</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">simpTimesSingleFactor</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">defOne</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">defZero</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">simpPlusSingleTerm</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">simpTimesSingleFactor</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">OrNeutral</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">andAbsorbingEl</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">notFalse</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">AndNeutral</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci type="bool">p</ci>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">plusAssociate</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">plusAssociate</ci>
+					<ci type="bool">rtl</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">timesAssociate</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">timesAssociate</ci>
+					<ci type="bool">rtl</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">orAssociate</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">orAssociate</ci>
+					<ci type="bool">rtl</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">andAssociate</ci>
+					<ci type="bool">ltr</ci>
+				</apply>
+				<apply type="obj">
+					<callfunction>
+					</callfunction>
+					<ci type="bool">andAssociate</ci>
+					<ci type="bool">rtl</ci>
+				</apply>
+			</apply>
+</math>
