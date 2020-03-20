@@ -1,11 +1,5 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply title="s" type="bool">
-		<deftrue>
-		</deftrue>
-		<ci type="bool">gestToAction</ci>
-		<apply type="bool">
-			<and>
-			</and>
+
 			<apply type="bool">
 				<eventtoaction>
 				</eventtoaction>
@@ -254,6 +248,4 @@
 					<ci type="bool">rtl</ci>
 				</apply>
 			</apply>
-		</apply>
-	</apply>
 </math>

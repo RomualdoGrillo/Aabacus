@@ -30,11 +30,11 @@ div.ide{
 	z-index:1;
 }
 #leftColumn:not(:hover):not(.fixed){
-	margin-top: 300px;
+	margin-top: 150px;
 }
 
 #leftColumn,#rightColumn{
-	width: 95px;
+	
 	transition: width 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
 	transition-delay: 0.15s;
 	z-index:2;
@@ -45,9 +45,13 @@ div.ide{
 
 #rightColumn{
 	right:0px;
+	width: 95px;
 }
 #leftColumn{
+	overflow: auto;
+	/* width: 95px; */
 	left:0px;
+	/* align-items: end; */
 }
 
 #tavolozzaRow:not(:hover):not(.fixed){
@@ -97,16 +101,13 @@ div.ide{
 	background-color:white;
 }
 
-#leftContent{
-flex-direction: column;
-	align-items: center;
-}
+#leftContent{flex-direction: column;align-items: center;}
 
 #result{
 		justify-content: center;
 }
 #leftContent,#settings{
-	flex-grow:1;
+	/* flex-grow:1; */
 }
 
 .fixButton{

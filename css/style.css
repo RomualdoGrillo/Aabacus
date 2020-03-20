@@ -489,6 +489,9 @@ per una questione estetica */
 	background-repeat: no-repeat;
 	background-position-x: center;
 }
+[data-atom=eventtoaction]>*{
+	align-self:baseline;
+}
 .functName {
 	display:none;
 }
@@ -721,6 +724,9 @@ border-right-style: solid;
 [data-atom=m_inverse]{
 	flex-direction:column;
 }
+[data-atom=m_inverse]>.numerator1{
+	display:none;
+}
 
 .debug [data-atom].taken{
 	background-color:red;
@@ -737,3 +743,4 @@ border-color:transparent;
 #telaRole [data-atom=not]{
 	border-top-right-radius:1px!important;
 }
+
