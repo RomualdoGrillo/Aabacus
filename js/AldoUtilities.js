@@ -119,9 +119,10 @@ function serialNumber(mode){
 function lookForResult(){
 	let $expressions = $('#telaRole>*');
 	let found = false;
+	let i;
 	for(i=0;i<$expressions.length;i++){
 		found = compareWithResult($expressions.eq(i),$('#result>*'))
-		console.log(found)
+		console.log(found);
 		if(found){break} 
 	}
 	return found

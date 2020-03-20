@@ -407,6 +407,7 @@ function PActxConclude(PActx) {
 		ssnapshot.take();
 		if (lookForResult()) {
 			alert('esattooooo!!!!')
+			$('body').removeClass('gameModeSurpriseRes'); 
 		}
 		PActxVisualize(PActx);
 	}
