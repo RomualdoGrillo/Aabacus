@@ -60,7 +60,7 @@ div{
 	/*border-color:red;*/
 	border-width:0px;
 }
-#leftContent,#settings{
+#events,#settings{
 	flex-grow:1;
 }
 

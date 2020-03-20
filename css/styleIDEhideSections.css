@@ -97,16 +97,16 @@ div.ide{
 	/*border-color:red;*/
 	border-width:0px;
 }
-#tavolozza,#leftContent,#settings{
+#tavolozza,#events,#settings{
 	background-color:white;
 }
 
-#leftContent{flex-direction: column;align-items: center;}
+#events{flex-direction: column;align-items: center;}
 
 #result{
 		justify-content: center;
 }
-#leftContent,#settings{
+#events,#settings{
 	/* flex-grow:1; */
 }
 

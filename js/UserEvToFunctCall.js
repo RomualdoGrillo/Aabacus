@@ -95,7 +95,7 @@ function keyboardEvToFC($atom, keyPressed){
 
 function searchEventHandler(event){// trova la definizione della proprietà
    var res
-   var $found = $('#leftContent').find('[data-atom="eventtoaction"]').filter(function(index){
+   var $found = $('#events').find('[data-atom="eventtoaction"]').filter(function(index){
         var $role = this.ATOM_getRoles('.event');
         if($role.length !== 1){
             console.warn('Role not found' + field);

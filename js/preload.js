@@ -40,12 +40,12 @@ function injectAll(response,rootUrl){
 		preloadAjax(buildPath(rootUrl,all.result_mml),$('#result'))
 	}
 	if(all.gestToAction_mml && all.gestToAction_mml.string){//string data
-		$('#leftContent').children(':not(input)').remove();
-		inject(all.gestToAction_mml.string, $('#leftContent'))
+		$('#events').children(':not(input)').remove();
+		inject(all.gestToAction_mml.string, $('#events'))
 		}
 	else if(all.gestToAction_mml){//url
-		$('#leftContent').children(':not(input)').remove();
-		preloadAjax(buildPath(rootUrl,all.gestToAction_mml),$('#leftContent'))
+		$('#events').children(':not(input)').remove();
+		preloadAjax(buildPath(rootUrl,all.gestToAction_mml),$('#events'))
 	}
 	
 	if(all.settings_json && all.settings_json.string){//string data

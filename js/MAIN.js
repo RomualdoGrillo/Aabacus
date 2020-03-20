@@ -175,9 +175,9 @@ function clickHandler(event) {
 		let $atom = $(event.target).parent();
 		if ($atom.is('#tela')) {// tela fa eccezione perchè determina lo anche lo stato delle sezioni result e events
 			if ($atom.hasClass('unlocked')) {
-				$('#tela,#result').removeClass('unlocked');
+				$('#tela,#result,#events').removeClass('unlocked');
 			} else {
-				$('#tela,#result').addClass('unlocked');
+				$('#tela,#result,#events').addClass('unlocked');
 			}
 		}
 		else{
