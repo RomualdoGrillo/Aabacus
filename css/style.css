@@ -61,12 +61,18 @@ per una questione estetica */
     margin:0px;
 }*/
 
+
+[data-atom],[class*="_role"]  {
+flex-shrink:0;
+	}
+#tela *{
+	flex-shrink:1;
+}
 [data-atom],[class*="_role"],#overlay {
 	position:relative;
 	/*border: 1px black solid; just for debug*/
 	border-radius: var(--div-radius);
 	font-family: arial;
-	flex-shrink:0;
 	justify-content:center;
 }
 #tavolozza{
