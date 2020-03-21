@@ -655,6 +655,7 @@ function compose($toBeComp){
 		$composed = ValToAtoms(partial);
 		$composed.addClass('selected');//selezione in uscita
 		PActx.$operand = $toBeComp;
+		PActx.visualization = "images/properties/compose.png";
 		PActx.msg = "compose";
 		
 		
@@ -812,6 +813,7 @@ function decompose($toBeDec,direction){//"up" for factorize
 		//ssnapshot.take();
 		//elementi sostituiti internamente
 		PActx.replacedAlready = true;
+		PActx.visualization = "images/properties/decompose.png"
 		PActx.msg = "decompose" 	
 	}
 	return PActx	

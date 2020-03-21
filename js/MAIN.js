@@ -414,16 +414,22 @@ function PActxConclude(PActx) {
 }
 
 function PActxVisualize(PActx) {
-
+	let visContet
 	if (PActx.visualization == "") {
-		PActx.visualization = "images/Brackets.png"
+		visContet = PActx.msg
+	}
+	else {
+		visContet = '<img src="' + PActx.visualization + '">';
 	}
 	removeVisualization()
-	let $visualization = $('<div class="visualization"><img src="' + PActx.visualization + '"></div>')
+	let $visualization = $('<div class="visualization">' + visContet + '</div>')
 	if (PActx.$transform) {
 		$visualization.insertAfter(PActx.$transform)
+		PActx.$transform.append($visualization);
 	} else {
 		$(tela).append($visualization)
+		$visualization.css('position','relative');
+		$visualization.css('top','0px');
 	}
 	setTimeout(removeVisualization, 3000);
 }
