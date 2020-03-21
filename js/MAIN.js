@@ -408,6 +408,7 @@ function PActxConclude(PActx) {
 		}
 		ssnapshot.take();
 		if (lookForResult()) {
+			victorySound.play();
 			alert('esattooooo!!!!')
 			$('body').removeClass('gameModeSurpriseRes'); 
 		}
