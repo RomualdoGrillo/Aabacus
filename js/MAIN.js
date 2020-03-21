@@ -20,7 +20,9 @@ makeSortable(initialSortables);
 ATOMextend($('body'), true);
 //************ Preload  ************
 //preload will trigger the usual extend and make sortable chain of events 
-preloadAll('./Data/Preload/preload.json');
+let preloadPath = window.location.href.split('preloadPath=')[1]
+if(!preloadPath){preloadPath='./Data/Preload/preload.json'}
+preloadAll(preloadPath);
 $('[data-atom].asymmetric').each(function(i, e) {
 	refreshAsymmEq($(e))
 })
