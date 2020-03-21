@@ -1,0 +1,23 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<ci type="bool">Lo scopo è trovare il risultato dell'espressione. Si può scomporre e ricomporre in addendi (schiaccia frecce dx e sx) e in fattori (frecce su e giù). Si può inoltre cambiare l'odine dei termini con drag and drop. In questo esercizio non c'è una primitiva per la divisione, non si può fare 6:3 direttamente, ma si può comporre un numero ed il suo reciproco. Si lo so è un esercizio un po cazzuto. I prossimi saranno migliori.</ci>
+	<apply type="num">
+		<plus>
+		</plus>
+		<cn type="num">2</cn>
+		<apply type="num">
+			<times>
+			</times>
+			<cn type="num">6</cn>
+			<apply type="num">
+				<m_inverse>
+				</m_inverse>
+				<cn type="num">3</cn>
+			</apply>
+		</apply>
+		<apply type="num">
+			<minus>
+			</minus>
+			<cn type="num">1</cn>
+		</apply>
+	</apply>
+</math>
