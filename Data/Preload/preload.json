@@ -1,8 +1,7 @@
 {
    "content_mml":"./Data/es1-f.mml",
-   "result_mml":"./Data/preload/Esercizio1_res.mml",
-   "tavolozza_html":"./Data/preload/tavolozza.prt",
-   "gestToAction_mml":"./Data/preload/gestToAction.mml",
-   "settings_json":"./Data/preload/game.set",
-   "eventsToHandlers_mml":"./Data/preload/eventsToHandlers.mml"
+   "result_mml":"./Data/Preload/Esercizio1_res.mml",
+   "tavolozza_html":"./Data/Preload/tavolozza.prt",
+   "gestToAction_mml":"./Data/Preload/gestToAction.mml",
+   "settings_json":"./Data/Preload/game.set"
 }
