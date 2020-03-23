@@ -1,4 +1,13 @@
-function associativeValid($mouseDownNode){
+//move
+
+//move with distribute_collect
+
+//copy from    //copy to
+function copyFrom($proposition){
+	//you just get all parents?
+}
+
+function associativeValid($mouseDownNode){//move
 	let $parent = ATOMparent($mouseDownNode);
 	let op = $parent.attr("data-atom");
 	//upstreamSpan
