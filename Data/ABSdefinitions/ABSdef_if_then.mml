@@ -1,0 +1,68 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<and>
+		</and>
+		<apply type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci type="num">a</ci>
+			</bvar>
+			<apply type="bool">
+				<implies>
+				</implies>
+				<apply type="bool">
+					<geq>
+					</geq>
+					<ci type="num">a</ci>
+					<ci type="num">0</ci>
+				</apply>
+				<apply type="bool">
+					<eq>
+					</eq>
+					<apply type="num">
+						<abs>
+						</abs>
+						<ci type="num">a</ci>
+					</apply>
+					<ci type="num">a</ci>
+				</apply>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci type="num">a</ci>
+			</bvar>
+			<apply type="bool">
+				<implies>
+				</implies>
+				<apply type="bool">
+					<not>
+					</not>
+					<apply type="bool">
+						<geq>
+						</geq>
+						<ci type="num">a</ci>
+						<ci type="num">0</ci>
+					</apply>
+				</apply>
+				<apply type="bool">
+					<eq>
+					</eq>
+					<apply type="num">
+						<abs>
+						</abs>
+						<ci type="num">a</ci>
+					</apply>
+					<apply type="num">
+						<minus>
+						</minus>
+						<ci type="num">a</ci>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+</math>

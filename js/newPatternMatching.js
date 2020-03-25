@@ -25,7 +25,7 @@ function Try($Input, $originalPattern) {
     var $pattern = ATOMclone($originalPattern);
     ATOMextend($pattern, true);
    	$('body').append($pattern);
-    PActx = adaptMatch(PActx)
+    PActx = adaptMatch(PActx,$Input,$pattern)
     // CLEANUP clones
     $pattern.remove()
     return PActx
@@ -323,45 +323,41 @@ function ATOMappendInABSPosition($atom,$refATOM,relativePosition){
 
 
 //  TryPropByName("name",actionString,firstValString)
-function TryPropByName(propName, $par1 ,firstVal){
+function TryPropByName(propName, $par1 ,firstVal,justTry){
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
     //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
     //"apre un fascicolo" e tenta di "dare seguito" all'ordine
 	var PActx = newPActx()
-  	/*
-    // ********************** prova ad applicare FUNZIONE INTERNA **************
-    //cerca una definizione di proprietà  "interna"
-    var $funct = searchForProperty("name",propName,"prop")
-    if( $funct == undefined){return PActx}
-    if( $funct.attr("data-atom") === "ci" ){
-        //chiamata ad una funzione interna
-        var functName = $funct[0].ATOM_getName()
-        console.log("auto call" + functName );
-        PActx = window[functName]( $par1 ,firstVal) //todo: gestire errore
-        return PActx        
-    }
-    */
+  	
+
     
     //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
-    var cloningRes = findSwapMembersClone(propName,firstVal);
-	if( cloningRes.foundTF ){
-	    //ATOMSmarkUnmark($('.selected'),"s");
-	    ATOMSmarkUnmark( $par1 ,"s");
-	    //res = checkProp(cloningRes.$newProp,$('.selected'))//$operando verrà determinato all'interno della funz'
-		PActx.$newProp = cloningRes.$newProp
-		PActx = tryReconfigurableProp(PActx, $par1 )//operando verrà determinato all'interno della funz'
-		PActx.visualization =  	cloningRes.visualization
+    
+	let	$origProp = findPropByName(propName)
+	if( $origProp.length == 0){ 
+    	console.log('property not found:' + propName)
 	}
-	return PActx
+	else{
+		var cloningRes = swapMembersClone($origProp.eq(0),firstVal);
+	    if( cloningRes.foundTF ){
+		    //ATOMSmarkUnmark($('.selected'),"s");
+		    ATOMSmarkUnmark( $par1 ,"s");
+		    //res = checkProp(cloningRes.$newProp,$('.selected'))//$operando verrà determinato all'interno della funz'
+			PActx.$newProp = cloningRes.$newProp
+			PActx = tryReconfigurableProp(PActx, $par1, undefined, justTry )//operando verrà determinato all'interno della funz'
+			PActx.visualization =  	cloningRes.visualization
+		}
+		return PActx
+	}
 }
 
-function tryReconfigurableProp(PActx,$par1,$par2){
+function tryReconfigurableProp(PActx,$par1,$par2,justTry){
     //********** da attack points istruisce la pratica PActx********************************
     PActx=PActxFromAttackPoints(PActx,$par1,$par2)
     //********** Adapt Match ******************************************************
     //cerca di far coincidere il primo membro con il mio operando
     overwriteFromHeader(PActx.$newProp)
-    PActx = cloneOrderMatch(PActx,false,true,false)
+    PActx = cloneOrderMatch(PActx,false,true,justTry)
     //PActx.$transform = PActx.$equation[0].ATOM_getRoles('.secondMember').children();// !!!!!  non mi piace, perchè trasform non viene ricavato dal PActx?
     
     if( PActx.matchedTF){
@@ -503,10 +499,10 @@ function PMclean(PActx){
 
 
 
-//function ($originalInput, $originalPattern, $span) 
 function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)
 {
-	//per Try:  cloneOrderMatch(PActx,true,false,true)
+	//per Try://cloneOrderMatch(PActx,true,false,true)
+	//
 	//se order = true, deve passare PActx.$newProp
 	//************Imposta valori di default************
 	if(clone==undefined){clone=true};
