@@ -750,3 +750,15 @@ border-color:transparent;
 	border-top-right-radius:1px!important;
 }
 
+[data-atom=conditional]{
+	display:grid;
+}
+.row1{
+	grid-row-start:1;
+	justify-content:center;
+}
+
+.row2{
+	grid-row-start:2;
+	justify-content:center;
+}
