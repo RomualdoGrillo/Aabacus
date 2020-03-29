@@ -116,15 +116,20 @@ function serialNumber(mode){
     return count
 }
 */
-function lookForResult(){
+
+function lookForResultAndCelebrate(){
 	let $expressions = $('#telaRole>*');
 	let found = false;
 	let i;
 	for(i=0;i<$expressions.length;i++){
 		found = compareWithResult($expressions.eq(i),$('#result>*'))
-		console.log(found);
 		if(found){break} 
 	}
+	if(found){
+		victorySound.play();
+		$('body').removeClass('gameModeSurpriseRes'); 
+		//alert('esattooooo!!!!')
+	} 
 	return found
 }
 

@@ -135,6 +135,7 @@ $('#create-link').click(function() {
 	$(".selected")[0].ATOMCreateDefinition()
 })
 
+
 //************ Help button**************
 $("#help-link").click(function(event) {
 	window.open('./Help/Help.html');
@@ -412,12 +413,7 @@ function PActxConclude(PActx) {
 			}
 		}
 		ssnapshot.take();
-		if (lookForResult()) {
-			victorySound.play();
-			$('body').removeClass('gameModeSurpriseRes'); 
-			//alert('esattooooo!!!!')
-
-		}
+		lookForResultAndCelebrate();
 		PActxVisualize(PActx);
 	}
 }
