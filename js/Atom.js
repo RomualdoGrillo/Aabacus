@@ -374,7 +374,7 @@ return $newNode
 
 function validTargetsFromOpened($ATOMdragged){
 		var numOfPlaces
-		var valids = $('#telaRole:visible, #telaRole [class*="_role"]:visible').filter(function( index ) {
+		var valids = $('#telaRole [class*="_role"]:visible').filter(function( index ) {
 			//*****determine number of places********
 			numOfPlaces = getNumOfPlaces($(this));
 			//*****valid?***********
@@ -391,7 +391,7 @@ function validTargetsFromOpened($ATOMdragged){
 			
 			return result
 		})
-	  	return valids.not($ATOMdragged.parent())
+	  	return valids.add('#telaRole').not($ATOMdragged.parent())
 }
 
 function getNumOfPlaces($role){
