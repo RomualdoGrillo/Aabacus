@@ -185,23 +185,7 @@ function onEndHandler(event) {
 			if(PActx){PActxConclude(PActx)}	    
 	    }
 	}
-	/*
-	if ($(dropTarget).is('[data-atom][target]:not([target=""])')) {
-		//apply property from propertiesDnD
-		let targetProperty = dropTarget.getAttribute('target');
-		console.log(' ------------> found target ' + targetProperty);
-		let property = propertiesDnD.find(function(el) {
-			return el.name == targetProperty
-		});
-		if (property) {
-			let PActx = property.apply($(event.item), $(dropTarget))
-			if (PActx) {
-				PActxConclude(PActx)
-			}
-		}
-	}
-	*/
-
+	
 	else {
 		//  no need for a specific function in propertiesDnD
 		// edit, commute, distribute are simply movement in connected lists  
