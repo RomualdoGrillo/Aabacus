@@ -1,3 +1,8 @@
+#rootPrototype{
+	background-color:red;
+}
+
+
 .fraction>.ul_role{
 	/* display: flow-root; */
 	flex-direction: column;
