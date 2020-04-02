@@ -123,7 +123,7 @@ function ATOM_dissolveContainer(){
 //per creazione automatica def: $(".SelectedDef")[0]ATOMCreateDefinition()
 function ATOMCreateDefinition(startNode){
 	if(startNode == undefined){startNode=this}
-	var outType=$(this).attr('data-type')
+	var outType=$(startNode).attr('data-type')
 	var $newDef=ATOMclone(prototypeSearch('eq')) //crea una nuova definizine  
 	//*********************** definendum **********************
 	var $definendum=ATOMclone(prototypeSearch('function'))
@@ -142,12 +142,13 @@ function ATOMCreateDefinition(startNode){
 	
 	if($parList.length>0){
 		$newforAll = ATOMclone(prototypeSearch('forAll'));//clona for each
+		ATOMextend($newforAll);
 		$('#telaRole').append($newforAll);//todo:scegliere dove deve essere visibile la nuova definizione
 		GetforAllContent($newforAll).append($newDef);
 		$parList.each(function(i,val){
 			var node=this;
 			var thisType=$(node).attr('data-type')
-			var $newNode=ATOMclone(prototypeSearch()).attr('data-type',thisType)//data() e' un casino
+			var $newNode=ATOMclone(prototypeSearch('ci')).attr('data-type',thisType)//data() e' un casino
 			$newNode.append("p" + i)
 			$(this).replaceWith($newNode)
 			var $Clone1=ATOMclone($newNode)//clone da inserire in definendum
@@ -373,7 +374,7 @@ return $newNode
 
 function validTargetsFromOpened($ATOMdragged){
 		var numOfPlaces
-		var valids = $('#telaRole:visible, #telaRole [class*="_role"]:visible').filter(function( index ) {
+		var valids = $('#telaRole [class*="_role"]:visible').filter(function( index ) {
 			//*****determine number of places********
 			numOfPlaces = getNumOfPlaces($(this));
 			//*****valid?***********
@@ -390,7 +391,7 @@ function validTargetsFromOpened($ATOMdragged){
 			
 			return result
 		})
-	  	return valids.not($ATOMdragged.parent())
+	  	return valids.add('#telaRole').not($ATOMdragged.parent())
 }
 
 function getNumOfPlaces($role){

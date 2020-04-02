@@ -55,27 +55,29 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 	fileReader.readAsText(fileToLoad, "UTF-8");
 }
 
-//inject(MMLstring,$('#telaRole'))
-function inject(MMLstring,$targetNode)
-{
-	var $convertedTree = createConvertedTree(MMLstring,"mml_aab");
-	
-	/*
-	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
-	if(  $targetNode.is('#telaRole') && (ATOMclosedDef( $targetNode )  || $convertedTree.attr("data-type") !== "bool") ){
+function returnTargetWrappedIfNeeded($targetNode,$toBeInserted){
+	if(  $targetNode.is('#telaRole') && (ATOMclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
 		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
 		var $newDef = ATOMclone(prototypeSearch('asymmEq'));
 		$newDef.removeClass("unlocked")//cio' che viene caticato e' di default unlocked
 		$targetNode.append($newDef);
 		$target = $newDef.find(".secondMember")
 		attachEventsAndExtend($newDef,false);//attacco eventi al solo container, gli eventi del contenuto sono attaccati nel load file. il contenusocollegare più volte gli eventi provoca errori
+		return $target
 	}
 	else{
-		$target = $targetNode
+		return $targetNode
 	}
-	*/
-	$target = $targetNode
+}
 
+//inject(MMLstring,$('#telaRole'))
+function inject(MMLstring,$targetNode)
+{
+	var $convertedTree = createConvertedTree(MMLstring,"mml_aab");
+	
+	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
+
+	$target = returnTargetWrappedIfNeeded($targetNode,$convertedTree)
 
 	$target.append($convertedTree);
 	attachEventsAndExtend($convertedTree,true);

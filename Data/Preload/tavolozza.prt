@@ -86,7 +86,8 @@
 				</div>
 				<div class="s_role forAllContent" data-type="bool" data-accept="1"></div>
 			</div>
-			<div id="ifThenElsePrototype" data-atom="ifThenElse" class="atom" data-type="bool">
+			<!--
+			<div id="ifthenelsePrototype" data-atom="ifthenelse" class="atom" data-type="bool">
 				<div class="column">
 					<div class="s_role if" data-type="bool"></div>
 					<div class="decoration imply"></div>
@@ -97,6 +98,45 @@
 					<div class="s_role else" data-type="bool"></div>
 				</div>
 			</div>
+			-->
+			<div id="ifthenelsePrototype" data-atom="conditional" class="atom" data-type="bool">
+				
+					<div class="row1">
+						<div class="s_role if" data-type="bool"></div>
+					</div>
+					<div class="row1">
+						<div class="decoration">else</div>
+					</div>
+					<div class="row2">
+						<div class="s_role then" data-type="bool"></div>
+						<div class="decoration">:</div>
+					</div>
+					<div class="row2">
+						<div class="s_role then" data-type="bool"></div>
+					</div>
+			</div>
+			<div id="conditionalPrototype" data-atom="conditional" class="atom" data-type="num">
+				
+					<div class="row1">
+						<div class="s_role if" data-type="bool"></div>
+						<div class="decoration">?</div>
+					</div>
+					<div class="row2">
+						<div class="s_role then" data-type="num"></div>
+						<div class="decoration">:</div>
+					</div>
+					<div class="row2">
+						<div class="s_role then" data-type="num"></div>
+					</div>
+			</div>
+			
+			<div id="divisiblePrototype" data-atom="divisible" class="atom" data-type="bool">
+				
+					<div class="s_role number" data-type="num"></div>
+					divisible by
+					<div class="s_role divisor" data-type="num"></div>
+			</div>
+			
 			<div id="existsPrototype" data-atom="exists" class="atom" data-type="bool">
 				<div class="row">
 					<div class="existsSymbol">∃</div>

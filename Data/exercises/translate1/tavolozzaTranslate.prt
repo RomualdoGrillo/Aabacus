@@ -1,0 +1,16 @@
+<div id="numPrototype" data-atom="ci" data-type="num" class="atom ">
+				<div class="name">x</div>
+</div>
+<div id="forallPrototype" data-atom="forAll" class="atom" data-type="bool">
+				<div class="row">
+					<div class="forallSymbol">∀</div>
+					<div class="bVar_role forAllHeader" data-type="obj"></div>
+				</div>
+				<div class="s_role forAllContent" data-type="bool" data-accept="1"></div>
+</div>
+<div id="divisiblePrototype" data-atom="divisible" class="atom" data-type="bool">
+				
+					<div class="s_role number" data-type="num"></div>
+					divisible by
+					<div class="s_role divisor" data-type="num"></div>
+</div>

@@ -60,7 +60,12 @@ $(document).on('keydown', function(e) {
 		ssnapshot.copy();
 		cancelSelected();
 		console.log("control + x")
-	}//canc or del  code of "cancel" = 46 code of "del" = 8
+	}//auto create function definition
+	else if (e.ctrlKey && (keyPressed === 'f')) {
+		ATOMCreateDefinition($('.selected')[0])
+		console.log("control + f")
+	}
+	//canc or del  code of "cancel" = 46 code of "del" = 8
 	else if (e.which === 46 || e.which === 8) {
 		cancelSelected();
 		console.log("canc or del")
@@ -129,6 +134,7 @@ $(document).on('keydown', function(e) {
 $('#create-link').click(function() {
 	$(".selected")[0].ATOMCreateDefinition()
 })
+
 
 //************ Help button**************
 $("#help-link").click(function(event) {
@@ -407,11 +413,7 @@ function PActxConclude(PActx) {
 			}
 		}
 		ssnapshot.take();
-		if (lookForResult()) {
-			victorySound.play();
-			alert('esattooooo!!!!')
-			$('body').removeClass('gameModeSurpriseRes'); 
-		}
+		lookForResultAndCelebrate();
 		PActxVisualize(PActx);
 	}
 }

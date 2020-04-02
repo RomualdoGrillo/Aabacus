@@ -1,0 +1,6 @@
+{
+   "content_mml":"./Data/Exercises/translate1/translate1_content.mml",
+   "result_mml":"./Data/Exercises/translate1/divisible_res.mml",
+   "tavolozza_html":"./Data/Exercises/translate1/tavolozzaTranslate.prt",
+   "settings_json":"./Data/Preload/game.set"
+}

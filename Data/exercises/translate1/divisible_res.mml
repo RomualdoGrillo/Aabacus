@@ -1,0 +1,25 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<forall>
+		</forall>
+		<bvar>
+			<ci type="num">x</ci>
+		</bvar>
+		<apply type="bool">
+			<implies>
+			</implies>
+			<apply type="bool">
+				<divisible>
+				</divisible>
+				<ci type="num">x</ci>
+				<cn type="num">6</cn>
+			</apply>
+			<apply type="bool">
+				<divisible>
+				</divisible>
+				<ci type="num">x</ci>
+				<cn type="num">3</cn>
+			</apply>
+		</apply>
+	</apply>
+</math>

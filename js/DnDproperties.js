@@ -90,7 +90,6 @@ function startHandler(event, AtomDragged) {
 			el.setAttribute('target', 'opened')
 		});
 		makeSortable($validTgT.toArray());
-
 	}
 
 	if (ATOMclosedDef($(dragged)) && event.from.classList.contains('ol_role')) {
@@ -144,7 +143,7 @@ function onEndHandler(event) {
 	}
 	let dropTarget
 	//Mouse
-	if (event.originalEvent.type == 'drop') {
+	if (event.originalEvent.type == 'drop' || event.originalEvent.type == 'dragend') {
 		// event.originalEvent.target è più facile, ma non distingue tra elemento e suo pseudoelemento ::before
 		let x = event.originalEvent.clientX;
 		let y = event.originalEvent.clientY;
@@ -169,7 +168,14 @@ function onEndHandler(event) {
 	if(dropTarget){
 		parentTarget = dropTarget.closest('[data-atom][target]:not([target=""])')//risalgo fino a che non trovo un parent marcato
 	}
-	if(parentTarget){
+	if(dropTarget.matches('#telaAnd') && $('#telaRole').attr('target')== 'opened'){
+		let $newTarget = returnTargetWrappedIfNeeded($('#telaRole'),$(event.item)); 
+		if( !$newTarget.is('#telaRole') ){
+			//target has changed 
+			$newTarget.append($(event.item));
+		}
+	}
+	else if(parentTarget){
 	    //apply property
 	    let targetProperty = parentTarget.getAttribute('target');
 	    console.log(' ------------> found target ' + targetProperty );
@@ -179,23 +185,7 @@ function onEndHandler(event) {
 			if(PActx){PActxConclude(PActx)}	    
 	    }
 	}
-	/*
-	if ($(dropTarget).is('[data-atom][target]:not([target=""])')) {
-		//apply property from propertiesDnD
-		let targetProperty = dropTarget.getAttribute('target');
-		console.log(' ------------> found target ' + targetProperty);
-		let property = propertiesDnD.find(function(el) {
-			return el.name == targetProperty
-		});
-		if (property) {
-			let PActx = property.apply($(event.item), $(dropTarget))
-			if (PActx) {
-				PActxConclude(PActx)
-			}
-		}
-	}
-	*/
-
+	
 	else {
 		//  no need for a specific function in propertiesDnD
 		// edit, commute, distribute are simply movement in connected lists  
