@@ -2432,8 +2432,10 @@
       if (cloneHidden) {
         pluginEvent('showClone', this);
         if (Sortable.eventCanceled) return; // show clone at dragEl or original position
-
-        if (rootEl.contains(dragEl) && !this.options.group.revertClone) {
+        
+        //mod Romualdo: if nested nested sortables contains does nor guaranties it is a child that can be use to insert before
+        //if (rootEl.contains(dragEl) && !this.options.group.revertClone) { 
+        if (dragEl.parentNode == rootEl && !this.options.group.revertClone) {
           rootEl.insertBefore(cloneEl, dragEl);
         } else if (nextEl) {
           rootEl.insertBefore(cloneEl, nextEl);
