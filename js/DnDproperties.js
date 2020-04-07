@@ -168,7 +168,7 @@ function onEndHandler(event) {
 	if(dropTarget){
 		parentTarget = dropTarget.closest('[data-atom][target]:not([target=""])')//risalgo fino a che non trovo un parent marcato
 	}
-	if(dropTarget.matches('#telaAnd') && $('#telaRole').attr('target')== 'opened'){
+	if(dropTarget && dropTarget.matches('#telaAnd') && $('#telaRole').attr('target')== 'opened'){
 		let $newTarget = returnTargetWrappedIfNeeded($('#telaRole'),$(event.item)); 
 		if( !$newTarget.is('#telaRole') ){
 			//target has changed 
