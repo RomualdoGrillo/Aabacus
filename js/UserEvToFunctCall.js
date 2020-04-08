@@ -83,7 +83,7 @@ function keyboardEvToFC($atom, keyPressed){
 		else{//chiamata a funzione configurabile
 		PActx = TryPropByName(actionString, $atom ,firstValString);
 			}
-		if( PActx.matchedTF ){//proprietà applicata con successo
+		if( PActx && PActx.matchedTF ){//proprietà applicata con successo
 			PActx.msg = actionString +" "+ firstValString
 			PActx = PMclean(PActx);
 			break
@@ -153,7 +153,7 @@ function RefineRepeatedOfMArked(PActx){
     	semplificEffettuata = false;
     	while( j>=0){//prova a semplificare il j-esimo atomo, parti dal fondo
     		var PActx = keyboardEvToFC($($toBesemplified[j]),"c");
-			if(PActx.matchedTF){//semplificazione applicata con successo
+			if(PActx && PActx.matchedTF){//semplificazione applicata con successo
 				refreshAndReplace(PActx);
 				semplificEffettuata = true;
 				break

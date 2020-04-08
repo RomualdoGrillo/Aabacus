@@ -26,25 +26,24 @@ div{
 
 /*[data-atom="eq"].asymmetric sono le definizioni, in quel tipo di atomi
 il bordo del primo membro sporge dal background venendo a "fondersi" con il bordo esterno verde
-per una questione estetica */
+per una questione estetica
 
 [data-atom="eq"].asymmetric *{
     border-color:white;
 }
+*/
+
 [data-atom].asymmetric,[data-atom="eq"].asymmetric>.firstMember {
     border: 1px solid #DAD9D9;
 }
-
-
-
+/*
 .greyBorders [data-atom].asymmetric,[data-atom="eq"].asymmetric>.firstMember,.ide {
-    border: 1px solid #aaa;/* necessario un selector specifico almeno quanto quello usato sopra */
+    border: 1px solid #aaa;/* necessario un selector specifico almeno quanto quello usato sopra
 }
 
 .greyBorders [data-atom] {
     border-color: #aaa;
 }
-
 
 .greyBorders [class*="_role"].empty {background-color:  #e6e6e6;}
 [data-atom].asymmetric>.firstMember {background-color:  #ffffff;}/*lo sfondo del lucchetto ha sempre sfondo bianco*/
@@ -94,7 +93,6 @@ flex-shrink:0;
 	top: 60px;
 }
 
-
 [data-atom="minus"] , [data-atom="m_inverse"] , [data-atom="not"] {
 	padding: 0;
 }
@@ -137,10 +135,12 @@ flex-shrink:0;
 	grid-template-columns: minmax(12px, max-content) minmax(8px, max-content);
 	grid-gap: 0px;
 }
+
 .base{
 	grid-row-start:2;
 	grid-column-start:1;
 }
+
 .exponent{
 	grid-row-start:1;
 	grid-column-start:2;
@@ -520,13 +520,14 @@ flex-shrink:0;
 	flex-direction:column
 }
 
+body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover){
+border-color:transparent;
+}
 
 .showPar .brackets[data-atom] {
 
-	border-left-color: black;
-	
-
-	border-right-color: black;
+	border-left-color: black!important;
+	border-right-color: black!important;
 	
 
 	border-left-width: 2px;
@@ -541,10 +542,10 @@ border-right-style: solid;
 
 
 /* roles inside glued atoms should still work*/
-.glued,.glued>*{ 
-	pointer-events: none;
+.glued,.glued>*{
+	/* pointer-events: none; */
 }
-.glued>*>*{ 
+.glued>*>*{
 	pointer-events: auto;
 }
 
@@ -738,9 +739,7 @@ border-right-style: solid;
 	background-color:red;
 }
 
-body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover){
-border-color:transparent;
-}
+body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover){border-color:transparent;}
 
 #telaRole [data-atom][data-type=bool]{
 	border-radius:var(--div-smallradius);

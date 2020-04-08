@@ -22,7 +22,7 @@
 		{
 		"name":"advanced",
 		"colors":"coloredBorders",
-		"brackets":false,
+		"brackets":true,
 		"timesVert":true,
 		"fixBorders":false
 		},

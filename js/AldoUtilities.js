@@ -139,3 +139,11 @@ function compareWithResult($expression,$result){
 	MyPActx.$pattern = $result;
 	return cloneOrderMatch(MyPActx,true,false,true).matchedTF
 }
+
+function getCol(matrix, col){
+       var column = [];
+       for(var i=0; i<matrix.length; i++){
+          column.push(matrix[i][col]);
+       }
+       return column;
+}
