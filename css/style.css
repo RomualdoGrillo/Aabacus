@@ -541,10 +541,10 @@ border-right-style: solid;
 
 
 /* roles inside glued atoms should still work*/
-.glued,.glued>*{ 
-	pointer-events: none;
+.glued,.glued>*{
+	/* pointer-events: none; */
 }
-.glued>*>*{ 
+.glued>*>*{
 	pointer-events: auto;
 }
 

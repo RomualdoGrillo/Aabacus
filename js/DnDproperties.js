@@ -30,7 +30,7 @@ function makeSortable(sortables) {
 					return "*"
 				}
 			},*/
-			//filter:"[data-type=num]",
+			//filter:".glued",//elimina l'evento di drag invece di lascirlo a quello sotto
 			animation: 150,
 			fallbackOnBody: true,
 			swapThreshold: 0.65,
@@ -165,9 +165,16 @@ function onEndHandler(event) {
 	}
 	 
 	let parentTarget
+	if(dropTarget && dropTarget.getAttribute('target')!=""){
+		parentTarget=dropTarget
+	}
+	else if( ATOMparent($(dropTarget)).attr('target')!="" ){//risalgo solo di un livello!!
+		parentTarget=ATOMparent($(dropTarget))[0];
+	}
+	/*
 	if(dropTarget){
 		parentTarget = dropTarget.closest('[data-atom][target]:not([target=""])')//risalgo fino a che non trovo un parent marcato
-	}
+	}*/
 	if(dropTarget && dropTarget.matches('#telaAnd') && $('#telaRole').attr('target')== 'opened'){
 		let $newTarget = returnTargetWrappedIfNeeded($('#telaRole'),$(event.item)); 
 		if( !$newTarget.is('#telaRole') ){

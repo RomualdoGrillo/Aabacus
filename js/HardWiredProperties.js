@@ -338,7 +338,7 @@ function validForColl(mouseDownNode){
 	};
 	console.log('okForCollection')
 	//return $parentParent[0].ATOM_getRoles()
-	return $parentParent	
+	return ATOMparent($parentParent)//target is the external atom	
 }
 
 
@@ -472,16 +472,17 @@ function ATOMcollect($dragged,$target){
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/collect.png"
 	let $parent = ATOMparent($dragged);
+	let $parentParent = ATOMparent($parent);
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
 	console.log("collect")
 	var extOp 
-	extOp = encaseIfNeeded($target,op)
+	extOp = encaseIfNeeded($parentParent,op)
 	ATOMparent($dragged).addClass("cleanifpointless")
 	ATOMparent($(".couldBeCollected")).addClass("cleanifpointless")
-	$dragged.insertBefore($target);
+	$dragged.insertBefore($parentParent);
 	$(".couldBeCollected").remove()
-	$target.addClass("cleanifpointless");
+	$parentParent.addClass("cleanifpointless");
 	PActx.$transform =  extOp;
 	PActx.matchedTF=true
 	return PActx
