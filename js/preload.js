@@ -24,10 +24,14 @@ function injectAll(response,rootUrl){
 		preloadAjax(buildPath(rootUrl,all.tavolozza_html),$("#tavolozza"))
 	}
 	if(all.content_mml && all.content_mml.string){//string data
+		$('#tela').addClass('unlocked');
+		refreshAsymmEq($('#tela'));
 		$('#telaRole').children().remove();
-		inject(all.content_mml.string, $("#telaRole"))
+		inject(all.content_mml.string, $("#telaRole"));
 		}
 	else if(all.content_mml){//url
+		$('#tela').addClass('unlocked');
+		refreshAsymmEq($('#tela'));
 		$('#telaRole').children().remove();
 		preloadAjax(buildPath(rootUrl,all.content_mml),$("#telaRole"));
 	}
