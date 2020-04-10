@@ -1,17 +1,40 @@
+let event
+$(document).on('mousedown',injectMouseDown);
+$(document).on('touchstart',injectMouseDown);
+
+function injectMouseDown(e){
+	console.log(e);
+	event = e;
+	let atomTarget = $(event.target).closest('[data-atom]');
+	if (atomTarget.length && atomTarget.parent()) {
+		console.log('closest role from mousedown')
+		console.log(atomTarget.parent());
+		let sortables = makeSortableDEBUG(atomTarget.parent())  
+		console.log( sortables[0])
+		sortables[0]._onTapStart(event);
+	}
+}
+
+
+
+
+
 //makeSortableDEBUG( $(tela).find( sortablesSelectorString ).addBack().add($('#tavolozza')).toArray() );
 
-function makeSortableDEBUG(sortables) {
-	for (var i = 0; i < sortables.length; i++) {
-		new Sortable(sortables[i],{
+function makeSortableDEBUG(roles) {
+	let sortables = []
+	for (var i = 0; i < roles.length; i++) {
+		sortables[i] = new Sortable(roles[i],{
 
 			group: {
 				name: 'shared',
-				//pull: 'clone',
+				pull: 'clone',
 			},
 			fallbackOnBody: true,
 			animation: 150,
 		});
 	}
+	return sortables
 }
 /*
 let event

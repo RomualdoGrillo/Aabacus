@@ -1,5 +1,5 @@
 function makeSortable(sortables) {
-
+/*
 	for (var i = 0; i < sortables.length; i++) {
 		new Sortable(sortables[i],{
 			group: {
@@ -31,7 +31,7 @@ function makeSortable(sortables) {
 				}
 			},*/
 			//filter:".glued",//elimina l'evento di drag invece di lascirlo a quello sotto
-			animation: 150,
+/*			animation: 150,
 			fallbackOnBody: true,
 			swapThreshold: 0.65,
 
@@ -51,6 +51,7 @@ function makeSortable(sortables) {
 
 		});
 	}
+*/
 }
 
 function startHandler(event, AtomDragged) {
