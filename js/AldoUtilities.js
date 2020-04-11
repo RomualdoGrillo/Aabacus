@@ -1,38 +1,144 @@
 let event
-$(document).on('mousedown',injectMouseDown);
-$(document).on('touchstart',injectMouseDown);
+$(document).on('mousedown',MakeSortableAndInjectMouseDown);
+$(document).on('touchstart',MakeSortableAndInjectMouseDown);
 
-function injectMouseDown(e){
-	console.log(e);
-	event = e;
-	let atomTarget = $(event.target).closest('[data-atom]');
-	if (atomTarget.length && atomTarget.parent()) {
-		console.log('closest role from mousedown')
-		console.log(atomTarget.parent());
-		let sortables = makeSortableDEBUG(atomTarget.parent())  
-		console.log( sortables[0])
-		sortables[0]._onTapStart(event);
+function MakeSortableAndInjectMouseDown(event){
+	clearTargetsMouseDown()
+	let $atomTarget 
+	if(ATOMclosedDef($(event.target))){
+		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
 	}
+	else{
+		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
+	}
+	//let $atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
+	if ($atomTarget.length && $atomTarget.parent()) {
+		//console.log('closest role from mousedown')
+		//console.log($atomTarget.parent()[0]);
+		//make targets sortables
+		//*********from opened
+		if (event.ctrlKey || !ATOMclosedDef($atomTarget) || $atomTarget.is('#tavolozza>*')) {
+			let $validTgT = validTargetsFromOpened($atomTarget);
+			$validTgT.toArray().forEach(function(el) {
+				el.setAttribute('target', 'opened')
+			});
+			makeSortableMouseDown($validTgT.toArray(),true);
+		}
+		//make source sortable
+		let sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);
+		$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
+		let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement],sort)[0]  
+		fromSortable._onTapStart(event);
+	}
+	/*
+	else {
+		//apply properties
+		let i = 0
+		while (propertiesDnD[i]) {
+			let classname = 'target-' + propertiesDnD[i].name
+			clearTarget(classname)
+			let targets = propertiesDnD[i].findTgt($(event.item));
+			let j = 0;
+			while (targets[j]) {
+				let role = targets[j];
+				role.classList.add(classname);
+				role.setAttribute('target', propertiesDnD[i].name)
+				let sortable = Sortable.get(role);
+				if (sortable) {
+				
+					sortable.option('onAdd', propertiesDnD[i].onAdd)
+			
+				}
+				j++;
+			}
+			i++
+		}
+	}
+	*/
 }
 
+function startHandlerMouseDown(event, AtomDragged) {
+	//debug
+	//********select*****************
+	//clickHandler(event)
+	//********clear all targets*****************
+	//if (debugMode) {
+	//	clearTragets()
+	//}
+	if (event.originalEvent.ctrlKey || event.from.matches('#tavolozza')) {
+		//clone!
+		event.item.classList.add('toBeCloned');
+		cloning = true
+		//event.item.classList.remove('showAsPlaceholder');
+	} else {
+		//move!
+		event.item.classList.add('showAsPlaceholder');
+		//will be removed in onEndHandler
 
+	}
 
+}
 
+function onEndHandlerMouseDown(event) {
+	//console.log('end!')
+	//console.log(event)
+	//disable all draggables
+	//clearTargetsMouseDown()
+}
 
-//makeSortableDEBUG( $(tela).find( sortablesSelectorString ).addBack().add($('#tavolozza')).toArray() );
+function clearTargetsMouseDown(){
+	let sortableRoles = document.querySelectorAll('[target],[from]')
+	let i=0
+	while(sortableRoles[i]){
+		sortableRoles[i].removeAttribute("target");
+		sortableRoles[i].removeAttribute("from");
+		let sortable = Sortable.get(sortableRoles[i]);
+		//if(sortable){sortable.destroy()};
+		if(sortable){
+			sortable.option('disabled',true);
+		};
+	i++}
 
-function makeSortableDEBUG(roles) {
-	let sortables = []
-	for (var i = 0; i < roles.length; i++) {
-		sortables[i] = new Sortable(roles[i],{
+}
 
+//makeSortableMouseDown( $(tela).find( sortablesSelectorString ).addBack().add($('#tavolozza')).toArray() );
+/*
+function makeSourceSortable(role,clone) {
+	let sortable = new Sortable(role,{
 			group: {
 				name: 'shared',
 				pull: 'clone',
 			},
-			fallbackOnBody: true,
 			animation: 150,
-		});
+			});
+	return sortable
+}
+*/
+
+function makeSortableMouseDown(roles,sort) {
+	let sortables = []
+	for (var i = 0; i < roles.length; i++) {
+		sortables[i] = Sortable.get(roles[i])
+		if( sortables[i] ){
+			sortables[i].option('disabled',false);
+			sortables[i].option('sort',sort);
+		}
+		else{
+			sortables[i] = new Sortable(roles[i],{
+
+				group: {
+					name: 'shared',
+					pull: 'clone',
+				},
+				sort:sort,
+				onStart: startHandlerMouseDown,
+				onEnd: onEndHandlerMouseDown,
+				animation: 150,
+				fallbackOnBody: true,
+				swapThreshold: 0.65,
+				animation: 150,
+			});
+		}
 	}
 	return sortables
 }
@@ -42,12 +148,12 @@ $(document).on('mousedown', function(e) {
 	console.log(e);
 	event = e;
 	console.log('closest atom of clicked')
-	let atomTarget = $(event.target).closest('[data-atom]');
-	if (atomTarget.length && atomTarget.parent()) {
+	let $atomTarget = $(event.target).closest('[data-atom]');
+	if ($atomTarget.length && $atomTarget.parent()) {
 
-		console.log(atomTarget.parent());
-		// set connected sortables starting from atomTarget.parentElement 
-		StartHandler(undefined, atomTarget[0], event.ctrlKey)
+		console.log($atomTarget.parent());
+		// set connected sortables starting from $atomTarget.parentElement 
+		StartHandler(undefined, $atomTarget[0], event.ctrlKey)
 
 	}
 })
