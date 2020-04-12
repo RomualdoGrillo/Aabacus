@@ -68,12 +68,34 @@ function startHandlerMouseDown(event, AtomDragged) {
 }
 
 function onEndHandlerMouseDown(event) {//console.log('end!')
-	//console.log(event)
+	//replacing sortablejs defaul clone with myClone (removed id, extends ATOM etc..)
+	//item stays in place myclone dropped in new place
 	let myClone = ATOMclone($(event.item))[0]//
 	attachEventsAndExtend($(myClone))
-	event.clone.replaceWith(myClone)
-//disable all draggables
-//clearTargetsMouseDown()
+	event.item.replaceWith(myClone)
+	event.clone.replaceWith(event.item)
+	let dropped = myClone
+	//move or clone
+	//if(dropTarget && dropTarget.matches('#telaAnd') && $('#telaRole').attr('target')== 'opened'){
+	if(event.to.getAttribute('target')== 'opened'){
+		if(event.to.matches('#telaRole')){
+			let $newTarget = returnTargetWrappedIfNeeded($('#telaRole'),$(dropped)); 
+			if( !$newTarget.is('#telaRole') ){
+				//target has changed 
+				$newTarget.append($(dropped));
+				}
+		}
+	}
+	//apply property
+	else{
+	    let targetProperty = event.to.getAttribute('target');
+	    console.log(' ------------> found target ' + targetProperty );
+	    let property = propertiesDnD.find(function(el){return el.name == targetProperty });
+	    if(property){
+	    	let PActx = property.apply($(dropped),$(event.to))
+			if(PActx){PActxConclude(PActx)}	    
+	    }
+	}
 }
 
 function clearTargetsMouseDown() {
@@ -119,27 +141,3 @@ function makeSortableMouseDown(roles, sort) {
 	}
 	return sortables
 }
-function onCloneHandler(evt) {
-	var origEl = evt.item;
-	if(origEl.matches('[data-atom]')){
-		evt.clone = ATOMclone($(evt.item))[0];
-		attachEventsAndExtend($(evt.clone));
-		evt.clone.classList.add('AtomClone')
-	}
-}
-/*
-let event
-$(document).on('mousedown', function(e) {
-	console.log(e);
-	event = e;
-	console.log('closest atom of clicked')
-	let $atomTarget = $(event.target).closest('[data-atom]');
-	if ($atomTarget.length && $atomTarget.parent()) {
-
-		console.log($atomTarget.parent());
-		// set connected sortables starting from $atomTarget.parentElement 
-		StartHandler(undefined, $atomTarget[0], event.ctrlKey)
-
-	}
-})
-*/
