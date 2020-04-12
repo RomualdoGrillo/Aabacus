@@ -110,7 +110,7 @@ function revert(event){//revert a sortablejs onAdd event
 }
 function forThisValid(mouseDownNode){
 let dataType = mouseDownNode[0].getAttribute('data-type');
-let forAlls = tela.querySelectorAll('[data-atom=forAll]');
+let forAlls = $('[data-atom=forAll]:visible').toArray();//querySelectAll does not work with :visible?
 let $parameters = $()
 let i=0
 while(forAlls[i]){

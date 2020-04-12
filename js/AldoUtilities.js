@@ -1,34 +1,4 @@
-//makeSortableDEBUG( $(tela).find( sortablesSelectorString ).addBack().add($('#tavolozza')).toArray() );
 
-function makeSortableDEBUG(sortables) {
-	for (var i = 0; i < sortables.length; i++) {
-		new Sortable(sortables[i],{
-
-			group: {
-				name: 'shared',
-				//pull: 'clone',
-			},
-			fallbackOnBody: true,
-			animation: 150,
-		});
-	}
-}
-/*
-let event
-$(document).on('mousedown', function(e) {
-	console.log(e);
-	event = e;
-	console.log('closest atom of clicked')
-	let atomTarget = $(event.target).closest('[data-atom]');
-	if (atomTarget.length && atomTarget.parent()) {
-
-		console.log(atomTarget.parent());
-		// set connected sortables starting from atomTarget.parentElement 
-		StartHandler(undefined, atomTarget[0], event.ctrlKey)
-
-	}
-})
-*/
 function removeClassStartNodeAndDiscendence(Class, $startNode) {
 	let $toBeCleaned
 	if ($startNode == undefined) {
@@ -73,25 +43,13 @@ function buildPath(base, relative) {
 		return relative
 	}
 }
-/*
-let timeout
-$(document).mouseup(function(){
-  clearTimeout(pressTimer);
-  // Clear timeout
-  return false;
-}).mousedown(function(){
-  // Set timeout
-  pressTimer = window.setTimeout(function() { alert('long press!')},1000);
-  return false; 
-});
-*/
 
-function wrapUnwrapUrlString(string, unwrap){
+function wrapUnwrapUrlString(string, unwrap) {
 	//wrap wrapUnwrapUrlString("../Aabacus/images/a.png")
 	//unwrap wrapUnwrapUrlString("url(../Aabacus/images/a.png)",true)
 	//cutFirstDir wrapUnwrapUrlString("url(../Aabacus/images/a.png)",'cutFirstDir')
 	if (unwrap == 'cutFirstDir') {
-		let arr = string.replace('../','').split('/');
+		let arr = string.replace('../', '').split('/');
 		part = arr[1]
 		for (i = 2; i < arr.length; i++) {
 			part = part + '/' + arr[i]
@@ -117,33 +75,35 @@ function serialNumber(mode){
 }
 */
 
-function lookForResultAndCelebrate(){
+function lookForResultAndCelebrate() {
 	let $expressions = $('#telaRole>*');
 	let found = false;
 	let i;
-	for(i=0;i<$expressions.length;i++){
-		found = compareWithResult($expressions.eq(i),$('#result>*'))
-		if(found){break} 
+	for (i = 0; i < $expressions.length; i++) {
+		found = compareWithResult($expressions.eq(i), $('#result>*'))
+		if (found) {
+			break
+		}
 	}
-	if(found){
+	if (found) {
 		victorySound.play();
-		$('body').removeClass('gameModeSurpriseRes'); 
+		$('body').removeClass('gameModeSurpriseRes');
 		//alert('esattooooo!!!!')
-	} 
+	}
 	return found
 }
 
-function compareWithResult($expression,$result){
+function compareWithResult($expression, $result) {
 	var MyPActx = newPActx();
 	MyPActx.$operand = $expression;
 	MyPActx.$pattern = $result;
-	return cloneOrderMatch(MyPActx,true,false,true).matchedTF
+	return cloneOrderMatch(MyPActx, true, false, true).matchedTF
 }
 
-function getCol(matrix, col){
-       var column = [];
-       for(var i=0; i<matrix.length; i++){
-          column.push(matrix[i][col]);
-       }
-       return column;
+function getCol(matrix, col) {
+	var column = [];
+	for (var i = 0; i < matrix.length; i++) {
+		column.push(matrix[i][col]);
+	}
+	return column;
 }

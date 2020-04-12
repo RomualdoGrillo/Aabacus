@@ -12,12 +12,7 @@ ssnapshot()
 //***********************
 //all elements that can be dragged around are initiated by making their container Sortable
 let sortablesSelectorString = '.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_role'
-let sortablesExcluded = '[data-atom=minus]>*,[data-atom=m_inverse]>*,[data-atom=not]>*'
-//let sortablesSelectorString='.ul_role,.ol_role,.s_role:not(.unsortable),[data-atom=ci]';
-let $initialSortables = $(tela).find(sortablesSelectorString).addBack().add($('#tavolozza')).not(sortablesExcluded);
-//let $initialSortables = $(tela).find( sortablesSelectorString ).addBack();
-let initialSortables = $initialSortables.toArray()
-makeSortable(initialSortables);
+let sortablesExcluded = '[data-atom=minus]>*,[data-atom=m_inverse]>*,[data-atom=not]>*'//glued
 ATOMextend($('body'), true);
 //************ Preload  ************
 //preload will trigger the usual extend and make sortable chain of events 
@@ -370,8 +365,6 @@ function attachEventsAndExtend($startElement, processDiscendence /*default is tr
 	$Elements.filter('[data-atom].asymmetric').each(function(i, e) {
 		refreshAsymmEq($(e))
 	})
-	let allSortables = $Elements.filter(sortablesSelectorString).not(sortablesExcluded).toArray();
-	makeSortable(allSortables);
 }
 
 function cancelSelected() {

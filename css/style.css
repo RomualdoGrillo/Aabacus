@@ -640,7 +640,7 @@ border-right-style: solid;
 	border-color:var(--bool-color)!important;
 }
 #telaRole [data-atom=or]>.ul_role>[data-atom]{
-	margin:-1px;
+	margin:-0.5px;
 	border-radius:0px;
 }
 .unlocked [data-atom=or]>.ul_role>[data-atom]{
