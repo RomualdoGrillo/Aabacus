@@ -915,6 +915,7 @@ function PropositionValidSpan($source,moveDistCopy){
 }
 
 function validPropDiscendence($sources,moveDistCopy){
+	//vedi sopra PropositionValidSpan
 	var $newTargets = $();
 	$sources.each(function(){
 		var atomType = $(this).attr("data-atom");

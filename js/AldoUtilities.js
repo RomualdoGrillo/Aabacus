@@ -68,7 +68,10 @@ function startHandlerMouseDown(event, AtomDragged) {
 }
 
 function onEndHandlerMouseDown(event) {//console.log('end!')
-//console.log(event)
+	//console.log(event)
+	let myClone = ATOMclone($(event.item))[0]//
+	attachEventsAndExtend($(myClone))
+	event.clone.replaceWith(myClone)
 //disable all draggables
 //clearTargetsMouseDown()
 }
@@ -110,10 +113,19 @@ function makeSortableMouseDown(roles, sort) {
 				fallbackOnBody: true,
 				swapThreshold: 0.65,
 				animation: 150,
+				//onClone:onCloneHandler,
 			});
 		}
 	}
 	return sortables
+}
+function onCloneHandler(evt) {
+	var origEl = evt.item;
+	if(origEl.matches('[data-atom]')){
+		evt.clone = ATOMclone($(evt.item))[0];
+		attachEventsAndExtend($(evt.clone));
+		evt.clone.classList.add('AtomClone')
+	}
 }
 /*
 let event
