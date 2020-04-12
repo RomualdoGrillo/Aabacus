@@ -26,7 +26,7 @@
 
 .sortable-ghost.showAsPlaceholder {
 	background-color: var(--default-bgcolor);/*default background*/
-	border-color:white!important;
+	border-color:transparent!important;
 	color:transparent!important;
 	background-image: none!important;
 }

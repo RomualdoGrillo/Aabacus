@@ -1,14 +1,12 @@
-let event
-$(document).on('mousedown',MakeSortableAndInjectMouseDown);
-$(document).on('touchstart',MakeSortableAndInjectMouseDown);
+$(document).on('mousedown', MakeSortableAndInjectMouseDown);
+$(document).on('touchstart', MakeSortableAndInjectMouseDown);
 
-function MakeSortableAndInjectMouseDown(event){
+function MakeSortableAndInjectMouseDown(event) {
 	clearTargetsMouseDown()
-	let $atomTarget 
-	if(ATOMclosedDef($(event.target))){
+	let $atomTarget
+	if (ATOMclosedDef($(event.target))) {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
-	}
-	else{
+	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	}
 	//let $atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
@@ -16,45 +14,35 @@ function MakeSortableAndInjectMouseDown(event){
 		//console.log('closest role from mousedown')
 		//console.log($atomTarget.parent()[0]);
 		//make targets sortables
-		//*********from opened
+		//*********from opened****************
 		if (event.ctrlKey || !ATOMclosedDef($atomTarget) || $atomTarget.is('#tavolozza>*')) {
+			//make targets sortable
 			let $validTgT = validTargetsFromOpened($atomTarget);
 			$validTgT.toArray().forEach(function(el) {
 				el.setAttribute('target', 'opened')
 			});
-			makeSortableMouseDown($validTgT.toArray(),true);
+			makeSortableMouseDown($validTgT.toArray(), true);
+		} else {
+			//apply properties
+			let i = 0
+			while (propertiesDnD[i]) {
+				let classname = 'target-' + propertiesDnD[i].name
+				let targets = propertiesDnD[i].findTgt($atomTarget);
+				let j = 0;
+				while (targets[j]) {
+					targets[j].setAttribute('target', propertiesDnD[i].name)
+					makeSortableMouseDown([targets[j]])
+					j++;
+				}
+				i++
+			}
 		}
 		//make source sortable
 		let sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);
 		$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
-		let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement],sort)[0]  
+		let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]
 		fromSortable._onTapStart(event);
 	}
-	/*
-	else {
-		//apply properties
-		let i = 0
-		while (propertiesDnD[i]) {
-			let classname = 'target-' + propertiesDnD[i].name
-			clearTarget(classname)
-			let targets = propertiesDnD[i].findTgt($(event.item));
-			let j = 0;
-			while (targets[j]) {
-				let role = targets[j];
-				role.classList.add(classname);
-				role.setAttribute('target', propertiesDnD[i].name)
-				let sortable = Sortable.get(role);
-				if (sortable) {
-				
-					sortable.option('onAdd', propertiesDnD[i].onAdd)
-			
-				}
-				j++;
-			}
-			i++
-		}
-	}
-	*/
 }
 
 function startHandlerMouseDown(event, AtomDragged) {
@@ -79,58 +67,43 @@ function startHandlerMouseDown(event, AtomDragged) {
 
 }
 
-function onEndHandlerMouseDown(event) {
-	//console.log('end!')
-	//console.log(event)
-	//disable all draggables
-	//clearTargetsMouseDown()
+function onEndHandlerMouseDown(event) {//console.log('end!')
+//console.log(event)
+//disable all draggables
+//clearTargetsMouseDown()
 }
 
-function clearTargetsMouseDown(){
+function clearTargetsMouseDown() {
 	let sortableRoles = document.querySelectorAll('[target],[from]')
-	let i=0
-	while(sortableRoles[i]){
+	let i = 0
+	while (sortableRoles[i]) {
 		sortableRoles[i].removeAttribute("target");
 		sortableRoles[i].removeAttribute("from");
 		let sortable = Sortable.get(sortableRoles[i]);
 		//if(sortable){sortable.destroy()};
-		if(sortable){
-			sortable.option('disabled',true);
-		};
-	i++}
+		if (sortable) {
+			sortable.option('disabled', true);
+		}
+		;i++
+	}
 
 }
 
-//makeSortableMouseDown( $(tela).find( sortablesSelectorString ).addBack().add($('#tavolozza')).toArray() );
-/*
-function makeSourceSortable(role,clone) {
-	let sortable = new Sortable(role,{
-			group: {
-				name: 'shared',
-				pull: 'clone',
-			},
-			animation: 150,
-			});
-	return sortable
-}
-*/
-
-function makeSortableMouseDown(roles,sort) {
+function makeSortableMouseDown(roles, sort) {
 	let sortables = []
 	for (var i = 0; i < roles.length; i++) {
 		sortables[i] = Sortable.get(roles[i])
-		if( sortables[i] ){
-			sortables[i].option('disabled',false);
-			sortables[i].option('sort',sort);
-		}
-		else{
+		if (sortables[i]) {
+			sortables[i].option('disabled', false);
+			sortables[i].option('sort', sort);
+		} else {
 			sortables[i] = new Sortable(roles[i],{
 
 				group: {
 					name: 'shared',
 					pull: 'clone',
 				},
-				sort:sort,
+				sort: sort,
 				onStart: startHandlerMouseDown,
 				onEnd: onEndHandlerMouseDown,
 				animation: 150,
@@ -202,25 +175,13 @@ function buildPath(base, relative) {
 		return relative
 	}
 }
-/*
-let timeout
-$(document).mouseup(function(){
-  clearTimeout(pressTimer);
-  // Clear timeout
-  return false;
-}).mousedown(function(){
-  // Set timeout
-  pressTimer = window.setTimeout(function() { alert('long press!')},1000);
-  return false; 
-});
-*/
 
-function wrapUnwrapUrlString(string, unwrap){
+function wrapUnwrapUrlString(string, unwrap) {
 	//wrap wrapUnwrapUrlString("../Aabacus/images/a.png")
 	//unwrap wrapUnwrapUrlString("url(../Aabacus/images/a.png)",true)
 	//cutFirstDir wrapUnwrapUrlString("url(../Aabacus/images/a.png)",'cutFirstDir')
 	if (unwrap == 'cutFirstDir') {
-		let arr = string.replace('../','').split('/');
+		let arr = string.replace('../', '').split('/');
 		part = arr[1]
 		for (i = 2; i < arr.length; i++) {
 			part = part + '/' + arr[i]
@@ -246,33 +207,35 @@ function serialNumber(mode){
 }
 */
 
-function lookForResultAndCelebrate(){
+function lookForResultAndCelebrate() {
 	let $expressions = $('#telaRole>*');
 	let found = false;
 	let i;
-	for(i=0;i<$expressions.length;i++){
-		found = compareWithResult($expressions.eq(i),$('#result>*'))
-		if(found){break} 
+	for (i = 0; i < $expressions.length; i++) {
+		found = compareWithResult($expressions.eq(i), $('#result>*'))
+		if (found) {
+			break
+		}
 	}
-	if(found){
+	if (found) {
 		victorySound.play();
-		$('body').removeClass('gameModeSurpriseRes'); 
+		$('body').removeClass('gameModeSurpriseRes');
 		//alert('esattooooo!!!!')
-	} 
+	}
 	return found
 }
 
-function compareWithResult($expression,$result){
+function compareWithResult($expression, $result) {
 	var MyPActx = newPActx();
 	MyPActx.$operand = $expression;
 	MyPActx.$pattern = $result;
-	return cloneOrderMatch(MyPActx,true,false,true).matchedTF
+	return cloneOrderMatch(MyPActx, true, false, true).matchedTF
 }
 
-function getCol(matrix, col){
-       var column = [];
-       for(var i=0; i<matrix.length; i++){
-          column.push(matrix[i][col]);
-       }
-       return column;
+function getCol(matrix, col) {
+	var column = [];
+	for (var i = 0; i < matrix.length; i++) {
+		column.push(matrix[i][col]);
+	}
+	return column;
 }
