@@ -1,6 +1,3 @@
-$(document).on('mousedown', MakeSortableAndInjectMouseDown);
-$(document).on('touchstart', MakeSortableAndInjectMouseDown);
-
 function MakeSortableAndInjectMouseDown(event) {
 	clearTargetsMouseDown()
 	let $atomTarget
@@ -80,6 +77,7 @@ function onEndHandlerMouseDown(event) {
 	//console.log('end!')
 	//replacing sortablejs defaul clone with myClone (removed id, extends ATOM etc..)
 	//item stays in place myclone dropped in new place
+	event.item.classList.remove('showAsPlaceholder');
 	let myClone = ATOMclone($(event.item))[0]
 	//
 	attachEventsAndExtend($(myClone))
@@ -99,10 +97,9 @@ function onEndHandlerMouseDown(event) {
 		}
 	}//apply property
 	else {
-		//assume the position of the dropped is not important
-		$(dropped).remove()//---->dropped directly in target
 		let target
-		if(event.to.classList.contains('tgt')){
+		let adHocTgt = event.to.classList.contains('tgt')
+		if(adHocTgt){
 			//---->real target is Atom so dropped in ad hoc tgt role
 			target=event.to.parentElement;
 		}
@@ -117,11 +114,15 @@ function onEndHandlerMouseDown(event) {
 		});
 		if (property) {
 			let PActx = property.apply($(event.item), $(event.to.parentElement),event)
+			if(adHocTgt){
+				(event.to).remove()
+			}
 			if (PActx) {
 				PActxConclude(PActx)
 			}
 		}
 	}
+	if(!debugMode){clearTargetsMouseDown()}//in debugMode i target sono lasciati visibili
 }
 
 function clearTargetsMouseDown() {
@@ -170,4 +171,8 @@ function makeSortableMouseDown(roles, sort) {
 		}
 	}
 	return sortables
+}
+
+function mouseUpHandler(event){
+	if(!debugMode){clearTargetsMouseDown()}//in debugMode i target sono lasciati visibili
 }

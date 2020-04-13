@@ -32,6 +32,9 @@ document.addEventListener("click", clickHandler);
 document.addEventListener("dblclick", dblclickHandler);
 //document.querySelectorAll('[data-atom]').forEach(function(i,e){ refreshAsymmEq($(e))})
 //***********************************************************
+$(document).on('mousedown', MakeSortableAndInjectMouseDown);
+$(document).on('mouseup', mouseUpHandler);
+$(document).on('touchstart', MakeSortableAndInjectMouseDown);
 
 $(document).on('keydown', function(e) {
 	var keyPressed = keyToCharacter(e.which).toLowerCase();

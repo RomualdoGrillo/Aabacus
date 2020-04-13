@@ -151,11 +151,8 @@ function immediateAssValid(mouseDownNode){
 
 function ATOMassociate(dragged,target){
 	var PActx = newPActx();
-	PActx.visualization = "images/properties/associative.png"
-	//create a clone of the dragged
-	dragged.appendTo($(target))
-	dragged.css({position:"relative", top:0 , left:0})
-	PActx.matchedTF=false;
+	PActx.visualization = "images/properties/associate.png"	
+	PActx.matchedTF=true;
 	PActx.replacedAlready = true;
 	PActx.msg = "associated";
 	//PActx.$transform = target.parent().parent()//not optimized, should update the older closest common parent
@@ -315,8 +312,8 @@ function validForColl(mouseDownNode){
 			var $factors = term.ATOM_getChildren()
 			for (j = 0; j < $factors.length ; j++){
 				var factor=$factors[j]
-				console.log("controllo factor");
-				console.log(factor);
+				//console.log("controllo factor");
+				//console.log(factor);
 				if(ATOMEqual(factor,$mouseDownNode[0])){
 					$(factor).addClass("couldBeCollected")
 					okForThisTerm = true;
@@ -475,12 +472,12 @@ function ATOMcollect($dragged,$target){
 	let $parentParent = ATOMparent($parent);
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
-	console.log("collect")
 	var extOp 
 	extOp = encaseIfNeeded($parentParent,op)
 	ATOMparent($dragged).addClass("cleanifpointless")
 	ATOMparent($(".couldBeCollected")).addClass("cleanifpointless")
-	$dragged.insertBefore($parentParent);
+	//$dragged.insertBefore($parentParent);
+	$dragged.remove();
 	$(".couldBeCollected").remove()
 	$parentParent.addClass("cleanifpointless");
 	PActx.$transform =  extOp;
