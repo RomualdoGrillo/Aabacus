@@ -23,15 +23,24 @@ function MakeSortableAndInjectMouseDown(event) {
 			});
 			makeSortableMouseDown($validTgT.toArray(), true);
 		} else {
-			//apply properties
+			//create targets to apply properties
 			let i = 0
 			while (propertiesDnD[i]) {
 				let classname = 'target-' + propertiesDnD[i].name
 				let targets = propertiesDnD[i].findTgt($atomTarget);
 				let j = 0;
 				while (targets[j]) {
-					targets[j].setAttribute('target', propertiesDnD[i].name)
-					makeSortableMouseDown([targets[j]])
+					targets[j].setAttribute('target', propertiesDnD[i].name);
+					if(targets[j].matches('.ul_role')){
+						//target is a role: for example associative property	
+						makeSortableMouseDown([targets[j]])
+					}
+					else{
+						//target is not a role: for example in replacement it is an atom 
+						let tgt = $('<div class="tgt"></div>')[0]
+						targets[j].append(tgt);
+						makeSortableMouseDown([tgt])						
+					}
 					j++;
 				}
 				i++
@@ -67,40 +76,62 @@ function startHandlerMouseDown(event, AtomDragged) {
 
 }
 
-function onEndHandlerMouseDown(event) {//console.log('end!')
+function onEndHandlerMouseDown(event) {
+	//console.log('end!')
 	//replacing sortablejs defaul clone with myClone (removed id, extends ATOM etc..)
 	//item stays in place myclone dropped in new place
-	let myClone = ATOMclone($(event.item))[0]//
+	let myClone = ATOMclone($(event.item))[0]
+	//
 	attachEventsAndExtend($(myClone))
 	event.item.replaceWith(myClone)
 	event.clone.replaceWith(event.item)
 	let dropped = myClone
-	//move or clone
-	//if(dropTarget && dropTarget.matches('#telaAnd') && $('#telaRole').attr('target')== 'opened'){
-	if(event.to.getAttribute('target')== 'opened'){
-		if(event.to.matches('#telaRole')){
-			let $newTarget = returnTargetWrappedIfNeeded($('#telaRole'),$(dropped)); 
-			if( !$newTarget.is('#telaRole') ){
+	//internal sorting
+	if (event.to == event.from) {
+	}//move or clone
+	else if (event.to.getAttribute('target') == 'opened') {
+		if (event.to.matches('#telaRole')) {
+			let $newTarget = returnTargetWrappedIfNeeded($('#telaRole'), $(dropped));
+			if (!$newTarget.is('#telaRole')) {
 				//target has changed 
 				$newTarget.append($(dropped));
-				}
+			}
 		}
-	}
-	//apply property
-	else{
-	    let targetProperty = event.to.getAttribute('target');
-	    console.log(' ------------> found target ' + targetProperty );
-	    let property = propertiesDnD.find(function(el){return el.name == targetProperty });
-	    if(property){
-	    	let PActx = property.apply($(dropped),$(event.to))
-			if(PActx){PActxConclude(PActx)}	    
-	    }
+	}//apply property
+	else {
+		//assume the position of the dropped is not important
+		$(dropped).remove()//---->dropped directly in target
+		let target
+		if(event.to.classList.contains('tgt')){
+			//---->real target is Atom so dropped in ad hoc tgt role
+			target=event.to.parentElement;
+		}
+		else{
+			//---->target is a role (no need to create ad hoc tgt)
+			target = event.to
+		}
+		let targetProperty = target.getAttribute('target');
+		console.log(' ------------> found target ' + targetProperty);
+		let property = propertiesDnD.find(function(el) {
+			return el.name == targetProperty
+		});
+		if (property) {
+			let PActx = property.apply($(event.item), $(event.to.parentElement))
+			if (PActx) {
+				PActxConclude(PActx)
+			}
+		}
 	}
 }
 
 function clearTargetsMouseDown() {
-	let sortableRoles = document.querySelectorAll('[target],[from]')
-	let i = 0
+	let tgts = document.querySelectorAll('.tgt');
+	let i = 0;
+	while (tgts[i]) {
+		tgts[i].remove()
+	i++}
+	let sortableRoles = document.querySelectorAll('[target],[from]');
+	i = 0
 	while (sortableRoles[i]) {
 		sortableRoles[i].removeAttribute("target");
 		sortableRoles[i].removeAttribute("from");
@@ -109,8 +140,7 @@ function clearTargetsMouseDown() {
 		if (sortable) {
 			sortable.option('disabled', true);
 		}
-		;i++
-	}
+	i++}
 
 }
 

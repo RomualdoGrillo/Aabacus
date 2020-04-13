@@ -12,12 +12,15 @@ ssnapshot()
 //***********************
 //all elements that can be dragged around are initiated by making their container Sortable
 let sortablesSelectorString = '.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_role'
-let sortablesExcluded = '[data-atom=minus]>*,[data-atom=m_inverse]>*,[data-atom=not]>*'//glued
+let sortablesExcluded = '[data-atom=minus]>*,[data-atom=m_inverse]>*,[data-atom=not]>*'
+//glued
 ATOMextend($('body'), true);
 //************ Preload  ************
 //preload will trigger the usual extend and make sortable chain of events 
 let preloadPath = window.location.href.split('preloadPath=')[1]
-if(!preloadPath){preloadPath='./Data/Preload/preload.json'}
+if (!preloadPath) {
+	preloadPath = './Data/Preload/preload.json'
+}
 preloadAll(preloadPath);
 $('[data-atom].asymmetric').each(function(i, e) {
 	refreshAsymmEq($(e))
@@ -60,8 +63,7 @@ $(document).on('keydown', function(e) {
 	else if (e.ctrlKey && (keyPressed === 'f')) {
 		ATOMCreateDefinition($('.selected')[0])
 		console.log("control + f")
-	}
-	//canc or del  code of "cancel" = 46 code of "del" = 8
+	}//canc or del  code of "cancel" = 46 code of "del" = 8
 	else if (e.which === 46 || e.which === 8) {
 		cancelSelected();
 		console.log("canc or del")
@@ -131,16 +133,15 @@ $('#create-link').click(function() {
 	$(".selected")[0].ATOMCreateDefinition()
 })
 
-
 //************ Help button**************
 $("#help-link").click(function(event) {
 	window.open('./Help/Help.html');
 });
 //***** auto load file after a file is choosen***************
 $('#fileToLoad').change(function(e) {
-	console.log(e);
+	//console.log(e);
 	//passa di qui dopo che l'utente ha selezionato un nuovo file, non se l'utente preme annulla
-	console.log('fileTOLoad change');
+	//console.log('fileTOLoad change');
 	var fileToLoad = jQuery('#fileToLoad')[0].files[0];
 	var $target = $('#telaRole');
 	var fileName = fileToLoad.name;
@@ -177,14 +178,14 @@ function clickHandler(event) {
 	}//*************** Lock unlock ******** 
 	else if ($(event.target).is('.asymmetric>.firstMember')) {
 		let $atom = $(event.target).parent();
-		if ($atom.is('#tela')) {// tela fa eccezione perchè determina lo anche lo stato delle sezioni result e events
+		if ($atom.is('#tela')) {
+			// tela fa eccezione perchè determina lo anche lo stato delle sezioni result e events
 			if ($atom.hasClass('unlocked')) {
 				$('#tela,#result,#events').removeClass('unlocked');
 			} else {
 				$('#tela,#result,#events').addClass('unlocked');
 			}
-		}
-		else{
+		} else {
 			$atom.toggleClass('unlocked');
 		}
 		refreshAsymmEq($atom);
@@ -251,8 +252,7 @@ function dblclickHandler(event) {
 			// togli exclusiveFocus
 			exclusiveFocus = ""
 		}
-	}
-	/********closed still not handled **********/
+	}/********closed still not handled **********/
 	else if (closed && atomClass === 'plus') {
 		//experimental
 		if ($atomDblclicked.hasClass('resizable')) {
@@ -260,8 +260,7 @@ function dblclickHandler(event) {
 			$atomDblclicked[0].ATOM_getRoles().css('height', '');
 		}
 		$atomDblclicked.toggleClass('resizable');
-	}
-	//closed or opened
+	}//closed or opened
 	//******** expand collapse ***********
 	else if (atomClass === 'deftrue') {
 		$atomDblclicked.toggleClass('expanded');
@@ -373,7 +372,7 @@ function cancelSelected() {
 	})
 	if (toBeCancelled.length != 0) {
 		toBeCancelled.each(function(i, element) {
-			console.log($(element).remove())
+			$(element).remove()
 		});
 		ssnapshot.take();
 	}
@@ -416,8 +415,7 @@ function PActxVisualize(PActx) {
 	let visContet
 	if (PActx.visualization == "") {
 		visContet = PActx.msg
-	}
-	else {
+	} else {
 		visContet = '<img src="' + PActx.visualization + '">';
 	}
 	removeVisualization()
@@ -427,8 +425,8 @@ function PActxVisualize(PActx) {
 		PActx.$transform.append($visualization);
 	} else {
 		$(tela).append($visualization)
-		$visualization.css('position','relative');
-		$visualization.css('top','0px');
+		$visualization.css('position', 'relative');
+		$visualization.css('top', '0px');
 	}
 	setTimeout(removeVisualization, 3000);
 }

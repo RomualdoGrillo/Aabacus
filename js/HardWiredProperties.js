@@ -183,7 +183,7 @@ function validForPartDist(dragged){
 	if ($parent !== undefined){opD = $parent.attr("data-atom")}
 	let op = opIsDistDop("",opD);
 	if(op && ATOMparent($parent).attr("data-atom")==op){
-		return ATOMparent(ATOMparent($parent))
+		return ATOMparent(ATOMparent($parent)).find('>.ul_role')
 	}
 	/*
 	if(op && ATOMparent($parent).attr("data-atom") === op){//check if parent of parent is the right op
@@ -338,7 +338,7 @@ function validForColl(mouseDownNode){
 	};
 	console.log('okForCollection')
 	//return $parentParent[0].ATOM_getRoles()
-	return ATOMparent($parentParent)//target is the external atom	
+	return ATOMparent($parentParent).find('>.ul_role')//target is the external atom	
 }
 
 

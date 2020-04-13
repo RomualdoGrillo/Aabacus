@@ -126,10 +126,12 @@ disadvantage: building new prototypes is less intuitive
 	padding:2px!important;
 }
 
-[data-atom][target]::after{
+/*[data-atom][target]::after,*/ .tgt{
 	content: "";
 	position:absolute;
 	width:100%;
 	height:100%;
-	background-color:blueviolet;	
+	border:1px solid blueviolet;
+	background-color: violet;
+	z-index: 1;
 }
