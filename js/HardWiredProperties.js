@@ -251,7 +251,7 @@ function ATOMPartDistribute(dragged,target){
 	return PActx
 }
 
-function ATOMdistribute(dragged,target){
+function ATOMdistribute(dragged,target,event){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/distributive.png"
@@ -269,7 +269,7 @@ function ATOMdistribute(dragged,target){
 		attachEventsAndExtend($cloneDragged);
 		$clone.insertBefore($(this));
 		$clone[0].ATOM_getRoles().append($cloneDragged);
-		if(dragged.index()>target.index()){
+		if(dragged.index()>target.index()){ 
 			$clone[0].ATOM_getRoles().prepend($(this));
 		}
 		else{
@@ -375,8 +375,8 @@ function validForPartColl(mouseDownNode){
 			var $factors = sibling.ATOM_getChildren()
 			for (j = 0; j < $factors.length ; j++){
 				var factor=$factors[j]
-				console.log("controllo factor");
-				console.log(factor);
+				//console.log("controllo factor");
+				//console.log(factor);
 				if(ATOMEqual(factor,$mouseDownNode[0])){
 					$(factor).addClass("couldBeCollected")
 					okForThisTerm = true;
@@ -486,7 +486,6 @@ function ATOMcollect($dragged,$target){
 	PActx.$transform =  extOp;
 	PActx.matchedTF=true
 	return PActx
-
 }
 
 

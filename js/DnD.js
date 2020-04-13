@@ -94,7 +94,7 @@ function onEndHandlerMouseDown(event) {
 			let $newTarget = returnTargetWrappedIfNeeded($('#telaRole'), $(dropped));
 			if (!$newTarget.is('#telaRole')) {
 				//target has changed 
-				$newTarget.append($(dropped));
+				//$newTarget.append($(dropped));
 			}
 		}
 	}//apply property
@@ -116,7 +116,7 @@ function onEndHandlerMouseDown(event) {
 			return el.name == targetProperty
 		});
 		if (property) {
-			let PActx = property.apply($(event.item), $(event.to.parentElement))
+			let PActx = property.apply($(event.item), $(event.to.parentElement),event)
 			if (PActx) {
 				PActxConclude(PActx)
 			}

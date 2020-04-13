@@ -60,9 +60,10 @@ function returnTargetWrappedIfNeeded($targetNode,$toBeInserted){
 		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
 		var $newDef = ATOMclone(prototypeSearch('asymmEq'));
 		$newDef.removeClass("unlocked")//cio' che viene caticato e' di default unlocked
-		$targetNode.append($newDef);
+		$newDef.insertBefore($toBeInserted);
 		$target = $newDef.find(".secondMember")
 		attachEventsAndExtend($newDef,false);//attacco eventi al solo container, gli eventi del contenuto sono attaccati nel load file. il contenusocollegare più volte gli eventi provoca errori
+		$target.append($toBeInserted);
 		return $target
 	}
 	else{
@@ -76,12 +77,12 @@ function inject(MMLstring,$targetNode)
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab");
 	
 	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
+	$targetNode.append($convertedTree);
 
 	$target = returnTargetWrappedIfNeeded($targetNode,$convertedTree)
 
-	$target.append($convertedTree);
 	attachEventsAndExtend($convertedTree,true);
 	RefreshEmptyInfixBraketsGlued(ATOMparent($convertedTree),true,"eibg")
-	insertHtmlByRef($targetNode)
+	//insertHtmlByRef($targetNode)
 	ssnapshot.take(); 
 }
