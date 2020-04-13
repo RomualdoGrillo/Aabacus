@@ -333,7 +333,7 @@ flex-shrink:0;
 	/*box-shadow: 0px 0.5px 3px 0px #ff9b00;*/
 }
 .coloredBorders [class*="l_role"][data-type="num"].empty ,.coloredBorders [class*="s_role"][data-type="num"] {
-    background-color: rgb(255, 230, 190);
+    background-color: var(--num-bgcolor);
 }
 .coloredBorders [data-type="bool"][data-atom] {
     border-color:var(--bool-color)
@@ -643,6 +643,12 @@ border-right-style: solid;
 	margin:-0.5px;
 	border-radius:0px;
 }
+#telaRole [data-atom=or]>.ul_role{
+	background-color:var(--bool-bgcolor);
+	border-radius:var(--div-smallradius);
+}
+
+
 .unlocked [data-atom=or]>.ul_role>[data-atom]{
 	margin:0px!important;
 }

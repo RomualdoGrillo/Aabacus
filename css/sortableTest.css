@@ -24,6 +24,7 @@
 	border-color:transparent!important;
 	color:transparent!important;
 	background-image: none!important;
+	z-index:0;
 }
 
 .sortable-ghost.showAsPlaceholder[data-type=num]{
@@ -32,6 +33,10 @@
 .sortable-ghost.showAsPlaceholder[data-type=bool][data-atom]{
 	background-color:var(--bool-bgcolor);
 }
+[data-atom=or]>.ul_role>.sortable-ghost.showAsPlaceholder{
+	visibility:hidden;
+}
+
 
 .sortable-ghost.showAsPlaceholder > * {
 	visibility: hidden!important;
