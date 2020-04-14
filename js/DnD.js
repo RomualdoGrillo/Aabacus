@@ -78,7 +78,8 @@ function startHandlerMouseDown(event, AtomDragged) {
 
 }
 
-function onEndHandlerMouseDown(event) {
+//function onEndHandlerMouseDown(event) {
+function onAdd(event) {
 	//console.log('end!')
 	//replacing sortablejs defaul clone with myClone (removed id, extends ATOM etc..)
 	//item stays in place myclone dropped in new place
@@ -90,10 +91,8 @@ function onEndHandlerMouseDown(event) {
 	event.item.replaceWith(myClone)
 	event.clone.replaceWith(event.item)//questo è l'elemento che rimane nella posizione di partenza
 	let dropped = myClone
-	//internal sorting
-	if (event.to == event.from) {
-	}//move or clone
-	else if (event.to.getAttribute('target') == 'opened') {
+	//move or clone
+	if (event.to.getAttribute('target') == 'opened') {
 		if (event.to.matches('#telaRole')) {
 			returnTargetWrappedIfNeeded($('#telaRole'), $(dropped));
 		}
@@ -171,12 +170,14 @@ function makeSortableMouseDown(roles, sort) {
 				},
 				sort: sort,
 				onStart: startHandlerMouseDown,
-				onEnd: onEndHandlerMouseDown,
+				//onEnd: onEndHandlerMouseDown,
+				onChange:onChangeHandler,
+				onAdd:onAdd,
 				animation: 150,
 				fallbackOnBody: true,
 				swapThreshold: 0.65,
 				animation: 150,
-				//onClone:onCloneHandler,
+				onUpdate:onUpdateHandler,
 			});
 		}
 	}
@@ -185,4 +186,11 @@ function makeSortableMouseDown(roles, sort) {
 
 function mouseUpHandler(event){
 	if(!debugMode){clearTargetsMouseDown()}//in debugMode i target sono lasciati visibili
+}
+
+function onChangeHandler(){
+	console.log('onChangeHandler')
+}
+function onUpdateHandler(){
+	console.log('onUpdateHandler')
 }

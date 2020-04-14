@@ -313,8 +313,8 @@ function validForColl(mouseDownNode){
 				}
 		}
 		if(okForThisTerm === false){
-			console.log("term without such factor");
-			console.log(term);
+			//console.log("term without such factor");
+			//console.log(term);
 			return $()
 		}
 	};
@@ -806,6 +806,9 @@ function validReplaced(mouseDownNode){
 	var $mouseDownNode=$(mouseDownNode);
 	var $equation = ATOMparent($mouseDownNode)
 	var $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
+	if( !$mouseDownNode.parent().parent().is("[data-atom=eq]:not(.asymmetric)") ){
+		return []//not from an equation	
+	}
 	if(!($mouseDownNode.parent().hasClass('firstMember')||$mouseDownNode.parent().hasClass('secondMember'))){
 	return []}// dragged is not a membrer of equation
 	//ricerca limitata ad elementi visibili
