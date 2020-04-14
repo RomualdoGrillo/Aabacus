@@ -24,7 +24,7 @@ class PropertyDnD  {
 
 let propertiesDnD = [
 //new PropertyDnD('openedDnD',validTargetsFromOpened,),  // come gestisco il +ctrl?
-new PropertyDnD('associativeDnD',immediateAssValid,ATOMassociate,associateOnAdd),
+new PropertyDnD('associativeDnD',immediateAssValid,ATOMassociate,""),
 new PropertyDnD('distributiveDnD',validForDist,ATOMdistribute,""),
 new PropertyDnD('partDistributDnD',validForPartDist,ATOMPartDistribute,""),
 new PropertyDnD('collectDnD',validForColl,ATOMcollect,""),
@@ -73,28 +73,7 @@ function openOnSort(event){//default onAdd
 }
 
 
-function openOnAdd(event){//default onAdd
-	if(!event.item.classList.contains('toBeCloned')){
-		event.clone.remove(); // if not cloning, clone was useful to visualize the starting point 	
-	}
-	//console.log('openOnAdd')	
-}
 
-
-
-function associateOnAdd(event){
-	if(!event.item.classList.contains('toBeCloned')){
-		event.clone.remove(); // if not cloning, clone was useful to visualize the starting point 	
-		//console.log('dovrei rimuovere il cloneeeeeeeeeeeeeeeeeeeeeeeeeeeee')
-	}
-	//revert(event);
-	console.log('associateOnAdd')	
-}
-
-/*function distributiveOnAdd(event){
-	revert(event);
-	ATOMdistribute($(event.item),ATOMparent($(event.to)));	
-}*/
 
 
 
@@ -149,8 +128,14 @@ function immediateAssValid(mouseDownNode){
 	return validTargets
 }
 
-function ATOMassociate(dragged,target){
+function ATOMassociate(dropped,target,event){
 	var PActx = newPActx();
+	if($(dropped).hasClass('toBeCloned')){
+			$(dropped).removeClass('toBeCloned');
+		}
+	else{
+		$(event.item).remove(); // if not cloning, clone was useful to visualize the starting point 	
+	}
 	PActx.visualization = "images/properties/associate.png"	
 	PActx.matchedTF=true;
 	PActx.replacedAlready = true;

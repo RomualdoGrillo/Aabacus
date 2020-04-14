@@ -15,11 +15,16 @@ function MakeSortableAndInjectMouseDown(event) {
 		if (event.ctrlKey || !ATOMclosedDef($atomTarget) || $atomTarget.is('#tavolozza>*')) {
 			//make targets sortable
 			let $validTgT = validTargetsFromOpened($atomTarget);
+			if($atomTarget.is('#tavolozza>*')){
+				//add tela as target
+				$validTgT=$validTgT.add('#telaRole');
+			}
 			$validTgT.toArray().forEach(function(el) {
 				el.setAttribute('target', 'opened')
 			});
 			makeSortableMouseDown($validTgT.toArray(), true);
-		} else {
+		}
+		if(ATOMclosedDef($atomTarget)&& !$atomTarget.is('#tavolozza>*')){
 			//create targets to apply properties
 			let i = 0
 			while (propertiesDnD[i]) {
@@ -80,20 +85,24 @@ function onEndHandlerMouseDown(event) {
 	event.item.classList.remove('showAsPlaceholder');
 	let myClone = ATOMclone($(event.item))[0]
 	//
+	event.item.classList.remove('toBeCloned');
 	attachEventsAndExtend($(myClone))
 	event.item.replaceWith(myClone)
-	event.clone.replaceWith(event.item)
+	event.clone.replaceWith(event.item)//questo è l'elemento che rimane nella posizione di partenza
 	let dropped = myClone
 	//internal sorting
 	if (event.to == event.from) {
 	}//move or clone
 	else if (event.to.getAttribute('target') == 'opened') {
 		if (event.to.matches('#telaRole')) {
-			let $newTarget = returnTargetWrappedIfNeeded($('#telaRole'), $(dropped));
-			if (!$newTarget.is('#telaRole')) {
-				//target has changed 
-				//$newTarget.append($(dropped));
-			}
+			returnTargetWrappedIfNeeded($('#telaRole'), $(dropped));
+		}
+		
+		if($(dropped).hasClass('toBeCloned')){
+			$(dropped).removeClass('toBeCloned');
+		}
+		else{
+			$(event.item).remove(); // if not cloning, clone was useful to visualize the starting point 	
 		}
 	}//apply property
 	else {
@@ -113,7 +122,7 @@ function onEndHandlerMouseDown(event) {
 			return el.name == targetProperty
 		});
 		if (property) {
-			let PActx = property.apply($(event.item), $(event.to.parentElement),event)
+			let PActx = property.apply($(dropped), $(event.to.parentElement),event)
 			if(adHocTgt){
 				(event.to).remove()
 			}
@@ -123,6 +132,7 @@ function onEndHandlerMouseDown(event) {
 		}
 	}
 	if(!debugMode){clearTargetsMouseDown()}//in debugMode i target sono lasciati visibili
+	clickSound.play();
 }
 
 function clearTargetsMouseDown() {
