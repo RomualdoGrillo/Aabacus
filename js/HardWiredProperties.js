@@ -29,7 +29,7 @@ new PropertyDnD('distributiveDnD',validForDist,ATOMdistribute,""),
 new PropertyDnD('partDistributDnD',validForPartDist,ATOMPartDistribute,""),
 new PropertyDnD('collectDnD',validForColl,ATOMcollect,""),
 new PropertyDnD('partCollectDnD',validForPartColl,ATOMPartCollect,""),
-new PropertyDnD('replaceDnD',validReplaced,ATOMLinkReplace,""),
+new PropertyDnD('replaceDnD',validReplaced,replaceDND,""),
 new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,"")
 ]
 
@@ -237,7 +237,7 @@ function ATOMdistribute(dragged,target,event){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/distributive.png"
-	let $dragged = $(dragged)
+	let $dragged = $(event.item)
 	let $parent = ATOMparent($dragged);
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
@@ -251,7 +251,7 @@ function ATOMdistribute(dragged,target,event){
 		attachEventsAndExtend($cloneDragged);
 		$clone.insertBefore($(this));
 		$clone[0].ATOM_getRoles().append($cloneDragged);
-		if(dragged.index()>target.index()){ 
+		if($(event.item).index()>target.index()){ 
 			$clone[0].ATOM_getRoles().prepend($(this));
 		}
 		else{
@@ -261,7 +261,7 @@ function ATOMdistribute(dragged,target,event){
 	})
 	var $draggedParent = dragged[0].ATOMparent(); 
 	$draggedParent.addClass("cleanifpointless");//mark external operation as remove if pointless
-	dragged.remove();
+	event.item.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
 	return PActx
@@ -379,10 +379,11 @@ function validForPartColl(mouseDownNode){
 	return $valids	
 }
 
-function ATOMPartCollect($dragged,$target){
+function ATOMPartCollect($dropped,$target,event){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/collect.png"
+	let $dragged = $(event.item)
 	let $targetParent = ATOMparent($target);
 	let $siblingsT = $target.siblings('[data-atom]')
 	let opt = $targetParent.attr("data-atom")
@@ -449,10 +450,11 @@ function ATOMPartCollect($dragged,$target){
 }
 
 
-function ATOMcollect($dragged,$target){
+function ATOMcollect($dropped,$target,event){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/collect.png"
+	let $dragged = $(event.item);
 	let $parent = ATOMparent($dragged);
 	let $parentParent = ATOMparent($parent);
 	let op = undefined;
@@ -462,7 +464,7 @@ function ATOMcollect($dragged,$target){
 	ATOMparent($dragged).addClass("cleanifpointless")
 	ATOMparent($(".couldBeCollected")).addClass("cleanifpointless")
 	//$dragged.insertBefore($parentParent);
-	$dragged.remove();
+	$(event.item).remove();
 	$(".couldBeCollected").remove()
 	$parentParent.addClass("cleanifpointless");
 	PActx.$transform =  extOp;
@@ -818,6 +820,10 @@ function validReplaced(mouseDownNode){
 		return ATOMEqual(this,$mouseDownNode[0],false,true/* trascura il segno root quindi -<esp> può essere sostituita con <esp> a patto che poi si cambi il segno*/)
 	})
 	return valids
+}
+
+function replaceDND(dragged,target,event){
+	ATOMLinkReplace($(event.item),target);
 }
 
 function  	$identifierSpan($identifier){
