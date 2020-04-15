@@ -430,7 +430,7 @@ flex-shrink:0;
 
 /* all valid targets */
 [target]:not([target=""]) {
-	background-color: lightyellow!important;
+	background-color: #fdfda2!important;
 }
 
 
@@ -439,31 +439,10 @@ flex-shrink:0;
 #telaRole :not(.empty)>.infix.proto{/*#telaRole  specifico il selector*/
 	display:none;
 }
-.infix.plus{
-	/* margin-left: 3px; */
-	/* margin-right: 3px; */
-	/* margin-left: -4.75px; */
-	margin-right: -9.5px;
-}
 
 .infix, .power_decoration{/*workaround: altrimenti .power_decoration risultava misteriosamente sortable*/
 	pointer-events: none;
 }
-
-/*.times.infix>div{
-	width: 3.5;
-	height: 3.5;
-	padding:0;
-	background-color:black;
-	z-index: 1;
-	border-radius: 3px;
-	margin:-1.5px;
-}
-
-.times.infix{
-	padding:0;
-	border-radius: 3px;
-}*/
 
 [data-atom="implies"] {
 	flex-direction:column

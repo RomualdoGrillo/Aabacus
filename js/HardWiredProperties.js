@@ -128,13 +128,13 @@ function immediateAssValid(mouseDownNode){
 	return validTargets
 }
 
-function ATOMassociate(dropped,target,event){
+function ATOMassociate(dragged,target,dropped){
 	var PActx = newPActx();
 	if($(dropped).hasClass('toBeCloned')){
 			$(dropped).removeClass('toBeCloned');
 		}
 	else{
-		$(event.item).remove(); // if not cloning, clone was useful to visualize the starting point 	
+		$(dragged).remove(); // if not cloning, clone was useful to visualize the starting point 	
 	}
 	PActx.visualization = "images/properties/associate.png"	
 	PActx.matchedTF=true;

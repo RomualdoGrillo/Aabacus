@@ -121,7 +121,7 @@ function onAdd(event) {
 			return el.name == targetProperty
 		});
 		if (property) {
-			let PActx = property.apply($(dropped), $(event.to.parentElement),event)
+			let PActx = property.apply($(event.item), $(event.to.parentElement),$(dropped))
 			if(adHocTgt){
 				(event.to).remove()
 			}
@@ -170,7 +170,7 @@ function makeSortableMouseDown(roles, sort) {
 				},
 				sort: sort,
 				onStart: startHandlerMouseDown,
-				//onEnd: onEndHandlerMouseDown,
+				onEnd: mouseUpSortEnd,
 				onChange:onChangeHandler,
 				onAdd:onAdd,
 				animation: 150,
@@ -184,7 +184,7 @@ function makeSortableMouseDown(roles, sort) {
 	return sortables
 }
 
-function mouseUpHandler(event){
+function mouseUpSortEnd(event){
 	if(!debugMode){clearTargetsMouseDown()}//in debugMode i target sono lasciati visibili
 }
 

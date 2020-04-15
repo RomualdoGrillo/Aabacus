@@ -12,13 +12,13 @@
 /*[data-atom=plus]>.ul_role>[data-atom=minus]:not(:first-of-type):not(.sortable-drag)::before{
 	content: "-";	
 }*/
-[data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
+[data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)::before {
 	background-color: black;
 	position: absolute;
-	content: "";
-	left:-3;
-	width: 3.5;
-	height: 3.5;
+	content:"";
+	left: -3px;
+	width: 3.5px;
+	height: 3.5px;
 	z-index: 2;
 	border-radius: 3px;
 }
@@ -31,7 +31,7 @@
 }
 
 .vertTimes [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
-	top:-3;
+	top:-3px;
 	left:unset;
 	pointer-events: none;
 }

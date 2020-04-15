@@ -33,7 +33,7 @@ document.addEventListener("dblclick", dblclickHandler);
 //document.querySelectorAll('[data-atom]').forEach(function(i,e){ refreshAsymmEq($(e))})
 //***********************************************************
 $(document).on('mousedown', MakeSortableAndInjectMouseDown);
-$(document).on('mouseup', mouseUpHandler);
+$(document).on('mouseup', mouseUpSortEnd);
 $(document).on('touchstart', MakeSortableAndInjectMouseDown);
 
 $(document).on('keydown', function(e) {
