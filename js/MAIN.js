@@ -249,13 +249,16 @@ function dblclickHandler(event) {
 			ssnapshot.take()
 		}
 	}//******** remove "exclusiveFocus" ***********
+	/*
 	else if (closed && atomClass === 'forAll') {
 		if ($atomDblclicked.hasClass('exclusiveFocus')) {
 			$atomDblclicked.removeClass('exclusiveFocus')
 			// togli exclusiveFocus
 			exclusiveFocus = ""
 		}
-	}/********closed still not handled **********/
+	}
+	*/
+	/********closed still not handled **********/
 	else if (closed && atomClass === 'plus') {
 		//experimental
 		if ($atomDblclicked.hasClass('resizable')) {
