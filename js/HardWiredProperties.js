@@ -820,34 +820,7 @@ function validReplaced(mouseDownNode){
 	return valids
 }
 
-function  	$identifierSpan($identifier){
-	//determina il campo di validità dell'identificatore
-	//risali fino a trovare un container che può avere Bvar 
-	//controlla se l'identifier è tra quelle bvar
-	var $span
-	var $containingForAlls = $('.selected').parents('[data-atom=forAll]');
-	//todo: andrebbero considrati tutti i parents che contengono Bvar, non solo i forAll
-	var i=0
-	while($containingForAlls[i]){
-		if ( parameterInHeader($identifier,$($containingForAlls[i])  ) ){
-			// l'$identifier si trova tra i paramettri del forall
-		return $($containingForAlls[i])
-		}
-		i++
-	}
-	return $('#telaRole'); //se non hai trovato nulla, lo span è l'intera tela
-}
 
-function highlightOccurrences($identifier){
-	//evidenzia lo span e le occorrenze dell'identificatore
-	var $span = $identifierSpan($identifier);
-	//todo: evidenzia lo span
-	var $occurrences = $ATOMParameterSearch($span,$identifier).not($identifier);
-	$occurrences.each(function(){
-		// crea linee
-		lineAB($(this),$identifier)	
-	})	 
-}
 
 function evaluateComparison($exp){
 	var PActx = newPActx();
