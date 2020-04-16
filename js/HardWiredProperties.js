@@ -812,11 +812,15 @@ function validReplaced(mouseDownNode){
 	if(!($mouseDownNode.parent().hasClass('firstMember')||$mouseDownNode.parent().hasClass('secondMember'))){
 	return []}// dragged is not a membrer of equation
 	//ricerca limitata ad elementi visibili
-	//var $candidates = $('#telaRole [data-atom]:visible')
-	var $candidates = PropositionValidSpan($equation).filter(':visible')
+	//var $candidates = PropositionValidSpan($equation).filter(':visible')
+	var $candidates = $PropositionDownstreamRec($equation).find('[data-atom]:visible')
 	var valids = $candidates.not($excludedMembers).filter(function( index ) {//escludi mousedownnode stesso dai possibili risultati
 		return ATOMEqual(this,$mouseDownNode[0],false,true/* trascura il segno root quindi -<esp> può essere sostituita con <esp> a patto che poi si cambi il segno*/)
 	})
+	valids.each(function(){
+		// crea linee
+		lineAB($mouseDownNode,$(this));	
+	})	 
 	return valids
 }
 

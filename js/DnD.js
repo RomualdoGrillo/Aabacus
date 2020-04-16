@@ -186,6 +186,7 @@ function makeSortableMouseDown(roles, sort) {
 
 function mouseUpSortEnd(event){
 	if(!debugMode){clearTargetsMouseDown()}//in debugMode i target sono lasciati visibili
+	clearLines()
 }
 
 function onChangeHandler(){

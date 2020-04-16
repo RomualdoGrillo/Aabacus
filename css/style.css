@@ -503,7 +503,7 @@ body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover){
 border-color:transparent;
 }
 
-.showPar .brackets[data-atom] {
+.showPar .brackets[data-atom]:not(.medium):not(.minimized) {
 
 	border-left-color: black!important;
 	border-right-color: black!important;
