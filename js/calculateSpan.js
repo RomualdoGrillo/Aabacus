@@ -91,11 +91,41 @@ function $PropositionDownstreamRec($startAtom){
 	return $validRoles
 }
 
-function $AssRolesRec($startAtom,immediate){
+function $PropositionUpstreamRec($startAtom,$outerRoleLimit){
 //testing
-//$AssRoles($('.selected')).each(function(){ATOMparent($(this)).addClass('selected')})
+//$PropositionUpstreamRec($('.selected')).each(function(){ATOMparent($(this)).addClass('selected')});
+
 	let op = $startAtom.attr("data-atom");
-	let $startRole  = $startAtom.parent(); 
+	let $validRoles = $()
+	let $parentRoles=$startAtom.parents('[class*="_role"]');
+	if($outerRoleLimit){
+		let index = $parentRoles.index($outerRoleLimit);
+		if(index!=-1){
+			$parentRoles = $parentRoles.slice(0,index);
+		}
+	}
+	$validRoles = $parentRoles.map(function(){
+		if( this.matches('[data-atom=implies]>.s_role:nth-child(2)') ){
+			return ATOMparent($(this))[0].ATOM_getRoles()[0]//return the first role of the implies  	
+		}
+		else if(this.matches('[data-atom=and]>.ul_role')){
+			let $roles = $AssRolesRec(undefined,false,$(this)).add($(this))
+			return  $roles.toArray()
+		} 
+		else{return null} 
+	})
+	return $validRoles
+	
+}
+
+function $AssRolesRec($startAtom,immediate,$startRole){
+//testing
+//$AssRolesRec($('.selected')).each(function(){ATOMparent($(this)).addClass('selected')})
+	if(!$startRole){
+		$startRole  = $startAtom.parent();	
+	}
+	let $ParentAtom = ATOMparent($startAtom);
+	let op = $ParentAtom.attr("data-atom");
 	let $validRoles = $()
 	if( OpIsAssociative(op)){
 		if(immediate){
@@ -146,7 +176,7 @@ function $PropositionUpstream($startRole){
 	let $validRoles = $();
 	let $startAtom = ATOMparent($startRole);
 	let op = $startAtom.attr("data-atom");
-	let $ParentAtom = ATOMparent($startRole);
+	let $ParentAtom = ATOMparent($startAtom);
 	let opP = $startAtom.attr("data-atom");
 	if(opP=="and" || opP=="implies"){$validRoles=$ParentAtom[0].ATOM_getRoles()}
 	return $validRoles
