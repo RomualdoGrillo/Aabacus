@@ -57,9 +57,11 @@ function MakeSortableAndInjectMouseDown(event) {
 }
 
 function startHandlerMouseDown(event, AtomDragged) {
-	//debug
-	//********select*****************
-	//clickHandler(event)
+	//*************** deselect ********
+	if (event.type == 'start') {
+		//clear selected unselected
+		selectionManager("","","",true);
+	}
 	//********clear all targets*****************
 	//if (debugMode) {
 	//	clearTragets()

@@ -609,7 +609,7 @@ border-right-style: solid;
 	background-position: center center;
 }
 
-#telaRole [data-atom=or]{
+#tela *:not([data-atom=or])>*>[data-atom=or]{
 	margin: 0px!important;
 	border-color: transparent;
 }

@@ -169,17 +169,8 @@ function ATOMNselectable(startElement) {
 
 function clickHandler(event) {
 	let $thisATOM = ATOMNselectable($(event.target));
-	//*************** drag start is seen as select click ********
-	if (event.type == 'start') {
-		$('[data-atom]').removeClass('selected').removeClass('unselected');
-		//clear selected unselected
-		$(event.item).addClass('selected');
-		if (event.clone) {
-			$(event.clone).addClass('selected')
-		}
-		;
-	}//*************** Lock unlock ******** 
-	else if ($(event.target).is('.asymmetric>.firstMember')) {
+	//*************** Lock unlock ********
+	if ($(event.target).is('.asymmetric>.firstMember')) {
 		let $atom = $(event.target).parent();
 		if ($atom.is('#tela')) {
 			// tela fa eccezione perchè determina lo anche lo stato delle sezioni result e events
@@ -193,41 +184,59 @@ function clickHandler(event) {
 		}
 		refreshAsymmEq($atom);
 		ssnapshot.take();
-	} else if (event.ctrlKey) {
+	} 
+	else if(!$thisATOM.hasClass('unselectable')){
+		selectionManager($thisATOM,event.ctrlKey,event.shiftKey)
+	}
+}
+function selectionManager($clickedATOM,ctrl,shift,deselectAll){
+	if(deselectAll){
+		//clear selected unselected
+		$('[data-atom]').removeClass('selected').removeClass('unselected');
+	}
+	else if (ctrl) {
 		//click +ctrl on .ATOM   ---multi select---
-		if ($thisATOM.hasClass('selected')) {
-			$thisATOM.find('[data-atom]').removeClass('selected').removeClass('unselected');
-		} else if ($thisATOM.closest('.selected').length != 0) {//if an ancestor is selected already, ignore click
+		if ($clickedATOM.hasClass('selected')) {
+			$clickedATOM.find('[data-atom]').removeClass('selected').removeClass('unselected');
+		} else if ($clickedATOM.closest('.selected').length != 0) {//if an ancestor is selected already, ignore click
 		} else {
-			$thisATOM.addClass('selected');
+			$clickedATOM.addClass('selected');
 		}
-	} else if (event.shiftKey) {
+	} else if (shift) {
 		//click +shift on [data-atom]   ---unselect---
-		if ($thisATOM.hasClass('selected')) {
-			$thisATOM.removeClass('selected');
-			$thisATOM.find('[data-atom]').removeClass('selected').removeClass('unselected');
-		} else if ($thisATOM.hasClass('unselected')) {
-			$thisATOM.removeClass('unselected');
-			$thisATOM.find('[data-atom]').removeClass('selected').removeClass('unselected');
-		} else if (($thisATOM.closest('.selected').length != 0) && ($thisATOM.closest('.unselected').length == 0)) {
+		if ($clickedATOM.hasClass('selected')) {
+			$clickedATOM.removeClass('selected');
+			$clickedATOM.find('[data-atom]').removeClass('selected').removeClass('unselected');
+		} else if ($clickedATOM.hasClass('unselected')) {
+			$clickedATOM.removeClass('unselected');
+			$clickedATOM.find('[data-atom]').removeClass('selected').removeClass('unselected');
+		} else if (($clickedATOM.closest('.selected').length != 0) && ($clickedATOM.closest('.unselected').length == 0)) {
 			//se è selected, a meno che non sia unselected		
 
-			$thisATOM.addClass('unselected');
-			$thisATOM.find('[data-atom]').removeClass('selected').removeClass('unselected');
+			$clickedATOM.addClass('unselected');
+			$clickedATOM.find('[data-atom]').removeClass('selected').removeClass('unselected');
 		}
 	} else {
 		//click on [data-atom]   ---select---
 
-		if ($thisATOM.hasClass('selected')) {
+		if ($clickedATOM.hasClass('selected')) {
 			$('[data-atom]').removeClass('selected').removeClass('unselected');
 			//clear selected unselected
 		} else {
 			$('[data-atom]').removeClass('selected').removeClass('unselected');
 			//clear selected unselected
-			$thisATOM.addClass('selected');
+			$clickedATOM.addClass('selected');
 		}
 	}
 }
+
+
+
+
+
+
+
+
 
 function dblclickHandler(event) {
 	let target = ATOMNselectable(event.target);

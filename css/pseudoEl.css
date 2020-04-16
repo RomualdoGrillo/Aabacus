@@ -19,7 +19,7 @@
 	left: -3px;
 	width: 3.5px;
 	height: 3.5px;
-	z-index: 2;
+	z-index: 1;
 	border-radius: 3px;
 }
 [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/{
