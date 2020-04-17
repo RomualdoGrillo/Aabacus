@@ -173,13 +173,13 @@ function makeSortableMouseDown(roles, sort) {
 				sort: sort,
 				onStart: startHandlerMouseDown,
 				onEnd: mouseUpSortEnd,
-				onChange:onChangeHandler,
 				onAdd:onAdd,
 				animation: 150,
 				fallbackOnBody: true,
 				swapThreshold: 0.65,
 				animation: 150,
-				onUpdate:onUpdateHandler,
+				//onChange:onChangeHandler,
+				//onUpdate:onUpdateHandler,
 			});
 		}
 	}
@@ -191,9 +191,9 @@ function mouseUpSortEnd(event){
 	clearLines()
 }
 
-function onChangeHandler(){
-	console.log('onChangeHandler')
-}
+
+/*
 function onUpdateHandler(){
 	console.log('onUpdateHandler')
 }
+*/

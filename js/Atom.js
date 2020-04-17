@@ -124,7 +124,7 @@ function ATOM_dissolveContainer(){
 function ATOMCreateDefinition(startNode){
 	if(startNode == undefined){startNode=this}
 	var outType=$(startNode).attr('data-type')
-	var $newDef=ATOMclone(prototypeSearch('eq')) //crea una nuova definizine  
+	var $newDef=ATOMclone(prototypeSearch('eq','bool',undefined,'asymmetric')) //crea una nuova definizine  
 	//*********************** definendum **********************
 	var $definendum=ATOMclone(prototypeSearch('function'))
 	$definendum.attr('data-type',outType)
@@ -434,74 +434,47 @@ function ATOMclone($node,removeID){// di default rimuove ID
 }
 
 
-function prototypeSearch(className,dataType){//alcune classi, ad esempio "ci", possono avere vari datatype 
-	//search in dom
+function prototypeSearch(className,dataType,requiredClass,name){//alcune classi, ad esempio "ci", possono avere vari datatype 
+	//get all prototypes  (futuribile: preindex prototypes)	
+	var $prototypes = $("#tavolozza").find('[data-atom]');
+	//filter for required
+	if(requiredClass){
+		$prototypes=$prototypes.filter('.' + requiredClass)}
+	if($prototypes.length==0){
+		console.log('prototype not found:'+ className + requiredClass)
+		return $()
+	};
+	//if(found 1 tag){return}
+	//if(found >1 tag){return}
+	var type =  dataType; //per poter usare questo valore nell 'each'
 	var dataTypeString = (dataType === undefined )?  "[data-type]"  :  "[data-type=" + dataType + "]"
-	var $prototype = $("#tavolozza").find("#" + className.toLowerCase() + "Prototype" + dataTypeString );
-	
+	$prototypes = $prototypes.filter(function(){
+		return this.getAttribute('data-atom').toLowerCase()==className
+		&&
+		(type==undefined || this.getAttribute('data-type').toLowerCase()==type)});//not case sensitive  
+	if($prototypes.length>1 && (className === "cn" || className === "ci")){
+		//if many candidates refine research 
+		let $specificProto = $prototypes.filter(function(){return this.ATOM_getName()==name});
+		if($specificProto.length!=0){
+			return $specificProto.eq(0)}//found specific proto
+		else{
+			let $genericPrototype = $prototypes.filter("#" + className.toLowerCase() + "Prototype" + dataTypeString);
+			if($genericPrototype.length!=0){
+				return $genericPrototype.eq(0);//found generic proto
+			}
+			else{ return $prototypes.eq(0);}//csn't refine return the firs with the right tag
+		}
+	}
 	//if not found adapt generic prototype 
-	if ($prototype.length === 0 ){
+	if($prototypes.length === 0 ){
 		//console.warn('ATOM prototype not found:className:' + className + ", dataType:" + dataType);//Warning!!
 		$prototype = ATOMclone($("#Prototype"));
 		$prototype.attr("data-atom",className);
 		$prototype.attr("data-type",dataType);
 		//addTypeDecorations($prototype);
 	}
-	return $prototype.last()//in case you find more prototypes
+	return $prototypes.last()//in case you find more prototypes
 }
-/*
-function prototypeSearch(className,dataType,loadedFile){//alcune classi, ad esempio "ci", possono avere vari datatype 
-	//search in dom
-	var dataTypeString = (dataType === undefined )?  "[data-type]"  :  "[data-type=" + dataType + "]"
-	var $prototype = $("#" + className.toLowerCase() + "Prototype" + dataTypeString );
-	//search in document to be loaded
-
-	//if not found adapt generic prototype 
-	if ($prototype.length === 0 ){
-		//console.warn('ATOM prototype not found:className:' + className + ", dataType:" + dataType);//Warning!!
-		$prototype = ATOMclone($("#Prototype"));
-		$prototype.attr("data-atom",className);
-		$prototype.attr("data-type",dataType);
-		//addTypeDecorations($prototype);
-	}
-	return $prototype
-}*/
-var symbols=["ci","cn","csymbol"]
-function prototypeSearch2(className,symbolname,dataType,loadedFile){//alcune classi, ad esempio "ci", possono avere vari datatype 
-	//search in dom
-	var dataTypeString = (dataType === undefined )?  "[data-type]"  :  "[data-type=" + dataType + "]"
-    var $prototypes = $("#" + className.toLowerCase() + "Prototype" + dataTypeString );
-	if($prototypes.length=0){
-	    	//use generic prototype 
-	}
-	if(symbols.indexOf(className) != -1){//is it a symbol?(ci,cs,csymbol)
-	    if( className==="cn" !== (!isNaN(symbolname)) ){//se la classe cn non combacia coll'essere un numero 
-			throw("incoerenza cn symbolname")
-		}
-	    if ($prototypes.length>1){
-		    //if more than one found, search for prototype with the exact same name
-		    var i=0;
-		    while($prototypes[i]){
-		    	i++
-		    	if($prototypes[i].text() == symbolname){//found!
-		    	    $prototype = $($prototypes[i]);
-                    i=-1 //
-
-		    	}
-		    	
-                
-		    }
-		}
-	}
-	if ($prototype){
-	    	//if prototype still not found: not a failed to find a prototype with right nameor not a symbol
-	    	//use the first availableonly available prototype
-	    	$prototype = $($prototypes[0]); 
-	}
-	return $prototype
-}
-
-
 
 function encaseWithOperation($ATOMelement,op){
 	//create external operation to $ATOMelement, $ATOMelement is 1 element or a list of adjacent elements 
@@ -665,7 +638,7 @@ function ValToAtoms(partial){
 		}
 		$target = $clone[0].ATOM_getRoles()
 	}
-	$clone = ATOMclone( prototypeSearch("num") )
+	$clone = ATOMclone( prototypeSearch("cn","num") )
 	attachEventsAndExtend($clone);
 	$clone[0].ATOM_setName(partial.val);
 	$clone.attr('data-atom', partial.type);//uso un generico prototipo num e qui specifico se cn o ci

@@ -206,11 +206,12 @@ function validForDist(mouseDownNode){//op2 è il tipo di operazione sulla quale 
 	return [] //empty array
 }
 
-function ATOMPartDistribute(dragged,target){
+function ATOMPartDistribute(dragged,target,dropped){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/distributive.png"
 	let $dragged = $(dragged)
+	let childrenIndex = ATOMparent($dragged).index()
 	let $parent = ATOMparent($dragged);
 	let opD ;
 	if ($parent !== undefined){opD = $parent.attr("data-atom")}
@@ -220,20 +221,22 @@ function ATOMPartDistribute(dragged,target){
 	let $prototype = prototypeSearch(op);
 	let $clone = ATOMclone($prototype)//create times
 	attachEventsAndExtend($clone);
-	$clone.insertBefore(ATOMparent($parent));
-	$clone[0].ATOM_getRoles().append($dragged);
+	$clone.insertBefore(dropped);
 	$siblings.each(function(i,e){
 		var $siblingClone = ATOMclone($(e));
 		attachEventsAndExtend($siblingClone);
 		$clone[0].ATOM_getRoles().append($siblingClone);
 	});
+	let previous = $clone[0].ATOM_getRoles().children().eq(childrenIndex-1);
+	$dragged.insertAfter(previous);
 	$parent.addClass("cleanifpointless");
+	dropped.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
 	return PActx
 }
 
-function ATOMdistribute(dragged,target,event){
+function ATOMdistribute(dragged,target,dropped){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/distributive.png"

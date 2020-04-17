@@ -165,7 +165,7 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 			var $children = $(node).children().not(':first')
 			//search for prototype
 			//console.log(tag)
-			var $prototype = prototypeSearch(tag, $(node).attr("type"))
+			var $prototype = prototypeSearch(tag, $(node).attr("type"),undefined,nodeText)
 			$newNode = ATOMclone($prototype)
 			ATOMextend($newNode)
 			// extend the new node
