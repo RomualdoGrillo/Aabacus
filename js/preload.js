@@ -110,6 +110,9 @@ function GLBsettingsToInterface() {
 		$('#cb_fixBorders')[0].checked = visSetting.fixBorders;
 		updateBodyClass('fixBorders',visSetting.fixBorders);
 		
+		$('#cb_eforall')[0].checked = visSetting.eforall;
+		updateBodyClass('eforall',visSetting.eforall);
+
 		if (dd_colors && dd_colors.namedItem(visSetting.colors) != null) {
 			let index = dd_colors.namedItem(visSetting.colors).index;
 			dd_colors.selectedIndex = index;
@@ -164,6 +167,7 @@ mySettings.addEventListener('change', function(event) {
 			visSetting.brackets = $('#cb_showPar')[0].checked;
 			visSetting.timesVert = $('#cb_vertTimes')[0].checked;
 			visSetting.fixBorders = $('#cb_fixBorders')[0].checked;
+			visSetting.eforall = $('#cb_eforall')[0].checked;
 			let index = dd_colors.selectedIndex
 			visSetting.colors=dd_colors.selectedOptions[0].id
 		}
