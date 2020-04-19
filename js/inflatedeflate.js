@@ -166,6 +166,7 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 			//search for prototype
 			//console.log(tag)
 			var $prototype = prototypeSearch(tag, $(node).attr("type"),undefined,nodeText)
+			if($prototype.length==0){console.log('prototype not found prototypeSearch()');console.log([tag, $(node).attr("type"),undefined,nodeText])}
 			$newNode = ATOMclone($prototype)
 			ATOMextend($newNode)
 			// extend the new node

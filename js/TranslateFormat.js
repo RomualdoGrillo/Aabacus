@@ -3,7 +3,7 @@ function ATOMfactorizeMinus($startNode){//translate from (-(a)) to (-1)(a)
     if(  $startNode.attr("data-atom") !== "minus"  ){return} //è circondato un meno?
     $extOp = encaseIfNeeded($startNode,"times");//se necessario crea una operazione container
 	//aggiungi un fattore "-1"
-	var prototype=prototypeSearch("num");
+	var prototype=prototypeSearch("ci","num");
 	var prototypeMinus=prototypeSearch("minus");
 	var $clone = ATOMclone(prototype);
 	var $cloneMinus = ATOMclone(prototypeMinus);
@@ -130,7 +130,7 @@ function ATOMtranslateFormat(mode,$startNode,applyToSubtreeAlso){//translate fro
     if($startNode.hasClass('minus')){
         var op = "times";
 		$extOp = encaseIfNeeded($startNode,op);//se necessario crea una operazione container
-		var prototype=prototypeSearch("num");//aggiungi un fattore "-1"
+		var prototype=prototypeSearch("ci","num");//aggiungi un fattore "-1"
 		$clone = ATOMclone(prototype);
 		$clone.attr('data-atom','cn');
 		attachEventsAndExtend($clone);

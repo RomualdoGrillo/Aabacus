@@ -1,0 +1,24 @@
+
+			<div data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/thing.png);
+			background-size: 100% 100%;">
+					<div class="name" style="display:none">t</div>
+			</div>
+			<div data-atom="ci" data-type="num" class="atom" style="min-width: 30px; background-image: url(./images/shoes.png);
+			background-size: 100% 100%;">
+					<div class="name" style="display:none">s</div>
+			</div>
+			<div data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/boy.png);
+			background-size: 100% 100%;">
+					<div class="name" style="display:none">b</div>
+			</div>
+			<div id="plusPrototype" data-atom="plus" data-type="num" class="atom ">
+				<div class="ul_role" data-type="num"></div>
+			</div>
+			
+			<div id="timesPrototype" data-atom="times" data-type="num" class="atom">
+				<div class="ul_role" data-type="num"></div>
+			</div>
+			
+			<div id="andPrototype" data-atom="and" data-type="bool" class="atom">
+				<div class="ul_role" data-type="bool"></div>
+			</div>

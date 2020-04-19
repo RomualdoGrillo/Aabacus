@@ -433,7 +433,7 @@ function ATOMclone($node,removeID){// di default rimuove ID
 	return $clone
 }
 
-
+var symbols=["ci","cn","csymbol"]
 function prototypeSearch(className,dataType,requiredClass,name){//alcune classi, ad esempio "ci", possono avere vari datatype 
 	//get all prototypes  (futuribile: preindex prototypes)	
 	var $prototypes = $("#tavolozza").find('[data-atom]');
@@ -458,11 +458,14 @@ function prototypeSearch(className,dataType,requiredClass,name){//alcune classi,
 		if($specificProto.length!=0){
 			return $specificProto.eq(0)}//found specific proto
 		else{
+			/*
 			let $genericPrototype = $prototypes.filter("#" + className.toLowerCase() + "Prototype" + dataTypeString);
 			if($genericPrototype.length!=0){
 				return $genericPrototype.eq(0);//found generic proto
 			}
 			else{ return $prototypes.eq(0);}//csn't refine return the firs with the right tag
+			*/
+			return $prototypes.eq(0)
 		}
 	}
 	//if not found adapt generic prototype 

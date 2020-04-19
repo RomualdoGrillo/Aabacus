@@ -430,7 +430,7 @@ flex-shrink:0;
 
 /* all valid targets */
 [target]:not([target=""]) {
-	background-color: #fdfda2!important;
+	background-color: #eaeaea!important;
 }
 
 
@@ -531,8 +531,8 @@ border-right-style: solid;
 
 
 .glued{
-	border-width: 0px!important;	
-	border-color:transparent!important;
+	border-width: 0px;
+	border-color:transparent;
 	/*background-color:red;*/
 }
 
@@ -671,9 +671,11 @@ border-right-style: solid;
 }
 
 .resizable>.ul_role{
-	resize:both;
+	resize: horizontal;
 	overflow:hidden;
 	border-radius:0px;
+	height: auto;
+	min-width: 20px;
 }
 .resizable{
 	border-radius:var(--div-radius) var(--div-radius)  0px var(--div-radius);

@@ -3,62 +3,6 @@
 // in chiamate a funzioni del modulo ATOM
 
 
-function DropEvToFC($draggable,$target){
-	//drop event to function call
-	//if($target.hasClass('forEachHeader')){return ATOMforThis($draggable,$target)}
-	//if(	($draggable.parent().hasClass('firstMember')||$draggable.parent().hasClass('secondMember'))&& ( $.trim(JumpEnclosure($draggable).html()) == $.trim(JumpEnclosure($target).html()) ) ){//2)Uguali al rimpiazzando
-	var $dropTarget
-	//if ($target.hasClass('role')){ $dropTarget = $target.parent()}
-	//else{ $dropTarget = $target}
-	$dropTarget = $target	
-	if(	
-		($draggable.parent().hasClass('firstMember')||$draggable.parent().hasClass('secondMember'))// dragged membro di una equazione?
-		&& 
-		( ATOMEqual(JumpEnclosure($draggable)[0] , JumpEnclosure($dropTarget)[0]) ) //dragged e target sono uguali?
-	){
-		
-		//todo:Devono essere in "And" con il rimpiazzando todo: se non sono direttamente in and si posso distribuire inesso ma questo e' non fondamentale
-		//console.log('qui ci vuole un replace!!!!!!!')
-		ATOMReplaceLink($dropTarget,$draggable)
-		return 'replace'
-	} 
-	//fratelli? hanno un common parent?
-	else if ($draggable.parent()[0] == $target.parent()[0]){
-		var $commonParent = $draggable.parent()
-		//---------propriet� distributiva prodotto rispetto somma ?---------------
-		if($commonParent.hasClass('times') && $target.hasClass('plus') ){
-		ATOMdistribute($draggable,$target)
-		return 'ATOMdistribute($draggable,$target)'
-		}
-		//---------propriet� associativa della somma?---------------
-		else if($commonParent.hasClass('plus') && $target.hasClass('plus') ){
-		ATOMassociate($draggable,$target)
-		return 'ATOMassociate($draggable,$target)'
-		}
-		//---------propriet� associativa del prodotto?---------------
-		else if($commonParent.hasClass('times') && $target.hasClass('times') ){
-		ATOMassociate($draggable,$target)
-		return 'ATOMassociate($draggable,$target)'
-		}
-		//---------calcolabile?---------------
-		else if($draggable.hasClass('cn') && $target.hasClass('cn') ){
-		ATOMcalculate($draggable,$target)
-		return 'ATOMcalculate($draggable,$target)'
-		}
-		
-		//si puo riscrivere con un solo termine, ad esempio:
-		//1) si puo calcolare risultato numerico, 
-		//2) si puo semplificare con opposto/con reciproco. 
-		
-		console.log('same parent but no appliable property')
-		return 'noProp'
-	}
-	else{
-		console.log('not same parent')
-		return 'noProp'
-	}
-}
-
 
 function keyboardEvToFC($atom, keyPressed){
 	var $actions = searchEventHandler(keyPressed);

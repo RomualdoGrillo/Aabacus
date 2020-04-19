@@ -67,7 +67,7 @@
 				<apply type="obj">
 					<callfunction>
 					</callfunction>
-					<ci type="bool">decompose in a sum</ci>
+					<ci type="bool">decompose-in-a-sum</ci>
 					<ci type="bool">right</ci>
 				</apply>
 				<apply type="obj">

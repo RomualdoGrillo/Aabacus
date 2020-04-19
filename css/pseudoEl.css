@@ -2,7 +2,7 @@
 	margin-left: 9px; /*space for infix symbol*/
 }
 
-[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
+[data-atom=plus]:not(.resizable)>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
 	/* background-color: red; */
 	position: absolute;
 	content: "+";

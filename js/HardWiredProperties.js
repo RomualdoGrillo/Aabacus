@@ -389,11 +389,15 @@ function ATOMPartCollect($dragged,$target){
 	let $targetParent = ATOMparent($target);
 	let $siblingsT = $target.siblings('[data-atom]')
 	let opt = $targetParent.attr("data-atom")
-	
+		
 	let $draggedParent = ATOMparent($dragged);
 	let $siblingsD = $dragged.siblings('[data-atom]')
 	let opd = $draggedParent.attr("data-atom")
-	
+		
+	let $commonGranParent = ATOMparent($targetParent);
+	$commonGranParent.addClass("cleanifpointless");
+
+
 	if(opt==opd && opIsDistDop(opt)){//both have same distributable op
 		var opPlus = opIsDistDop(opt)//opPlus may be plus,or, other operation over wich you distribute 
 		var $prototype = prototypeSearch(opPlus)// for example search for "#timesPrototype"
@@ -450,7 +454,6 @@ function ATOMPartCollect($dragged,$target){
 		return PActx
 	}
 }
-
 
 function ATOMcollect($dragged,$target){
 	var PActx = newPActx();
@@ -726,7 +729,7 @@ function decompose($toBeDec,direction){//"up" for factorize
 				
 				if(primeFactors.length >1){// se numero primo non fare nulla
 					$extOp = encaseIfNeeded($toBeDec,op);//se necessario crea una operazione container
-					var prototype=prototypeSearch("num")
+					var prototype=prototypeSearch("cn","num")
 					primeFactors.forEach(function(e,i){
 						$clone = ATOMclone(prototype);
 						$clone.attr('data-atom','cn');
@@ -778,7 +781,7 @@ function decompose($toBeDec,direction){//"up" for factorize
 		if(direction == "up"){
 			op = "and";
 			$extOp = encaseIfNeeded($toBeDec,op);//se necessaro crea una operazione container
-			var prototype=prototypeSearch("bool")
+			var prototype=prototypeSearch("ci","bool")
 			$clone = ATOMclone(prototype);
 			$clone.text("true");
 			attachEventsAndExtend($clone);
@@ -840,7 +843,7 @@ function evaluateComparison($exp){
 		var $secondMember = $exp[0].ATOM_getRoles('.secondMember').children();
 		var secondMember = AtomsToVal($secondMember);
 		if(  !isNaN(firstMember.computedVal) && !isNaN(secondMember.computedVal) ){
-			var prototype=prototypeSearch("bool")
+			var prototype=prototypeSearch("ci","bool")
 			var result
 			if(atomClass="eq"){
 				result = firstMember.computedVal == secondMember.computedVal;

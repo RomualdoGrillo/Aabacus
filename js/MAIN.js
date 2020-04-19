@@ -99,12 +99,10 @@ $(document).on('keydown', function(e) {
 		$('#fileToLoad').trigger('click');
 		// #fileToLoad: ad esso è associato un evento vedi sotto	
 		//}
-	} else {
+	} else if($('.selected').length != 0){
 		//****************applica proprietà***********
-		var PActx = newPActx();
-
 		var $selected = $('.selected')
-
+		var PActx = newPActx();
 		//code of "arrowup" = 38 
 		if (e.which === 38) {
 			//console.log("decompose up")
@@ -268,13 +266,42 @@ function dblclickHandler(event) {
 	}
 	*/
 	/********closed still not handled **********/
-	else if (closed && atomClass === 'plus') {
-		//experimental
-		if ($atomDblclicked.hasClass('resizable')) {
-			$atomDblclicked[0].ATOM_getRoles().css('width', '');
-			$atomDblclicked[0].ATOM_getRoles().css('height', '');
+	else if (closed && atomClass === 'cn') {
+		let n = Number( ATOMNumericCdsAsText($atomDblclicked) );
+		if(Number.isInteger(n) && n>0){
+			let $plus =encaseWithOperation($atomDblclicked,'plus');
+			$plus.addClass('resizable');
+			$atomDblclicked.remove()
+			//crea il numero 1
+			var One = {type:"cn", val:1, sign:1, exp:1}
+			for(i=0;i<n;i++){
+				//clona atom 1
+				$plus[0].ATOM_getRoles().append(ValToAtoms(One))
+			}	
 		}
-		$atomDblclicked.toggleClass('resizable');
+	}
+	else if ($atomDblclicked.hasClass('resizable')){
+			let $role=$atomDblclicked[0].ATOM_getRoles().eq(0);
+			let n_columns = Math.floor( $role[0].offsetWidth/$role.find('>[data-atom]')[0].offsetWidth )
+			let n_children = $atomDblclicked[0].ATOM_getChildren().length
+			if(n_children % n_columns == 0){
+				let n_rows = n_children / n_columns;
+				console.log('decoposed!!!')
+				encaseIfNeeded($atomDblclicked,'times')
+				let $factor_r = ValToAtoms({type:"cn", val:n_rows, sign:1, exp:1})
+				let $factor_c = ValToAtoms({type:"cn", val:n_columns, sign:1, exp:1})
+				let $factors = $factor_r.add($factor_c); 
+				$atomDblclicked.replaceWith($factors);
+				$atomDblclicked.hasClass('resizable');
+				$role.css('width', '');
+				$role.css('height', '');
+								
+			}
+			else{
+				//sum in one numeber
+				let $composed = ValToAtoms({type:"cn", val:n_children, sign:1, exp:1})
+				$atomDblclicked.replaceWith($composed)
+			}
 	}//closed or opened
 	//******** expand collapse ***********
 	else if (atomClass === 'deftrue') {
