@@ -161,6 +161,8 @@ function getKeyByValue(dictionary,value ) {
 function validForPartDist(dragged){
 	let $dragged = $(dragged)
 	let $parent = ATOMparent($dragged);
+	var $siblings = $parent.siblings('[data-atom]');
+	if($siblings.length == 0){return $()}//nothing to distribute
 	let opD = undefined;
 	if ($parent !== undefined){opD = $parent.attr("data-atom")}
 	let op = opIsDistDop("",opD);
