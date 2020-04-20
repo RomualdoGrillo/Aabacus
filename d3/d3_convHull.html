@@ -32,7 +32,7 @@ var width = 960,
 
 var randomX = d3.random.normal(width / 2, 60),
     randomY = d3.random.normal(height / 2, 60),
-    vertices = d3.range(100).map(function() { return [randomX(), randomY()]; });
+    vertices = d3.range(3).map(function() { return [randomX(), randomY()]; });
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)

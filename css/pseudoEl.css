@@ -1,8 +1,10 @@
 [data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/{
 	margin-left: 9px; /*space for infix symbol*/
 }
-
-[data-atom=plus]:not(.resizable)>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
+body.hidePlus [data-atom=plus]>.ul_role>[data-atom]::before{
+	color:transparent;	
+}
+[data-atom=plus]:not(.resizable)>.ul_role>[data-atom]:not(:first-of-type):not(.resizable)/*:not(.sortable-drag)*/::before {
 	/* background-color: red; */
 	position: absolute;
 	content: "+";

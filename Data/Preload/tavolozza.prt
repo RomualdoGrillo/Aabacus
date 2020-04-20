@@ -10,11 +10,7 @@
 			<div data-atom="cn" data-type="num" class="atom">
 				<div class="name">1</div>
 			</div>
-			<div data-atom="cn" data-type="num" class="atom" style=" background-image: url(./images/EgyptNumber3.svg);
-			background-size: 100% 100%;">
-					<div class="name" style="display:none">3</div>
-			</div>
-			
+					
 			<div id="plusPrototype" data-atom="plus" data-type="num" class="atom ">
 				<div class="ul_role" data-type="num"></div>
 			</div>

@@ -5,7 +5,7 @@
   --default-bgcolor:#e2d9d6;
   --num-bgcolor: #fcd598;
   --bool-color:  rgb(119, 134, 119);
-  --bool-bgcolor: #bef0ae;
+  --bool-bgcolor: #bfeab2;
 }
 
 div{
@@ -380,9 +380,9 @@ flex-shrink:0;
 	border-color: blue!important;
 	z-index:1 } 
 
-.exclusiveFocus {/*grayout all but .exclusiveFocus DIV */
+.exclusiveFocus, .resizable {/*grayout all but .exclusiveFocus DIV */
 	z-index:100;
-	box-shadow: 0 0 0 999px #96959542;
+	box-shadow: 0 0 0 999px #9695958a;
 }
 
 #telaRole .exclusiveFocus .forallSymbol{
@@ -432,6 +432,18 @@ flex-shrink:0;
 [target]:not([target=""]) {
 	background-color: #eaeaea!important;
 }
+
+
+body.hidePlus [data-atom="times"]{
+	border-color:transparent!important;
+	padding:0px;
+}
+.unlocked [data-atom="times"]{
+	border-color:var(--num-color)!important;
+	padding:3px;
+}
+
+
 
 
 .infix{ z-index:2}
@@ -671,6 +683,7 @@ border-right-style: solid;
 }
 
 .resizable>.ul_role{
+	border-radius:5px;
 	resize: horizontal;
 	overflow:hidden;
 	border-radius:0px;
@@ -678,11 +691,14 @@ border-right-style: solid;
 	min-width: 20px;
 }
 .resizable{
+	position:absolute;
 	border-radius:var(--div-radius) var(--div-radius)  0px var(--div-radius);
 }
 
 .resizable>.ul_role {
-	display:inline-block;// do not know why but it works
+	border-radius:5px;
+	width:80px;
+	display:inline-block;/* do not know why but it works*/
 
 }
 .resizable>.ul_role>* {
