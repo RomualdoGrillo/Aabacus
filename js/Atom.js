@@ -419,17 +419,11 @@ function ATOMclone($node,removeID){// di default rimuove ID
 	$toBeCleaned = $clone.add($clone.find('*'))//clean discendence too
 	//$toBeCleaned = $clone//clean just the start Node
 	if(removeID !== false){
-		$toBeCleaned.removeAttr("id");//ripulisci id	
+		$toBeCleaned.removeAttr("id");
+		$toBeCleaned.removeAttr("data-tag");	
 		$toBeCleaned.removeClass("hide");
 		$toBeCleaned.removeClass("fundamental");
 	}
-	$toBeCleaned.removeClass (function (index, css) {
-		return (css.match (/(^|\s)ui-\S+/g) || []).join(' ');
-	});//ripulisci classi: ui-
-		$toBeCleaned.removeClass (function (index, css) {
-		return (css.match (/(^|\s)target-\S+/g) || []).join(' ');
-	});//ripulisci classi: target-
-	$toBeCleaned.removeClass('born');//ripulisci classe born
 	return $clone
 }
 

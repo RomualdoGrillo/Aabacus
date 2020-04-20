@@ -244,18 +244,22 @@ function dblclickHandler(event) {
 	console.log('dblclick');
 	//closed
 	//******** forThis prompt ***********
-	if (closed && atomClass === 'ci' && ATOMparent($atomDblclicked).attr('data-atom') == 'forAll') {
+	let $toBeSpecified
+	if (closed && atomClass === 'ci') {
+		$toBeSpecified = parameterInHeader($atomDblclicked,$identifierSpan($atomDblclicked))}
+	if ($toBeSpecified && $toBeSpecified.length!=0) {
 		var newVal = prompt('Specify a value')
 		if (newVal != null) {
-			var type = $atomDblclicked.attr('data-type')
+			var type = $toBeSpecified.attr('data-type')
 			var $newNode = ATOMclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
 			attachEventsAndExtend($newNode);
 			$newNode[0].ATOM_setName(newVal);
 			$newNode.attr('data-type', type)
-			forThisPar_focus_nofocus($newNode, $atomDblclicked)
+			forThisPar_focus_nofocus($newNode, $toBeSpecified)
 			ssnapshot.take()
 		}
-	}//******** remove "exclusiveFocus" ***********
+	}
+	//******** remove "exclusiveFocus" ***********
 	/*
 	else if (closed && atomClass === 'forAll') {
 		if ($atomDblclicked.hasClass('exclusiveFocus')) {

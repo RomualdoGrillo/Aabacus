@@ -380,7 +380,7 @@ flex-shrink:0;
 	border-color: blue!important;
 	z-index:1 } 
 
-.exclusiveFocus, .resizable {/*grayout all but .exclusiveFocus DIV */
+.exclusiveFocus, .resizable, .waiting {/*grayout all but .exclusiveFocus DIV */
 	z-index:100;
 	box-shadow: 0 0 0 999px #9695958a;
 }
@@ -537,7 +537,7 @@ border-right-style: solid;
 	/* pointer-events: none; */
 }
 .glued>*>*{
-	pointer-events: auto;
+	/* pointer-events: auto; */
 }
 
 

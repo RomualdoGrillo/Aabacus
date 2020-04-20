@@ -30,7 +30,7 @@ new PropertyDnD('partDistributDnD',validForPartDist,ATOMPartDistribute,""),
 new PropertyDnD('collectDnD',validForColl,ATOMcollect,""),
 new PropertyDnD('partCollectDnD',validForPartColl,ATOMPartCollect,""),
 new PropertyDnD('replaceDnD',validReplaced,ATOMLinkReplace,""),
-new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,"")
+//new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,"")
 ]
 
 
@@ -88,13 +88,15 @@ function revert(event){//revert a sortablejs onAdd event
 	event.clone.remove();
 }
 function forThisValid(mouseDownNode){
-let dataType = mouseDownNode[0].getAttribute('data-type');
-let forAlls = $('[data-atom=forAll]:visible').toArray();//querySelectAll does not work with :visible?
-let $parameters = $()
-let i=0
-while(forAlls[i]){
-	$parameters = $parameters.add(GetforAllHeader($(forAlls[i])).find('[data-atom]'));
-i++
+	let dataType = mouseDownNode[0].getAttribute('data-type');
+	let $excludedForall = $identifierSpan($(mouseDownNode)).filter('[data-atom=forAll]');
+	console.log($excludedForall[0]);
+	let forAlls = $('[data-atom=forAll]:visible').not($excludedForall).toArray();//querySelectAll does not work with :visible?
+	let $parameters = $()
+	let i=0
+	while(forAlls[i]){
+		$parameters = $parameters.add(GetforAllHeader($(forAlls[i])).find('[data-atom]'));
+	i++
 }
 
 let $valids=$parameters.filter(function(i,el){return typeOk(mouseDownNode,$(el))});
@@ -884,14 +886,14 @@ function forThisPar_focus_nofocus($specificValue,$parameter){
 		
 		//a parameter in a forall is specific by a $specificValue
 		let $forall
-		if(ATOMparent($parameter).hasClass('exclusiveFocus')){//the forall is in focus
+		//if(ATOMparent($parameter).hasClass('exclusiveFocus')){//the forall is in focus
 			$forall= ATOMparent($parameter)
-		}
+		/*}
 		else{//the forall is not in focus -> create a clone
 			let index=$parameter.index();
 			$forall=createForThis(ATOMparent($parameter),ATOMparent($parameter));
 			$parameter=$(GetforAllHeader($forall).children()[index])
-		}
+		}*/
 		PActx.$transform = ATOMForThisPar($parameter,$specificValue)
 		PActx.matchedTF = true;		
 		PActx.replacedAlready = true;

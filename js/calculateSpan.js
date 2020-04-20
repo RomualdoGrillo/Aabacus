@@ -140,7 +140,7 @@ function  	$identifierSpan($identifier){
 	//risali fino a trovare un container che può avere Bvar 
 	//controlla se l'identifier è tra quelle bvar
 	var $span
-	var $containingForAlls = $('.selected').parents('[data-atom=forAll]');
+	var $containingForAlls = $identifier.parents('[data-atom=forAll]');
 	//todo: andrebbero considrati tutti i parents che contengono Bvar, non solo i forAll
 	var i=0
 	while($containingForAlls[i]){
@@ -164,96 +164,3 @@ function highlightOccurrences($identifier){
 	})	 
 }
 
-
-/*
-function PropositionValidSpan($source,moveDistCopy){
-//determina l'area di validità di una proposizione, più complesso del calcolo di arre collegate con prop associativa
-// moveDistCopy=true(default) restituisce tutti i target raggiungibili in qualche modo
-//             =false restituisci solo i target in cui è possibile spostare, è la modalità più restrittiva 
-// 		
-//todo: questa funzione tratta gli ATOMS senza distinguerne i Roles, va bene per gli atomi che hanno un solo role 
-////nota: add() aggiunge elementi a meno che siano già presenti
-	//***********DOWN: leaaf to root*****
-	if(moveDistCopy == undefined){moveDistCopy=true}
-	var $rootValid = $source //se non trovo radici più profonde parto dal source per risalire
-	var $ATOMparents = $source.parents('[data-atom]');
-	var i=0
-	while($ATOMparents[i]){
-		//todo: per risalire prova anche a raccogliere
-		if($($ATOMparents[i]).attr('data-atom')=="and"){// se è "valido" cerca più a fondo
-		$rootValid=$($ATOMparents[i])
-		i++	
-		}
-		else{break}
-	}
-	//**********UP: root to leafs*****
-	return validPropDiscendence($rootValid,moveDistCopy) 
-}
-
-function validPropDiscendence($sources,moveDistCopy){
-	//vedi sopra PropositionValidSpan
-	var $newTargets = $();
-	$sources.each(function(){
-		var atomType = $(this).attr("data-atom");
-		//add children
-		var $thisChildren = this.ATOM_getChildren();
-		if($thisChildren){
-			if(atomType=="and" || moveDistCopy!=false ){//nel caso di un or vale la proprietà distributiva
-				//todo:lo span si dovrebbe arrestare quando la variabile viene ridefinita 
-				$newTargets = $newTargets.add($thisChildren)//.not($sources);
-				$newTargets = $newTargets.add( validPropDiscendence($thisChildren,moveDistCopy) );
-			}
-		}
-	})
-	return $newTargets//altri elementi immediatamente raggiungibili dai $source
-}
-
-function associativeValid($mouseDownNode){//move
-	let $parent = ATOMparent($mouseDownNode);
-	let op = $parent.attr("data-atom");
-	//upstreamSpan
-	let $upstremValids = $() 
-	if(OpIsAssociative(op)){
-		let OPselector = '[data-atom='+op+']'
-		$upstremValids = $parent.parents(OPselector)
-	}
-	//downstreamSpan
-	let downstreamValids = getAssocitiveValids($parent,op);	
-	return $upstremValids.add(downstreamValids)
-}
-
-function getAssocitiveValids($startPoints,op){
-	let i=0;
-	let $newStartingPoints = $()
-	while($startPoints[i]){
-		$newStartingPoints = $newStartingPoints.add( $startPoints[i].ATOM_getChildren('[data-atom='+op+']') ) 
-	i++}
-	let $newValids = $();
-	//**************recursive
-	if($newStartingPoints.length>0){$newValids=getAssocitiveValids($newStartingPoints,op)};  
-	return $newStartingPoints.add($newValids)
-}
-
-function upstreamSpan(mouseDownNode){
-	var $mouseDownNode=$(mouseDownNode);
-	var $parent = ATOMparent($mouseDownNode);
-	let op = undefined;
-	if ($parent !== undefined){op = $parent.attr("data-atom")}
-	var validTargets = $();
-	if( OpIsAssociative(op)){
-		//parent is a target-associative?
-		if(ATOMparent($parent).attr("data-atom") === op ){
-			validTargets = validTargets.add( ATOMparent($parent)[0].ATOM_getRoles());
-		}
-		//children are validTargets?
-		var ATOMchildren = $parent[0].ATOM_getChildren();
-		ATOMchildren.each(function(i,e){
-			 if( $(e).attr("data-atom") === op ){
-			validTargets = validTargets.add(e.ATOM_getRoles());
-			 }
-		});
-	}
-	return validTargets
-}
-
-*/
