@@ -96,9 +96,9 @@ function RefineRepeatedOfMArked(PActx){
     	var j= ($toBesemplified.length - 1)
     	semplificEffettuata = false;
     	while( j>=0){//prova a semplificare il j-esimo atomo, parti dal fondo
-    		var PActx = keyboardEvToFC($($toBesemplified[j]),"c");
-			if(PActx && PActx.matchedTF){//semplificazione applicata con successo
-				refreshAndReplace(PActx);
+    		var refinementPActx = keyboardEvToFC($($toBesemplified[j]),"c");
+			if(refinementPActx && refinementPActx.matchedTF){//semplificazione applicata con successo
+				refreshAndReplace(refinementPActx);
 				semplificEffettuata = true;
 				break
     		}

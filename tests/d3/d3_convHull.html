@@ -23,6 +23,8 @@ circle {
 
 </style>
 <body>
+
+<!--<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>-->
 <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
 
 <script>
@@ -52,7 +54,9 @@ var circle = svg.selectAll("circle");
 redraw();
 
 function redraw() {
-  hull.datum(d3.geom.hull(vertices)).attr("d", function(d) { return "M" + d.join("L") + "Z"; });
+  hull.datum(d3.geom.hull(vertices)).attr("d", function(d) { 
+  console.log(d);  
+  return "M" + d.join("L") + "Z"; });
   circle = circle.data(vertices);
   circle.enter().append("circle").attr("r", 3);
   circle.attr("transform", function(d) { return "translate(" + d + ")"; });

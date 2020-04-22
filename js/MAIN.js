@@ -250,11 +250,18 @@ function dblclickHandler(event) {
 	if ($toBeSpecified && $toBeSpecified.length!=0) {
 		var newVal = prompt('Specify a value')
 		if (newVal != null) {
-			var type = $toBeSpecified.attr('data-type')
-			var $newNode = ATOMclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
-			attachEventsAndExtend($newNode);
-			$newNode[0].ATOM_setName(newVal);
-			$newNode.attr('data-type', type)
+			var $newNode
+			let $operation = dummyParser(newVal)
+			if($operation){//dummy parser managed to parse x>0 etc...
+				$newNode=$operation;
+			}
+			else{
+				var type = $toBeSpecified.attr('data-type')
+				$newNode = ATOMclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
+				attachEventsAndExtend($newNode);
+				$newNode[0].ATOM_setName(newVal);
+				$newNode.attr('data-type', type)
+			}
 			forThisPar_focus_nofocus($newNode, $toBeSpecified)
 			ssnapshot.take()
 		}

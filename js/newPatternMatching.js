@@ -239,7 +239,7 @@ function ATOMdescForPath($atom){
 function ATOMSmarkUnmark($Atom,value,attrName){
 //la funzione scrive o legge marcature atomi in modo permanente: le marcature passano nel file mml. 
 //attrname può assumere i valori m,l,p corrispondenti al formato della stringa mark-link-post
-//mark: marcature che devono apparire anche nell'input perchè ci siaQA< un match
+//mark: marcature che devono apparire anche nell'input perchè ci sia un match
 //Attenzione: le marcature sono intese come singoli caratteri
 //ad esempio "s" per selected o "d" per dragged.
 //Un marcatura "sp" va intesa come marcato "s" e marcato "p"
@@ -345,6 +345,7 @@ function TryPropByName(propName, $par1 ,firstVal,justTry){
 		    //res = checkProp(cloningRes.$newProp,$('.selected'))//$operando verrà determinato all'interno della funz'
 			PActx.$newProp = cloningRes.$newProp
 			PActx = tryReconfigurableProp(PActx, $par1, undefined, justTry )//operando verrà determinato all'interno della funz'
+			ATOMSmarkUnmark($par1,"");
 			PActx.visualization =  	cloningRes.visualization
 		}
 		return PActx

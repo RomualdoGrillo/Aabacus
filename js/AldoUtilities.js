@@ -107,3 +107,90 @@ function getCol(matrix, col) {
 	}
 	return column;
 }
+/*
+var width = 960,
+    height = 500;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+var hull = svg.append("path")
+    .attr("class", "hull");
+
+$('svg').css('position','absolute')
+arr = getPositionsOfChildren($('.resizable'))
+hull.datum(d3.geom.hull(arr)).attr("d", function(d) { return "M" + d.join("L") + "Z"; })
+*/
+function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return [_x,_y]
+}
+function getPositionsOfChildren($parentAtom){
+	let arr =[]
+	arr = $parentAtom[0].ATOM_getChildren().toArray()
+	for(i=0;arr[i];i++){
+		arr[i]=getOffset(arr[i])
+	}
+	return arr
+}
+function createHullTo(){
+	var width = 960;
+    var height = 500;
+	var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+	var hull = svg.append("path")
+    .attr("class", "hull");
+    svg.attr('id','svgHull');
+	$('#svgHull').css('position','absolute');
+	return hull
+}
+function redrawHull($resizable,hull){
+	var arr = getPositionsOfChildren($resizable)
+	if(arr.length>2){
+		hull.datum(d3.geom.hull(arr)).attr("d", function(d) { return "M" + d.join("L") + "Z"; });
+	}
+}
+
+
+function dummyParser(string){
+	let op 
+	let splitted
+	let splittedgeq = string.split('>=')
+	let splittedgt = string.split('>')
+	let splittedeq = string.split('=')
+	if(splittedgeq.length=2){splitted=splittedgeq; op='geq'}
+	else if(splittedgt.length=2){splitted=splittedgt; op='gt'}
+	else if(splittedeq.length=2){splitted=splittedeq; op='eq'}
+	if(op){
+		let $operation = ATOMclone( prototypeSearch(op) )
+		attachEventsAndExtend($operation);
+		let first = identifierToAtom(splitted[0]);
+		let second = identifierToAtom(splitted[1]);
+		$operation[0].ATOM_getRoles('.firstMember').append(first)
+		$operation[0].ATOM_getRoles('.secondMember').append(second)
+		return $operation
+	}
+}
+
+function identifierToAtom(string){
+	let num = parseInt(string)
+	let atomType 
+	if(isNaN(parseInt(string))){
+		atomType = 'ci'
+	}
+	else{
+		atomType = 'cn'
+	}
+	$clone = ATOMclone( prototypeSearch("cn","num") )
+	attachEventsAndExtend($clone);
+	$clone[0].ATOM_setName(string);
+	$clone.attr('data-atom', atomType);//uso un generico prototipo num e qui specifico se cn o ci
+	return	$clone
+}
