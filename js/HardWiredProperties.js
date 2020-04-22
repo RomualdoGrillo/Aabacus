@@ -30,7 +30,7 @@ new PropertyDnD('partDistributDnD',validForPartDist,ATOMPartDistribute,""),
 new PropertyDnD('collectDnD',validForColl,ATOMcollect,""),
 new PropertyDnD('partCollectDnD',validForPartColl,ATOMPartCollect,""),
 new PropertyDnD('replaceDnD',validReplaced,ATOMLinkReplace,""),
-//new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,"")
+new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,"")
 ]
 
 

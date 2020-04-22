@@ -1,0 +1,58 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<and>
+		</and>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">s</ci>
+				<ci type="num">s</ci>
+				<ci type="num">s</ci>
+			</apply>
+			<cn type="num">30</cn>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">boy</ci>
+				<ci type="num">boy</ci>
+				<ci type="num">s</ci>
+			</apply>
+			<cn type="num">20</cn>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">t</ci>
+				<ci type="num">t</ci>
+				<ci type="num">boy</ci>
+			</apply>
+			<cn type="num">13</cn>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">s</ci>
+				<apply type="num">
+					<times>
+					</times>
+					<ci type="num">boy</ci>
+					<ci type="num">t</ci>
+				</apply>
+			</apply>
+			<ci type="num">?</ci>
+		</apply>
+	</apply>
+</math>

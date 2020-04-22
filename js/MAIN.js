@@ -252,7 +252,7 @@ function dblclickHandler(event) {
 		if (newVal != null) {
 			var $newNode
 			let $operation = dummyParser(newVal)
-			if($operation){//dummy parser managed to parse x>0 etc...
+			if($operation){//dummy parser to parse x>0 etc...
 				$newNode=$operation;
 			}
 			else{

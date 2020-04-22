@@ -60,7 +60,7 @@ function returnTargetWrappedIfNeeded($targetNode,$toBeInserted){
 		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
 		var $newDef = ATOMclone(prototypeSearch('eq','bool','asymmetric'));
 		$newDef.removeClass("unlocked")//cio' che viene caticato e' di default unlocked
-		$newDef.insertBefore($toBeInserted);
+		$newDef.insertBefore($toBeInserted.eq(0));
 		$target = $newDef.find(".secondMember")
 		attachEventsAndExtend($newDef,false);//attacco eventi al solo container, gli eventi del contenuto sono attaccati nel load file. il contenusocollegare più volte gli eventi provoca errori
 		$target.append($toBeInserted);
@@ -72,15 +72,15 @@ function returnTargetWrappedIfNeeded($targetNode,$toBeInserted){
 }
 
 //inject(MMLstring,$('#telaRole'))
-function inject(MMLstring,$targetNode)
+function inject(MMLstring,$targetNode,doNotWrap)
 {
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab");
 	
 	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
 	$targetNode.append($convertedTree);
-
-	$target = returnTargetWrappedIfNeeded($targetNode,$convertedTree)
-
+	if(doNotWrap=!true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
+		$target = returnTargetWrappedIfNeeded($targetNode,$convertedTree)
+	}
 	attachEventsAndExtend($convertedTree,true);
 	RefreshEmptyInfixBraketsGlued(ATOMparent($convertedTree),true,"eibg")
 	//insertHtmlByRef($targetNode)

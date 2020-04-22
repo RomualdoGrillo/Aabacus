@@ -165,9 +165,9 @@ function dummyParser(string){
 	let splittedgeq = string.split('>=')
 	let splittedgt = string.split('>')
 	let splittedeq = string.split('=')
-	if(splittedgeq.length=2){splitted=splittedgeq; op='geq'}
-	else if(splittedgt.length=2){splitted=splittedgt; op='gt'}
-	else if(splittedeq.length=2){splitted=splittedeq; op='eq'}
+	if(splittedgeq.length==2){splitted=splittedgeq; op='geq'}
+	else if(splittedgt.length==2){splitted=splittedgt; op='gt'}
+	else if(splittedeq.length==2){splitted=splittedeq; op='eq'}
 	if(op){
 		let $operation = ATOMclone( prototypeSearch(op) )
 		attachEventsAndExtend($operation);

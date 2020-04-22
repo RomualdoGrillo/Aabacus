@@ -11,28 +11,39 @@ function preloadAll(myUrl) {
 		//success: function(response){injectAll(response,myUrl)}
 		//Al momento quando scelgo un file da file explorer non viene passato l'url
 		//quindi tutti i path in file JSON sono a partire dal root dell'applicazione
-		success: function(response){injectAll(response)}
+		success: function(response){
+			injectAll(response)
+		}
 	});
 }
 function injectAll(response,rootUrl){
 	//console.log(response);
 	let all = JSON.parse(response);
+	$('#telaRole').children().remove();
 	if(all.tavolozza_html && all.tavolozza_html.string){//string data
-		inject(all.tavolozza_html.string, $("#tavolozza"))
+		//inject(all.tavolozza_html.string, $("#tavolozza"))
 		}
 	else if(all.tavolozza_html){//url
 		preloadAjax(buildPath(rootUrl,all.tavolozza_html),$("#tavolozza"))
 	}
+	if(all.foundation_mml && all.foundation_mml.string){//string data
+		$('#tela').addClass('unlocked');
+		refreshAsymmEq($('#tela'));
+		inject(all.content_mml.string, $("#telaRole"),true);
+		}
+	else if(all.foundation_mml){//url
+		$('#tela').addClass('unlocked');
+		refreshAsymmEq($('#tela'));
+		preloadAjax(buildPath(rootUrl,all.foundation_mml),$("#telaRole"));
+	}
 	if(all.content_mml && all.content_mml.string){//string data
 		$('#tela').addClass('unlocked');
 		refreshAsymmEq($('#tela'));
-		$('#telaRole').children().remove();
-		inject(all.content_mml.string, $("#telaRole"));
+		inject(all.content_mml.string, $("#telaRole"),true);
 		}
 	else if(all.content_mml){//url
 		$('#tela').addClass('unlocked');
 		refreshAsymmEq($('#tela'));
-		$('#telaRole').children().remove();
 		preloadAjax(buildPath(rootUrl,all.content_mml),$("#telaRole"));
 	}
 	if(all.result_mml && all.result_mml.string){//string data
