@@ -1,0 +1,91 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<or>
+		</or>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<leq>
+				</leq>
+				<cn type="num">1</cn>
+				<ci type="num">x</ci>
+			</apply>
+			<apply type="bool">
+				<leq>
+				</leq>
+				<cn type="num">0</cn>
+				<cn type="num">1</cn>
+			</apply>
+			<apply type="bool">
+				<leq>
+				</leq>
+				<cn type="num">0</cn>
+				<ci type="num">x</ci>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<leq>
+				</leq>
+				<apply type="num">
+					<minus>
+					</minus>
+					<cn type="num">1</cn>
+				</apply>
+				<cn type="num">0</cn>
+			</apply>
+			<apply type="bool">
+				<leq>
+				</leq>
+				<ci type="num">x</ci>
+				<apply type="num">
+					<minus>
+					</minus>
+					<cn type="num">1</cn>
+				</apply>
+			</apply>
+			<apply type="bool">
+				<leq>
+				</leq>
+				<ci type="num">x</ci>
+				<cn type="num">0</cn>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<or>
+		</or>
+		<apply type="bool">
+			<leq>
+			</leq>
+			<ci type="num">x</ci>
+			<apply type="num">
+				<minus>
+				</minus>
+				<cn type="num">1</cn>
+			</apply>
+			<cn type="num">0</cn>
+			<ci type="num">x</ci>
+		</apply>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<leq>
+				</leq>
+				<cn type="num">0</cn>
+				<cn type="num">1</cn>
+				<ci type="num">x</ci>
+			</apply>
+			<apply type="bool">
+				<lt>
+				</lt>
+				<cn type="num">0</cn>
+				<ci type="num">x</ci>
+			</apply>
+		</apply>
+	</apply>
+</math>

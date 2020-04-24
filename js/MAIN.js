@@ -183,6 +183,9 @@ function clickHandler(event) {
 		refreshAsymmEq($atom);
 		ssnapshot.take();
 	} 
+	else if($thisATOM.hasClass('unselectable')){
+		selectionManager("","","",true)//deselectAll
+	}
 	else if(!$thisATOM.hasClass('unselectable')){
 		selectionManager($thisATOM,event.ctrlKey,event.shiftKey)
 	}
@@ -293,7 +296,11 @@ function dblclickHandler(event) {
 	}
 	else if ($atomDblclicked.hasClass('resizable')){
 			let $role=$atomDblclicked[0].ATOM_getRoles().eq(0);
-			let n_columns = Math.floor( $role[0].offsetWidth/$role.find('>[data-atom]')[0].offsetWidth )
+			let firstChild = $role.find('>[data-atom]')[0]
+			let fcWidth = firstChild.offsetWidth
+			var fcstyle = element.currentStyle || window.getComputedStyle(firstChild);
+			let fcMargins = parseFloat(fcstyle.marginLeft) + parseFloat(fcstyle.marginRight)
+			let n_columns = Math.floor( $role[0].offsetWidth/(fcWidth+fcMargins) )
 			let n_children = $atomDblclicked[0].ATOM_getChildren().length
 			if(n_children % n_columns == 0){
 				let n_rows = n_children / n_columns;

@@ -84,7 +84,7 @@
 						<apply type="bool">
 							<gt>
 							</gt>
-							<apply type="num">
+							<apply>
 								<root>
 								</root>
 								<ci type="num">a</ci>
@@ -97,7 +97,7 @@
 							<apply type="num">
 								<power>
 								</power>
-								<apply type="num">
+								<apply >
 									<root>
 									</root>
 									<ci type="num">a</ci>
@@ -113,7 +113,7 @@
 		<apply type="bool">
 			<gt>
 			</gt>
-			<apply type="num">
+			<apply>
 				<root>
 				</root>
 				<ci type="num">x</ci>

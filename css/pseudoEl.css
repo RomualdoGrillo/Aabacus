@@ -1,4 +1,7 @@
-[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type){
+[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type),
+[data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type),
+[data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type)
+{
 	margin-left: 9px;/*space for infix symbol*/
 }
 [data-atom=plus].resizable>.ul_role>[data-atom]/*:not(.sortable-drag)*/{
@@ -7,13 +10,22 @@
 body.hidePlus [data-atom=plus]>.ul_role>[data-atom]::before{
 	color:transparent;	
 }
-[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type):not(.resizable)/*:not(.sortable-drag)*/::before {
+[data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type):not(.resizable)::before,
+[data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type):not(.resizable)::before,
+[data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type):not(.resizable)::before {
 	/* background-color: red; */
 	position: absolute;
-	content: "+";
+	content: "+";/*&#x2264; for leq*/
 	left:-10.2px;
 	pointer-events: none;
 }
+[data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type)::before {
+	content:'\2264'!important;/*https://www.evotech.net/articles/testjsentities.html*/
+}
+[data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type)::before {
+	content: '<'!important;
+}
+
 /*[data-atom=plus]>.ul_role>[data-atom=minus]:not(:first-of-type):not(.sortable-drag)::before{
 	content: "-";	
 }*/

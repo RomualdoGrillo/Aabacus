@@ -1,6 +1,7 @@
 {
    "tavolozza_html":"",
-   "content_mml":"./Data/abs-f.mml",
+   "foundation_mml":"./Data/foundation.mml",
+   "content_mml":"./Data/ABS-simpler.mml",
    "result_mml":"./Data/preload/Esercizio1_res.mml",
    "settings_json":"./Data/preload/game.set",
    "eventsToHandlers_mml":""

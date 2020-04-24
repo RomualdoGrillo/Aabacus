@@ -1,10 +1,10 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply minimized="True" medium="True" type="bool">
+	<apply medium="True" type="bool">
 		<and>
 		</and>
 		<ci minimized="True" type="bool" data-tag="replace" data-tagimg="../Aabacus/images/properties/replace.png">internal</ci>
 		<ci minimized="True" type="bool" data-tag="compose" data-tagimg="../Aabacus/images/gear.svg">internal</ci>
-		<apply medium="True" type="bool" data-tag="foundation" data-tagimg="../Aabacus/images/properties/distributive.png">
+		<apply minimized="True" medium="True" type="bool" data-tag="foundation" data-tagimg="../Aabacus/images/properties/distributive.png">
 			<and>
 			</and>
 			<apply minimized="True" type="bool" data-tag="timesAssociate">
@@ -127,7 +127,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply type="bool" data-tag="Opposite" data-tagimg="../Aabacus/images/properties/Annihilate.png">
+			<apply minimized="True" type="bool" data-tag="Opposite" data-tagimg="../Aabacus/images/properties/Annihilate.png">
 				<forall>
 				</forall>
 				<bvar>
@@ -541,7 +541,7 @@
 									<times>
 									</times>
 									<ci type="num">y</ci>
-									<apply type="num">
+									<apply title="--c" type="num">
 										<m_inverse>
 										</m_inverse>
 										<ci type="num">a</ci>

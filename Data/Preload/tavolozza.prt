@@ -49,19 +49,27 @@
 			<div id="absPrototype" data-atom="abs" data-type="num" class="atom">
 				|<div class="s_role" data-type="num"></div>
 				|
-			
 			</div>
-				<div data-atom="gt" id="gtPrototype" data-type="bool" class="atom">
-					<div class="s_role firstMember" data-type="num" data-accept="1"></div>
-					<div class="decoration">></div>
-					<div class="s_role secondMember" data-type="num" data-accept="1"></div>
-				</div>
-			
-				<div data-atom="geq" id="geqPrototype" data-type="bool" class="atom">
-					<div class="s_role firstMember" data-type="num" data-accept="1"></div>
-					<div class="decoration">&#x2265;</div>
-					<div class="s_role secondMember" data-type="num" data-accept="1"></div>
-				</div>
+			<div data-atom="gt" id="gtPrototype" data-type="bool" class="atom">
+				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
+				<div class="decoration">></div>
+				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
+			</div>
+			<div data-atom="geq" id="geqPrototype" data-type="bool" class="atom">
+				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
+				<div class="decoration">&#x2265;</div>
+				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
+			</div>
+			<div data-atom="lt" id="ltPrototype" data-type="bool" class="atom">
+				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
+				<div class="decoration"><</div>
+				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
+			</div>
+			<div data-atom="leq" id="leqPrototype" data-type="bool" class="atom">
+				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
+				<div class="decoration">&#x2264;</div>
+				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
+			</div>
 			<div data-atom="ci" id="boolPrototype" data-type="bool" class="atom">
 				<div class="name">true</div>
 			</div>
@@ -153,6 +161,7 @@
 			</div>
 		
 			<div data-atom="implies" id="impliesPrototype" data-type="bool" class="atom">
+				<div class="leftBar"></div>
 				<div class="s_role firstMember" data-type="bool" data-accept="1"></div>
 				<div class="decoration imply"></div>
 				<div class="s_role secondMember" data-type="bool" data-accept="1"></div>

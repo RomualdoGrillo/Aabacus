@@ -1,0 +1,35 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<ci type="bool">https://student.craigndave.org/videos/ocr-alevel-slr15-simplifying-boolean-algebra-example</ci>
+	<apply type="bool">
+		<or>
+		</or>
+		<apply type="bool">
+			<and>
+			</and>
+			<ci type="bool">a</ci>
+			<ci type="bool">b</ci>
+		</apply>
+		<apply type="bool">
+			<and>
+			</and>
+			<ci type="bool">a</ci>
+			<apply type="bool">
+				<or>
+				</or>
+				<ci type="bool">b</ci>
+				<ci type="bool">c</ci>
+			</apply>
+		</apply>
+		<apply type="bool">
+			<and>
+			</and>
+			<ci type="bool">b</ci>
+			<apply type="bool">
+				<or>
+				</or>
+				<ci type="bool">b</ci>
+				<ci type="bool">c</ci>
+			</apply>
+		</apply>
+	</apply>
+</math>

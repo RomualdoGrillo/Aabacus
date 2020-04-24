@@ -1,8 +1,9 @@
 {
    "tavolozza_html":"./Data/Preload/tavolozza.prt",
+   "foundation_mml":"./Data/foundation.mml",
+   "content_mml":"./Data/ABS-simpler.mml",
    "gestToAction_mml":"./Data/Preload/gestToAction.mml",
    "eventsToHandlers_mml":"./Data/Preload/eventsToHandlers.mml",
-   "content_mml":"./Data/abs-f.mml",
    "settings_json":"./Data/preload/game.set"
 }
 

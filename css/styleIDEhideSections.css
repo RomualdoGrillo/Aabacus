@@ -139,3 +139,7 @@ body.gameModeSurpriseRes #result{
 #telaRole>[data-atom]:first-child{
 	margin-bottom:25px;
 }
+
+.fixButton{
+	background-image: url(../images/pin.png);
+}

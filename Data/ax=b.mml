@@ -1,0 +1,14 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<ci type="bool">calculate x=?</ci>
+	<apply type="bool">
+		<eq>
+		</eq>
+		<apply type="num">
+			<times>
+			</times>
+			<ci type="num">x</ci>
+			<ci type="num">a</ci>
+		</apply>
+		<ci type="num">y</ci>
+	</apply>
+</math>
