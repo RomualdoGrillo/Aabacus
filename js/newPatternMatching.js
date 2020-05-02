@@ -159,7 +159,7 @@ function ATOMgetOrder($atom,description){
 		var length = arrayPath.length
 		while( arrayPath[length-1-i] ){//scorri il vettore in senso inverso
 			markArray = arrayPath[length-1-i].split(/(\d+)/)
-			console.log(markArray[0])
+			//console.log(markArray[0])
 			if( markArray[0]==description)//se trovi quella descrizione
 				{ return Number(markArray[1]) };//restituisci l'ordine 
 			i++;

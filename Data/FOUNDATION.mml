@@ -136,7 +136,7 @@
 				<apply type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply title="--c" type="num">
 						<plus>
 						</plus>
 						<ci type="num">a</ci>
@@ -805,7 +805,7 @@
 				<apply type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply title="--c" type="bool">
 						<and>
 						</and>
 						<ci type="bool">true</ci>

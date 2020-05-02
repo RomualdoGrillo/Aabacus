@@ -13,22 +13,6 @@
 	<apply type="bool">
 		<eventtoaction>
 		</eventtoaction>
-		<ci type="bool">u</ci>
-		<apply type="obj">
-			<callfunction>
-			</callfunction>
-			<ci type="bool">compose</ci>
-		</apply>
-		<apply type="obj">
-			<callfunction>
-			</callfunction>
-			<ci type="bool">composeXorNotX</ci>
-			<ci type="bool">ltr</ci>
-		</apply>
-	</apply>
-	<apply type="bool">
-		<eventtoaction>
-		</eventtoaction>
 		<ci title="d" type="bool">←</ci>
 		<apply type="obj">
 			<callfunction>
@@ -49,8 +33,14 @@
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci title="d" type="bool">decompose in a product</ci>
+			<ci title="d" type="bool">decompose-in-a-product</ci>
 			<ci type="bool">up</ci>
+		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">AndNeutral</ci>
+			<ci type="bool">rtl</ci>
 		</apply>
 		<apply type="obj">
 			<callfunction>
@@ -173,41 +163,6 @@
 			<callfunction>
 			</callfunction>
 			<ci type="bool">notFalse</ci>
-			<ci type="bool">ltr</ci>
-		</apply>
-		<apply type="obj">
-			<callfunction>
-			</callfunction>
-			<ci type="bool">AndNeutral</ci>
-			<ci type="bool">ltr</ci>
-		</apply>
-	</apply>
-	<apply type="bool">
-		<eventtoaction>
-		</eventtoaction>
-		<ci type="bool">p</ci>
-		<apply type="obj">
-			<callfunction>
-			</callfunction>
-			<ci type="bool">plusAssociate</ci>
-			<ci type="bool">ltr</ci>
-		</apply>
-		<apply type="obj">
-			<callfunction>
-			</callfunction>
-			<ci type="bool">timesAssociate</ci>
-			<ci type="bool">ltr</ci>
-		</apply>
-		<apply type="obj">
-			<callfunction>
-			</callfunction>
-			<ci type="bool">orAssociate</ci>
-			<ci type="bool">ltr</ci>
-		</apply>
-		<apply type="obj">
-			<callfunction>
-			</callfunction>
-			<ci type="bool">andAssociate</ci>
 			<ci type="bool">ltr</ci>
 		</apply>
 	</apply>

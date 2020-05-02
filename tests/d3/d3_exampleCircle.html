@@ -11,7 +11,7 @@
         .append("svg")
         .attr("width", 100)
         .attr("height", 100);    
-
+    /*
     sampleSVG.append("circle")
         .style("stroke", "gray")
         .style("fill", "white")
@@ -20,7 +20,15 @@
         .attr("cy", 50)
         .on("mouseover", function(){d3.select(this).style("fill", "aliceblue");})
         .on("mouseout", function(){d3.select(this).style("fill", "white");});
-    
+    */
+    let positions = [[10,10],[200,10],[10,-200],[50,50],[-100,-200],[-200,-200]];
+    function drawCircles(centersArray){
+	   for(i=0;centersArray[i];i++){
+            sampleSVG.append("circle").style("stroke", "gray").attr("r", 40).attr("cx", centersArray[i][0]).attr("cy", centersArray[i][1])
+	   }
+    }
+
+
     </script>
 </body>
 </html>
