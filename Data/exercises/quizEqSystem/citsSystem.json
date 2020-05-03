@@ -4,6 +4,5 @@
    "gestToAction_mml":"./Data/Preload/gestToAction.mml",
    "content_mml":"./Data/exercises/quizEqSystem/quizEqSyst.mml",
    "result_mml":"./Data/exercises/quizEqSystem/quisEqresult.mml",
-   "settings_json":"./Data/Preload/game.set",
-   "eventsToHandlers_mml":"./Data/exercises/quizEqSystem/gameHorTimes.set"
+   "settings_json":"./Data/exercises/quizEqSystem/gameHorTimes.set"
 }
