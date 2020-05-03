@@ -86,6 +86,7 @@ function preloadAjax(myUrl,target) {
 		$.ajax({
 			type: "GET",
 			url: myUrl,
+			async: false,
 			dataType: "text",
 			error: function(e) {
 				alert("AJAX/ errore nel caricare:" + myUrl);

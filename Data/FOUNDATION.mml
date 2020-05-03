@@ -805,7 +805,7 @@
 				<apply type="bool">
 					<eq>
 					</eq>
-					<apply title="--c" type="bool">
+					<apply type="bool">
 						<and>
 						</and>
 						<ci type="bool">true</ci>
