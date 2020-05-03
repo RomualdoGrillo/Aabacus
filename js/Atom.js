@@ -465,10 +465,11 @@ function prototypeSearch(className,dataType,requiredClass,name){//alcune classi,
 	//if not found adapt generic prototype 
 	if($prototypes.length === 0 ){
 		//console.warn('ATOM prototype not found:className:' + className + ", dataType:" + dataType);//Warning!!
-		$prototype = ATOMclone($("#Prototype"));
+		let $prototype = ATOMclone($("#Prototype"));
 		$prototype.attr("data-atom",className);
 		$prototype.attr("data-type",dataType);
 		//addTypeDecorations($prototype);
+		return $prototype
 	}
 	return $prototypes.last()//in case you find more prototypes
 }
