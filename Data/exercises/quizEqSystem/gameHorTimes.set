@@ -16,7 +16,7 @@
 		{
 		"name":"beauty",
 		"colors":"greyBorders",
-		"brackets":false,
+		"brackets":true,
 		"timesVert":false,
 		"fixBorders":false,
 		"eforall":true
