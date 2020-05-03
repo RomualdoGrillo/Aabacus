@@ -21,7 +21,7 @@ function ATOMfactorizeMinus($startNode) {
 	$startNode[0].ATOM_dissolveContainer()
 	//remove minus from $startNode  
 	refreshInfix($extOp);
-	refreshGlued();
+	RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 	ssnapshot.take();
 }
 

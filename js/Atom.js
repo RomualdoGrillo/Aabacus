@@ -743,8 +743,6 @@ function RefreshEmptyInfixBraketsGlued($startNode,tree,options){
 		if( options==undefined  || options.indexOf("g")!=-1 ){//nota: refresh è sempre applicato a tutto l'albero 
 				refreshGlued($startNode);
 		}
-				
-				
 	//}
 
 }

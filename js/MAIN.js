@@ -53,6 +53,7 @@ $(document).on('keydown', function(e) {
 	else if (e.ctrlKey && (keyPressed === 'v')) {
 		ssnapshot.paste();
 		console.log("control + v")
+		RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 	}//ctrl+z
 	else if (e.ctrlKey && (keyPressed === 'z')) {
 		ssnapshot.undo();
@@ -267,6 +268,7 @@ function dblclickHandler(event) {
 			}
 			forThisPar_focus_nofocus($newNode, $toBeSpecified)
 			ssnapshot.take()
+			RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 		}
 	}
 	//******** remove "exclusiveFocus" ***********
@@ -435,6 +437,7 @@ function cancelSelected() {
 			$(element).remove()
 		});
 		ssnapshot.take();
+		RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 	}
 }
 
@@ -466,6 +469,7 @@ function PActxConclude(PActx) {
 			}
 		}
 		ssnapshot.take();
+		RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 		lookForResultAndCelebrate();
 		PActxVisualize(PActx);
 	}
