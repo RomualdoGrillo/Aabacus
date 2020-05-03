@@ -3,7 +3,7 @@
 	"gameMode":true,
 	"gameModeSurpriseRes":true,
 	"lockTela":true,
-	"visSettingSelected":2,
+	"visSettingSelected":1,
 	"visSettings":[
 		{
 		"name":"classic",
