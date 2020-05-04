@@ -367,6 +367,7 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 /*.selected[data-atom], .selected[data-atom]>.s_role>.glued ,.selected[data-atom]>.s_role>.glued[data-atom]>*{*/
 .selected[data-atom], .selected[data-atom] [data-atom]{
     background-color: #eaeaea;
+    border-color:Grey!important;
 }
 .unselected[data-atom], .unselected[data-atom] [data-atom]{
 	background-color:white!important;
