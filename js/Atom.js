@@ -663,33 +663,6 @@ function AtomBesideGiven($startAtom){
 }
 
 
-function ATOMneedsBracket($ATOM)
-{
-	var ATOMclass= $ATOM.attr('data-atom')  //
-	var parentClass = ATOMparent($ATOM).attr('data-atom')//
-	// futuribile:
-	//var parentRole = da completare per poter distinguere se in quale "role" è contenuto
-	//la stringa che identifica la posizione dovrebbe diventare <ATOMtype>.<role>
-	
-	
-	//in each row: first element needs bracke if contained in itself or one of the elements in his row
-	var MatrixBaracketNeeded = [ 
-		["plus","times","power"],// first container
-		["times","power"],
-		["minus"],
-		["m_inverse"],
-		["and"],
-		["or"]
-	];
-	
-	var ATOMclassIndex = getCol(MatrixBaracketNeeded,0).indexOf(ATOMclass)
-	if ( ATOMclassIndex != -1 )
-	{
-		var row = MatrixBaracketNeeded [ATOMclassIndex];
-		return row.indexOf(parentClass) != -1; // found in matrix
-	}
-	return false // if not found, bracket not needed
-}
 
 function refreshOneBracket($ATOM){
 	if ( ATOMneedsBracket($ATOM) ){ $ATOM.addClass("brackets")}
