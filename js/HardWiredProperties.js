@@ -28,7 +28,7 @@ new PropertyDnD('associativeDnD',immediateAssValid,ATOMassociate,""),
 new PropertyDnD('distributiveDnD',validForDist,ATOMdistribute,""),
 new PropertyDnD('partDistributDnD',validForPartDist,ATOMPartDistribute,""),
 new PropertyDnD('collectDnD',validForColl,ATOMcollect,""),
-new PropertyDnD('oppollectDnD',validForPartColl,ATOMoppollect,""),
+new PropertyDnD('partCollectDnD',validForPartColl,ATOMpartCollect,""),
 new PropertyDnD('replaceDnD',validReplaced,ATOMLinkReplace,""),
 new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,"")
 ]
@@ -313,7 +313,7 @@ function validForColl(mouseDownNode){
 	var op = undefined
 	if($parent !== undefined){op = $parent.attr("data-atom")};//look for targets
 	var opD = opIsDistDop(op);
-	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
+	//$('*').removeClass('toBeCollected').removeClass('couldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
 	//*******test preliminari
 	if ($parent == undefined){
 		return $() //empty $ array
@@ -374,7 +374,7 @@ function validForPartColl(mouseDownNode){
 	var opParent = $parent.attr("data-atom");
 	var op;
 	var opD = opIsDistDop(opParent);
-	if(opD){// dragged is directrly into a "times"
+	if(opD){// dragged is into a "times"
 		$plusParent = ATOMparent($parent);
 	}
 	else{
@@ -387,7 +387,7 @@ function validForPartColl(mouseDownNode){
 		}
 	}
 	
-	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
+	//$('*').removeClass('toBeCollected').removeClass('couldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
 	//*******test preliminari
 	
 	if ( 
@@ -434,7 +434,7 @@ function validForPartColl(mouseDownNode){
 	return $valids	
 }
 
-
+/*
 function validForoppoll(mouseDownNode){
 	var $mouseDownNode=$(mouseDownNode);
 	var $parent = ATOMparent($mouseDownNode);
@@ -488,8 +488,9 @@ function validForoppoll(mouseDownNode){
 	};
 	return $valids	
 }
+*/
 
-function ATOMoppollect($dragged,$target){
+function ATOMpartCollect($dragged,$target){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/collect.png"
