@@ -411,24 +411,14 @@ function validForPartColl(mouseDownNode){
 				//console.log("controllo factor");
 				//console.log(factor);
 				if(ATOMEqual(factor,$mouseDownNode[0])){
-					$(factor).addClass("couldBeCollected")
-					okForThisTerm = true;
 					$valids = $valids.add(factor);
-					break
 				}
 			}
 		}
 		else{// altrimenti controlla lui stesso
 			if(ATOMEqual(term,$mouseDownNode[0])){
-					$(term).addClass("couldBeCollected");
 					$valids = $valids.add(term);
-					okForThisTerm = true;
 				}
-		}
-		if(okForThisTerm === false){
-			//console.log("term without such factor");
-			//console.log(term);
-			return $()
 		}
 	};
 	return $valids	
