@@ -139,6 +139,7 @@ function onAdd(event) {
 function clearTargetsMouseDown() {
 	let tgts = document.querySelectorAll('.tgt');
 	let i = 0;
+	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
 	while (tgts[i]) {
 		tgts[i].remove()
 	i++}

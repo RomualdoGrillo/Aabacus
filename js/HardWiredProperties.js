@@ -28,14 +28,47 @@ new PropertyDnD('associativeDnD',immediateAssValid,ATOMassociate,""),
 new PropertyDnD('distributiveDnD',validForDist,ATOMdistribute,""),
 new PropertyDnD('partDistributDnD',validForPartDist,ATOMPartDistribute,""),
 new PropertyDnD('collectDnD',validForColl,ATOMcollect,""),
-new PropertyDnD('partCollectDnD',validForPartColl,ATOMPartCollect,""),
+new PropertyDnD('partCollectDnD',validForPartColl,ATOMpartCollect,""),
 new PropertyDnD('replaceDnD',validReplaced,ATOMLinkReplace,""),
 new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,"")
 ]
 
+function ATOMneedsBracket($ATOM)
+{
+	var ATOMclass= $ATOM.attr('data-atom')  //
+	var parentClass = ATOMparent($ATOM).attr('data-atom')//
+	// futuribile:
+	//var parentRole = da completare per poter distinguere se in quale "role" è contenuto
+	//la stringa che identifica la posizione dovrebbe diventare <ATOMtype>.<role>
+	
+	
+	//in each row: first element needs bracket if contained in itself or one of the elements in his row
+	var MatrixBaracketNeeded = [ 
+		["plus","times","power"],// first container
+		["times","power"],
+		["minus"],
+		["m_inverse"],
+		["and"],
+		["or"]
+	];
+	
+	var ATOMclassIndex = getCol(MatrixBaracketNeeded,0).indexOf(ATOMclass)
+	if ( ATOMclassIndex != -1 )
+	{
+		var row = MatrixBaracketNeeded [ATOMclassIndex];
+		return row.indexOf(parentClass) != -1; // found in matrix
+	}
+	return false // if not found, bracket not needed
+}
+
+
+
+
 
 function opIsDistDop(op,opD){// string ex: plus times 
-	let key_distributesOver_Val = {'times':'plus','and':'or'}
+	//opIsDistDop('times') cerca su chi si distribuicse times
+	//opIsDistDop('','plus') cerca quale operazione è distributiva su plus
+	let key_distributesOver_Val = {'times':'plus','power':'times','and':'or'}
 	if(op != ""){
 		return key_distributesOver_Val[op]	
 	}
@@ -280,7 +313,7 @@ function validForColl(mouseDownNode){
 	var op = undefined
 	if($parent !== undefined){op = $parent.attr("data-atom")};//look for targets
 	var opD = opIsDistDop(op);
-	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
+	//$('*').removeClass('toBeCollected').removeClass('couldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
 	//*******test preliminari
 	if ($parent == undefined){
 		return $() //empty $ array
@@ -330,9 +363,79 @@ function validForColl(mouseDownNode){
 	return ATOMparent($parentParent).find('>.ul_role')//target is the external atom	
 }
 
-
-
 function validForPartColl(mouseDownNode){
+	var $mouseDownNode=$(mouseDownNode);
+	var $parent = ATOMparent($mouseDownNode);
+	var $valids = $();
+	var $plusParent ;
+	if ($parent == undefined){
+		return $() //empty $ array
+	}
+	var opParent = $parent.attr("data-atom");
+	var op;
+	var opD = opIsDistDop(opParent);
+	if(opD){// dragged is into a "times"
+		$plusParent = ATOMparent($parent);
+	}
+	else{
+		//check if the dragged is directrly into a "plus"
+		op = opIsDistDop("",opParent);
+		if(op !== undefined){
+			opD=opParent;
+			$plusParent = $parent;
+			$parent = $mouseDownNode;
+		}
+	}
+	
+	//$('*').removeClass('toBeCollected').removeClass('couldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
+	//*******test preliminari
+	
+	if ( 
+		opD == undefined //if no distributive operation is found
+		||
+		$plusParent == undefined
+		||
+		$plusParent.attr('data-atom') !== opD
+		){
+		return $() //empty $ array
+	}
+	//***** test su ciascun termine
+	var $siblings = $parent.siblings('[data-atom]')
+	for (i = 0; i < $siblings.length ; i++){
+		var term=$siblings[i]
+		var okForThisTerm = false;
+		if($(term).attr('data-atom')==op){// se l'addendo è di tipo times controlla ogni fattore
+			var $factors = term.ATOM_getChildren()
+			for (j = 0; j < $factors.length ; j++){
+				var factor=$factors[j]
+				//console.log("controllo factor");
+				//console.log(factor);
+				if(ATOMEqual(factor,$mouseDownNode[0])){
+					$(factor).addClass("couldBeCollected")
+					okForThisTerm = true;
+					$valids = $valids.add(factor);
+					break
+				}
+			}
+		}
+		else{// altrimenti controlla lui stesso
+			if(ATOMEqual(term,$mouseDownNode[0])){
+					$(term).addClass("couldBeCollected");
+					$valids = $valids.add(term);
+					okForThisTerm = true;
+				}
+		}
+		if(okForThisTerm === false){
+			//console.log("term without such factor");
+			//console.log(term);
+			return $()
+		}
+	};
+	return $valids	
+}
+
+/*
+function validForoppoll(mouseDownNode){
 	var $mouseDownNode=$(mouseDownNode);
 	var $parent = ATOMparent($mouseDownNode);
 	var $valids = $();
@@ -385,8 +488,9 @@ function validForPartColl(mouseDownNode){
 	};
 	return $valids	
 }
+*/
 
-function ATOMPartCollect($dragged,$target){
+function ATOMpartCollect($dragged,$target){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/collect.png"
