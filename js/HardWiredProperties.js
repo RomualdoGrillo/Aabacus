@@ -366,22 +366,24 @@ function validForColl(mouseDownNode){
 function validForPartColl(mouseDownNode){
 	var $mouseDownNode=$(mouseDownNode);
 	var $parent = ATOMparent($mouseDownNode);
-	var $valids = $();
-	var $plusParent ;
 	if ($parent == undefined){
 		return $() //empty $ array
 	}
-	var opParent = $parent.attr("data-atom");
-	var op;
-	var opD = opIsDistDop(opParent);
-	if(opD){// dragged is into a "times"
-		$plusParent = ATOMparent($parent);
+	var $valids = $();
+	var $plusParent ;
+	var opP;
+	var opT;
+	var op = $parent.attr("data-atom");
+	var opP = opIsDistDop(op);
+	if(opP){// dragged is into a "times"
+		$plusParent = ATOMparent($parent);//candidate plus parent will be checked later
+		opT=op
 	}
 	else{
 		//check if the dragged is directrly into a "plus"
-		op = opIsDistDop("",opParent);
-		if(op !== undefined){
-			opD=opParent;
+		opT = opIsDistDop("",op);
+		if(opT !== undefined){
+			opP=op;
 			$plusParent = $parent;
 			$parent = $mouseDownNode;
 		}
@@ -391,11 +393,11 @@ function validForPartColl(mouseDownNode){
 	//*******test preliminari
 	
 	if ( 
-		opD == undefined //if no distributive operation is found
+		opP == undefined //if no distributive operation is found
 		||
 		$plusParent == undefined
 		||
-		$plusParent.attr('data-atom') !== opD
+		$plusParent.attr('data-atom') !== opP
 		){
 		return $() //empty $ array
 	}
@@ -404,7 +406,7 @@ function validForPartColl(mouseDownNode){
 	for (i = 0; i < $siblings.length ; i++){
 		var term=$siblings[i]
 		var okForThisTerm = false;
-		if($(term).attr('data-atom')==op){// se l'addendo è di tipo times controlla ogni fattore
+		if($(term).attr('data-atom')==opT){// se l'addendo è di tipo times controlla ogni fattore
 			var $factors = term.ATOM_getChildren()
 			for (j = 0; j < $factors.length ; j++){
 				var factor=$factors[j]
