@@ -1,3 +1,17 @@
+.tgt>*{
+	background-color:grey!important;
+	/*visibility:hidden;*/
+}
+/*.tgt*::after{
+	content: "ooo";
+	position: absolute;
+	pointer-events: none;
+	top:50%;
+	z-index:2000
+}*/
+
+
+
 [data-atom=plus]>.ul_role>[data-atom]:not(:first-of-type),
 [data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type),
 [data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type)
@@ -146,9 +160,8 @@ disadvantage: building new prototypes is less intuitive
 /*[data-atom][target]::after,*/ .tgt{
 	content: "";
 	position:absolute;
-	width:100%;
-	height:100%;
-
+	width: 30%;
+	height: 30%;
 	z-index: 1;
 	justify-content: center;
 }
