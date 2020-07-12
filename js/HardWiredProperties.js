@@ -426,62 +426,6 @@ function validForPartColl(mouseDownNode){
 	return $valids	
 }
 
-/*
-function validForoppoll(mouseDownNode){
-	var $mouseDownNode=$(mouseDownNode);
-	var $parent = ATOMparent($mouseDownNode);
-	var $valids = $();
-	var op = undefined
-	if($parent !== undefined){op = $parent.attr("data-atom")};//look for targets
-	var opD = opIsDistDop(op);
-	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
-	//*******test preliminari
-	if ($parent == undefined){
-		return $() //empty $ array
-	}
-	var $parentParent = ATOMparent($parent);
-	if ( 
-		opD == undefined
-		||
-		$parentParent == undefined
-		||
-		$parentParent.attr('data-atom') !== opD
-		){
-		return $() //empty $ array
-	}
-	
-	//***** test su ciascun termine
-	var $siblings = $parent.siblings('[data-atom]'); // ottieni la lista degli altri addendi
-	for (i = 0; i < $siblings.length ; i++){
-		var sibling=$siblings[i]
-		var okForThisTerm = false;
-		if($(sibling).attr('data-atom')==op){// se l'addendo è di tipo times controlla ogni fattore
-			var $factors = sibling.ATOM_getChildren()
-			for (j = 0; j < $factors.length ; j++){
-				var factor=$factors[j]
-				//console.log("controllo factor");
-				//console.log(factor);
-				if(ATOMEqual(factor,$mouseDownNode[0])){
-					$(factor).addClass("couldBeCollected")
-					okForThisTerm = true;
-					$valids = $valids.add(factor);
-					break
-				}
-			}
-		}
-		//todo da rivedere per ora non gestisce fattori solitari
-		else{// altrimenti controlla lui stesso
-			if(ATOMEqual(sibling,$mouseDownNode[0])){
-					$(sibling).addClass("couldBeCollected")
-					okForThisTerm = true;
-					$valids = $valids.add(sibling);
-				}
-		}
-	};
-	return $valids	
-}
-*/
-
 function ATOMpartCollect($dragged,$target){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
