@@ -35,7 +35,7 @@
 			<callfunction>
 			</callfunction>
 			<ci type="bool">AndNeutral</ci>
-			<ci type="bool">rtl</ci>
+			<ci type="bool">ltr</ci>
 		</apply>
 	</apply>
 	

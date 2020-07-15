@@ -805,10 +805,10 @@
 				<apply type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply type="bool" title="--c">
 						<and>
 						</and>
-						<ci type="bool">true</ci>
+						<ci type="bool" title="s-s">true</ci>
 						<ci type="bool">a</ci>
 					</apply>
 					<ci type="bool">a</ci>
