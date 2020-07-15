@@ -30,8 +30,11 @@ new PropertyDnD('partDistributDnD',validForPartDist,ATOMPartDistribute,""),
 new PropertyDnD('collectDnD',validForColl,ATOMcollect,""),
 new PropertyDnD('partCollectDnD',validForPartColl,ATOMpartCollect,""),
 new PropertyDnD('replaceDnD',validReplaced,ATOMLinkReplace,""),
-new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,"")
+new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,""),
+new PropertyDnD('removeRedundantDnD',validRedundant,removeDropped,"")
 ]
+
+
 
 function ATOMneedsBracket($ATOM)
 {
@@ -875,6 +878,42 @@ function validReplaced(mouseDownNode){
 }
 
 
+function validRedundant(mouseDownNode){
+	//validRedundant($('.selected'))
+	// cerca nodi uguali a mousedown node 
+	var $mouseDownNode=$(mouseDownNode);
+	if( !$mouseDownNode.is("[data-type=bool]") ){
+		return []//not a boolean expression	
+	}
+	var $candidates = $PropositionDownstreamRec($mouseDownNode).find('[data-atom]:visible').not($mouseDownNode);
+	var valids = $candidates.filter(function( index ) {//escludi mousedownnode stesso dai possibili risultati
+		return ATOMEqual(this,$mouseDownNode[0],false,true/* trascura il segno root quindi -<esp> può essere sostituita con <esp> a patto che poi si cambi il segno*/)
+	})
+	valids.each(function(){
+		// crea linee
+		lineAB($mouseDownNode,$(this));	
+	})	 
+	return valids
+}
+
+function removeDropped($dragged,$target){
+	var PActx = newPActx();
+	var $parent = ATOMparent($target)
+	PActx.replacedAlready = true;
+	PActx.visualization = "images/properties/collect.png"
+	if($parent.attr("data-atom")=="and"){
+		$target.remove();//if contained in an and simply remove the redundant term		
+		$parent.addClass("cleanifpointless");
+	}
+	else{
+		var $clone = ATOMclone( prototypeSearch("ci","bool") )
+		attachEventsAndExtend($clone);
+		$clone[0].ATOM_setName('true');
+		$target.replaceWith($clone);
+	}
+	PActx.matchedTF=true
+	return PActx
+}
 
 function evaluateComparison($exp){
 	var PActx = newPActx();
