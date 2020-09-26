@@ -82,7 +82,9 @@ function inject(MMLstring,$targetNode,doNotWrap)
 		$target = returnTargetWrappedIfNeeded($targetNode,$convertedTree)
 	}
 	attachEventsAndExtend($convertedTree,true);
-	RefreshEmptyInfixBraketsGlued(ATOMparent($convertedTree),true,"eibg")
+	var $refreshStartPoint = ATOMparent($convertedTree);
+	if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
+	RefreshEmptyInfixBraketsGlued($refreshStartPoint,true,"eibg")
 	//insertHtmlByRef($targetNode)
 	ssnapshot.take(); 
 }

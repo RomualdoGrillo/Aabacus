@@ -150,9 +150,7 @@ $('#fileToLoad').change(function(e) {
 	var fileSuffix = fileName.split(".")[fileName.split(".").length - 1]
 	loadFileConvert(fileToLoad, $($target[0]), fileSuffix);
 	//forse la chiamata sopra è asincrona? ssnapshot scatta prima dell'effettivo caricamento
-	//ssnapshot.take(); //todo: snapshot solo in base a risultato di loadFileConvert()
-	this.value = "";
-	//cancella il vecchio path altrimenti se carico due volte lo stesso file non si accorge del cambiamento
+	this.value = "";//cancella il vecchio path altrimenti se carico due volte lo stesso file non si accorge del cambiamento
 });
 
 //***********************************************************

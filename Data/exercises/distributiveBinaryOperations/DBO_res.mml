@@ -1,0 +1,18 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="num">
+		<plus>
+		</plus>
+		<apply type="num">
+			<plus>
+			</plus>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">a</ci>
+				<ci type="num">b</ci>
+			</apply>
+			<ci type="num">b</ci>
+		</apply>
+		<ci type="num">c</ci>
+	</apply>
+</math>

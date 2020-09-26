@@ -16,7 +16,7 @@ div{
     background-color: white;
     border: 1px solid #DAD9D9;
 }
-#tela div,#tavolozza div,#tavolozza,#result{
+#tela div,#tavolozza div,#result div, #tavolozza{
 	align-items:center;
 }
 #telaAnd,#tela > .secondMember{
@@ -768,7 +768,9 @@ border-right-style: solid;
 	background-color:red;
 }
 
-body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover){border-color:transparent;}
+body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover),
+body:not(.fixBorders) #result [data-atom][data-type=num]:not(:hover)
+{border-color:transparent;}
 
 #telaRole [data-atom][data-type=bool]{
 	border-radius:var(--div-smallradius);
