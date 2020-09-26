@@ -1,0 +1,7 @@
+{
+   "content_mml":"./Data/Logics/JackAnneGeorge/JackAnneGeorge.mml",
+    "foundation_mml":"./Data/FOUNDATION.mml",
+   "tavolozza_html":"./Data/Preload/tavolozzaAll.prt",
+   "gestToAction_mml":"./Data/Preload/gestToAction.mml",
+   "settings_json":"./Data/Preload/game.set"
+}

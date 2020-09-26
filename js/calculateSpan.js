@@ -100,7 +100,7 @@ function $SameOpInOut($startRole){
 	return $validRoles
 }
 function $PropositionLevelAndDownstream($startRole,limitTomove){
-	//move:true limit to roles you can move into (and associative)
+	//limitTomove:true limit to roles you can move into (and associative)
 	let $validRoles = $();
 	if(!limitTomove && $startRole.is('[data-atom=implies]>:first-child') ){
 		$validRoles = ATOMparent($startRole).find('>.s_role:last')  

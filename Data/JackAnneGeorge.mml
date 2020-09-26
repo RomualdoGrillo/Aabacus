@@ -1,0 +1,62 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<gt>
+		</gt>
+		<ci type="num">J</ci>
+		<ci type="num">A</ci>
+	</apply>
+	<apply type="bool">
+		<gt>
+		</gt>
+		<ci type="num">A</ci>
+		<ci type="num">G</ci>
+	</apply>
+	<apply type="bool">
+		<in>
+		</in>
+		<ci type="num">J</ci>
+		<ci type="set">married</ci>
+	</apply>
+	<apply type="bool">
+		<not>
+		</not>
+		<apply type="bool">
+			<in>
+			</in>
+			<ci type="num">G</ci>
+			<ci type="set">married</ci>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<exists>
+		</exists>
+		<bvar>
+			<ci type="num">x</ci>
+		</bvar>
+		<bvar>
+			<ci type="num">y</ci>
+		</bvar>
+		<apply type="bool">
+			<and>
+			</and>
+			<apply type="bool">
+				<gt>
+				</gt>
+				<ci type="num">x</ci>
+				<ci type="num">y</ci>
+			</apply>
+			<apply type="bool">
+				<in>
+				</in>
+				<ci type="num">x</ci>
+				<ci type="set">married</ci>
+			</apply>
+			<apply type="bool">
+				<in>
+				</in>
+				<ci type="num">y</ci>
+				<ci type="set">married</ci>
+			</apply>
+		</apply>
+	</apply>
+</math>
