@@ -16,7 +16,7 @@
 [data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type),
 [data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type)
 {
-	margin-left: 9px;/*space for infix symbol*/
+	margin-left: 11px;/*space for infix symbol*/
 }
 [data-atom=plus].resizable>.ul_role>[data-atom]/*:not(.sortable-drag)*/{
 	margin: 4px;
@@ -30,7 +30,7 @@ body.hidePlus [data-atom=plus]>.ul_role>[data-atom]::before{
 	/* background-color: red; */
 	position: absolute;
 	content: "+";/*&#x2264; for leq*/
-	left:-10.2px;
+	left: -11.6px;
 	pointer-events: none;
 }
 [data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type)::before {
