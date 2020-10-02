@@ -1,4 +1,43 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply minimized="True" type="bool" data-tag="associativa">
+		<forall>
+		</forall>
+		<bvar>
+			<ci type="num">x</ci>
+		</bvar>
+		<bvar>
+			<ci type="num">y</ci>
+		</bvar>
+		<bvar>
+			<ci type="num">k</ci>
+		</bvar>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<apply type="num">
+					<plus>
+					</plus>
+					<ci type="num">x</ci>
+					<ci type="num">y</ci>
+				</apply>
+				<ci type="num">k</ci>
+			</apply>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">x</ci>
+				<apply type="num">
+					<plus>
+					</plus>
+					<ci type="num">y</ci>
+					<ci type="num">k</ci>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
 	<apply type="num">
 		<plus>
 		</plus>
