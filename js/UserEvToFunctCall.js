@@ -35,7 +35,13 @@ function keyboardEvToFC($atom, keyPressed){
 	}
 	return PActx
 }
+function checkIfFoundation(){
+	return $('#telaRole [data-tag="foundation"]').length != 0
+}
 
+function directCall(key){
+	return $('#telaRole [data-rtl='+ key + ']')
+}
 
 function searchEventHandler(event){// trova la definizione della proprietà
    var res

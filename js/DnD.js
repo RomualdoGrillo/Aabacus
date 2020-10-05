@@ -15,37 +15,40 @@ function MakeSortableAndInjectMouseDown(event) {
 		if (event.ctrlKey || !ATOMclosedDef($atomTarget) || $atomTarget.is('#tavolozza>*')) {
 			//make targets sortable
 			let $validTgT = validTargetsFromOpened($atomTarget);
-			if($atomTarget.is('#tavolozza>*')){
+			if ($atomTarget.is('#tavolozza>*')) {
 				//add tela as target
-				$validTgT=$validTgT.add('#telaRole');
+				$validTgT = $validTgT.add('#telaRole');
 			}
 			$validTgT.toArray().forEach(function(el) {
 				el.setAttribute('target', 'opened')
 			});
 			makeSortableMouseDown($validTgT.toArray(), true);
 		}
-		if(ATOMclosedDef($atomTarget)&& !$atomTarget.is('#tavolozza>*')){
+		if (ATOMclosedDef($atomTarget) && !$atomTarget.is('#tavolozza>*')) {
 			//create targets to apply properties
 			let i = 0
-			while (propertiesDnD[i]) {
-				let classname = 'target-' + propertiesDnD[i].name
-				let targets = propertiesDnD[i].findTgt($atomTarget);
-				let j = 0;
-				while (targets[j]) {
-					targets[j].setAttribute('target', propertiesDnD[i].name);
-					if(targets[j].matches('.ul_role')){
-						//target is a role: for example associative property	
-						makeSortableMouseDown([targets[j]])
+			if (checkIfFoundation()) {//only if tag foundation is present in tela 
+
+				while (propertiesDnD[i]) {
+					let classname = 'target-' + propertiesDnD[i].name
+					let targets = propertiesDnD[i].findTgt($atomTarget);
+					let j = 0;
+					while (targets[j]) {
+						targets[j].setAttribute('target', propertiesDnD[i].name);
+						if (targets[j].matches('.ul_role')) {
+							//target is a role: for example associative property	
+							makeSortableMouseDown([targets[j]])
+						} else {
+							//target is not a role: for example in replacement it is an atom 
+							let tgt = $('<div class="tgt"></div>')[0]
+							targets[j].append(tgt);
+							makeSortableMouseDown([tgt])
+						}
+						j++;
 					}
-					else{
-						//target is not a role: for example in replacement it is an atom 
-						let tgt = $('<div class="tgt"></div>')[0]
-						targets[j].append(tgt);
-						makeSortableMouseDown([tgt])						
-					}
-					j++;
+					i++
 				}
-				i++
+
 			}
 		}
 		//make source sortable
@@ -60,7 +63,7 @@ function startHandlerMouseDown(event, AtomDragged) {
 	//*************** deselect ********
 	if (event.type == 'start') {
 		//clear selected unselected
-		selectionManager("","","",true);
+		selectionManager("", "", "", true);
 	}
 	//********clear all targets*****************
 	//if (debugMode) {
@@ -91,29 +94,29 @@ function onAdd(event) {
 	event.item.classList.remove('toBeCloned');
 	attachEventsAndExtend($(myClone))
 	event.item.replaceWith(myClone)
-	event.clone.replaceWith(event.item)//questo è l'elemento che rimane nella posizione di partenza
+	event.clone.replaceWith(event.item)
+	//questo è l'elemento che rimane nella posizione di partenza
 	let dropped = myClone
 	//move or clone
 	if (event.to.getAttribute('target') == 'opened') {
 		if (event.to.matches('#telaRole')) {
 			returnTargetWrappedIfNeeded($('#telaRole'), $(dropped));
 		}
-		
-		if($(dropped).hasClass('toBeCloned')){
+
+		if ($(dropped).hasClass('toBeCloned')) {
 			$(dropped).removeClass('toBeCloned');
-		}
-		else{
-			$(event.item).remove(); // if not cloning, clone was useful to visualize the starting point 	
+		} else {
+			$(event.item).remove();
+			// if not cloning, clone was useful to visualize the starting point 	
 		}
 	}//apply property
 	else {
 		let target
 		let adHocTgt = event.to.classList.contains('tgt')
-		if(adHocTgt){
+		if (adHocTgt) {
 			//---->real target is Atom so dropped in ad hoc tgt role
-			target=event.to.parentElement;
-		}
-		else{
+			target = event.to.parentElement;
+		} else {
 			//---->target is a role (no need to create ad hoc tgt)
 			target = event.to
 		}
@@ -123,8 +126,8 @@ function onAdd(event) {
 			return el.name == targetProperty
 		});
 		if (property) {
-			let PActx = property.apply($(event.item), $(event.to.parentElement),$(dropped))
-			if(adHocTgt){
+			let PActx = property.apply($(event.item), $(event.to.parentElement), $(dropped))
+			if (adHocTgt) {
 				(event.to).remove()
 			}
 			if (PActx) {
@@ -132,7 +135,10 @@ function onAdd(event) {
 			}
 		}
 	}
-	if(!debugMode){clearTargetsMouseDown()}//in debugMode i target sono lasciati visibili
+	if (!debugMode) {
+		clearTargetsMouseDown()
+	}
+	//in debugMode i target sono lasciati visibili
 	clickSound.play();
 }
 
@@ -142,7 +148,8 @@ function clearTargetsMouseDown() {
 	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
 	while (tgts[i]) {
 		tgts[i].remove()
-	i++}
+		i++
+	}
 	let sortableRoles = document.querySelectorAll('[target],[from]');
 	i = 0
 	while (sortableRoles[i]) {
@@ -153,7 +160,8 @@ function clearTargetsMouseDown() {
 		if (sortable) {
 			sortable.option('disabled', true);
 		}
-	i++}
+		i++
+	}
 
 }
 
@@ -174,7 +182,7 @@ function makeSortableMouseDown(roles, sort) {
 				sort: sort,
 				onStart: startHandlerMouseDown,
 				onEnd: mouseUpSortEnd,
-				onAdd:onAdd,
+				onAdd: onAdd,
 				animation: 150,
 				fallbackOnBody: true,
 				swapThreshold: 0.65,
@@ -187,11 +195,13 @@ function makeSortableMouseDown(roles, sort) {
 	return sortables
 }
 
-function mouseUpSortEnd(event){
-	if(!debugMode){clearTargetsMouseDown()}//in debugMode i target sono lasciati visibili
+function mouseUpSortEnd(event) {
+	if (!debugMode) {
+		clearTargetsMouseDown()
+	}
+	//in debugMode i target sono lasciati visibili
 	clearLines()
 }
-
 
 /*
 function onUpdateHandler(){
