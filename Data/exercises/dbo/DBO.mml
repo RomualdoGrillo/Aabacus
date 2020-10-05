@@ -17,7 +17,7 @@
 			<apply type="num">
 				<plus>
 				</plus>
-				<apply type="num">
+				<apply title="s--" type="num">
 					<plus>
 					</plus>
 					<ci type="num">x</ci>
@@ -29,7 +29,7 @@
 				<plus>
 				</plus>
 				<ci type="num">x</ci>
-				<apply type="num">
+				<apply title="s--" type="num">
 					<plus>
 					</plus>
 					<ci type="num">y</ci>
