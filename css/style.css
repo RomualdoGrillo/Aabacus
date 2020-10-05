@@ -12,6 +12,7 @@ div{
 	display: flex;
 	/* align-items:center; */
 }
+
 [data-atom] {
     background-color: white;
     border: 1px solid #DAD9D9;
@@ -23,6 +24,9 @@ div{
 	align-items:normal!important;
 }
 
+[title^="s"] {
+	border-color: yellow!important;
+}
 
 /*[data-atom="eq"].asymmetric sono le definizioni, in quel tipo di atomi
 il bordo del primo membro sporge dal background venendo a "fondersi" con il bordo esterno verde

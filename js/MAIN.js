@@ -475,7 +475,7 @@ function PActxConclude(PActx) {
 
 function PActxVisualize(PActx) {
 	let visContet
-	if (PActx.visualization == "") {
+	if (!PActx.visualization ) {
 		visContet = PActx.msg
 	} else {
 		visContet = '<img src="' + PActx.visualization + '">';
