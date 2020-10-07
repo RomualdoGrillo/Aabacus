@@ -1,6 +1,6 @@
 {
    "content_mml":"./Data/es1.mml",
-   "result_mml":"./Data/Exercises/es1/Esercizio1_res.mml",
+   "result_mml":"./Data/exercises/es1/Esercizio1_res.mml",
    "tavolozza_html":"./Data/Preload/tavolozza.prt",
    "gestToAction_mml":"./Data/Preload/gestToAction.mml",
    "settings_json":"./Data/Preload/game.set"
