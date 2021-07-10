@@ -107,6 +107,10 @@ function ATOMclosedDef(Node){
 	//stabilisci se l'elemento "Node" � aperto e si puo modificare liberamente
 	return $(Node).closest('.unlocked').length == 0
 }
+function ATOMfrozenDef(Node){
+	//!! to be refined 
+	return $(Node).closest('[data-tag]')
+}
 
 
 function ATOM_dissolveContainer(){

@@ -2,7 +2,14 @@ function MakeSortableAndInjectMouseDown(event) {
 	clearTargetsMouseDown()
 	let $atomTarget
 	if (ATOMclosedDef($(event.target))) {
-		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
+		if( ATOMfrozenDef($(event.target)).length !== 0){//se e' anche frozen
+            //console.log( ATOMfrozenDef($(event.target)) );
+            //alert('found')
+            $atomTarget = $(event.target).closest('[title^="s"]');
+            //$atomTarget = $(event.target).closest('.firstMember , .secondMember').children()
+		}
+		else{$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
+        }
 	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	}
@@ -24,8 +31,14 @@ function MakeSortableAndInjectMouseDown(event) {
 			});
 			makeSortableMouseDown($validTgT.toArray(), true);
 		}
-		if (ATOMclosedDef($atomTarget) && !$atomTarget.is('#tavolozza>*')) {
-			//create targets to apply properties
+		//*********crete targets to try pattern Match******
+		//else if(true){//is it from frozen?
+		    //validTargetsFromOpened	
+		}
+		 
+		//**********create targets to apply properties****
+		else if (ATOMclosedDef($atomTarget) && !$atomTarget.is('#tavolozza>*')) {
+			
 			let i = 0
 			if (checkIfFoundation()) {//only if tag foundation is present in tela 
 
