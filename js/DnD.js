@@ -1,76 +1,70 @@
 function MakeSortableAndInjectMouseDown(event) {
 	clearTargetsMouseDown()
 	let $atomTarget
-	if (ATOMclosedDef($(event.target))) {
-		if( ATOMfrozenDef($(event.target)).length !== 0){//se e' anche frozen
-            //console.log( ATOMfrozenDef($(event.target)) );
-            //alert('found')
-            $atomTarget = $(event.target).closest('[title^="s"]');
-            //$atomTarget = $(event.target).closest('.firstMember , .secondMember').children()
-		}
-		else{$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
-        }
-	} else {
-		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
+	// a *************************drag to insert in opened *****************
+	if(event.ctrlKey || !ATOMclosedDef($atomTarget) || $(event.target).is('#tavolozza>*')){
+        //preselect $atomTarget, may be overwritten in "b" case
+	    $atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
+	    if (!$atomTarget.length || !$atomTarget.parent()){return }//precondition
+	    //make targets sortable
+	    let $validTgT = validTargetsFromOpened($atomTarget);
+    	if ($atomTarget.is('#tavolozza>*')) {
+    		//add tela as target
+	    	$validTgT = $validTgT.add('#telaRole');
+	    }
+	    $validTgT.toArray().forEach(function(el) {
+		    el.setAttribute('target', 'opened')
+	    });
+		makeSortableMouseDown($validTgT.toArray(), true);
 	}
-	//let $atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
-	if ($atomTarget.length && $atomTarget.parent()) {
-		//console.log('closest role from mousedown')
-		//console.log($atomTarget.parent()[0]);
-		//make targets sortables
-		//*********from opened****************
-		if (event.ctrlKey || !ATOMclosedDef($atomTarget) || $atomTarget.is('#tavolozza>*')) {
-			//make targets sortable
-			let $validTgT = validTargetsFromOpened($atomTarget);
-			if ($atomTarget.is('#tavolozza>*')) {
-				//add tela as target
-				$validTgT = $validTgT.add('#telaRole');
-			}
-			$validTgT.toArray().forEach(function(el) {
-				el.setAttribute('target', 'opened')
-			});
-			makeSortableMouseDown($validTgT.toArray(), true);
-		}
-		//*********crete targets to try pattern Match******
-		//else if(true){//is it from frozen?
-		    //validTargetsFromOpened	
-		}
-		 
-		//**********create targets to apply properties****
-		else if (ATOMclosedDef($atomTarget) && !$atomTarget.is('#tavolozza>*')) {
-			
-			let i = 0
+	// b *************************drag to apply custom propety with pattern match *****************
+	else if( ATOMclosedDef($(event.target)) && ATOMfrozenDef($(event.target)).length !== 0){//also frozen
+         $atomTarget = $(event.target).closest('[title^="s"]');
+         let $validTgT = validCandidatesForPatternDrop($atomTarget);
+         makeTargetsSortableRolesOrAtoms($validTgT.toArray(),'dragPatternMatch');
+	}
+	// c *************************drag to apply custom propeties listed in propertiesDnD[i] *****************
+	else{
+        $atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
+		if (!$atomTarget.length || !$atomTarget.parent()){return }//precondition
+		let i = 0
 			if (checkIfFoundation()) {//only if tag foundation is present in tela 
 
 				while (propertiesDnD[i]) {
 					let classname = 'target-' + propertiesDnD[i].name
 					let targets = propertiesDnD[i].findTgt($atomTarget);
-					let j = 0;
-					while (targets[j]) {
-						targets[j].setAttribute('target', propertiesDnD[i].name);
-						if (targets[j].matches('.ul_role')) {
-							//target is a role: for example associative property	
-							makeSortableMouseDown([targets[j]])
-						} else {
-							//target is not a role: for example in replacement it is an atom 
-							let tgt = $('<div class="tgt"></div>')[0]
-							targets[j].append(tgt);
-							makeSortableMouseDown([tgt])
-						}
-						j++;
-					}
+					makeTargetsSortableRolesOrAtoms(targets,propertiesDnD[i].name)
 					i++
 				}
 
 			}
-		}
-		//make source sortable
-		let sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);
-		$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
-		let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]
-		fromSortable._onTapStart(event);
 	}
+	//make source sortable
+	let sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);
+	$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
+	let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]
+	fromSortable._onTapStart(event);
+	
 }
+
+//makeTargetsSortableRolesOrAtoms(targets,propertiesDnD[i].name)
+function makeTargetsSortableRolesOrAtoms(targetsArray,propertyName){
+	let j = 0;
+					while (targetsArray[j]) {
+						targetsArray[j].setAttribute('target', propertyName );
+						if (targetsArray[j].matches('.ul_role')) {
+							//target is a role: for example associative property	
+							makeSortableMouseDown([targetsArray[j]])
+						} else {
+							//target is not a role: for example in replacement it is an atom 
+							let tgt = $('<div class="tgt"></div>')[0]
+							targetsArray[j].append(tgt);
+							makeSortableMouseDown([tgt])
+						}
+						j++;
+					}
+}
+
 
 function startHandlerMouseDown(event, AtomDragged) {
 	//*************** deselect ********
@@ -110,7 +104,7 @@ function onAdd(event) {
 	event.clone.replaceWith(event.item)
 	//questo è l'elemento che rimane nella posizione di partenza
 	let dropped = myClone
-	//move or clone
+	//*********** move or clone
 	if (event.to.getAttribute('target') == 'opened') {
 		if (event.to.matches('#telaRole')) {
 			returnTargetWrappedIfNeeded($('#telaRole'), $(dropped));
@@ -122,7 +116,14 @@ function onAdd(event) {
 			$(event.item).remove();
 			// if not cloning, clone was useful to visualize the starting point 	
 		}
-	}//apply property
+	}
+		
+
+
+
+
+
+	//*********** apply property
 	else {
 		let target
 		let adHocTgt = event.to.classList.contains('tgt')
@@ -135,16 +136,29 @@ function onAdd(event) {
 		}
 		let targetProperty = target.getAttribute('target');
 		console.log(' ------------> found target ' + targetProperty);
-		let property = propertiesDnD.find(function(el) {
-			return el.name == targetProperty
-		});
-		if (property) {
-			let PActx = property.apply($(event.item), $(event.to.parentElement), $(dropped))
-			if (adHocTgt) {
-				(event.to).remove()
-			}
-			if (PActx) {
-				PActxConclude(PActx)
+		//*********** dragPatternMatch
+		if(targetProperty=='dragPatternMatch' ){
+           	//decide if ltr or rtl
+             let $Member = $(event.item).closest('.firstMember,.secondMember');//find closest equation
+             let direction 
+             if( $Member.is('.firstMember')){direction="ltr"}else{direction="rtl"}
+             let $prop = ATOMparent(ATOMparent($Member));        
+             let PActx=TryProp($prop,ATOMparent($(event.to)), direction)
+             PActx.msg=$prop.closest('[data-tag]').attr('data-tag')
+             PActxConclude(PActx)  
+            }
+		else{
+			let property = propertiesDnD.find(function(el) {
+				return el.name == targetProperty
+			});
+			if (property) {
+				let PActx = property.apply($(event.item), $(event.to.parentElement), $(dropped))
+				if (adHocTgt) {
+					(event.to).remove()
+				}
+				if (PActx) {
+					PActxConclude(PActx)
+				}
 			}
 		}
 	}
