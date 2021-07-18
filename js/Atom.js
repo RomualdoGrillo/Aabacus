@@ -107,6 +107,10 @@ function ATOMclosedDef(Node){
 	//stabilisci se l'elemento "Node" � aperto e si puo modificare liberamente
 	return $(Node).closest('.unlocked').length == 0
 }
+function ATOMfrozenDef(Node){
+	//!! to be refined 
+	return $(Node).closest('[data-tag]')
+}
 
 
 function ATOM_dissolveContainer(){
@@ -393,6 +397,21 @@ function validTargetsFromOpened($ATOMdragged){
 		})
 	  	return valids.not($ATOMdragged.parent())
 }
+
+function validCandidatesForPatternDrop($ATOMdragged){
+		var valids = $('#telaRole [data-atom]:visible').filter(function( index ) {
+			//*****valid?***********
+			var result =(
+				//datatype is compatible
+				typeOk($ATOMdragged,$(this))
+				&&
+				ATOMfrozenDef($(this)).length == 0
+				)
+			return result
+		})
+	  	return valids//.not($ATOMdragged.parent())
+}
+
 
 function getNumOfPlaces($role){
 	//*****determine number of places********
