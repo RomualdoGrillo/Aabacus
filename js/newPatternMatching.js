@@ -323,7 +323,7 @@ function ATOMappendInABSPosition($atom,$refATOM,relativePosition){
 
 
 //  TryPropByName("name",actionString,firstValString)
-function OLD_TryPropByName(propName, $par1 ,firstVal,justTry){
+function TryPropByName(propName, $par1 ,firstVal,justTry){
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
     //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
     //"apre un fascicolo" e tenta di "dare seguito" all'ordine
@@ -351,48 +351,6 @@ function OLD_TryPropByName(propName, $par1 ,firstVal,justTry){
 		return PActx
 	}
 }
-
-//  TryPropByName("name",actionString,firstValString)
-function TryPropByName(propName, $par1 ,firstVal,justTry){
-	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
-    //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
-    //"apre un fascicolo" e tenta di "dare seguito" all'ordine
-  	
-
-    
-    //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
-    
-	let	$origProp = findPropByName(propName)
-	if( $origProp.length == 0){ 
-    	console.log('property not found:' + propName)
-	}
-	else{
-		
-		return TryProp($origProp, $par1 ,firstVal,justTry)
-	}
-}
-
-
-function TryProp($origProp, $par1 ,firstVal,justTry){
-	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
-    //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
-    //"apre un fascicolo" e tenta di "dare seguito" all'ordine
-	var PActx = newPActx()
-    //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
-	var cloningRes = swapMembersClone($origProp.eq(0),firstVal);
-	if( cloningRes.foundTF ){
-	    //ATOMSmarkUnmark($('.selected'),"s");
-		ATOMSmarkUnmark( $par1 ,"s");
-		//res = checkProp(cloningRes.$newProp,$('.selected'))//$operando verrà determinato all'interno della funz'
-	    PActx.$newProp = cloningRes.$newProp
-		PActx = tryReconfigurableProp(PActx, $par1, undefined, justTry )//operando verrà determinato all'interno della funz'
-		ATOMSmarkUnmark($par1,"");
-		PActx.visualization =  	cloningRes.visualization
-	}
-return PActx
-}
-
-
 
 function tryReconfigurableProp(PActx,$par1,$par2,justTry){
     //********** da attack points istruisce la pratica PActx********************************
