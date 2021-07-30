@@ -2,7 +2,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	clearTargetsMouseDown()
 	let $atomTarget
 	// a *************************drag to insert in opened *****************
-	if(event.ctrlKey || !ATOMclosedDef($atomTarget) || $(event.target).is('#tavolozza>*')){
+	if(event.ctrlKey || !ATOMclosedDef($atomTarget) || $(event.target).is('#tavolozza *')){
         //preselect $atomTarget, may be overwritten in "b" case
 	    $atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	    if (!$atomTarget.length || !$atomTarget.parent()){return }//precondition
