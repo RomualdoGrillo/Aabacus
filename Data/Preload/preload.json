@@ -1,8 +1,7 @@
 {
-   "content_mml":"./Data/FOUNDATION.mml",
-   "result_mml":"./Data/Preload/minus-2.mml",
+   "content_mml":"./Data/Preload/reproduceBugSotable.mml",
    "tavolozza_html":"./Data/Preload/tavolozza.prt",
    "gestToAction_mml":"./Data/Preload/gestToAction.mml",
-   "settings_json":"./Data/Preload/default.set",
+   "settings_json":"./Data/exercises/quizEqSystem/gameHorTimes.set",
    "eventsToHandlers_mml":"./Data/Preload/eventsToHandlers.mml"
 }
