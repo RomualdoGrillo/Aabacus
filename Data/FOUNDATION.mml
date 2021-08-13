@@ -2,9 +2,9 @@
 	<apply medium="True" type="bool">
 		<and>
 		</and>
-		<ci minimized="True" type="bool" data-tag="replace" data-tagimg="../Aabacus/images/properties/replace.png">internal</ci>
-		<ci minimized="True" type="bool" data-tag="compose" data-tagimg="../Aabacus/images/gear.svg">internal</ci>
-		<apply minimized="True" medium="True" type="bool" data-tag="foundation" data-tagimg="../Aabacus/images/properties/distributive.png">
+		<ci minimized="True" type="bool" data-tag="replace" data-tagimg="./images/properties/replace.png">internal</ci>
+		<ci minimized="True" type="bool" data-tag="compose" data-tagimg="./images/gear.svg">internal</ci>
+		<apply minimized="True" medium="True" type="bool" data-tag="foundation" data-tagimg="./images/properties/distributive.png">
 			<and>
 			</and>
 			<apply minimized="True" type="bool" data-tag="timesAssociate">
