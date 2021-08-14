@@ -1,5 +1,5 @@
 function MakeSortableAndInjectMouseDown(event) {
-	clearTargetsMouseDown()
+	clearSortableTargets()
 	let $atomTarget
 	if (ATOMclosedDef($(event.target))) {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
@@ -10,7 +10,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	if ($atomTarget.length && $atomTarget.parent()) {
 		//console.log('closest role from mousedown')
 		//console.log($atomTarget.parent()[0]);
-		//make targets sortables
+		//make targets sortable
 		//*********from opened****************
 		if (event.ctrlKey || !ATOMclosedDef($atomTarget) || $atomTarget.is('#tavolozza>*')) {
 			//make targets sortable
@@ -136,13 +136,13 @@ function onAdd(event) {
 		}
 	}
 	if (!debugMode) {
-		clearTargetsMouseDown()
+		clearSortableTargets()
 	}
 	//in debugMode i target sono lasciati visibili
 	clickSound.play();
 }
 
-function clearTargetsMouseDown() {
+function clearSortableTargets() {
 	let tgts = document.querySelectorAll('.tgt');
 	let i = 0;
 	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
@@ -187,8 +187,6 @@ function makeSortableMouseDown(roles, sort) {
 				fallbackOnBody: true,
 				swapThreshold: 0.65,
 				animation: 150,
-				//onChange:onChangeHandler,
-				//onUpdate:onUpdateHandler,
 			});
 		}
 	}
@@ -196,15 +194,11 @@ function makeSortableMouseDown(roles, sort) {
 }
 
 function mouseUpSortEnd(event) {
-	if (!debugMode) {
-		clearTargetsMouseDown()
+	if (!debugMode) {//in debugMode i target sono lasciati visibili
+		clearSortableTargets()
 	}
-	//in debugMode i target sono lasciati visibili
-	clearLines()
+	else{//clears lines used in debug mode to link pattern to input
+		clearLines()
+	}
+	
 }
-
-/*
-function onUpdateHandler(){
-	console.log('onUpdateHandler')
-}
-*/
