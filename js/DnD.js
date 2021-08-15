@@ -1,5 +1,5 @@
 function MakeSortableAndInjectMouseDown(event) {
-	clearSortableTargets()
+	clearSortableTargets()//that's just for debug mode, in normal mode targets are clened on mouseup
 	let $atomTarget
 	if (ATOMclosedDef($(event.target))) {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
@@ -142,39 +142,17 @@ function onAdd(event) {
 	clickSound.play();
 }
 
-function clearSortableTargets() {
-	let tgts = document.querySelectorAll('.tgt');
-	let i = 0;
-	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
-	while (tgts[i]) {
-		tgts[i].remove()
-		i++
-	}
-	let sortableRoles = document.querySelectorAll('[target],[from]');
-	i = 0
-	while (sortableRoles[i]) {
-		sortableRoles[i].removeAttribute("target");
-		sortableRoles[i].removeAttribute("from");
-		let sortable = Sortable.get(sortableRoles[i]);
-		//if(sortable){sortable.destroy()};
-		if (sortable) {
-			sortable.option('disabled', true);
-		}
-		i++
-	}
 
-}
 
-function makeSortableMouseDown(roles, sort) {
+function makeSortableMouseDown(roles, sort) {// roles is an array containing both roles and dummy roles 
 	let sortables = []
-	for (var i = 0; i < roles.length; i++) {
+	for (var i = 0; i < roles.length; i++) {//for each role
 		sortables[i] = Sortable.get(roles[i])
-		if (sortables[i]) {
+		if (sortables[i]) {//if a Sortable instance exists for that role THEN enable it
 			sortables[i].option('disabled', false);
 			sortables[i].option('sort', sort);
-		} else {
+		} else {//else create a Sortable
 			sortables[i] = new Sortable(roles[i],{
-
 				group: {
 					name: 'shared',
 					pull: 'clone',
@@ -201,4 +179,30 @@ function mouseUpSortEnd(event) {
 		clearLines()
 	}
 	
+}
+
+function clearSortableTargets() {
+	let tgts = document.querySelectorAll('.tgt');
+	let i = 0;
+	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
+	while (tgts[i]) {
+		tgts[i].remove()
+		i++
+	}
+	let sortableRoles = document.querySelectorAll('[target],[from]');
+	i = 0
+	while (sortableRoles[i]) {
+		sortableRoles[i].removeAttribute("target");
+		sortableRoles[i].removeAttribute("from");
+		let sortable = Sortable.get(sortableRoles[i]);
+		
+		//if(sortable){sortable.destroy()};
+		
+		if (sortable) {
+			sortable.option('disabled', true);
+		}
+		
+		i++
+	}
+
 }
