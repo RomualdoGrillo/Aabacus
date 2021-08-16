@@ -1,0 +1,11 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<ci type="bool" data-tag="foundation">true</ci>
+	<apply type="num">
+		<plus>
+		</plus>
+		<ci type="num">x</ci>
+		<ci type="num">x</ci>
+		<ci type="num">x</ci>
+	</apply>
+	<ci type="bool">1) riordina i tre termini "x" trascinando il primo a sinistra in posizione centrale.  2) riordina nuovamente e rimetti il  termine "x" che ora si trova al centro in posizione a sinistra. 3)si ottiene un errore e da quel momento in poi non è più possibile riordinare nulla. </ci>
+</math>
