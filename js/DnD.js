@@ -175,11 +175,10 @@ function mouseUpSortEnd(event) {
 	if (!debugMode) {//in debugMode i target sono lasciati visibili
 		clearSortableTargets()
 	}
-	else{//clears lines used in debug mode to link pattern to input
-		clearLines()
-	}
-	
+	clearLines()
 }
+
+
 
 function clearSortableTargets() {
 	let tgts = document.querySelectorAll('.tgt');
