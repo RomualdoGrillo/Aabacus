@@ -186,6 +186,11 @@ function clearSortableTargets() {
 	let i = 0;
 	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
 	while (tgts[i]) {
+		let sortable = Sortable.get(tgts[i]);
+		if(sortable){sortable.destroy()};
+		/*if (sortable) {
+			sortable.option('disabled', true);
+		}*/
 		tgts[i].remove()
 		i++
 	}
