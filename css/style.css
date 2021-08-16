@@ -436,7 +436,10 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 [target]:not([target=""]) {
 	background-color: #eaeaea!important;
 }
-
+/* source role of the dragging*/ 
+.debug [from] {
+    background-color: palevioletred;
+}
 
 body.hidePlus [data-atom="times"]{
 	border-color:transparent!important;
