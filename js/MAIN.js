@@ -34,8 +34,8 @@ document.addEventListener("dblclick", dblclickHandler);
 //***********************************************************
 $(document).on('mousedown', MakeSortableAndInjectMouseDown);
 $(document).on('touchstart', MakeSortableAndInjectMouseDown);
-$(document).on('mouseup', mouseUpSortEnd);
-$(document).on('touchend', mouseUpSortEnd);//not tested
+$(document).on('mouseup', cleanupDnD);
+$(document).on('touchend', cleanupDnD);//not tested
 
 
 $(document).on('keydown', function(e) {

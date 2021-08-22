@@ -1,5 +1,8 @@
 function MakeSortableAndInjectMouseDown(event) {
-	clearSortableTargets()//that's just for debug mode, in normal mode targets are clened on mouseup
+	if (debugMode) {//in debugMode i target sono lasciati visibili
+		cleanupDnD()
+	}
+	//that's just for debug mode, in normal mode targets are clened on mouseup
 	let $atomTarget
 	if (ATOMclosedDef($(event.target))) {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
@@ -83,9 +86,8 @@ function startHandlerMouseDown(event, AtomDragged) {
 
 }
 
-//function onEndHandlerMouseDown(event) {
 function onAdd(event) {
-	//console.log('end!')
+	console.log('onAdd')
 	//replacing sortablejs defaul clone with myClone (removed id, extends ATOM etc..)
 	//item stays in place myclone dropped in new place
 	event.item.classList.remove('showAsPlaceholder');
@@ -135,10 +137,9 @@ function onAdd(event) {
 			}
 		}
 	}
-	if (!debugMode) {
+	/*if (!debugMode) {//in debugMode i target sono lasciati visibili
 		clearSortableTargets()
-	}
-	//in debugMode i target sono lasciati visibili
+	}*/
 	clickSound.play();
 }
 
@@ -160,7 +161,7 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 				sort: sort,
 				onStart: startHandlerMouseDown,
 				onAdd: onAdd,
-				onEnd: mouseUpSortEnd,
+				onEnd: cleanupDnD,
 				animation: 150,
 				fallbackOnBody: true,
 				swapThreshold: 0.65,
@@ -170,14 +171,23 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 	}
 	return sortables
 }
-
-function mouseUpSortEnd(event) {
-	if (!debugMode) {//in debugMode i target sono lasciati visibili
-		clearSortableTargets()
-	}
-	clearLines()
+function sortEnd(){
+	console.log('sortEnd');
 }
 
+function cleanupDnD(event) {
+	//called both on sortEnd an Mouseup events 
+	//at least one of the events must fire
+	//not optimal
+	//Mouseup does not fire if the element is removed as a result of property applications
+	//Sortend is not fired if click without drag
+	//Documentation:
+	//https://docs.google.com/drawings/d/1sASg3RC51sOYWCRIxJjdRI_lL0ZKpATyPaFWfkVxT70/edit
+	if (!debugMode) {//in debugMode i target sono lasciati visibili
+		clearSortableTargets()
+		clearLines()//todo: distinguish between hints and PatternMatching and other lines
+	}
+}
 
 
 function clearSortableTargets() {
