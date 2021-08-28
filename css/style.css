@@ -275,7 +275,7 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 	width: 5px;
 	height:5px;
 	padding: 0px;
-	bottom: 0px;"
+	bottom: 0px;
 }
 
 .asymmetric  {
@@ -404,26 +404,26 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
     border-right: #ffffff;
 }
 
-.debug .target-opened, .debug  .target-openedDnD{
+.debug [target=opened], .debug  [target=openedDnD]{
 	background-color: pink!important;
 }
 
-.debug .target-associative, .debug .target-associativeDnD{
+.debug [target=associative], .debug .target-associativeDnD{
 	background-color: green!important;
 }
 
  
-.debug .target-distributiveDnD *{
+.debug [target=distributiveDnD] *{
 	background-color: #d69ece!important;
 	cursor: url(../images/distributeDown.svg), auto;
 }
 
 
-/*.hover.target-distributive , .hover.target-distributiveDnD *{ 
+/*.hover[target=distributive], .hover[target=distributiveDnD] *{ 
     cursor: url(../images/distributeDown.svg), auto;
 }*/
 
-/*.target-collection, .target-collectDnD {
+/*.[target=collection], [target=collectDnD] {
 	background-color: aqua!important;
     cursor: url(../images/collectUp.svg), auto;
 }*/
@@ -567,12 +567,12 @@ border-right-style: solid;
 
 
 /* roles inside glued atoms should still work*/
-.glued,.glued>*{
-	/* pointer-events: none; */
-}
-.glued>*>*{
-	/* pointer-events: auto; */
-}
+/* .glued,.glued>*{
+	pointer-events: none; 
+}*/
+/* .glued>*>*{
+	pointer-events: auto; 
+}*/
 
 
 
@@ -605,7 +605,7 @@ border-right-style: solid;
 	background-color: red!important;
 }
 
-6#telaRole.debug .pattern:not([data-atom]){ 
+#telaRole.debug .pattern:not([data-atom]){ 
 	background-color: yellow;
 }
 
@@ -737,7 +737,7 @@ border-right-style: solid;
 
 }
 .resizable>.ul_role>* {
-	display:inline-flex;// do not know why but it works
+	display:inline-flex;/* do not know why but it works*/
 
 }
 /*

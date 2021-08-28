@@ -981,7 +981,7 @@ function forThisPar_focus_nofocus($specificValue,$parameter){
 }
 
 function clearTragets(){
-	clearTarget(["target-opened","toBeCloned"]);//debug 
+	clearTarget(["toBeCloned"]);//debug 
 	document.querySelectorAll(sortablesSelectorString).forEach(function(el){el.setAttribute('target','')});
 	document.querySelectorAll('[data-atom]').forEach(function(el){el.setAttribute('target','')});
 }

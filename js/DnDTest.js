@@ -86,7 +86,6 @@ function startHandler(event, AtomDragged) {
 
 	if (event.originalEvent.ctrlKey || !ATOMclosedDef($(dragged)) || $(dragged).is('#tavolozza>*')) {
 		let $validTgT = validTargetsFromOpened($(dragged));
-		$validTgT.addClass("target-opened");
 		$validTgT.toArray().forEach(function(el) {
 			el.setAttribute('target', 'opened')
 		});
@@ -94,10 +93,8 @@ function startHandler(event, AtomDragged) {
 	}
 
 	if (ATOMclosedDef($(dragged)) && event.from.classList.contains('ol_role')) {
-		// if closed ordered list the not a good target
+		// if closed ordered list then not a good target
 		event.from.setAttribute('target', '');
-		//not a good target
-		event.from.classList.remove("target-opened");
 		//let sortable = Sortable.get(event.from)
 		thisSortable = Sortable.get(event.from);
 		thisSortable.option('sort', false);
