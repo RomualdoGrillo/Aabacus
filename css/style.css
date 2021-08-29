@@ -418,7 +418,12 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 	cursor: url(../images/distributeDown.svg), auto;
 }
 
-
+body[tool=copy] *{
+	cursor: copy;
+}
+body[tool=magic] *{
+	cursor: url(../images/smilingblob.png), auto;
+}
 /*.hover[target=distributive], .hover[target=distributiveDnD] *{ 
     cursor: url(../images/distributeDown.svg), auto;
 }*/

@@ -41,6 +41,8 @@ $(document).on('touchend', cleanupDnD);//not tested
 $(document).on('keydown', function(e) {
 	var keyPressed = keyToCharacter(e.which).toLowerCase();
 	console.log('key pressed:' + keyPressed + ' code: ' + e.which)
+	//cursor appearence
+	changeTool(e);
 	//ctrl+a 
 	if (e.which == 16 || e.which == 17) {//console.log("filter ctrl and Maiusc if alone")
 	} else if (e.ctrlKey && (keyPressed === 'a')) {
@@ -131,6 +133,11 @@ $(document).on('keydown', function(e) {
 		PActxConclude(PActx)
 	}
 });
+$(document).on('keyup', function(e) {
+	changeTool(e);
+	console.log('key up:' );
+	console.log( e)
+})
 
 //************  Create! button **************
 $('#create-link').click(function() {
@@ -497,4 +504,15 @@ function PActxVisualize(PActx) {
 
 function removeVisualization() {
 	$('.visualization').remove()
+}
+
+
+
+function changeTool(e){
+	let tool;
+    if(e.ctrlKey){tool = 'copy'}
+	else if(e.altKey){tool = 'magic'}
+	else{tool = '' }
+	//todo:update tool in status
+	$('body').attr('tool',tool);
 }
