@@ -422,7 +422,7 @@ body[tool=copy] *{
 	cursor: copy;
 }
 body[tool=magic] *{
-	cursor: url(../images/smilingblob.png), auto;
+	cursor: url(../images/shirt.png), auto;
 }
 /*.hover[target=distributive], .hover[target=distributiveDnD] *{ 
     cursor: url(../images/distributeDown.svg), auto;
