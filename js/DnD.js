@@ -36,7 +36,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		//console.log($atomTarget.parent()[0]);
 		//make targets sortable
 	*/
-	if (GLBDnD.toolWhenMousedown =='copy' || !ATOMclosedDef($(event.target)) || $(event.target).is('#tavolozza>*')) {
+	else if(GLBDnD.toolWhenMousedown =='copy' || !ATOMclosedDef($(event.target)) || $(event.target).is('#tavolozza>*')) {
 		//*********from opened****************
 		if (ATOMclosedDef($(event.target))) {
 			$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
@@ -49,47 +49,33 @@ function MakeSortableAndInjectMouseDown(event) {
 			//add tela as target
 			$validTgT = $validTgT.add('#telaRole');
 		}
-		makeTargetsSortableRolesOrAtoms($validTgT.toArray(),'opened');
-		/*
 		$validTgT.toArray().forEach(function(el) {
 			el.setAttribute('target', 'opened')
 		});
 		makeSortableMouseDown($validTgT.toArray(), true);
-		}
-		*/
-		if (ATOMclosedDef($atomTarget) && !$atomTarget.is('#tavolozza>*')) {
-			//create targets to apply properties
-			let i = 0
-			if (checkIfFoundation()) {//only if tag foundation is present in tela 
-
-				while (propertiesDnD[i]) {
-					let classname = 'target-' + propertiesDnD[i].name
-					let targets = propertiesDnD[i].findTgt($atomTarget);
-					let j = 0;
-					while (targets[j]) {
-						targets[j].setAttribute('target', propertiesDnD[i].name);
-						if (targets[j].matches('.ul_role')) {
-							//target is a role: for example associative property	
-							makeSortableMouseDown([targets[j]])
-						} else {
-							//target is not a role: for example in replacement it is an atom 
-							let tgt = $('<div class="tgt"></div>')[0]
-							targets[j].append(tgt);
-							makeSortableMouseDown([tgt])
-						}
-						j++;
-					}
-					i++
-				}
-
-			}
-		}
-		//make source sortable
-		let sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);
-		$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
-		let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]
-		fromSortable._onTapStart(event);
 	}
+	else{
+	//******** apply custom propeties listed in propertiesDnD[i] ***************
+		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
+		if (!$atomTarget.length || !$atomTarget.parent()){return }//precondition
+		let i = 0
+		if (checkIfFoundation()) {//only if tag foundation is present in tela 
+
+			while (propertiesDnD[i]) {
+				let classname = 'target-' + propertiesDnD[i].name
+				let targets = propertiesDnD[i].findTgt($atomTarget);
+				makeTargetsSortableRolesOrAtoms(targets,propertiesDnD[i].name)
+				i++
+			}
+	
+		}
+	}
+		
+		//make source sortable
+	let sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);
+	$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
+	let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]
+	fromSortable._onTapStart(event);
 }
 
 function startHandlerMouseDown(event, AtomDragged) {
