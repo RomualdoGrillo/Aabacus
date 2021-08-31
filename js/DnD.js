@@ -6,13 +6,26 @@ let GLBDnD = {toolWhenMousedown:""}
 
 
 function MakeSortableAndInjectMouseDown(event) {
-	GLBDnD.toolWhenMousedown=GLBtool;
+	/********cleanup*******/
 	if (debugMode) {//that's just for debug mode, in normal mode targets are clened on mouseup
 		cleanupDnD()
 	}
-	
+
 	let $atomTarget
-	if (ATOMclosedDef($(event.target))) {
+	GLBDnD.toolWhenMousedown=GLBtool;
+	if(GLBDnD.toolWhenMousedown='autoAdapt'){
+		//********* autoAdapt ****************
+  		if( ATOMclosedDef($(event.target)) ){
+			$atomTarget = $(event.target).closest('[title^="s"]');
+			let $validTgT = validCandidatesForPatternDrop($atomTarget);
+			makeTargetsSortableRolesOrAtoms($validTgT.toArray(),'dragPatternMatch');
+		}
+		else{
+			//no forall property
+		}
+	}
+	/*
+	else if (ATOMclosedDef($(event.target))) {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
 	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
@@ -22,18 +35,24 @@ function MakeSortableAndInjectMouseDown(event) {
 		//console.log('closest role from mousedown')
 		//console.log($atomTarget.parent()[0]);
 		//make targets sortable
+	*/
+	if (GLBDnD.toolWhenMousedown =='copy' || !ATOMclosedDef($(event.target)) || $(event.target).is('#tavolozza>*')) {
 		//*********from opened****************
-		if (GLBDnD.toolWhenMousedown =='copy' || !ATOMclosedDef($atomTarget) || $atomTarget.is('#tavolozza>*')) {
-			//make targets sortable
-			let $validTgT = validTargetsFromOpened($atomTarget);
-			if ($atomTarget.is('#tavolozza>*')) {
-				//add tela as target
-				$validTgT = $validTgT.add('#telaRole');
-			}
-			$validTgT.toArray().forEach(function(el) {
-				el.setAttribute('target', 'opened')
-			});
-			makeSortableMouseDown($validTgT.toArray(), true);
+		if (ATOMclosedDef($(event.target))) {
+			$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
+		} else {
+			$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
+		}	
+		//make targets sortable
+		let $validTgT = validTargetsFromOpened($atomTarget);
+		if ($atomTarget.is('#tavolozza>*')) {
+			//add tela as target
+			$validTgT = $validTgT.add('#telaRole');
+		}
+		$validTgT.toArray().forEach(function(el) {
+			el.setAttribute('target', 'opened')
+		});
+		makeSortableMouseDown($validTgT.toArray(), true);
 		}
 		if (ATOMclosedDef($atomTarget) && !$atomTarget.is('#tavolozza>*')) {
 			//create targets to apply properties

@@ -896,6 +896,21 @@ function validRedundant(mouseDownNode){
 	return valids
 }
 
+function validCandidatesForPatternDrop($ATOMdragged){
+	var valids = $('#telaRole [data-atom]:visible').filter(function( index ) {
+		//*****valid?***********
+		var result =(
+			//datatype is compatible
+			typeOk($ATOMdragged,$(this))
+			&&
+			ATOMfrozenDef($(this)).length == 0
+			)
+		return result
+	})
+	return valids//.not($ATOMdragged.parent())
+}
+
+
 function removeDropped($dragged,$target){
 	var PActx = newPActx();
 	var $parent = ATOMparent($target)
