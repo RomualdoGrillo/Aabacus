@@ -103,7 +103,7 @@ function startHandlerMouseDown(event, AtomDragged) {
 }
 
 function onAdd(event) {
-	console.log('onAdd')
+	//console.log('end!')
 	//replacing sortablejs defaul clone with myClone (removed id, extends ATOM etc..)
 	//item stays in place myclone dropped in new place
 	event.item.classList.remove('showAsPlaceholder');
@@ -115,7 +115,7 @@ function onAdd(event) {
 	event.clone.replaceWith(event.item)
 	//questo è l'elemento che rimane nella posizione di partenza
 	let dropped = myClone
-	//move or clone
+	//*********** move or clone
 	if (event.to.getAttribute('target') == 'opened') {
 		if (event.to.matches('#telaRole')) {
 			returnTargetWrappedIfNeeded($('#telaRole'), $(dropped));
@@ -127,7 +127,14 @@ function onAdd(event) {
 			$(event.item).remove();
 			// if not cloning, clone was useful to visualize the starting point 	
 		}
-	}//apply property
+	}
+		
+
+
+
+
+
+	//*********** apply property
 	else {
 		let target
 		let adHocTgt = event.to.classList.contains('tgt')
@@ -140,22 +147,36 @@ function onAdd(event) {
 		}
 		let targetProperty = target.getAttribute('target');
 		console.log(' ------------> found target ' + targetProperty);
-		let property = propertiesDnD.find(function(el) {
-			return el.name == targetProperty
-		});
-		if (property) {
-			let PActx = property.apply($(event.item), $(event.to.parentElement), $(dropped))
-			if (adHocTgt) {
-				(event.to).remove()
-			}
-			if (PActx) {
-				PActxConclude(PActx)
+		//*********** dragPatternMatch
+		if(targetProperty=='dragPatternMatch' ){
+           	//decide if ltr or rtl
+             let $Member = $(event.item).closest('.firstMember,.secondMember');//find closest equation
+             let direction 
+             if( $Member.is('.firstMember')){direction="ltr"}else{direction="rtl"}
+             let $prop = ATOMparent(ATOMparent($Member));        
+             let PActx=TryProp($prop,ATOMparent($(event.to)), direction)
+             PActx.msg=$prop.closest('[data-tag]').attr('data-tag')
+             PActxConclude(PActx)  
+            }
+		else{
+			let property = propertiesDnD.find(function(el) {
+				return el.name == targetProperty
+			});
+			if (property) {
+				let PActx = property.apply($(event.item), $(event.to.parentElement), $(dropped))
+				if (adHocTgt) {
+					(event.to).remove()
+				}
+				if (PActx) {
+					PActxConclude(PActx)
+				}
 			}
 		}
 	}
-	/*if (!debugMode) {//in debugMode i target sono lasciati visibili
-		clearSortableTargets()
-	}*/
+	if (!debugMode) {
+		clearTargetsMouseDown()
+	}
+	//in debugMode i target sono lasciati visibili
 	clickSound.play();
 }
 
