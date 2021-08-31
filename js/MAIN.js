@@ -512,7 +512,7 @@ function removeVisualization() {
 function changeTool(e){
 	let tool;
     if(e.ctrlKey||e.altKey){tool = 'copy'}//e.altKey is used on MACs to drag copy
-	else if(e.shiftKey){tool = 'magic'}
+	else if(e.shiftKey){tool = 'autoAdapt'}
 	else{tool = '' }
 	GLBtool = tool;//update tool in GLB
 	$('body').attr('tool',tool);//update tool as class of <body> 

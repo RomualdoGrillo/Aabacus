@@ -421,7 +421,7 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 body[tool=copy] *{
 	cursor: copy;
 }
-body[tool=magic] *{
+body[tool=autoAdapt] *{
 	cursor: url(../images/shirt.png), auto;
 }
 /*.hover[target=distributive], .hover[target=distributiveDnD] *{ 
