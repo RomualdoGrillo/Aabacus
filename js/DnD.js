@@ -49,11 +49,14 @@ function MakeSortableAndInjectMouseDown(event) {
 			//add tela as target
 			$validTgT = $validTgT.add('#telaRole');
 		}
+		makeTargetsSortableRolesOrAtoms($validTgT.toArray(),'opened');
+		/*
 		$validTgT.toArray().forEach(function(el) {
 			el.setAttribute('target', 'opened')
 		});
 		makeSortableMouseDown($validTgT.toArray(), true);
 		}
+		*/
 		if (ATOMclosedDef($atomTarget) && !$atomTarget.is('#tavolozza>*')) {
 			//create targets to apply properties
 			let i = 0
@@ -170,6 +173,23 @@ function onAdd(event) {
 	clickSound.play();
 }
 
+function makeTargetsSortableRolesOrAtoms(targetsArray,propertyName){
+	let j = 0;
+					while (targetsArray[j]) {
+						targetsArray[j].setAttribute('target', propertyName );
+						if (targetsArray[j].matches('.ul_role')) {
+							//target is a role: for example associative property   
+							makeSortableMouseDown([targetsArray[j]])
+						} else {
+							//target is not a role: for example in replacement it is an atom
+							let tgt = $('<div class="tgt"></div>')[0]
+							targetsArray[j].append(tgt);
+							makeSortableMouseDown([tgt])
+						}
+						j++;
+					}
+ }
+ 
 
 
 function makeSortableMouseDown(roles, sort) {// roles is an array containing both roles and dummy roles 
