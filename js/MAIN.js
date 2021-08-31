@@ -1,5 +1,6 @@
 //************************Init*******************************
 let GLBsettings
+let GLBtool =''
 let debugMode = false
 //debug,normal
 let tela = document.getElementById('telaRole');
@@ -510,9 +511,9 @@ function removeVisualization() {
 
 function changeTool(e){
 	let tool;
-    if(e.ctrlKey){tool = 'copy'}
-	else if(e.altKey){tool = 'magic'}
+    if(e.ctrlKey||e.altKey){tool = 'copy'}//e.altKey is used on MACs to drag copy
+	else if(e.shiftKey){tool = 'magic'}
 	else{tool = '' }
-	//todo:update tool in status
-	$('body').attr('tool',tool);
+	GLBtool = tool;//update tool in GLB
+	$('body').attr('tool',tool);//update tool as class of <body> 
 }

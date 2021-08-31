@@ -1,8 +1,16 @@
+//Passing data between DnD, write on the Drag and use data on dragStat..dragEnd
+let GLBDnD = {toolWhenMousedown:""}
+//at the moment ther's no clean whay to pass data between
+// mousedown, sortablejs onstart, sortablejs onend etc.. 
+//see discussion https://github.com/SortableJS/Sortable/issues/1196 
+
+
 function MakeSortableAndInjectMouseDown(event) {
-	if (debugMode) {//in debugMode i target sono lasciati visibili
+	GLBDnD.toolWhenMousedown=GLBtool;
+	if (debugMode) {//that's just for debug mode, in normal mode targets are clened on mouseup
 		cleanupDnD()
 	}
-	//that's just for debug mode, in normal mode targets are clened on mouseup
+	
 	let $atomTarget
 	if (ATOMclosedDef($(event.target))) {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
@@ -15,7 +23,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		//console.log($atomTarget.parent()[0]);
 		//make targets sortable
 		//*********from opened****************
-		if (event.ctrlKey || !ATOMclosedDef($atomTarget) || $atomTarget.is('#tavolozza>*')) {
+		if (GLBDnD.toolWhenMousedown =='copy' || !ATOMclosedDef($atomTarget) || $atomTarget.is('#tavolozza>*')) {
 			//make targets sortable
 			let $validTgT = validTargetsFromOpened($atomTarget);
 			if ($atomTarget.is('#tavolozza>*')) {
@@ -72,7 +80,7 @@ function startHandlerMouseDown(event, AtomDragged) {
 	//if (debugMode) {
 	//	clearTragets()
 	//}
-	if (event.originalEvent.ctrlKey || event.from.matches('#tavolozza')) {
+	if (/*event.originalEvent.ctrlKey*/GLBDnD.toolWhenMousedown =='copy' || event.from.matches('#tavolozza')) {
 		//clone!
 		event.item.classList.add('toBeCloned');
 		cloning = true

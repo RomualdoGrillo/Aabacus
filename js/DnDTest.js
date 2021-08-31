@@ -53,7 +53,7 @@ function makeSortable(sortables) {
 	}
 */
 }
-
+/*
 function startHandler(event, AtomDragged) {
 	//debug newOnStartHandler(undefined,AtomDragged) 
 	let dragged
@@ -169,10 +169,11 @@ function onEndHandler(event) {
 	else if( ATOMparent($(dropTarget)).attr('target')!="" ){//risalgo solo di un livello!!
 		parentTarget=ATOMparent($(dropTarget))[0];
 	}
-	/*
-	if(dropTarget){
-		parentTarget = dropTarget.closest('[data-atom][target]:not([target=""])')//risalgo fino a che non trovo un parent marcato
-	}*/
+
+	
+	//if(dropTarget){
+	//	parentTarget = dropTarget.closest('[data-atom][target]:not([target=""])')//risalgo fino a che non trovo un parent marcato
+	//}
 	if(dropTarget && dropTarget.matches('#telaAnd') && $('#telaRole').attr('target')== 'opened'){
 		let $newTarget = returnTargetWrappedIfNeeded($('#telaRole'),$(event.item)); 
 		if( !$newTarget.is('#telaRole') ){
@@ -224,13 +225,13 @@ function onChangeHandler(event) {
 
 //********************** overing tests ***************************************
 
-/*
 
-<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 
-<img id="drag1" src="img_logo.gif" draggable="true" ondragstart="drag(event)" width="336" height="69">
+//<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 
-*/
+//<img id="drag1" src="img_logo.gif" draggable="true" ondragstart="drag(event)" width="336" height="69">
+
+
 
 
 function addEventsForOvering(target){
@@ -287,17 +288,18 @@ function addEventsToDraggables(element){
     elementAtTouchPoint.style.backgroundColor = 'red';//qui passanno tutti gli elementi che sta sorvolando
 
     
-    /*
-    if (elementAtTouchPoint === targetElement ||
-        elementAtTouchPoint.parentNode === targetElement) {
-      targetElement.style.backgroundColor = 'red';
-    } else {
-      // Here is where you remove the styling of targetElement
-      targetElement.style.backgroundColor = '';
-    }
-    */
+    
+    //if (elementAtTouchPoint === targetElement ||
+    //    elementAtTouchPoint.parentNode === targetElement) {
+    //  targetElement.style.backgroundColor = 'red';
+    //} else {
+    //  // Here is where you remove the styling of targetElement
+    //  targetElement.style.backgroundColor = '';
+    //}
+    
   });
 
 
 
 }
+*/
