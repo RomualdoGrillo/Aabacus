@@ -16,9 +16,25 @@ function MakeSortableAndInjectMouseDown(event) {
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
 		//********* autoAdapt ****************
 		if (ATOMclosedDef($(event.target))) {
-			//$atomTarget = $(event.target).closest('[title^="s"]');
-			$atomTarget = $(event.target).closest('[data-atom=forAll]');
-			let $validTgT = validCandidatesForPatternDrop($atomTarget);
+			GLBDnD.$originalProperty = $(event.target).closest('[data-atom=forAll]');
+			if(GLBDnD.$originalProperty.length==0){return};
+			let $forallContent=GetforAllContent(GLBDnD.$originalProperty);
+			let $eqMembers=$forallContent.find('[data-atom=eq]>.firstMember,[data-atom=eq]>.secondMember');
+	        let $Member = $eqMembers.filter(function(i,e){return e.contains(event.target)})
+            if($Member.length==0){return}
+            //decide if ltr or rtl
+			$atomTarget = $Member.children().filter('[data-atom]:first');
+			let $startPointForValids = searchForMarkedInSubtree($Member,"s",'m')//"s" e' la marcatura cercata, "m" vuol dire cerca una parcatura, non un link o post
+            if($startPointForValids.length==0){$startPointForValids=$Member}
+			if($Member.is('.firstMember')){
+            	GLBDnD.direction='ltr'//rtl or ltr
+            }
+			else if($Member.is('.secondMember')){
+            	GLBDnD.direction='rtl'//rtl or ltr
+            }
+            else{console.log('ERROR:member not found in equation')}
+			//$atomTarget = $(event.target).closest('[data-atom=forAll]');
+			let $validTgT = validCandidatesForPatternDrop($startPointForValids);
 			makeTargetsSortableRolesOrAtoms($validTgT.toArray(), 'dragPatternMatch');
 		}
 		else {
@@ -61,7 +77,13 @@ function MakeSortableAndInjectMouseDown(event) {
 	}
 	if ($atomTarget && $atomTarget.length && $atomTarget[0].parentElement){//is there a valid target?(sometimes the $atomTarget is undefined sometime it is not but there is no [0] element)
 		//make source sortable
-		let sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);
+		let sort
+		if(GLBDnD.toolWhenMousedown=""){//if mode is normal
+			sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);		
+		}
+		else{//never sort in "autoAdapt" or "copy" mode
+			sort=false;
+		}
 		$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
 		let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]
 		fromSortable._onTapStart(event);
@@ -139,13 +161,10 @@ function onAdd(event) {
 		console.log(' ------------> found target ' + targetProperty);
 		//*********** dragPatternMatch
 		if (targetProperty == 'dragPatternMatch') {
-			//decide if ltr or rtl
-			let $Member = $(event.item).closest('.firstMember,.secondMember');//find closest equation
-			let direction
-			if ($Member.is('.firstMember')) { direction = "ltr" } else { direction = "rtl" }
-			let $prop = ATOMparent(ATOMparent($Member));
-			let PActx = TryProp($prop, ATOMparent($(event.to)), direction)
-			PActx.msg = $prop.closest('[data-tag]').attr('data-tag')
+			
+			
+			let PActx = TryProp(GLBDnD.$originalProperty, ATOMparent($(event.to)), GLBDnD.direction)
+			PActx.msg = GLBDnD.$originalProperty.closest('[data-tag]').attr('data-tag')
 			PActxConclude(PActx)
 		}
 		else {
