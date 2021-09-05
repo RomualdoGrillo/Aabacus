@@ -804,3 +804,11 @@ body:not(.fixBorders) #result [data-atom][data-type=num]:not(:hover)
 	grid-row-start:2;
 	justify-content:center;
 }
+
+body[tool=autoAdapt] .sortable-drag *{
+	color: rgba(1, 1, 1, 0.5)
+	/*opacity: 0.6;*/
+}
+body[tool=autoAdapt] .sortable-drag [title^="s"] *,body[tool=autoAdapt] .sortable-drag [title^="s"]{/*??? [title] does not work you need [title^="s"]*/
+	color:black;
+}

@@ -1,7 +1,7 @@
 //Passing data between DnD, write on the Drag and use data on dragStat..dragEnd
 let GLBDnD = { toolWhenMousedown: "" }
 //at the moment ther's no clean whay to pass data between
-// mousedown, sortablejs onstart, sortablejs onend etc.. 
+// mousedown, sortablejs onStart, sortablejs onEnd etc.. 
 //see discussion https://github.com/SortableJS/Sortable/issues/1196 
 
 
@@ -16,7 +16,8 @@ function MakeSortableAndInjectMouseDown(event) {
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
 		//********* autoAdapt ****************
 		if (ATOMclosedDef($(event.target))) {
-			$atomTarget = $(event.target).closest('[title^="s"]');
+			//$atomTarget = $(event.target).closest('[title^="s"]');
+			$atomTarget = $(event.target).closest('[data-atom=forAll]');
 			let $validTgT = validCandidatesForPatternDrop($atomTarget);
 			makeTargetsSortableRolesOrAtoms($validTgT.toArray(), 'dragPatternMatch');
 		}
@@ -24,18 +25,6 @@ function MakeSortableAndInjectMouseDown(event) {
 			//no forall property
 		}
 	}
-	/*
-	else if (ATOMclosedDef($(event.target))) {
-		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
-	} else {
-		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
-	}
-	//let $atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
-	if ($atomTarget.length && $atomTarget.parent()) {
-		//console.log('closest role from mousedown')
-		//console.log($atomTarget.parent()[0]);
-		//make targets sortable
-	*/
 	else if (GLBDnD.toolWhenMousedown == 'copy' || !ATOMclosedDef($(event.target)) || $(event.target).is('#tavolozza>*')) {
 		//*********from opened****************
 		if (ATOMclosedDef($(event.target))) {

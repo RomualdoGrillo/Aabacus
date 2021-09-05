@@ -867,22 +867,4 @@ function ATOMfrozenDef(Node){
 	//!! to be refined 
 	return $(Node).closest('[data-tag]')
 }
-
-function elClickedToAtomDragged(element){
-	//
-	if(GLBDnD.toolWhenMousedown="autoAdapt"){
-		ATOMfrozenDef($(event.target)).length !== 0){//also frozen
-			$atomTarget = $(event.target).closest('[title^="s"]');
-			let $validTgT = validCandidatesForPatternDrop($atomTarget);
-			makeTargetsSortableRolesOrAtoms($validTgT.toArray(),'dragPatternMatch');
-	   }
-
-	}
-	else{
-		//preselect $atomTarget, may be overwritten in "b" case
-	    $atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
-	    if (!$atomTarget.length || !$atomTarget.parent()){return }//precondition
-	    //make targets sortable
-	}
-}
 */
