@@ -42,11 +42,13 @@ $(document).on('touchend', cleanupDnD);//not tested
 $(document).on('keydown', function(e) {
 	var keyPressed = keyToCharacter(e.which).toLowerCase();
 	console.log('key pressed:' + keyPressed + ' code: ' + e.which)
-	//cursor appearence
-	changeTool(e);
+	
+	if (e.which == 16 || e.which == 17){}//console.log("filter ctrl and Maiusc if alone")
+	//TAB 
+	else if(keyPressed === '\t'){
+		changeTool();}// change tool
 	//ctrl+a 
-	if (e.which == 16 || e.which == 17) {//console.log("filter ctrl and Maiusc if alone")
-	} else if (e.ctrlKey && (keyPressed === 'a')) {
+	else if (e.ctrlKey && (keyPressed === 'a')) {
 		$('#telaRole *').removeClass('selected');
 		$('#telaRole>[data-atom]').addClass('selected');
 		// select all: all the atoms in telaRole
@@ -134,11 +136,6 @@ $(document).on('keydown', function(e) {
 		PActxConclude(PActx)
 	}
 });
-$(document).on('keyup', function(e) {
-	changeTool(e);
-	//console.log('key up:' );
-	//console.log( e)
-})
 
 //************  Create! button **************
 $('#create-link').click(function() {
@@ -507,14 +504,11 @@ function removeVisualization() {
 	$('.visualization').remove()
 }
 
-
-
-function changeTool(e){
-	let tool;
-    if(e.ctrlKey||e.altKey){tool = 'copy'}//e.altKey is used on MACs to drag copy
-	else if(e.shiftKey){tool = 'autoAdapt'}
-	else{tool = '' }
-	GLBtool = tool;//update tool in GLB
-	$('body').attr('tool',tool);//update tool as class of <body> 
+const tools = ["", "copy", "autoAdapt"];
+function changeTool(){
+	let currToolIndex = tools.indexOf(GLBtool)
+	let newToolIndex = ((currToolIndex + 1) % tools.length)// start over when the list is over
+	GLBtool = tools[newToolIndex]//update tool in GLB
+	$('body').attr('tool',GLBtool);//update tool as class of <body> 
     console.log('GLBtool<='+ GLBtool)
 }
