@@ -1,5 +1,5 @@
 //Passing data between DnD, write on the Drag and use data on dragStat..dragEnd
-let GLBDnD = {toolWhenMousedown:""}
+let GLBDnD = { toolWhenMousedown: "" }
 //at the moment ther's no clean whay to pass data between
 // mousedown, sortablejs onstart, sortablejs onend etc.. 
 //see discussion https://github.com/SortableJS/Sortable/issues/1196 
@@ -12,15 +12,15 @@ function MakeSortableAndInjectMouseDown(event) {
 	}
 
 	let $atomTarget
-	GLBDnD.toolWhenMousedown=GLBtool;
-	if(GLBDnD.toolWhenMousedown='autoAdapt'){
+	GLBDnD.toolWhenMousedown = GLBtool;
+	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
 		//********* autoAdapt ****************
-  		if( ATOMclosedDef($(event.target)) ){
+		if (ATOMclosedDef($(event.target))) {
 			$atomTarget = $(event.target).closest('[title^="s"]');
 			let $validTgT = validCandidatesForPatternDrop($atomTarget);
-			makeTargetsSortableRolesOrAtoms($validTgT.toArray(),'dragPatternMatch');
+			makeTargetsSortableRolesOrAtoms($validTgT.toArray(), 'dragPatternMatch');
 		}
-		else{
+		else {
 			//no forall property
 		}
 	}
@@ -36,46 +36,47 @@ function MakeSortableAndInjectMouseDown(event) {
 		//console.log($atomTarget.parent()[0]);
 		//make targets sortable
 	*/
-	else if(GLBDnD.toolWhenMousedown =='copy' || !ATOMclosedDef($(event.target)) || $(event.target).is('#tavolozza>*')) {
+	else if (GLBDnD.toolWhenMousedown == 'copy' || !ATOMclosedDef($(event.target)) || $(event.target).is('#tavolozza>*')) {
 		//*********from opened****************
 		if (ATOMclosedDef($(event.target))) {
 			$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
 		} else {
 			$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
-		}	
+		}
 		//make targets sortable
 		let $validTgT = validTargetsFromOpened($atomTarget);
 		if ($atomTarget.is('#tavolozza>*')) {
 			//add tela as target
 			$validTgT = $validTgT.add('#telaRole');
 		}
-		$validTgT.toArray().forEach(function(el) {
+		$validTgT.toArray().forEach(function (el) {
 			el.setAttribute('target', 'opened')
 		});
 		makeSortableMouseDown($validTgT.toArray(), true);
 	}
-	else{
-	//******** apply custom propeties listed in propertiesDnD[i] ***************
+	else {
+		//******** apply custom propeties listed in propertiesDnD[i] ***************
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
-		if (!$atomTarget.length || !$atomTarget.parent()){return }//precondition
+		if (!$atomTarget.length || !$atomTarget[0].parentElement) { return }//precondition
 		let i = 0
 		if (checkIfFoundation()) {//only if tag foundation is present in tela 
 
 			while (propertiesDnD[i]) {
 				let classname = 'target-' + propertiesDnD[i].name
 				let targets = propertiesDnD[i].findTgt($atomTarget);
-				makeTargetsSortableRolesOrAtoms(targets,propertiesDnD[i].name)
+				makeTargetsSortableRolesOrAtoms(targets, propertiesDnD[i].name)
 				i++
 			}
-	
+
 		}
 	}
-		
+	if ($atomTarget && $atomTarget.length && $atomTarget[0].parentElement){//is there a valid target?(sometimes the $atomTarget is undefined sometime it is not but there is no [0] element)
 		//make source sortable
-	let sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);
-	$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
-	let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]
-	fromSortable._onTapStart(event);
+		let sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);
+		$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
+		let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]
+		fromSortable._onTapStart(event);
+	}
 }
 
 function startHandlerMouseDown(event, AtomDragged) {
@@ -88,7 +89,7 @@ function startHandlerMouseDown(event, AtomDragged) {
 	//if (debugMode) {
 	//	clearTragets()
 	//}
-	if (/*event.originalEvent.ctrlKey*/GLBDnD.toolWhenMousedown =='copy' || event.from.matches('#tavolozza')) {
+	if (/*event.originalEvent.ctrlKey*/GLBDnD.toolWhenMousedown == 'copy' || event.from.matches('#tavolozza')) {
 		//clone!
 		event.item.classList.add('toBeCloned');
 		cloning = true
@@ -128,7 +129,7 @@ function onAdd(event) {
 			// if not cloning, clone was useful to visualize the starting point 	
 		}
 	}
-		
+
 
 
 
@@ -148,18 +149,18 @@ function onAdd(event) {
 		let targetProperty = target.getAttribute('target');
 		console.log(' ------------> found target ' + targetProperty);
 		//*********** dragPatternMatch
-		if(targetProperty=='dragPatternMatch' ){
-           	//decide if ltr or rtl
-             let $Member = $(event.item).closest('.firstMember,.secondMember');//find closest equation
-             let direction 
-             if( $Member.is('.firstMember')){direction="ltr"}else{direction="rtl"}
-             let $prop = ATOMparent(ATOMparent($Member));        
-             let PActx=TryProp($prop,ATOMparent($(event.to)), direction)
-             PActx.msg=$prop.closest('[data-tag]').attr('data-tag')
-             PActxConclude(PActx)  
-            }
-		else{
-			let property = propertiesDnD.find(function(el) {
+		if (targetProperty == 'dragPatternMatch') {
+			//decide if ltr or rtl
+			let $Member = $(event.item).closest('.firstMember,.secondMember');//find closest equation
+			let direction
+			if ($Member.is('.firstMember')) { direction = "ltr" } else { direction = "rtl" }
+			let $prop = ATOMparent(ATOMparent($Member));
+			let PActx = TryProp($prop, ATOMparent($(event.to)), direction)
+			PActx.msg = $prop.closest('[data-tag]').attr('data-tag')
+			PActxConclude(PActx)
+		}
+		else {
+			let property = propertiesDnD.find(function (el) {
 				return el.name == targetProperty
 			});
 			if (property) {
@@ -174,29 +175,30 @@ function onAdd(event) {
 		}
 	}
 	if (!debugMode) {
-		clearTargetsMouseDown()
+		//clearSortableTargets();
+		//clearTargetsMouseDown()
 	}
 	//in debugMode i target sono lasciati visibili
 	clickSound.play();
 }
 
-function makeTargetsSortableRolesOrAtoms(targetsArray,propertyName){
+function makeTargetsSortableRolesOrAtoms(targetsArray, propertyName) {
 	let j = 0;
-					while (targetsArray[j]) {
-						targetsArray[j].setAttribute('target', propertyName );
-						if (targetsArray[j].matches('.ul_role')) {
-							//target is a role: for example associative property   
-							makeSortableMouseDown([targetsArray[j]])
-						} else {
-							//target is not a role: for example in replacement it is an atom
-							let tgt = $('<div class="tgt"></div>')[0]
-							targetsArray[j].append(tgt);
-							makeSortableMouseDown([tgt])
-						}
-						j++;
-					}
- }
- 
+	while (targetsArray[j]) {
+		targetsArray[j].setAttribute('target', propertyName);
+		if (targetsArray[j].matches('.ul_role')) {
+			//target is a role: for example associative property   
+			makeSortableMouseDown([targetsArray[j]])
+		} else {
+			//target is not a role: for example in replacement it is an atom
+			let tgt = $('<div class="tgt"></div>')[0]
+			targetsArray[j].append(tgt);
+			makeSortableMouseDown([tgt])
+		}
+		j++;
+	}
+}
+
 
 
 function makeSortableMouseDown(roles, sort) {// roles is an array containing both roles and dummy roles 
@@ -207,7 +209,7 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 			sortables[i].option('disabled', false);
 			sortables[i].option('sort', sort);
 		} else {//else create a Sortable
-			sortables[i] = new Sortable(roles[i],{
+			sortables[i] = new Sortable(roles[i], {
 				group: {
 					name: 'shared',
 					pull: 'clone',
@@ -225,7 +227,7 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 	}
 	return sortables
 }
-function sortEnd(){
+function sortEnd() {
 	console.log('sortEnd');
 }
 
@@ -250,7 +252,7 @@ function clearSortableTargets() {
 	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
 	while (tgts[i]) {
 		let sortable = Sortable.get(tgts[i]);
-		if(sortable){sortable.destroy()};
+		if (sortable) { sortable.destroy() };
 		/*if (sortable) {
 			sortable.option('disabled', true);
 		}*/
@@ -263,13 +265,13 @@ function clearSortableTargets() {
 		sortableRoles[i].removeAttribute("target");
 		sortableRoles[i].removeAttribute("from");
 		let sortable = Sortable.get(sortableRoles[i]);
-		
+
 		//if(sortable){sortable.destroy()};
-		
+
 		if (sortable) {
 			sortable.option('disabled', true);
 		}
-		
+
 		i++
 	}
 

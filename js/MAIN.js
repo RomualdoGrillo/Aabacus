@@ -136,8 +136,8 @@ $(document).on('keydown', function(e) {
 });
 $(document).on('keyup', function(e) {
 	changeTool(e);
-	console.log('key up:' );
-	console.log( e)
+	//console.log('key up:' );
+	//console.log( e)
 })
 
 //************  Create! button **************
@@ -516,4 +516,5 @@ function changeTool(e){
 	else{tool = '' }
 	GLBtool = tool;//update tool in GLB
 	$('body').attr('tool',tool);//update tool as class of <body> 
+    console.log('GLBtool<='+ GLBtool)
 }
