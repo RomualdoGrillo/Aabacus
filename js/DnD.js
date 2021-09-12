@@ -78,7 +78,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	if ($atomTarget && $atomTarget.length && $atomTarget[0].parentElement){//is there a valid target?(sometimes the $atomTarget is undefined sometime it is not but there is no [0] element)
 		//make source sortable
 		let sort
-		if(GLBDnD.toolWhenMousedown=""){//if mode is normal
+		if(GLBDnD.toolWhenMousedown==""){//if mode is normal
 			sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);		
 		}
 		else{//never sort in "autoAdapt" or "copy" mode
