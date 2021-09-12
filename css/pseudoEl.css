@@ -1,15 +1,10 @@
-.tgt>*{
-	background-color:grey!important;
-	/*visibility:hidden;*/
-}
-/*.tgt*::after{
-	content: "ooo";
-	position: absolute;
-	pointer-events: none;
-	top:50%;
-	z-index:2000
-}*/
+/*
+::before is used for infix notation 
+:: after is used for all the tags
+In this way infix and tag can exist at the same time
+*/
 
+/***********   Infix Notation   *********/
 
 
 [data-atom=plus]>[class$="role"]>[data-atom]:not(:first-of-type),
@@ -73,9 +68,6 @@ body.hidePlus [data-atom=plus]>.[class$="role"]>[data-atom]::before{
 using ::before and ::after for prefix and postfix notation does not offer advantages
 disadvantage: mixfix notation needs a different approach
 disadvantage: building new prototypes is less intuitive
-[data-atom="and"]:not(#telaAnd){
-	padding-left:20px;
-}
 
 
 [data-atom="and"]:not(#telaAnd):not(.sortable-ghost)::before{
@@ -101,14 +93,17 @@ disadvantage: building new prototypes is less intuitive
 	background-repeat: no-repeat;
 }
 */
-[data-tag]:not(.minimized)::before{
+
+/***********   Tags   ***********/
+
+[data-tag]:not(.minimized)::after{
 	position: absolute;
 	bottom: 95%;
 	right: 60%;
 	box-shadow: 2px 3px 5px 0px grey;
 }
 
-[data-tag]::before{
+[data-tag]::after{
 	content:attr(data-tag);
 	z-index: 1;
 	background-image: inherit;
@@ -123,7 +118,7 @@ disadvantage: building new prototypes is less intuitive
 	border-radius: 8px;
 	border-bottom-right-radius: 0px;
 }
-[data-tag][data-tagimg]::before{
+[data-tag][data-tagimg]::after{
 	padding-left: 45px;
 }
 
@@ -143,26 +138,13 @@ disadvantage: building new prototypes is less intuitive
 	align-self: center!important;
 }
 
-.minimized[data-tag]:not([data-tagimg])::before{
+.minimized[data-tag]:not([data-tagimg])::after{
 	background:white;
 	padding-left:0px;
 }
-.minimized[data-tag][data-tagimg]::before{
+.minimized[data-tag][data-tagimg]::after{
 	font-size:0px;
 }
 [data-atom="and"].medium>.ul_role{
 	padding:2px!important;
-}
-
-/*[data-atom][target]::after,*/ .tgt{
-	content: "";
-	position:absolute;
-	width: 30%;
-	height: 30%;
-	z-index: 1;
-	justify-content: center;
-}
-.debug .tgt{
-	border:1px solid blueviolet;
-	background-color: violet;
 }

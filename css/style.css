@@ -814,3 +814,31 @@ body[tool=autoAdapt] .sortable-drag [title^="s"] *,body[tool=autoAdapt] .sortabl
 	color:black;
 }
     
+/***********   tgt DUMMY element   *********/
+/* .tgt DIVs are dynamically added to act as sortable targets
+
+/*[data-atom][target]::after,*/ .tgt{
+	content: "";
+	position:absolute;
+	width: 30%;
+	height: 30%;
+	z-index: 1;
+	justify-content: center;
+}
+
+.debug .tgt{
+	border:1px solid blueviolet;
+	background-color: violet;
+}
+
+.tgt>*{/*target is not a pseudo element*/
+	background-color:grey!important;
+	/*visibility:hidden;*/
+}
+/*.tgt*::after{
+	content: "ooo";
+	position: absolute;
+	pointer-events: none;
+	top:50%;
+	z-index:2000
+}*/
