@@ -145,6 +145,7 @@ function ATOMCreateDefinition(startNode){
 	var $parList = $definens.find(".unselected")
 	
 	if($parList.length>0){
+		let paramDefNames = ['x','y','z','t','k','p','q','a','b','c','d','e','f','g','h','i','l','m','n','o','q','r','s','u','v','z'];
 		$newforAll = ATOMclone(prototypeSearch('forall'));//clona for each
 		ATOMextend($newforAll);
 		$('#telaRole').append($newforAll);//todo:scegliere dove deve essere visibile la nuova definizione
@@ -153,7 +154,8 @@ function ATOMCreateDefinition(startNode){
 			var node=this;
 			var thisType=$(node).attr('data-type')
 			var $newNode=ATOMclone(prototypeSearch('ci')).attr('data-type',thisType)//data() e' un casino
-			$newNode.append("p" + i)
+			attachEventsAndExtend($newNode);
+			$newNode[0].ATOM_setName(paramDefNames[i]);
 			$(this).replaceWith($newNode)
 			var $Clone1=ATOMclone($newNode)//clone da inserire in definendum
 			var $Clone2=ATOMclone($newNode)//clone da inserire in forAll header
