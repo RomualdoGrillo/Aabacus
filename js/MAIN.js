@@ -332,7 +332,7 @@ function dblclickHandler(event) {
 	else if (atomClass === 'deftrue') {
 		$atomDblclicked.toggleClass('expanded');
 	} else if (atomClass != 'ci' && atomClass != 'cn' && atomClass != 'plus') {
-		$atomDblclicked.toggleClass('minimized');
+		$atomDblclicked.toggleClass('collapsed');
 		//??todo: uniformare con expanded
 	}//opened
 	//******** dblclick on ci ***********

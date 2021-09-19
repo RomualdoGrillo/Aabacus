@@ -554,7 +554,7 @@ body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover){
 border-color:transparent;
 }
 
-.showPar .brackets[data-atom]:not(.medium):not(.minimized) {
+.showPar .brackets[data-atom]:not(.medium):not(.collapsed) {
 
 	border-left-color: black!important;
 	border-right-color: black!important;
@@ -635,7 +635,7 @@ border-right-style: solid;
 #telaRole [data-atom="deftrue"]:not(.expanded){
 	border-bottom-right-radius: 0px!important;
 }
-#telaRole .minimized{
+#telaRole .collapsed{
 	align-self: stretch;
 	min-height: 3px;
 	background-image: url(../images/three-dots.svg);
@@ -654,7 +654,7 @@ border-right-style: solid;
 
 
 
-#telaRole [data-atom=or]>.ul_role>.minimized{
+#telaRole [data-atom=or]>.ul_role>.collapsed{
 	min-width:3px;
 	background-image: url(../images/three-dots-vert.svg);
 	background-position: center center;
@@ -697,11 +697,11 @@ border-right-style: solid;
 	border-radius:var(--div-smallradius)!important;
 }
 
-#telaRole [data-atom].minimized>*{
+#telaRole [data-atom].collapsed>*{
 	display:none!important;
 }
 /*
-#telaRole [data-atom].minimized>*:not(.ul_role){
+#telaRole [data-atom].collapsed>*:not(.ul_role){
 	display:none!important;
 }
 */

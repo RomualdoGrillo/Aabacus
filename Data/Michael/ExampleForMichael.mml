@@ -6,7 +6,7 @@
 			<eventtoaction>
 			</eventtoaction>
 			<ci type="bool">m</ci>
-			<apply minimized="True" type="obj">
+			<apply collapsed="True" type="obj">
 				<callfunction>
 				</callfunction>
 				<ci type="bool">eqPlusMove</ci>

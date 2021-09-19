@@ -1,5 +1,5 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply medium="True" minimized="True" type="bool">
+	<apply medium="True" collapsed="True" type="bool">
 		<and>
 		</and>
 		
@@ -39,7 +39,7 @@
 			<ci type="num">b</ci>
 		</apply>
 		
-		<apply type="bool" minimized="True" data-tag='eqPlusMove' data-tagimg='../Aabacus/images/properties/distributive.png'>
+		<apply type="bool" collapsed="True" data-tag='eqPlusMove' data-tagimg='../Aabacus/images/properties/distributive.png'>
 			<forall>
 			</forall>
 			<bvar>

@@ -230,7 +230,7 @@ function swapMembersClone($origProp,mode){
     var $equation
     if( propCdsClass === "forAll" ){
         res.$newProp.addClass('waiting'); //metti il clone in stato waiting
-        res.$newProp.removeClass('minimized medium');
+        res.$newProp.removeClass('collapsed medium');
         $equation = GetforAllContent(res.$newProp).children();
     }
     else{

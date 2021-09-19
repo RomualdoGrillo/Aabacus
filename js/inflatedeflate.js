@@ -85,7 +85,7 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 				dataTagImg = wrapUnwrapUrlString( $(node)[0].style.backgroundImage , true );
 			}
 		}
-		isMinimized = $(node).hasClass('minimized')
+		isMinimized = $(node).hasClass('collapsed')
 		isMedium = $(node).hasClass('medium')
 		if (!neglectSign) {//signsAsClasses($(node),"SignsAsClasses_to_MinusOp") // converti   	
 		}
@@ -114,7 +114,7 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 			$newNode.append($htmlDivChildren);
 		}
 		if (isMinimized) {
-			$newNode.attr("minimized", "True")
+			$newNode.attr("collapsed", "True")
 		}
 		if (isMedium) {
 			$newNode.attr("medium", "True")
@@ -138,7 +138,7 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 	} else if (from_to === "mml_aab") {
 		//inflate: =first child tag; if tag==csymbol or ci or cn allora considera il contenuto
 		dataType = $(node).attr('type');
-		isMinimized = ($(node).attr('minimized') == "True");
+		isMinimized = ($(node).attr('collapsed') == "True");
 		isMedium = ($(node).attr('medium') == "True");
 		title = $(node).attr('title');
 		dataTag = $(node).attr('data-tag');
@@ -210,7 +210,7 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 			// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
 		}
 		if (isMinimized) {
-			$newNode.addClass("minimized")
+			$newNode.addClass("collapsed")
 		}
 		if (isMedium) {
 			$newNode.addClass("medium")
