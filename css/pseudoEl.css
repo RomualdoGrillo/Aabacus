@@ -103,8 +103,10 @@ disadvantage: building new prototypes is less intuitive
 	box-shadow: 2px 3px 5px 0px grey;
 }
 
-[data-tag]::after{
-	content:attr(data-tag);
+/*[data-tag]::after{
+	content:attr(data-tag);*/
+[data-tag]::after,[title]:hover::after{
+	content:attr(data-tag)attr(title);
 	z-index: 1;
 	background-image: inherit;
 	background-color: white;
@@ -117,6 +119,10 @@ disadvantage: building new prototypes is less intuitive
 	border: 1px solid gray;
 	border-radius: 8px;
 	border-bottom-right-radius: 0px;
+	/*position: absolute;
+	bottom: 95%;
+	right: 60%;
+	box-shadow: 2px 3px 5px 0px grey;*/
 }
 [data-tag][data-tagimg]::after{
 	padding-left: 45px;
