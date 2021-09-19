@@ -158,9 +158,16 @@ disadvantage: building new prototypes is less intuitive
 
 .selected::after {
 	pointer-events: none;
-		content: '. ';
-		background-color: #7b032aad;
-		position: absolute;
-		width: 100%;
-		height: 100%;
+	content: "";
+    /*
+    CSS 2.1; will remove quotes if supported, and override the above.
+    User-agents that don't understand "none" should ignore it, and
+    keep the above value. This is here for future compatibility,
+    though I'm not 100% convinced that it's a good idea...
+    */
+    content: none;
+	background-color: #7b032aad;
+	position: absolute;
+	width: 100%;
+	height: 100%;
 }
