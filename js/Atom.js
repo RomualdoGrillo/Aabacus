@@ -145,7 +145,7 @@ function ATOMCreateDefinition(startNode){
 	var $parList = $definens.find(".unselected")
 	
 	if($parList.length>0){
-		$newforAll = ATOMclone(prototypeSearch('forAll'));//clona for each
+		$newforAll = ATOMclone(prototypeSearch('forall'));//clona for each
 		ATOMextend($newforAll);
 		$('#telaRole').append($newforAll);//todo:scegliere dove deve essere visibile la nuova definizione
 		GetforAllContent($newforAll).append($newDef);
