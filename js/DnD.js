@@ -10,8 +10,15 @@ function MakeSortableAndInjectMouseDown(event) {
 	if (debugMode) {//that's just for debug mode, in normal mode targets are clened on mouseup
 		cleanupDnD()
 	}
-
+	/******** from targrt to Atom target *************/
+	
 	let $atomTarget
+	if (ATOMclosedDef($(event.target))) {
+		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
+	} else {
+		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
+	}
+	
 	GLBDnD.toolWhenMousedown = GLBtool;
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
 		//********* autoAdapt ****************
@@ -25,7 +32,7 @@ function MakeSortableAndInjectMouseDown(event) {
             //decide if ltr or rtl
 			$atomTarget = $Member.children().filter('[data-atom]:first');
 			let $startPointForValids = searchForMarkedInSubtree($Member,"s",'m')//"s" e' la marcatura cercata, "m" vuol dire cerca una parcatura, non un link o post
-            if($startPointForValids.length==0){$startPointForValids=$Member}
+            if($startPointForValids.length==0){$startPointForValids=$atomTarget}
 			if($Member.is('.firstMember')){
             	GLBDnD.direction='ltr'//rtl or ltr
             }
@@ -43,11 +50,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	}
 	else if (GLBDnD.toolWhenMousedown == 'copy' || !ATOMclosedDef($(event.target)) || $(event.target).is('#tavolozza>*')) {
 		//*********from opened****************
-		if (ATOMclosedDef($(event.target))) {
-			$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
-		} else {
-			$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
-		}
+		
 		//make targets sortable
 		let $validTgT = validTargetsFromOpened($atomTarget);
 		if ($atomTarget.is('#tavolozza>*')) {
@@ -61,7 +64,6 @@ function MakeSortableAndInjectMouseDown(event) {
 	}
 	else {
 		//******** apply custom propeties listed in propertiesDnD[i] ***************
-		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
 		if (!$atomTarget.length || !$atomTarget[0].parentElement) { return }//precondition
 		let i = 0
 		if (checkIfFoundation()) {//only if tag foundation is present in tela 
