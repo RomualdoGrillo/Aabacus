@@ -154,7 +154,7 @@ function ATOMCreateDefinition(startNode){
 			var node=this;
 			var thisType=$(node).attr('data-type')
 			var $newNode=ATOMclone(prototypeSearch('ci')).attr('data-type',thisType)//data() e' un casino
-			attachEventsAndExtend($newNode);
+			ExtendAndInitializeTree($newNode);
 			$newNode[0].ATOM_setName(paramDefNames[i]);
 			$(this).replaceWith($newNode)
 			var $Clone1=ATOMclone($newNode)//clone da inserire in definendum
@@ -169,7 +169,7 @@ function ATOMCreateDefinition(startNode){
 
 	//*******************inserisci la nuova definizione
 	$newDef.find('*').removeClass('selected').removeClass('unselected');//clear selected unselected
-	attachEventsAndExtend($newforAll);
+	ExtendAndInitializeTree($newforAll);
 	return startNode
 }
 
@@ -185,7 +185,7 @@ function ATOMReplace($replaced,$replacer){
 	}
 	$replaced.replaceWith($clone)
 	$clone.css({display:""});
-	attachEventsAndExtend($clone)	
+	ExtendAndInitializeTree($clone)	
 }
  
 function ATOMLinkReplace($link,$replaced){
@@ -205,7 +205,7 @@ function ATOMReplaceLink($replaced,$link){
 	if(inverse){$replacer.toggleClass('inverse')};
 	//sostituisci
 	$replaced.replaceWith($replacer)
-	attachEventsAndExtend($replacer)
+	ExtendAndInitializeTree($replacer)
 }
 
 // ottenere HTMLElement: d=Object.getPrototypeOf( una div o altro );h=Object.getPrototypeOf(d)
@@ -231,7 +231,7 @@ function ATOMCreateSpaceForDeduction($hypothesis){
 	}
 	else{// create an 'and'
 		var newAnd = ATOMclone(prototypeSearch("and"))
-		attachEventsAndExtend(newAnd)
+		ExtendAndInitializeTree(newAnd)
 		$hypothesis.parent().append(newAnd)
 		spaceForDeduction = newAnd.find('>[class*="_role"]')
 		spaceForDeduction.append($hypothesis)//
@@ -499,7 +499,7 @@ function encaseWithOperation($ATOMelement,op){
 	//create external operation to $ATOMelement, $ATOMelement is 1 element or a list of adjacent elements 
 	var $prototype = prototypeSearch(op);
 	var $clone = ATOMclone($prototype)
-	attachEventsAndExtend($clone);// dai vita a clone ed al suo albero
+	ExtendAndInitializeTree($clone);// dai vita a clone ed al suo albero
 	//ATOMparent($ATOMelement).replaceWith($clone);//replace provoca la distruzione degli eventi nel replaced
 	$clone.insertBefore($ATOMelement.eq(0));
 	$ATOMelement.appendTo($clone[0].ATOM_getRoles());
@@ -589,7 +589,7 @@ function createForThis($forall,$placeHolder){
 //Modus Ponens deduce a special case from a forall
 	var $clone= ATOMclone($forall);
 	exclusiveFocus = $clone.addClass('exclusiveFocus'); //metti il clone in stato exclusiveFocus
-	attachEventsAndExtend($clone);
+	ExtendAndInitializeTree($clone);
 	//****inserit the new proposition*****
 	if( ATOMparent($forall).attr('data-atom') == 'and'){
 		$clone.insertAfter($forall);
@@ -642,13 +642,13 @@ function ValToAtoms(partial){
 	var $target
 	if( partial.sign === -1 ){//segno meno?
 		$clone = ATOMclone( prototypeSearch("minus") )
-		attachEventsAndExtend($clone);
+		ExtendAndInitializeTree($clone);
 		$newAtom = $clone
 		$target = $clone[0].ATOM_getRoles() 
 	}
 	if( partial.exp === -1 ){//inverso?
 		$clone = ATOMclone( prototypeSearch("m_inverse") )
-		attachEventsAndExtend($clone);
+		ExtendAndInitializeTree($clone);
 		if($target !== undefined){
 			$target.append($clone)
 		}
@@ -658,7 +658,7 @@ function ValToAtoms(partial){
 		$target = $clone[0].ATOM_getRoles()
 	}
 	$clone = ATOMclone( prototypeSearch("cn","num") )
-	attachEventsAndExtend($clone);
+	ExtendAndInitializeTree($clone);
 	$clone[0].ATOM_setName(partial.val);
 	$clone.attr('data-atom', partial.type);//uso un generico prototipo num e qui specifico se cn o ci
 	if($target !== undefined){

@@ -267,7 +267,7 @@ function dblclickHandler(event) {
 			else{
 				var type = $toBeSpecified.attr('data-type')
 				$newNode = ATOMclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
-				attachEventsAndExtend($newNode);
+				ExtendAndInitializeTree($newNode);
 				$newNode[0].ATOM_setName(newVal);
 				$newNode.attr('data-type', type)
 			}
@@ -381,7 +381,7 @@ function refreshAndReplace(PActx) {
 		$toBeRefreshed = ATOMparent(PActx.$operand)
 		PActx.$transform.insertBefore(PActx.$operand[0]);
 		PActx.$operand.remove()
-		attachEventsAndExtend(PActx.$transform, true, true);
+		ExtendAndInitializeTree(PActx.$transform, true, true);
 		//********select on exit
 		//$('*').removeClass('selected')
 		//$(PActx.$transform[0]).addClass('selected')	
@@ -407,7 +407,7 @@ function debugToggle() {
 	}
 }
 
-function attachEventsAndExtend($startElement, processDiscendence /*default is true*/
+function ExtendAndInitializeTree($startElement, processDiscendence /*default is true*/
 , extend /*default is true*/
 ) {
 	//di qui passano tutti, a seconda della classe: 1)estendi atom 2)attach events

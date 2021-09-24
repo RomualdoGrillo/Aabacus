@@ -215,7 +215,7 @@ function swapMembersClone($origProp,mode){
     res.$newProp = ATOMclone($origProp);
     res.visualization =    wrapUnwrapUrlString( $origProp[0].style.backgroundImage ,'cutFirstDir')
     if(debugMode){$('#telaRole').append(res.$newProp)}//debug 
-    //attachEventsAndExtend(res.$newProp);
+    //ExtendAndInitializeTree(res.$newProp);
     ATOMextend(res.$newProp,true)
     //***********marca TUTTI I CLONI clone ************************************************
     res.$newProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone
@@ -281,7 +281,7 @@ function findSwapMembersClone(propName,mode){
     res.$newProp = ATOMclone($prop);
     res.visualization =    wrapUnwrapUrlString( $prop[0].style.backgroundImage ,'cutFirstDir')
     if(debugMode){$('#telaRole').append(res.$newProp)}//debug 
-    //attachEventsAndExtend(res.$newProp);
+    //ExtendAndInitializeTree(res.$newProp);
     ATOMextend(res.$newProp,true)
     //***********marca TUTTI I CLONI clone ************************************************
     res.$newProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone

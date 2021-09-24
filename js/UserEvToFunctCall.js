@@ -6,7 +6,7 @@
 
 function keyboardEvToFC($atom, keyPressed){
 	var $actions = searchEventHandler(keyPressed);
-	var PActx = newPActx()
+	var PActx 
 	//prova in ordine ogni azione
 	for(var i=0;i<$actions.length;i++){
 		var actionString
@@ -29,9 +29,11 @@ function keyboardEvToFC($atom, keyPressed){
 			}
 		if( PActx && PActx.matchedTF ){//proprietà applicata con successo
 			PActx.msg = actionString +" "+ firstValString
-			PActx = PMclean(PActx);
 			break
 		}
+	}
+	if(PActx == undefined){
+		PActx = newPActx()//if no property was applied pass a dummy PActx
 	}
 	return PActx
 }

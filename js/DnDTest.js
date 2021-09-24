@@ -202,7 +202,7 @@ function onEndHandler(event) {
 	//repositioned
 	if (event.clone.parentElement != null) {
 		event.clone.removeAttribute('id')
-		attachEventsAndExtend($(event.clone), true)
+		ExtendAndInitializeTree($(event.clone), true)
 	}
 	//RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 	//$(sortablesSelectorString).removeClass('toBeUpdated');

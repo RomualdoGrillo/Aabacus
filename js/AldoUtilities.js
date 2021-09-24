@@ -170,7 +170,7 @@ function dummyParser(string){
 	else if(splittedeq.length==2){splitted=splittedeq; op='eq'}
 	if(op){
 		let $operation = ATOMclone( prototypeSearch(op) )
-		attachEventsAndExtend($operation);
+		ExtendAndInitializeTree($operation);
 		let first = identifierToAtom(splitted[0]);
 		let second = identifierToAtom(splitted[1]);
 		$operation[0].ATOM_getRoles('.firstMember').append(first)
@@ -189,7 +189,7 @@ function identifierToAtom(string){
 		atomType = 'cn'
 	}
 	$clone = ATOMclone( prototypeSearch("cn","num") )
-	attachEventsAndExtend($clone);
+	ExtendAndInitializeTree($clone);
 	$clone[0].ATOM_setName(string);
 	$clone.attr('data-atom', atomType);//uso un generico prototipo num e qui specifico se cn o ci
 	return	$clone

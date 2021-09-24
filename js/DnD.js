@@ -124,7 +124,7 @@ function onAdd(event) {
 	let myClone = ATOMclone($(event.item))[0]
 	//
 	event.item.classList.remove('toBeCloned');
-	attachEventsAndExtend($(myClone))
+	ExtendAndInitializeTree($(myClone))
 	event.item.replaceWith(myClone)
 	event.clone.replaceWith(event.item)
 	//questo è l'elemento che rimane nella posizione di partenza

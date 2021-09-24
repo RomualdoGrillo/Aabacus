@@ -31,7 +31,7 @@ ssnapshot.undo = function(){
 			$(FILO.pop()).remove() // butta via l'ultima snapshot
 			var toBeRestored = FILO[FILO.length - 1].clone()// ripristina la penultima, in FILO devono essere presenti i cloni degli stati, non gli stati, altrimenti FILO.pop() distrugge stato
 			$("#tela>.secondMember").replaceWith(toBeRestored)
-			attachEventsAndExtend(toBeRestored,true,false)//process discendence, no need to extend
+			ExtendAndInitializeTree(toBeRestored)
 			//----------test-----------------------
 			//$("#test").html(toBeRestored)
 			//var poppedName = testSnapshotNames.pop()
@@ -39,7 +39,7 @@ ssnapshot.undo = function(){
 			//$("#test").html(testSnapshotNames[testSnapshotNames.length - 1])
 			//$("#undoNames").html(testSnapshotNames.toString())
 			//-------------------------------------
-			attachEventsAndExtend(toBeRestored)
+			ExtendAndInitializeTree(toBeRestored)
 			//console.log('restored tela')
 			//console.log(toBeRestored)
 		}
@@ -56,6 +56,6 @@ ssnapshot.paste = function(){
 	if(ssnapshot.clipBoard.length != 0){
 		var $newCds = ATOMclone( ssnapshot.clipBoard );
 		$(".selected").replaceWith( $newCds );
-		attachEventsAndExtend( $newCds );
+		ExtendAndInitializeTree( $newCds );
 	}
 }

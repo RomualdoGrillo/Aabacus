@@ -96,7 +96,7 @@ function openOnSort(event){//default onAdd
 		if(event.from.isSameNode(event.to)){
 			let nextChildren = event.from.children[event.oldIndex]
 			let clone = ATOMclone($(event.item))[0];
-			attachEventsAndExtend($(clone));
+			ExtendAndInitializeTree($(clone));
 			if(nextChildren){
 				//copy back to starting role with ctrl+DnD
 				event.from.insertBefore(clone, nextChildren);	
@@ -260,11 +260,11 @@ function ATOMPartDistribute(dragged,target,dropped){
 	$extOp = encaseIfNeeded( ATOMparent($parent),opD);//se necessario crea una operazione container
 	let $prototype = prototypeSearch(op);
 	let $clone = ATOMclone($prototype)//create times
-	attachEventsAndExtend($clone);
+	ExtendAndInitializeTree($clone);
 	$clone.insertBefore(dropped);
 	$siblings.each(function(i,e){
 		var $siblingClone = ATOMclone($(e));
-		attachEventsAndExtend($siblingClone);
+		ExtendAndInitializeTree($siblingClone);
 		$clone[0].ATOM_getRoles().append($siblingClone);
 	});
 	let previous = $clone[0].ATOM_getRoles().children().eq(childrenIndex-1);
@@ -290,8 +290,8 @@ function ATOMdistribute(dragged,target,dropped){
 		e.classList.add("cleanifpointless");
 		var $clone = ATOMclone($prototype)//create times
 		var $cloneDragged = ATOMclone($dragged)// clone dragged
-		attachEventsAndExtend($clone);// dai vita a clone ed al suo albero
-		attachEventsAndExtend($cloneDragged);
+		ExtendAndInitializeTree($clone);// dai vita a clone ed al suo albero
+		ExtendAndInitializeTree($cloneDragged);
 		$clone.insertBefore($(this));
 		$clone[0].ATOM_getRoles().append($cloneDragged);
 		if(dragged.index()>target.index()){ 
@@ -482,7 +482,7 @@ function ATOMpartCollect($dragged,$target){
 		}
 		if(!$opPlus){//if a suitable "plus" container has not been found create a new one
 			$opPlus= ATOMclone($prototype)//create times
-			attachEventsAndExtend($opPlus);
+			ExtendAndInitializeTree($opPlus);
 			$opPlus.insertBefore($termT);
 			$termT.remove();
 		}
@@ -697,7 +697,7 @@ function compose($toBeComp){
 		PActx.replacedAlready=true;
 		$composed.insertBefore(PActx.$operand[0]);
 		PActx.$operand.remove()
-		attachEventsAndExtend($composed,true,true);
+		ExtendAndInitializeTree($composed,true,true);
 		$parent.addClass('cleanifpointless');
 		PActx.$transform = $parent; 
 	}
@@ -780,7 +780,7 @@ function decompose($toBeDec,direction){//"up" for factorize
 					primeFactors.forEach(function(e,i){
 						$clone = ATOMclone(prototype);
 						$clone.attr('data-atom','cn');
-						attachEventsAndExtend($clone);
+						ExtendAndInitializeTree($clone);
 						$clone[0].ATOM_setName(e)
 						$clone.insertAfter($toBeDec);
 						if(i == (primeFactors.length -1)){
@@ -831,7 +831,7 @@ function decompose($toBeDec,direction){//"up" for factorize
 			var prototype=prototypeSearch("ci","bool")
 			$clone = ATOMclone(prototype);
 			$clone.text("true");
-			attachEventsAndExtend($clone);
+			ExtendAndInitializeTree($clone);
 			$clone.insertAfter($toBeDec);
 			$clone.css({display:""});
 		}
@@ -922,7 +922,7 @@ function removeDropped($dragged,$target){
 	}
 	else{
 		var $clone = ATOMclone( prototypeSearch("ci","bool") )
-		attachEventsAndExtend($clone);
+		ExtendAndInitializeTree($clone);
 		$clone[0].ATOM_setName('true');
 		$target.replaceWith($clone);
 	}
@@ -962,7 +962,7 @@ function evaluateComparison($exp){
 			if(result){stringResult="true"} else{stringResult="false"}
 			var $clone = ATOMclone(prototype);
 			// $clone.attr('data-atom','cn');
-			attachEventsAndExtend($clone);
+			ExtendAndInitializeTree($clone);
 			$clone[0].ATOM_setName(stringResult)
 			$clone.insertAfter($exp);
 			$clone.addClass('selected');// il risultato rimane selezionato

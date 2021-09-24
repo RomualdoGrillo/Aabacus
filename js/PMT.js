@@ -339,9 +339,6 @@ function InstructAndTryOnePMTByName(propName, $par1 ,firstVal,justTry){
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
     //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
     //"apre un fascicolo" e tenta di "dare seguito" all'ordine
-  	
-
-    
     //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
     
 	let	$origProp = findPropByName(propName)
@@ -349,7 +346,6 @@ function InstructAndTryOnePMTByName(propName, $par1 ,firstVal,justTry){
     	console.log('property not found:' + propName)
 	}
 	else{
-		
 		return InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry)
 	}
 }
