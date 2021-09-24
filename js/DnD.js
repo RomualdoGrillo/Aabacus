@@ -142,12 +142,6 @@ function onAdd(event) {
 			// if not cloning, clone was useful to visualize the starting point 	
 		}
 	}
-
-
-
-
-
-
 	//*********** apply property
 	else {
 		let target
@@ -165,7 +159,7 @@ function onAdd(event) {
 		if (targetProperty == 'dragPatternMatch') {
 			
 			
-			let PActx = TryProp(GLBDnD.$originalProperty, ATOMparent($(event.to)), GLBDnD.direction)
+			let PActx = InstructAndTryOnePMT(GLBDnD.$originalProperty, ATOMparent($(event.to)), GLBDnD.direction)
 			PActx.msg = GLBDnD.$originalProperty.closest('[data-tag]').attr('data-tag')
 			PActxConclude(PActx)
 		}

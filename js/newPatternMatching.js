@@ -234,7 +234,20 @@ function ATOMdescForPath($atom){
 		return $atom.attr('data-atom')
 	}
 }
-
+   
+function moveOrClearMarksInTree($startAtom,clear){//copy marks from persistent "data-mark" to volatile mark 
+	$subtree = $startAtom.add( $startAtom.find('[data-atom]') )
+	$subtree.each(function(index) {
+		if(clear){//clearVolatile
+			$(this).removeAttr('mark')
+		}
+		else{//moveFromPersistentToVolatile 
+			var value = $(this).attr('title');
+			$(this).attr('mark',value);
+			$(this).removeAttr('title')
+		}
+	})
+}
 
 function ATOMSmarkUnmark($Atom,value,attrName){
 //la funzione scrive o legge marcature atomi in modo permanente: le marcature passano nel file mml. 
@@ -246,7 +259,7 @@ function ATOMSmarkUnmark($Atom,value,attrName){
 //link:per associare atomi in pattern e transform
 //post: c=semplifica n=nonRiordinare
 
-	var mark = $Atom.attr('title');
+	var mark = $Atom.attr('mark');
 	if ( mark == undefined ){mark=""}
 	var markArray = mark.split("-")
 	//********************mode: READ*************************
@@ -269,7 +282,7 @@ function ATOMSmarkUnmark($Atom,value,attrName){
 	//********************mode: WRITE**************************
 	// ATOMSmarkUnmark($atom,"","all"); cancella tutte le marcature
 	if( attrName=="all" ){//scrivi tutto in una volta
-		$Atom.attr('title',value);
+		$Atom.attr('mark',value);
 		return value
 	}
 	else if( attrName=="p"){
@@ -296,8 +309,8 @@ function ATOMSmarkUnmark($Atom,value,attrName){
 		}
 		i++
 	}
-	if(str){$Atom.attr('title',str);}
-	else{$Atom.removeAttr('title')}
+	if(str){$Atom.attr('mark',str);}
+	else{$Atom.removeAttr('mark')}
 	return str
 }
 
@@ -321,39 +334,8 @@ function ATOMappendInABSPosition($atom,$refATOM,relativePosition){
 } 
 
 
-
-//  TryPropByName("name",actionString,firstValString)
-function OLD_TryPropByName(propName, $par1 ,firstVal,justTry){
-	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
-    //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
-    //"apre un fascicolo" e tenta di "dare seguito" all'ordine
-	var PActx = newPActx()
-  	
-
-    
-    //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
-    
-	let	$origProp = findPropByName(propName)
-	if( $origProp.length == 0){ 
-    	console.log('property not found:' + propName)
-	}
-	else{
-		var cloningRes = swapMembersClone($origProp.eq(0),firstVal);
-	    if( cloningRes.foundTF ){
-		    //ATOMSmarkUnmark($('.selected'),"s");
-		    ATOMSmarkUnmark( $par1 ,"s");
-		    //res = checkProp(cloningRes.$newProp,$('.selected'))//$operando verrà determinato all'interno della funz'
-			PActx.$newProp = cloningRes.$newProp
-			PActx = tryReconfigurableProp(PActx, $par1, undefined, justTry )//operando verrà determinato all'interno della funz'
-			ATOMSmarkUnmark($par1,"");
-			PActx.visualization =  	cloningRes.visualization
-		}
-		return PActx
-	}
-}
-
-//  TryPropByName("name",actionString,firstValString)
-function TryPropByName(propName, $par1 ,firstVal,justTry){
+//  InstructAndTryOnePMTByName("name",actionString,firstValString)
+function InstructAndTryOnePMTByName(propName, $par1 ,firstVal,justTry){
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
     //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
     //"apre un fascicolo" e tenta di "dare seguito" all'ordine
@@ -368,12 +350,12 @@ function TryPropByName(propName, $par1 ,firstVal,justTry){
 	}
 	else{
 		
-		return TryProp($origProp, $par1 ,firstVal,justTry)
+		return InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry)
 	}
 }
 
 
-function TryProp($origProp, $par1 ,firstVal,justTry){
+function InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry){//instruct practice and try to apply one property by  Pattern Matching and Transform
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
     //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
     //"apre un fascicolo" e tenta di "dare seguito" all'ordine
@@ -381,11 +363,14 @@ function TryProp($origProp, $par1 ,firstVal,justTry){
     //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
 	var cloningRes = swapMembersClone($origProp.eq(0),firstVal);
 	if( cloningRes.foundTF ){
-	    //ATOMSmarkUnmark($('.selected'),"s");
-		ATOMSmarkUnmark( $par1 ,"s");
-		//res = checkProp(cloningRes.$newProp,$('.selected'))//$operando verrà determinato all'interno della funz'
+		moveOrClearMarksInTree(cloningRes.$newProp)//from permanent marks to volatile marks
+		
+		ATOMSmarkUnmark( $par1 ,"s");//add volatile mark
 	    PActx.$newProp = cloningRes.$newProp
-		PActx = tryReconfigurableProp(PActx, $par1, undefined, justTry )//operando verrà determinato all'interno della funz'
+		PActx = tryPMT(PActx, $par1, undefined, justTry )//operando verrà determinato all'interno della funz'
+		if( PActx && PActx.matchedTF ){//proprietà applicata con successo
+			PActx = PMclean(PActx);
+		}
 		ATOMSmarkUnmark($par1,"");
 		PActx.visualization =  	cloningRes.visualization
 	}
@@ -394,7 +379,7 @@ return PActx
 
 
 
-function tryReconfigurableProp(PActx,$par1,$par2,justTry){
+function tryPMT(PActx,$par1,$par2,justTry){
     //********** da attack points istruisce la pratica PActx********************************
     PActx=PActxFromAttackPoints(PActx,$par1,$par2)
     //********** Adapt Match ******************************************************
@@ -416,7 +401,7 @@ function tryReconfigurableProp(PActx,$par1,$par2,justTry){
    		 
 		PActx.$transform = PActx.$equation[0].ATOM_getRoles('.secondMember').children();//alla fine degli adapt match riaggiorno transform
     }
-    ATOMSmarkUnmark(PActx.$operand,"","all")//l'operando vieme inizialmente marcato come "s" selected 
+    ATOMSmarkUnmark(PActx.$operand,"","all")//l'operando viene inizialmente marcato come "s" selected 
     //"s" è usato come punto di partenza
     // l'uguaglianza "usa e getta"che contiene il pattern è rimossa dal documento
     // una volta utilizzata finirà nel garbage collection

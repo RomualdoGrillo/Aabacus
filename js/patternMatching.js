@@ -1,5 +1,5 @@
 /*
-function repeatTryProp(field,propName,firstVal,$atom1){
+function repeatInstructAndTryOnePMT(field,propName,firstVal,$atom1){
     var $atomList 
     var match = 0;
     var res 
@@ -7,7 +7,7 @@ function repeatTryProp(field,propName,firstVal,$atom1){
         if( match<ii){return }//ho fatto un giro a vuoto: senza trovare nulla
         $atomList = $atom1.add($atom1.find('[data-atom]'));
         for(j=0; j<$atomList.length ;j++){
-            res = TryPropByName(field,propName, $($atomList[j]) ,firstVal) //da rivedere cambiati i parametri e sostituire tryProp() con checkProp()
+            res = InstructAndTryOnePMTByName(field,propName, $($atomList[j]) ,firstVal) //da rivedere cambiati i parametri e sostituire tryProp() con checkProp()
             //tryRes = tryProp(field,propName,mode,$($atomList[j]))
             
             if( tryRes.matchedTF === true ){

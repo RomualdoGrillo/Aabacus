@@ -24,7 +24,7 @@ div{
 	align-items:normal!important;
 }
 
-[title^="s"] {
+[title^="s"],[data-mark^="s"],[mark^="s"] {/*highlight elements marked with s*/
 	border-color: yellow!important;
 }
 
