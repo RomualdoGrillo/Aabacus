@@ -499,7 +499,7 @@ function encaseWithOperation($ATOMelement,op){
 	//create external operation to $ATOMelement, $ATOMelement is 1 element or a list of adjacent elements 
 	var $prototype = prototypeSearch(op);
 	var $clone = ATOMclone($prototype)
-	ExtendAndInitializeTree($clone);// dai vita a clone ed al suo albero
+	ExtendAndInitializeTree($clone);// extend $clone and descendants
 	//ATOMparent($ATOMelement).replaceWith($clone);//replace provoca la distruzione degli eventi nel replaced
 	$clone.insertBefore($ATOMelement.eq(0));
 	$ATOMelement.appendTo($clone[0].ATOM_getRoles());
@@ -864,9 +864,30 @@ function ATOMnodesAddClass($atom,newClass,mode/* true = remove*/){
         })
     }
 }
+
+// ATOMapplyFunctToTree($('.selected'),true,ALDOtest,'a','b','c')
+function ATOMapplyFunctToTree($StartAtom,includeRoot,funct,parameterA,parameterB,parameterC){
+    //given Funct($Atom), it is applied to the discendants of $startNode
+    let $tree = $()
+	if(includeRoot){
+		$tree = $tree.add($StartAtom)
+	}
+	$tree = $tree.add($StartAtom.find('[data-atom]'));
+	//$tree.each(funct(parameterA,parameterB))
+	$tree.each(function(i,e){funct($(e),parameterA,parameterB,parameterC)});
+}
+/*
+function ALDOtest($Atom,parameterA){
+    console.log('Atom:')
+	console.log($Atom)
+	console.log('parameterA:')
+	console.log(parameterA)
+}
+*/
 /*
 function ATOMfrozenDef(Node){
 	//!! to be refined 
 	return $(Node).closest('[data-tag]')
 }
 */
+

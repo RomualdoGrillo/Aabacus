@@ -62,7 +62,7 @@ function returnTargetWrappedIfNeeded($targetNode,$toBeInserted){
 		$newDef.removeClass("unlocked")//cio' che viene caticato e' di default unlocked
 		$newDef.insertBefore($toBeInserted.eq(0));
 		$target = $newDef.find(".secondMember")
-		ExtendAndInitializeTree($newDef,false);// il contenuto è già stato esteso
+		ExtendAndInitialize($newDef);// il contenuto è già stato esteso
 		$target.append($toBeInserted);
 		return $target
 	}
@@ -81,7 +81,7 @@ function inject(MMLstring,$targetNode,doNotWrap)
 	if(doNotWrap=!true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
 		$target = returnTargetWrappedIfNeeded($targetNode,$convertedTree)
 	}
-	ExtendAndInitializeTree($convertedTree,true);
+	ExtendAndInitializeTree($convertedTree);
 	var $refreshStartPoint = ATOMparent($convertedTree);
 	if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
 	RefreshEmptyInfixBraketsGlued($refreshStartPoint,true,"eibg")

@@ -697,7 +697,7 @@ function compose($toBeComp){
 		PActx.replacedAlready=true;
 		$composed.insertBefore(PActx.$operand[0]);
 		PActx.$operand.remove()
-		ExtendAndInitializeTree($composed,true,true);
+		ExtendAndInitializeTree($composed);
 		$parent.addClass('cleanifpointless');
 		PActx.$transform = $parent; 
 	}

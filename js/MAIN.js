@@ -381,7 +381,7 @@ function refreshAndReplace(PActx) {
 		$toBeRefreshed = ATOMparent(PActx.$operand)
 		PActx.$transform.insertBefore(PActx.$operand[0]);
 		PActx.$operand.remove()
-		ExtendAndInitializeTree(PActx.$transform, true, true);
+		ExtendAndInitializeTree(PActx.$transform);
 		//********select on exit
 		//$('*').removeClass('selected')
 		//$(PActx.$transform[0]).addClass('selected')	
@@ -407,31 +407,19 @@ function debugToggle() {
 	}
 }
 
-function ExtendAndInitializeTree($startElement, processDiscendence /*default is true*/
-, extend /*default is true*/
-) {
-	//di qui passano tutti, a seconda della classe: 1)estendi atom 2)attach events
-	var $Elements
-	if (processDiscendence !== false) {
-		if (extend != false) {
-			ATOMextend($startElement, true)
-		}
-		$Elements = $startElement.add($startElement.find('[data-atom],[class*="_role"]'));
-		// order is important!	
-	} else {
-		if (extend != false) {
-			ATOMextend($startElement, true)
-		}
-		$Elements = $startElement[0].ATOM_getNodes();
-	}
-	//initialize lock icons
-	$Elements.filter('[data-atom].asymmetric').each(function(i, e) {
-		refreshAsymmEq($(e))
-	})
-	$Elements.filter('[data-atom].asymmetric').each(function(i, e) {
-		refreshAsymmEq($(e))
-	})
+function ExtendAndInitializeTree($startElement){
+    ATOMapplyFunctToTree($startElement,true,ExtendAndInitialize)
 }
+
+function ExtendAndInitialize($Atom){
+	ATOMextend($Atom, true)
+	//initialize lock icon
+	if($Atom.is('[data-atom].asymmetric')){
+		refreshAsymmEq($(e))
+	}
+}
+
+
 
 function cancelSelected() {
 	toBeCancelled = $('.selected').filter(function(index) {
