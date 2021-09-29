@@ -817,14 +817,6 @@ function ATOMcleanIfPointless(startNode,applyToSubtree){//per applicarlo all'alb
 
 	}
 }
-/*
-
-function ATOM_checkIfPointlessSingleNode(){
-	return ($(this).is('[data-atom="plus"],[data-atom="times"],[data-atom="or"],[data-atom="and"]') 
-			&&
-			this.ATOM_getChildren().length == 1)
-}*/
-
 
 function ATOM_checkIfPointlessSingleNode(){
 	let op = $(this).attr('data-atom')
