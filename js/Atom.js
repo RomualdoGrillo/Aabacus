@@ -35,20 +35,6 @@ atom = {
 	ATOM_overlay: ATOM_overlay,	
 }
 
-function ATOMextend($startNode,applyToSubtreeAlso){//add methods from object "atom" 
-	var $toBeExtended
-	if( !applyToSubtreeAlso ){
-		$toBeExtended = $startNode.filter('[data-atom]')//in ogni caso estendo solo i '[data-atom]'
-	}
-	else{
-		$toBeExtended = $startNode.filter('[data-atom]').add( $startNode.find('[data-atom]') )
-	}
-	
-	$toBeExtended.each(function(index) {// tutti gli HTML nodes con classe .ATOM
-		$.extend(this,atom);//pare non si possa fare altrimenti non riesco a estendere $(this)
-	})
-}
-
 function ATOMparent($startNode){
 	//per poter chiamare sia come funzione che come metodo
 	if($startNode == undefined){$startNode=$(this)}
@@ -883,3 +869,17 @@ function ATOMfrozenDef(Node){
 }
 */
 
+/************** ATOM UTILITIES  not API ***********************/
+function ATOMextend($startNode,applyToSubtreeAlso){//add methods from object "atom" 
+	var $toBeExtended
+	if( !applyToSubtreeAlso ){
+		$toBeExtended = $startNode.filter('[data-atom]')//in ogni caso estendo solo i '[data-atom]'
+	}
+	else{
+		$toBeExtended = $startNode.filter('[data-atom]').add( $startNode.find('[data-atom]') )
+	}
+	
+	$toBeExtended.each(function(index) {// tutti gli HTML nodes con classe .ATOM
+		$.extend(this,atom);//pare non si possa fare altrimenti non riesco a estendere $(this)
+	})
+}
