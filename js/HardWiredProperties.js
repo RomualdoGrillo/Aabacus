@@ -196,6 +196,7 @@ function getKeyByValue(dictionary,value ) {
 
 
 function validForPartDist($mouseDownAtom){
+	let $parent = ATOMparent($mouseDownAtom);
 	var $siblings = $parent.siblings('[data-atom]');
 	if($siblings.length == 0){return $()}//nothing to distribute
 	let opD = undefined;
