@@ -117,7 +117,6 @@ function startHandlerMouseDown(event, AtomDragged) {
 }
 
 function onAdd(event) {
-	//console.log('end!')
 	//replacing sortablejs defaul clone with myClone (removed id, extends ATOM etc..)
 	//item stays in place myclone dropped in new place
 	event.item.classList.remove('showAsPlaceholder');
@@ -126,8 +125,7 @@ function onAdd(event) {
 	event.item.classList.remove('toBeCloned');
 	ExtendAndInitializeTree($(myClone))
 	event.item.replaceWith(myClone)
-	event.clone.replaceWith(event.item)
-	//questo è l'elemento che rimane nella posizione di partenza
+	event.clone.replaceWith(event.item)//questo è l'elemento che rimane nella posizione di partenza
 	let dropped = myClone
 	//*********** move or clone
 	if (event.to.getAttribute('target') == 'opened') {
@@ -221,8 +219,7 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 				sort: sort,
 				onStart: startHandlerMouseDown,
 				onAdd: onAdd,
-				onEnd: cleanupDnD,
-				animation: 150,
+				onEnd:MouseUpCleanup,//on sortend the event MouseUp does not occur! onEnd is fired instead
 				fallbackOnBody: true,
 				swapThreshold: 0.65,
 				animation: 150,
@@ -231,11 +228,14 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 	}
 	return sortables
 }
-function sortEnd() {
-	console.log('sortEnd');
+function MouseUpCleanup(event) {
+	//console.log(event)
+	if (!debugMode) {//in debugMode i target sono lasciati visibili
+		cleanupDnD()
+	}
 }
 
-function cleanupDnD(event) {
+function cleanupDnD() {
 	//called both on sortEnd an Mouseup events 
 	//at least one of the events must fire
 	//not optimal
@@ -243,10 +243,8 @@ function cleanupDnD(event) {
 	//Sortend is not fired if click without drag
 	//Documentation:
 	//https://docs.google.com/drawings/d/1sASg3RC51sOYWCRIxJjdRI_lL0ZKpATyPaFWfkVxT70/edit
-	if (!debugMode) {//in debugMode i target sono lasciati visibili
-		clearSortableTargets()
-		clearLines()//todo: distinguish between hints and PatternMatching and other lines
-	}
+	clearSortableTargets()
+	clearLines()//todo: distinguish between hints and PatternMatching and other lines
 }
 
 

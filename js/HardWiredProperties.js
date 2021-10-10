@@ -144,12 +144,11 @@ return $valids
 
 
 
-function immediateAssValid(mouseDownNode){
-	var $mouseDownNode=$(mouseDownNode);
-	var $parent = ATOMparent($mouseDownNode);
-	let op = undefined;
+function immediateAssValid($mouseDownAtom){
+	const $parent = ATOMparent($mouseDownAtom);
+	let op;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
-	var validTargets = $();
+	let validTargets = $();
 	if( OpIsAssociative(op)){
 		//parent is a target-associative?
 		if(ATOMparent($parent).attr("data-atom") === op ){
@@ -196,9 +195,7 @@ function getKeyByValue(dictionary,value ) {
 
 
 
-function validForPartDist(dragged){
-	let $dragged = $(dragged)
-	let $parent = ATOMparent($dragged);
+function validForPartDist($mouseDownAtom){
 	var $siblings = $parent.siblings('[data-atom]');
 	if($siblings.length == 0){return $()}//nothing to distribute
 	let opD = undefined;
@@ -222,16 +219,15 @@ function validForPartDist(dragged){
 
 
 
-function validForDist(mouseDownNode){//op2 è il tipo di operazione sulla quale si distribuisce
-	var $mouseDownNode=$(mouseDownNode);
-	var $parent = ATOMparent($mouseDownNode);
+function validForDist($mouseDownAtom){//op2 è il tipo di operazione sulla quale si distribuisce
+	var $parent = ATOMparent($mouseDownAtom);
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
 	let opD = opIsDistDop(op);
 	
 	if ( opD !== undefined ){
-		//return $mouseDownNode.siblings().filter("[data-atom="+opD+"]")	
-		$validAtoms = $mouseDownNode.siblings().filter("[data-atom="+opD+"]")
+		//return $mouseDownAtom.siblings().filter("[data-atom="+opD+"]")	
+		$validAtoms = $mouseDownAtom.siblings().filter("[data-atom="+opD+"]")
 		/*
 		let $validTargets = $()
 		let i=0;
@@ -310,9 +306,8 @@ function ATOMdistribute(dragged,target,dropped){
 	return PActx
 }
 
-function validForColl(mouseDownNode){
-	var $mouseDownNode=$(mouseDownNode);
-	var $parent = ATOMparent($mouseDownNode);
+function validForColl($mouseDownAtom){
+	var $parent = ATOMparent($mouseDownAtom);
 	var op = undefined
 	if($parent !== undefined){op = $parent.attr("data-atom")};//look for targets
 	var opD = opIsDistDop(op);
@@ -342,7 +337,7 @@ function validForColl(mouseDownNode){
 				var factor=$factors[j]
 				//console.log("controllo factor");
 				//console.log(factor);
-				if(ATOMEqual(factor,$mouseDownNode[0])){
+				if(ATOMEqual(factor,$mouseDownAtom[0])){
 					$(factor).addClass("couldBeCollected")
 					okForThisTerm = true;
 					break
@@ -350,7 +345,7 @@ function validForColl(mouseDownNode){
 			}
 		}
 		else{// altrimenti controlla lui stesso
-			if(ATOMEqual(term,$mouseDownNode[0])){
+			if(ATOMEqual(term,$mouseDownAtom[0])){
 					$(term).addClass("couldBeCollected")
 					okForThisTerm = true;
 				}
@@ -366,9 +361,8 @@ function validForColl(mouseDownNode){
 	return ATOMparent($parentParent).find('>.ul_role')//target is the external atom	
 }
 
-function validForPartColl(mouseDownNode){
-	var $mouseDownNode=$(mouseDownNode);
-	var $parent = ATOMparent($mouseDownNode);
+function validForPartColl($mouseDownAtom){
+	var $parent = ATOMparent($mouseDownAtom);
 	if ($parent == undefined){
 		return $() //empty $ array
 	}
@@ -388,7 +382,7 @@ function validForPartColl(mouseDownNode){
 		if(opT !== undefined){
 			opP=op;
 			$plusParent = $parent;
-			$parent = $mouseDownNode;
+			$parent = $mouseDownAtom;
 		}
 	}
 	
@@ -415,13 +409,13 @@ function validForPartColl(mouseDownNode){
 				var factor=$factors[j]
 				//console.log("controllo factor");
 				//console.log(factor);
-				if(ATOMEqual(factor,$mouseDownNode[0])){
+				if(ATOMEqual(factor,$mouseDownAtom[0])){
 					$valids = $valids.add(factor);
 				}
 			}
 		}
 		else{// altrimenti controlla lui stesso
-			if(ATOMEqual(term,$mouseDownNode[0])){
+			if(ATOMEqual(term,$mouseDownAtom[0])){
 					$valids = $valids.add(term);
 				}
 		}
@@ -854,60 +848,58 @@ function decompose($toBeDec,direction){//"up" for factorize
 	return PActx	
 }
 
-function validReplaced(mouseDownNode){
+function validReplaced($mouseDownAtom){
 	// cerca nodi uguali a mousedown node 
-	var $mouseDownNode=$(mouseDownNode);
-	var $equation = ATOMparent($mouseDownNode)
+	var $equation = ATOMparent($mouseDownAtom)
 	var $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
-	if( !$mouseDownNode.parent().parent().is("[data-atom=eq]:not(.asymmetric)") ){
+	if( !$mouseDownAtom.parent().parent().is("[data-atom=eq]:not(.asymmetric)") ){
 		return []//not from an equation	
 	}
-	if(!($mouseDownNode.parent().hasClass('firstMember')||$mouseDownNode.parent().hasClass('secondMember'))){
+	if(!($mouseDownAtom.parent().hasClass('firstMember')||$mouseDownAtom.parent().hasClass('secondMember'))){
 	return []}// dragged is not a membrer of equation
 	//ricerca limitata ad elementi visibili
 	//var $candidates = PropositionValidSpan($equation).filter(':visible')
 	var $candidates = $PropositionDownstreamRec($equation).find('[data-atom]:visible')
 	var valids = $candidates.not($excludedMembers).filter(function( index ) {//escludi mousedownnode stesso dai possibili risultati
-		return ATOMEqual(this,$mouseDownNode[0],false,true/* trascura il segno root quindi -<esp> può essere sostituita con <esp> a patto che poi si cambi il segno*/)
+		return ATOMEqual(this,$mouseDownAtom[0],false,true/* trascura il segno root quindi -<esp> può essere sostituita con <esp> a patto che poi si cambi il segno*/)
 	})
 	valids.each(function(){
 		// crea linee
-		lineAB($mouseDownNode,$(this));	
+		lineAB($mouseDownAtom,$(this));	
 	})	 
 	return valids
 }
 
 
-function validRedundant(mouseDownNode){
+function validRedundant($mouseDownAtom){
 	//validRedundant($('.selected'))
 	// cerca nodi uguali a mousedown node 
-	var $mouseDownNode=$(mouseDownNode);
-	if( !$mouseDownNode.is("[data-type=bool]") ){
+	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	var $candidates = $PropositionDownstreamRec($mouseDownNode).find('[data-atom]:visible').not($mouseDownNode);
+	var $candidates = $PropositionDownstreamRec($mouseDownAtom).find('[data-atom]:visible').not($mouseDownAtom);
 	var valids = $candidates.filter(function( index ) {//escludi mousedownnode stesso dai possibili risultati
-		return ATOMEqual(this,$mouseDownNode[0],false,true/* trascura il segno root quindi -<esp> può essere sostituita con <esp> a patto che poi si cambi il segno*/)
+		return ATOMEqual(this,$mouseDownAtom[0],false,true/* trascura il segno root quindi -<esp> può essere sostituita con <esp> a patto che poi si cambi il segno*/)
 	})
 	valids.each(function(){
 		// crea linee
-		lineAB($mouseDownNode,$(this));	
+		lineAB($mouseDownAtom,$(this));	
 	})	 
 	return valids
 }
 
-function validCandidatesForPatternDrop($ATOMdragged){
+function validCandidatesForPatternDrop($mouseDownAtom){
 	var valids = $('#telaRole [data-atom]:visible').filter(function( index ) {
 		//*****valid?***********
 		var result =(
 			//datatype is compatible
-			typeOk($ATOMdragged,$(this))
+			typeOk($mouseDownAtom,$(this))
 			&&
 			ATOMfrozenDef($(this)).length == 0
 			)
 		return result
 	})
-	return valids//.not($ATOMdragged.parent())
+	return valids//.not($mouseDownAtom.parent())
 }
 
 
