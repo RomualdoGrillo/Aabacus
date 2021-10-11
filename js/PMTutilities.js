@@ -341,7 +341,7 @@ function InstructAndTryOnePMTByName(propName, $par1 ,firstVal,justTry){
     //"apre un fascicolo" e tenta di "dare seguito" all'ordine
     //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
     
-	let	$origProp = findPropByName(propName)
+	let	$origProp = findPMPropByName(propName)
 	if( $origProp.length == 0){ 
     	console.log('property not found:' + propName)
 	}
@@ -358,29 +358,15 @@ function InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry){//instruct pra
 	var PActx = newPActx()
     //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
 	var cloningRes = swapMembersClone($origProp.eq(0),firstVal);
-	if( cloningRes.foundTF ){
-		moveOrClearMarksInTree(cloningRes.$newProp)//from permanent marks to volatile marks
-		
-		ATOMSmarkUnmark( $par1 ,"s");//add volatile mark
-	    PActx.$newProp = cloningRes.$newProp
-		PActx = tryPMT(PActx, $par1, undefined, justTry )//operando verrà determinato all'interno della funz'
-		if( PActx && PActx.matchedTF ){//proprietà applicata con successo
-			PActx = PMclean(PActx);
-		}
-		ATOMSmarkUnmark($par1,"");
-		PActx.visualization =  	cloningRes.visualization
-	}
-return PActx
-}
-
-
-
-function tryPMT(PActx,$par1,$par2,justTry){
-    //********** da attack points istruisce la pratica PActx********************************
-    PActx=PActxFromAttackPoints(PActx,$par1,$par2)
+	if( !cloningRes.foundTF ){return PActx}
+	moveOrClearMarksInTree(cloningRes.$cloneProp)//from permanent marks to volatile marks
+	ATOMSmarkUnmark( $par1 ,"s");//add volatile mark
+    PActx.$cloneProp = cloningRes.$cloneProp
+	//********** da attack points istruisce la pratica PActx********************************
+    PActx=PActxFromAttackPoints(PActx,$par1)
     //********** Adapt Match ******************************************************
     //cerca di far coincidere il primo membro con il mio operando
-    overwriteFromHeader(PActx.$newProp)
+    overwriteFromHeader(PActx.$cloneProp)
     PActx = cloneOrderMatch(PActx,false,true,justTry)
     //PActx.$transform = PActx.$equation[0].ATOM_getRoles('.secondMember').children();// !!!!!  non mi piace, perchè trasform non viene ricavato dal PActx?
     
@@ -388,11 +374,11 @@ function tryPMT(PActx,$par1,$par2,justTry){
 		/* todo: se alla fine di tutte le sostituzioni di parametri, ne rimane qualcuno solo nel transform 
 		allora quella è una variabile libera, direi ininfluente, come quelle da specificare quando da un forall
 		ottengo un elmento "waiting". ad esempio applicando: forall(x, 0=x-x) le x sono variabili ininfluenti.*/
-        if( containsBvar(PActx.$transform,PActx.$newProp) ){
+        if( containsBvar(PActx.$transform,PActx.$cloneProp) ){
         	//se il transform contiene ancora parametri: è una proprità ancora generale!
         	//esempio: 0=x-x posso sostituire a zero un qualsiasi x-x
             //sposta il forall che contiene tutto in modo che circondi solo il "$transform"
-            PActx.$newProp = reformatForallProp(PActx.$newProp,PActx.$transform);
+            PActx.$cloneProp = reformatForallProp(PActx.$cloneProp,PActx.$transform);
         }
    		 
 		PActx.$transform = PActx.$equation[0].ATOM_getRoles('.secondMember').children();//alla fine degli adapt match riaggiorno transform
@@ -401,32 +387,36 @@ function tryPMT(PActx,$par1,$par2,justTry){
     //"s" è usato come punto di partenza
     // l'uguaglianza "usa e getta"che contiene il pattern è rimossa dal documento
     // una volta utilizzata finirà nel garbage collection
-    if(debugMode){PActx.$newProp.remove()
-    		PActx.$operand.removeClass('expandedAsTree');
-    		hideAllMarks()
-		}//debugMode
-    return PActx
+	if(debugMode){PActx.$cloneProp.remove()
+		hideAllMarks()
+	}//debugMode
+	if( PActx && PActx.matchedTF ){//proprietà applicata con successo
+		PActx = PMcleanAndPost(PActx);
+	}
+	ATOMSmarkUnmark($par1,"");
+	PActx.visualization =  	cloningRes.visualization
+	return PActx
 }
 
 //dr=$('.selected')
 //tr=$('.selected') //selezionare gli addendi uno per uno
-//PActxFromAttackPoints(findSwapMembersClone("timesAssociate","rtl").$newProp,undefined,dr,tr)
+//PActxFromAttackPoints(findSwapMembersClone("timesAssociate","rtl").$cloneProp,undefined,dr,tr)
 function PActxFromAttackPoints(PActx,$par1,$par2){
-    //PActx.$newProp è la proprietà che si intende applicare, già preparata con pattern a sx
+    //PActx.$cloneProp è la proprietà che si intende applicare, già preparata con pattern a sx
     //$par1 e $par2 possono essere selected e undefined       oppure dagged e target o altro
-    // var PActx = {matchedTF:false, msg:"", $newProp:$forAllEq, $pattern:"", $operand:"", $transform:""}
+    // var PActx = {matchedTF:false, msg:"", $cloneProp:$forAllEq, $pattern:"", $operand:"", $transform:""}
     //************estrai $pattern e  $transform dall'Equazione***************************
-    //PActx.$newProp è equazione applicabile, ad esempio da "a = b = c" ricavato "c=b"
+    //PActx.$cloneProp è equazione applicabile, ad esempio da "a = b = c" ricavato "c=b"
     //var $equation
     var $pattParameters = []
     var $inputParameters = [$par1,$par2]
-    if( PActx.$newProp.attr('data-atom') === "forAll" ){//l'equazione è circondata da un forall
-        $pattParameters = GetforAllHeader(PActx.$newProp).children();
-        PActx.$equation = GetforAllContent(PActx.$newProp).children();
+    if( PActx.$cloneProp.attr('data-atom') === "forAll" ){//l'equazione è circondata da un forall
+        $pattParameters = GetforAllHeader(PActx.$cloneProp).children();
+        PActx.$equation = GetforAllContent(PActx.$cloneProp).children();
         PActx.$pattern = PActx.$equation[0].ATOM_getRoles('.firstMember').children()   
     }
     else{//l'equazione non è circondata da un forall
-        PActx.$equation = PActx.$newProp;
+        PActx.$equation = PActx.$cloneProp;
     }
     PActx.$pattern = PActx.$equation[0].ATOM_getRoles('.firstMember').children();
     PActx.$transform = PActx.$equation[0].ATOM_getRoles('.secondMember').children();
@@ -484,11 +474,11 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
 }
 
 
-function PMclean(PActx){
+function PMcleanAndPost(PActx){
 	//things to clean immediately after a succesfull PM property has been applied
 	//************RemoveMarksFromTransform*****************************************
 	removeClassStartNodeAndDiscendence('taken',PActx.$transform);
-	//************select***********
+	//************Post select***********
 	//post selection must happen only if the operand was selected
 	if( PActx && PActx.$operand && PActx.$operand.parent().find('.selected').length != 0){
 		let $markedAsSelected = searchForMarkedInSubtree(PActx.$transform,"s",'p')//??? "p"
@@ -499,9 +489,9 @@ function PMclean(PActx){
 			$markedAsSelected.addClass('selected');
 		}
 	}
+	//************Post cleanup***********
 	if(PActx.$transform){
 	    PActx.$transform.find('[data-atom].PMclone').addBack().each(function(){
-
 	    	let postMarks = ATOMSmarkUnmark($(this),undefined,"p");
 	    	if(postMarks.indexOf('c') != -1){// is "c" one of the post markings?
 				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
@@ -523,17 +513,18 @@ function PMclean(PActx){
 
 
 
+
 function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)
 {
 	//per Try://cloneOrderMatch(PActx,true,false,true)
 	//
-	//se order = true, deve passare PActx.$newProp
+	//se order = true, deve passare PActx.$cloneProp
 	//************Imposta valori di default************
 	if(clone==undefined){clone=true};
 	if(order==undefined){order=true};
 	var $span //span è l'ambito sul quale effettuare le sostituzioni
 	if(replaceInPatternOnly){$span=PActx.$pattern}
-	else{$span=PActx.$newProp};
+	else{$span=PActx.$cloneProp};
 	//************Clona il Pattern*********************
 	if(clone){
 		//???? come faccio a clonare e ad ottenere i nuovi riferimenti a span, pattern e match?
@@ -573,6 +564,7 @@ function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)
     }
     //************Cleanup*******************************************************************
  	PActx.lineList.remove()
+	PActx.$operand.removeClass('expandedAsTree');
     if(clone && debugMode){
 			//clone remove: per ora avviene all'esterno
 	}
@@ -588,7 +580,7 @@ function adaptMatch(PActx,$Input, $Pattern, $span) {//Try: si può limitare al m
 	//deve contenere il $pattern altrimenti in alcuni casi ci potrebbero essere incongruenze.
 	//Se $span non è forAll si possono comunque indicare parametri secondo la
 	//convenzione sui nomi:x_ x__
-	//se $span è undefined, usa l'intera proprietà PActx.$newProp
+	//se $span è undefined, usa l'intera proprietà PActx.$cloneProp
 	//Try: per provare se la prop è applicabile si può limitare al minimo lo span:
 	// adaptMatch(undefined,$Input, $Pattern, $Pattern) : sto solo comparando due espressioni
 	
@@ -609,7 +601,7 @@ function adaptMatch(PActx,$Input, $Pattern, $span) {//Try: si può limitare al m
     var currPattMatch=true//nel caso non ci siano pattern allora match!
     if($span==undefined){
     	spanIsProp = true;
-    	$span=PActx.$newProp;
+    	$span=PActx.$cloneProp;
     }
     while ($Pattern[patternIndex] != undefined) {
         var $resList = $()
@@ -685,7 +677,7 @@ function adaptMatch(PActx,$Input, $Pattern, $span) {//Try: si può limitare al m
 				})
 				var $updatedProp = replaceInForall($($Pattern[patternIndex]),$resList,$span)
 				//if(spanIsProp){PActx.newProp=$updatedProp}//lo span va aggiornato nel PActx?
-				PActx.$newProp=$updatedProp
+				PActx.$cloneProp=$updatedProp
 			}
 			else{
 				//NO OVERKILL: non sotituire quando non è necessario

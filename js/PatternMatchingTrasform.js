@@ -202,25 +202,25 @@ function levelsToAncestor($marked,$patternMember){
 }
 
 
-function findPropByName(propName){
+function findPMPropByName(propName){
 	return	$prop = $('[data-tag=' + propName + ']') 
 }
 
 function swapMembersClone($origProp,mode){
-    var res = {foundTF:false, msg:"", $newProp: "",visualization:""}
+    var res = {foundTF:false, msg:"", $cloneProp: "",visualization:""}
     
     //********* CLONA prop ************************************************
     var propCdsClass = $origProp.attr('data-atom');
     //createForThis($forall,$placeHolder)//todo: utilizzare stessa funzione rispetto a forThis manuale
-    res.$newProp = ATOMclone($origProp);
+    res.$cloneProp = ATOMclone($origProp);
     res.visualization =    wrapUnwrapUrlString( $origProp[0].style.backgroundImage ,'cutFirstDir')
-    if(debugMode){$('#telaRole').append(res.$newProp)}//debug 
-    //ExtendAndInitializeTree(res.$newProp);
-    ATOMextend(res.$newProp,true)
+    if(debugMode){$('#telaRole').append(res.$cloneProp)}//debug 
+    //ExtendAndInitializeTree(res.$cloneProp);
+    ATOMextend(res.$cloneProp,true)
     //***********marca TUTTI I CLONI clone ************************************************
-    res.$newProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone
+    res.$cloneProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone
 
-    //res.$newProp.find('[data-atom]').addBack().each(function(){
+    //res.$cloneProp.find('[data-atom]').addBack().each(function(){
 	    	//if(ATOMSmarkUnmark($(this),undefined,"p") == "c"){
 				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
 	    		//$(this).addClass('cleanifpointless');
@@ -229,16 +229,16 @@ function swapMembersClone($origProp,mode){
     //***********trova l'equazione ************************************************
     var $equation
     if( propCdsClass === "forAll" ){
-        res.$newProp.addClass('waiting'); //metti il clone in stato waiting
-        res.$newProp.removeClass('collapsed medium');
-        $equation = GetforAllContent(res.$newProp).children();
+        res.$cloneProp.addClass('waiting'); //metti il clone in stato waiting
+        res.$cloneProp.removeClass('collapsed medium');
+        $equation = GetforAllContent(res.$cloneProp).children();
     }
     else{
-        $equation = res.$newProp;
+        $equation = res.$cloneProp;
     }
     if ( $equation.attr('data-atom') !== "eq"){// todo: controllare che ci sia una relazione transitiva
         res.msg= "no equation found in this prop: " + $equation.attr('data-atom')
-        if(debugMode){res.$newProp.remove()}//debug 
+        if(debugMode){res.$cloneProp.remove()}//debug 
         return res
     }
     else{// proprietà correttamente trovata
@@ -260,71 +260,3 @@ function swapMembersClone($origProp,mode){
     //else{//futuribile: ricava n-esimo ed m-esimo membro di eq a=b=n=m };
     return res
 }
-/*
-function findSwapMembersClone(propName,mode){
-    var res = {foundTF:false, msg:"", $newProp: "",visualization:""}
-    //********** trova prop ********************************************** 
-    
-    //var $prop = searchForProperty("name",propName,"prop") vecchio formato
-	var	$prop = $('[data-tag=' + propName + ']') 
-    if( $prop.length == 0){ 
-    	console.log('property not found:' + propName)
-        res.msg="unknown property: " + propName;
-        if(debugMode){
-            //throw({'unknown property': propName })
-        }
-        return res
-    };
-    //********* CLONA prop ************************************************
-    var propCdsClass = $prop.attr('data-atom');
-    //createForThis($forall,$placeHolder)//todo: utilizzare stessa funzione rispetto a forThis manuale
-    res.$newProp = ATOMclone($prop);
-    res.visualization =    wrapUnwrapUrlString( $prop[0].style.backgroundImage ,'cutFirstDir')
-    if(debugMode){$('#telaRole').append(res.$newProp)}//debug 
-    //ExtendAndInitializeTree(res.$newProp);
-    ATOMextend(res.$newProp,true)
-    //***********marca TUTTI I CLONI clone ************************************************
-    res.$newProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone
-
-    //res.$newProp.find('[data-atom]').addBack().each(function(){
-	    	//if(ATOMSmarkUnmark($(this),undefined,"p") == "c"){
-				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
-	    		//$(this).addClass('cleanifpointless');
-	    	//}
-    //}); 
-    //***********trova l'equazione ************************************************
-    var $equation
-    if( propCdsClass === "forAll" ){
-        res.$newProp.addClass('waiting'); //metti il clone in stato waiting
-        $equation = GetforAllContent(res.$newProp).children();
-    }
-    else{
-        $equation = res.$newProp;
-    }
-    if ( $equation.attr('data-atom') !== "eq"){// todo: controllare che ci sia una relazione transitiva
-        res.msg= "no equation found in this prop: " + $equation.attr('data-atom')
-        if(debugMode){res.$newProp.remove()}//debug 
-        return res
-    }
-    else{// proprietà correttamente trovata
-        res.foundTF = true;
-    }
-    
-
-    //*********** determina primo e secondo membro************
-    // a seconda di "mode" costruisci la giusta equazione.
-    if(mode === "rtl"){
-        var $firstMember = $equation[0].ATOM_getRoles('.firstMember');
-        var $secondMember = $equation[0].ATOM_getRoles('.secondMember');
-        var $firstMemberContent = $firstMember.children().remove();
-        var $secondMemberContent = $secondMember.children().remove();
-        $firstMember.append($secondMemberContent);
-        $secondMember.append($firstMemberContent);
-    }
-    else{ }// if(mode === "ltr") l'equazione è già pronta'
-    //else{//futuribile: ricava n-esimo ed m-esimo membro di eq a=b=n=m };
-    return res
-}
-
-
-*/

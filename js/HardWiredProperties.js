@@ -4,7 +4,7 @@ function newPActx(){
 	//$transform deve contenere il più grande elemento trasformato
 	return {matchedTF:false,
 		msg:"",visualization:"",
-		$newProp: undefined ,
+		$cloneProp: undefined ,
 		$pattern: undefined,
 		$operand: undefined,
 		$transform: undefined,//must be the the biggest element changed, his parent will be considered when upadating infix ecc..
