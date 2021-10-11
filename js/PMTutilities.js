@@ -334,8 +334,8 @@ function ATOMappendInABSPosition($atom,$refATOM,relativePosition){
 } 
 
 
-//  InstructAndTryOnePMTByName("name",actionString,firstValString)
-function InstructAndTryOnePMTByName(propName, $par1 ,firstVal,justTry){
+//  TryOnePMTByName("name",actionString,firstValString)
+function TryOnePMTByName(propName, $par1 ,firstVal,justTry){
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
     //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
     //"apre un fascicolo" e tenta di "dare seguito" all'ordine
@@ -367,9 +367,7 @@ function InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry){//instruct pra
     //********** Adapt Match ******************************************************
     //cerca di far coincidere il primo membro con il mio operando
     overwriteFromHeader(PActx.$cloneProp)
-    PActx = cloneOrderMatch(PActx,false,true,justTry)
-    //PActx.$transform = PActx.$equation[0].ATOM_getRoles('.secondMember').children();// !!!!!  non mi piace, perchè trasform non viene ricavato dal PActx?
-    
+    PActx = orderMatch(PActx,true,justTry)
     if( PActx.matchedTF){
 		/* todo: se alla fine di tutte le sostituzioni di parametri, ne rimane qualcuno solo nel transform 
 		allora quella è una variabile libera, direi ininfluente, come quelle da specificare quando da un forall
@@ -514,25 +512,14 @@ function PMcleanAndPost(PActx){
 
 
 
-function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)
-{
-	//per Try://cloneOrderMatch(PActx,true,false,true)
-	//
+function orderMatch(PActx,order,replaceInPatternOnly){
 	//se order = true, deve passare PActx.$cloneProp
 	//************Imposta valori di default************
-	if(clone==undefined){clone=true};
 	if(order==undefined){order=true};
 	var $span //span è l'ambito sul quale effettuare le sostituzioni
 	if(replaceInPatternOnly){$span=PActx.$pattern}
 	else{$span=PActx.$cloneProp};
-	//************Clona il Pattern*********************
-	if(clone){
-		//???? come faccio a clonare e ad ottenere i nuovi riferimenti a span, pattern e match?
-		//il clonaggio non va fatto qui, ma a monte 
-		var $pattern = ATOMclone(PActx.$pattern);
-		ATOMextend($pattern, true);
-	}
-	else{var $pattern = PActx.$pattern}
+	$pattern = PActx.$pattern
 	if (debugMode) {//show input beside pattern
 		ATOMappendInABSPosition($span,PActx.$operand,"beside")
 	}
@@ -565,7 +552,7 @@ function cloneOrderMatch(PActx,clone,order,replaceInPatternOnly)
     //************Cleanup*******************************************************************
  	PActx.lineList.remove()
 	PActx.$operand.removeClass('expandedAsTree');
-    if(clone && debugMode){
+    if(debugMode){
 			//clone remove: per ora avviene all'esterno
 	}
     

@@ -96,8 +96,10 @@ function lookForResultAndCelebrate() {
 function compareWithResult($expression, $result) {
 	var MyPActx = newPActx();
 	MyPActx.$operand = $expression;
-	MyPActx.$pattern = $result;
-	return cloneOrderMatch(MyPActx, true, false, true).matchedTF
+	//compare with a clone of the result
+	MyPActx.$pattern = ATOMclone($result);
+	ATOMextend(MyPActx.$pattern, true);
+	return orderMatch(MyPActx, false, true).matchedTF
 }
 
 function getCol(matrix, col) {
