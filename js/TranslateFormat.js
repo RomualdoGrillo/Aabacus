@@ -13,8 +13,6 @@ function ATOMfactorizeMinus($startNode) {
 	var $clone = ATOMclone(prototype);
 	var $cloneMinus = ATOMclone(prototypeMinus);
 	$clone.attr('data-atom', 'cn');
-	ExtendAndInitializeTree($clone);
-	ExtendAndInitializeTree($cloneMinus);
 	$clone[0].ATOM_setName("1");
 	$cloneMinus.insertAfter($startNode);
 	$cloneMinus[0].ATOM_getRoles().append($clone);
@@ -141,7 +139,6 @@ function ATOMtranslateFormat(mode,$startNode,applyToSubtreeAlso){//translate fro
 		var prototype=prototypeSearch("ci","num");//aggiungi un fattore "-1"
 		$clone = ATOMclone(prototype);
 		$clone.attr('data-atom','cn');
-		ExtendAndInitializeTree($clone);
 		$clone[0].ATOM_setName("1");
 		$clone.addClass('minus');
 		$clone.insertAfter($startNode);

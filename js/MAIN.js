@@ -267,7 +267,6 @@ function dblclickHandler(event) {
 			else{
 				var type = $toBeSpecified.attr('data-type')
 				$newNode = ATOMclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
-				ExtendAndInitializeTree($newNode);
 				$newNode[0].ATOM_setName(newVal);
 				$newNode.attr('data-type', type)
 			}
@@ -381,7 +380,6 @@ function refreshAndReplace(PActx) {
 		$toBeRefreshed = ATOMparent(PActx.$operand)
 		PActx.$transform.insertBefore(PActx.$operand[0]);
 		PActx.$operand.remove()
-		ExtendAndInitializeTree(PActx.$transform);
 		//********select on exit
 		//$('*').removeClass('selected')
 		//$(PActx.$transform[0]).addClass('selected')	

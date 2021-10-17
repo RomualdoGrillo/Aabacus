@@ -215,7 +215,6 @@ function swapMembersClone($origProp,mode){
     res.$cloneProp = ATOMclone($origProp);
     res.visualization =    wrapUnwrapUrlString( $origProp[0].style.backgroundImage ,'cutFirstDir')
     if(debugMode){$('#telaRole').append(res.$cloneProp)}//debug 
-    //ExtendAndInitializeTree(res.$cloneProp);
     ATOMextend(res.$cloneProp,true)
     //***********marca TUTTI I CLONI clone ************************************************
     res.$cloneProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone

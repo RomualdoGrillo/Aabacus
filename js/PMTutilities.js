@@ -16,21 +16,6 @@ function markOriginalPositionInSubtree($root){
 }
 */
 
-// attenzione, non serve passare la "proprietà" (cioè il forall)
-// ma si deve prima inferire dalla proprietà i tipi di parametri
-// overwriteFromHeader($property)
-function Try($Input, $originalPattern) {
-    //Try: opera su cloni analizza gli input senza modificarli
-    var PActx;
-    var $pattern = ATOMclone($originalPattern);
-    ATOMextend($pattern, true);
-   	$('body').append($pattern);
-    PActx = adaptMatch(PActx,$Input,$pattern)
-    // CLEANUP clones
-    $pattern.remove()
-    return PActx
-}
-
 
 
 

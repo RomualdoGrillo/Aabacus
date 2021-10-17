@@ -56,6 +56,5 @@ ssnapshot.paste = function(){
 	if(ssnapshot.clipBoard.length != 0){
 		var $newCds = ATOMclone( ssnapshot.clipBoard );
 		$(".selected").replaceWith( $newCds );
-		ExtendAndInitializeTree( $newCds );
 	}
 }
