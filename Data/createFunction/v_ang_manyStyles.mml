@@ -1,0 +1,61 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<eq>
+		</eq>
+		<ci type="num">v</ci>
+		<apply type="num">
+			<divide>
+			</divide>
+			<apply type="num">
+				<times>
+				</times>
+				<cn type="num">2</cn>
+				<ci type="num">π</ci>
+				<ci type="num">r</ci>
+			</apply>
+			<ci type="num">T</ci>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<eq>
+		</eq>
+		<ci type="num">v</ci>
+		<apply type="num">
+			<times>
+			</times>
+			<apply type="num">
+				<divide>
+				</divide>
+				<apply type="num">
+					<times>
+					</times>
+					<cn type="num">2</cn>
+					<ci type="num">π</ci>
+				</apply>
+				<ci type="num">T</ci>
+			</apply>
+			<ci type="num">r</ci>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<eq>
+		</eq>
+		<ci type="num">v</ci>
+		<apply type="num">
+			<times>
+			</times>
+			<apply type="num">
+				<times>
+				</times>
+				<cn type="num">2</cn>
+				<ci type="num">π</ci>
+				<apply type="num">
+					<m_inverse>
+					</m_inverse>
+					<ci type="num">T</ci>
+				</apply>
+			</apply>
+			<ci type="num">r</ci>
+		</apply>
+	</apply>
+</math>

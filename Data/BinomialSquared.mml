@@ -1,0 +1,50 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<forall>
+		</forall>
+		<bvar>
+			<ci type="num">x</ci>
+		</bvar>
+		<bvar>
+			<ci type="num">y</ci>
+		</bvar>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<power>
+				</power>
+				<apply type="num">
+					<plus>
+					</plus>
+					<ci type="num">x</ci>
+					<ci type="num">y</ci>
+				</apply>
+				<cn type="num">2</cn>
+			</apply>
+			<apply type="num">
+				<plus>
+				</plus>
+				<apply type="num">
+					<power>
+					</power>
+					<ci type="num">x</ci>
+					<cn type="num">2</cn>
+				</apply>
+				<apply type="num">
+					<times>
+					</times>
+					<cn type="num">2</cn>
+					<ci type="num">x</ci>
+					<ci type="num">y</ci>
+				</apply>
+				<apply type="num">
+					<power>
+					</power>
+					<ci type="num">y</ci>
+					<cn type="num">2</cn>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+</math>
