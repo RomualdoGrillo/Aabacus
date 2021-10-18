@@ -109,7 +109,7 @@ function MNODE_dissolveContainer() {
   return $children;
 }
 
-//per creazione automatica def: $(".SelectedDef")[0]MNODECreateDefinition()
+//per creazione automatica def: $(".selected")[0].MNODECreateDefinition()
 function MNODECreateDefinition(startNode) {
   if (startNode == undefined) {
     startNode = this;
@@ -119,12 +119,15 @@ function MNODECreateDefinition(startNode) {
     prototypeSearch("eq", "bool", undefined, "asymmetric")
   ); //crea una nuova definizine
   //*********************** definendum **********************
+  //attuale)al momento vengono inseriti n ruoli singoli quanti sono i parametri
+  //alternativa)in altermnativa si potrebbe una lista ordinata, ma si dovrebbe introdurre un modo
+  //per specificare separatamente il datatype di ogni elemento della lista
   var $definendum = MNODEclone(prototypeSearch("function"));
   $definendum.attr("data-type", outType);
   m1 = $newDef.find(".firstMember"); //trova primo membro
   newName = prompt("Enter a new name");
-  $definendum.attr("data-atom", newName);
-  $definendum.append(newName);
+  $definendum.attr("data-atom",newName);
+  $definendum.find(".name").append(newName);
   m1.append($definendum); //aggiungi contenuto al primo membro ed inseriscilo
   //*********************** definens **********************
   $definens = MNODEclone($(startNode));
@@ -134,34 +137,7 @@ function MNODECreateDefinition(startNode) {
   var $parList = $definens.find(".unselected");
 
   if ($parList.length > 0) {
-    let paramDefNames = [
-      "x",
-      "y",
-      "z",
-      "t",
-      "k",
-      "p",
-      "q",
-      "a",
-      "b",
-      "c",
-      "d",
-      "e",
-      "f",
-      "g",
-      "h",
-      "i",
-      "l",
-      "m",
-      "n",
-      "o",
-      "q",
-      "r",
-      "s",
-      "u",
-      "v",
-      "z",
-    ];
+    let paramDefNames = ["x","y","z","t","k","p","q","a","b","c","d","e","f","g","h","i","l","m","n","o","q","r","s","u","v","z",];
     $newforAll = MNODEclone(prototypeSearch("forall")); //clona for each
     MNODEextend($newforAll);
     $("#telaRole").append($newforAll); //todo:scegliere dove deve essere visibile la nuova definizione
