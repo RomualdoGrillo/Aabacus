@@ -13,7 +13,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	/******** from targrt to Atom target *************/
 	
 	let $atomTarget
-	if (ATOMclosedDef($(event.target))) {
+	if (MNODEclosedDef($(event.target))) {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
 	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
@@ -22,7 +22,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	GLBDnD.toolWhenMousedown = GLBtool;
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
 		//********* autoAdapt ****************
-		if (ATOMclosedDef($(event.target))) {
+		if (MNODEclosedDef($(event.target))) {
 			GLBDnD.$originalProperty = $(event.target).closest('[data-atom=forAll]');
 			if(GLBDnD.$originalProperty.length==0){return};
 			let $forallContent=GetforAllContent(GLBDnD.$originalProperty);
@@ -48,7 +48,7 @@ function MakeSortableAndInjectMouseDown(event) {
 			//no forall property
 		}
 	}
-	else if (GLBDnD.toolWhenMousedown == 'copy' || !ATOMclosedDef($(event.target)) || $(event.target).is('#tavolozza>*')) {
+	else if (GLBDnD.toolWhenMousedown == 'copy' || !MNODEclosedDef($(event.target)) || $(event.target).is('#tavolozza>*')) {
 		//*********from opened****************
 		
 		//make targets sortable
@@ -81,7 +81,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		//make source sortable
 		let sort
 		if(GLBDnD.toolWhenMousedown==""){//if mode is normal
-			sort = $atomTarget[0].parentElement.matches('.ul_role') || !ATOMclosedDef($atomTarget);		
+			sort = $atomTarget[0].parentElement.matches('.ul_role') || !MNODEclosedDef($atomTarget);		
 		}
 		else{//never sort in "autoAdapt" or "copy" mode
 			sort=false;
@@ -117,10 +117,10 @@ function startHandlerMouseDown(event, AtomDragged) {
 }
 
 function onAdd(event) {
-	//replacing sortablejs defaul clone with myClone (removed id, extends ATOM etc..)
+	//replacing sortablejs defaul clone with myClone (removed id, extends MNODE etc..)
 	//item stays in place myclone dropped in new place
 	event.item.classList.remove('showAsPlaceholder');
-	let myClone = ATOMclone($(event.item))[0]
+	let myClone = MNODEclone($(event.item))[0]
 	//
 	event.item.classList.remove('toBeCloned');
 	event.item.replaceWith(myClone)
@@ -156,7 +156,7 @@ function onAdd(event) {
 		if (targetProperty == 'dragPatternMatch') {
 			
 			
-			let PActx = InstructAndTryOnePMT(GLBDnD.$originalProperty, ATOMparent($(event.to)), GLBDnD.direction)
+			let PActx = InstructAndTryOnePMT(GLBDnD.$originalProperty, MNODEparent($(event.to)), GLBDnD.direction)
 			PActx.msg = GLBDnD.$originalProperty.closest('[data-tag]').attr('data-tag')
 			PActxConclude(PActx)
 		}

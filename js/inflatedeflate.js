@@ -1,19 +1,19 @@
 var leafTags = ["cn", "ci", "csymbol"];
 
-function createMathmlString($ATOMs, describeDataType, neglectRootSign) {
+function createMathmlString($MNODEs, describeDataType, neglectRootSign) {
 	var from_to
 	if (describeDataType) {
 		from_to = "aab_mmlWithType"
 	} else {
 		from_to = "aab_mml"
 	}
-	var $convertedTree = createConvertedTree($ATOMs, from_to, neglectRootSign);
+	var $convertedTree = createConvertedTree($MNODEs, from_to, neglectRootSign);
 	return $.trim($convertedTree.parent().html())
 	//return formatXml($convertedTree.parent().html())
 
 }
 
-function ATOM_createMathmlString(describeDataType, neglectRootSign) {
+function MNODE_createMathmlString(describeDataType, neglectRootSign) {
 	var from_to
 	if (describeDataType) {
 		from_to = "aab_mmlWithType"
@@ -36,18 +36,18 @@ function createConvertedTree(startNode, from_to, neglectRootSign) {
 	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
 		//deflate todo: completare distinzione tra mml e mml + type
 
-		//estendi tutti i nodi ATOM
+		//estendi tutti i nodi MNODE
 		$thisClone.parent().find('[data-atom]').each(function(i, node) {
 			$.extend(node, atom)
 		})
 
 		//signsAsClassesSubtree($thisClone,"SignsAsClasses_to_MinusOp")// converti in modo che il segno meno sia una operazione applicata al nodo
-		//sostituisci tutti i nodi ATOM
+		//sostituisci tutti i nodi MNODE
 		$thisClone.parent().find('[data-atom]').each(function(i, node) {
 			if (i == 0) {
-				ReplaceOneATOM(node, from_to, neglectRootSign);
+				ReplaceOneMNODE(node, from_to, neglectRootSign);
 			} else {
-				ReplaceOneATOM(node, from_to, false);
+				ReplaceOneMNODE(node, from_to, false);
 				//never neglect sign if not root 
 			}
 		})
@@ -56,7 +56,7 @@ function createConvertedTree(startNode, from_to, neglectRootSign) {
 		//ottieni l'elenco dei nodi' da sostituire
 		$thisClone.parent().find('apply,cn,ci,bind,math').each(function(i, node) {
 			//console.log(node);
-			ReplaceOneATOM(node, from_to);
+			ReplaceOneMNODE(node, from_to);
 		})
 		//signsAsClasses($containerForClone.children(),"MinusOp_to_SignsAsClasses"); // converti root node
 		//signsAsClassesSubtree($containerForClone.children(),"MinusOp_to_SignsAsClasses");	// converti il resto dell'albero'	
@@ -64,11 +64,11 @@ function createConvertedTree(startNode, from_to, neglectRootSign) {
 	return $containerForClone.children()
 }
 
-function ReplaceOneATOM(node, from_to, neglectSign) {
+function ReplaceOneMNODE(node, from_to, neglectSign) {
 	//node is HTML node
 	var $newNode
 	var dataType
-	var ATOMtype
+	var MNODEtype
 	var isMinimized
 	var isMedium
 	var dataTag
@@ -76,7 +76,7 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 	var title
 	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
 		dataType = $(node).attr('data-type')
-		ATOMtype = $(node).attr('data-atom')
+		MNODEtype = $(node).attr('data-atom')
 		title = $(node).attr('title')
 		
 		if( $(node).attr('data-tag') ) {
@@ -90,25 +90,25 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 		if (!neglectSign) {//signsAsClasses($(node),"SignsAsClasses_to_MinusOp") // converti   	
 		}
 		var nodeText = ""
-		if (leafTags.indexOf(ATOMtype.toLowerCase()) !== -1) {
+		if (leafTags.indexOf(MNODEtype.toLowerCase()) !== -1) {
 			//if [cn;ci;csymbol] then the content is the text, else some role must be present
-			nodeText = node.ATOM_getName(true);
-			$newNode = $('<' + ATOMtype.toLowerCase() + '/>');
+			nodeText = node.MNODE_getName(true);
+			$newNode = $('<' + MNODEtype.toLowerCase() + '/>');
 			$newNode.text(nodeText)
 		} else {
 			/*
-			var $role= node.ATOM_getRoles();
+			var $role= node.MNODE_getRoles();
 			var $bVarChildren=$role.filter('.bVar_role').children().filter('[data-atom]')// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
 			var $nobBvarchildren=$role.not('.bVar_role').children().filter('[data-atom]')
 			*/
-			var $bVarChildren = node.ATOM_getRoles('.bVar_role').children().filter('[data-atom]')
+			var $bVarChildren = node.MNODE_getRoles('.bVar_role').children().filter('[data-atom]')
 			// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
-			var $nobBvarchildren = node.ATOM_getRoles(':not(.bVar_role)').children().filter('[data-atom]')
-			var $htmlDivChildren = node.ATOM_getRoles(':not(.bVar_role)').children().filter(':not([data-atom])').filter('.saveAsHtml')
+			var $nobBvarchildren = node.MNODE_getRoles(':not(.bVar_role)').children().filter('[data-atom]')
+			var $htmlDivChildren = node.MNODE_getRoles(':not(.bVar_role)').children().filter(':not([data-atom])').filter('.saveAsHtml')
 			//salvo ciò che è .saveAsHtmlL
 			$newNode = $('<apply></apply>')
 			$newNode.text(nodeText)
-			$newNode.append('<' + ATOMtype + '/>')
+			$newNode.append('<' + MNODEtype + '/>')
 			$newNode.append($bVarChildren.wrap('<bvar>').parent());
 			$newNode.append($nobBvarchildren);
 			$newNode.append($htmlDivChildren);
@@ -167,20 +167,20 @@ function ReplaceOneATOM(node, from_to, neglectSign) {
 			//console.log(tag)
 			var $prototype = prototypeSearch(tag, $(node).attr("type"),undefined,nodeText)
 			if($prototype.length==0){console.log('prototype not found prototypeSearch()');console.log([tag, $(node).attr("type"),undefined,nodeText])}
-			$newNode = ATOMclone($prototype)
-			ATOMextend($newNode)
+			$newNode = MNODEclone($prototype)
+			MNODEextend($newNode)
 			// extend the new node
 			if (leafTags.indexOf(tag.toLowerCase()) !== -1) {
 				//todo: eccezione if leafTag with children
 				try {
-					$newNode[0].ATOM_setName($(node).text());
+					$newNode[0].MNODE_setName($(node).text());
 				} catch (err) {
 					console.log('error on prototype '+tag+" "+ $(node).attr("type"))
 				}
 				//signsAsClasses($newNode,"SignsInNames_to_SignsAsClasses"); //convert to_signs_as_classes 
 			} else {
 				//append children in roles
-				var $tgtRoles = $newNode[0].ATOM_getRoles()
+				var $tgtRoles = $newNode[0].MNODE_getRoles()
 				var $bVarRole = $tgtRoles.filter('.bVar_role');
 				var $noBVarRole = $tgtRoles.not('.bVar_role');
 				$newNode.prepend(nodeText);

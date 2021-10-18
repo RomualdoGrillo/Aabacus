@@ -97,8 +97,8 @@ function compareWithResult($expression, $result) {
 	var MyPActx = newPActx();
 	MyPActx.$operand = $expression;
 	//compare with a clone of the result
-	MyPActx.$pattern = ATOMclone($result);
-	ATOMextend(MyPActx.$pattern, true);
+	MyPActx.$pattern = MNODEclone($result);
+	MNODEextend(MyPActx.$pattern, true);
 	return orderMatch(MyPActx, false, true).matchedTF
 }
 
@@ -135,7 +135,7 @@ function getOffset( el ) {
 }
 function getPositionsOfChildren($parentAtom){
 	let arr =[]
-	arr = $parentAtom[0].ATOM_getChildren().toArray()
+	arr = $parentAtom[0].MNODE_getChildren().toArray()
 	for(i=0;arr[i];i++){
 		arr[i]=getOffset(arr[i])
 	}
@@ -171,11 +171,11 @@ function dummyParser(string){
 	else if(splittedgt.length==2){splitted=splittedgt; op='gt'}
 	else if(splittedeq.length==2){splitted=splittedeq; op='eq'}
 	if(op){
-		let $operation = ATOMclone( prototypeSearch(op) )
+		let $operation = MNODEclone( prototypeSearch(op) )
 		let first = identifierToAtom(splitted[0]);
 		let second = identifierToAtom(splitted[1]);
-		$operation[0].ATOM_getRoles('.firstMember').append(first)
-		$operation[0].ATOM_getRoles('.secondMember').append(second)
+		$operation[0].MNODE_getRoles('.firstMember').append(first)
+		$operation[0].MNODE_getRoles('.secondMember').append(second)
 		return $operation
 	}
 }
@@ -189,8 +189,8 @@ function identifierToAtom(string){
 	else{
 		atomType = 'cn'
 	}
-	$clone = ATOMclone( prototypeSearch("cn","num") )
-	$clone[0].ATOM_setName(string);
+	$clone = MNODEclone( prototypeSearch("cn","num") )
+	$clone[0].MNODE_setName(string);
 	$clone.attr('data-atom', atomType);//uso un generico prototipo num e qui specifico se cn o ci
 	return	$clone
 }

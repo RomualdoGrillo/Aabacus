@@ -1,6 +1,6 @@
 //UI Event to function call
 //traduce i comandi dell'utente, in questo caso inpartiti via mouse e tastiera,
-// in chiamate a funzioni del modulo ATOM
+// in chiamate a funzioni del modulo MNODE
 
 
 
@@ -12,8 +12,8 @@ function keyboardEvToFC($atom, keyPressed){
 		var actionString
 		var firstValString
 		try {
-    		actionString = $actions[i].ATOM_getRoles('.function').children()[0].ATOM_getName();
-			firstValString = $actions[i].ATOM_getRoles('.values').children()[0].ATOM_getName();	
+    		actionString = $actions[i].MNODE_getRoles('.function').children()[0].MNODE_getName();
+			firstValString = $actions[i].MNODE_getRoles('.values').children()[0].MNODE_getName();	
 		}
 		catch(err) {}
 		if( firstValString === "int" ){	//chiamata ad una funzione interna
@@ -48,15 +48,15 @@ function directCall(key){
 function searchEventHandler(event){// trova la definizione della proprietà
    var res
    var $found = $('#events').find('[data-atom="eventtoaction"]').filter(function(index){
-        var $role = this.ATOM_getRoles('.event');
+        var $role = this.MNODE_getRoles('.event');
         if($role.length !== 1){
             console.warn('Role not found' + field);
             res = $()
             return res
         }
-        var ATOM = $role.children()[0]
-        if( ATOM !== undefined){
-            return ATOM.ATOM_getName().toLowerCase() === event.toLowerCase()//case insensitive
+        var MNODE = $role.children()[0]
+        if( MNODE !== undefined){
+            return MNODE.MNODE_getName().toLowerCase() === event.toLowerCase()//case insensitive
         }
         else{
         	res = $()
@@ -64,7 +64,7 @@ function searchEventHandler(event){// trova la definizione della proprietà
         }
     })
     if ($found.length !== 0){
-        res = $found[0].ATOM_getRoles('.actions').children()
+        res = $found[0].MNODE_getRoles('.actions').children()
     }
     else{ res = $()}
     return  res
@@ -80,14 +80,14 @@ function searchForProperty(field,value,returnedField){
 	let candidates = Array.from( tela.querySelectorAll('[data-atom=deftrue]') );
 	let i=0;
 	while(candidates[i]){
-		let $role = candidates[i].ATOM_getRoles().filter('.' + field)
+		let $role = candidates[i].MNODE_getRoles().filter('.' + field)
 		if($role.length !== 1){
 			console.warn('Role not found' + field);
 		}
-		let ATOMvalue = $role.children()[0]
-		if(ATOMvalue !== undefined && ATOMvalue.ATOM_getName().toLowerCase() === value.toLowerCase() ){
+		let MNODEvalue = $role.children()[0]
+		if(MNODEvalue !== undefined && MNODEvalue.MNODE_getName().toLowerCase() === value.toLowerCase() ){
 		    //case insensitive
-        	return   $( candidates[i].ATOM_getRoles().filter("." + returnedField ).children()[0] ) 
+        	return   $( candidates[i].MNODE_getRoles().filter("." + returnedField ).children()[0] ) 
 		}	
 	i++}
 }

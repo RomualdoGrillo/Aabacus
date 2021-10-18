@@ -7,10 +7,10 @@
 
 function $PropositionDownstreamRec($startAtom){
 //testing
-//$PropositionDownstreamRec($('.selected')).each(function(){ATOMparent($(this)).addClass('selected')})
+//$PropositionDownstreamRec($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')})
 	let op = $startAtom.attr("data-atom");
 	let $startRole  = $startAtom.parent(); 
-	let $ParentAtom = ATOMparent($startAtom);
+	let $ParentAtom = MNODEparent($startAtom);
 	let $validRoles = $()
 	if( $ParentAtom.is('[data-atom=and]')){
 		$validRoles = $startRole;
@@ -21,7 +21,7 @@ function $PropositionDownstreamRec($startAtom){
 
 function $PropositionUpstreamRec($startAtom,$outerRoleLimit){
 //testing
-//$PropositionUpstreamRec($('.selected')).each(function(){ATOMparent($(this)).addClass('selected')});
+//$PropositionUpstreamRec($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')});
 
 	let op = $startAtom.attr("data-atom");
 	let $validRoles = $()
@@ -34,7 +34,7 @@ function $PropositionUpstreamRec($startAtom,$outerRoleLimit){
 	}
 	$validRoles = $parentRoles.map(function(){
 		if( this.matches('[data-atom=implies]>.s_role:nth-child(2)') ){
-			return ATOMparent($(this))[0].ATOM_getRoles()[0]//return the first role of the implies  	
+			return MNODEparent($(this))[0].MNODE_getRoles()[0]//return the first role of the implies  	
 		}
 		else if(this.matches('[data-atom=and]>.ul_role')){
 			let $roles = $AssRolesRec(undefined,false,$(this)).add($(this))
@@ -48,11 +48,11 @@ function $PropositionUpstreamRec($startAtom,$outerRoleLimit){
 
 function $AssRolesRec($startAtom,immediate,$startRole){
 //testing
-//$AssRolesRec($('.selected')).each(function(){ATOMparent($(this)).addClass('selected')})
+//$AssRolesRec($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')})
 	if(!$startRole){
 		$startRole  = $startAtom.parent();	
 	}
-	let $ParentAtom = ATOMparent($startAtom);
+	let $ParentAtom = MNODEparent($startAtom);
 	let op = $ParentAtom.attr("data-atom");
 	let $validRoles = $()
 	if( OpIsAssociative(op)){
@@ -90,12 +90,12 @@ function $AtomChildren($startNode){
 }
 */
 function $SameOpInOut($startRole){
-	let $startAtom = ATOMparent($startRole);
+	let $startAtom = MNODEparent($startRole);
 	let op = $startAtom.attr("data-atom");
 	let $validRoles = $startRole.find('>[data-atom='+op+']>.ul_role');
-	let $parentATOM = ATOMparent($startAtom);
-		if( $parentATOM.attr("data-atom") == op ){//parent
-		$validRoles = $validRoles.add($parentATOM[0].ATOM_getRoles())//children
+	let $parentMNODE = MNODEparent($startAtom);
+		if( $parentMNODE.attr("data-atom") == op ){//parent
+		$validRoles = $validRoles.add($parentMNODE[0].MNODE_getRoles())//children
 	}
 	return $validRoles
 }
@@ -103,7 +103,7 @@ function $PropositionLevelAndDownstream($startRole,limitTomove){
 	//limitTomove:true limit to roles you can move into (and associative)
 	let $validRoles = $();
 	if(!limitTomove && $startRole.is('[data-atom=implies]>:first-child') ){
-		$validRoles = ATOMparent($startRole).find('>.s_role:last')  
+		$validRoles = MNODEparent($startRole).find('>.s_role:last')  
 	}
 	else{
 		let $atoms = $startRole.find('[data-atom=and]')
@@ -112,10 +112,10 @@ function $PropositionLevelAndDownstream($startRole,limitTomove){
 		}
 	$validRoles = $atoms.map(function(){
 		if(this.matches('[data-atom=implies]')){
-			return this.ATOM_getRoles().toArray()	
+			return this.MNODE_getRoles().toArray()	
 		}
 		else{
-			return this.ATOM_getRoles().last()[0]}//last role is ok for forall an definition	
+			return this.MNODE_getRoles().last()[0]}//last role is ok for forall an definition	
 		})	
 	}
 	return $validRoles
@@ -125,11 +125,11 @@ function $PropositionUpstream($startRole){
 	//if you look for proposition that can be moved (not cloned) in $startRole
 	//that's not the right function 
 	let $validRoles = $();
-	let $startAtom = ATOMparent($startRole);
+	let $startAtom = MNODEparent($startRole);
 	let op = $startAtom.attr("data-atom");
-	let $ParentAtom = ATOMparent($startAtom);
+	let $ParentAtom = MNODEparent($startAtom);
 	let opP = $startAtom.attr("data-atom");
-	if(opP=="and" || opP=="implies"){$validRoles=$ParentAtom[0].ATOM_getRoles()}
+	if(opP=="and" || opP=="implies"){$validRoles=$ParentAtom[0].MNODE_getRoles()}
 	return $validRoles
 }
 
@@ -157,7 +157,7 @@ function highlightOccurrences($identifier){
 	//evidenzia lo span e le occorrenze dell'identificatore
 	var $span = $identifierSpan($identifier);
 	//todo: evidenzia lo span
-	var $occurrences = $ATOMParameterSearch($span,$identifier).not($identifier);
+	var $occurrences = $MNODEParameterSearch($span,$identifier).not($identifier);
 	$occurrences.each(function(){
 		// crea linee
 		lineAB($(this),$identifier)	

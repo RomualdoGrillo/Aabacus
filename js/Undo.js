@@ -12,7 +12,7 @@ function ssnapshot() {
 }
 
 ssnapshot.take = function(){
-		var $cloneTela = ATOMclone( $("#tela>.secondMember"),false )
+		var $cloneTela = MNODEclone( $("#tela>.secondMember"),false )
 		FILO.push($cloneTela)
 		
 		//----test------------------inserire due span in "index.html" per vedere i risultati
@@ -26,7 +26,7 @@ ssnapshot.take = function(){
 		//console.log($cloneTela)
 }
 
-ssnapshot.undo = function(){
+,  ssnapshot.undo = function(){
 		if (FILO.length > 1){
 			$(FILO.pop()).remove() // butta via l'ultima snapshot
 			var toBeRestored = FILO[FILO.length - 1].clone()// ripristina la penultima, in FILO devono essere presenti i cloni degli stati, non gli stati, altrimenti FILO.pop() distrugge stato
@@ -50,11 +50,11 @@ ssnapshot.undo = function(){
 }
 
 ssnapshot.copy = function(){
-	ssnapshot.clipBoard = ATOMclone($(".selected"));
+	ssnapshot.clipBoard = MNODEclone($(".selected"));
 }
 ssnapshot.paste = function(){
 	if(ssnapshot.clipBoard.length != 0){
-		var $newCds = ATOMclone( ssnapshot.clipBoard );
+		var $newCds = MNODEclone( ssnapshot.clipBoard );
 		$(".selected").replaceWith( $newCds );
 	}
 }

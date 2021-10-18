@@ -15,16 +15,16 @@ function primeFactorization(num){
   return (x === num) ? result : primeFactorization(num/x, result) ;
 }
 /*
-function ATOMgetNumber($ATOM){
-  var $elementUnderTest = $ATOM
+function MNODEgetNumber($MNODE){
+  var $elementUnderTest = $MNODE
   var sign = 1
   while( $elementUnderTest.attr('data-atom') === "minus" ){
     //passa all'elemento interno
-    $elementUnderTest = $elementUnderTest[0].ATOM_getRoles().children(':first');
+    $elementUnderTest = $elementUnderTest[0].MNODE_getRoles().children(':first');
     sign = sign * -1
   }
   if( $elementUnderTest.attr('data-atom') == "cn"){// se è un simbolo
-    var res = sign * Number($elementUnderTest[0].ATOM_getName()) 
+    var res = sign * Number($elementUnderTest[0].MNODE_getName()) 
   }
   else{
     res="NaN"
@@ -32,15 +32,15 @@ function ATOMgetNumber($ATOM){
   return res
 }
 */
-function ATOMNumericCdsAsText($ATOM){
-  var $elementUnderTest = $ATOM
+function MNODENumericCdsAsText($MNODE){
+  var $elementUnderTest = $MNODE
   var sign = 1
   while( $elementUnderTest.attr('data-atom') === "minus" ){
     //passa all'elemento interno
-    $elementUnderTest = $elementUnderTest[0].ATOM_getRoles().children(':first');
+    $elementUnderTest = $elementUnderTest[0].MNODE_getRoles().children(':first');
     sign = sign * -1
   }
-  var res = $elementUnderTest[0].ATOM_getName();
+  var res = $elementUnderTest[0].MNODE_getName();
   if( sign == -1 ){//se necessario aggiungi segno meno
     res = "-" + res
   }

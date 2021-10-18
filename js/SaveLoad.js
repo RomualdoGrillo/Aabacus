@@ -56,9 +56,9 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 }
 
 function returnTargetWrappedIfNeeded($targetNode,$toBeInserted){
-	if(  $targetNode.is('#telaRole') && (ATOMclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
+	if(  $targetNode.is('#telaRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
 		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
-		var $newDef = ATOMclone(prototypeSearch('eq','bool','asymmetric'));
+		var $newDef = MNODEclone(prototypeSearch('eq','bool','asymmetric'));
 		$newDef.removeClass("unlocked")//cio' che viene caticato e' di default unlocked
 		$newDef.insertBefore($toBeInserted.eq(0));
 		$target = $newDef.find(".secondMember")
@@ -82,7 +82,7 @@ function inject(MMLstring,$targetNode,doNotWrap)
 		$target = returnTargetWrappedIfNeeded($targetNode,$convertedTree)
 	}
 	ExtendAndInitializeTree($convertedTree);
-	var $refreshStartPoint = ATOMparent($convertedTree);
+	var $refreshStartPoint = MNODEparent($convertedTree);
 	if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
 	RefreshEmptyInfixBraketsGlued($refreshStartPoint,true,"eibg")
 	//insertHtmlByRef($targetNode)

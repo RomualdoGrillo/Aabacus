@@ -9,10 +9,10 @@ function refreshInfix($startNode,rootAndSubTree){//todo:obsoleta, sostituita con
 
 }
 
-function refreshOneInfix($ATOMnode){
-	if($ATOMnode[0].ATOM_getRoles === undefined){return}// invalid parameter
-	var $role=$ATOMnode[0].ATOM_getRoles();
-	var $ATOMchildren = $role.children().filter('[data-atom]');
+function refreshOneInfix($MNODEnode){
+	if($MNODEnode[0].MNODE_getRoles === undefined){return}// invalid parameter
+	var $role=$MNODEnode[0].MNODE_getRoles();
+	var $MNODEchildren = $role.children().filter('[data-atom]');
 	var $InfixChildren = $role.children().filter('.infix:not(.proto)');
 	var $infixProto = $role.find('>.infix.proto');
 	//procedura "cambia solo il necessario"
@@ -24,7 +24,7 @@ function refreshOneInfix($ATOMnode){
 		}
 	})
 	//per ogni elemento atom tranne il primo: se non sei preceduto da infix, aggiungine uno
-	$ATOMchildren.each(function(i,e){
+	$MNODEchildren.each(function(i,e){
 		if(i>0){
 			if(!$(e).prev().is('.infix:not(.proto)')){
 				//console.log(i);

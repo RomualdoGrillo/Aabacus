@@ -1,46 +1,46 @@
 // atoms.js dovrebbe costituire lo strato di comunicazione tra
-//l'albero degli ATOMS ed il resto del software
+//l'albero degli MNODES ed il resto del software
 
 /*
-Nota: non sempre � comodo usare ATOMobject.ATOMmethod()
-Il risultato di un select $('selector'), � un oggetto jQuery contenente n altri oggetti. Quindi non si pu� chiamare $('selector').ATOMmethod
+Nota: non sempre � comodo usare MNODEobject.MNODEmethod()
+Il risultato di un select $('selector'), � un oggetto jQuery contenente n altri oggetti. Quindi non si pu� chiamare $('selector').MNODEmethod
 Si pu� chiamare in uno dei modi seguenti:  
-1)  $('selector')[0].ATOMmethod
-	$('selector').each(function(index) {this.ATOMmethod})
-2) oppure chiamare la funzione corrispondente al metodo, per come � costruito atom ATOMmethod(ATOMobject)
+1)  $('selector')[0].MNODEmethod
+	$('selector').each(function(index) {this.MNODEmethod})
+2) oppure chiamare la funzione corrispondente al metodo, per come � costruito atom MNODEmethod(MNODEobject)
 */
 
 /*
 Nota:
-ATOMnomefunzione possono essere usati sia come metodi che come funzioni
-ATOM_nomemetodo possono essere chiamati solo come metodi
-ad esempio ATOMparent può essere invocato come metodo di un ATOM oppure come
-funzione su un qualsiasi elemento html anche se non è un ATOM 
+MNODEnomefunzione possono essere usati sia come metodi che come funzioni
+MNODE_nomemetodo possono essere chiamati solo come metodi
+ad esempio MNODEparent può essere invocato come metodo di un MNODE oppure come
+funzione su un qualsiasi elemento html anche se non è un MNODE 
 */
 atom = {
-  ATOMparent: ATOMparent,
-  ATOMcleanIfPointless: ATOMcleanIfPointless,
-  ATOMclosedDef: ATOMclosedDef,
-  ATOMCreateDefinition: ATOMCreateDefinition,
-  ATOM_replaceWith: ATOM_replaceWith,
-  ATOM_getNodes: ATOM_getNodes,
-  ATOM_getRoles: ATOM_getRoles,
-  ATOM_getChildren: ATOM_getChildren,
-  ATOM_getName: ATOM_getName,
-  ATOM_setName: ATOM_setName,
-  ATOM_createMathmlString: ATOM_createMathmlString,
-  ATOM_addRole: ATOM_addRole,
-  ATOM_checkIfPointlessSingleNode: ATOM_checkIfPointlessSingleNode,
-  ATOM_dissolveContainer: ATOM_dissolveContainer,
-  ATOM_overlay: ATOM_overlay,
+  MNODEparent: MNODEparent,
+  MNODEcleanIfPointless: MNODEcleanIfPointless,
+  MNODEclosedDef: MNODEclosedDef,
+  MNODECreateDefinition: MNODECreateDefinition,
+  MNODE_replaceWith: MNODE_replaceWith,
+  MNODE_getNodes: MNODE_getNodes,
+  MNODE_getRoles: MNODE_getRoles,
+  MNODE_getChildren: MNODE_getChildren,
+  MNODE_getName: MNODE_getName,
+  MNODE_setName: MNODE_setName,
+  MNODE_createMathmlString: MNODE_createMathmlString,
+  MNODE_addRole: MNODE_addRole,
+  MNODE_checkIfPointlessSingleNode: MNODE_checkIfPointlessSingleNode,
+  MNODE_dissolveContainer: MNODE_dissolveContainer,
+  MNODE_overlay: MNODE_overlay,
 };
 
-function ATOMparent($startNode) {
+function MNODEparent($startNode) {
   //per poter chiamare sia come funzione che come metodo
   if ($startNode == undefined) {
     $startNode = $(this);
   }
-  //risali passo passo la struttura DOM fino a trovare un elemento ATOM
+  //risali passo passo la struttura DOM fino a trovare un elemento MNODE
   return $startNode.parent().closest("[data-atom]");
 }
 
@@ -69,39 +69,39 @@ function LookForAncestor($startNode,selector)
 
 //todo:funzione inutile da sostituire con parents()
 /*
-function LookForAncCdsEveryGeneration($ATOMnode,selector)
+function LookForAncCdsEveryGeneration($MNODEnode,selector)
 {
 	//cerca un elemento che soddisfa la stringa selector, controlla $startNode e poi risale gli antenati.
 	//Termina Esplorazione se:
 	//limite1: fermati dopo  n passi (depthLimit=10) 
 	var depthLimit=30;
-	var currNode=$ATOMnode;
+	var currNode=$MNODEnode;
 	for (i=0; i<depthLimit; i++)
 	{
-	if( !ATOMparent(currNode).is(selector) || !ATOMclosedDef(currNode) ) // il prox nodo non ha la caratteristica cercata?
+	if( !MNODEparent(currNode).is(selector) || !MNODEclosedDef(currNode) ) // il prox nodo non ha la caratteristica cercata?
 		{
 			return currNode
 		}
-	else // al prossimo giro analizza il ATOMpadre
+	else // al prossimo giro analizza il MNODEpadre
 		{
-		currNode=ATOMparent(currNode)
+		currNode=MNODEparent(currNode)
 		}
 	}
 }
 */
 
-function ATOMclosedDef(Node) {
+function MNODEclosedDef(Node) {
   //stabilisci se l'elemento "Node" e' aperto e si puo modificare liberamente
   return $(Node).closest(".unlocked").length == 0;
 }
-function ATOMfrozenDef(Node) {
+function MNODEfrozenDef(Node) {
   //!! to be refined
   return $(Node).closest("[data-tag]");
 }
 
-function ATOM_dissolveContainer() {
-  if (this.ATOM_getChildren().length > 0) {
-    var $children = this.ATOM_getRoles().children().filter("[data-atom]");
+function MNODE_dissolveContainer() {
+  if (this.MNODE_getChildren().length > 0) {
+    var $children = this.MNODE_getRoles().children().filter("[data-atom]");
     $(this).replaceWith($children);
   } else {
     $(this).remove();
@@ -109,17 +109,17 @@ function ATOM_dissolveContainer() {
   return $children;
 }
 
-//per creazione automatica def: $(".SelectedDef")[0]ATOMCreateDefinition()
-function ATOMCreateDefinition(startNode) {
+//per creazione automatica def: $(".SelectedDef")[0]MNODECreateDefinition()
+function MNODECreateDefinition(startNode) {
   if (startNode == undefined) {
     startNode = this;
   }
   var outType = $(startNode).attr("data-type");
-  var $newDef = ATOMclone(
+  var $newDef = MNODEclone(
     prototypeSearch("eq", "bool", undefined, "asymmetric")
   ); //crea una nuova definizine
   //*********************** definendum **********************
-  var $definendum = ATOMclone(prototypeSearch("function"));
+  var $definendum = MNODEclone(prototypeSearch("function"));
   $definendum.attr("data-type", outType);
   m1 = $newDef.find(".firstMember"); //trova primo membro
   newName = prompt("Enter a new name");
@@ -127,7 +127,7 @@ function ATOMCreateDefinition(startNode) {
   $definendum.append(newName);
   m1.append($definendum); //aggiungi contenuto al primo membro ed inseriscilo
   //*********************** definens **********************
-  $definens = ATOMclone($(startNode));
+  $definens = MNODEclone($(startNode));
   //$definens.find("#MyOverlay").remove()//togli l'overlay violetto dal clone
   m2 = $newDef.find(".secondMember"); //trova secondo membro todo
   m2.append($definens); //aggiungi contenuto al secondo membro
@@ -162,21 +162,21 @@ function ATOMCreateDefinition(startNode) {
       "v",
       "z",
     ];
-    $newforAll = ATOMclone(prototypeSearch("forall")); //clona for each
-    ATOMextend($newforAll);
+    $newforAll = MNODEclone(prototypeSearch("forall")); //clona for each
+    MNODEextend($newforAll);
     $("#telaRole").append($newforAll); //todo:scegliere dove deve essere visibile la nuova definizione
     GetforAllContent($newforAll).append($newDef);
     $parList.each(function (i, val) {
       var node = this;
       var thisType = $(node).attr("data-type");
-      var $newNode = ATOMclone(prototypeSearch("ci")).attr(
+      var $newNode = MNODEclone(prototypeSearch("ci")).attr(
         "data-type",
         thisType
       ); //data() e' un casino
-      $newNode[0].ATOM_setName(paramDefNames[i]);
+      $newNode[0].MNODE_setName(paramDefNames[i]);
       $(this).replaceWith($newNode);
-      var $Clone1 = ATOMclone($newNode); //clone da inserire in definendum
-      var $Clone2 = ATOMclone($newNode); //clone da inserire in forAll header
+      var $Clone1 = MNODEclone($newNode); //clone da inserire in definendum
+      var $Clone2 = MNODEclone($newNode); //clone da inserire in forAll header
       var $newRole = $('<span class="s_role" data-accept="1"></span>');
       $newRole.attr("data-type", thisType);
       $definendum.append($newRole);
@@ -190,34 +190,34 @@ function ATOMCreateDefinition(startNode) {
   return startNode;
 }
 
-function ATOMReplace($replaced, $replacer) {
-  var $clone = ATOMclone($replacer);
-  ATOMextend($clone); //mi serve subito che sia esteso, gli eventi sono attivati in seguito
+function MNODEReplace($replaced, $replacer) {
+  var $clone = MNODEclone($replacer);
+  MNODEextend($clone); //mi serve subito che sia esteso, gli eventi sono attivati in seguito
   //sostituisci
-  var mark = ATOMSmarkUnmark($replaced);
+  var mark = MNODESmarkUnmark($replaced);
   if (mark !== undefined) {
-    ATOMSmarkUnmark($clone, mark); //$replaced---->$replacer sostituisci ma conserva il titolo se presente
+    MNODESmarkUnmark($clone, mark); //$replaced---->$replacer sostituisci ma conserva il titolo se presente
   }
   $replaced.replaceWith($clone);
   $clone.css({ display: "" });
   ExtendAndInitializeTree($clone);
 }
 
-function ATOMLinkReplace($link, $replaced) {
+function MNODELinkReplace($link, $replaced) {
   //changed argument order to comply with 1Dragged 2Target
-  ATOMReplaceLink($replaced, $link);
+  MNODEReplaceLink($replaced, $link);
 }
 
-function ATOMReplaceLink($replaced, $link) {
+function MNODEReplaceLink($replaced, $link) {
   //get the other member of the link, futuribile: uguaglianza tra molti membri, necessario sistema per scegliere tra membri
   var $replacer;
   if ($link.parent().hasClass("firstMember")) {
-    $replacer = ATOMclone(
-      ATOMparent($link)[0].ATOM_getRoles(".secondMember").children()
+    $replacer = MNODEclone(
+      MNODEparent($link)[0].MNODE_getRoles(".secondMember").children()
     );
   } else if ($link.parent().hasClass("secondMember")) {
-    $replacer = ATOMclone(
-      ATOMparent($link)[0].ATOM_getRoles(".firstMember").children()
+    $replacer = MNODEclone(
+      MNODEparent($link)[0].MNODE_getRoles(".firstMember").children()
     );
   } else {
     console.log("dragged ne primo ne secondo membro");
@@ -240,27 +240,27 @@ function ATOMReplaceLink($replaced, $link) {
 //no! cos� lo aggiungo alla funzione jQuery()  $.extend(addToJQ)
 //metodo da aggiungere a HTMLElement
 
-function typeOk($ATOMdragged, $role) {
+function typeOk($MNODEdragged, $role) {
   return classA_in_classB(
-    $ATOMdragged.attr("data-type"),
+    $MNODEdragged.attr("data-type"),
     $role.attr("data-type")
   );
 }
 
-//if($ATOMdragged.attr(data-type))verifica datatype e numero di elementi accettati
+//if($MNODEdragged.attr(data-type))verifica datatype e numero di elementi accettati
 function classA_in_classB(classNameA, classNameB) {
   // futuribile: stabilire se una classe ne estende un'altra anche con ereditariet� multipla
   return classNameB === "obj" || classNameA === classNameB;
 }
 
-function ATOMCreateSpaceForDeduction($hypothesis) {
+function MNODECreateSpaceForDeduction($hypothesis) {
   var spaceForDeduction;
-  if (ATOMparent($hypothesis).attr("data-atom") === "and") {
+  if (MNODEparent($hypothesis).attr("data-atom") === "and") {
     //parent external to enclosure is 'and'?
     spaceForDeduction = $hypothesis.parent();
   } else {
     // create an 'and'
-    var newAnd = ATOMclone(prototypeSearch("and"));
+    var newAnd = MNODEclone(prototypeSearch("and"));
     $hypothesis.parent().append(newAnd);
     spaceForDeduction = newAnd.find('>[class*="_role"]');
     spaceForDeduction.append($hypothesis); //
@@ -270,16 +270,16 @@ function ATOMCreateSpaceForDeduction($hypothesis) {
 
 //todo: questa ricerca non distingue le variabili interne "Bvar".
 // Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
-function $ATOMParameterSearch($startNode, $atom_param) {
+function $MNODEParameterSearch($startNode, $atom_param) {
   // cerca nodi uguali al parametro dato
   var result = $startNode.find("[data-atom]").filter(function (index) {
-    //return ATOMEqual($atom_param[0],this)
-    return compareExtATOM($atom_param, $(this), true, false);
+    //return MNODEEqual($atom_param[0],this)
+    return compareExtMNODE($atom_param, $(this), true, false);
   });
   return result;
 }
 
-function ATOMReplaceAll(
+function MNODEReplaceAll(
   $startNode,
   replaced /*HTMLnode atom */,
   replacer /*HTMLnode atom */
@@ -287,24 +287,24 @@ function ATOMReplaceAll(
   var $replaced = $(replaced);
   var $replacer = $(replacer);
   $startNode = $($startNode); //se per caso passo uno start node non $
-  var $occurrences = $ATOMParameterSearch($startNode, replaced);
+  var $occurrences = $MNODEParameterSearch($startNode, replaced);
   var result = $.each($occurrences, function (i, o) {
-    ATOMReplace($(o), $replacer);
+    MNODEReplace($(o), $replacer);
   });
   return +$occurrences.length + " replaced";
 }
 
 function GetforAllContent($forAll) {
-  return $forAll[0].ATOM_getRoles(".forAllContent");
+  return $forAll[0].MNODE_getRoles(".forAllContent");
 }
 function GetforAllHeader($forAll) {
-  return $forAll[0].ATOM_getRoles(".forAllHeader");
+  return $forAll[0].MNODE_getRoles(".forAllHeader");
 }
 
-function ATOMForThis_Par_newVal($newVal, $parameter) {
-  return ATOMForThisPar($parameter, $newVal);
+function MNODEForThis_Par_newVal($newVal, $parameter) {
+  return MNODEForThisPar($parameter, $newVal);
 }
-function ATOMForThisPar($parameter, $newVal) {
+function MNODEForThisPar($parameter, $newVal) {
   // atom
   //$newVal può essere anche un vettore vuoto
   //in tal caso il parametro doverebbe essere di tipo x___ ma per ora non faccio controlli
@@ -315,25 +315,25 @@ function ATOMForThisPar($parameter, $newVal) {
   //************stabilisci se c'è conflitto con i nomi delle Bvar******
   //il nome della variabile specificata nel forThis è per caso già presente tra i parametri del forall?
   if ($newVal.length != 0) {
-    var newValName = $newVal[0].ATOM_getName();
+    var newValName = $newVal[0].MNODE_getName();
     var $toBeRenamed = $h.children().filter(function () {
-      return this.ATOM_getName() == newValName;
+      return this.MNODE_getName() == newValName;
     });
     $toBeRenamed.each(function () {
       formatForall($f, $(this));
     });
   }
-  //var mark = $parameter[0].ATOM_getName()
-  //ATOMSmarkUnmark($newVal,mark)//se sostituisci il paramtro di nome xxx sarai marcato xxx
+  //var mark = $parameter[0].MNODE_getName()
+  //MNODESmarkUnmark($newVal,mark)//se sostituisci il paramtro di nome xxx sarai marcato xxx
   //sostituisci
-  ATOMReplaceAll($c, $parameter, $newVal);
+  MNODEReplaceAll($c, $parameter, $newVal);
   $parameter.remove();
   //se non ci sono più parametri, "dissolvi" il forAll esterno e metti al suo posto il contenuto
   if ($h.children().length == 0) {
     var $content = $c.children();
     //metti il sostituto nella stessa posizione del sostituito
     if ($f.css("position") == "absolute") {
-      ATOMappendInABSPosition($content, $f, "superposed");
+      MNODEappendInABSPosition($content, $f, "superposed");
     } else {
       $content.insertBefore($f);
     }
@@ -345,22 +345,22 @@ function ATOMForThisPar($parameter, $newVal) {
 }
 
 function formatForall($forall, $toBeRenamed) {
-  var oldName = $toBeRenamed[0].ATOM_getName();
+  var oldName = $toBeRenamed[0].MNODE_getName();
   var newName = "(" + oldName + ")";
   //cerca le occorrenze e marca ciascuna occorrenza
-  var $occurrences = $ATOMParameterSearch($forall, $toBeRenamed);
+  var $occurrences = $MNODEParameterSearch($forall, $toBeRenamed);
   $occurrences.each(function () {
-    this.ATOM_setName(newName);
+    this.MNODE_setName(newName);
   });
 }
 
-function ATOM_replaceWith(replacer) {
+function MNODE_replaceWith(replacer) {
   //replacer must be atom
-  $(this.ATOM_getEnclIfPresent()).replaceWith(ATOM_getEnclIfPresent(replacer));
+  $(this.MNODE_getEnclIfPresent()).replaceWith(MNODE_getEnclIfPresent(replacer));
   return this; // return replaced
 }
 
-function ATOM_getNodes(selector) {
+function MNODE_getNodes(selector) {
   $(this).addClass("gettingNodes");
   var $subnodes = $(this)
     .find("*")
@@ -374,8 +374,8 @@ function ATOM_getNodes(selector) {
   return $Nodes;
 }
 
-function ATOM_getRoles(selector) {
-  var $roles = this.ATOM_getNodes(selector).filter('[class*="_role"]');
+function MNODE_getRoles(selector) {
+  var $roles = this.MNODE_getNodes(selector).filter('[class*="_role"]');
   $roles.sort(function (a, b) {
     if ($(a).hasClass("bVar_role") && !$(b).hasClass("bVar_role")) {
       // bVar_role always before other roles
@@ -401,8 +401,8 @@ function ATOM_getRoles(selector) {
   return $roles;
 }
 
-function ATOM_getChildren(selector) {
-  var $children = this.ATOM_getRoles().children("[data-atom]");
+function MNODE_getChildren(selector) {
+  var $children = this.MNODE_getRoles().children("[data-atom]");
   if (selector != undefined) {
     // se viene passato un "selector", filtra
     $children = $children.filter(selector);
@@ -410,7 +410,7 @@ function ATOM_getChildren(selector) {
   return $children;
 }
 
-function ATOM_getName(considerSuffix) {
+function MNODE_getName(considerSuffix) {
   var nameWithSuffix = $(this).find(">.name").text();
   if (considerSuffix) {
     return nameWithSuffix;
@@ -419,11 +419,11 @@ function ATOM_getName(considerSuffix) {
   }
 }
 
-function ATOM_setName(newName) {
+function MNODE_setName(newName) {
   $(this).find(">.name").text(newName);
 }
 
-function ATOM_addRole(dataType, content) {
+function MNODE_addRole(dataType, content) {
   var $newNode;
   $newNode = $('<span class="role">' + content + "</span>").attr(
     "data-type",
@@ -433,7 +433,7 @@ function ATOM_addRole(dataType, content) {
   return $newNode;
 } //da usare quando si crea una nuova funzione o definizione
 
-function validTargetsFromOpened($ATOMdragged) {
+function validTargetsFromOpened($MNODEdragged) {
   var numOfPlaces;
   var valids = $('#telaRole,  [class*="_role"]:visible').filter(function (
     index
@@ -443,29 +443,29 @@ function validTargetsFromOpened($ATOMdragged) {
     //*****valid?***********
     var result =
       //if $dragged is not a new definition, target must be opened or boolPtototype todo: check the dragged prototype really has value true
-      (!ATOMclosedDef(this) ||
-        $ATOMdragged.is("#asymmeqPrototype") ||
-        $ATOMdragged.is("#boolPrototype")) &&
+      (!MNODEclosedDef(this) ||
+        $MNODEdragged.is("#asymmeqPrototype") ||
+        $MNODEdragged.is("#boolPrototype")) &&
       //datatype is compatible
-      typeOk($ATOMdragged, $(this)) &&
+      typeOk($MNODEdragged, $(this)) &&
       //is there place for another?
       (numOfPlaces === -1 ||
         $(this).children().filter("[data-atom]").length < numOfPlaces);
 
     return result;
   });
-  return valids.not($ATOMdragged.parent());
+  return valids.not($MNODEdragged.parent());
 }
 
-function validCandidatesForPatternDrop($ATOMdragged) {
+function validCandidatesForPatternDrop($MNODEdragged) {
   var valids = $("#telaRole [data-atom]:visible").filter(function (index) {
     //*****valid?***********
     var result =
       //datatype is compatible
-      typeOk($ATOMdragged, $(this)) && ATOMfrozenDef($(this)).length == 0;
+      typeOk($MNODEdragged, $(this)) && MNODEfrozenDef($(this)).length == 0;
     return result;
   });
-  return valids; //.not($ATOMdragged.parent())
+  return valids; //.not($MNODEdragged.parent())
 }
 
 function getNumOfPlaces($role) {
@@ -489,7 +489,7 @@ function overflowExsists(node) {
   );
 }
 
-function ATOMclone($node, doNotExtend, removeID) {
+function MNODEclone($node, doNotExtend, removeID) {
   // di default rimuove ID
   $clone = $node.clone(); //clona
   $toBeCleaned = $clone.add($clone.find("*")); //clean discendence too
@@ -533,7 +533,7 @@ function prototypeSearch(className, dataType, requiredClass, name) {
   if ($prototypes.length > 1 && (className === "cn" || className === "ci")) {
     //if many candidates refine research
     let $specificProto = $prototypes.filter(function () {
-      return this.ATOM_getName() == name;
+      return this.MNODE_getName() == name;
     });
     if ($specificProto.length != 0) {
       return $specificProto.eq(0);
@@ -551,8 +551,8 @@ function prototypeSearch(className, dataType, requiredClass, name) {
   }
   //if not found adapt generic prototype
   if ($prototypes.length === 0) {
-    //console.warn('ATOM prototype not found:className:' + className + ", dataType:" + dataType);//Warning!!
-    let $prototype = ATOMclone($("#Prototype"));
+    //console.warn('MNODE prototype not found:className:' + className + ", dataType:" + dataType);//Warning!!
+    let $prototype = MNODEclone($("#Prototype"));
     $prototype.attr("data-atom", className);
     $prototype.attr("data-type", dataType);
     //addTypeDecorations($prototype);
@@ -561,22 +561,22 @@ function prototypeSearch(className, dataType, requiredClass, name) {
   return $prototypes.last(); //in case you find more prototypes
 }
 
-function encaseWithOperation($ATOMelement, op) {
-  //create external operation to $ATOMelement, $ATOMelement is 1 element or a list of adjacent elements
+function encaseWithOperation($MNODEelement, op) {
+  //create external operation to $MNODEelement, $MNODEelement is 1 element or a list of adjacent elements
   var $prototype = prototypeSearch(op);
-  var $clone = ATOMclone($prototype);
-  //ATOMparent($ATOMelement).replaceWith($clone);//replace provoca la distruzione degli eventi nel replaced
-  $clone.insertBefore($ATOMelement.eq(0));
-  $ATOMelement.appendTo($clone[0].ATOM_getRoles());
+  var $clone = MNODEclone($prototype);
+  //MNODEparent($MNODEelement).replaceWith($clone);//replace provoca la distruzione degli eventi nel replaced
+  $clone.insertBefore($MNODEelement.eq(0));
+  $MNODEelement.appendTo($clone[0].MNODE_getRoles());
   return $clone;
 }
 
-function encaseIfNeeded($ATOMelement, op) {
-  if (ATOMparent($ATOMelement).attr("data-atom") === op) {
+function encaseIfNeeded($MNODEelement, op) {
+  if (MNODEparent($MNODEelement).attr("data-atom") === op) {
     //no need to cteate external op
-    return ATOMparent($ATOMelement);
+    return MNODEparent($MNODEelement);
   } else {
-    return encaseWithOperation($ATOMelement, op);
+    return encaseWithOperation($MNODEelement, op);
   }
 }
 
@@ -596,9 +596,9 @@ function checkCn($s) {
 function checkSiblings($s) {
   //controlla che siano numeri e siano siblings
   var allSiblingsOk = true;
-  var $parent = ATOMparent($($s[0])); //to check if nodes are siblings
+  var $parent = MNODEparent($($s[0])); //to check if nodes are siblings
   for (var i = 0, len = $s.length; i < len; i++) {
-    if (!ATOMparent($($s[i])).is($parent)) {
+    if (!MNODEparent($($s[i])).is($parent)) {
       allSiblingsOk = false;
       break;
     }
@@ -623,9 +623,9 @@ function addTypeDecorations($atom) {
   }
 }
 
-function ATOMrenamePrompt($atom, newName) {
+function MNODErenamePrompt($atom, newName) {
   //
-  var oldName = $atom[0].ATOM_getName();
+  var oldName = $atom[0].MNODE_getName();
   if ($atom.hasClass("minus")) {
     oldName = "-" + oldName;
   }
@@ -651,7 +651,7 @@ function ATOMrenamePrompt($atom, newName) {
     else {
       $atom.removeClass("minus");
     }
-    $atom[0].ATOM_setName(newName);
+    $atom[0].MNODE_setName(newName);
     $atom.attr("data-atom", isNaN(newName) ? "ci" : "cn"); // se numero allora classe "cn"
     ssnapshot.take();
   }
@@ -659,14 +659,14 @@ function ATOMrenamePrompt($atom, newName) {
 
 function createForThis($forall, $placeHolder) {
   //Modus Ponens deduce a special case from a forall
-  var $clone = ATOMclone($forall);
+  var $clone = MNODEclone($forall);
   exclusiveFocus = $clone.addClass("exclusiveFocus"); //metti il clone in stato exclusiveFocus
   //****inserit the new proposition*****
-  if (ATOMparent($forall).attr("data-atom") == "and") {
+  if (MNODEparent($forall).attr("data-atom") == "and") {
     $clone.insertAfter($forall);
   } else {
     //enclosure needed
-    ATOMCreateSpaceForDeduction($forall).append($clone);
+    MNODECreateSpaceForDeduction($forall).append($clone);
   }
   return $clone;
 }
@@ -678,7 +678,7 @@ function AtomsToVal($currAtom, res) {
   //debug colors
   if (debugMode) {
     $("*").removeClass("input");
-    ATOMnodesAddClass($currAtom, "input"); //add colors
+    MNODEnodesAddClass($currAtom, "input"); //add colors
   }
 
   //se non vengono passati segni precedenti essi sono inizializzati a 1
@@ -695,7 +695,7 @@ function AtomsToVal($currAtom, res) {
   var op = $currAtom.attr("data-atom");
   if (op === "minus" || op === "m_inverse") {
     //------------------> recursive
-    var newRes = AtomsToVal($currAtom[0].ATOM_getChildren(), res);
+    var newRes = AtomsToVal($currAtom[0].MNODE_getChildren(), res);
     //<------------------
     if (op === "minus") {
       res.sign = newRes.sign * -1;
@@ -705,7 +705,7 @@ function AtomsToVal($currAtom, res) {
   } else if (op === "cn" || op === "ci") {
     //todo: per ora gestisce solo cn e ci
     res.type = op;
-    res.val = $currAtom[0].ATOM_getName();
+    res.val = $currAtom[0].MNODE_getName();
   } else {
     res.val = NaN;
     res.canBeReplaced = false;
@@ -725,22 +725,22 @@ function ValToAtoms(partial) {
   var $target;
   if (partial.sign === -1) {
     //segno meno?
-    $clone = ATOMclone(prototypeSearch("minus"));
+    $clone = MNODEclone(prototypeSearch("minus"));
     $newAtom = $clone;
-    $target = $clone[0].ATOM_getRoles();
+    $target = $clone[0].MNODE_getRoles();
   }
   if (partial.exp === -1) {
     //inverso?
-    $clone = ATOMclone(prototypeSearch("m_inverse"));
+    $clone = MNODEclone(prototypeSearch("m_inverse"));
     if ($target !== undefined) {
       $target.append($clone);
     } else {
       $newAtom = $clone;
     }
-    $target = $clone[0].ATOM_getRoles();
+    $target = $clone[0].MNODE_getRoles();
   }
-  $clone = ATOMclone(prototypeSearch("cn", "num"));
-  $clone[0].ATOM_setName(partial.val);
+  $clone = MNODEclone(prototypeSearch("cn", "num"));
+  $clone[0].MNODE_setName(partial.val);
   $clone.attr("data-atom", partial.type); //uso un generico prototipo num e qui specifico se cn o ci
   if ($target !== undefined) {
     $target.append($clone);
@@ -760,11 +760,11 @@ function AtomBesideGiven($startAtom) {
   }
 }
 
-function refreshOneBracket($ATOM) {
-  if (ATOMneedsBracket($ATOM)) {
-    $ATOM.addClass("brackets");
+function refreshOneBracket($MNODE) {
+  if (MNODEneedsBracket($MNODE)) {
+    $MNODE.addClass("brackets");
   } else {
-    $ATOM.removeClass("brackets");
+    $MNODE.removeClass("brackets");
   }
 }
 
@@ -825,7 +825,7 @@ function RefreshEmptyInfixBraketsGlued($startNode, tree, options) {
   //}
 }
 
-function ATOMshowMarks($atom, showPath) {
+function MNODEshowMarks($atom, showPath) {
   //se showPath=true allora mostra anche il path
   var labelString;
   var mark = $atom.attr("title");
@@ -843,7 +843,7 @@ function ATOMshowMarks($atom, showPath) {
 }
 function showAllMarks(showPath) {
   $("body [data-atom]:visible").each(function (i, element) {
-    ATOMshowMarks($(element), showPath);
+    MNODEshowMarks($(element), showPath);
   });
 }
 
@@ -851,19 +851,19 @@ function hideAllMarks() {
   $(".label").remove();
 }
 
-function ATOMEqual(node1, node2, checkType, neglectRootSign) {
+function MNODEEqual(node1, node2, checkType, neglectRootSign) {
   //node1/2 HTMLnode. Flat to simil mathml e paragona
   if (node1 == undefined || node2 == undefined) {
     return false;
   }
   return (
-    node1.ATOM_createMathmlString(checkType, neglectRootSign) ===
-    node2.ATOM_createMathmlString(checkType, neglectRootSign)
+    node1.MNODE_createMathmlString(checkType, neglectRootSign) ===
+    node2.MNODE_createMathmlString(checkType, neglectRootSign)
   );
   //return adaptMatch(undefined,$(node1),$(node2),$(node2))//sostituita comparazione "grezza" con comparazione ricorsiva
 }
 
-function compareExtATOM(
+function compareExtMNODE(
   $input,
   $pattern,
   checkAtomTypeAndName /*defaul=true*/,
@@ -887,14 +887,14 @@ function compareExtATOM(
   ) {
     return false;
   } else if (symbols.indexOf($input.attr("data-atom")) != -1 /*is a symbol*/) {
-    res = $input[0].ATOM_getName() === $pattern[0].ATOM_getName();
+    res = $input[0].MNODE_getName() === $pattern[0].MNODE_getName();
   } else {
     res = true; //no more tests required
   }
   return res;
 }
 
-function ATOMcleanIfPointless(startNode, applyToSubtree) {
+function MNODEcleanIfPointless(startNode, applyToSubtree) {
   //per applicarlo all'albero applica prima a subtree e poi a root
   let $extOp = $(startNode);
   if (applyToSubtree) {
@@ -905,11 +905,11 @@ function ATOMcleanIfPointless(startNode, applyToSubtree) {
         .parent()
         .find("[data-atom].cleanifpointless")
         .filter(function () {
-          return this.ATOM_checkIfPointlessSingleNode();
+          return this.MNODE_checkIfPointlessSingleNode();
         });
       //agisci sul primo trovato, poi ripeti la ricerca.
       if ($pointlessElements.length > 0) {
-        let $children = $pointlessElements[0].ATOM_dissolveContainer();
+        let $children = $pointlessElements[0].MNODE_dissolveContainer();
         if ($pointlessElements.eq(0).is($extOp)) {
           $extOp = $children;
         }
@@ -921,29 +921,29 @@ function ATOMcleanIfPointless(startNode, applyToSubtree) {
   } else {
     if (
       $extOp.is("[data-atom].cleanifpointless") &&
-      $extOp[0].ATOM_checkIfPointlessSingleNode()
+      $extOp[0].MNODE_checkIfPointlessSingleNode()
     ) {
-      return $extOp[0].ATOM_dissolveContainer();
+      return $extOp[0].MNODE_dissolveContainer();
     }
   }
 }
 
-function ATOM_checkIfPointlessSingleNode() {
+function MNODE_checkIfPointlessSingleNode() {
   let op = $(this).attr("data-atom");
   if (!OpIsAssociative(op)) {
     return false;
   }
-  if (this.ATOM_getChildren().length <= 1) {
+  if (this.MNODE_getChildren().length <= 1) {
     return true;
   }
-  let opP = ATOMparent($(this)).attr("data-atom");
+  let opP = MNODEparent($(this)).attr("data-atom");
   if (opP == op) {
     return true;
   }
 }
 
-function ATOM_overlay(mode) {
-  // aggiunge/rimuove un overlay ad un ATOM
+function MNODE_overlay(mode) {
+  // aggiunge/rimuove un overlay ad un MNODE
   if (mode == undefined) {
     $(this).append('<div id="overlay">');
   } else {
@@ -951,20 +951,20 @@ function ATOM_overlay(mode) {
   }
 }
 
-function ATOMnodesAddClass($atom, newClass, mode /* true = remove*/) {
+function MNODEnodesAddClass($atom, newClass, mode /* true = remove*/) {
   if (!mode) {
     $atom.each(function () {
-      this.ATOM_getNodes().addClass(newClass);
+      this.MNODE_getNodes().addClass(newClass);
     });
   } else {
     $atom.each(function () {
-      this.ATOM_getNodes().removeClass(newClass);
+      this.MNODE_getNodes().removeClass(newClass);
     });
   }
 }
 
-// ATOMapplyFunctToTree($('.selected'),true,ALDOtest,'a','b','c')
-function ATOMapplyFunctToTree(
+// MNODEapplyFunctToTree($('.selected'),true,ALDOtest,'a','b','c')
+function MNODEapplyFunctToTree(
   $StartAtom,
   includeRoot,
   funct,
@@ -992,14 +992,14 @@ function ALDOtest($Atom,parameterA){
 }
 */
 /*
-function ATOMfrozenDef(Node){
+function MNODEfrozenDef(Node){
 	//!! to be refined 
 	return $(Node).closest('[data-tag]')
 }
 */
 
-/************** ATOM UTILITIES  not API ***********************/
-function ATOMextend($startNode, applyToSubtreeAlso) {
+/************** MNODE UTILITIES  not API ***********************/
+function MNODEextend($startNode, applyToSubtreeAlso) {
   //add methods from object "atom"
   var $toBeExtended;
   if (!applyToSubtreeAlso) {
@@ -1011,7 +1011,7 @@ function ATOMextend($startNode, applyToSubtreeAlso) {
   }
 
   $toBeExtended.each(function (index) {
-    // tutti gli HTML nodes con classe .ATOM
+    // tutti gli HTML nodes con classe .MNODE
     $.extend(this, atom); //pare non si possa fare altrimenti non riesco a estendere $(this)
   });
 }
