@@ -48,7 +48,7 @@ function MakeSortableAndInjectMouseDown(event) {
 			//no forall property
 		}
 	}
-	else if (GLBDnD.toolWhenMousedown == 'copy' || !MNODEclosedDef($(event.target)) || $(event.target).is('#tavolozza>*')) {
+	else if (GLBDnD.toolWhenMousedown == 'copy' || !MNODEclosedDef($(event.target)) || $atomTarget.is('#tavolozza>*')) {
 		//*********from opened****************
 		
 		//make targets sortable

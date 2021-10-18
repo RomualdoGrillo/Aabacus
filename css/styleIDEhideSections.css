@@ -39,8 +39,8 @@ div.ide{
 	transition-delay: 0.15s;
 	z-index:2;
 }
-#leftColumn:not(.fixed),#rightColumn:not(.fixed),#tavolozzaRow:not(.fixed){
-	position:absolute;
+#leftColumn:not(.fixed),#rightColumn:not(.fixed){
+	 position:absolute; 
 }
 
 #rightColumn{

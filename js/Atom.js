@@ -120,8 +120,9 @@ function MNODECreateDefinition(startNode) {
   ); //crea una nuova definizine
   //*********************** definendum **********************
   //attuale)al momento vengono inseriti n ruoli singoli quanti sono i parametri
+  //rimane da fare todo!!: circondare la lista parametri con parentesi e separarli con, quando?
   //alternativa)in altermnativa si potrebbe una lista ordinata, ma si dovrebbe introdurre un modo
-  //per specificare separatamente il datatype di ogni elemento della lista
+  //per specificare separatamente il datatype di ogni elemento della lista (cluster)
   var $definendum = MNODEclone(prototypeSearch("function"));
   $definendum.attr("data-type", outType);
   m1 = $newDef.find(".firstMember"); //trova primo membro
