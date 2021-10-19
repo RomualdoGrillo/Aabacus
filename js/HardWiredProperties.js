@@ -167,7 +167,6 @@ function getKeyByValue(dictionary,value ) {
 
 
 
-
 function validForPartDist($mouseDownAtom){
 	let $parent = MNODEparent($mouseDownAtom);
 	var $siblings = $parent.siblings('[data-atom]');
@@ -216,11 +215,10 @@ function validForDist($mouseDownAtom){//op2 è il tipo di operazione sulla quale
 	return [] //empty array
 }
 
-function MNODEPartDistribute(dragged,target,dropped){
+function MNODEPartDistribute($dragged,target,dropped){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/distributive.png"
-	let $dragged = $(dragged)
 	let childrenIndex = MNODEparent($dragged).index()
 	let $parent = MNODEparent($dragged);
 	let opD ;
@@ -244,11 +242,10 @@ function MNODEPartDistribute(dragged,target,dropped){
 	return PActx
 }
 
-function MNODEdistribute(dragged,target,dropped){
+function MNODEdistribute($dragged,target,dropped){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	PActx.visualization = "images/properties/distributive.png"
-	let $dragged = $(dragged)
 	let $parent = MNODEparent($dragged);
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
@@ -868,7 +865,6 @@ function validCandidatesForPatternDrop($mouseDownAtom){
 	})
 	return valids//.not($mouseDownAtom.parent())
 }
-
 
 function removeDropped($dragged,$target){
 	var PActx = newPActx();

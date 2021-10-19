@@ -160,6 +160,7 @@ function onAdd(event) {
 			PActx.msg = GLBDnD.$originalProperty.closest('[data-tag]').attr('data-tag')
 			PActxConclude(PActx)
 		}
+		//*********** apply property in propertiesDnD
 		else {
 			let property = propertiesDnD.find(function (el) {
 				return el.name == targetProperty
