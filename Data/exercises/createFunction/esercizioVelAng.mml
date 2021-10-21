@@ -1,8 +1,8 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
 	<ci type="bool">Crea una definizione per ω velocità angolare:</ci>
 	<ci type="bool">1) seleziona la frazione 2π/T </ci>
-	<ci type="bool">2) premi Shift e clicca su "T" deselezionandolo</ci>
-	<ci type="bool">3) Per creare una definizione premi per questa nuova funzione premi Ctrl+f</ci>
+	<ci type="bool">2) deseleziona il parametro T: tieni premuto Shift e clicca su "T" </ci>
+	<ci type="bool">3) Creare una definizione a partire dall'espressione seleziona: premi Ctrl+f</ci>
 	<apply type="bool">
 		<eq>
 		</eq>

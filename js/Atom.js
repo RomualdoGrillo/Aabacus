@@ -126,7 +126,7 @@ function MNODECreateDefinition(startNode) {
   var $definendum = MNODEclone(prototypeSearch("function"));
   $definendum.attr("data-type", outType);
   m1 = $newDef.find(".firstMember"); //trova primo membro
-  newName = prompt("Enter a new name");
+  newName = prompt("Enter a name for the new definition");
   $definendum.attr("data-atom",newName);
   $definendum.find(".name").append(newName);
   m1.append($definendum); //aggiungi contenuto al primo membro ed inseriscilo
