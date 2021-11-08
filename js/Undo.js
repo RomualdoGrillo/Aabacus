@@ -12,7 +12,7 @@ function ssnapshot() {
 }
 
 ssnapshot.take = function(){
-		var $cloneTela = MNODEclone( $("#tela>.secondMember"),false )
+		var $cloneTela = MNODEclone( $("#tela>.secondMember"),false,false )
 		FILO.push($cloneTela)
 		
 		//----test------------------inserire due span in "index.html" per vedere i risultati

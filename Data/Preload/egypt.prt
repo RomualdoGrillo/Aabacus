@@ -1,13 +1,4 @@
-
-			<div data-atom="cn" data-type="num" class="atom" style=" background-image: url(./images/thing.png);
+<div data-atom="cn" data-type="num" class="atom" style=" background-image: url(./images/EgyptNumber3.svg);
 			background-size: 100% 100%;">
-					<div class="name" style="display:none">t</div>
-			</div>
-			<div data-atom="cn" data-type="num" class="atom" style=" background-image: url(./images/shoes.png);
-			background-size: 100% 100%;">
-					<div class="name" style="display:none">s</div>
-			</div>
-			<div data-atom="cn" data-type="num" class="atom" style=" background-image: url(./images/boy.png);
-			background-size: 100% 100%;">
-					<div class="name" style="display:none">b</div>
+					<div class="name" style="display:none">3</div>
 			</div>
