@@ -137,7 +137,7 @@ body.gameModeSurpriseRes #result{
 
 
 #telaRole>[data-atom]:first-child{
-	margin-bottom:25px;
+	/* margin-bottom:25px; */
 }
 
 .fixButton{

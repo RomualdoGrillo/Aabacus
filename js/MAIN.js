@@ -42,10 +42,12 @@ $(document).on('touchend', cleanupDnD);//not tested
 $(document).on('keydown', function(e) {
 	var keyPressed = keyToCharacter(e.which).toLowerCase();
 	console.log('key pressed:' + keyPressed + ' code: ' + e.which)
-	//cursor appearence
-	changeTool(e);
+	//ctrl+tab
+	if(keyPressed === '\t'){
+		changeTool(e);
+	}
 	//ctrl+a 
-	if (e.which == 16 || e.which == 17) {//console.log("filter ctrl and Maiusc if alone")
+	else if (e.which == 16 || e.which == 17) {//console.log("filter ctrl and Maiusc if alone")
 	} else if (e.ctrlKey && (keyPressed === 'a')) {
 		$('#telaRole *').removeClass('selected');
 		$('#telaRole>[data-atom]').addClass('selected');
@@ -134,11 +136,10 @@ $(document).on('keydown', function(e) {
 		PActxConclude(PActx)
 	}
 });
-$(document).on('keyup', function(e) {
-	changeTool(e);
-	console.log('key up:' );
-	console.log( e)
-})
+
+
+
+
 
 //************  Create! button **************
 $('#create-link').click(function() {
