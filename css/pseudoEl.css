@@ -166,3 +166,6 @@ disadvantage: building new prototypes is less intuitive
 	border:1px solid blueviolet;
 	background-color: violet;
 }
+.vertTimes [data-tag=vertTimes]{
+	transform: rotate(90deg);
+}
