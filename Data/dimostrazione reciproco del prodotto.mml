@@ -1,0 +1,126 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<eq>
+		</eq>
+		<apply type="num">
+			<divide>
+			</divide>
+			<cn type="num">1</cn>
+			<apply type="num">
+				<times>
+				</times>
+				<ci type="num">x</ci>
+				<ci type="num">y</ci>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<eq>
+		</eq>
+		<apply type="num">
+			<plus>
+			</plus>
+			<apply type="num">
+				<times>
+				</times>
+				<apply type="num">
+					<divide>
+					</divide>
+					<cn type="num">1</cn>
+					<apply type="num">
+						<times>
+						</times>
+						<ci type="num">x</ci>
+						<ci type="num">y</ci>
+					</apply>
+				</apply>
+				<apply type="num">
+					<divide>
+					</divide>
+					<ci type="num">x</ci>
+					<ci type="num">x</ci>
+				</apply>
+				<apply type="num">
+					<divide>
+					</divide>
+					<ci type="num">y</ci>
+					<ci type="num">y</ci>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<eq>
+		</eq>
+		<apply type="num">
+			<times>
+			</times>
+			<apply type="num">
+				<m_inverse>
+				</m_inverse>
+				<apply type="num">
+					<times>
+					</times>
+					<ci type="num">x</ci>
+					<ci type="num">y</ci>
+				</apply>
+			</apply>
+			<ci type="num">y</ci>
+			<ci type="num">x</ci>
+			<apply type="num">
+				<m_inverse>
+				</m_inverse>
+				<ci type="num">x</ci>
+			</apply>
+			<apply type="num">
+				<m_inverse>
+				</m_inverse>
+				<ci type="num">y</ci>
+			</apply>
+		</apply>
+	</apply>
+	<apply type="num">
+		<times>
+		</times>
+		<apply type="num">
+			<m_inverse>
+			</m_inverse>
+			<apply type="num">
+				<times>
+				</times>
+				<ci type="num">x</ci>
+				<ci type="num">y</ci>
+			</apply>
+		</apply>
+		<apply type="num">
+			<times>
+			</times>
+			<ci type="num">x</ci>
+			<ci type="num">y</ci>
+		</apply>
+		<apply type="num">
+			<m_inverse>
+			</m_inverse>
+			<ci type="num">x</ci>
+		</apply>
+		<apply type="num">
+			<m_inverse>
+			</m_inverse>
+			<ci type="num">y</ci>
+		</apply>
+	</apply>
+	<apply type="num">
+		<times>
+		</times>
+		<apply type="num">
+			<m_inverse>
+			</m_inverse>
+			<ci type="num">x</ci>
+		</apply>
+		<apply type="num">
+			<m_inverse>
+			</m_inverse>
+			<ci type="num">y</ci>
+		</apply>
+	</apply>
+</math>
