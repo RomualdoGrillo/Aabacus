@@ -6,17 +6,17 @@
 		</ci>
 		<ci minimized="True" type="bool" title="prop. associativa della somma" data-tag="" data-tagimg="./images/properties/associate.png">
 		</ci>
-		<ci minimized="True" type="bool" title="prop. elemento neutro della somma" data-tag="" data-tagimg="./images/properties/couple.png">
+		<ci minimized="True" type="bool" title="prop. del neutro" data-tag="" data-tagimg="./images/properties/zero.png">
 		</ci>
-		<ci minimized="True" type="bool" title="prop. dell'opposto " data-tag="" data-tagimg="./images/properties/zero.png">
+		<ci minimized="True" type="bool" title="" data-tag="prop. dell'opposto" data-tagimg="./images/properties/couple.png">
 		</ci>
 		<ci minimized="True" type="bool" title="commutativa della moltiplicazione" data-tag="vertTimes" data-tagimg="./images/properties/commutative.png">
 		</ci>
 		<ci minimized="True" type="bool" title="plus associative" data-tag="vertTimes" data-tagimg="./images/properties/associate.png">
 		</ci>
-		<ci minimized="True" type="bool" title="elemento neutro" data-tag="vertTimes" data-tagimg="./images/properties/couple.png">
+		<ci minimized="True" type="bool" title="prop. del neutro " data-tag="vertTimes" data-tagimg="./images/properties/neutral.png">
 		</ci>
-		<ci minimized="True" type="bool" title="prop. del reciproco " data-tag="vertTimes" data-tagimg="./images/properties/neutral.png">
+		<ci minimized="True" type="bool" title="prop. del reciproco" data-tag="vertTimes" data-tagimg="./images/properties/couple.png">
 		</ci>
 		<ci minimized="True" type="bool" title="prop. distributiva " data-tag="" data-tagimg="./images/properties/distributive.png">
 		</ci>

@@ -118,7 +118,7 @@ disadvantage: building new prototypes is less intuitive
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center left;
-	padding-right:2px;
+	padding-right:0px;
 	border: 1px solid gray;
 	border-radius: 8px;
 	border-bottom-right-radius: 0px;
@@ -168,4 +168,7 @@ disadvantage: building new prototypes is less intuitive
 }
 .vertTimes [data-tag=vertTimes]{
 	transform: rotate(90deg);
+}
+div#telaRole > [data-atom=and] {
+    padding: 10px;
 }

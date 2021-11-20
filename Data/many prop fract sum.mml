@@ -10,10 +10,6 @@
 		</ci>
 		<ci minimized="True" type="bool" title="" data-tag="prop. dell'opposto" data-tagimg="./images/properties/couple.png">
 		</ci>
-	</apply>
-	<apply medium="True" type="bool">
-		<and>
-		</and>
 		<ci minimized="True" type="bool" title="commutativa della moltiplicazione" data-tag="vertTimes" data-tagimg="./images/properties/commutative.png">
 		</ci>
 		<ci minimized="True" type="bool" title="plus associative" data-tag="vertTimes" data-tagimg="./images/properties/associate.png">
@@ -22,11 +18,50 @@
 		</ci>
 		<ci minimized="True" type="bool" title="prop. del reciproco" data-tag="vertTimes" data-tagimg="./images/properties/couple.png">
 		</ci>
-	</apply>
-	<apply medium="True" type="bool">
-		<and>
-		</and>
 		<ci minimized="True" type="bool" title="prop. distributiva " data-tag="" data-tagimg="./images/properties/distributive.png">
 		</ci>
+		<ci type="bool">calcolo automatico di somme, moltiplicazioni,scomposizioni di naturali</ci>
+		<apply minimized="True" type="bool" data-tag="reciprocp del prodotto">
+			<forall>
+			</forall>
+			<bvar>
+				<ci type="num">x</ci>
+			</bvar>
+			<bvar>
+				<ci type="num">y</ci>
+			</bvar>
+			<apply type="bool">
+				<eq>
+				</eq>
+				<apply type="num">
+					<divide>
+					</divide>
+					<cn type="num">1</cn>
+					<apply type="num">
+						<times>
+						</times>
+						<ci type="num">x</ci>
+						<ci type="num">y</ci>
+					</apply>
+				</apply>
+				<apply type="num">
+					<times>
+					</times>
+					<apply type="num">
+						<divide>
+						</divide>
+						<cn type="num">1</cn>
+						<ci type="num">x</ci>
+					</apply>
+					<apply type="num">
+						<divide>
+						</divide>
+						<cn type="num">1</cn>
+						<ci type="num">y</ci>
+					</apply>
+				</apply>
+			</apply>
+		</apply>
+		<ci type="bool">moltiplicaz. natur.</ci>
 	</apply>
 </math>
