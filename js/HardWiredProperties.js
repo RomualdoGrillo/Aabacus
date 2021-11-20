@@ -257,7 +257,7 @@ function MNODEdistribute($dragged,target,dropped){
 		var $cloneDragged = MNODEclone($dragged)// clone dragged
 		$clone.insertBefore($(this));
 		$clone[0].MNODE_getRoles().append($cloneDragged);
-		if(dragged.index()>target.index()){ 
+		if($dragged.index()>target.index()){ 
 			$clone[0].MNODE_getRoles().prepend($(this));
 		}
 		else{
@@ -265,9 +265,9 @@ function MNODEdistribute($dragged,target,dropped){
 		}
 		//$cloneDragged.css({display:""})
 	})
-	var $draggedParent = dragged[0].MNODEparent(); 
+	var $draggedParent = $dragged[0].MNODEparent(); 
 	$draggedParent.addClass("cleanifpointless");//mark external operation as remove if pointless
-	dragged.remove();
+	$dragged.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
 	return PActx
