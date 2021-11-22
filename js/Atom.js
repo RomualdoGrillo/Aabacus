@@ -143,6 +143,12 @@ function MNODECreateDefinition(startNode) {
     MNODEextend($newforAll);
     $("#telaRole").append($newforAll); //todo:scegliere dove deve essere visibile la nuova definizione
     GetforAllContent($newforAll).append($newDef);
+    //***create arguments container in definendum, that's a way to show brackets
+    //discarded alternative: ahow brackets on the first and last roles:
+    // would not adapt to the bigger role in th elist
+    var $rolescontainer = $('<span class="rolescontainer" ></span>');
+      $definendum.append($rolescontainer);
+    //*** add each parameter
     $parList.each(function (i, val) {
       var node = this;
       var thisType = $(node).attr("data-type");
@@ -156,7 +162,7 @@ function MNODECreateDefinition(startNode) {
       var $Clone2 = MNODEclone($newNode); //clone da inserire in forAll header
       var $newRole = $('<span class="s_role" data-accept="1"></span>');
       $newRole.attr("data-type", thisType);
-      $definendum.append($newRole);
+      $rolescontainer.append($newRole);
       $newRole.append($Clone1);
       GetforAllHeader($newforAll).append($Clone2);
     });

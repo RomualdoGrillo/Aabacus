@@ -52,7 +52,15 @@ per una questione estetica
 .greyBorders [class*="_role"].empty {background-color:  #e6e6e6;}
 [data-atom].asymmetric>.firstMember {background-color:  #ffffff;}/*lo sfondo del lucchetto ha sempre sfondo bianco*/
 
-[data-atom] {
+
+.rolescontainer{
+	display:flex;
+	a: 1;
+	border: 1px solid transparent;
+}
+
+
+[data-atom], .rolescontainer {
     padding: 3px;
 }
 [data-atom='cn'],[data-atom='ci']{
@@ -71,7 +79,7 @@ flex-shrink:0;
 #tela *{
 	flex-shrink:1;
 }
-[data-atom],[class*="_role"],#overlay {
+[data-atom], [class*="_role"], #overlay, .rolescontainer {
 	position:relative;
 	/*border: 1px black solid; just for debug*/
 	border-radius: var(--div-radius);
@@ -554,18 +562,7 @@ body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover){
 border-color:transparent;
 }
 
-.showPar .brackets[data-atom]:not(.medium):not(.collapsed) {
-
-	border-left-color: black!important;
-	border-right-color: black!important;
-	
-
-	border-left-width: 2px;
-    border-right-width: 2px;
-	
-border-left-style: solid;
-border-right-style: solid;
-}
+.showPar .brackets:not(.medium):not(.collapsed), .showPar .rolescontainer {border-left-color: black!important;border-right-color: black!important;border-left-width: 2px;border-right-width: 2px;border-left-style: solid;border-right-style: solid;}
     
   
 /*written here to prevale over all other class css rules*/ 
