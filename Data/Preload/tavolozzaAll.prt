@@ -237,6 +237,3 @@
 			<div data-atom="ci" id="ciPrototype" data-type="" class="atom">
 				<div class="name"></div>
 			</div>
-			<div data-atom="ci" id="functionPrototype" data-type="function" class="atom">
-				<div class="name"></div>
-			</div>
