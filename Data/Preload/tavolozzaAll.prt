@@ -132,7 +132,7 @@
 				</div>
 				<div class="s_role forAllContent" data-type="bool" data-accept="1"></div>
 			</div>
-			<div id="ifThenElsePrototype" data-atom="ifThenElse" class="atom" data-type="bool">
+			<div id="ifthenelse" data-atom="ifthenelse" class="atom" data-type="bool">
 				<div class="column">
 					<div class="s_role if" data-type="bool"></div>
 					<div class="decoration imply"></div>

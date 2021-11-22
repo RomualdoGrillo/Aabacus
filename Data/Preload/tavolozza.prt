@@ -107,7 +107,7 @@
 				</div>
 			</div>
 			-->
-			<div id="ifthenelsePrototype" data-atom="conditional" class="atom" data-type="bool">
+			<div id="ifthenelsePrototype" data-atom="ifthenelse" class="atom" data-type="bool">
 				
 					<div class="row1">
 						<div class="s_role if" data-type="bool"></div>

@@ -789,7 +789,7 @@ body:not(.fixBorders) #result [data-atom][data-type=num]:not(:hover)
 	border-top-right-radius:1px!important;
 }
 
-[data-atom=conditional]{
+[data-atom=conditional], [data-atom=ifthenelse]{
 	display:grid;
 }
 .row1{
