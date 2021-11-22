@@ -120,28 +120,30 @@ function MNODECreateDefinition(startNode) {
   ); //crea una nuova definizine
   //*********************** definendum **********************
   //attuale)al momento vengono inseriti n ruoli singoli quanti sono i parametri
-  //rimane da fare todo!!: circondare la lista parametri con parentesi e separarli con, quando?
+  //rimane da fare todo!!: separare con , 
   //alternativa)in altermnativa si potrebbe una lista ordinata, ma si dovrebbe introdurre un modo
   //per specificare separatamente il datatype di ogni elemento della lista (cluster)
-  var $definendum = MNODEclone(prototypeSearch("function"));
+  var $definendum = MNODEclone(prototypeSearch(""));//search for generic prototype
   $definendum.attr("data-type", outType);
   m1 = $newDef.find(".firstMember"); //trova primo membro
   newName = prompt("Enter a name for the new definition");
+  if(newName == null){return}//prompt cancelled
+  if(!newName){return}//empty name
   $definendum.attr("data-atom",newName);
   $definendum.find(".name").append(newName);
   m1.append($definendum); //aggiungi contenuto al primo membro ed inseriscilo
   //*********************** definens **********************
   $definens = MNODEclone($(startNode));
-  //$definens.find("#MyOverlay").remove()//togli l'overlay violetto dal clone
+  //$definens.find("#MyOverlay").remove()//togli l'overlay colorato dal clone
   m2 = $newDef.find(".secondMember"); //trova secondo membro todo
   m2.append($definens); //aggiungi contenuto al secondo membro
   var $parList = $definens.find(".unselected");
-
+  $("#telaRole").append($newDef);
   if ($parList.length > 0) {
     let paramDefNames = ["x","y","z","t","k","p","q","a","b","c","d","e","f","g","h","i","l","m","n","o","q","r","s","u","v","z",];
     $newforAll = MNODEclone(prototypeSearch("forall")); //clona for each
     MNODEextend($newforAll);
-    $("#telaRole").append($newforAll); //todo:scegliere dove deve essere visibile la nuova definizione
+    $newDef.replaceWith($newforAll); //todo:scegliere dove deve essere visibile la nuova definizione
     GetforAllContent($newforAll).append($newDef);
     //***create arguments container in definendum, that's a way to show brackets
     //discarded alternative: ahow brackets on the first and last roles:

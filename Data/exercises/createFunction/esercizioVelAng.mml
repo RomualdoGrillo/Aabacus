@@ -2,7 +2,7 @@
 	<ci type="bool">Crea una definizione per ω velocità angolare:</ci>
 	<ci type="bool">1) seleziona la frazione 2π/T </ci>
 	<ci type="bool">2) deseleziona il parametro T: tieni premuto Shift e clicca su "T" </ci>
-	<ci type="bool">3) Creare una definizione a partire dall'espressione seleziona: premi Ctrl+f</ci>
+	<ci type="bool">3) Creare una definizione a partire dall'espressione seleziona: premi Ctrl+b</ci>
 	<apply type="bool">
 		<eq>
 		</eq>

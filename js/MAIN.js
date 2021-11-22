@@ -71,9 +71,9 @@ $(document).on('keydown', function(e) {
 		cancelSelected();
 		console.log("control + x")
 	}//auto create function definition
-	else if (e.ctrlKey && (keyPressed === 'f')) {
+	else if (e.ctrlKey && (keyPressed === 'b')) { //baptize
 		MNODECreateDefinition($('.selected')[0])
-		console.log("control + f")
+		console.log("control + b")
 	}//canc or del  code of "cancel" = 46 code of "del" = 8
 	else if (e.which === 46 || e.which === 8) {
 		cancelSelected();
