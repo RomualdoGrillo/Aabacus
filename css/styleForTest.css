@@ -116,15 +116,9 @@ body.eforall [data-atom=forAll]>.row>.forallSymbol{
      
 }*/
 
-/*[data-atom="m_inverse"]>.s_role[data-type="num"]{
-    border-style:solid;
-    border-width:10 0 0 0px;
-    border-image:url(../images/EgyptNumbers.svg) 100 0 stretch;
-    padding-left:0.5em;
-}
-*/
+
 /* notazione "antico egitto" egypt
-.m_inversedecoration{
+.m_inverseDecoration{
 	height: 10px;
 	padding:0px;
 	background-color: #645ca000;

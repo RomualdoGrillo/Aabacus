@@ -55,7 +55,7 @@ per una questione estetica
 
 .rolescontainer{
 	display:flex;
-	a: 1;
+	margin-left:3px;
 	border: 1px solid transparent;
 }
 
@@ -238,7 +238,7 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 	flex-direction:column;
 }
 
-[data-atom="ifThenElse"]{
+[data-atom="ifthenelse"]{
 	align-items:stretch;
 }
 
