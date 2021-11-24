@@ -164,6 +164,10 @@ function MNODECreateDefinition(startNode) {
       var $Clone2 = MNODEclone($newNode); //clone da inserire in forAll header
       var $newRole = $('<span class="s_role" data-accept="1"></span>');
       $newRole.attr("data-type", thisType);
+      //prepend comma
+      if(i>0){
+        $rolescontainer.append(",");
+      }
       $rolescontainer.append($newRole);
       $newRole.append($Clone1);
       GetforAllHeader($newforAll).append($Clone2);
