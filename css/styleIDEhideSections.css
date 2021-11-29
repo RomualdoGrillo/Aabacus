@@ -24,7 +24,6 @@ div.ide{
 	a seconda del contenuto*/
 }
 #rightColumn:not(:hover):not(.fixed),#leftColumn:not(:hover):not(.fixed) {
-	width: 20px;
 	opacity:0;
 	border-width:0px;
 	z-index:1;
