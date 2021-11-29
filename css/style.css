@@ -184,6 +184,16 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 	 flex-direction:column;
 }
 
+.brTimes [data-atom=times]>.ul_role{
+	display:inline;
+	text-align:center;
+}
+.brTimes [data-atom=times]>.ul_role>*{
+	display:inline-flex;
+	vertical-align: middle;
+}
+
+
 [data-atom="plus"]>.decoration.left {
 	width:5px;
 	height:90%;
