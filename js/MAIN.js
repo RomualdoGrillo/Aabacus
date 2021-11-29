@@ -178,9 +178,11 @@ function clickHandler(event) {
 		let $atom = $(event.target).parent();
 		if ($atom.is('#tela')) {
 			// tela fa eccezione perchè determina lo anche lo stato delle sezioni result e events
-			if ($atom.hasClass('unlocked')) {
+			if(!GLBsettings.lockTela){
+				GLBsettings.lockTela=true;
 				$('#tela,#result,#events').removeClass('unlocked');
 			} else {
+				GLBsettings.lockTela=false;
 				$('#tela,#result,#events').addClass('unlocked');
 			}
 		} else {
