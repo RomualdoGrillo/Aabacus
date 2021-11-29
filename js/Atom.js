@@ -1004,3 +1004,29 @@ function MNODEextend($startNode, applyToSubtreeAlso) {
     $.extend(this, atom); //pare non si possa fare altrimenti non riesco a estendere $(this)
   });
 }
+
+function reorderTimes($startTimes) {
+	//reorderTimes($('.selected'))  select a times atom
+	try {
+		
+		let role = $startTimes[0].MNODE_getRoles()[0];
+		$(role).find('br').remove();
+		let brExist = false;
+		let childrenArr = $startTimes[0].MNODE_getChildren().toArray()
+		for (i = 0; childrenArr[i]; i++) {
+			if ($(childrenArr[i]).is('[data-atom=m_inverse]')) {
+				//aggiungi br se ancora non esiste
+				if(!brExist){
+					$('<br>').appendTo($(role))
+					brExist = true;
+				}
+				//mettilo in coda
+				role.appendChild(childrenArr[i])
+				
+			}
+		}
+	} catch (error) {
+		console.error(error);
+	}
+
+}
