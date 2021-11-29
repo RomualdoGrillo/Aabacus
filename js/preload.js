@@ -116,9 +116,18 @@ function GLBsettingsToInterface() {
 		$dd_visSelection[0].selectedIndex = GLBsettings.visSettingSelected;
 		$('#cb_showPar')[0].checked = visSetting.brackets;
 		updateBodyClass('showPar',visSetting.brackets);
-		$('#cb_vertTimes')[0].checked = visSetting.timesVert;
-		updateBodyClass('vertTimes',visSetting.timesVert);
-		
+		//*********times disposition************
+		$('#timesDisposition')[0].selectedIndex = visSetting.timesDisposition;
+		let varDisposition = $('#timesDisposition').val();
+		$('body').attr('timesDisposition',varDisposition);
+		//reorder terms and add or remove <br>
+		let onlyRemoveBr = varDisposition!='brTimes'
+		let arr= $('#telaRole [data-atom=times]').toArray()
+		let i = 0;
+		for(i=0;arr[i];i++){
+			reorderTimes($(arr[i]),onlyRemoveBr)
+		}
+		//**************************************
 		$('#cb_fixBorders')[0].checked = visSetting.fixBorders;
 		updateBodyClass('fixBorders',visSetting.fixBorders);
 
@@ -180,7 +189,7 @@ mySettings.addEventListener('change', function(event) {
 			GLBsettings.gameMode = $('#BUTT_gameMode')[0].checked;
 			GLBsettings.gameModeSurpriseRes = $('#BUTT_gameModeSurpriseRes')[0].checked;		
 			visSetting.brackets = $('#cb_showPar')[0].checked;
-			visSetting.timesVert = $('#cb_vertTimes')[0].checked;
+			visSetting.timesDisposition = $('#timesDisposition')[0].selectedIndex
 			visSetting.fixBorders = $('#cb_fixBorders')[0].checked;
 			visSetting.hidePlus = $('#cb_hidePlus')[0].checked;
 			visSetting.eforall = $('#cb_eforall')[0].checked;

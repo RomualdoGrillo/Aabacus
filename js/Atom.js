@@ -1005,12 +1005,15 @@ function MNODEextend($startNode, applyToSubtreeAlso) {
   });
 }
 
-function reorderTimes($startTimes) {
-	//reorderTimes($('.selected'))  select a times atom
+function reorderTimes($startTimes,brRemove) {
+	//select a times atom
+	//reorderTimes($('.selected'))  
+	//reorderTimes($('.selected'),true)  te remove br
 	try {
 		
 		let role = $startTimes[0].MNODE_getRoles()[0];
 		$(role).find('br').remove();
+		if(brRemove){return}
 		let brExist = false;
 		let childrenArr = $startTimes[0].MNODE_getChildren().toArray()
 		for (i = 0; childrenArr[i]; i++) {

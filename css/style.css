@@ -180,15 +180,15 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 }*/
 
 /*questo per ottenere disposizione verticale in times e and*/
-.vertTimes [data-atom="times"] >[class*="_role"] {
+[timesdisposition=vertTimes] [data-atom="times"] >[class*="_role"] {
 	 flex-direction:column;
 }
 
-.brTimes [data-atom=times]>.ul_role{
+[timesdisposition=brTimes] [data-atom=times]>.ul_role{
 	display:inline;
 	text-align:center;
 }
-.brTimes [data-atom=times]>.ul_role>*{
+[timesdisposition=brTimes] [data-atom=times]>.ul_role>*{
 	display:inline-flex;
 	vertical-align: middle;
 }

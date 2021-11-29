@@ -19,6 +19,10 @@ In this way infix and tag can exist at the same time
 body.hidePlus [data-atom=plus]>[class$="role"]>[data-atom]::before{
 	color:transparent;	
 }
+body[timesdisposition=brTimes] br + [data-atom]::before{
+	background-color:transparent!important;	
+}
+
 [data-atom=plus]>[class$="role"]>[data-atom]:not(:first-of-type):not(.resizable)::before,
 [data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type):not(.resizable)::before,
 [data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type):not(.resizable)::before {
@@ -50,15 +54,17 @@ body.hidePlus [data-atom=plus]>[class$="role"]>[data-atom]::before{
 	margin-left: 0.5px; /*space for infix symbol*/
 }
 
-.vertTimes [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/{
+[timesdisposition=vertTimes] [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/{
 	margin-top: 0.5px; /*space for infix symbol*/
 }
 
-.vertTimes [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
+[timesdisposition=vertTimes] [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
 	top:-3px;
 	left:unset;
 	pointer-events: none;
 }
+
+
 .sortable-drag::before{/*if before is removed you get a flickering, so it is just hidden*/
 	visibility:hidden;
 }
