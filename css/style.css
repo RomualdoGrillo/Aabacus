@@ -481,6 +481,7 @@ body.hidePlus [data-atom="times"]{
 #telaRole :not(.empty)>.infix.proto{/*#telaRole  specifico il selector*/
 	display:none;
 }
+.s_role.exponent{margin:-8px;}
 
 .infix, .power_decoration{/*workaround: altrimenti .power_decoration risultava misteriosamente sortable*/
 	pointer-events: none;
