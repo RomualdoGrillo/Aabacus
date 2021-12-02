@@ -49,8 +49,12 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 				$('#tavolozza').children(':not(.fundamental)').remove();
 			}
 			inject(textFromFileLoaded,$('#tavolozza'))
-
 		}
+		else{
+			console.log('unknown file extension');
+			return
+		}
+		RefreshEmptyInfixBraketsGlued()
 	};
 	fileReader.readAsText(fileToLoad, "UTF-8");
 }
@@ -84,7 +88,6 @@ function inject(MMLstring,$targetNode,doNotWrap)
 	ExtendAndInitializeTree($convertedTree);
 	var $refreshStartPoint = MNODEparent($convertedTree);
 	if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
-	RefreshEmptyInfixBraketsGlued($refreshStartPoint,true,"eibg")
 	//insertHtmlByRef($targetNode)
 	ssnapshot.take(); 
 }

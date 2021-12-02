@@ -66,12 +66,14 @@ function injectAll(response,rootUrl){
 	if(all.settings_json && all.settings_json.string){//string data
 			GLBsettings = JSON.parse(all.settings_json.string);
 			GLBsettingsToInterface();
+			RefreshEmptyInfixBraketsGlued($("#telaRole"))
 		}
 	else if(all.settings_json){//url
 		$.getJSON(buildPath(rootUrl,all.settings_json), function(parsedJSON){
 			//console.log(parsedJSON);
 			GLBsettings = parsedJSON
 			GLBsettingsToInterface();
+			RefreshEmptyInfixBraketsGlued($("#telaRole"))
 		});
 	}
 	
@@ -120,6 +122,7 @@ function GLBsettingsToInterface() {
 		$('#timesDisposition')[0].selectedIndex = visSetting.timesDisposition;
 		let varDisposition = $('#timesDisposition').val();
 		$('body').attr('timesDisposition',varDisposition);
+		/*
 		//reorder terms and add or remove <br>
 		let onlyRemoveBr = varDisposition!='brTimes'
 		let arr= $('#telaRole [data-atom=times]').toArray()
@@ -127,6 +130,7 @@ function GLBsettingsToInterface() {
 		for(i=0;arr[i];i++){
 			reorderTimes($(arr[i]),onlyRemoveBr)
 		}
+		*/
 		//**************************************
 		$('#cb_fixBorders')[0].checked = visSetting.fixBorders;
 		updateBodyClass('fixBorders',visSetting.fixBorders);
@@ -180,7 +184,6 @@ mySettings.addEventListener('change', function(event) {
 	if (event.target.matches('#visSettingSelected')) {
 		console.log('changed visSettingSelected');
 		GLBsettings.visSettingSelected = $dd_visSelection[0].selectedIndex
-		GLBsettingsToInterface();
 	} else {
 		console.log('changed settings');
 		let visIndex = GLBsettings.visSettingSelected;
@@ -198,9 +201,5 @@ mySettings.addEventListener('change', function(event) {
 		}
 	}
 	GLBsettingsToInterface();
+	RefreshEmptyInfixBraketsGlued($("#telaRole"))
 });
-
-function updateCSSclassesFromGLB(){
-
-
-}

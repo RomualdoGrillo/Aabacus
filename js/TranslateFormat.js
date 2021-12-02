@@ -19,7 +19,7 @@ function MNODEfactorizeMinus($startNode) {
 	$startNode[0].MNODE_dissolveContainer()
 	//remove minus from $startNode  
 	refreshInfix($extOp);
-	RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
+	RefreshEmptyInfixBraketsGlued($('body'));
 	ssnapshot.take();
 }
 

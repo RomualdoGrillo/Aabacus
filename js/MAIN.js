@@ -17,17 +17,14 @@ let sortablesExcluded = '[data-atom=minus]>*,[data-atom=m_inverse]>*,[data-atom=
 //glued
 MNODEextend($('body'), true);
 //************ Preload  ************
-//preload will trigger the usual extend and make sortable chain of events 
+//preload will extend new atoms 
 let preloadPath = window.location.href.split('preloadPath=')[1]
 if (!preloadPath) {
 	preloadPath = './Data/Preload/preload.json'
 }
 preloadAll(preloadPath);
-$('[data-atom].asymmetric').each(function(i, e) {
-	refreshAsymmEq($(e))
-})
 //initialize lock icons??
-RefreshEmptyInfixBraketsGlued($('body'), true, "eib");
+RefreshEmptyInfixBraketsGlued();
 ssnapshot.take();
 document.addEventListener("click", clickHandler);
 document.addEventListener("dblclick", dblclickHandler);
@@ -60,7 +57,7 @@ $(document).on('keydown', function(e) {
 	else if (e.ctrlKey && (keyPressed === 'v')) {
 		ssnapshot.paste();
 		console.log("control + v")
-		RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
+		RefreshEmptyInfixBraketsGlued();
 	}//ctrl+z
 	else if (e.ctrlKey && (keyPressed === 'z')) {
 		ssnapshot.undo();
@@ -272,9 +269,9 @@ function dblclickHandler(event) {
 				$newNode[0].MNODE_setName(newVal);
 				$newNode.attr('data-type', type)
 			}
-			forThisPar_focus_nofocus($newNode, $toBeSpecified)
-			ssnapshot.take()
-			RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
+			forThisPar_focus_nofocus($newNode, $toBeSpecified);
+			RefreshEmptyInfixBraketsGlued();
+			ssnapshot.take();
 		}
 	}
 	//******** remove "exclusiveFocus" ***********
@@ -390,7 +387,7 @@ function refreshAndReplace(PActx) {
 
 	if ($toBeRefreshed !== undefined && $toBeRefreshed.length != 0) {
 
-		RefreshEmptyInfixBraketsGlued($toBeRefreshed, true, "egip");
+		RefreshEmptyInfixBraketsGlued();
 	}
 	return PActx
 }
@@ -429,8 +426,8 @@ function cancelSelected() {
 		toBeCancelled.each(function(i, element) {
 			$(element).remove()
 		});
+		RefreshEmptyInfixBraketsGlued();
 		ssnapshot.take();
-		RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
 	}
 }
 
