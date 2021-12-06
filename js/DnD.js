@@ -115,6 +115,11 @@ function startHandlerMouseDown(event, AtomDragged) {
 	}
 
 }
+function onMove(event) {
+	console.log('moved');
+	$('.dropTarget').removeClass('dropTarget');
+	MNODEparent($(event.to)).addClass('dropTarget');
+}
 function onSort(event) {
 	console.log('just sorting');
 	RefreshEmptyInfixBraketsGlued(MNODEparent($(event.to)))	
@@ -224,6 +229,7 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 				onSort:onSort,
 				onStart: startHandlerMouseDown,
 				onAdd: onAdd,
+				onMove:onMove,
 				onEnd:MouseUpCleanup,//on sortend the event MouseUp does not occur! onEnd is fired instead
 				fallbackOnBody: true,
 				swapThreshold: 0.65,
@@ -257,6 +263,7 @@ function clearSortableTargets() {
 	let tgts = document.querySelectorAll('.tgt');
 	let i = 0;
 	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
+	$('*').removeClass('dropTarget');
 	while (tgts[i]) {
 		let sortable = Sortable.get(tgts[i]);
 		if (sortable) { sortable.destroy() };
