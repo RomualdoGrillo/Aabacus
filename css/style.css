@@ -814,8 +814,8 @@ body:not(.fixBorders) #result [data-atom][data-type=num]:not(:hover)
 }
 
 body[tool=autoAdapt] .sortable-drag *{
-	color: rgba(1, 1, 1, 0.5)
-	/*opacity: 0.6;//opacity affects child elements too*/
+	color: rgba(1, 1, 1, 0.5);
+	opacity: 0;/*opacity affects child elements too*/
 }
 body[tool=autoAdapt] .sortable-drag [title^="s"] *,body[tool=autoAdapt] .sortable-drag [title^="s"]{/*??? [title] does not work you need [title^="s"]*/
 	background-color: lightyellow;
@@ -832,6 +832,11 @@ body[tool=autoAdapt] .sortable-drag [title^="s"] *,body[tool=autoAdapt] .sortabl
 	height: 30%;
 	z-index: 1;
 	justify-content: center;
+}
+
+.dropTarget{
+	border-color:blue!important;
+	border-style:dashed;
 }
 
 .debug .tgt{
