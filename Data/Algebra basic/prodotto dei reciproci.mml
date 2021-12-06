@@ -8,6 +8,48 @@
 		<bvar>
 			<ci type="num">x_</ci>
 		</bvar>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<times>
+				</times>
+				<apply type="num">
+					<m_inverse>
+					</m_inverse>
+					<apply type="num">
+						<times>
+						</times>
+						<ci type="num">o</ci>
+						<ci type="num">x</ci>
+					</apply>
+				</apply>
+			</apply>
+			<apply type="num">
+				<times>
+				</times>
+				<apply type="num">
+					<m_inverse>
+					</m_inverse>
+					<ci type="num">o</ci>
+				</apply>
+				<apply type="num">
+					<m_inverse>
+					</m_inverse>
+					<ci type="num">x</ci>
+				</apply>
+			</apply>
+		</apply>
+	</apply>
+	<apply title="prodotto dei reciproci gen." type="bool">
+		<forall>
+		</forall>
+		<bvar>
+			<ci type="num">others___</ci>
+		</bvar>
+		<bvar>
+			<ci type="num">x_</ci>
+		</bvar>
 		<bvar>
 			<ci type="num">y_</ci>
 		</bvar>
