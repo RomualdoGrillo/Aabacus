@@ -954,6 +954,7 @@ function reorderTimes($startTimes, brRemove) {
 		let brExist = false;
 		let numeratorFound = false;
 		let childrenArr = $startTimes[0].MNODE_getChildren().toArray()
+		/**metti i reciproci al per ultimi preceduti da br */
 		for (i = 0; childrenArr[i]; i++) {
 			if ($(childrenArr[i]).is('[data-atom=m_inverse]')) {
 				//aggiungi br se ancora non esiste
@@ -967,9 +968,10 @@ function reorderTimes($startTimes, brRemove) {
 			else {
 				numeratorFound = true;
 			}
-			if(!numeratorFound){
-				$(role).find('br').remove();
-			}
+		}
+		//** se però non c'è numeratore, allora togli il br*/
+		if(!numeratorFound){
+			$(role).find('br').remove();
 		}
 	} catch (error) {
 		console.error(error);
