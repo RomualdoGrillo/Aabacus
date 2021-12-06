@@ -474,7 +474,7 @@ function PMcleanAndPost(PActx){
 	}
 	//************Post cleanup***********
 	if(PActx.$transform){
-	    PActx.$transform.find('[data-atom].PMclone').addBack().each(function(){
+	    PActx.$transform.find('[data-atom]').addBack().each(function(){
 	    	let postMarks = MNODESmarkUnmark($(this),undefined,"p");
 	    	if(postMarks.indexOf('c') != -1){// is "c" one of the post markings?
 				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
