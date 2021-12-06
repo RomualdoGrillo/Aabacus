@@ -253,7 +253,7 @@ function MNODEForThisPar($parameter, $newVal) {
 	//$newVal può essere anche un vettore vuoto
 	//in tal caso il parametro doverebbe essere di tipo x___ ma per ora non faccio controlli
 	var $f = $parameter.parent().closest('[data-atom="forAll"]'); //
-	var $h = GetforAllHeader($f); // get header
+	var $h = GetforAllHeader($f);// get header
 	var $c = GetforAllContent($f);
 	var $root = $f; //l'elemento più esterno Root può cambiare
 	//************stabilisci se c'è conflitto con i nomi delle Bvar******
@@ -952,6 +952,7 @@ function reorderTimes($startTimes, brRemove) {
 		$(role).find('br').remove();
 		if (brRemove) { return }
 		let brExist = false;
+		let numeratorFound = false;
 		let childrenArr = $startTimes[0].MNODE_getChildren().toArray()
 		for (i = 0; childrenArr[i]; i++) {
 			if ($(childrenArr[i]).is('[data-atom=m_inverse]')) {
@@ -962,7 +963,12 @@ function reorderTimes($startTimes, brRemove) {
 				}
 				//mettilo in coda
 				role.appendChild(childrenArr[i])
-
+			}
+			else {
+				numeratorFound = true;
+			}
+			if(!numeratorFound){
+				$(role).find('br').remove();
 			}
 		}
 	} catch (error) {
