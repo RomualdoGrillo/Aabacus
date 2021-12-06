@@ -30,6 +30,7 @@ div.ide{
 }
 #leftColumn:not(:hover):not(.fixed){
 	margin-top: 150px;
+	left:calc(-50% + 30px);
 }
 
 #leftColumn,#rightColumn{
@@ -48,9 +49,6 @@ div.ide{
 }
 #leftColumn{
 	overflow: auto;
-	/* width: 95px; */
-	left:0px;
-	/* align-items: end; */
 }
 
 #tavolozzaRow:not(:hover):not(.fixed){
