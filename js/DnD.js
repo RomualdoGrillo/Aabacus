@@ -115,6 +115,10 @@ function startHandlerMouseDown(event, AtomDragged) {
 	}
 
 }
+function onSort(event) {
+	console.log('just sorting');
+	RefreshEmptyInfixBraketsGlued(MNODEparent($(event.to)))	
+}
 
 function onAdd(event) {
 	//replacing sortablejs defaul clone with myClone (removed id, extends MNODE etc..)
@@ -217,6 +221,7 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 					pull: 'clone',
 				},
 				sort: sort,
+				onSort:onSort,
 				onStart: startHandlerMouseDown,
 				onAdd: onAdd,
 				onEnd:MouseUpCleanup,//on sortend the event MouseUp does not occur! onEnd is fired instead
