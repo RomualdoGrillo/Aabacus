@@ -303,7 +303,8 @@ function dblclickHandler(event) {
 			let $role=$atomDblclicked[0].MNODE_getRoles().eq(0);
 			let firstChild = $role.find('>[data-atom]')[0]
 			let fcWidth = firstChild.offsetWidth
-			var fcstyle = element.currentStyle || window.getComputedStyle(firstChild);
+			//var fcstyle = element.currentStyle || window.getComputedStyle(firstChild);
+			var fcstyle = window.getComputedStyle(firstChild);
 			let fcMargins = parseFloat(fcstyle.marginLeft) + parseFloat(fcstyle.marginRight)
 			let n_columns = Math.floor( $role[0].offsetWidth/(fcWidth+fcMargins) )
 			let n_children = $atomDblclicked[0].MNODE_getChildren().length
@@ -459,7 +460,7 @@ function PActxConclude(PActx) {
 			}
 		}
 		ssnapshot.take();
-		RefreshEmptyInfixBraketsGlued($('body'),true,"eib");
+		RefreshEmptyInfixBraketsGlued($('body'),true);
 		lookForResultAndCelebrate();
 		PActxVisualize(PActx);
 	}
