@@ -99,7 +99,7 @@ function MNODECreateDefinition(startNode) {
 		$newforAll = MNODEclone(prototypeSearch("forall")); //clona for each
 		MNODEextend($newforAll);
 		$newDef.replaceWith($newforAll); //todo:scegliere dove deve essere visibile la nuova definizione
-		GetforAllContent($newforAll).append($newDef);
+		GetforAllContentRole($newforAll).append($newDef);
 		//***create arguments container in definendum, that's a way to show brackets
 		//discarded alternative: ahow brackets on the first and last roles:
 		// would not adapt to the bigger role in th elist
@@ -238,7 +238,7 @@ function MNODEReplaceAll(
 	return +$occurrences.length + " replaced";
 }
 
-function GetforAllContent($forAll) {
+function GetforAllContentRole($forAll) {
 	return $forAll[0].MNODE_getRoles(".forAllContent");
 }
 function GetforAllHeader($forAll) {
@@ -254,7 +254,7 @@ function MNODEForThisPar($parameter, $newVal) {
 	//in tal caso il parametro doverebbe essere di tipo x___ ma per ora non faccio controlli
 	var $f = $parameter.parent().closest('[data-atom="forAll"]'); //
 	var $h = GetforAllHeader($f);// get header
-	var $c = GetforAllContent($f);
+	var $c = GetforAllContentRole($f);
 	var $root = $f; //l'elemento più esterno Root può cambiare
 	//************stabilisci se c'è conflitto con i nomi delle Bvar******
 	//il nome della variabile specificata nel forThis è per caso già presente tra i parametri del forall?
