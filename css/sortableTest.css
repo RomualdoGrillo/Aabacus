@@ -5,8 +5,6 @@
 	/* align-content: center; */
 }
 
-.fraction>.ul_role>[data-atom=m_inverse]{
-}
 
 .fraction>.ul_role>.infix
 {
@@ -51,7 +49,4 @@ f_role{
 	width: 100%;
 }
 
-.over{
-	/* background-color:red; */
-}
 
