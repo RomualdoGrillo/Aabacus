@@ -244,7 +244,7 @@ function MNODESmarkUnmark($Atom,value,attrName){
 //link:per associare atomi in pattern e transform
 //post: c=semplifica n=nonRiordinare
 
-	var mark = $Atom.attr('mark');
+	var mark = $Atom.attr('title');
 	if ( mark == undefined ){mark=""}
 	var markArray = mark.split("-")
 	//********************mode: READ*************************
@@ -267,7 +267,7 @@ function MNODESmarkUnmark($Atom,value,attrName){
 	//********************mode: WRITE**************************
 	// MNODESmarkUnmark($atom,"","all"); cancella tutte le marcature
 	if( attrName=="all" ){//scrivi tutto in una volta
-		$Atom.attr('mark',value);
+		$Atom.attr('title',value);
 		return value
 	}
 	else if( attrName=="p"){
@@ -294,8 +294,8 @@ function MNODESmarkUnmark($Atom,value,attrName){
 		}
 		i++
 	}
-	if(str){$Atom.attr('mark',str);}
-	else{$Atom.removeAttr('mark')}
+	if(str){$Atom.attr('title',str);}
+	else{$Atom.removeAttr('title')}
 	return str
 }
 
