@@ -36,13 +36,13 @@ function overwriteFromHeader($forAll) {
     })
 }
 //getAllMarks(searchForMarkedInSubtree($root, "*"))
-function searchForMarkedInSubtree($root, mark, attrName) {
+function searchForMarkedInSubtree($root, mark, attrName,usePermanentMark) {
     //cerca gli elementi che presentano tutte le marcature specificate in "mark"
     //se mark="*" return all marked
     var $rootAndSubnodes = $root.add($root.find('[data-atom]'))
     var $marked = $rootAndSubnodes.filter(function() {
         //search for marked elements
-        var thisMark = MNODESmarkUnmark($(this),undefined,attrName);//undefined vuol dire leggi perchè non ci sono val da scrivere
+        var thisMark = MNODESmarkUnmark($(this),undefined,attrName,usePermanentMark);//undefined vuol dire leggi perchè non ci sono val da scrivere
         if (thisMark) {
             return mark == "*" || allStringAinStringB(mark,thisMark) 
         }
@@ -234,7 +234,7 @@ function moveOrClearMarksInTree($startAtom,clear){//copy marks from persistent "
 	})
 }
 
-function MNODESmarkUnmark($Atom,value,attrName){
+function MNODESmarkUnmark($Atom,value,attrName,usePermanentMark){
 //la funzione scrive o legge marcature atomi in modo permanente: le marcature passano nel file mml. 
 //attrname può assumere i valori m,l,p corrispondenti al formato della stringa mark-link-post
 //mark: marcature che devono apparire anche nell'input perchè ci sia un match
@@ -243,8 +243,9 @@ function MNODESmarkUnmark($Atom,value,attrName){
 //Un marcatura "sp" va intesa come marcato "s" e marcato "p"
 //link:per associare atomi in pattern e transform
 //post: c=semplifica n=nonRiordinare
-
-	var mark = $Atom.attr('mark');
+	let markAttName ='mark'
+	if(usePermanentMark)(markAttName='title')
+	var mark = $Atom.attr(markAttName);
 	if ( mark == undefined ){mark=""}
 	var markArray = mark.split("-")
 	//********************mode: READ*************************
@@ -267,7 +268,7 @@ function MNODESmarkUnmark($Atom,value,attrName){
 	//********************mode: WRITE**************************
 	// MNODESmarkUnmark($atom,"","all"); cancella tutte le marcature
 	if( attrName=="all" ){//scrivi tutto in una volta
-		$Atom.attr('mark',value);
+		$Atom.attr(markAttName,value);
 		return value
 	}
 	else if( attrName=="p"){
@@ -294,8 +295,8 @@ function MNODESmarkUnmark($Atom,value,attrName){
 		}
 		i++
 	}
-	if(str){$Atom.attr('mark',str);}
-	else{$Atom.removeAttr('mark')}
+	if(str){$Atom.attr(markAttName,str);}
+	else{$Atom.removeAttr(markAttName)}
 	return str
 }
 

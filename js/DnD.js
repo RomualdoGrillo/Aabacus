@@ -41,7 +41,7 @@ function MakeSortableAndInjectMouseDown(event) {
             else{console.log('ERROR:member not found in equation')}
 			//look for  attack point
 			$atomTarget = $RoleMember.children().filter('[data-atom]:first');
-			let $startPointForValids = searchForMarkedInSubtree($RoleMember,"s",'m')//"s" e' la marcatura cercata, "m" vuol dire cerca una marcatura, non un link o post
+			let $startPointForValids = searchForMarkedInSubtree($RoleMember,"s",'m',true)//"s" e' la marcatura cercata, "m" vuol dire cerca una marcatura, non un link o post
             if($startPointForValids.length==0){$startPointForValids=$atomTarget}
 			let $validTgT = validCandidatesForPatternDrop($startPointForValids);
 			makeTargetsSortableRolesOrAtoms($validTgT.toArray(), 'dragPatternMatch');
