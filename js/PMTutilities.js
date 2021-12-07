@@ -395,7 +395,7 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
     var $inputParameters = [$par1,$par2]
     if( PActx.$cloneProp.attr('data-atom') === "forAll" ){//l'equazione è circondata da un forall
         $pattParameters = GetforAllHeader(PActx.$cloneProp).children();
-        PActx.$equation = GetforAllContent(PActx.$cloneProp).children();
+        PActx.$equation = GetforAllContentRole(PActx.$cloneProp).children();
         PActx.$pattern = PActx.$equation[0].MNODE_getRoles('.firstMember').children()   
     }
     else{//l'equazione non è circondata da un forall

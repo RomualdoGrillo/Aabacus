@@ -91,7 +91,7 @@ function containsBvar($member,$forAll){//contiene bvar?
 
 function reformatForallProp($prop,$transform){
     //sposta il forall che contiene tutto in modo che circondi solo il "$transform" 
-	var $forallContRole = GetforAllContent($prop);
+	var $forallContRole = GetforAllContentRole($prop);
 	var $newProp = $forallContRole.children();
 	var $tranformParent = $transform.parent();
 	$newProp.insertAfter($prop);//inserisci provvisoriamente dopo il forall
@@ -230,7 +230,7 @@ function swapMembersClone($origProp,mode){
     if( propCdsClass === "forAll" ){
         res.$cloneProp.addClass('waiting'); //metti il clone in stato waiting
         res.$cloneProp.removeClass('collapsed medium');
-        $equation = GetforAllContent(res.$cloneProp).children();
+        $equation = GetforAllContentRole(res.$cloneProp).children();
     }
     else{
         $equation = res.$cloneProp;

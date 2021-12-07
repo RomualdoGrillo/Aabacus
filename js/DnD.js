@@ -25,22 +25,24 @@ function MakeSortableAndInjectMouseDown(event) {
 		if (MNODEclosedDef($(event.target))) {
 			GLBDnD.$originalProperty = $(event.target).closest('[data-atom=forAll]');
 			if(GLBDnD.$originalProperty.length==0){return};
-			let $forallContent=GetforAllContent(GLBDnD.$originalProperty);
-			let $eqMembers=$forallContent.find('[data-atom=eq]>.firstMember,[data-atom=eq]>.secondMember');
-	        let $Member = $eqMembers.filter(function(i,e){return e.contains(event.target)})
-            if($Member.length==0){return}
+			let $forallContent=GetforAllContentRole(GLBDnD.$originalProperty).children();
+			let $equation=$($forallContent[0]);
+			if(!$equation.is('[data-atom=eq]')){console.log('forall content is not an equation'); return}
+			let $eqRoleMembers=$equation[0].MNODE_getRoles('.firstMember','.secondMember');
+			let $RoleMember = $eqRoleMembers.filter(function(i,e){return e.contains(event.target)})
+            if($RoleMember.length==0){return}
             //decide if ltr or rtl
-			$atomTarget = $Member.children().filter('[data-atom]:first');
-			let $startPointForValids = searchForMarkedInSubtree($Member,"s",'m')//"s" e' la marcatura cercata, "m" vuol dire cerca una parcatura, non un link o post
-            if($startPointForValids.length==0){$startPointForValids=$atomTarget}
-			if($Member.is('.firstMember')){
+			if($RoleMember.is('.firstMember')){
             	GLBDnD.direction='ltr'//rtl or ltr
             }
-			else if($Member.is('.secondMember')){
+			else if($RoleMember.is('.secondMember')){
             	GLBDnD.direction='rtl'//rtl or ltr
             }
             else{console.log('ERROR:member not found in equation')}
-			//$atomTarget = $(event.target).closest('[data-atom=forAll]');
+			//look for  attack point
+			$atomTarget = $RoleMember.children().filter('[data-atom]:first');
+			let $startPointForValids = searchForMarkedInSubtree($RoleMember,"s",'m')//"s" e' la marcatura cercata, "m" vuol dire cerca una marcatura, non un link o post
+            if($startPointForValids.length==0){$startPointForValids=$atomTarget}
 			let $validTgT = validCandidatesForPatternDrop($startPointForValids);
 			makeTargetsSortableRolesOrAtoms($validTgT.toArray(), 'dragPatternMatch');
 		}
@@ -116,7 +118,6 @@ function startHandlerMouseDown(event, AtomDragged) {
 
 }
 function onMove(event) {
-	console.log('moved');
 	$('.dropTarget').removeClass('dropTarget');
 	MNODEparent($(event.to)).addClass('dropTarget');
 }
