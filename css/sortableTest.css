@@ -16,7 +16,7 @@
 	height:20px
 }
 body[tool=autoAdapt] .sortable-ghost{
-	visibility: hidden;
+	display: none;
 }
 .sortable-ghost.showAsPlaceholder {
 	background-color: var(--default-bgcolor);/*default background*/
