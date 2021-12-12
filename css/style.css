@@ -402,9 +402,12 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 	border-color: blue!important;
 	z-index:1 } 
 
-.exclusiveFocus, .resizable, .waiting {/*grayout all but .exclusiveFocus DIV */
+.exclusiveFocus, .resizable, .waiting, .TargetsCommonParent {/*grayout all but .exclusiveFocus DIV */
 	z-index:100;
 	box-shadow: 0 0 0 999px #9695958a;
+}
+.exclusiveFocus2{
+	z-index:101;
 }
 
 #telaRole .exclusiveFocus .forallSymbol{
@@ -813,13 +816,16 @@ body:not(.fixBorders) #result [data-atom][data-type=num]:not(:hover)
 	justify-content:center;
 }
 
-body[tool=autoAdapt] .sortable-drag *{
-	color: rgba(1, 1, 1, 0.5);
-	opacity: 0;/*opacity affects child elements too*/
+body[tool=autoAdapt] .sortable-drag, body[tool=autoAdapt] .sortable-drag *{
+	opacity: 1;/*opacity affects child elements too*/
+	background-color:transparent!important;
+	color:transparent!important;
 }
 body[tool=autoAdapt] .sortable-drag [title^="s"] *,body[tool=autoAdapt] .sortable-drag [title^="s"]{/*??? [title] does not work you need [title^="s"]*/
-	background-color: lightyellow;
-	color:black;
+	color:black!important;
+}
+body[tool=autoAdapt] .sortable-drag [title^="s"]{
+	border-color:blue!important;
 }
     
 /***********   tgt DUMMY element   *********/

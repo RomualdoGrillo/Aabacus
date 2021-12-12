@@ -194,3 +194,20 @@ function identifierToAtom(string){
 	$clone.attr('data-atom', atomType);//uso un generico prototipo num e qui specifico se cn o ci
 	return	$clone
 }
+
+//arr=[a,y,x]
+function commonParent(elArray){
+    return elArray.reduce(commonParentOfTwo,elArray[0])
+}
+function commonParentOfTwo(a, b) {
+    var ap = $(a).parents().addBack();
+    var bp = $(b).parents().addBack();
+    //odd: addBack revverts the array order!
+    //i starts from maximun index and goes back
+    for (var i = ap.length - 1; i >= 0; i--) {
+        if (bp.index(ap[i]) != -1) {
+            return ap[i] //found common parent
+        }
+    }
+}
+

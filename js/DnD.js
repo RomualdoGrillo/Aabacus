@@ -6,6 +6,7 @@ let GLBDnD = { toolWhenMousedown: "" }
 
 
 function MakeSortableAndInjectMouseDown(event) {
+	let $validTgT=$();
 	/********cleanup*******/
 	if (debugMode) {//that's just for debug mode, in normal mode targets are clened on mouseup
 		cleanupDnD()
@@ -28,7 +29,7 @@ function MakeSortableAndInjectMouseDown(event) {
 			let $forallContent=GetforAllContentRole(GLBDnD.$originalProperty).children();
 			let $equation=$($forallContent[0]);
 			if(!$equation.is('[data-atom=eq]')){console.log('forall content is not an equation'); return}
-			let $eqRoleMembers=$equation[0].MNODE_getRoles('.firstMember','.secondMember');
+			let $eqRoleMembers=$equation[0].MNODE_getRoles('.firstMember,.secondMember');
 			let $RoleMember = $eqRoleMembers.filter(function(i,e){return e.contains(event.target)})
             if($RoleMember.length==0){return}
             //decide if ltr or rtl
@@ -43,8 +44,11 @@ function MakeSortableAndInjectMouseDown(event) {
 			$atomTarget = $RoleMember.children().filter('[data-atom]:first');
 			let $startPointForValids = searchForMarkedInSubtree($RoleMember,"s",'m',true)//"s" e' la marcatura cercata, "m" vuol dire cerca una marcatura, non un link o post
             if($startPointForValids.length==0){$startPointForValids=$atomTarget}
-			let $validTgT = validCandidatesForPatternDrop($startPointForValids);
+			$validTgT = validCandidatesForPatternDrop($startPointForValids);
 			makeTargetsSortableRolesOrAtoms($validTgT.toArray(), 'dragPatternMatch');
+			
+			
+			
 		}
 		else {
 			//no forall property
@@ -54,15 +58,15 @@ function MakeSortableAndInjectMouseDown(event) {
 		//*********from opened****************
 		
 		//make targets sortable
-		let $validTgT = validTargetsFromOpened($atomTarget);
+		let $validTgTOpen = validTargetsFromOpened($atomTarget);//i $validTgTOpen non vengono evidenziati con exclusive focus
 		if ($atomTarget.is('#tavolozza>*')) {
 			//add tela as target
-			$validTgT = $validTgT.add('#telaRole');
+			$validTgTOpen = $validTgTOpen.add('#telaRole');
 		}
-		$validTgT.toArray().forEach(function (el) {
+		$validTgTOpen.toArray().forEach(function (el) {
 			el.setAttribute('target', 'opened')
 		});
-		makeSortableMouseDown($validTgT.toArray(), true);
+		makeSortableMouseDown($validTgTOpen.toArray(), true);
 	}
 	else {
 		//******** apply custom propeties listed in propertiesDnD[i] ***************
@@ -71,15 +75,21 @@ function MakeSortableAndInjectMouseDown(event) {
 		if (checkIfFoundation()) {//only if tag foundation is present in tela 
 
 			while (propertiesDnD[i]) {
-				let classname = 'target-' + propertiesDnD[i].name
 				let targets = propertiesDnD[i].findTgt($atomTarget);
 				makeTargetsSortableRolesOrAtoms(targets, propertiesDnD[i].name)
+				$validTgT=$validTgT.add($(targets))
 				i++
 			}
+
 
 		}
 	}
 	if ($atomTarget && $atomTarget.length && $atomTarget[0].parentElement){//is there a valid target?(sometimes the $atomTarget is undefined sometime it is not but there is no [0] element)
+		if($validTgT.length!=0){
+			let $draggedAndTargets = $atomTarget.add($validTgT); 
+			$commParent = $(commonParent( $draggedAndTargets.toArray() ));	
+			$commParent.addClass('TargetsCommonParent')
+		}
 		//make source sortable
 		let sort
 		if(GLBDnD.toolWhenMousedown==""){//if mode is normal
@@ -94,7 +104,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	}
 }
 
-function startHandlerMouseDown(event, AtomDragged) {
+function startHandlerMouseDown(event) {
 	//*************** deselect ********
 	if (event.type == 'start') {
 		//clear selected unselected
@@ -122,7 +132,6 @@ function onMove(event) {
 	MNODEparent($(event.to)).addClass('dropTarget');
 }
 function onSort(event) {
-	console.log('just sorting');
 	RefreshEmptyInfixBraketsGlued(MNODEparent($(event.to)))	
 }
 
@@ -265,6 +274,7 @@ function clearSortableTargets() {
 	let i = 0;
 	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
 	$('*').removeClass('dropTarget');
+	$('*').removeClass('TargetsCommonParent');
 	while (tgts[i]) {
 		let sortable = Sortable.get(tgts[i]);
 		if (sortable) { sortable.destroy() };

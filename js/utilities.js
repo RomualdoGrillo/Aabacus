@@ -6,3 +6,5 @@
 atoms=$('#telaRole').find('[data-atom]');
 forallRepalceSubtree($(atoms[0]),$(atoms[0]));
 */
+
+
