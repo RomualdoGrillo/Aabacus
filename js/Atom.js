@@ -445,6 +445,7 @@ function MNODEclone($node, doNotExtend, removeID) {
 		$toBeCleaned.removeAttr("data-tag");
 		$toBeCleaned.removeClass("hide");
 		$toBeCleaned.removeClass("fundamental");
+		$toBeCleaned.removeClass("couldBeCollected");
 	}
 	return $clone;
 }
