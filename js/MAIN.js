@@ -192,7 +192,7 @@ function clickHandler(event) {
 		selectionManager("","","",true)//deselectAll
 	}
 	else if(!$thisMNODE.hasClass('unselectable')){
-		selectionManager($thisMNODE,event.ctrlKey,event.shiftKey)
+		selectionManager($thisMNODE,event.ctrlKey||event.metaKey,event.shiftKey)//on mac use command key instead of control
 	}
 }
 function selectionManager($clickedMNODE,ctrl,shift,deselectAll){

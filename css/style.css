@@ -402,7 +402,7 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 	border-color: blue!important;
 	z-index:1 } 
 
-.exclusiveFocus, .resizable, .waiting, .TargetsCommonParent {/*grayout all but .exclusiveFocus DIV */
+.exclusiveFocus, .resizable, .waiting, .TargetsCommonParentx {/*grayout all but .exclusiveFocus DIV */
 	z-index:100;
 	box-shadow: 0 0 0 999px #9695958a;
 }
