@@ -7,23 +7,23 @@ In this way infix and tag can exist at the same time
 /***********   Infix Notation   *********/
 
 
-[data-atom=plus]>[class$="role"]>[data-atom]:not(:first-of-type),
+[data-atom=plus]>[class*="role"]>[data-atom]:not(:first-of-type),
 [data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type),
 [data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type)
 {
 	margin-left: 11px;/*space for infix symbol*/
 }
-[data-atom=plus].resizable>[class$="role"]>[data-atom]/*:not(.sortable-drag)*/{
+[data-atom=plus].resizable>[class*="role"]>[data-atom]/*:not(.sortable-drag)*/{
 	margin: 4px;
 }
-body.hidePlus [data-atom=plus]>[class$="role"]>[data-atom]::before{
+body.hidePlus [data-atom=plus]>[class*="role"]>[data-atom]::before{
 	color:transparent;	
 }
 body[timesdisposition=brTimes] br + [data-atom]::before{
 	background-color:transparent!important;	
 }
 
-[data-atom=plus]>[class$="role"]>[data-atom]:not(:first-of-type):not(.resizable)::before,
+[data-atom=plus]>[class*="role"]>[data-atom]:not(:first-of-type):not(.resizable)::before,
 [data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type):not(.resizable)::before,
 [data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type):not(.resizable)::before {
 	/* background-color: red; */
