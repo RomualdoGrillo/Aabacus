@@ -1,0 +1,40 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<ci type="bool">Long division polinomial</ci>
+	<apply type="num">
+		<plus>
+		</plus>
+		<apply type="num">
+			<times>
+			</times>
+			<cn type="num">4</cn>
+			<apply type="num">
+				<power>
+				</power>
+				<ci type="num">x</ci>
+				<cn type="num">2</cn>
+			</apply>
+		</apply>
+		<apply type="num">
+			<times>
+			</times>
+			<cn type="num">4</cn>
+			<ci type="num">x</ci>
+		</apply>
+		<cn type="num">7</cn>
+		<apply type="num">
+			<times>
+			</times>
+			<apply type="num">
+				<plus>
+				</plus>
+				<apply type="num">
+					<times>
+					</times>
+					<ci type="num">x</ci>
+				</apply>
+				<cn type="num">2</cn>
+			</apply>
+			<cn type="num">0</cn>
+		</apply>
+	</apply>
+</math>

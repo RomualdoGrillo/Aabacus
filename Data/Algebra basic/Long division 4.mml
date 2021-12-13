@@ -1,0 +1,30 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<ci type="bool">Long division with decimal numbers examples:  47/12</ci>
+	<apply type="num">
+		<plus>
+		</plus>
+		<apply type="num">
+			<times>
+			</times>
+			<cn type="num">4</cn>
+			<cn type="num">10</cn>
+		</apply>
+		<cn type="num">7</cn>
+		<apply type="num">
+			<times>
+			</times>
+			<apply type="num">
+				<plus>
+				</plus>
+				<apply type="num">
+					<times>
+					</times>
+					<cn type="num">1</cn>
+					<cn type="num">10</cn>
+				</apply>
+				<cn type="num">2</cn>
+			</apply>
+			<cn type="num">0</cn>
+		</apply>
+	</apply>
+</math>
