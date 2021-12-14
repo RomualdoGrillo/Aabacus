@@ -27,11 +27,7 @@
 			<apply type="num">
 				<plus>
 				</plus>
-				<apply type="num">
-					<times>
-					</times>
-					<ci type="num">x</ci>
-				</apply>
+				<ci type="num">x</ci>
 				<cn type="num">2</cn>
 			</apply>
 			<cn type="num">0</cn>
