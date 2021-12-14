@@ -143,7 +143,7 @@ flex-shrink:0;
 /*************specifici per tipo di MNODEO ***************/
 
 [data-atom="power"]{
-	display: grid;
+	display: inline-grid!important;/* grid works but breaka the num/den disposition*/
 	grid-template-columns: minmax(12px, max-content) minmax(8px, max-content);
 	grid-gap: 0px;
 }

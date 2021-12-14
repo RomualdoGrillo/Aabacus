@@ -60,7 +60,7 @@ body[timesdisposition=brTimes] br + [data-atom]::before{
 
 [timesdisposition=vertTimes] [data-atom=times]>.ul_role>[data-atom]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
 	top:-3px;
-	left:unset;
+	left:calc(50% - 1.75px);
 	pointer-events: none;
 }
 
