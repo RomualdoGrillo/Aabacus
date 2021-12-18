@@ -211,3 +211,50 @@ function commonParentOfTwo(a, b) {
     }
 }
 
+
+function gradeInMonomial($MNODE, varName) {
+	let $factors
+	let totalGrade = 0
+	if ($MNODE.attr('data-atom') == 'times') {//multiple factors?
+		$factors = $MNODE[0].MNODE_getChildren()
+	}
+	else {
+		$factors = $MNODE
+	}
+	for(let i=0;$factors[i];i++){
+		let type=$factors.eq(i).attr('data-atom')
+		if(type=="ci"||type=="power"){
+			digested=AtomsToVal($factors.eq(i));
+			//xyz=$($factors[i]){} //translate to values
+			if(varName==undefined || digested.val==varName){//add the exponent
+				totalGrade= totalGrade + digested.exp;
+			}
+		} 
+		 
+	}
+	return totalGrade
+}
+
+function sortByGrade(array,varName) {
+    return array.sort(function (a,b) {
+        return gradeInMonomial($(a),varName)-gradeInMonomial($(b),varName);
+    });
+}
+
+function updateContainerView($MNODE,view,par){
+	if(view=='grid'){
+		//set parent
+		$MNODE[0].MNODE_getRoles().css('display','grid').css('grid-auto-flow','column').css('justify-items','center') //(data-view,"viewAsGrid");
+		//set children
+		let $children = $MNODE[0].MNODE_getChildren()
+		//childrenArr = sortByGrade(childrenArr);
+		for(i=0;$children[i];i++){
+			console.log(i)
+			let column_index=gradeInMonomial($children.eq(i),par)+1;
+			$children.eq(i).css('grid-column', column_index);//column index starts from 1
+		}
+		//set column for each children
+	}
+}
+
+
