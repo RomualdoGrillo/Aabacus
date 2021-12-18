@@ -647,6 +647,22 @@ function AtomsToVal($currAtom, res) {
 		} else {
 			res.exp = newRes.exp * -1;
 		}
+	} else if (op === "power") {
+		let $exponent = $currAtom[0].MNODE_getChildren(':last');//:first child is exponent\
+		if($exponent.attr("data-atom")=="cn"){ 
+			//------>
+			let resExp = AtomsToVal($exponent);
+			//<-----
+			res.exp = res.exp * resExp.val;  
+			let $base = $currAtom[0].MNODE_getChildren(':first');//:first child is base
+			//------>
+			res.val = AtomsToVal($base).val;
+			//<-----
+		}
+		else{
+			//can't manage x^y 
+		}
+		res.type = op;
 	} else if (op === "cn" || op === "ci") {
 		//todo: per ora gestisce solo cn e ci
 		res.type = op;
@@ -683,6 +699,20 @@ function ValToAtoms(partial) {
 			$newAtom = $clone;
 		}
 		$target = $clone[0].MNODE_getRoles();
+	}
+	else if (partial.exp!=1){
+		//power
+		$clone = MNODEclone(prototypeSearch("power"));
+		if ($target !== undefined) {
+			$target.append($clone);
+		} else {
+			$newAtom = $clone;
+		}
+		let $exponent = MNODEclone(prototypeSearch("cn", "num"));
+		$exponent[0].MNODE_setName(partial.exp);
+		$clone[0].MNODE_getRoles('.exponent').append($exponent);
+		$target = $clone[0].MNODE_getRoles('.base');
+		
 	}
 	$clone = MNODEclone(prototypeSearch("cn", "num"));
 	$clone[0].MNODE_setName(partial.val);
