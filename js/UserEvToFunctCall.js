@@ -108,6 +108,7 @@ function RefineRepeatedOfMArked(PActx){
 			if(refinementPActx && refinementPActx.matchedTF){//semplificazione applicata con successo
 				refreshAndReplace(refinementPActx);
 				semplificEffettuata = true;
+				PActx = refinementPActx
 				break
     		}
     		j--
