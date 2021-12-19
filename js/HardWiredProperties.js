@@ -540,43 +540,47 @@ function compose($toBeComp){
 		
 	var partial = undefined
 	for (var i = 0, len = $toBeComp.length; i < len; i++){//for perchè potrebbe sommare o moltiplicare una lista di n elementi
-		var currRes = AtomsToVal( $($toBeComp[i]));
-		if(currRes.val == 0 && currRes.exp == -1){// trovato elemento "indigesto" /0
+		var currToBeComp = AtomsToVal( $($toBeComp[i]));
+		if(currToBeComp.val == 0 && currToBeComp.exp == -1){// controlla che non sia /0
 			console.warn("1/0 is meaningless")
 			PActx.matchedTF=false;//non procedere alla sostituzione
 			break
 		}
-		if( currRes.type !== "cn" && currRes.type !== "ci"){// trovato elemento "indigesto"
-			partial = currRes
+		if( currToBeComp.type !== "cn" && currToBeComp.type !== "ci"){// trovato elemento "indigesto"
+			partial = currToBeComp
 			PActx.matchedTF=false;
 			break
 		}
 		if( partial == undefined){//*** prima iterazione, il risultato parziale coincide con il primo operando
-			partial = currRes;
+			partial = currToBeComp;
 		}
 		else{
 			if( op === "times" ){
 				//conteggia segni
-				partial.sign = partial.sign * currRes.sign;
+				partial.sign = partial.sign * currToBeComp.sign;
 				//conteggia il valore
 				if( partial.val == 1){//se il parziale ha valore 1
-					partial.val = currRes.val;
-					partial.exp = currRes.exp;
-					partial.type = currRes.type;
+					partial.val = currToBeComp.val;
+					partial.exp = currToBeComp.exp;
+					partial.type = currToBeComp.type;
 					PActx.matchedTF = true;//composed!!
 				}
-				else if( currRes.val == 1){
-					//se valore currRes ha valore 1, non è necessario modificare altro oltre il segno che è già stato computato
+				else if( currToBeComp.val == 1){
+					//se valore currToBeComp ha valore 1, non è necessario modificare altro oltre il segno che è già stato computato
 					PActx.matchedTF = true;//composed!!
 				}
-				else if( partial.val === currRes.val && (partial.exp == currRes.exp * -1) ){//reciproci? C.E. se ha senso l’esp iniziale lo ha anche questa operazione
+				else if( partial.val === currToBeComp.val && (partial.exp == currToBeComp.exp * -1) ){//reciproci? C.E. se ha senso l’esp iniziale lo ha anche questa operazione
 					partial.exp = 1;
 					partial.val  = 1;
 					partial.type = "cn";
 					PActx.matchedTF = true;//composed!!
 				}
-				else if( currRes.type === "cn" && partial.type === "cn" && (partial.exp == currRes.exp)){//esponenti concordi
-					partial.val = partial.val * currRes.val;
+				else if( currToBeComp.type === "cn" && partial.type === "cn" && (partial.exp == currToBeComp.exp)){//esponenti concordi
+					partial.val = partial.val * currToBeComp.val;
+					PActx.matchedTF = true;//composed!!
+				}
+				else if(partial.val == 0 || currToBeComp.val==0 ){
+					partial.val = 0;
 					PActx.matchedTF = true;//composed!!
 				}
 				else if(false){
@@ -584,10 +588,10 @@ function compose($toBeComp){
 					var den
 					if(partial.exp == 1){
 						num = partial.val;
-						den = currRes.val;
+						den = currToBeComp.val;
 					}
 					else{
-						num = currRes.val;
+						num = currToBeComp.val;
 						den = partial.val;
 						}
 					if( num%den == 0){//divisione tra interi ?? tarpare ??
@@ -599,6 +603,10 @@ function compose($toBeComp){
 						break	
 					}
 				}
+				else if( partial.val === currToBeComp.val && partial.type == "ci"){//reciproci? C.E. se ha senso l’esp iniziale lo ha anche questa operazione
+					partial.exp = partial.exp + currToBeComp.exp;
+					PActx.matchedTF = true;//composed!!
+				}
 				else{
 					//partial.canBeReplaced = false;
 					PActx.matchedTF=false;//se nessun tentativo è andato a buon fine...
@@ -608,20 +616,20 @@ function compose($toBeComp){
 			else if( op === "plus"){
 
 				if( partial.val == 0){//se il parziale ha valore 0
-					partial = currRes;
+					partial = currToBeComp;
 					PActx.matchedTF = true;//composed!!
 				}
-				else if( currRes.val == 0){//se valore currRes ha valore 0, non è necessario modificare 
+				else if( currToBeComp.val == 0){//se valore currToBeComp ha valore 0, non è necessario modificare 
 					PActx.matchedTF = true;//composed!!
 				}
-				else if( currRes.type === "cn" && partial.type === "cn"){//numerici
+				else if( currToBeComp.type === "cn" && partial.type === "cn"){//numerici
 					//compute algebric val
-					var algRes = currRes.val * currRes.sign + partial.val * partial.sign;
+					var algRes = currToBeComp.val * currToBeComp.sign + partial.val * partial.sign;
 					partial.val = Math.abs(algRes);
 					partial.sign = Math.sign(algRes)
 					PActx.matchedTF = true;//composed!!
 				}
-				else if(currRes.type === "ci" && partial.type === "ci" && (currRes.exp == partial.exp) && (currRes.sign == partial.sign * -1) ){//opposti?
+				else if(currToBeComp.type === "ci" && partial.type === "ci" && (currToBeComp.exp == partial.exp) && (currToBeComp.sign == partial.sign * -1) ){//opposti?
 							partial.val = 0;
 							partial.exp = 1;
 							partial.sign = 1;
@@ -634,7 +642,7 @@ function compose($toBeComp){
 			
 			}
 			else if(op === "and"){
-				partial = currRes
+				partial = currToBeComp
 				//partial.canBeReplaced = false;
 				break
 
