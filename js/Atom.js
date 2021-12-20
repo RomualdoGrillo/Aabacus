@@ -19,7 +19,7 @@ funzione su un qualsiasi elemento html anche se non è un MNODE
 */
 atom = {
 	MNODEparent: MNODEparent,
-	MNODEcleanIfPointless: MNODEcleanIfPointless,
+	MNODErefine_c: MNODErefine_c,
 	MNODEclosedDef: MNODEclosedDef,
 	MNODECreateDefinition: MNODECreateDefinition,
 	MNODE_replaceWith: MNODE_replaceWith,
@@ -858,7 +858,7 @@ function compareExtMNODE(
 	return res;
 }
 
-function MNODEcleanIfPointless(startNode, applyToSubtree) {
+function MNODErefine_c(startNode, applyToSubtree) {
 	//per applicarlo all'albero applica prima a subtree e poi a root
 	let $extOp = $(startNode);
 	if (applyToSubtree) {
@@ -867,7 +867,7 @@ function MNODEcleanIfPointless(startNode, applyToSubtree) {
 			//trova i contenitori da rimuovere: vuoti o con un solo figlio
 			var $pointlessElements = $extOp
 				.parent()
-				.find("[data-atom].cleanifpointless")
+				.find("[data-atom].refine_c")
 				.filter(function () {
 					return this.MNODE_checkIfPointlessSingleNode();
 				});
@@ -884,7 +884,7 @@ function MNODEcleanIfPointless(startNode, applyToSubtree) {
 		}
 	} else {
 		if (
-			$extOp.is("[data-atom].cleanifpointless") &&
+			$extOp.is("[data-atom].refine_c") &&
 			$extOp[0].MNODE_checkIfPointlessSingleNode()
 		) {
 			return $extOp[0].MNODE_dissolveContainer();

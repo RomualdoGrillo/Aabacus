@@ -235,7 +235,7 @@ function MNODEPartDistribute($dragged,target,dropped){
 	});
 	let previous = $clone[0].MNODE_getRoles().children().eq(childrenIndex-1);
 	$dragged.insertAfter(previous);
-	$parent.addClass("cleanifpointless");
+	$parent.addClass("refine_c");
 	dropped.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
@@ -252,7 +252,7 @@ function MNODEdistribute($dragged,target,dropped){
 	let opD = opIsDistDop(op);
 	var $prototype = prototypeSearch(op)// for example search for "#timesPrototype"
 	$(target)[0].MNODE_getChildren().each(function(i,e){
-		e.classList.add("cleanifpointless");
+		e.classList.add("refine_c");
 		var $clone = MNODEclone($prototype)//create times
 		var $cloneDragged = MNODEclone($dragged)// clone dragged
 		$clone.insertBefore($(this));
@@ -266,7 +266,7 @@ function MNODEdistribute($dragged,target,dropped){
 		//$cloneDragged.css({display:""})
 	})
 	var $draggedParent = $dragged[0].MNODEparent(); 
-	$draggedParent.addClass("cleanifpointless");//mark external operation as remove if pointless
+	$draggedParent.addClass("refine_c");//mark external operation as remove if pointless
 	$dragged.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
@@ -403,7 +403,7 @@ function MNODEpartCollect($dragged,$target){
 	let opd = $draggedParent.attr("data-atom")
 		
 	let $commonGranParent = MNODEparent($targetParent);
-	$commonGranParent.addClass("cleanifpointless");
+	$commonGranParent.addClass("refine_c");
 
 
 	if(opt==opd && opIsDistDop(opt)){//both have same distributable op
@@ -472,12 +472,12 @@ function MNODEcollect($dragged,$target){
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
 	var extOp 
 	extOp = encaseIfNeeded($parentParent,op)
-	MNODEparent($dragged).addClass("cleanifpointless")
-	MNODEparent($(".couldBeCollected")).addClass("cleanifpointless")
+	MNODEparent($dragged).addClass("refine_c")
+	MNODEparent($(".couldBeCollected")).addClass("refine_c")
 	//$dragged.insertBefore($parentParent);
 	$dragged.remove();
 	$(".couldBeCollected").remove()
-	$parentParent.addClass("cleanifpointless");
+	$parentParent.addClass("refine_c");
 	PActx.$transform =  extOp;
 	PActx.matchedTF=true
 	return PActx
@@ -666,7 +666,7 @@ function compose($toBeComp){
 		$composed.insertBefore(PActx.$operand[0]);
 		PActx.$operand.remove()
 		//ExtendAndInitializeTree($composed);
-		$parent.addClass('cleanifpointless');
+		$parent.addClass('refine_c');
 		PActx.$transform = $parent; 
 	}
 	else {//rimetti le cose come stavano tranne le semplificazioni iniziali
@@ -713,7 +713,7 @@ function decompose($toBeDec,direction){//"up" for factorize
 				}
 				//******Rimuovi il MINUS
 				$minusContent.insertAfter($minus);
-				$minusContent.addClass("cleanifpointless");//if the content was a "times" it may by dissolved if the parent is also times
+				$minusContent.addClass("refine_c");//if the content was a "times" it may by dissolved if the parent is also times
 				$minus.remove();
 				
 				//var $roleContainingFactors = $minusContent[0].MNODE_getRoles();
@@ -884,7 +884,7 @@ function removeDropped($dragged,$target){
 	PActx.visualization = "images/properties/collect.png"
 	if($parent.attr("data-atom")=="and"){
 		$target.remove();//if contained in an and simply remove the redundant term		
-		$parent.addClass("cleanifpointless");
+		$parent.addClass("refine_c");
 	}
 	else{
 		var $clone = MNODEclone( prototypeSearch("ci","bool") )

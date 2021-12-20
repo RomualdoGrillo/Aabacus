@@ -453,7 +453,7 @@ function PActxConclude(PActx) {
 		refreshAndReplace(PActx);
 		if (PActx.$transform) {
 			RefineRepeatedOfpointless(PActx);
-			$children = MNODEcleanIfPointless(PActx.$transform, true);
+			$children = MNODErefine_c(PActx.$transform, true);
 			if ($children) {
 				//in case the $transform "dissolved" you need to consider his child 
 				PActx.$transform = $children

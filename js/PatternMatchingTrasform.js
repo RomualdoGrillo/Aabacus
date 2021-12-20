@@ -222,7 +222,7 @@ function swapMembersClone($origProp,mode){
     //res.$cloneProp.find('[data-atom]').addBack().each(function(){
 	    	//if(MNODESmarkUnmark($(this),undefined,"p") == "c"){
 				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
-	    		//$(this).addClass('cleanifpointless');
+	    		//$(this).addClass('refine_c');
 	    	//}
     //}); 
     //***********trova l'equazione ************************************************

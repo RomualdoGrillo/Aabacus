@@ -479,7 +479,7 @@ function PMcleanAndPost(PActx){
 	    	let postMarks = MNODESmarkUnmark($(this),undefined,"p");
 	    	if(postMarks.indexOf('c') != -1){// is "c" one of the post markings?
 				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
-	    		$(this).addClass('cleanifpointless');
+	    		$(this).addClass('refine_c');
 	    	}
 	    	//************remove all PM marks***********
     		$(this).removeClass('taken');
