@@ -689,13 +689,13 @@
 					<apply type="num">
 						<times>
 						</times>
+						<ci title="d" type="num">x</ci>
+						<ci type="num">others</ci>
 						<apply title="d" type="num">
 							<m_inverse>
 							</m_inverse>
 							<ci type="num">x</ci>
 						</apply>
-						<ci title="d" type="num">x</ci>
-						<ci type="num">others</ci>
 					</apply>
 					<apply type="num">
 						<times>
@@ -805,10 +805,10 @@
 				<apply type="bool">
 					<eq>
 					</eq>
-					<apply type="bool" title="--c">
+					<apply title="--c" type="bool">
 						<and>
 						</and>
-						<ci type="bool" title="s-s">true</ci>
+						<ci title="--s" type="bool">true</ci>
 						<ci type="bool">a</ci>
 					</apply>
 					<ci type="bool">a</ci>
