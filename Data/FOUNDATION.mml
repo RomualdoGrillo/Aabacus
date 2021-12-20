@@ -640,7 +640,7 @@
 					<ci type="bool">true</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="simpPlusSingleFactor">
+			<apply collapsed="True" type="bool" data-tag="simpPlusSingleTerm">
 				<forall>
 				</forall>
 				<bvar>

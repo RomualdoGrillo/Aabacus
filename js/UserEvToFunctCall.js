@@ -95,7 +95,7 @@ function searchForProperty(field,value,returnedField){
 
 
 
-function RefineRepeatedOfpointless(PActx){
+function RepeatedRefine_c(PActx){
 	var i=0
 	var semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
 	let $transformParentRole = PActx.$transform.parent()//se il transform viene sostituito, continua a cercare a partire da l suo parent
