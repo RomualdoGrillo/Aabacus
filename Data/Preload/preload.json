@@ -4,5 +4,5 @@
    "tavolozza_html":"./Data/Preload/tavolozza.prt",
    "gestToAction_mml":"./Data/Preload/gestToAction.mml",
    "settings_json":"./Data/Preload/default.set",
-   "eventsToHandlers_mml":"./Data/Preload/eventsToHandlers.mml"
+
 }

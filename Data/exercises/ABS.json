@@ -4,5 +4,5 @@
    "content_mml":"./Data/ABS-simpler.mml",
    "result_mml":"./Data/preload/Esercizio1_res.mml",
    "settings_json":"./Data/preload/game.set",
-   "eventsToHandlers_mml":""
+
 }
