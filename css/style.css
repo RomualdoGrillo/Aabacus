@@ -824,7 +824,7 @@ body[tool=autoAdapt] .sortable-drag, body[tool=autoAdapt] .sortable-drag *{
 body[tool=autoAdapt] .sortable-drag [title^="s"] *,body[tool=autoAdapt] .sortable-drag [title^="s"]{/*??? [title] does not work you need [title^="s"]*/
 	color:black!important;
 }
-body[tool=autoAdapt] .sortable-drag [title^="s"]{
+body[tool=autoAdapt] .sortable-drag.attackPoint /*[title^="s"]*/{
 	border-color:blue!important;
 }
     
