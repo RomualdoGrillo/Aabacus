@@ -36,6 +36,12 @@
 			<ci type="bool">AndNeutral</ci>
 			<ci type="bool">ltr</ci>
 		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">timesAbsorbingEl</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
 	</apply>
 	<apply type="bool">
 		<eventtoaction>

@@ -713,6 +713,7 @@ function decompose($toBeDec,direction){//"up" for factorize
 				}
 				//******Rimuovi il MINUS
 				$minusContent.insertAfter($minus);
+				$minusContent.addClass("cleanifpointless");//if the content was a "times" it may by dissolved if the parent is also times
 				$minus.remove();
 				
 				//var $roleContainingFactors = $minusContent[0].MNODE_getRoles();

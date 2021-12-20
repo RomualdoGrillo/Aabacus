@@ -674,12 +674,9 @@
 					<ci type="num">x</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="annichilaT">
+			<apply collapsed="True" type="bool" data-tag="timesAbsorbingEl">
 				<forall>
 				</forall>
-				<bvar>
-					<ci title="d" type="num">x</ci>
-				</bvar>
 				<bvar>
 					<ci type="num">others___</ci>
 				</bvar>
@@ -689,19 +686,10 @@
 					<apply type="num">
 						<times>
 						</times>
-						<ci title="d" type="num">x</ci>
-						<ci type="num">others</ci>
-						<apply title="d" type="num">
-							<m_inverse>
-							</m_inverse>
-							<ci type="num">x</ci>
-						</apply>
-					</apply>
-					<apply type="num">
-						<times>
-						</times>
+						<cn type="num">0</cn>
 						<ci type="num">others</ci>
 					</apply>
+					<cn type="num">0</cn>
 				</apply>
 			</apply>
 			<apply collapsed="True" type="bool" data-tag="orAbsorbingEl">
@@ -766,36 +754,6 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="annichilaP">
-				<forall>
-				</forall>
-				<bvar>
-					<ci title="d" type="num">x</ci>
-				</bvar>
-				<bvar>
-					<ci type="num">others___</ci>
-				</bvar>
-				<apply type="bool">
-					<eq>
-					</eq>
-					<apply type="num">
-						<plus>
-						</plus>
-						<apply title="d" type="num">
-							<minus>
-							</minus>
-							<ci type="num">x</ci>
-						</apply>
-						<ci title="d" type="num">x</ci>
-						<ci type="num">others</ci>
-					</apply>
-					<apply type="num">
-						<plus>
-						</plus>
-						<ci type="num">others</ci>
-					</apply>
-				</apply>
-			</apply>
 			<apply collapsed="True" type="bool" data-tag="AndNeutral">
 				<forall>
 				</forall>
@@ -841,6 +799,36 @@
 					<ci type="bool">false</ci>
 				</apply>
 				<ci type="bool">true</ci>
+			</apply>
+			<apply collapsed="True" type="bool" data-tag="annichilaP">
+				<forall>
+				</forall>
+				<bvar>
+					<ci title="d" type="num">x</ci>
+				</bvar>
+				<bvar>
+					<ci type="num">others___</ci>
+				</bvar>
+				<apply type="bool">
+					<eq>
+					</eq>
+					<apply type="num">
+						<plus>
+						</plus>
+						<apply title="d" type="num">
+							<minus>
+							</minus>
+							<ci type="num">x</ci>
+						</apply>
+						<ci title="d" type="num">x</ci>
+						<ci type="num">others</ci>
+					</apply>
+					<apply type="num">
+						<plus>
+						</plus>
+						<ci type="num">others</ci>
+					</apply>
+				</apply>
 			</apply>
 		</apply>
 	</apply>
