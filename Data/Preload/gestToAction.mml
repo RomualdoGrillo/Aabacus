@@ -26,7 +26,6 @@
 			<ci type="bool">rtl</ci>
 		</apply>
 	</apply>
-	
 	<apply type="bool">
 		<eventtoaction>
 		</eventtoaction>
@@ -38,7 +37,6 @@
 			<ci type="bool">ltr</ci>
 		</apply>
 	</apply>
-	
 	<apply type="bool">
 		<eventtoaction>
 		</eventtoaction>
@@ -152,12 +150,6 @@
 			<callfunction>
 			</callfunction>
 			<ci type="bool">defOne</ci>
-			<ci type="bool">ltr</ci>
-		</apply>
-		<apply type="obj">
-			<callfunction>
-			</callfunction>
-			<ci type="bool">defZero</ci>
 			<ci type="bool">ltr</ci>
 		</apply>
 		<apply type="obj">

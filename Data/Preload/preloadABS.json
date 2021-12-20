@@ -3,7 +3,6 @@
    "foundation_mml":"./Data/FOUNDATION.mml",
    "content_mml":"./Data/ABS-simpler.mml",
    "gestToAction_mml":"./Data/Preload/gestToAction.mml",
-   "eventsToHandlers_mml":"./Data/Preload/eventsToHandlers.mml",
    "settings_json":"./Data/Preload/game.set"
 }
 

@@ -98,9 +98,11 @@ function searchForProperty(field,value,returnedField){
 function RefineRepeatedOfMArked(PActx){
 	var i=0
 	var semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
+	let $transformParentRole = PActx.$transform.parent()//se il transform viene sostituito, continua a cercare a partire da l suo parent
 	while(semplificEffettuata == true && i<20){//limito il numero di tentativi per evitare loop infiniti
 		//cerca atomi marcati "c"
-		var $toBesemplified = PActx.$transform.find('[data-atom]').addBack().filter('.cleanifpointless')
+		
+		var $toBesemplified = $transformParentRole.find('[data-atom].cleanifpointless')
     	var j= ($toBesemplified.length - 1)
     	semplificEffettuata = false;
     	while( j>=0){//prova a semplificare il j-esimo atomo, parti dal fondo
@@ -108,7 +110,6 @@ function RefineRepeatedOfMArked(PActx){
 			if(refinementPActx && refinementPActx.matchedTF){//semplificazione applicata con successo
 				refreshAndReplace(refinementPActx);
 				semplificEffettuata = true;
-				PActx = refinementPActx
 				break
     		}
     		j--
