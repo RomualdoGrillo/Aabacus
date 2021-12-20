@@ -54,14 +54,21 @@ function MNODEneedsBracket($MNODE)
 		["and"],
 		["or"]
 	];
-	
+	//check PEMDAS order of operations 
 	var MNODEclassIndex = getCol(MatrixBaracketNeeded,0).indexOf(MNODEclass)
 	if ( MNODEclassIndex != -1 )
 	{
 		var row = MatrixBaracketNeeded [MNODEclassIndex];
-		return row.indexOf(parentClass) != -1; // found in matrix
+		if(row.indexOf(parentClass) != -1){// found in matrix
+			return true}
 	}
-	return false // if not found, bracket not needed
+	//check if plus timess etc.. have one or zero children
+	let needMoreThanOneChild = ["plus","times","power"]
+	if ( needMoreThanOneChild.indexOf(MNODEclass) != -1   && 
+	$MNODE[0].MNODE_getChildren().length< 2 ){
+		return true //highlight 0 or one child
+	}
+	return false // bracket not needed
 }
 
 
