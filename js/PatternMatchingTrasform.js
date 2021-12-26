@@ -219,12 +219,6 @@ function swapMembersClone($origProp,mode){
     //***********marca TUTTI I CLONI clone ************************************************
     res.$cloneProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone
 
-    //res.$cloneProp.find('[data-atom]').addBack().each(function(){
-	    	//if(MNODESmarkUnmark($(this),undefined,"p") == "c"){
-				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
-	    		//$(this).addClass('refine_c');
-	    	//}
-    //}); 
     //***********trova l'equazione ************************************************
     var $equation
     if( propCdsClass === "forAll" ){

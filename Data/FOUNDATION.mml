@@ -830,6 +830,24 @@
 					</apply>
 				</apply>
 			</apply>
+			<apply collapsed="True" type="bool" data-tag="oneAsEmptyTimes">
+				<eq>
+				</eq>
+				<apply type="num">
+					<times>
+					</times>
+				</apply>
+				<cn type="num">1</cn>
+			</apply>
+			<apply collapsed="True" type="bool" data-tag="zeroAsEmptyPlus">
+				<eq>
+				</eq>
+				<apply type="num">
+					<plus>
+					</plus>
+				</apply>
+				<cn type="num">0</cn>
+			</apply>
 		</apply>
 	</apply>
 </math>

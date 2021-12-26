@@ -182,6 +182,42 @@
 			<ci type="bool">notFalse</ci>
 			<ci type="bool">ltr</ci>
 		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">zeroAsEmptyPlus</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">oneAsEmptyTimes</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">plusAssociate</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">timesAssociate</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">andAssociate</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">orAssociate</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
 	</apply>
 	<apply type="bool">
 		<eventtoaction>
