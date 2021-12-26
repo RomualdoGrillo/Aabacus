@@ -453,13 +453,6 @@ function PActxConclude(PActx) {
 		refreshAndReplace(PActx);
 		if (PActx.$transform) {
 			RepeatedRefine_c(PActx.$transform,'c','.refine_c');//Apply "c" to every Node in the branch marked with '.refine_c'
-			/*
-			$children = MNODErefine_c(PActx.$transform, true);
-			if ($children) {
-				//in case the $transform "dissolved" you need to consider his child 
-				PActx.$transform = $children
-			}
-			*/
 		}
 		ssnapshot.take();
 		RefreshEmptyInfixBraketsGlued($('body'),true);

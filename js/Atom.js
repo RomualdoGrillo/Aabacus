@@ -19,7 +19,6 @@ funzione su un qualsiasi elemento html anche se non è un MNODE
 */
 atom = {
 	MNODEparent: MNODEparent,
-	MNODErefine_c: MNODErefine_c,
 	MNODEclosedDef: MNODEclosedDef,
 	MNODECreateDefinition: MNODECreateDefinition,
 	MNODE_replaceWith: MNODE_replaceWith,
@@ -858,39 +857,6 @@ function compareExtMNODE(
 	return res;
 }
 
-function MNODErefine_c(startNode, applyToSubtree) {
-	//per applicarlo all'albero applica prima a subtree e poi a root
-	let $extOp = $(startNode);
-	if (applyToSubtree) {
-		for (i = 0; i < 100; i++) {
-			//messo un limite solo per evitare loop infiniti in caso di errori nel codice
-			//trova i contenitori da rimuovere: vuoti o con un solo figlio
-			var $pointlessElements = $extOp
-				.parent()
-				.find("[data-atom].refine_c")
-				.filter(function () {
-					return this.MNODE_checkIfPointlessSingleNode();
-				});
-			//agisci sul primo trovato, poi ripeti la ricerca.
-			if ($pointlessElements.length > 0) {
-				let $children = $pointlessElements[0].MNODE_dissolveContainer();
-				if ($pointlessElements.eq(0).is($extOp)) {
-					$extOp = $children;
-				}
-			} else {
-				//console.log('no more pointless subnodes')
-				return $extOp;
-			}
-		}
-	} else {
-		if (
-			$extOp.is("[data-atom].refine_c") &&
-			$extOp[0].MNODE_checkIfPointlessSingleNode()
-		) {
-			return $extOp[0].MNODE_dissolveContainer();
-		}
-	}
-}
 
 function MNODE_checkIfPointlessSingleNode() {
 	let op = $(this).attr("data-atom");
