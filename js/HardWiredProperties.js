@@ -274,6 +274,7 @@ function MNODEdistribute($dragged,target,dropped){
 	})
 	var $draggedParent = $dragged[0].MNODEparent(); 
 	$draggedParent.addClass("refine_c");//mark external operation as remove if pointless
+	$(target).addClass("refine_c");//mark target operation as remove if pointless
 	$dragged.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
