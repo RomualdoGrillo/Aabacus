@@ -76,18 +76,39 @@ function returnTargetWrappedIfNeeded($targetNode,$toBeInserted){
 }
 
 //inject(MMLstring,$('#telaRole'))
-function inject(MMLstring,$targetNode,doNotWrap)
+function inject(MMLstring,$targetRole,doNotWrap)
 {
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab");
 	
 	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
-	$targetNode.append($convertedTree);
+	$targetRole.append($convertedTree);
 	if(doNotWrap=!true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
-		$target = returnTargetWrappedIfNeeded($targetNode,$convertedTree)
+		$target = returnTargetWrappedIfNeeded($targetRole,$convertedTree)
 	}
 	ExtendAndInitializeTree($convertedTree);
 	var $refreshStartPoint = MNODEparent($convertedTree);
 	if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
-	//insertHtmlByRef($targetNode)
+	//insertHtmlByRef($targetRole)
 	ssnapshot.take(); 
 }
+
+function importAll(){
+	//futuribile for()//fino a che c’è qualcosa da importare
+	$("#telaRole").find('[data-atom=and]:not(.ImportSuccess):not(.ImportFail)').filter(function(i,el){//search for import
+
+		try{
+			//***versione2: import statement è un and 
+			//che specifica il path del file da importare e opzionalmente le definizioni da importare all'interno del file
+			//se il il nodo contiene classe "ImportFail", non riprovare a caricarlo 
+			//se l'importazione fallisce aggiungi classe "ImportFail"
+			json = JSON.parse($(el).attr('title'));
+			if(json.import){
+				let $role=	el.MNODE_getRoles()
+				loadAjaxAndInject(json.import,$role); //will load and inject or mark the node as ImportFail or ImportSuccess
+			}
+		}
+		catch{}
+	})
+	
+}
+	

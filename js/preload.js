@@ -24,7 +24,7 @@ function injectAll(response,rootUrl){
 		//inject(all.tavolozza_html.string, $("#tavolozza"))
 		}
 	else if(all.tavolozza_html){//url
-		preloadAjax(buildPath(rootUrl,all.tavolozza_html),$("#tavolozza"))
+		loadAjaxAndInject(buildPath(rootUrl,all.tavolozza_html),$("#tavolozza"))
 	}
 	if(all.foundation_mml && all.foundation_mml.string){//string data
 		$('#tela').addClass('unlocked');
@@ -34,7 +34,7 @@ function injectAll(response,rootUrl){
 	else if(all.foundation_mml){//url
 		$('#tela').addClass('unlocked');
 		refreshAsymmEq($('#tela'));
-		preloadAjax(buildPath(rootUrl,all.foundation_mml),$("#telaRole"));
+		loadAjaxAndInject(buildPath(rootUrl,all.foundation_mml),$("#telaRole"));
 	}
 	if(all.content_mml && all.content_mml.string){//string data
 		$('#tela').addClass('unlocked');
@@ -44,7 +44,7 @@ function injectAll(response,rootUrl){
 	else if(all.content_mml){//url
 		$('#tela').addClass('unlocked');
 		refreshAsymmEq($('#tela'));
-		preloadAjax(buildPath(rootUrl,all.content_mml),$("#telaRole"));
+		loadAjaxAndInject(buildPath(rootUrl,all.content_mml),$("#telaRole"));
 	}
 	if(all.result_mml && all.result_mml.string){//string data
 		$('#result').children().remove();
@@ -52,7 +52,7 @@ function injectAll(response,rootUrl){
 	}
 	else if(all.result_mml){//url
 		$('#result').children().remove();
-		preloadAjax(buildPath(rootUrl,all.result_mml),$('#result'))
+		loadAjaxAndInject(buildPath(rootUrl,all.result_mml),$('#result'))
 	}
 	if(all.gestToAction_mml && all.gestToAction_mml.string){//string data
 		$('#events').children(':not(input)').remove();
@@ -60,7 +60,7 @@ function injectAll(response,rootUrl){
 		}
 	else if(all.gestToAction_mml){//url
 		$('#events').children(':not(input)').remove();
-		preloadAjax(buildPath(rootUrl,all.gestToAction_mml),$('#events'))
+		loadAjaxAndInject(buildPath(rootUrl,all.gestToAction_mml),$('#events'))
 	}
 	
 	if(all.settings_json && all.settings_json.string){//string data
@@ -80,27 +80,31 @@ function injectAll(response,rootUrl){
 }
 
 
-function preloadAjax(myUrl,target) {
-	//preloadAjax('./Data/Preload/preload.mml')
+function loadAjaxAndInject(myUrl,target) {
+	//loadAjaxAndInject('./Data/Preload/preload.mml')
+	let res
 	if(myUrl){
 	//altrimenti un url vuoto verrebbe interpretato come path relativo,
 	//col risultato di caricare index.html
-		$.ajax({
+		let res= $.ajax({
 			type: "GET",
 			url: myUrl,
 			async: false,
 			dataType: "text",
 			error: function(e) {
-				alert("AJAX/ errore nel caricare:" + myUrl);
+				//alert("AJAX/ errore nel caricare:" + myUrl);
 				console.log("Ajax/GET fallita : ", e);
+				MNODEparent(target).addClass("ImportFail");
 			},
 			success: function(response) {
+			MNODEparent(target).addClass("ImportSuccess");
 			//alert("lettura file " + myUrl + " tramite Ajax OK - risposta : " + response);
 			if(!target){target=$("#telaRole")}
 			inject(response, target)
 			}
 		});
 	}
+	return res
 }
 
 let dd_colors = $('#select_colors')[0]
