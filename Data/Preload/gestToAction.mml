@@ -13,7 +13,7 @@
 	<apply type="bool">
 		<eventtoaction>
 		</eventtoaction>
-		<ci title="d" type="bool">←</ci>
+		<ci  type="bool">←</ci>
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
@@ -30,6 +30,11 @@
 		<eventtoaction>
 		</eventtoaction>
 		<ci type="bool">↓</ci>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">compose</ci>
+		</apply>
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
@@ -50,8 +55,7 @@
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci title="d" type="bool">decompose-in-a-product</ci>
-			<ci type="bool">up</ci>
+			<ci  type="bool">decomposeInAProduct</ci>
 		</apply>
 		<apply type="obj">
 			<callfunction>
@@ -69,12 +73,11 @@
 	<apply type="bool">
 		<eventtoaction>
 		</eventtoaction>
-		<ci title="d" type="bool">→</ci>
+		<ci  type="bool">→</ci>
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci type="bool">decompose-in-a-sum</ci>
-			<ci type="bool">right</ci>
+			<ci type="bool">decomposeInASum</ci>
 		</apply>
 		<apply type="obj">
 			<callfunction>

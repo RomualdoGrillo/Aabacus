@@ -16,10 +16,10 @@ function keyboardEvToFC($atom, keyPressed){
 			firstValString = $actions[i].MNODE_getRoles('.values').children()[0].MNODE_getName();	
 		}
 		catch(err) {}
-		if( firstValString === "int" ){	//chiamata ad una funzione interna
+		if( firstValString!="rtl" && firstValString!="ltr"  ){	//chiamata ad una funzione interna
 			console.log("auto call: " + actionString );
 			var result
-			result = window[actionString](  $atom ) //todo: gestire errore 
+			result = window[actionString]( $atom,firstValString ) //todo: gestire errore 
 			if(result){
 				PActx = result
 			}//usa il risultato a meno che non sia "undefined"

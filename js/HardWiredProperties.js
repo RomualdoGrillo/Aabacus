@@ -684,7 +684,12 @@ function compose($toBeComp){
 	}
 	return PActx
 }
-
+function decomposeInAProduct($toBeDec){
+	return decompose($toBeDec,"up");
+}
+function decomposeInASum($toBeDec){
+	return decompose($toBeDec,"right");
+}
 function decompose($toBeDec,direction){//"up" for factorize
 	var PActx = newPActx();
 	PActx.$operand = $toBeDec;

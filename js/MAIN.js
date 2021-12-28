@@ -108,27 +108,9 @@ $(document).on('keydown', function(e) {
 		//****************applica proprietà***********
 		var $selected = $('.selected')
 		var PActx = newPActx();
-		//code of "arrowup" = 38 
-		if (e.which === 38) {
-			//console.log("decompose up")
-			PActx = decompose($selected, "up");
-			//up for factorize
-		}//code of "arrowright" = 39
-		else if (e.which === 39) {
-			//console.log("decompose right")
-			PActx = decompose($selected, "right");
-		}//code of "arrowdown" = 40 or "arrowleft" = 37 
-		else if (e.which === 40 || e.which === 37) {
-			//console.log("compose")
-			PActx = compose($selected)
-		}
 
-		// ogni volta che si preme un tasto cerca se c'è prop applicabile
-		if (!PActx.matchedTF) {
-
-			PActx = keyboardEvToFC($selected, keyPressed);
-
-		}
+		PActx = keyboardEvToFC($selected, keyPressed);
+		
 		//*************** operazioni conclusive (dopo tutti i tentativi)*******************
 		PActxConclude(PActx)
 	}
