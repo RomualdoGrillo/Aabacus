@@ -66,34 +66,32 @@ function createConvertedTree(startNode, from_to, neglectRootSign) {
 
 function ReplaceOneMNODE(node, from_to, neglectSign) {
 	//node is HTML node
+	let $node = $(node);
 	var $newNode
-	var dataType
-	var MNODEtype
 	var isMinimized
 	var isMedium
-	var dataTag
-	var dataTagImg
+	var originalData
 	var title
 	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
-		dataType = $(node).attr('data-type')
-		MNODEtype = $(node).attr('data-atom')
-		title = $(node).attr('title')
+		//get all data attributes
+		originalData = $node.data()
+		title = $node.attr('title')
 		
-		if( $(node).attr('data-tag') ) {
-			dataTag = $(node).attr('data-tag')
-			if($(node)[0].style.backgroundImage){ 
-				dataTagImg = wrapUnwrapUrlString( $(node)[0].style.backgroundImage , true );
+		if( $node.attr('data-tag') ) {
+			if($node[0].style.backgroundImage){ 
+				originalData.tagimg = wrapUnwrapUrlString( $node[0].style.backgroundImage , true );
 			}
 		}
-		isMinimized = $(node).hasClass('collapsed')
-		isMedium = $(node).hasClass('medium')
-		if (!neglectSign) {//signsAsClasses($(node),"SignsAsClasses_to_MinusOp") // converti   	
+		//todo: sostituire con un solo attributo che indichi lo stato di minimizzazione
+		isMinimized = $node.hasClass('collapsed')
+		isMedium = $node.hasClass('medium')
+		if (!neglectSign) {//signsAsClasses($node,"SignsAsClasses_to_MinusOp") // converti   	
 		}
 		var nodeText = ""
-		if (leafTags.indexOf(MNODEtype.toLowerCase()) !== -1) {
+		if (leafTags.indexOf(originalData.atom.toLowerCase()) !== -1) {
 			//if [cn;ci;csymbol] then the content is the text, else some role must be present
 			nodeText = node.MNODE_getName(true);
-			$newNode = $('<' + MNODEtype.toLowerCase() + '/>');
+			$newNode = $('<' + originalData.atom.toLowerCase() + '/>');
 			$newNode.text(nodeText)
 		} else {
 			/*
@@ -108,7 +106,7 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 			//salvo ciò che è .saveAsHtmlL
 			$newNode = $('<apply></apply>')
 			$newNode.text(nodeText)
-			$newNode.append('<' + MNODEtype + '/>')
+			$newNode.append('<' + originalData.atom + '/>')
 			$newNode.append($bVarChildren.wrap('<bvar>').parent());
 			$newNode.append($nobBvarchildren);
 			$newNode.append($htmlDivChildren);
@@ -120,62 +118,55 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 			$newNode.attr("medium", "True")
 		}
 		//if(title != undefined){	$newNode.attr('title',title)}//se presente salva anche il titolo
-		if (title) {
+		if (title) {//se presente e diverso da "" salva anche il titolo
 			$newNode.attr('title', title)
 		}
-		//se presente e diverso da "" salva anche il titolo
-		if (from_to === "aab_mmlWithType") {
-			$newNode.attr('type', dataType)
-			// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
-		}
-		if (dataTag) {
-			$newNode.attr("data-tag", dataTag )
-		}
-		if (dataTagImg) {
-			$newNode.attr("data-tagimg", dataTagImg)
-		}
+		// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
+		let newData = originalData
+		delete newData.atom
+		writeData($newNode,newData)
+
 		
 	} else if (from_to === "mml_aab") {
 		//inflate: =first child tag; if tag==csymbol or ci or cn allora considera il contenuto
-		dataType = $(node).attr('type');
-		isMinimized = ($(node).attr('collapsed') == "True");
-		isMedium = ($(node).attr('medium') == "True");
-		title = $(node).attr('title');
-		dataTag = $(node).attr('data-tag');
-		dataTagImg = $(node).attr('data-tagimg');
-		var nodeText = $(node).clone()//clone the element
+		originalData = $node.data();
+		isMinimized = ($node.attr('collapsed') == "True");
+		isMedium = ($node.attr('medium') == "True");
+		title = $node.attr('title');
+		
+		var nodeText = $node.clone()//clone the element
 		.children()//select all the children
 		.remove()//remove all the children
 		.end()//again go back to selected element
 		.text();
-		var tag;
+		var atom;
 		//string
 		if (node.tagName.toLowerCase() === "apply" || node.tagName === "bind") {
-			tag = $(node).children().filter(':first')[0].tagName.toLowerCase()
+			atom = $node.children().filter(':first')[0].tagName.toLowerCase()
 		} else {
 			////todo!!! devo distinguere e trattare diversamente saveAsHtml 
-			tag = node.tagName.toLowerCase()
+			atom = node.tagName.toLowerCase()
 		}
-		if (tag === "math") {
-			$newNode = $(node).children()
+		if (atom === "math") {
+			$newNode = $node.children()
 			//unwrap "math"
-		} else if (tag === "saveAsHtml") {//gestire qui 
+		} else if (atom === "saveAsHtml") {//gestire qui 
 		//non sostituire e non fare nulla
 		} else {
-			var $children = $(node).children().not(':first')
+			var $children = $node.children().not(':first')
 			//search for prototype
-			//console.log(tag)
-			var $prototype = prototypeSearch(tag, $(node).attr("type"),undefined,nodeText)
-			if($prototype.length==0){console.log('prototype not found prototypeSearch()');console.log([tag, $(node).attr("type"),undefined,nodeText])}
+			//console.log(atom)
+			var $prototype = prototypeSearch(atom, $node.attr("type"),undefined,nodeText)
+			if($prototype.length==0){console.log('prototype not found prototypeSearch()');console.log([atom, $node.attr("type"),undefined,nodeText])}
 			$newNode = MNODEclone($prototype)
 			MNODEextend($newNode)
 			// extend the new node
-			if (leafTags.indexOf(tag.toLowerCase()) !== -1) {
+			if (leafTags.indexOf(atom.toLowerCase()) !== -1) {
 				//todo: eccezione if leafTag with children
 				try {
-					$newNode[0].MNODE_setName($(node).text());
+					$newNode[0].MNODE_setName($node.text());
 				} catch (err) {
-					console.log('error on prototype '+tag+" "+ $(node).attr("type"))
+					console.log('error on prototype '+atom+" "+ $node.attr("type"))
 				}
 				//signsAsClasses($newNode,"SignsInNames_to_SignsAsClasses"); //convert to_signs_as_classes 
 			} else {
@@ -205,27 +196,26 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 				})
 			}
 		}
-		if (dataType !== undefined) {
-			$newNode.attr('data-type', dataType)
-			// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
+		newData=originalData;
+		newData.atom = atom;
+		if (newData.tag !== undefined) {
+			if(originalData.tagimg){
+				$newNode.css('background-image',wrapUnwrapUrlString(originalData.tagimg))	
+			}
 		}
+		writeData($newNode,newData)
+		// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
 		if (isMinimized) {
 			$newNode.addClass("collapsed")
 		}
 		if (isMedium) {
 			$newNode.addClass("medium")
 		}
-		if (dataTag !== undefined) {
-			$newNode.attr('data-tag', dataTag);
-			if(dataTagImg){
-				$newNode.attr('data-tagimg', dataTagImg)
-				$newNode.css('background-image',wrapUnwrapUrlString(dataTagImg))	
-			}
-		}
+		
 		if (title !== undefined) {
 			$newNode.attr('title', title)
 			//
 		}
 	}
-	$(node).replaceWith($newNode)
+	$node.replaceWith($newNode)
 }

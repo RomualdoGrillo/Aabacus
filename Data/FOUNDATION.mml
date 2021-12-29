@@ -1,870 +1,869 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply medium="True" type="bool">
+	<apply medium="True" data-type="bool">
 		<and>
 		</and>
-		<ci collapsed="True" type="bool" data-tag="replace" data-tagimg="./images/properties/replace.png">internal</ci>
-		<apply collapsed="True" type="bool" data-tag="built in">
+		<apply collapsed="True" data-tag="built in" data-type="bool">
 			<and>
 			</and>
-			<ci type="bool" data-tag="compose">built in</ci>
-			<ci type="bool" data-tag="decompose">built in</ci>
-			<ci type="bool" data-tag="evaluateComparison">built in</ci>
-			<apply medium="True" type="bool">
+			<ci data-tag="compose" data-type="bool">built in</ci>
+			<ci data-tag="decompose" data-type="bool">built in</ci>
+			<ci data-tag="evaluateComparison" data-type="bool">built in</ci>
+			<apply medium="True" data-type="bool">
 				<and>
 				</and>
-				<ci type="bool" data-tag="associativeDnD" data-tagimg="./images/properties/associate.png">true</ci>
-				<ci type="bool" data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.png">true</ci>
-				<ci type="bool" data-tag="partDistributDnD">true</ci>
-				<ci type="bool" data-tag="collectDnD">true</ci>
-				<ci type="bool" data-tag="partCollectDnD">true</ci>
-				<ci type="bool" data-tag="replaceDnD">true</ci>
-				<ci type="bool" data-tag="forThisDnD">true</ci>
-				<ci type="bool" data-tag="removeRedundantDnD">true</ci>
+				<ci data-tag="associativeDnD" data-tagimg="./images/properties/associate.png" data-type="bool">true</ci>
+				<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.png" data-type="bool">true</ci>
+				<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.png" data-type="bool">true</ci>
+				<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.png" data-type="bool">true</ci>
+				<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.png" data-type="bool">true</ci>
+				<ci data-tag="replaceDnD" data-tagimg="./images/properties/replace.png" data-type="bool">true</ci>
+				<ci data-tag="forThisDnD" data-type="bool">true</ci>
+				<ci data-tag="removeRedundantDnD" data-type="bool">true</ci>
 			</apply>
 		</apply>
-		<apply collapsed="True" medium="True" type="bool" data-tag="foundation" data-tagimg="./images/properties/distributive.png">
+		<apply collapsed="True" medium="True" data-tag="foundation" data-tagimg="./images/properties/distributive.png" data-type="bool">
 			<and>
 			</and>
-			<apply collapsed="True" type="bool" data-tag="timesAssociate">
+			<apply collapsed="True" data-tag="timesAssociate" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">a__</ci>
+					<ci data-type="num">a__</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">b___</ci>
+					<ci data-type="num">b___</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply title="-mainP" type="num">
+					<apply title="-mainP" data-type="num">
 						<times>
 						</times>
-						<apply title="s-s" type="num">
+						<apply title="s-s" data-type="num">
 							<times>
 							</times>
-							<ci type="num">a</ci>
+							<ci data-type="num">a</ci>
 						</apply>
-						<ci type="num">b</ci>
+						<ci data-type="num">b</ci>
 					</apply>
-					<apply title="-mainP" type="num">
+					<apply title="-mainP" data-type="num">
 						<times>
 						</times>
-						<ci title="s-s" type="num">a</ci>
-						<ci type="num">b</ci>
+						<ci title="s-s" data-type="num">a</ci>
+						<ci data-type="num">b</ci>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="plusAssociate">
+			<apply collapsed="True" data-tag="plusAssociate" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">a__</ci>
+					<ci data-type="num">a__</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">b___</ci>
+					<ci data-type="num">b___</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply title="-mainP" type="num">
+					<apply title="-mainP" data-type="num">
 						<plus>
 						</plus>
-						<apply title="s--c" type="num">
+						<apply title="s--c" data-type="num">
 							<plus>
 							</plus>
-							<ci type="num">a</ci>
+							<ci data-type="num">a</ci>
 						</apply>
-						<ci type="num">b</ci>
+						<ci data-type="num">b</ci>
 					</apply>
-					<apply title="-mainP" type="num">
+					<apply title="-mainP" data-type="num">
 						<plus>
 						</plus>
-						<ci title="s--c" type="num">a</ci>
-						<ci type="num">b</ci>
+						<ci title="s--c" data-type="num">a</ci>
+						<ci data-type="num">b</ci>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="orAssociate">
+			<apply collapsed="True" data-tag="orAssociate" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="bool">a__</ci>
+					<ci data-type="bool">a__</ci>
 				</bvar>
 				<bvar>
-					<ci type="bool">b___</ci>
+					<ci data-type="bool">b___</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<or>
 						</or>
-						<apply title="s--c" type="bool">
+						<apply title="s--c" data-type="bool">
 							<or>
 							</or>
-							<ci type="bool">a</ci>
+							<ci data-type="bool">a</ci>
 						</apply>
-						<ci type="bool">b</ci>
+						<ci data-type="bool">b</ci>
 					</apply>
-					<apply title="s--c" type="bool">
+					<apply title="s--c" data-type="bool">
 						<or>
 						</or>
-						<ci type="bool">a</ci>
-						<ci type="bool">b</ci>
+						<ci data-type="bool">a</ci>
+						<ci data-type="bool">b</ci>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="andAssociate">
+			<apply collapsed="True" data-tag="andAssociate" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="bool">a__</ci>
+					<ci data-type="bool">a__</ci>
 				</bvar>
 				<bvar>
-					<ci type="bool">b___</ci>
+					<ci data-type="bool">b___</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<and>
 						</and>
-						<apply title="s--c" type="bool">
+						<apply title="s--c" data-type="bool">
 							<and>
 							</and>
-							<ci type="bool">a</ci>
+							<ci data-type="bool">a</ci>
 						</apply>
-						<ci type="bool">b</ci>
+						<ci data-type="bool">b</ci>
 					</apply>
-					<apply title="s--c" type="bool">
+					<apply title="s--c" data-type="bool">
 						<and>
 						</and>
-						<ci type="bool">a</ci>
-						<ci type="bool">b</ci>
+						<ci data-type="bool">a</ci>
+						<ci data-type="bool">b</ci>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="Opposite" data-tagimg="../Aabacus/images/properties/Annihilate.png">
+			<apply collapsed="True" data-tag="Opposite" data-tagimg="../Aabacus/images/properties/Annihilate.png" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">a</ci>
+					<ci data-type="num">a</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply title="--c" type="num">
+					<apply title="--c" data-type="num">
 						<plus>
 						</plus>
-						<ci type="num">a</ci>
-						<apply type="num">
+						<ci data-type="num">a</ci>
+						<apply data-type="num">
 							<minus>
 							</minus>
-							<ci type="num">a</ci>
+							<ci data-type="num">a</ci>
 						</apply>
 					</apply>
-					<cn type="num">0</cn>
+					<cn data-type="num">0</cn>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="Reciprocal">
+			<apply collapsed="True" data-tag="Reciprocal" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">a</ci>
+					<ci data-type="num">a</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply data-type="num">
 						<times>
 						</times>
-						<ci type="num">a</ci>
-						<apply type="num">
+						<ci data-type="num">a</ci>
+						<apply data-type="num">
 							<m_inverse>
 							</m_inverse>
-							<ci type="num">a</ci>
+							<ci data-type="num">a</ci>
 						</apply>
 					</apply>
-					<cn type="num">1</cn>
+					<cn data-type="num">1</cn>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="defZero">
+			<apply collapsed="True" data-tag="defZero" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">a</ci>
+					<ci data-type="num">a</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply title="--c" type="num">
+					<apply title="--c" data-type="num">
 						<plus>
 						</plus>
-						<ci type="num">a</ci>
-						<cn type="num">0</cn>
+						<ci data-type="num">a</ci>
+						<cn data-type="num">0</cn>
 					</apply>
-					<ci type="num">a</ci>
+					<ci data-type="num">a</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="defOne">
+			<apply collapsed="True" data-tag="defOne" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">a</ci>
+					<ci data-type="num">a</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply data-type="num">
 						<times>
 						</times>
-						<ci type="num">a</ci>
-						<cn type="num">1</cn>
+						<ci data-type="num">a</ci>
+						<cn data-type="num">1</cn>
 					</apply>
-					<ci type="num">a</ci>
+					<ci data-type="num">a</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="propDist">
+			<apply collapsed="True" data-tag="propDist" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">d</ci>
+					<ci data-type="num">d</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">a</ci>
+					<ci data-type="num">a</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">b</ci>
+					<ci data-type="num">b</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply data-type="num">
 						<plus>
 						</plus>
-						<apply type="num">
+						<apply data-type="num">
 							<times>
 							</times>
-							<ci type="num">d</ci>
-							<ci type="num">a</ci>
+							<ci data-type="num">d</ci>
+							<ci data-type="num">a</ci>
 						</apply>
-						<apply type="num">
+						<apply data-type="num">
 							<times>
 							</times>
-							<ci type="num">d</ci>
-							<ci type="num">b</ci>
+							<ci data-type="num">d</ci>
+							<ci data-type="num">b</ci>
 						</apply>
 					</apply>
-					<apply type="num">
+					<apply data-type="num">
 						<times>
 						</times>
-						<ci type="num">d</ci>
-						<apply type="num">
+						<ci data-type="num">d</ci>
+						<apply data-type="num">
 							<plus>
 							</plus>
-							<ci type="num">a</ci>
-							<ci type="num">b</ci>
+							<ci data-type="num">a</ci>
+							<ci data-type="num">b</ci>
 						</apply>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="transitive">
+			<apply collapsed="True" data-tag="transitive" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">x</ci>
+					<ci data-type="num">x</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">y</ci>
+					<ci data-type="num">y</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">z</ci>
+					<ci data-type="num">z</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<implies>
 					</implies>
-					<apply type="bool">
+					<apply data-type="bool">
 						<and>
 						</and>
-						<apply type="bool">
+						<apply data-type="bool">
 							<gt>
 							</gt>
-							<ci type="num">x</ci>
-							<ci type="num">y</ci>
+							<ci data-type="num">x</ci>
+							<ci data-type="num">y</ci>
 						</apply>
-						<apply type="bool">
+						<apply data-type="bool">
 							<gt>
 							</gt>
-							<ci type="num">y</ci>
-							<ci type="num">z</ci>
+							<ci data-type="num">y</ci>
+							<ci data-type="num">z</ci>
 						</apply>
 					</apply>
-					<apply type="bool">
+					<apply data-type="bool">
 						<gt>
 						</gt>
-						<ci type="num">x</ci>
-						<ci type="num">z</ci>
+						<ci data-type="num">x</ci>
+						<ci data-type="num">z</ci>
 					</apply>
 				</apply>
 			</apply>
 		</apply>
-		<apply collapsed="True" type="bool" data-tag="derived">
+		<apply collapsed="True" data-tag="derived" data-type="bool">
 			<and>
 			</and>
-			<apply collapsed="True" type="bool" data-tag="eqPlusMove" data-tagimg="../Aabacus/images/properties/replace.png">
+			<apply collapsed="True" data-tag="eqPlusMove" data-tagimg="../Aabacus/images/properties/replace.png" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">a___</ci>
+					<ci data-type="num">a___</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">k</ci>
+					<ci data-type="num">k</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">b</ci>
+					<ci data-type="num">b</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<eq>
 						</eq>
-						<apply type="num">
+						<apply data-type="num">
 							<plus>
 							</plus>
-							<ci title="s--f" type="num">k</ci>
-							<ci type="num">a</ci>
+							<ci title="s--f" data-type="num">k</ci>
+							<ci data-type="num">a</ci>
 						</apply>
-						<ci type="num">b</ci>
+						<ci data-type="num">b</ci>
 					</apply>
-					<apply type="bool">
+					<apply data-type="bool">
 						<eq>
 						</eq>
-						<apply type="num">
+						<apply data-type="num">
 							<plus>
 							</plus>
-							<apply title="--cs" type="num">
+							<apply title="--cs" data-type="num">
 								<minus>
 								</minus>
-								<ci type="num">k</ci>
+								<ci data-type="num">k</ci>
 							</apply>
-							<ci type="num">b</ci>
+							<ci data-type="num">b</ci>
 						</apply>
-						<apply title="--c" type="num">
+						<apply title="--c" data-type="num">
 							<plus>
 							</plus>
-							<ci type="num">a</ci>
+							<ci data-type="num">a</ci>
 						</apply>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="eqPlusMoveAlone">
+			<apply collapsed="True" data-tag="eqPlusMoveAlone" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">a</ci>
+					<ci data-type="num">a</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">b</ci>
+					<ci data-type="num">b</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<eq>
 						</eq>
-						<ci title="s--f" type="num">a</ci>
-						<ci type="num">b</ci>
+						<ci title="s--f" data-type="num">a</ci>
+						<ci data-type="num">b</ci>
 					</apply>
-					<apply type="bool">
+					<apply data-type="bool">
 						<eq>
 						</eq>
-						<cn type="num">0</cn>
-						<apply type="num">
+						<cn data-type="num">0</cn>
+						<apply data-type="num">
 							<plus>
 							</plus>
-							<apply title="--s" type="num">
+							<apply title="--s" data-type="num">
 								<minus>
 								</minus>
-								<ci type="num">a</ci>
+								<ci data-type="num">a</ci>
 							</apply>
-							<ci type="num">b</ci>
+							<ci data-type="num">b</ci>
 						</apply>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="eqPlus">
+			<apply collapsed="True" data-tag="eqPlus" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">x</ci>
+					<ci data-type="num">x</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">y</ci>
+					<ci data-type="num">y</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">k</ci>
+					<ci data-type="num">k</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<eq>
 						</eq>
-						<ci type="num">x</ci>
-						<ci type="num">y</ci>
+						<ci data-type="num">x</ci>
+						<ci data-type="num">y</ci>
 					</apply>
-					<apply type="bool">
+					<apply data-type="bool">
 						<eq>
 						</eq>
-						<apply type="num">
+						<apply data-type="num">
 							<plus>
 							</plus>
-							<ci type="num">x</ci>
-							<ci type="num">k</ci>
+							<ci data-type="num">x</ci>
+							<ci data-type="num">k</ci>
 						</apply>
-						<apply type="num">
+						<apply data-type="num">
 							<plus>
 							</plus>
-							<ci type="num">y</ci>
-							<ci type="num">k</ci>
+							<ci data-type="num">y</ci>
+							<ci data-type="num">k</ci>
 						</apply>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="eqTimes1">
+			<apply collapsed="True" data-tag="eqTimes1" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">x</ci>
+					<ci data-type="num">x</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">y</ci>
+					<ci data-type="num">y</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">a</ci>
+					<ci data-type="num">a</ci>
 				</bvar>
 				<bvar>
-					<ci type="bool">others___</ci>
+					<ci data-type="bool">others___</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<and>
 						</and>
-						<apply type="bool">
+						<apply data-type="bool">
 							<not>
 							</not>
-							<apply type="bool">
+							<apply data-type="bool">
 								<eq>
 								</eq>
-								<ci type="num">a</ci>
-								<cn type="num">0</cn>
+								<ci data-type="num">a</ci>
+								<cn data-type="num">0</cn>
 							</apply>
 						</apply>
-						<apply type="bool">
+						<apply data-type="bool">
 							<eq>
 							</eq>
-							<ci type="num">x</ci>
-							<ci type="num">y</ci>
+							<ci data-type="num">x</ci>
+							<ci data-type="num">y</ci>
 						</apply>
-						<ci type="bool">others</ci>
+						<ci data-type="bool">others</ci>
 					</apply>
-					<apply type="bool">
+					<apply data-type="bool">
 						<and>
 						</and>
-						<apply type="bool">
+						<apply data-type="bool">
 							<not>
 							</not>
-							<apply type="bool">
+							<apply data-type="bool">
 								<eq>
 								</eq>
-								<ci type="num">a</ci>
-								<cn type="num">0</cn>
+								<ci data-type="num">a</ci>
+								<cn data-type="num">0</cn>
 							</apply>
 						</apply>
-						<apply type="bool">
+						<apply data-type="bool">
 							<eq>
 							</eq>
-							<apply type="num">
+							<apply data-type="num">
 								<times>
 								</times>
-								<ci type="num">a</ci>
-								<ci type="num">x</ci>
+								<ci data-type="num">a</ci>
+								<ci data-type="num">x</ci>
 							</apply>
-							<apply type="num">
+							<apply data-type="num">
 								<times>
 								</times>
-								<ci type="num">a</ci>
-								<ci type="num">y</ci>
+								<ci data-type="num">a</ci>
+								<ci data-type="num">y</ci>
 							</apply>
 						</apply>
-						<ci type="bool">others</ci>
+						<ci data-type="bool">others</ci>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="eqTimesMove">
+			<apply collapsed="True" data-tag="eqTimesMove" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">a</ci>
+					<ci data-type="num">a</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">y</ci>
+					<ci data-type="num">y</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">others___</ci>
+					<ci data-type="num">others___</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<eq>
 						</eq>
-						<apply type="num">
+						<apply data-type="num">
 							<times>
 							</times>
-							<ci title="s" type="num">a</ci>
-							<ci type="num">others</ci>
+							<ci title="s" data-type="num">a</ci>
+							<ci data-type="num">others</ci>
 						</apply>
-						<ci type="num">y</ci>
+						<ci data-type="num">y</ci>
 					</apply>
-					<apply title="--c" type="bool">
+					<apply title="--c" data-type="bool">
 						<or>
 						</or>
-						<apply title="--c" type="bool">
+						<apply title="--c" data-type="bool">
 							<and>
 							</and>
-							<apply title="--c" type="bool">
+							<apply title="--c" data-type="bool">
 								<not>
 								</not>
-								<apply title="--c" type="bool">
+								<apply title="--c" data-type="bool">
 									<eq>
 									</eq>
-									<ci type="num">a</ci>
-									<cn type="num">0</cn>
+									<ci data-type="num">a</ci>
+									<cn data-type="num">0</cn>
 								</apply>
 							</apply>
-							<apply type="bool">
+							<apply data-type="bool">
 								<eq>
 								</eq>
-								<apply title="--c" type="num">
+								<apply title="--c" data-type="num">
 									<times>
 									</times>
-									<ci type="num">others</ci>
+									<ci data-type="num">others</ci>
 								</apply>
-								<apply type="num">
+								<apply data-type="num">
 									<times>
 									</times>
-									<ci type="num">y</ci>
-									<apply title="--c" type="num">
+									<ci data-type="num">y</ci>
+									<apply title="--c" data-type="num">
 										<m_inverse>
 										</m_inverse>
-										<ci type="num">a</ci>
+										<ci data-type="num">a</ci>
 									</apply>
 								</apply>
 							</apply>
 						</apply>
-						<apply collapsed="True" title="--c" type="bool">
+						<apply collapsed="True" title="--c" data-type="bool">
 							<and>
 							</and>
-							<apply title="--c" type="bool">
+							<apply title="--c" data-type="bool">
 								<eq>
 								</eq>
-								<ci type="num">a</ci>
-								<cn type="num">0</cn>
+								<ci data-type="num">a</ci>
+								<cn data-type="num">0</cn>
 							</apply>
-							<apply type="bool">
+							<apply data-type="bool">
 								<eq>
 								</eq>
-								<cn type="num">0</cn>
-								<ci type="num">y</ci>
+								<cn data-type="num">0</cn>
+								<ci data-type="num">y</ci>
 							</apply>
 						</apply>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="InvOfOpposite">
+			<apply collapsed="True" data-tag="InvOfOpposite" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">x</ci>
+					<ci data-type="num">x</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply data-type="num">
 						<m_inverse>
 						</m_inverse>
-						<apply type="num">
+						<apply data-type="num">
 							<minus>
 							</minus>
-							<ci type="num">x</ci>
+							<ci data-type="num">x</ci>
 						</apply>
 					</apply>
-					<apply type="num">
+					<apply data-type="num">
 						<minus>
 						</minus>
-						<apply type="num">
+						<apply data-type="num">
 							<m_inverse>
 							</m_inverse>
-							<ci type="num">x</ci>
+							<ci data-type="num">x</ci>
 						</apply>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="OppositeOfOpposite">
+			<apply collapsed="True" data-tag="OppositeOfOpposite" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">x</ci>
+					<ci data-type="num">x</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply data-type="num">
 						<minus>
 						</minus>
-						<apply type="num">
+						<apply data-type="num">
 							<minus>
 							</minus>
-							<ci type="num">x</ci>
+							<ci data-type="num">x</ci>
 						</apply>
 					</apply>
-					<ci title="--s" type="num">x</ci>
+					<ci title="--s" data-type="num">x</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="composeXorNotX">
+			<apply collapsed="True" data-tag="composeXorNotX" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="bool">x</ci>
+					<ci data-type="bool">x</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<or>
 						</or>
-						<ci type="bool">x</ci>
-						<apply type="bool">
+						<ci data-type="bool">x</ci>
+						<apply data-type="bool">
 							<not>
 							</not>
-							<ci type="bool">x</ci>
+							<ci data-type="bool">x</ci>
 						</apply>
 					</apply>
-					<ci type="bool">true</ci>
+					<ci data-type="bool">true</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="simpPlusSingleTerm">
+			<apply collapsed="True" data-tag="simpPlusSingleTerm" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">x_</ci>
+					<ci data-type="num">x_</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply data-type="num">
 						<plus>
 						</plus>
-						<ci type="num">x</ci>
+						<ci data-type="num">x</ci>
 					</apply>
-					<ci type="num">x</ci>
+					<ci data-type="num">x</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="simpTimesSingleFactor">
+			<apply collapsed="True" data-tag="simpTimesSingleFactor" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">x_</ci>
+					<ci data-type="num">x_</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply data-type="num">
 						<times>
 						</times>
-						<ci type="num">x</ci>
+						<ci data-type="num">x</ci>
 					</apply>
-					<ci type="num">x</ci>
+					<ci data-type="num">x</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="timesAbsorbingEl">
+			<apply collapsed="True" data-tag="timesAbsorbingEl" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">others___</ci>
+					<ci data-type="num">others___</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply data-type="num">
 						<times>
 						</times>
-						<cn type="num">0</cn>
-						<ci type="num">others</ci>
+						<cn data-type="num">0</cn>
+						<ci data-type="num">others</ci>
 					</apply>
-					<cn type="num">0</cn>
+					<cn data-type="num">0</cn>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="orAbsorbingEl">
+			<apply collapsed="True" data-tag="orAbsorbingEl" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="bool">a__</ci>
+					<ci data-type="bool">a__</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<or>
 						</or>
-						<ci type="bool">true</ci>
-						<ci type="bool">a</ci>
+						<ci data-type="bool">true</ci>
+						<ci data-type="bool">a</ci>
 					</apply>
-					<ci type="bool">true</ci>
+					<ci data-type="bool">true</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="andAbsorbingEl">
+			<apply collapsed="True" data-tag="andAbsorbingEl" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="bool">a__</ci>
+					<ci data-type="bool">a__</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<and>
 						</and>
-						<ci type="bool">false</ci>
-						<ci type="bool">a</ci>
+						<ci data-type="bool">false</ci>
+						<ci data-type="bool">a</ci>
 					</apply>
-					<ci type="bool">false</ci>
+					<ci data-type="bool">false</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="factorizeMinus">
+			<apply collapsed="True" data-tag="factorizeMinus" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="num">x</ci>
+					<ci data-type="num">x</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply data-type="num">
 						<minus>
 						</minus>
-						<ci type="num">x</ci>
+						<ci data-type="num">x</ci>
 					</apply>
-					<apply type="num">
+					<apply data-type="num">
 						<times>
 						</times>
-						<ci type="num">x</ci>
-						<apply type="num">
+						<ci data-type="num">x</ci>
+						<apply data-type="num">
 							<minus>
 							</minus>
-							<cn type="num">1</cn>
+							<cn data-type="num">1</cn>
 						</apply>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="AndNeutral">
+			<apply collapsed="True" data-tag="AndNeutral" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="bool">a_</ci>
+					<ci data-type="bool">a_</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply title="--c" type="bool">
+					<apply title="--c" data-type="bool">
 						<and>
 						</and>
-						<ci title="--s" type="bool">true</ci>
-						<ci type="bool">a</ci>
+						<ci title="--s" data-type="bool">true</ci>
+						<ci data-type="bool">a</ci>
 					</apply>
-					<ci type="bool">a</ci>
+					<ci data-type="bool">a</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="OrNeutral">
+			<apply collapsed="True" data-tag="OrNeutral" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci type="bool">a_</ci>
+					<ci data-type="bool">a_</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="bool">
+					<apply data-type="bool">
 						<or>
 						</or>
-						<ci type="bool">false</ci>
-						<ci type="bool">a</ci>
+						<ci data-type="bool">false</ci>
+						<ci data-type="bool">a</ci>
 					</apply>
-					<ci type="bool">a</ci>
+					<ci data-type="bool">a</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="notFalse">
+			<apply collapsed="True" data-tag="notFalse" data-type="bool">
 				<eq>
 				</eq>
-				<apply type="bool">
+				<apply data-type="bool">
 					<not>
 					</not>
-					<ci type="bool">false</ci>
+					<ci data-type="bool">false</ci>
 				</apply>
-				<ci type="bool">true</ci>
+				<ci data-type="bool">true</ci>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="annichilaP">
+			<apply collapsed="True" data-tag="annichilaP" data-type="bool">
 				<forall>
 				</forall>
 				<bvar>
-					<ci title="d" type="num">x</ci>
+					<ci title="d" data-type="num">x</ci>
 				</bvar>
 				<bvar>
-					<ci type="num">others___</ci>
+					<ci data-type="num">others___</ci>
 				</bvar>
-				<apply type="bool">
+				<apply data-type="bool">
 					<eq>
 					</eq>
-					<apply type="num">
+					<apply data-type="num">
 						<plus>
 						</plus>
-						<apply title="d" type="num">
+						<apply title="d" data-type="num">
 							<minus>
 							</minus>
-							<ci type="num">x</ci>
+							<ci data-type="num">x</ci>
 						</apply>
-						<ci title="d" type="num">x</ci>
-						<ci type="num">others</ci>
+						<ci title="d" data-type="num">x</ci>
+						<ci data-type="num">others</ci>
 					</apply>
-					<apply type="num">
+					<apply data-type="num">
 						<plus>
 						</plus>
-						<ci type="num">others</ci>
+						<ci data-type="num">others</ci>
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="oneAsEmptyTimes">
+			<apply collapsed="True" data-tag="oneAsEmptyTimes" data-type="bool">
 				<eq>
 				</eq>
-				<apply type="num">
+				<apply data-type="num">
 					<times>
 					</times>
 				</apply>
-				<cn type="num">1</cn>
+				<cn data-type="num">1</cn>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="zeroAsEmptyPlus">
+			<apply collapsed="True" data-tag="zeroAsEmptyPlus" data-type="bool">
 				<eq>
 				</eq>
-				<apply type="num">
+				<apply data-type="num">
 					<plus>
 					</plus>
 				</apply>
-				<cn type="num">0</cn>
+				<cn data-type="num">0</cn>
 			</apply>
 		</apply>
 	</apply>

@@ -257,4 +257,11 @@ function updateContainerView($MNODE,view,par){
 	}
 }
 
-
+//write a data object into attributes of an html element
+function writeData($node,dataObject){
+	//writeData($('.selected'),{'a':'acont','b':'bcont'})
+	for ( property in dataObject) {
+		console.log(`${property}: ${dataObject[property]}`);
+		$node.attr('data-'+ property,dataObject[property]);
+	  }
+}

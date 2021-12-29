@@ -74,17 +74,12 @@ function MakeSortableAndInjectMouseDown(event) {
 		if (!$atomTarget.length || !$atomTarget[0].parentElement) { return }//precondition
 		let i = 0
 		let propertiesInCanvas = DnDpropertiesInCanvas(propertiesDnD)
-		
-
-			while (propertiesInCanvas[i]) {
-				let targets = propertiesInCanvas[i].findTgt($atomTarget);
-				makeTargetsSortableRolesOrAtoms(targets, propertiesInCanvas[i].name)
-				$validTgT=$validTgT.add($(targets))
-				i++
-			}
-
-
-		
+		while (propertiesInCanvas[i]) {
+			let targets = propertiesInCanvas[i].findTgt($atomTarget);
+			makeTargetsSortableRolesOrAtoms(targets, propertiesInCanvas[i].name)
+			$validTgT = $validTgT.add($(targets))
+			i++
+		}
 	}
 	if ($atomTarget && $atomTarget.length && $atomTarget[0].parentElement){//is there a valid target?(sometimes the $atomTarget is undefined sometime it is not but there is no [0] element)
 		if($validTgT.length!=0){
