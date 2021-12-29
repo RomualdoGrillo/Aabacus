@@ -16,17 +16,9 @@ function keyboardEvToFC($atom, keyPressed){
 			firstValString = $actions[i].MNODE_getRoles('.values').children()[0].MNODE_getName();	
 		}
 		catch(err) {}
-		if( firstValString!="rtl" && firstValString!="ltr"  ){	//chiamata ad una funzione interna
-			console.log("auto call: " + actionString );
-			var result
-			result = window[actionString]( $atom,firstValString ) //todo: gestire errore 
-			if(result){
-				PActx = result
-			}//usa il risultato a meno che non sia "undefined"
-			}
-		else{//chiamata a funzione configurabile
-		PActx = TryOnePMTByName(actionString, $atom ,firstValString);
-			}
+		
+		PActx = TryOnePropertyByName(actionString, $atom ,firstValString);
+	
 		if( PActx && PActx.matchedTF ){//proprietà applicata con successo
 			PActx.msg = actionString +" "+ firstValString
 			break
@@ -37,9 +29,28 @@ function keyboardEvToFC($atom, keyPressed){
 	}
 	return PActx
 }
-function checkIfFoundation(){
-	return $('#telaRole [data-tag="foundation"]').length != 0
+
+function DnDpropertiesInCanvas(propertiesDnD){
+	let propInCanvas = $('#telaRole [data-atom=ci][data-tag]').toArray()
+	let namelist = propInCanvas.map(function(e){return e.getAttribute('data-tag')})
+	
+	let propertiesKnokedOut = propertiesDnD.map(function(e){
+		let index = namelist.indexOf(e.name)
+		if(index != -1){
+			e.icon = propInCanvas[index].getAttribute('data-tagimg')
+			return e
+		}
+		else{
+			return undefined
+		} 
+	})
+
+	let filtered = propertiesKnokedOut.filter(function(e){ return e!=undefined})
+	return filtered
 }
+
+
+
 
 function directCall(key){
 	return $('#telaRole [data-rtl='+ key + ']')

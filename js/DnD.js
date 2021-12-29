@@ -73,17 +73,18 @@ function MakeSortableAndInjectMouseDown(event) {
 		//******** apply custom propeties listed in propertiesDnD[i] ***************
 		if (!$atomTarget.length || !$atomTarget[0].parentElement) { return }//precondition
 		let i = 0
-		if (checkIfFoundation()) {//only if tag foundation is present in tela 
+		let propertiesInCanvas = DnDpropertiesInCanvas(propertiesDnD)
+		
 
-			while (propertiesDnD[i]) {
-				let targets = propertiesDnD[i].findTgt($atomTarget);
-				makeTargetsSortableRolesOrAtoms(targets, propertiesDnD[i].name)
+			while (propertiesInCanvas[i]) {
+				let targets = propertiesInCanvas[i].findTgt($atomTarget);
+				makeTargetsSortableRolesOrAtoms(targets, propertiesInCanvas[i].name)
 				$validTgT=$validTgT.add($(targets))
 				i++
 			}
 
 
-		}
+		
 	}
 	if ($atomTarget && $atomTarget.length && $atomTarget[0].parentElement){//is there a valid target?(sometimes the $atomTarget is undefined sometime it is not but there is no [0] element)
 		if($validTgT.length!=0){

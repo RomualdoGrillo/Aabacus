@@ -3,7 +3,25 @@
 		<and>
 		</and>
 		<ci collapsed="True" type="bool" data-tag="replace" data-tagimg="./images/properties/replace.png">internal</ci>
-		<ci collapsed="True" type="bool" data-tag="compose" data-tagimg="./images/gear.svg">internal</ci>
+		<apply collapsed="True" type="bool" data-tag="built in">
+			<and>
+			</and>
+			<ci type="bool" data-tag="compose">built in</ci>
+			<ci type="bool" data-tag="decompose">built in</ci>
+			<ci type="bool" data-tag="evaluateComparison">built in</ci>
+			<apply medium="True" type="bool">
+				<and>
+				</and>
+				<ci type="bool" data-tag="associativeDnD" data-tagimg="./images/properties/associate.png">true</ci>
+				<ci type="bool" data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.png">true</ci>
+				<ci type="bool" data-tag="partDistributDnD">true</ci>
+				<ci type="bool" data-tag="collectDnD">true</ci>
+				<ci type="bool" data-tag="partCollectDnD">true</ci>
+				<ci type="bool" data-tag="replaceDnD">true</ci>
+				<ci type="bool" data-tag="forThisDnD">true</ci>
+				<ci type="bool" data-tag="removeRedundantDnD">true</ci>
+			</apply>
+		</apply>
 		<apply collapsed="True" medium="True" type="bool" data-tag="foundation" data-tagimg="./images/properties/distributive.png">
 			<and>
 			</and>

@@ -320,19 +320,22 @@ function MNODEappendInABSPosition($atom,$refMNODE,relativePosition){
 } 
 
 
-//  TryOnePMTByName("name",actionString,firstValString)
-function TryOnePMTByName(propName, $par1 ,firstVal,justTry){
+//  TryOnePropertyByName("name",actionString,firstValString)
+function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
-    //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
-    //"apre un fascicolo" e tenta di "dare seguito" all'ordine
-    //******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
-    
-	let	$origProp = findPMPropByName(propName)
-	if( $origProp.length == 0){ 
-    	console.log('property not found:' + propName)
+	//a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
+	//"apre un fascicolo" e tenta di "dare seguito" all'ordine
+	//******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
+	let $origProp = findPMPropByName(propName)
+	if ($origProp.length == 0) {
+		console.log('property not found:' + propName)
 	}
-	else{
-		return InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry)
+	else {
+		if ($origProp.attr('data-atom')=="ci") {//internal property?
+			console.log("auto call: " + propName);
+			return window[propName]($par1, firstVal) //todo: gestire errore 
+		}
+		return InstructAndTryOnePMT($origProp, $par1, firstVal, justTry)
 	}
 }
 

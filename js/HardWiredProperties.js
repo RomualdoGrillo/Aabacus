@@ -14,11 +14,11 @@ function newPActx(){
 }
 
 class PropertyDnD  {
-  constructor(name,findTgt,apply,onAdd) {
+  constructor(name,findTgt,apply,icon) {
     this.name = name
     this.findTgt = findTgt//return valid target roles
     this.apply = apply	// in onEndHandler when an element is dropped on a valid target apply($dropped,$target) 
-    this.onAdd = onAdd //handler of event fired when a valid dragged is added to a valid role
+    this.icon = icon //handler of event fired when a valid dragged is added to a valid role
   }
 }
 
