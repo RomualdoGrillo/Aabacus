@@ -1,26 +1,18 @@
 var leafTags = ["cn", "ci", "csymbol"];
 
-function createMathmlString($MNODEs, describeDataType, neglectRootSign) {
+
+function MNODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) {
+	//per poter chiamare sia come funzione che come metodo
+	if ($startNodes == undefined) {
+		$startNodes = $(this);
+	}
 	var from_to
 	if (describeDataType) {
 		from_to = "aab_mmlWithType"
 	} else {
 		from_to = "aab_mml"
 	}
-	var $convertedTree = createConvertedTree($MNODEs, from_to, neglectRootSign);
-	return $.trim($convertedTree.parent().html())
-	//return formatXml($convertedTree.parent().html())
-
-}
-
-function MNODE_createMathmlString(describeDataType, neglectRootSign) {
-	var from_to
-	if (describeDataType) {
-		from_to = "aab_mmlWithType"
-	} else {
-		from_to = "aab_mml"
-	}
-	var $convertedTree = createConvertedTree(this, from_to, neglectRootSign);
+	var $convertedTree = createConvertedTree($startNodes, from_to, neglectRootSign);
 	//return $.trim($convertedTree.parent().html())
 	return formatXml($convertedTree.parent().html())
 
@@ -197,7 +189,7 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 			}
 		}
 		newData=originalData;
-		newData.atom = atom;
+		//data.atom=xxx is already cloned from prototype
 		if (newData.tag !== undefined) {
 			if(originalData.tagimg){
 				$newNode.css('background-image',wrapUnwrapUrlString(originalData.tagimg))	

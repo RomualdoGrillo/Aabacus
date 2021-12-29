@@ -261,7 +261,7 @@ function updateContainerView($MNODE,view,par){
 function writeData($node,dataObject){
 	//writeData($('.selected'),{'a':'acont','b':'bcont'})
 	for ( property in dataObject) {
-		console.log(`${property}: ${dataObject[property]}`);
+		//console.log(`${property}: ${dataObject[property]}`);
 		$node.attr('data-'+ property,dataObject[property]);
 	  }
 }

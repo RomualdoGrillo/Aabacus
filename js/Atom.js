@@ -19,6 +19,7 @@ funzione su un qualsiasi elemento html anche se non è un MNODE
 */
 atom = {
 	MNODEparent: MNODEparent,
+	MNODEcreateMathmlString: MNODEcreateMathmlString,
 	MNODEclosedDef: MNODEclosedDef,
 	MNODECreateDefinition: MNODECreateDefinition,
 	MNODE_replaceWith: MNODE_replaceWith,
@@ -27,7 +28,6 @@ atom = {
 	MNODE_getChildren: MNODE_getChildren,
 	MNODE_getName: MNODE_getName,
 	MNODE_setName: MNODE_setName,
-	MNODE_createMathmlString: MNODE_createMathmlString,
 	MNODE_addRole: MNODE_addRole,
 	MNODE_checkIfPointlessSingleNode: MNODE_checkIfPointlessSingleNode,
 	MNODE_dissolveContainer: MNODE_dissolveContainer,
@@ -820,8 +820,8 @@ function MNODEEqual(node1, node2, checkType, neglectRootSign) {
 		return false;
 	}
 	return (
-		node1.MNODE_createMathmlString(checkType, neglectRootSign) ===
-		node2.MNODE_createMathmlString(checkType, neglectRootSign)
+		node1.MNODEcreateMathmlString(undefined,checkType, neglectRootSign) ===
+		node2.MNODEcreateMathmlString(undefined,checkType, neglectRootSign)
 	);
 	//return adaptMatch(undefined,$(node1),$(node2),$(node2))//sostituita comparazione "grezza" con comparazione ricorsiva
 }

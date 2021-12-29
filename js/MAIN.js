@@ -90,7 +90,7 @@ $(document).on('keydown', function(e) {
 			$toBeSaved = $('.selected')
 		}
 		;if ($toBeSaved.length != 0) {
-			var contentString = createMathmlString($toBeSaved, true)
+			var contentString = MNODEcreateMathmlString($toBeSaved, true)
 			var stringToBeSaved = '<math xmlns="http://www.w3.org/1998/Math/MathML">' + contentString + '</math>'
 			var fileName = prompt('Save as... Attenzione: Il file verrà salvato nella cartella "Download" !! non è possibile salvare in altre cartelle')
 			if (fileName !== null) {
