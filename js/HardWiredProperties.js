@@ -493,7 +493,7 @@ function MNODEcollect($dragged,$target){
 
 
 
-function compose($toBeComp){
+function compose($toBeComp,firstVal,img){
 	var $originaltoBeComp = $toBeComp //per poter ripristinare lo stato iniziale
 	var PActx = newPActx();
 	//**** la funzione può essere applicata?
@@ -675,7 +675,8 @@ function compose($toBeComp){
 		PActx.$operand.remove()
 		//ExtendAndInitializeTree($composed);
 		$parent.addClass('refine_c');
-		PActx.$transform = $parent; 
+		PActx.$transform = $parent;
+		PActx.visualization = img
 	}
 	else {//rimetti le cose come stavano tranne le semplificazioni iniziali
 		$('.selected').removeClass('selected')
@@ -684,13 +685,13 @@ function compose($toBeComp){
 	}
 	return PActx
 }
-function decomposeInAProduct($toBeDec){
-	return decompose($toBeDec,"up");
+function decomposeInAProduct($toBeDec,firstVal,img){
+	return decompose($toBeDec,"up",img);
 }
-function decomposeInASum($toBeDec){
-	return decompose($toBeDec,"right");
+function decomposeInASum($toBeDec,firstVal,img){
+	return decompose($toBeDec,"right",img);
 }
-function decompose($toBeDec,direction){//"up" for factorize
+function decompose($toBeDec,direction,img){//"up" for factorize
 	var PActx = newPActx();
 	PActx.$operand = $toBeDec;
 	var op = ""
@@ -828,7 +829,7 @@ function decompose($toBeDec,direction){//"up" for factorize
 		//ssnapshot.take();
 		//elementi sostituiti internamente
 		PActx.replacedAlready = true;
-		PActx.visualization = "images/properties/decompose.png"
+		PActx.visualization = img
 		PActx.msg = "decompose" 	
 	}
 	return PActx	

@@ -452,7 +452,7 @@ function PActxVisualize(PActx) {
 	}
 	removeVisualization()
 	let $visualization = $('<div class="visualization">' + visContet + '</div>')
-	if (PActx.$transform) {
+	if (PActx.$transform && PActx.$transform.is('body *')) {//if the trasform exixts an is still in canvas
 		$visualization.insertAfter(PActx.$transform)
 		PActx.$transform.append($visualization);
 	} else {

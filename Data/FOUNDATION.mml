@@ -5,7 +5,7 @@
 			<apply collapsed="True" data-tag="built in" data-type="bool">
 				<and>
 				</and>
-				<ci data-tag="compose" data-type="bool">built in</ci>
+				<ci data-tagimg="./images/properties/compose.png" data-tag="compose" data-type="bool">built in</ci>
 				<ci data-tagimg="./images/properties/decompose.png" data-tag="decomposeInAProduct" data-type="bool">built in</ci>
 				<ci data-tagimg="./images/properties/decompose.png" data-tag="decomposeInASum" data-type="bool">true</ci>
 				<ci data-tag="evaluateComparison" data-type="bool">built in</ci>

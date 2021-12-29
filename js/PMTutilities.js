@@ -332,10 +332,11 @@ function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
 	}
 	else {
 		if ($origProp.attr('data-atom')=="ci") {//internal property?
-			console.log("auto call: " + propName);
-			return window[propName]($par1, firstVal) //todo: gestire errore 
+			let img = $origProp.attr('data-tagimg');
+			console.log("auto call: " + propName + " img: " + img);
+			return window[propName]($par1, firstVal, img) //todo: gestire errore 
 		}
-		return InstructAndTryOnePMT($origProp, $par1, firstVal, justTry)
+		return InstructAndTryOnePMT($origProp, $par1, firstVal, justTry, $origProp.attr('data-tagimg'))
 	}
 }
 
