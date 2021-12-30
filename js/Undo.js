@@ -50,11 +50,11 @@ ssnapshot.take = function(){
 }
 
 ssnapshot.copy = function(){
-	ssnapshot.clipBoard = MNODEclone($(".selected"));
+	ssnapshot.clipBoard = MNODEclone($(".selected"),false,false);
 }
 ssnapshot.paste = function(){
 	if(ssnapshot.clipBoard.length != 0){
-		var $newCds = MNODEclone( ssnapshot.clipBoard );
+		var $newCds = MNODEclone( ssnapshot.clipBoard,true,false ); //extend, do not removeID
 		$(".selected").replaceWith( $newCds );
 	}
 }

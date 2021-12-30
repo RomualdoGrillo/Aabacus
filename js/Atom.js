@@ -432,11 +432,10 @@ function overflowExsists(node) {
 	);
 }
 
-function MNODEclone($node, doNotExtend, removeID) {
-	// di default rimuove ID
+function MNODEclone($node, Extend, removeID) {//default: Extend and RemoveID
 	$clone = $node.clone(); //clona
 	$toBeCleaned = $clone.add($clone.find("*")); //clean discendence too
-	if (doNotExtend !== false) {
+	if (Extend !== false) {
 		ExtendAndInitializeTree($clone);
 	}
 	if (removeID !== false) {
