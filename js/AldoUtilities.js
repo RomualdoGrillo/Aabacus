@@ -265,3 +265,4 @@ function writeData($node,dataObject){
 		$node.attr('data-'+ property,dataObject[property]);
 	  }
 }
+
