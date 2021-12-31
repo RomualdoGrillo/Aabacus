@@ -18,14 +18,15 @@ function MNODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) 
 
 }
 
-function createConvertedTree(startNode, from_to, neglectRootSign) {
+function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImported) {
 	var $containerForClone = $('<span></span>')
 	//$('#testSpan').html("") ;var $containerForClone = $('#testSpan');// debug
 	//var $thisClone = $($.parseXML(startNode).firstElementChild)
-	var $thisClone = $(startNode).clone()
+	let $startNodeOrMML = $(startNodeOrMML)
 	//try to rebuild the here??
-	$containerForClone.append($thisClone)
 	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
+		let $thisClone = $startNodeOrMML.clone()
+		$containerForClone.append($thisClone)
 		//deflate todo: completare distinzione tra mml e mml + type
 
 		//estendi tutti i nodi MNODE
@@ -44,9 +45,18 @@ function createConvertedTree(startNode, from_to, neglectRootSign) {
 			}
 		})
 	} else if (from_to === "mml_aab") {
+		//filtra solo le tag da importare
+		let $imported
+		if(toBeImported){
+			$imported = $startNodeOrMML.find('[data-tag=' + toBeImported + ']')
+		}
+		else{//if no item is specified import all
+			$imported = $startNodeOrMML
+		}
+		$containerForClone.append($imported)
 		//inflate
 		//ottieni l'elenco dei nodi' da sostituire
-		$thisClone.parent().find('apply,cn,ci,bind,math').each(function(i, node) {
+		$imported.parent().find('apply,cn,ci,bind,math').each(function(i, node) {
 			//console.log(node);
 			ReplaceOneMNODE(node, from_to);
 		})
