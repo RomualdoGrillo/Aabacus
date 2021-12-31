@@ -80,14 +80,12 @@ function injectAll(response,rootUrl){
 }
 
 
-function loadAjaxAndInject(myUrl,target) {
 function loadAjaxAndInject(myUrl,target,toBeImported) {
 	//loadAjaxAndInject('./Data/Preload/preload.mml')
 	let res
 	if(myUrl){
 	//altrimenti un url vuoto verrebbe interpretato come path relativo,
 	//col risultato di caricare index.html
-		let res= $.ajax({
 		res= $.ajax({
 			type: "GET",
 			url: myUrl,
@@ -102,7 +100,6 @@ function loadAjaxAndInject(myUrl,target,toBeImported) {
 			MNODEparent(target).addClass("ImportSuccess");
 			//alert("lettura file " + myUrl + " tramite Ajax OK - risposta : " + response);
 			if(!target){target=$("#telaRole")}
-			inject(response, target)
 			inject(response, target, undefined ,toBeImported)
 			}
 		});
