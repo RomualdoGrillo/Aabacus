@@ -76,9 +76,9 @@ function returnTargetWrappedIfNeeded($targetNode,$toBeInserted){
 }
 
 //inject(MMLstring,$('#telaRole'))
-function inject(MMLstring,$targetRole,doNotWrap)
+function inject(MMLstring,$targetRole,doNotWrap,toBeImported)
 {
-	var $convertedTree = createConvertedTree(MMLstring,"mml_aab");
+	var $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
 	
 	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
 	$targetRole.append($convertedTree);
@@ -104,11 +104,11 @@ function importAll(){
 			json = JSON.parse($(el).attr('title'));
 			if(json.import){
 				let $role=	el.MNODE_getRoles()
-				loadAjaxAndInject(json.import,$role); //will load and inject or mark the node as ImportFail or ImportSuccess
+				loadAjaxAndInject(json.import,$role,json.toBeImported); //will load and inject or mark the node as ImportFail or ImportSuccess
 			}
 		}
 		catch{}
 	})
 	
 }
-	
+
