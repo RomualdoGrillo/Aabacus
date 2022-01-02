@@ -42,8 +42,7 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 			inject(textFromFileLoaded,$targetNode);
 		}
 		else if(fileSuffix === "json"){
-			injectAllMMLS(textFromFileLoaded);
-			//injectAll(textFromFileLoaded);
+			injectAll(textFromFileLoaded);
 		}
 		else if(fileSuffix === "prt"){
 			if(confirm('replace existing list of prototypes?')){
@@ -77,64 +76,38 @@ function WrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted){
 }
 
 //inject(MMLstring,$('#telaRole'))
-function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
+function inject(MMLstring,$targetRole,doNotWrap)
 {
-	var $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
+	var $convertedTree = createConvertedTree(MMLstring,"mml_aab");
 	
 	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
-	if($targetRoleOrAtom.is('[data-atom]')){
-		// Needs "and" container if multiple items? 
-
-		//get all data attributes
-		
-		let originalData = $targetRoleOrAtom.data();
-		let importStatus= $targetRoleOrAtom.attr('importStatus');
-		//transfer data to replacer
-		let newData=originalData;
-		delete newData.atom  //do not transfer atom type
-		writeData($convertedTree,newData)
-		if(importStatus){
-			$convertedTree.attr('importStatus',importStatus)
-		}
-		$targetRoleOrAtom.replaceWith($convertedTree);
+	$targetRole.append($convertedTree);
+	if(doNotWrap=!true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
+		$target = WrapWithDefIfNeededreturnTarget($targetRole,$convertedTree)
 	}
-	else{
-		if(doNotWrap=!true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
-			$target = WrapWithDefIfNeededreturnTarget($targetRoleOrAtom,$convertedTree)
-		}
-	
-		$targetRoleOrAtom.append($convertedTree);
-	}
-	
-	
 	ExtendAndInitializeTree($convertedTree);
-	//var $refreshStartPoint = MNODEparent($convertedTree);
-	//if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
+	var $refreshStartPoint = MNODEparent($convertedTree);
+	if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
+	//insertHtmlByRef($targetRole)
 	ssnapshot.take(); 
 }
 
-function importAll($startNode){
+function importAll(){
 	//futuribile for()//fino a che c’è qualcosa da importare
-	if(!$startNode){
-		$startNode=$("#telaRole");
-	}
-	$startNode.find('[data-import]:not([importStatus=imported]):not([importStatus=failed])').each(function(i,el){//search for import
+	$("#telaRole").find('[data-atom=and]:not(.ImportSuccess):not(.ImportFail)').filter(function(i,el){//search for import
 
 		try{
-			let $el = $(el)
-			let path = $el.attr('data-import')
-			if(path){
-				let tag = $el.attr('data-tag')
-				//marca come imported! 
-				$el.attr('importStatus','imported')
-				loadAjaxAndInject(path,$el,tag); //will load and inject or mark the node as ImportFail or ImportSuccess
+			//***versione2: import statement è un and 
+			//che specifica il path del file da importare e opzionalmente le definizioni da importare all'interno del file
+			//se il il nodo contiene classe "ImportFail", non riprovare a caricarlo 
+			//se l'importazione fallisce aggiungi classe "ImportFail"
+			json = JSON.parse($(el).attr('title'));
+			if(json.import){
+				let $role=	el.MNODE_getRoles()
+				loadAjaxAndInject(json.import,$role); //will load and inject or mark the node as ImportFail or ImportSuccess
 			}
 		}
-		catch{
-			//failed to import!
-			$el.attr('importStatus','failed')
-		}
+		catch{}
 	})
 	
 }
-

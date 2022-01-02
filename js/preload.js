@@ -79,6 +79,58 @@ function injectAll(response,rootUrl){
 	
 }
 
+function injectAllMMLS(response,rootUrl){
+	//console.log(response);
+	let $MML = $(response)
+	$sections=$MML.filter('section')
+	$('#telaRole').children().remove();
+	let $paletteContent = $sections.filter('[data-section=palette]').children();
+	if($paletteContent.length!=0){
+		inject($paletteContent, $("#tavolozza"));
+		importAll($("#tavolozza"));
+		//setTimeout(importAll($("#tavolozza")), 3000);
+		//all prototypes must be ready before rendering other sections
+
+	}
+	let $canvasContent =  $sections.filter('[data-section=canvas]').children();
+	if($canvasContent.length!=0){
+		//$('#tela').addClass('unlocked');
+		refreshAsymmEq($('#tela'));
+		inject($canvasContent,$('#telaRole'),true);
+	}
+	let $resultContent = $sections.filter('[data-section=result]').children();
+	if($resultContent.length!=0){
+		$('#result').children().remove();
+		inject($resultContent, $('#result'));
+	}
+	let $eventsContent = $sections.filter('[data-section=events]').children();
+	if($eventsContent.length!=0){
+		//$('#events').children(':not(input)').remove();
+		inject($eventsContent, $('#events'));
+	}
+	//************import all**********
+	//importAll()
+	//setTimeout(importAll(), 5000);
+
+	let $settingsSection = $sections.filter('[data-section=settings]')
+	if ($settingsSection.length != 0) {
+		let all = JSON.parse($settingsSection.html());
+
+		if (all.settings_json && all.settings_json.string) {//string data
+			GLBsettings = JSON.parse(all.settings_json.string);
+			GLBsettingsToInterface();
+			RefreshEmptyInfixBraketsGlued($("#telaRole"))
+		}
+		else if (all.settings_json) {//url
+			$.getJSON(buildPath(rootUrl, all.settings_json), function (parsedJSON) {
+				//console.log(parsedJSON);
+				GLBsettings = parsedJSON
+				GLBsettingsToInterface();
+				RefreshEmptyInfixBraketsGlued($("#telaRole"))
+			});
+		}
+	}
+}
 
 function loadAjaxAndInject(myUrl,target,toBeImported) {
 	//loadAjaxAndInject('./Data/Preload/preload.mml')
@@ -94,10 +146,8 @@ function loadAjaxAndInject(myUrl,target,toBeImported) {
 			error: function(e) {
 				//alert("AJAX/ errore nel caricare:" + myUrl);
 				console.log("Ajax/GET fallita : ", e);
-				MNODEparent(target).addClass("ImportFail");
 			},
-			success: function(response) {
-			MNODEparent(target).addClass("ImportSuccess");
+			success: function(response){
 			//alert("lettura file " + myUrl + " tramite Ajax OK - risposta : " + response);
 			if(!target){target=$("#telaRole")}
 			inject(response, target, undefined ,toBeImported)

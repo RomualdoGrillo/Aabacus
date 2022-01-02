@@ -1,0 +1,118 @@
+<section data-section="palette">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci data-type="num" title="{&quot;import&quot;:&quot;./Data/exercises/quizEqSystem/quizEqSystem.prt&quot;}">import tavolozza</ci>
+</math>
+</section>
+
+<section data-section="events">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<ci type="bool">testttttttttt events</ci>
+</math>
+
+</section>
+
+<section data-section="canvas">
+	<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply title="{&quot;import&quot;:&quot;./Data/exercises/quizEqSystem/quizEqSyst.mml&quot;}" data-type="bool">
+			<and>
+			</and>
+	</apply>
+	<apply type="bool">
+		<and>
+		</and>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">s</ci>
+				<ci type="num">s</ci>
+				<ci type="num">s</ci>
+			</apply>
+			<cn type="num">30</cn>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">boy</ci>
+				<ci type="num">boy</ci>
+				<ci type="num">s</ci>
+			</apply>
+			<cn type="num">20</cn>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">t</ci>
+				<ci type="num">t</ci>
+				<ci type="num">boy</ci>
+			</apply>
+			<cn type="num">13</cn>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">s</ci>
+				<apply type="num">
+					<times>
+					</times>
+					<ci type="num">boy</ci>
+					<ci type="num">t</ci>
+				</apply>
+			</apply>
+			<ci type="num">?</ci>
+		</apply>
+	</apply>
+</math>
+</section>
+
+<section data-section="result">
+	<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply type="bool">
+		<and>
+		</and>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<ci type="num">s</ci>
+			<cn type="num">10</cn>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<ci type="num">boy</ci>
+			<cn type="num">5</cn>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<ci type="num">t</ci>
+			<cn type="num">4</cn>
+		</apply>
+		<apply type="bool">
+			<eq>
+			</eq>
+			<cn type="num">30</cn>
+			<ci type="num">?</ci>
+		</apply>
+	</apply>
+</math>	
+</section>
+
+<section data-section="settings">
+	{
+   "settings_json":"./Data/exercises/quizEqSystem/gameHorTimes.set"
+    }
+</section>
+
+

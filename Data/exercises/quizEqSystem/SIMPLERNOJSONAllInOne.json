@@ -1,0 +1,15 @@
+
+
+<section data-section="canvas">
+<ci data-type="bool" data-import="./Data/exercises/quizEqSystem/quizEqSyst.mml">import tavolozza</ci>
+</section>
+
+
+
+<section data-section="settings">
+	{
+   "settings_json":"./Data/exercises/quizEqSystem/gameHorTimes.set"
+    }
+</section>
+
+

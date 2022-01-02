@@ -145,7 +145,7 @@ function onAdd(event) {
 	//*********** move or clone
 	if (event.to.getAttribute('target') == 'opened') {
 		if (event.to.matches('#telaRole')) {
-			returnTargetWrappedIfNeeded($('#telaRole'), $(dropped));
+			WrapWithDefIfNeededreturnTarget($('#telaRole'), $(dropped));
 		}
 
 		if ($(dropped).hasClass('toBeCloned')) {

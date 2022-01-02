@@ -441,6 +441,8 @@ function MNODEclone($node, Extend, removeID) {//default: Extend and RemoveID
 	if (removeID !== false) {
 		$toBeCleaned.removeAttr("id");
 		$toBeCleaned.removeAttr("data-tag");
+		$toBeCleaned.removeAttr("data-import");
+		$toBeCleaned.removeAttr("importStatus");
 		$toBeCleaned.removeClass("hide");
 		$toBeCleaned.removeClass("fundamental");
 		$toBeCleaned.removeClass("couldBeCollected");
