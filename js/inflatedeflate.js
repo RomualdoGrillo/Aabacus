@@ -158,7 +158,9 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 			var $children = $node.children().not(':first')
 			//search for prototype
 			//console.log(atom)
-			var $prototype = prototypeSearch(atom, $node.attr("type"),undefined,nodeText)
+			let dataType= $node.attr("type");//for compatibility with older format
+			if(!dataType){dataType=$node.attr("data-type")};
+			var $prototype = prototypeSearch(atom, dataType,undefined,nodeText)
 			if($prototype.length==0){console.log('prototype not found prototypeSearch()');console.log([atom, $node.attr("type"),undefined,nodeText])}
 			$newNode = MNODEclone($prototype)
 			MNODEextend($newNode)

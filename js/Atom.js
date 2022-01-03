@@ -466,8 +466,7 @@ function prototypeSearch(className, dataType, requiredClass, name) {
 	//if(found 1 tag){return}
 	//if(found >1 tag){return}
 	var type = dataType; //per poter usare questo valore nell 'each'
-	var dataTypeString =
-		dataType === undefined ? "[data-type]" : "[data-type=" + dataType + "]";
+	
 	$prototypes = $prototypes.filter(function () {
 		return (
 			this.getAttribute("data-atom").toLowerCase() == className &&

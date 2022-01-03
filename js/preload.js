@@ -109,7 +109,7 @@ function injectAllMMLS(response,rootUrl){
 		inject($eventsContent, $('#events'));
 	}
 	//************import all**********
-	//importAll()
+	importAll()
 	//setTimeout(importAll(), 5000);
 
 	let $settingsSection = $sections.filter('[data-section=settings]')

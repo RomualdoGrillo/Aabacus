@@ -7,11 +7,11 @@
 </section>
 
 <section data-section="canvas">
-<ci data-type="bool" data-import="./Data/exercises/quizEqSystem/quizEqSyst.mml">import tavolozza</ci>
+<ci data-type="bool" data-import="./Data/exercises/quizEqSystem/quizEqSyst.mml">import canvas</ci>
 </section>
 
 <section data-section="result">
-<ci data-type="bool" data-import="./Data/exercises/quizEqSystem/quizEqresult.prt">import tavolozza</ci>
+<ci data-type="bool" data-import="./Data/exercises/quizEqSystem/quizEqresult.mml">import result</ci>
 </section>
 
 <section data-section="settings">

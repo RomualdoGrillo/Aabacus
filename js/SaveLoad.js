@@ -41,8 +41,12 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 		if(fileSuffix === "mml"){
 			inject(textFromFileLoaded,$targetNode);
 		}
-		else if(fileSuffix === "json"){
+		else if(fileSuffix === "mmls"){
 			injectAllMMLS(textFromFileLoaded);
+			//injectAll(textFromFileLoaded);
+		}
+		else if(fileSuffix === "json"){
+			injectAll(textFromFileLoaded);
 			//injectAll(textFromFileLoaded);
 		}
 		else if(fileSuffix === "prt"){
@@ -87,12 +91,11 @@ function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
 
 		//get all data attributes
 		
-		let originalData = $targetRoleOrAtom.data();
+		let originalImportData = $targetRoleOrAtom.data().import;
+		if(originalImportData){
+			$convertedTree.attr('data-import',originalImportData);
+		}
 		let importStatus= $targetRoleOrAtom.attr('importStatus');
-		//transfer data to replacer
-		let newData=originalData;
-		delete newData.atom  //do not transfer atom type
-		writeData($convertedTree,newData)
 		if(importStatus){
 			$convertedTree.attr('importStatus',importStatus)
 		}
@@ -118,7 +121,7 @@ function importAll($startNode){
 	if(!$startNode){
 		$startNode=$("#telaRole");
 	}
-	$startNode.find('[data-import]:not([importStatus=imported]):not([importStatus=failed])').each(function(i,el){//search for import
+	$('body').find('[data-import]:not([importStatus=imported]):not([importStatus=failed])').each(function(i,el){//search for import
 
 		try{
 			let $el = $(el)
