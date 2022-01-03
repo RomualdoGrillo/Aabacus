@@ -55,11 +55,11 @@ function injectAll(response,rootUrl){
 		loadAjaxAndInject(buildPath(rootUrl,all.result_mml),$('#result'))
 	}
 	if(all.gestToAction_mml && all.gestToAction_mml.string){//string data
-		$('#events').children(':not(input)').remove();
+		$('#events').children().remove();
 		inject(all.gestToAction_mml.string, $('#events'))
 		}
 	else if(all.gestToAction_mml){//url
-		$('#events').children(':not(input)').remove();
+		$('#events').children().remove();
 		loadAjaxAndInject(buildPath(rootUrl,all.gestToAction_mml),$('#events'))
 	}
 	
@@ -105,7 +105,7 @@ function injectAllMMLS(response,rootUrl){
 	}
 	let $eventsContent = $sections.filter('[data-section=events]').children();
 	if($eventsContent.length!=0){
-		//$('#events').children(':not(input)').remove();
+		//$('#events').children('').remove();
 		inject($eventsContent, $('#events'));
 	}
 	//************import all**********

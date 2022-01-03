@@ -95,7 +95,7 @@ $(document).on('keydown', function(e) {
 			fileExtension= '.mml';
 		}
 		;if (stringToBeSaved) {
-			var fileName = prompt('Save as... Attenzione: Il file verrà salvato nella cartella "Download" !! non è possibile salvare in altre cartelle')
+			var fileName = prompt('Save as... Attenzione: Il file verrà salvato nella cartella "Download" !! non è possibile salvare in altre cartelle','noname')
 			if (fileName !== null) {
 				saveTextAsFile(stringToBeSaved, fileName + fileExtension );
 			}
