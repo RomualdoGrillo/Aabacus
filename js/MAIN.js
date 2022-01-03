@@ -82,19 +82,22 @@ $(document).on('keydown', function(e) {
 	}//shift+s salva contenuto (ctrl+s è già associato al salvataggio della pagina da parte del browser)
 	else if (e.shiftKey && (keyPressed === 's')) {
 		console.log("Shift + s")
-		var $toBeSaved
-		if ($('.selected').length == 0) {
-			$toBeSaved = $('#telaAnd')[0].MNODE_getChildren()
-		}//se nulla in particolare è selezionato salva tutto
-		else {
-			$toBeSaved = $('.selected')
+		let fileExtension
+		let stringToBeSaved 
+
+		if ($('.selected').length == 0) {//se nulla in particolare è selezionato salva tutto
+			stringToBeSaved = AlltoMMLSstring();
+			fileExtension= '.mmls';
 		}
-		;if ($toBeSaved.length != 0) {
-			var contentString = MNODEcreateMathmlString($toBeSaved, true)
-			var stringToBeSaved = '<math xmlns="http://www.w3.org/1998/Math/MathML">' + contentString + '</math>'
+		else {
+			let contentString = MNODEcreateMathmlString($('.selected'), true);
+			stringToBeSaved = '<math xmlns="http://www.w3.org/1998/Math/MathML">' + contentString + '</math>';
+			fileExtension= '.mml';
+		}
+		;if (stringToBeSaved) {
 			var fileName = prompt('Save as... Attenzione: Il file verrà salvato nella cartella "Download" !! non è possibile salvare in altre cartelle')
 			if (fileName !== null) {
-				saveTextAsFile(stringToBeSaved, fileName + ".mml");
+				saveTextAsFile(stringToBeSaved, fileName + fileExtension );
 			}
 		}
 	}//shift+l load file

@@ -141,3 +141,21 @@ function importAll($startNode){
 	
 }
 
+function AlltoMMLSstring(){
+	//palette
+	let paletteString = MNODEcreateMathmlString($('#tavolozza').children(':not(.fundamental)'),true);
+	//canvas
+	let canvasString = MNODEcreateMathmlString($('#telaAnd')[0].MNODE_getChildren(),true);
+	//events
+	let eventsString = MNODEcreateMathmlString($('#events').children(),true);
+	//result
+	let resultString = MNODEcreateMathmlString($('#result').children(),true);
+	//save settings
+	let MMLSString =
+	'<section data-section="palette">' + paletteString + '</section>'+
+	'<section data-section="canvas">' + canvasString + '</section>'+
+	'<section data-section="events">' + eventsString + '</section>'+
+	'<section data-section="result">' + resultString + '</section>'
+
+	return MMLSString
+}
