@@ -28,7 +28,7 @@ body.eforall [data-atom=forAll]>.row>.forallSymbol{
 
 
 
-[data-atom=and].medium>*{
+[data-atom=and][data-vis=medium]>*{
 	flex-direction:row!important;
 	border-width:0px!important;
 }

@@ -1,13 +1,13 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply medium="True" type="bool">
+	<apply data-vis="medium" type="bool">
 		<and>
 		</and>
-		<ci collapsed="True" type="bool" data-tag="replace" data-tagimg="./images/properties/replace.png">internal</ci>
-		<ci collapsed="True" type="bool" data-tag="compose" data-tagimg="./images/gear.svg">internal</ci>
-		<apply collapsed="True" medium="True" type="bool" data-tag="foundation" data-tagimg="./images/properties/distributive.png">
+		<ci data-vis="collapsed" type="bool" data-tag="replace" data-tagimg="./images/properties/replace.png">internal</ci>
+		<ci data-vis="collapsed" type="bool" data-tag="compose" data-tagimg="./images/gear.svg">internal</ci>
+		<apply data-vis="collapsed" data-vis="medium" type="bool" data-tag="foundation" data-tagimg="./images/properties/distributive.png">
 			<and>
 			</and>
-			<apply collapsed="True" type="bool" data-tag="timesAssociate">
+			<apply data-vis="collapsed" type="bool" data-tag="timesAssociate">
 				<forall>
 				</forall>
 				<bvar>
@@ -37,7 +37,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="plusAssociate">
+			<apply data-vis="collapsed" type="bool" data-tag="plusAssociate">
 				<forall>
 				</forall>
 				<bvar>
@@ -67,7 +67,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="orAssociate">
+			<apply data-vis="collapsed" type="bool" data-tag="orAssociate">
 				<forall>
 				</forall>
 				<bvar>
@@ -97,7 +97,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="andAssociate">
+			<apply data-vis="collapsed" type="bool" data-tag="andAssociate">
 				<forall>
 				</forall>
 				<bvar>
@@ -127,7 +127,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="Opposite" data-tagimg="../Aabacus/images/properties/Annihilate.png">
+			<apply data-vis="collapsed" type="bool" data-tag="Opposite" data-tagimg="../Aabacus/images/properties/Annihilate.png">
 				<forall>
 				</forall>
 				<bvar>
@@ -149,7 +149,7 @@
 					<cn type="num">0</cn>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="Reciprocal">
+			<apply data-vis="collapsed" type="bool" data-tag="Reciprocal">
 				<forall>
 				</forall>
 				<bvar>
@@ -171,7 +171,7 @@
 					<cn type="num">1</cn>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="defZero">
+			<apply data-vis="collapsed" type="bool" data-tag="defZero">
 				<forall>
 				</forall>
 				<bvar>
@@ -189,7 +189,7 @@
 					<ci type="num">a</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="defOne">
+			<apply data-vis="collapsed" type="bool" data-tag="defOne">
 				<forall>
 				</forall>
 				<bvar>
@@ -207,7 +207,7 @@
 					<ci type="num">a</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="propDist">
+			<apply data-vis="collapsed" type="bool" data-tag="propDist">
 				<forall>
 				</forall>
 				<bvar>
@@ -251,7 +251,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="transitive">
+			<apply data-vis="collapsed" type="bool" data-tag="transitive">
 				<forall>
 				</forall>
 				<bvar>
@@ -291,10 +291,10 @@
 				</apply>
 			</apply>
 		</apply>
-		<apply collapsed="True" type="bool" data-tag="derived">
+		<apply data-vis="collapsed" type="bool" data-tag="derived">
 			<and>
 			</and>
-			<apply collapsed="True" type="bool" data-tag="eqPlusMove" data-tagimg="../Aabacus/images/properties/replace.png">
+			<apply data-vis="collapsed" type="bool" data-tag="eqPlusMove" data-tagimg="../Aabacus/images/properties/replace.png">
 				<forall>
 				</forall>
 				<bvar>
@@ -341,7 +341,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="eqPlusMoveAlone">
+			<apply data-vis="collapsed" type="bool" data-tag="eqPlusMoveAlone">
 				<forall>
 				</forall>
 				<bvar>
@@ -376,7 +376,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="eqPlus">
+			<apply data-vis="collapsed" type="bool" data-tag="eqPlus">
 				<forall>
 				</forall>
 				<bvar>
@@ -415,7 +415,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="eqTimes1">
+			<apply data-vis="collapsed" type="bool" data-tag="eqTimes1">
 				<forall>
 				</forall>
 				<bvar>
@@ -487,7 +487,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="eqTimesMove">
+			<apply data-vis="collapsed" type="bool" data-tag="eqTimesMove">
 				<forall>
 				</forall>
 				<bvar>
@@ -549,7 +549,7 @@
 								</apply>
 							</apply>
 						</apply>
-						<apply collapsed="True" title="--c" type="bool">
+						<apply data-vis="collapsed" title="--c" type="bool">
 							<and>
 							</and>
 							<apply title="--c" type="bool">
@@ -568,7 +568,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="InvOfOpposite">
+			<apply data-vis="collapsed" type="bool" data-tag="InvOfOpposite">
 				<forall>
 				</forall>
 				<bvar>
@@ -597,7 +597,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="OppositeOfOpposite">
+			<apply data-vis="collapsed" type="bool" data-tag="OppositeOfOpposite">
 				<forall>
 				</forall>
 				<bvar>
@@ -618,7 +618,7 @@
 					<ci title="--s" type="num">x</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="composeXorNotX">
+			<apply data-vis="collapsed" type="bool" data-tag="composeXorNotX">
 				<forall>
 				</forall>
 				<bvar>
@@ -640,7 +640,7 @@
 					<ci type="bool">true</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="simpPlusSingleFactor">
+			<apply data-vis="collapsed" type="bool" data-tag="simpPlusSingleFactor">
 				<forall>
 				</forall>
 				<bvar>
@@ -657,7 +657,7 @@
 					<ci type="num">x</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="simpTimesSingleFactor">
+			<apply data-vis="collapsed" type="bool" data-tag="simpTimesSingleFactor">
 				<forall>
 				</forall>
 				<bvar>
@@ -674,7 +674,7 @@
 					<ci type="num">x</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="annichilaT">
+			<apply data-vis="collapsed" type="bool" data-tag="annichilaT">
 				<forall>
 				</forall>
 				<bvar>
@@ -704,7 +704,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="orAbsorbingEl">
+			<apply data-vis="collapsed" type="bool" data-tag="orAbsorbingEl">
 				<forall>
 				</forall>
 				<bvar>
@@ -722,7 +722,7 @@
 					<ci type="bool">true</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="andAbsorbingEl">
+			<apply data-vis="collapsed" type="bool" data-tag="andAbsorbingEl">
 				<forall>
 				</forall>
 				<bvar>
@@ -740,7 +740,7 @@
 					<ci type="bool">false</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="factorizeMinus">
+			<apply data-vis="collapsed" type="bool" data-tag="factorizeMinus">
 				<forall>
 				</forall>
 				<bvar>
@@ -766,7 +766,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="annichilaP">
+			<apply data-vis="collapsed" type="bool" data-tag="annichilaP">
 				<forall>
 				</forall>
 				<bvar>
@@ -796,7 +796,7 @@
 					</apply>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="AndNeutral">
+			<apply data-vis="collapsed" type="bool" data-tag="AndNeutral">
 				<forall>
 				</forall>
 				<bvar>
@@ -814,7 +814,7 @@
 					<ci type="bool">a</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="OrNeutral">
+			<apply data-vis="collapsed" type="bool" data-tag="OrNeutral">
 				<forall>
 				</forall>
 				<bvar>
@@ -832,7 +832,7 @@
 					<ci type="bool">a</ci>
 				</apply>
 			</apply>
-			<apply collapsed="True" type="bool" data-tag="notFalse">
+			<apply data-vis="collapsed" type="bool" data-tag="notFalse">
 				<eq>
 				</eq>
 				<apply type="bool">

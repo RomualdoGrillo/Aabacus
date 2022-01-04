@@ -1,5 +1,5 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply collapsed="True" type="bool" data-tag="associativa">
+	<apply data-vis="collapsed" type="bool" data-tag="associativa">
 		<forall>
 		</forall>
 		<bvar>

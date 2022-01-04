@@ -93,9 +93,6 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 				originalData.tagimg = wrapUnwrapUrlString( $node[0].style.backgroundImage , true );
 			}
 		}
-		//todo: sostituire con un solo attributo che indichi lo stato di minimizzazione
-		isMinimized = $node.hasClass('collapsed')
-		isMedium = $node.hasClass('medium')
 		if (!neglectSign) {//signsAsClasses($node,"SignsAsClasses_to_MinusOp") // converti   	
 		}
 		var nodeText = ""
@@ -122,12 +119,6 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 			$newNode.append($nobBvarchildren);
 			$newNode.append($htmlDivChildren);
 		}
-		if (isMinimized) {
-			$newNode.attr("collapsed", "True")
-		}
-		if (isMedium) {
-			$newNode.attr("medium", "True")
-		}
 		//if(title != undefined){	$newNode.attr('title',title)}//se presente salva anche il titolo
 		if (title) {//se presente e diverso da "" salva anche il titolo
 			$newNode.attr('title', title)
@@ -141,8 +132,6 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 	} else if (from_to === "mml_aab") {
 		//inflate: =first child tag; if tag==csymbol or ci or cn allora considera il contenuto
 		originalData = $node.data();
-		isMinimized = ($node.attr('collapsed') == "True");
-		isMedium = ($node.attr('medium') == "True");
 		title = $node.attr('title');
 		
 		var nodeText = $node.clone()//clone the element
@@ -218,13 +207,6 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 		}
 		writeData($newNode,newData)
 		// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
-		if (isMinimized) {
-			$newNode.addClass("collapsed")
-		}
-		if (isMedium) {
-			$newNode.addClass("medium")
-		}
-		
 		if (title !== undefined) {
 			$newNode.attr('title', title)
 			//

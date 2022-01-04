@@ -103,7 +103,7 @@ disadvantage: building new prototypes is less intuitive
 
 /***********   Tags   ***********/
 
-[data-tag]:not(.collapsed)::after{
+[data-tag]:not([data-vis=collapsed])::after{
 	position: absolute;
 	bottom: 95%;
 	right: 60%;
@@ -135,30 +135,30 @@ disadvantage: building new prototypes is less intuitive
 	padding-left: 45px;
 }
 
-[data-tag]:not(.collapsed){
+[data-tag]:not([data-vis=collapsed]){
  background-position:-9999px -9999px;
  background-repeat: no-repeat;
 }
 
 
-.collapsed[data-tag]>*{
+[data-vis=collapsed][data-tag]>*{
 	display:none;
 }
-.collapsed[data-tag]{
+[data-vis=collapsed][data-tag]{
 	/*width:20px;*/
 	height: 20px;
 	border-width:0px;
 	align-self: center!important;
 }
 
-.collapsed[data-tag]:not([data-tagimg])::after{
+[data-vis=collapsed][data-tag]:not([data-tagimg])::after{
 	background:white;
 	padding-left:0px;
 }
-.collapsed[data-tag][data-tagimg]::after{
+[data-vis=collapsed][data-tag][data-tagimg]::after{
 	font-size:0px;
 }
-[data-atom="and"].medium>.ul_role{
+[data-atom="and"][data-vis=medium]>.ul_role{
 	padding:2px!important;
 }
 

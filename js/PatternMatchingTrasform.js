@@ -223,7 +223,7 @@ function swapMembersClone($origProp,mode){
     var $equation
     if( propCdsClass === "forAll" ){
         res.$cloneProp.addClass('waiting'); //metti il clone in stato waiting
-        res.$cloneProp.removeClass('collapsed medium');
+        res.$cloneProp.removeAttr('data-vis');
         $equation = GetforAllContentRole(res.$cloneProp).children();
     }
     else{

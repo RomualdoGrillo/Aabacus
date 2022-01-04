@@ -576,7 +576,7 @@ body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover){
 border-color:transparent;
 }
 
-.showPar .brackets:not(.medium):not(.collapsed), .showPar .rolescontainer {border-left-color: black!important;border-right-color: black!important;border-left-width: 2px;border-right-width: 2px;border-left-style: solid;border-right-style: solid;}
+.showPar .brackets:not([data-vis=medium]):not([data-vis=collapsed]), .showPar .rolescontainer {border-left-color: black!important;border-right-color: black!important;border-left-width: 2px;border-right-width: 2px;border-left-style: solid;border-right-style: solid;}
     
   
 /*written here to prevale over all other class css rules*/ 
@@ -646,7 +646,7 @@ border-color:transparent;
 #telaRole [data-atom="deftrue"]:not(.expanded){
 	border-bottom-right-radius: 0px!important;
 }
-#telaRole .collapsed{
+#telaRole [data-vis=collapsed]{
 	align-self: stretch;
 	min-height: 3px;
 	background-image: url(../images/three-dots.svg);
@@ -665,7 +665,7 @@ border-color:transparent;
 
 
 
-#telaRole [data-atom=or]>.ul_role>.collapsed{
+#telaRole [data-atom=or]>.ul_role>[data-vis=collapsed]{
 	min-width:3px;
 	background-image: url(../images/three-dots-vert.svg);
 	background-position: center center;
@@ -708,11 +708,11 @@ border-color:transparent;
 	border-radius:var(--div-smallradius)!important;
 }
 
-#telaRole [data-atom].collapsed>*{
+#telaRole [data-atom][data-vis=collapsed]>*{
 	display:none!important;
 }
 /*
-#telaRole [data-atom].collapsed>*:not(.ul_role){
+#telaRole [data-atom][data-vis=collapsed]>*:not(.ul_role){
 	display:none!important;
 }
 */
