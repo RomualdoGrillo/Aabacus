@@ -13,8 +13,13 @@ function MNODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) 
 		from_to = "aab_mml"
 	}
 	var $convertedTree = createConvertedTree($startNodes, from_to, neglectRootSign);
+	let returnString = ""
+	if($convertedTree.length!=0){
+		//returnString = $.trim($convertedTree.parent().html())
+		returnString = formatXml($convertedTree.parent().html())
+	}
 	//return $.trim($convertedTree.parent().html())
-	return formatXml($convertedTree.parent().html())
+	return returnString
 
 }
 
@@ -33,6 +38,9 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 		$thisClone.parent().find('[data-atom]').each(function(i, node) {
 			$.extend(node, atom)
 		})
+		//rimuovi il contenuto importato da altri files
+		$thisClone.parent().find('[data-import]').each(function(i, node){node.MNODE_getChildren().remove()});
+		
 
 		//signsAsClassesSubtree($thisClone,"SignsAsClasses_to_MinusOp")// converti in modo che il segno meno sia una operazione applicata al nodo
 		//sostituisci tutti i nodi MNODE
@@ -46,17 +54,18 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 		})
 	} else if (from_to === "mml_aab") {
 		//filtra solo le tag da importare
-		let $imported
+		let $mmlTagSubset
 		if(toBeImported){
-			$imported = $startNodeOrMML.find('[data-tag=' + toBeImported + ']')
+			$mmlTagSubset = $startNodeOrMML.find('[data-tag=' + toBeImported + ']')
 		}
 		else{//if no item is specified import all
-			$imported = $startNodeOrMML
+			$mmlTagSubset = $startNodeOrMML
+			//wrap
 		}
-		$containerForClone.append($imported)
+		$containerForClone.append($mmlTagSubset)
 		//inflate
 		//ottieni l'elenco dei nodi' da sostituire
-		$imported.parent().find('apply,cn,ci,bind,math').each(function(i, node) {
+		$mmlTagSubset.parent().find('apply,cn,ci,bind,math').each(function(i, node) {
 			//console.log(node);
 			ReplaceOneMNODE(node, from_to);
 		})

@@ -87,12 +87,14 @@ function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
 	
 	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
 	if($targetRoleOrAtom.is('[data-atom]')){
-		// Needs "and" container if multiple items? 
-
-		//get all data attributes
 		
+		//get all data attributes
 		let originalImportData = $targetRoleOrAtom.data().import;
 		if(originalImportData){
+			if($convertedTree.length>1){
+				// Needs "and" container if multiple items? 
+				$convertedTree=encaseWithOperation($convertedTree,'and')		
+			}
 			$convertedTree.attr('data-import',originalImportData);
 		}
 		let importStatus= $targetRoleOrAtom.attr('importStatus');
