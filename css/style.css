@@ -385,8 +385,8 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 }
 
 /*.selected[data-atom], .selected[data-atom]>.s_role>.glued ,.selected[data-atom]>.s_role>.glued[data-atom]>*{*/
-.selected[data-atom], .selected[data-atom] [data-atom],.selected::after{
-    background-color: #eaeaea;
+.selected[data-atom], .selected[data-atom] [data-atom],.selected[data-atom]::after{
+    background-color: #aaa;
     border-color:Grey!important;
 }
 .unselected[data-atom], .unselected[data-atom] [data-atom]{
@@ -644,7 +644,7 @@ border-color:transparent;
 #telaRole [data-atom="deftrue"][data-vis=collapsed]{
 	border-bottom-right-radius: 0px!important;
 }
-#telaRole [data-vis=collapsed]{
+#telaRole [data-vis=collapsed], #telaRole [data-atom=ci][data-tag]{
 	align-self: stretch;
 	min-height: 3px;
 	background-image: url(../images/three-dots.svg);
@@ -705,15 +705,6 @@ border-color:transparent;
 .unlocked [data-atom=or]>.ul_role>[data-atom]{
 	border-radius:var(--div-smallradius)!important;
 }
-
-#telaRole [data-atom][data-vis=collapsed]>*{
-	display:none!important;
-}
-/*
-#telaRole [data-atom][data-vis=collapsed]>*:not(.ul_role){
-	display:none!important;
-}
-*/
 
 #overlay {
     position: absolute;

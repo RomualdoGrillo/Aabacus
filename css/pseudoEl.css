@@ -103,7 +103,7 @@ disadvantage: building new prototypes is less intuitive
 
 /***********   Tags   ***********/
 
-[data-tag]:not([data-vis=collapsed])::after{
+[data-tag]:not([data-vis=collapsed]):not([data-atom=ci])::after{
 	position: absolute;
 	bottom: 95%;
 	right: 60%;
@@ -135,27 +135,32 @@ disadvantage: building new prototypes is less intuitive
 	padding-left: 45px;
 }
 
-[data-tag]:not([data-vis=collapsed]){
+[data-tag]:not([data-vis=collapsed]):not([data-atom=ci]){
  background-position:-9999px -9999px;
  background-repeat: no-repeat;
 }
 
 
-[data-vis=collapsed][data-tag]>*{
+[data-vis=collapsed][data-tag]>*,
+[data-atom=ci][data-tag]>*{
 	display:none;
 }
-[data-vis=collapsed][data-tag]{
+[data-vis=collapsed][data-tag],
+[data-atom=ci][data-tag]{
 	/*width:20px;*/
 	height: 20px;
 	border-width:0px;
 	align-self: center!important;
 }
 
-[data-vis=collapsed][data-tag]:not([data-tagimg])::after{
+[data-vis=collapsed][data-tag]:not([data-tagimg])::after,
+[data-atom=ci][data-tag]:not([data-tagimg])::after
+{
 	background:white;
 	padding-left:0px;
 }
-[data-vis=collapsed][data-tag][data-tagimg]::after{
+[data-vis=collapsed][data-tag][data-tagimg]::after,
+[data-atom=ci][data-tag][data-tagimg]::after{
 	font-size:0px;
 }
 [data-atom="and"][data-vis=medium]>.ul_role{
@@ -164,13 +169,5 @@ disadvantage: building new prototypes is less intuitive
 
 
 .selected::after {
-	background-color: #7b032aad;
-	/*
-	pointer-events: none;
-	content: "";
-    content: none;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	*/
+	/* background-color: #7b032aad; */
 }
