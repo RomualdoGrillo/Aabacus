@@ -311,9 +311,7 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 	min-height:8px;
 	padding: 0px;
 }
-.ui-icon-bullet {
-    -webkit-transform: scale(0.8);
-}
+
 
 .asymmetric  {
   padding: 0px;

@@ -312,7 +312,7 @@
 			<apply data-vis="collapsed" data-tag="derived" data-type="bool">
 				<and>
 				</and>
-				<apply data-vis="collapsed" data-tag="eqPlusMove" data-tagimg="../Aabacus/images/properties/replace.png" data-type="bool">
+				<apply data-vis="collapsed" data-tag="eqPlusMove" data-tagimg="./images/properties/replace.png" data-type="bool">
 					<forall>
 					</forall>
 					<bvar>

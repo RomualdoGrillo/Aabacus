@@ -315,7 +315,6 @@ function dblclickHandler(event) {
 	else if (atomClass != 'ci' && atomClass != 'cn' && atomClass != 'plus') {
 		if($atomDblclicked.is('[data-vis=collapsed]')){$atomDblclicked.attr('data-vis','')}
 		else{$atomDblclicked.attr('data-vis','collapsed')}
-		//??todo: uniformare con expanded
 	}//opened
 	//******** dblclick on ci ***********
 	else if (!closed && (atomClass == 'ci' || atomClass == 'cn')) {

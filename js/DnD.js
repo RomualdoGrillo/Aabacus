@@ -11,8 +11,8 @@ function MakeSortableAndInjectMouseDown(event) {
 	if (debugMode) {//that's just for debug mode, in normal mode targets are clened on mouseup
 		cleanupDnD()
 	}
-	/******** from targrt to Atom target *************/
-	
+	/******** from target to Atom target *************/
+	//glued vs no glued
 	let $atomTarget
 	if (MNODEclosedDef($(event.target))) {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
@@ -62,7 +62,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		let $validTgTOpen = validTargetsFromOpened($atomTarget);//i $validTgTOpen non vengono evidenziati con exclusive focus
 		if ($atomTarget.is('#tavolozza>*')) {
 			//add tela as target
-			$validTgTOpen = $validTgTOpen.add('#telaRole');
+			$validTgTOpen = $validTgTOpen.add('#telaRole');//will be encased!!//
 		}
 		$validTgTOpen.toArray().forEach(function (el) {
 			el.setAttribute('target', 'opened')
@@ -81,7 +81,8 @@ function MakeSortableAndInjectMouseDown(event) {
 			i++
 		}
 	}
-	if ($atomTarget && $atomTarget.length && $atomTarget[0].parentElement){//is there a valid target?(sometimes the $atomTarget is undefined sometime it is not but there is no [0] element)
+	if ($atomTarget && $atomTarget.length && $atomTarget[0].parentElement){
+	//is there a valid target?(sometimes the $atomTarget is undefined sometime it is not but there is no [0] element)
 		if($validTgT.length!=0){
 			let $draggedAndTargets = $atomTarget.add($validTgT); 
 			$commParent = $(commonParent( $draggedAndTargets.toArray() ));	
@@ -97,6 +98,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		}
 		$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
 		let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]
+		//inject start event
 		fromSortable._onTapStart(event);
 	}
 }
@@ -107,14 +109,9 @@ function startHandlerMouseDown(event) {
 		//clear selected unselected
 		selectionManager("", "", "", true);
 	}
-	//********clear all targets*****************
-	//if (debugMode) {
-	//	clearTragets()
-	//}
-	if (/*event.originalEvent.ctrlKey*/GLBDnD.toolWhenMousedown == 'copy' || event.from.matches('#tavolozza')) {
+	if (event.originalEvent.metaKey || event.originalEvent.ctrlKey||GLBDnD.toolWhenMousedown == 'copy' || event.from.matches('#tavolozza')) {
 		//clone!
 		event.item.classList.add('toBeCloned');
-		cloning = true
 		//event.item.classList.remove('showAsPlaceholder');
 	} else {
 		//move!
@@ -136,9 +133,15 @@ function onAdd(event) {
 	//replacing sortablejs defaul clone with myClone (removed id, extends MNODE etc..)
 	//item stays in place myclone dropped in new place
 	event.item.classList.remove('showAsPlaceholder');
-	let myClone = MNODEclone($(event.item))[0]
-	//
-	event.item.classList.remove('toBeCloned');
+	let myClone
+	//if moving, id and tags must remain!
+	if($(event.item).hasClass('toBeCloned')){
+		myClone = MNODEclone($(event.item))[0]//remove id and tag
+		event.item.classList.remove('toBeCloned');
+	}
+	else{
+		myClone = MNODEclone($(event.item),true,false)[0]//do not remove id and tag
+	}
 	event.item.replaceWith(myClone)
 	event.clone.replaceWith(event.item)//questo è l'elemento che rimane nella posizione di partenza
 	let dropped = myClone

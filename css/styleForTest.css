@@ -33,15 +33,6 @@ body.eforall [data-atom=forAll]>.row>.forallSymbol{
 	border-width:0px!important;
 }
 
-[data-atom]:.collapsed>*>.emb{
-	min-width:45px;
-	font-size: 0px;
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-size: contain;
-	border-width:0px;
-}
-
 [data-atom]:not('[data-vis=collapsed]')>*>.emb{
 	width:40px;
 	/* padding-left:45px!important; */
