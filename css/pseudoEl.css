@@ -13,7 +13,7 @@ In this way infix and tag can exist at the same time
 {
 	margin-left: 11px;/*space for infix symbol*/
 }
-[data-atom=plus].resizable>[class*="role"]>[data-atom]/*:not(.sortable-drag)*/{
+[data-atom=plus][data-vis=resizable]>[class*="role"]>[data-atom]/*:not(.sortable-drag)*/{
 	margin: 4px;
 }
 body.hidePlus [data-atom=plus]>[class*="role"]>[data-atom]::before{
@@ -23,9 +23,9 @@ body[timesdisposition=brTimes] br + [data-atom]::before{
 	background-color:transparent!important;	
 }
 
-[data-atom=plus]>[class*="role"]>[data-atom]:not(:first-of-type):not(.resizable)::before,
-[data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type):not(.resizable)::before,
-[data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type):not(.resizable)::before {
+[data-atom=plus]>[class*="role"]>[data-atom]:not(:first-of-type):not([data-vis=resizable])::before,
+[data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type):not([data-vis=resizable])::before,
+[data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type):not([data-vis=resizable])::before {
 	/* background-color: red; */
 	position: absolute;
 	content: "+";/*&#x2264; for leq*/

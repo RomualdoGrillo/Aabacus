@@ -402,7 +402,7 @@ body:not(.fitch) [data-atom="and"]:not(#telaAnd)>.ul_role {
 	border-color: blue!important;
 	z-index:1 } 
 
-.exclusiveFocus, .resizable, .waiting, .TargetsCommonParentx {/*grayout all but .exclusiveFocus DIV */
+.exclusiveFocus, [data-vis=resizable], .waiting, .TargetsCommonParentx {/*grayout all but .exclusiveFocus DIV */
 	z-index:100;
 	box-shadow: 0 0 0 999px #9695958a;
 }
@@ -732,7 +732,7 @@ border-color:transparent;
 	display:none;
 }
 
-.resizable>.ul_role{
+[data-vis=resizable]>.ul_role{
 	border-radius:5px;
 	resize: horizontal;
 	overflow:hidden;
@@ -740,24 +740,24 @@ border-color:transparent;
 	height: auto;
 	min-width: 20px;
 }
-.resizable{
+[data-vis=resizable]{
 	position:absolute;
 	border-radius:var(--div-radius) var(--div-radius)  0px var(--div-radius);
 }
 
-.resizable>.ul_role {
+[data-vis=resizable]>.ul_role {
 	border-radius:5px;
 	width:80px;
 	padding-left:4px;
 	display:inline-block;/* do not know why but it works*/
 
 }
-.resizable>.ul_role>* {
+[data-vis=resizable]>.ul_role>* {
 	display:inline-flex;/* do not know why but it works*/
 
 }
 /*
-.resizable>.ul_role>[data-atom]{
+[data-vis=resizable]>.ul_role>[data-atom]{
 	margin:0!important;
 }
 */

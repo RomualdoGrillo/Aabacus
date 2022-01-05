@@ -274,7 +274,7 @@ function dblclickHandler(event) {
 		let n = Number( MNODENumericCdsAsText($atomDblclicked) );
 		if(Number.isInteger(n) && n>0){
 			let $plus =encaseWithOperation($atomDblclicked,'plus');
-			$plus.addClass('resizable');
+			$plus.attr('data-vis','resizable');
 			$atomDblclicked.remove()
 			//crea il numero 1
 			var One = {type:"cn", val:1, sign:1, exp:1}
@@ -284,7 +284,7 @@ function dblclickHandler(event) {
 			}	
 		}
 	}
-	else if ($atomDblclicked.hasClass('resizable')){
+	else if ($atomDblclicked.is('[data-vis=resizable]')){
 			let $role=$atomDblclicked[0].MNODE_getRoles().eq(0);
 			let firstChild = $role.find('>[data-atom]')[0]
 			let fcWidth = firstChild.offsetWidth
@@ -301,7 +301,6 @@ function dblclickHandler(event) {
 				let $factor_c = ValToAtoms({type:"cn", val:n_columns, sign:1, exp:1})
 				let $factors = $factor_r.add($factor_c); 
 				$atomDblclicked.replaceWith($factors);
-				$atomDblclicked.hasClass('resizable');
 				$role.css('width', '');
 				$role.css('height', '');
 								

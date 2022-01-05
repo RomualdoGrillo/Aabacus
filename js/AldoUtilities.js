@@ -120,7 +120,7 @@ var hull = svg.append("path")
     .attr("class", "hull");
 
 $('svg').css('position','absolute')
-arr = getPositionsOfChildren($('.resizable'))
+arr = getPositionsOfChildren($('[data-vis=resizable]'))
 hull.datum(d3.geom.hull(arr)).attr("d", function(d) { return "M" + d.join("L") + "Z"; })
 */
 function getOffset( el ) {
