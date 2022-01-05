@@ -1,6 +1,6 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
 	<apply type="bool">
-		<deftrue>
+		<deftrue data-vis="collapsed">
 		</deftrue>
 		<ci type="bool">eqTimes1</ci>
 		<apply type="bool">
@@ -77,7 +77,7 @@
 		</apply>
 	</apply>
 	<apply type="bool">
-		<deftrue>
+		<deftrue data-vis="collapsed">
 		</deftrue>
 		<ci type="bool">eqTimesMove1</ci>
 		<apply type="bool">
@@ -143,7 +143,7 @@
 		</apply>
 	</apply>
 	<apply type="bool">
-		<deftrue>
+		<deftrue data-vis="collapsed">
 		</deftrue>
 		<ci type="bool">eqTimesMove2</ci>
 		<apply type="bool">
@@ -229,7 +229,7 @@
 		</apply>
 	</apply>
 	<apply type="bool">
-		<deftrue>
+		<deftrue data-vis="collapsed">
 		</deftrue>
 		<ci type="bool">eqTimesMove3</ci>
 		<apply type="bool">

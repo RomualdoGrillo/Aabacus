@@ -33,7 +33,7 @@ body.eforall [data-atom=forAll]>.row>.forallSymbol{
 	border-width:0px!important;
 }
 
-[data-atom]:not(.expanded)>*>.emb{
+[data-atom]:.collapsed>*>.emb{
 	min-width:45px;
 	font-size: 0px;
 	background-repeat: no-repeat;
@@ -42,7 +42,7 @@ body.eforall [data-atom=forAll]>.row>.forallSymbol{
 	border-width:0px;
 }
 
-[data-atom].expanded>*>.emb{
+[data-atom]:not('[data-vis=collapsed]')>*>.emb{
 	width:40px;
 	/* padding-left:45px!important; */
 	background-repeat: no-repeat;

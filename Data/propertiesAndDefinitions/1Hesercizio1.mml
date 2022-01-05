@@ -1,6 +1,6 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
 	<apply title="s" type="bool">
-		<deftrue>
+		<deftrue data-vis="collapsed">
 		</deftrue>
 		<ci type="bool">gestToAction</ci>
 		<apply type="bool">
@@ -121,14 +121,14 @@
 		</apply>
 	</apply>
 	<apply type="bool">
-		<deftrue>
+		<deftrue data-vis="collapsed">
 		</deftrue>
 		<ci type="bool">derived</ci>
 		<apply type="bool">
 			<and>
 			</and>
 			<apply type="bool">
-				<deftrue>
+				<deftrue data-vis="collapsed">
 				</deftrue>
 				<ci type="bool">eqPlusMove</ci>
 				<apply type="bool">
@@ -180,7 +180,7 @@
 				</apply>
 			</apply>
 			<apply type="bool">
-				<deftrue>
+				<deftrue data-vis="collapsed">
 				</deftrue>
 				<ci type="bool">eqPlus</ci>
 				<apply type="bool">
@@ -224,7 +224,7 @@
 				</apply>
 			</apply>
 			<apply type="bool">
-				<deftrue>
+				<deftrue data-vis="collapsed">
 				</deftrue>
 				<ci type="bool">eqTimes1</ci>
 				<apply type="bool">
@@ -301,7 +301,7 @@
 				</apply>
 			</apply>
 			<apply type="bool">
-				<deftrue>
+				<deftrue data-vis="collapsed">
 				</deftrue>
 				<ci type="bool">eqTimesMove</ci>
 				<apply type="bool">
@@ -373,7 +373,7 @@
 				</apply>
 			</apply>
 			<apply type="bool">
-				<deftrue>
+				<deftrue data-vis="collapsed">
 				</deftrue>
 				<ci type="bool">OppositeOfOpposite</ci>
 				<apply type="bool">
@@ -399,7 +399,7 @@
 				</apply>
 			</apply>
 			<apply type="bool">
-				<deftrue>
+				<deftrue data-vis="collapsed">
 				</deftrue>
 				<ci type="bool">composeXorNotX</ci>
 				<apply type="bool">
@@ -428,7 +428,7 @@
 				<ci type="bool">g</ci>
 			</apply>
 			<apply type="bool">
-				<deftrue>
+				<deftrue data-vis="collapsed">
 				</deftrue>
 				<ci type="bool">simpPlusSingleTerm</ci>
 				<apply type="bool">
@@ -450,7 +450,7 @@
 				</apply>
 			</apply>
 			<apply type="bool">
-				<deftrue>
+				<deftrue data-vis="collapsed">
 				</deftrue>
 				<ci type="bool">simpTimesSingleFactor</ci>
 				<apply type="bool">
@@ -472,7 +472,7 @@
 				</apply>
 			</apply>
 			<apply type="bool">
-				<deftrue>
+				<deftrue data-vis="collapsed">
 				</deftrue>
 				<ci type="bool">factorizeMinus</ci>
 				<apply type="bool">

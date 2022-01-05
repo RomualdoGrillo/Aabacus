@@ -312,10 +312,9 @@ function dblclickHandler(event) {
 			}
 	}//closed or opened
 	//******** expand collapse ***********
-	else if (atomClass === 'deftrue') {
-		$atomDblclicked.toggleClass('expanded');
-	} else if (atomClass != 'ci' && atomClass != 'cn' && atomClass != 'plus') {
-		$atomDblclicked.toggleClass('collapsed');
+	else if (atomClass != 'ci' && atomClass != 'cn' && atomClass != 'plus') {
+		if($atomDblclicked.is('[data-vis=collapsed]')){$atomDblclicked.attr('data-vis','')}
+		else{$atomDblclicked.attr('data-vis','collapsed')}
 		//??todo: uniformare con expanded
 	}//opened
 	//******** dblclick on ci ***********

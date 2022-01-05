@@ -3,7 +3,7 @@
 		<and>
 		</and>
 		<apply type="bool">
-			<deftrue>
+			<deftrue data-vis="collapsed">
 			</deftrue>
 			<ci type="bool">monotoniaQuadrato</ci>
 			<apply type="bool">
@@ -60,7 +60,7 @@
 			</apply>
 		</apply>
 		<apply type="bool">
-			<deftrue>
+			<deftrue data-vis="collapsed">
 			</deftrue>
 			<ci type="bool">defRadice</ci>
 			<apply type="bool">
