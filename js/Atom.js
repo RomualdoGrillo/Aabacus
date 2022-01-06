@@ -452,7 +452,7 @@ var symbols = ["ci", "cn", "csymbol"];
 function prototypeSearch(className, dataType, requiredClass, name) {
 	//alcune classi, ad esempio "ci", possono avere vari datatype
 	//get all prototypes  (futuribile: preindex prototypes)
-	var $prototypes = $("#tavolozza").find("[data-atom]");
+	var $prototypes = $("#tavolozza").find("[data-atom][id]");
 	//filter for required
 	if (requiredClass) {
 		$prototypes = $prototypes.filter("." + requiredClass);
