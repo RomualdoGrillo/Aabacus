@@ -1,10 +1,10 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply data-vis="medium" type="bool">
+	<apply data-and="horizontal" type="bool">
 		<and>
 		</and>
 		<ci data-vis="collapsed" type="bool" data-tag="replace" data-tagimg="./images/properties/replace.png">internal</ci>
 		<ci data-vis="collapsed" type="bool" data-tag="compose" data-tagimg="./images/gear.svg">internal</ci>
-		<apply data-vis="collapsed" data-vis="medium" type="bool" data-tag="foundation" data-tagimg="./images/properties/distributive.png">
+		<apply data-vis="collapsed" data-and="horizontal" type="bool" data-tag="foundation" data-tagimg="./images/properties/distributive.png">
 			<and>
 			</and>
 			<apply data-vis="collapsed" type="bool" data-tag="timesAssociate">

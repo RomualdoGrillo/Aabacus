@@ -1,5 +1,5 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply data-vis="medium" data-type="bool">
+	<apply data-and="horizontal" data-type="bool">
 			<and>
 			</and>
 			<apply data-vis="collapsed" data-tag="built in" data-type="bool">
@@ -9,7 +9,7 @@
 				<ci data-tagimg="./images/properties/decompose.png" data-tag="decomposeInAProduct" data-type="bool">built in</ci>
 				<ci data-tagimg="./images/properties/decompose.png" data-tag="decomposeInASum" data-type="bool">true</ci>
 				<ci data-tag="evaluateComparison" data-type="bool">built in</ci>
-				<apply data-vis="medium" data-type="bool">
+				<apply data-and="horizontal" data-type="bool">
 					<and>
 					</and>
 					<ci data-tag="associativeDnD" data-tagimg="./images/properties/associate.png" data-type="bool">true</ci>
@@ -22,7 +22,7 @@
 					<ci data-tag="removeRedundantDnD" data-type="bool">true</ci>
 				</apply>
 			</apply>
-			<apply data-vis="collapsed" data-vis="medium" data-tag="foundation" data-tagimg="./images/properties/distributive.png" data-type="bool">
+			<apply data-vis="collapsed" data-and="horizontal" data-tag="foundation" data-tagimg="./images/properties/distributive.png" data-type="bool">
 				<and>
 				</and>
 				<apply data-vis="collapsed" data-tag="timesAssociate" data-type="bool">

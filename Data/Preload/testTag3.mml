@@ -1,5 +1,5 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply data-vis="medium" data-vis="collapsed" type="bool">
+	<apply data-and="horizontal" data-vis="collapsed" type="bool">
 		<and>
 		</and>
 		

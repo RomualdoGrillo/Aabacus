@@ -90,12 +90,14 @@ function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
 		
 		//get all data attributes
 		let originalImportData = $targetRoleOrAtom.data().import;
+		let originalImportAndVis = $targetRoleOrAtom.data().and;
 		if(originalImportData){
 			if($convertedTree.length>1){
 				// Needs "and" container if multiple items? 
 				$convertedTree=encaseWithOperation($convertedTree,'and')		
 			}
 			$convertedTree.attr('data-import',originalImportData);
+			$convertedTree.attr('data-and',originalImportAndVis);
 		}
 		let importStatus= $targetRoleOrAtom.attr('importStatus');
 		if(importStatus){

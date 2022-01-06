@@ -163,7 +163,7 @@ disadvantage: building new prototypes is less intuitive
 [data-atom=ci][data-tag][data-tagimg]::after{
 	font-size:0px;
 }
-[data-atom="and"][data-vis=medium]>.ul_role{
+[data-atom="and"][data-and=horizontal]>.ul_role{
 	padding:2px!important;
 }
 
