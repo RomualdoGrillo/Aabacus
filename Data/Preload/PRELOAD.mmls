@@ -1,0 +1,24 @@
+<section data-section="palette">
+<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/tavolozza.prt">import tavolozza</ci>
+</section>
+
+<section data-section="events">
+<ci data-type="bool" data-import="./Data/Preload/gestToAction.mml">import events</ci>
+</section>
+
+<section data-section="canvas">
+
+<ci data-type="bool" data-import="./Data/FOUNDATION.mml">import FOUNDATION</ci>
+
+</section>
+
+<section data-section="result">
+</section>
+
+<section data-section="settings">
+	{
+   "settings_json":"./Data/Preload/default.set"
+    }
+</section>
+
+

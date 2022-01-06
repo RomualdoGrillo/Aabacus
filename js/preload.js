@@ -12,7 +12,7 @@ function preloadAll(myUrl) {
 		//Al momento quando scelgo un file da file explorer non viene passato l'url
 		//quindi tutti i path in file JSON sono a partire dal root dell'applicazione
 		success: function(response){
-			injectAll(response)
+			injectAllMMLS(response)
 		}
 	});
 }

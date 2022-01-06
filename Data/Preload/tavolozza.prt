@@ -78,9 +78,6 @@
 					<div class="ul_role" data-type="bool"></div>
 				</div>
 			
-			<div id="andPrototype" data-atom="and" data-type="bool" class="atom">
-				<div class="ul_role" data-type="bool"></div>
-			</div>
 			
 				<div id="notPrototype" data-atom="not" data-type="bool" class="atom">
 					<div class="s_role" data-type="bool"></div>

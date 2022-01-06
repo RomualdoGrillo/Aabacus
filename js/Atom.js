@@ -378,9 +378,7 @@ function MNODE_addRole(dataType, content) {
 
 function validTargetsFromOpened($MNODEdragged) {
 	var numOfPlaces;
-	var valids = $('#telaRole,  [class*="_role"]:visible').filter(function (
-		index
-	) {
+	var valids = $('#telaRole,  [class*="_role"]:visible').filter(function () {
 		//*****determine number of places********
 		numOfPlaces = getNumOfPlaces($(this));
 		//*****valid?***********

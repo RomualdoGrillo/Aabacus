@@ -166,8 +166,3 @@ disadvantage: building new prototypes is less intuitive
 [data-atom="and"][data-and=horizontal]>.ul_role{
 	padding:2px!important;
 }
-
-
-.selected::after {
-	/* background-color: #7b032aad; */
-}
