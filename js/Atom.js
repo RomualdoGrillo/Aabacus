@@ -711,7 +711,7 @@ function ValToAtoms(partial) {
 		$target = $clone[0].MNODE_getRoles('.base');
 		
 	}
-	$clone = MNODEclone(prototypeSearch("cn", "num"));
+	$clone = MNODEclone(prototypeSearch(partial.type, "num",undefined,partial.val));
 	$clone[0].MNODE_setName(partial.val);
 	$clone.attr("data-atom", partial.type); //uso un generico prototipo num e qui specifico se cn o ci
 	if ($target !== undefined) {

@@ -111,7 +111,6 @@ function revert(event){//revert a sortablejs onAdd event
 function forThisValid(mouseDownNode){
 	let dataType = mouseDownNode[0].getAttribute('data-type');
 	let $excludedForall = $identifierSpan($(mouseDownNode)).filter('[data-atom=forAll]');
-	console.log($excludedForall[0]);
 	let forAlls = $('[data-atom=forAll]:visible').not($excludedForall).toArray();//querySelectAll does not work with :visible?
 	let $parameters = $()
 	let i=0
@@ -660,9 +659,6 @@ function compose($toBeComp,firstVal,img){
 	//if( partial.canBeReplaced){ 
 	if( PActx.matchedTF == true){
 		///****Create Result********
-		
-		$composed= ValToAtoms(partial);
-
 		$composed = ValToAtoms(partial);
 		$composed.addClass('selected');//selezione in uscita
 		PActx.$operand = $toBeComp;
