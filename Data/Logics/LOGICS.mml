@@ -1,0 +1,302 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-vis="" data-tag="logics" data-type="bool">
+			<and>
+			</and>
+			<apply data-vis="collapsed" data-tag="ModusTollens" data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="bool">a</ci>
+				</bvar>
+				<bvar>
+					<ci data-type="bool">b</ci>
+				</bvar>
+				<apply data-type="bool">
+					<implies>
+					</implies>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<apply data-type="bool">
+							<implies>
+							</implies>
+							<ci data-type="bool">a</ci>
+							<ci data-type="bool">b</ci>
+						</apply>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">b</ci>
+						</apply>
+					</apply>
+					<apply data-type="bool">
+						<not>
+						</not>
+						<ci data-type="bool">a</ci>
+					</apply>
+				</apply>
+			</apply>
+			<apply data-vis="collapsed" data-tag="ModusPonens" data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="bool">a</ci>
+				</bvar>
+				<bvar>
+					<ci data-type="bool">b</ci>
+				</bvar>
+				<apply data-type="bool">
+					<implies>
+					</implies>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<apply data-type="bool">
+							<implies>
+							</implies>
+							<ci data-type="bool">a</ci>
+							<ci data-type="bool">b</ci>
+						</apply>
+						<ci data-type="bool">a</ci>
+					</apply>
+					<ci data-type="bool">b</ci>
+				</apply>
+			</apply>
+			<apply data-vis="collapsed" data-tag="Contronominal" data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="bool">a</ci>
+				</bvar>
+				<bvar>
+					<ci data-type="bool">b</ci>
+				</bvar>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<implies>
+						</implies>
+						<ci data-type="bool">a</ci>
+						<ci data-type="bool">b</ci>
+					</apply>
+					<apply data-type="bool">
+						<implies>
+						</implies>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">b</ci>
+						</apply>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">b</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+			<apply data-vis="collapsed" data-tag="OrDefinition" data-type="bool">
+				<and>
+				</and>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<or>
+						</or>
+						<ci data-type="bool">true</ci>
+						<ci data-type="bool">true</ci>
+					</apply>
+					<ci data-type="bool">true</ci>
+				</apply>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<or>
+						</or>
+						<ci data-type="bool">true</ci>
+						<ci data-type="bool">false</ci>
+					</apply>
+					<ci data-type="bool">true</ci>
+				</apply>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<or>
+						</or>
+						<ci data-type="bool">false</ci>
+						<ci data-type="bool">true</ci>
+					</apply>
+					<ci data-type="bool">true</ci>
+				</apply>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<or>
+						</or>
+						<ci data-type="bool">false</ci>
+						<ci data-type="bool">false</ci>
+					</apply>
+					<ci data-type="bool">false</ci>
+				</apply>
+			</apply>
+			<apply data-vis="collapsed" data-tag="AndDefinition" data-type="bool">
+				<and>
+				</and>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<ci data-type="bool">true</ci>
+						<ci data-type="bool">true</ci>
+					</apply>
+					<ci data-type="bool">true</ci>
+				</apply>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<ci data-type="bool">true</ci>
+						<ci data-type="bool">false</ci>
+					</apply>
+					<ci data-type="bool">false</ci>
+				</apply>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<ci data-type="bool">false</ci>
+						<ci data-type="bool">true</ci>
+					</apply>
+					<ci data-type="bool">false</ci>
+				</apply>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<ci data-type="bool">false</ci>
+						<ci data-type="bool">false</ci>
+					</apply>
+					<ci data-type="bool">false</ci>
+				</apply>
+			</apply>
+			<apply data-vis="collapsed" data-tag="ImplyDefinition" data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="bool">x</ci>
+				</bvar>
+				<bvar>
+					<ci data-type="bool">y</ci>
+				</bvar>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<implies>
+						</implies>
+						<ci data-type="bool">x</ci>
+						<ci data-type="bool">y</ci>
+					</apply>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<ci data-type="bool">x</ci>
+						<apply data-type="bool">
+							<and>
+							</and>
+							<ci data-type="bool">x</ci>
+							<ci data-type="bool">y</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+			<apply data-vis="collapsed" data-tag="NotDefinition" data-type="bool">
+				<and>
+				</and>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<not>
+						</not>
+						<ci data-type="bool">true</ci>
+					</apply>
+					<ci data-type="bool">false</ci>
+				</apply>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<not>
+						</not>
+						<ci data-type="bool">false</ci>
+					</apply>
+					<ci data-type="bool">true</ci>
+				</apply>
+			</apply>
+			<apply data-vis="collapsed" data-tag="NotDefinition2" data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="bool">a</ci>
+				</bvar>
+				<apply data-type="bool">
+					<or>
+					</or>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<ci data-type="bool">a</ci>
+							<ci data-type="bool">true</ci>
+						</apply>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<apply data-type="bool">
+								<not>
+								</not>
+								<ci data-type="bool">a</ci>
+							</apply>
+							<ci data-type="bool">false</ci>
+						</apply>
+					</apply>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<ci data-type="bool">a</ci>
+							<ci data-type="bool">false</ci>
+						</apply>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<apply data-type="bool">
+								<not>
+								</not>
+								<ci data-type="bool">a</ci>
+							</apply>
+							<ci data-type="bool">true</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+</math>
