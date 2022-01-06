@@ -80,11 +80,12 @@ function injectAll(response,rootUrl){
 }
 
 function injectAllMMLS(response,rootUrl){
-	//console.log(response);
 	let $MML = $(response)
 	$sections=$MML.filter('section')
 	$('#telaRole').children().remove();
+	//**** palette
 	let $paletteContent = $sections.filter('[data-section=palette]').children();
+	$('#tavolozza').children(':not(.fundamental)').remove();
 	if($paletteContent.length!=0){
 		inject($paletteContent, $("#tavolozza"));
 		if (!debugMode){importAll($("#tavolozza"))};
