@@ -93,6 +93,12 @@ function injectAllMMLS(response,rootUrl){
 		//all prototypes must be ready before rendering other sections
 
 	}
+	let $eventsContent = $sections.filter('[data-section=events]').children();
+	$('#events').children().remove();
+	if($eventsContent.length!=0){
+		//$('#events').children('').remove();
+		inject($eventsContent, $('#events'));
+	}
 	let $canvasContent =  $sections.filter('[data-section=canvas]').children();
 	if($canvasContent.length!=0){
 		//$('#tela').addClass('unlocked');
@@ -103,11 +109,6 @@ function injectAllMMLS(response,rootUrl){
 	if($resultContent.length!=0){
 		$('#result').children().remove();
 		inject($resultContent, $('#result'));
-	}
-	let $eventsContent = $sections.filter('[data-section=events]').children();
-	if($eventsContent.length!=0){
-		//$('#events').children('').remove();
-		inject($eventsContent, $('#events'));
 	}
 	//************import all**********
 	if (!debugMode){importAll()}

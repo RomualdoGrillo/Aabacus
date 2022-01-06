@@ -1,0 +1,23 @@
+<section data-section="palette">
+<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/binaryOp.prt">import tavolozza</ci>
+</section>
+
+<section data-section="events">
+<ci data-type="bool" data-import="./Data/exercises/dbo/gestToAction.mml">import events</ci>
+</section>
+
+<section data-section="canvas">
+
+<ci data-type="bool" data-import="./Data/exercises/dbo/dbo.mml">import</ci>
+
+</section>
+
+<section data-section="result">
+<ci data-type="bool" data-import="./Data/exercises/dbo/dbo_res.mml">import</ci>
+</section>
+
+<section data-section="settings">
+	{
+   "settings_json":"./Data/exercises/dbo/dbo.set"
+    }
+</section>
