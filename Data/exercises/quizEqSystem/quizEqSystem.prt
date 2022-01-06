@@ -186,15 +186,15 @@
 			
 			
 			</div>
-			<div data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/thing.png);
+			<div id="tPrototype" data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/thing.png);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">t</div>
 			</div>
-			<div data-atom="ci" data-type="num" class="atom" style="min-width: 30px; background-image: url(./images/shoes.png);
+			<div id="sPrototype" data-atom="ci" data-type="num" class="atom" style="min-width: 30px; background-image: url(./images/shoes.png);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">s</div>
 			</div>
-			<div data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/boy.png);
+			<div id="boyPrototype" data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/boy.png);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">boy</div>
 			</div>
