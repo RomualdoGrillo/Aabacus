@@ -87,7 +87,7 @@ function injectAllMMLS(response,rootUrl){
 	let $paletteContent = $sections.filter('[data-section=palette]').children();
 	if($paletteContent.length!=0){
 		inject($paletteContent, $("#tavolozza"));
-		importAll($("#tavolozza"));
+		if (!debugMode){importAll($("#tavolozza"))};
 		//setTimeout(importAll($("#tavolozza")), 3000);
 		//all prototypes must be ready before rendering other sections
 
@@ -109,7 +109,7 @@ function injectAllMMLS(response,rootUrl){
 		inject($eventsContent, $('#events'));
 	}
 	//************import all**********
-	importAll()
+	if (!debugMode){importAll()}
 	//setTimeout(importAll(), 5000);
 
 	let $settingsSection = $sections.filter('[data-section=settings]')
