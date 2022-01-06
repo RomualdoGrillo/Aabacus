@@ -30,7 +30,7 @@ div.ide{
 }
 #leftColumn:not(:hover):not(.fixed){
 	margin-top: 150px;
-	left:-400px;
+	left: -100px;
 }
 
 #leftColumn,#rightColumn{
