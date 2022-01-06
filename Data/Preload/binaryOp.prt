@@ -10,6 +10,12 @@
 	+
 	<div class="ol_role" data-type="num" data-accept="1"></div>
 </div>
+
+<div id="timesPrototype" data-atom="times" data-type="num" class="atom ">
+	<div class="ol_role" data-type="num" data-accept="1"></div>
+	*
+	<div class="ol_role" data-type="num" data-accept="1"></div>
+</div>
 			
 <div id="timesPrototype" data-atom="times" data-type="num" class="atom">
 	<div class="ol_role" data-type="num" data-accept="1"></div>

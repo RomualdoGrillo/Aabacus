@@ -1,0 +1,182 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-vis="" data-tag="PlusAssociativeBinary" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">x</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">y</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">k</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<apply title="s--" data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">x</ci>
+						<ci data-type="num">y</ci>
+					</apply>
+					<ci data-type="num">k</ci>
+				</apply>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<ci data-type="num">x</ci>
+					<apply title="s--" data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">y</ci>
+						<ci data-type="num">k</ci>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-vis="" data-tag="PlusCommutativeBinary" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">x</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">y</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">k</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<ci data-type="num">x</ci>
+					<ci data-type="num">y</ci>
+				</apply>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<ci data-type="num">y</ci>
+					<ci data-type="num">x</ci>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-vis="" data-tag="TimesAssociativeBinary" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">x</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">y</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">k</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<times>
+					</times>
+					<apply title="s--" data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">x</ci>
+						<ci data-type="num">y</ci>
+					</apply>
+					<ci data-type="num">k</ci>
+				</apply>
+				<apply data-type="num">
+					<times>
+					</times>
+					<ci data-type="num">x</ci>
+					<apply title="s--" data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">y</ci>
+						<ci data-type="num">k</ci>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-vis="" data-tag="TimesCommutativeBinary" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">x</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">y</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">k</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<times>
+					</times>
+					<ci data-type="num">x</ci>
+					<ci data-type="num">y</ci>
+				</apply>
+				<apply data-type="num">
+					<times>
+					</times>
+					<ci data-type="num">x</ci>
+					<ci data-type="num">y</ci>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-vis="" data-tag="propDistBinary" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">x</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">y</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">z</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<times>
+					</times>
+					<ci data-type="num">x</ci>
+					<apply data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">y</ci>
+						<ci data-type="num">z</ci>
+					</apply>
+				</apply>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<apply data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">x</ci>
+						<ci data-type="num">y</ci>
+					</apply>
+					<apply data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">x</ci>
+						<ci data-type="num">z</ci>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+</math>

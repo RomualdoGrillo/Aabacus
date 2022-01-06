@@ -1,7 +1,0 @@
-{
-   "content_mml":"./Data/exercises/dbo/dbo.mml",
-   "result_mml":"./Data/exercises/dbo/dbo_res.mml",
-   "tavolozza_html":"./Data/Preload/binaryOp.prt",
-   "gestToAction_mml":"./Data/exercises/dbo/gestToAction.mml",
-   "settings_json":"./Data/exercises/dbo/dbo.set"
-}
