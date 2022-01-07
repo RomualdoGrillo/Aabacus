@@ -256,7 +256,7 @@ function MNODEdistribute($dragged,target,dropped){
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
 	let opD = opIsDistDop(op);
-	var $prototype = prototypeSearch(op)// for example search for "#timesPrototype"
+	var $prototype = prototypeSearch(op)// for example search for times proto
 	$(target)[0].MNODE_getChildren().each(function(i,e){
 		e.classList.add("refine_c");
 		var $clone = MNODEclone($prototype)//create times
@@ -415,7 +415,7 @@ function MNODEpartCollect($dragged,$target){
 
 	if(opt==opd && opIsDistDop(opt)){//both have same distributable op
 		var opPlus = opIsDistDop(opt)//opPlus may be plus,or, other operation over wich you distribute 
-		var $prototype = prototypeSearch(opPlus)// for example search for "#timesPrototype"
+		var $prototype = prototypeSearch(opPlus)
 		var $opPlus
 		var $termT
 		var $termD

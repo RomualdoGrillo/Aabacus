@@ -1,5 +1,5 @@
 
-<div id="forallPrototype" data-atom="forAll" class="atom" data-type="bool">
+<div data-proto="forall" data-atom="forAll" class="atom" data-type="bool">
 				<div class="row">
 					<div class="forallSymbol">∀</div>
 					<div class="bVar_role forAllHeader" data-type="obj"></div>
@@ -9,27 +9,27 @@
 
 
 
-<div data-atom="implies" id="impliesPrototype" data-type="bool" class="atom">
+<div data-atom="implies" data-proto="implies" data-type="bool" class="atom">
 	<div class="s_role firstMember" data-type="bool" data-accept="1"></div>
 	<div class="decoration imply"></div>
 	<div class="s_role secondMember" data-type="bool" data-accept="1"></div>
 </div>
 
-<div id="divisiblePrototype" data-atom="divisible" class="atom" data-type="bool">
+<div data-proto="divisible" data-atom="divisible" class="atom" data-type="bool">
 				
 					<div class="s_role number" data-type="num"></div>
 					divisible by
 					<div class="s_role divisor" data-type="num"></div>
 </div>
 
-<div id="numPrototype" data-atom="ci" data-type="num" class="atom ">
+<div data-proto="num" data-atom="ci" data-type="num" class="atom ">
 				<div class="name">x</div>
 </div>
 
-<div id="numPrototype" data-atom="cn" data-type="num" class="atom ">
+<div data-proto="num" data-atom="cn" data-type="num" class="atom ">
 				<div class="name">3</div>
 </div>
 
-<div id="numPrototype" data-atom="cn" data-type="num" class="atom ">
+<div data-proto="num" data-atom="cn" data-type="num" class="atom ">
 				<div class="name">6</div>
 </div>

@@ -385,8 +385,8 @@ function validTargetsFromOpened($MNODEdragged) {
 		var result =
 			//if $dragged is not a new definition, target must be opened or boolPtototype todo: check the dragged prototype really has value true
 			(!MNODEclosedDef(this) ||
-				$MNODEdragged.is("#asymmeqPrototype") ||
-				$MNODEdragged.is("#boolPrototype")) &&
+				$MNODEdragged.is("[data-proto=asymmeq]") ||
+				$MNODEdragged.is("[data-proto=bool]")) &&
 			//datatype is compatible
 			typeOk($MNODEdragged, $(this)) &&
 			//is there place for another?
@@ -438,6 +438,7 @@ function MNODEclone($node, Extend, removeID) {//default: Extend and RemoveID
 	}
 	if (removeID !== false) {
 		$toBeCleaned.removeAttr("id");
+		$toBeCleaned.removeAttr("data-proto");
 		$toBeCleaned.removeAttr("data-tag");
 		$toBeCleaned.removeAttr("data-import");
 		$toBeCleaned.removeAttr("importStatus");
@@ -452,7 +453,7 @@ var symbols = ["ci", "cn", "csymbol"];
 function prototypeSearch(className, dataType, requiredClass, name) {
 	//alcune classi, ad esempio "ci", possono avere vari datatype
 	//get all prototypes  (futuribile: preindex prototypes)
-	var $prototypes = $("#tavolozza").find("[data-atom][id]");
+	var $prototypes = $("#tavolozza").find("[data-atom][data-proto]");
 	//filter for required
 	if (requiredClass) {
 		$prototypes = $prototypes.filter("." + requiredClass);
@@ -494,7 +495,7 @@ function prototypeSearch(className, dataType, requiredClass, name) {
 	//if not found adapt generic prototype
 	if ($prototypes.length === 0) {
 		//console.warn('MNODE prototype not found:className:' + className + ", dataType:" + dataType);//Warning!!
-		let $prototype = MNODEclone($("#Prototype"));
+		let $prototype = MNODEclone($("[data-proto='']"));
 		$prototype.attr("data-atom", className);
 		$prototype.attr("data-type", dataType);
 		//addTypeDecorations($prototype);

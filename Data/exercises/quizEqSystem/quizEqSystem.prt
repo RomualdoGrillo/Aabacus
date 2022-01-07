@@ -1,93 +1,93 @@
-<div data-atom="eq" id="eqPrototype" data-type="bool" class="atom">
+<div data-atom="eq" data-proto="eq" data-type="bool" class="atom">
 				<div class="s_role firstMember" data-type="obj" data-accept="1"></div>
 				<div class="decoration">=</div>
 				<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
 			</div>
 			
-			<div id="numPrototype" data-atom="ci" data-type="num" class="atom ">
+			<div data-proto="num" data-atom="ci" data-type="num" class="atom ">
 				<div class="name">x</div>
 			</div>
 			<div data-atom="cn" data-type="num" class="atom">
 				<div class="name">1</div>
 			</div>
 					
-			<div id="plusPrototype" data-atom="plus" data-type="num" class="atom ">
+			<div data-proto="plus" data-atom="plus" data-type="num" class="atom ">
 				<div class="ul_role" data-type="num"></div>
 			</div>
 			
-			<div id="timesPrototype" data-atom="times" data-type="num" class="atom">
+			<div data-proto="times" data-atom="times" data-type="num" class="atom">
 				<div class="ul_role" data-type="num"></div>
 			</div>
 			
 			
-				<div id="minusPrototype" data-atom="minus" data-type="num" class="atom">
+				<div data-proto="minus" data-atom="minus" data-type="num" class="atom">
 					<div class="s_role" data-type="num"></div>
 					<div class="minusDecoration"></div>
 				</div>
 			
-				<div id="m_inversePrototype" data-atom="m_inverse" data-type="num" class="atom">
+				<div data-proto="m_inverse" data-atom="m_inverse" data-type="num" class="atom">
 					<div class="numerator1">1</div>
 					<div class="s_role" data-type="num">
 						<div class="m_inverseDecoration"></div>
 					</div>
 				</div>
-				<div id="dividePrototype" data-atom="divide" class="atom column" data-type="num">
+				<div data-proto="divide" data-atom="divide" class="atom column" data-type="num">
 					<div class="s_role numeratore" data-type="num"></div>
 					<div class="decoration"></div>
 					<div class="s_role denominatore" data-type="num" data-accept="1"></div>
 				</div>
-				<div id="powerPrototype" data-atom="power" class="atom" data-type="num">
+				<div data-proto="power" data-atom="power" class="atom" data-type="num">
 					<div class="s_role base" data-type="num" data-accept="1">
 						<div class="power_decoration"></div>
 					</div>
 					<div class="s_role exponent" data-type="num"></div>
 				</div>
-				<div id="rootPrototype" data-atom="root" data-type="obj" class="atom">
+				<div data-proto="root" data-atom="root" data-type="obj" class="atom">
 				√<div class="s_role" data-type="num"></div>
 			</div>
 			<!-- root andrebbe inserito anche l'esponente, vedi specifiche mathml -->
-			<div id="absPrototype" data-atom="abs" data-type="num" class="atom">
+			<div data-proto="abs" data-atom="abs" data-type="num" class="atom">
 				|<div class="s_role" data-type="num"></div>
 				|
 			</div>
-			<div data-atom="gt" id="gtPrototype" data-type="bool" class="atom">
+			<div data-atom="gt" data-proto="gt" data-type="bool" class="atom">
 				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
 				<div class="decoration">></div>
 				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
 			</div>
-			<div data-atom="geq" id="geqPrototype" data-type="bool" class="atom">
+			<div data-atom="geq" data-proto="geq" data-type="bool" class="atom">
 				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
 				<div class="decoration">&#x2265;</div>
 				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
 			</div>
-			<div data-atom="lt" id="ltPrototype" data-type="bool" class="atom">
+			<div data-atom="lt" data-proto="lt" data-type="bool" class="atom">
 				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
 				<div class="decoration"><</div>
 				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
 			</div>
-			<div data-atom="leq" id="leqPrototype" data-type="bool" class="atom">
+			<div data-atom="leq" data-proto="leq" data-type="bool" class="atom">
 				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
 				<div class="decoration">&#x2264;</div>
 				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
 			</div>
-			<div data-atom="ci" id="boolPrototype" data-type="bool" class="atom">
+			<div data-atom="ci" data-proto="bool" data-type="bool" class="atom">
 				<div class="name">true</div>
 			</div>
 		
-				<div id="orPrototype" data-atom="or" data-type="bool" class="atom">
+				<div data-proto="or" data-atom="or" data-type="bool" class="atom">
 					<div class="ul_role" data-type="bool"></div>
 				</div>
 			
-			<div id="andPrototype" data-atom="and" data-type="bool" class="atom">
+			<div data-proto="and" data-atom="and" data-type="bool" class="atom">
 				<div class="ul_role" data-type="bool"></div>
 			</div>
 			
-				<div id="notPrototype" data-atom="not" data-type="bool" class="atom">
+				<div data-proto="not" data-atom="not" data-type="bool" class="atom">
 					<div class="s_role" data-type="bool"></div>
 					<div class="notDecoration"></div>
 				</div>
 			
-			<div id="forallPrototype" data-atom="forAll" class="atom" data-type="bool">
+			<div data-proto="forall" data-atom="forAll" class="atom" data-type="bool">
 				<div class="row">
 					<div class="forallSymbol">∀</div>
 					<div class="bVar_role forAllHeader" data-type="obj"></div>
@@ -95,7 +95,7 @@
 				<div class="s_role forAllContent" data-type="bool" data-accept="1"></div>
 			</div>
 			<!--
-			<div id="ifthenelsePrototype" data-atom="ifthenelse" class="atom" data-type="bool">
+			<div data-proto="ifthenelse" data-atom="ifthenelse" class="atom" data-type="bool">
 				<div class="column">
 					<div class="s_role if" data-type="bool"></div>
 					<div class="decoration imply"></div>
@@ -107,7 +107,7 @@
 				</div>
 			</div>
 			-->
-			<div id="ifthenelsePrototype" data-atom="conditional" class="atom" data-type="bool">
+			<div data-proto="ifthenelse" data-atom="conditional" class="atom" data-type="bool">
 				
 					<div class="row1">
 						<div class="s_role if" data-type="bool"></div>
@@ -123,7 +123,7 @@
 						<div class="s_role then" data-type="bool"></div>
 					</div>
 			</div>
-			<div id="conditionalPrototype" data-atom="conditional" class="atom" data-type="num">
+			<div data-proto="conditional" data-atom="conditional" class="atom" data-type="num">
 				
 					<div class="row1">
 						<div class="s_role if" data-type="bool"></div>
@@ -138,14 +138,14 @@
 					</div>
 			</div>
 			
-			<div id="divisiblePrototype" data-atom="divisible" class="atom" data-type="bool">
+			<div data-proto="divisible" data-atom="divisible" class="atom" data-type="bool">
 				
 					<div class="s_role number" data-type="num"></div>
 					divisible by
 					<div class="s_role divisor" data-type="num"></div>
 			</div>
 			
-			<div id="existsPrototype" data-atom="exists" class="atom" data-type="bool">
+			<div data-proto="exists" data-atom="exists" class="atom" data-type="bool">
 				<div class="row">
 					<div class="existsSymbol">∃</div>
 					<div class="bVar_role existsHeader" data-type="obj"></div>
@@ -154,19 +154,19 @@
 				<div class="s_role existsContent" data-type="bool" data-accept="1"></div>
 			</div>
 			
-			<div id="suchThatPrototype" data-atom="suchThat" data-type="obj" class="atom">
+			<div data-proto="suchThat" data-atom="suchThat" data-type="obj" class="atom">
 				<div class="s_role" data-type="obj"></div>
 				:
 			
 			</div>
 		
-			<div data-atom="implies" id="impliesPrototype" data-type="bool" class="atom">
+			<div data-atom="implies" data-proto="implies" data-type="bool" class="atom">
 				<div class="leftBar"></div>
 				<div class="s_role firstMember" data-type="bool" data-accept="1"></div>
 				<div class="decoration imply"></div>
 				<div class="s_role secondMember" data-type="bool" data-accept="1"></div>
 			</div>
-			<div id="setPrototype" data-atom="set" data-type="set" class="atom">
+			<div data-proto="set" data-atom="set" data-type="set" class="atom">
 				{
 				
 				<div class="ul_role" data-type="obj">
@@ -176,7 +176,7 @@
 			
 			
 			</div>
-			<div id="listPrototype" data-atom="list" data-type="list" class="atom">
+			<div data-proto="list" data-atom="list" data-type="list" class="atom">
 				(
 				
 				<div class="ol_role" data-type="obj">
@@ -186,26 +186,26 @@
 			
 			
 			</div>
-			<div id="tPrototype" data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/thing.png);
+			<div data-proto="t" data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/thing.png);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">t</div>
 			</div>
-			<div id="sPrototype" data-atom="ci" data-type="num" class="atom" style="min-width: 30px; background-image: url(./images/shoes.png);
+			<div data-proto="s" data-atom="ci" data-type="num" class="atom" style="min-width: 30px; background-image: url(./images/shoes.png);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">s</div>
 			</div>
-			<div id="boyPrototype" data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/boy.png);
+			<div data-proto="boy" data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/boy.png);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">boy</div>
 			</div>
-			<div id="plusPrototype" data-atom="plus" data-type="num" class="atom ">
+			<div data-proto="plus" data-atom="plus" data-type="num" class="atom ">
 				<div class="ul_role" data-type="num"></div>
 			</div>
 			
-			<div id="timesPrototype" data-atom="times" data-type="num" class="atom">
+			<div data-proto="times" data-atom="times" data-type="num" class="atom">
 				<div class="ul_role" data-type="num"></div>
 			</div>
 			
-			<div id="andPrototype" data-atom="and" data-type="bool" class="atom">
+			<div data-proto="and" data-atom="and" data-type="bool" class="atom">
 				<div class="ul_role" data-type="bool"></div>
 			</div>

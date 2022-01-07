@@ -44,7 +44,7 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 
 		//signsAsClassesSubtree($thisClone,"SignsAsClasses_to_MinusOp")// converti in modo che il segno meno sia una operazione applicata al nodo
 		//sostituisci tutti i nodi MNODE excluding prototypes
-		$thisClone.parent().find('[data-atom]').not('[id]').each(function(i, node) {
+		$thisClone.parent().find('[data-atom]').not('[data-proto]').each(function(i, node) {
 			if (i == 0) {
 				ReplaceOneMNODE(node, from_to, neglectRootSign);
 			} else {

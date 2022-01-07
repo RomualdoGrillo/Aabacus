@@ -1,28 +1,28 @@
-<div data-atom="eq" id="eqPrototype" data-type="bool" class="atom">
+<div data-atom="eq" data-proto="eq" data-type="bool" class="atom">
 	<div class="s_role firstMember" data-type="obj" data-accept="1"></div>
 	<div class="decoration">=</div>
 	<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
 </div>
 
 
-<div id="plusPrototype" data-atom="plus" data-type="num" class="atom ">
+<div data-proto="plus" data-atom="plus" data-type="num" class="atom ">
 	<div class="ol_role" data-type="num" data-accept="1"></div>
 	+
 	<div class="ol_role" data-type="num" data-accept="1"></div>
 </div>
 
-<div id="timesPrototype" data-atom="times" data-type="num" class="atom ">
+<div data-proto="times" data-atom="times" data-type="num" class="atom ">
 	<div class="ol_role" data-type="num" data-accept="1"></div>
 	*
 	<div class="ol_role" data-type="num" data-accept="1"></div>
 </div>
 			
-<div id="timesPrototype" data-atom="times" data-type="num" class="atom">
+<div data-proto="times" data-atom="times" data-type="num" class="atom">
 	<div class="ol_role" data-type="num" data-accept="1"></div>
 	<div class="ol_role" data-type="num" data-accept="1"></div>
 </div>
 
-<div id="forallPrototype" data-atom="forAll" class="atom" data-type="bool">
+<div data-proto="forall" data-atom="forAll" class="atom" data-type="bool">
 	<div class="row">
 	<div class="forallSymbol">∀</div>
 	<div class="bVar_role forAllHeader" data-type="obj"></div>
