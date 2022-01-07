@@ -55,12 +55,12 @@ function MakeSortableAndInjectMouseDown(event) {
 			//no forall property
 		}
 	}
-	else if (GLBDnD.toolWhenMousedown == 'copy' || !MNODEclosedDef($(event.target)) || $atomTarget.is('#tavolozza *')) {
+	else if (GLBDnD.toolWhenMousedown == 'copy' || !MNODEclosedDef($(event.target)) || $atomTarget.is('#palette *')) {
 		//*********from opened****************
 		
 		//make targets sortable
 		let $validTgTOpen = validTargetsFromOpened($atomTarget);//i $validTgTOpen non vengono evidenziati con exclusive focus
-		if ($atomTarget.is('#tavolozza *')) {
+		if ($atomTarget.is('#palette *')) {
 			//add canvas as target
 			$validTgTOpen = $validTgTOpen.add('#canvasRole');//will be encased!!//
 		}
@@ -109,7 +109,7 @@ function startHandlerMouseDown(event) {
 		//clear selected unselected
 		selectionManager("", "", "", true);
 	}
-	if (event.originalEvent.metaKey || event.originalEvent.ctrlKey||GLBDnD.toolWhenMousedown == 'copy' || event.from.matches('#tavolozza,#tavolozza *')) {
+	if (event.originalEvent.metaKey || event.originalEvent.ctrlKey||GLBDnD.toolWhenMousedown == 'copy' || event.from.matches('#palette,#palette *')) {
 		//clone!
 		event.item.classList.add('toBeCloned');
 		//event.item.classList.remove('showAsPlaceholder');

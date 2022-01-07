@@ -1,5 +1,5 @@
 {
-   "tavolozza_html":"./Data/Geometry/geometry.prt",
+   "palette_html":"./Data/Geometry/geometry.prt",
    "content_mml":"./Data/Geometry/MidpointOFMidpoints.mml",
    "settings_json":"./Data/Preload/game.set"
 }

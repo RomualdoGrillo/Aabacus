@@ -17,7 +17,7 @@
 	  background-color: white;
 	  border: 1px solid #DAD9D9;
   }
-  #canvas div,#tavolozza div,#result div, #tavolozza{
+  #canvas div,#palette div,#result div, #palette{
 	  align-items:center;
   }
   #canvasAnd,#canvas > .secondMember{
@@ -86,7 +86,7 @@
 	  font-family: arial;
 	  justify-content:center;
   }
-  #tavolozza{
+  #palette{
 	  justify-content: normal;
   }
   

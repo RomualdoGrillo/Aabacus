@@ -12,7 +12,7 @@ div.ide{
 	border-radius: 15px;
 }
 
-#tavolozza, #settings {
+#palette, #settings {
 	overflow-y: hidden;
 	overflow-x: auto;
 }
@@ -51,32 +51,32 @@ div.ide{
 	overflow: auto;
 }
 
-#tavolozzaRow:not(:hover):not(.fixed){
+#paletteRow:not(:hover):not(.fixed){
 	height:10px;
 	z-index:1;
 	opacity:0;
 		margin-left: 50px;
 }
-#tavolozzaRow:not(:hover):not(.fixed) *{
+#paletteRow:not(:hover):not(.fixed) *{
 	display:none;
 }
 
-#tavolozzaRow{
+#paletteRow{
 	flex-direction:column;
 	transition: height 0.5s cubic-bezier(.3,.65,.44,1), padding 0.25s ease-in-out, background 0.65s ease, opacity 0.25s ease;
 	transition-delay: 0.15s;
 	z-index:2;
 }
 
-#tavolozza{
+#palette{
 	padding-left:10px;
 	}
 
 
-#tavolozza>*{
+#palette>*{
 	margin:2px;
 }
-#tavolozzaRow:not(.fixed){
+#paletteRow:not(.fixed){
 	left:10px;
 	right:10px;
 }
@@ -94,7 +94,7 @@ div.ide{
 	/*border-color:red;*/
 	border-width:0px;
 }
-#tavolozza,#events,#settings{
+#palette,#events,#settings{
 	background-color:white;
 }
 

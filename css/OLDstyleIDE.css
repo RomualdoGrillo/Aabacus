@@ -10,7 +10,7 @@ Body{
    -ms-user-select: none; /* Internet Explorer/Edge */
     }
 
-#tavolozza [data-atom] {
+#palette [data-atom] {
     margin: 2px;
 }
 #help-link{
@@ -24,7 +24,7 @@ button>.ui-icon {
  display:inline-block;
 }
 
-/*#tavolozza, #canvas{ border: 1px solid #C9C9C9; }*/
+/*#palette, #canvas{ border: 1px solid #C9C9C9; }*/
 
 #fileToLoad{visibility:hidden;}
 #create, #help {
@@ -37,7 +37,7 @@ border: 1px solid #000000;
     background-color: whitesmoke;
 }
 
-#tavolozza, #settings{
+#palette, #settings{
     background-color:#ffffff;
     overflow-x:hidden;
     overflow-y:scroll;
@@ -51,7 +51,7 @@ border: 1px solid #000000;
 #visSetup{
     flex-direction: column;
 }
-#tavolozza.hidden{
+#palette.hidden{
     display:none;
 }
 /*#canvasRole{height:820px;flex-grow: 1;}
@@ -112,7 +112,7 @@ border: 1px solid #000000;
     background-color: transparent;
 }
 
-#tavolozza{
+#palette{
   flex-direction:  column;
   right: 0;
   padding: 0px;
@@ -128,7 +128,7 @@ border: 1px solid #000000;
 }
 
 
-#tavolozza:hover {
+#palette:hover {
   position: fixed;
 
   padding: 0px;
@@ -138,6 +138,6 @@ border: 1px solid #000000;
   transition-delay: 0s;
 }
 
-#tavolozza:not(:hover) {
+#palette:not(:hover) {
   width: 2px;  
 }

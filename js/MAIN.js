@@ -380,10 +380,10 @@ function debugToggle() {
 	//toggle debugMode
 	if (debugMode) {
 		$('#canvasRole').addClass('debug');
-		$('#tavolozza').addClass('hidden');
+		$('#palette').addClass('hidden');
 	} else {
 		$('#canvasRole').removeClass('debug');
-		$('#tavolozza').removeClass('hidden');
+		$('#palette').removeClass('hidden');
 	}
 }
 

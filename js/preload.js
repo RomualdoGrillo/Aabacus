@@ -20,11 +20,11 @@ function injectAll(response,rootUrl){
 	//console.log(response);
 	let all = JSON.parse(response);
 	$('#canvasRole').children().remove();
-	if(all.tavolozza_html && all.tavolozza_html.string){//string data
-		//inject(all.tavolozza_html.string, $("#tavolozza"))
+	if(all.palette_html && all.palette_html.string){//string data
+		//inject(all.palette_html.string, $("#palette"))
 		}
-	else if(all.tavolozza_html){//url
-		loadAjaxAndInject(buildPath(rootUrl,all.tavolozza_html),$("#tavolozza"))
+	else if(all.palette_html){//url
+		loadAjaxAndInject(buildPath(rootUrl,all.palette_html),$("#palette"))
 	}
 	if(all.foundation_mml && all.foundation_mml.string){//string data
 		$('#canvas').addClass('unlocked');
@@ -85,11 +85,11 @@ function injectAllMMLS(response,rootUrl){
 	$('#canvasRole').children().remove();
 	//**** palette
 	let $paletteContent = $sections.filter('[data-section=palette]').children();
-	$('#tavolozza').children(':not(.fundamental)').remove();
+	$('#palette').children(':not(.fundamental)').remove();
 	if($paletteContent.length!=0){
-		inject($paletteContent, $("#tavolozza"));
-		if (!debugMode){importAll($("#tavolozza"))};
-		//setTimeout(importAll($("#tavolozza")), 3000);
+		inject($paletteContent, $("#palette"));
+		if (!debugMode){importAll($("#palette"))};
+		//setTimeout(importAll($("#palette")), 3000);
 		//all prototypes must be ready before rendering other sections
 
 	}

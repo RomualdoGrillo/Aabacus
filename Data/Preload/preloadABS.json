@@ -1,5 +1,5 @@
 {
-   "tavolozza_html":"./Data/Preload/tavolozza.prt",
+   "palette_html":"./Data/Preload/palette.prt",
    "foundation_mml":"./Data/FOUNDATION.mml",
    "content_mml":"./Data/ABS-simpler.mml",
    "gestToAction_mml":"./Data/Preload/gestToAction.mml",

@@ -51,9 +51,9 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 		}
 		else if(fileSuffix === "prt"){
 			if(confirm('replace existing list of prototypes?')){
-				$('#tavolozza').children(':not(.fundamental)').remove();
+				$('#palette').children(':not(.fundamental)').remove();
 			}
-			inject(textFromFileLoaded,$('#tavolozza'))
+			inject(textFromFileLoaded,$('#palette'))
 		}
 		else{
 			console.log('unknown file extension');
@@ -147,7 +147,7 @@ function importAll($startNode){
 
 function AlltoMMLSstring(){
 	//palette
-	let paletteString = MNODEcreateMathmlString($('#tavolozza').children(':not(.fundamental)'),true);
+	let paletteString = MNODEcreateMathmlString($('#palette').children(':not(.fundamental)'),true);
 	//canvas
 	let canvasString = MNODEcreateMathmlString($('#canvasAnd')[0].MNODE_getChildren(),true);
 	//events
