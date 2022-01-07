@@ -1,5 +1,5 @@
 function preloadAll(myUrl) {
-	//preloadAll('./Data/Preload/preload.json')
+	//preloadAll('./data/preload/preload.json')
 	$.ajax({
 		type: "GET",
 		url: myUrl,
@@ -135,7 +135,7 @@ function injectAllMMLS(response,rootUrl){
 }
 
 function loadAjaxAndInject(myUrl,target,toBeImported) {
-	//loadAjaxAndInject('./Data/Preload/preload.mml')
+	//loadAjaxAndInject('./data/preload/preload.mml')
 	let res
 	if(myUrl){
 	//altrimenti un url vuoto verrebbe interpretato come path relativo,
