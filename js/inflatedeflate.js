@@ -40,11 +40,11 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 		})
 		//rimuovi il contenuto importato da altri files
 		$thisClone.parent().find('[data-import]').each(function(i, node){node.MNODE_getChildren().remove()});
-		
+	
 
 		//signsAsClassesSubtree($thisClone,"SignsAsClasses_to_MinusOp")// converti in modo che il segno meno sia una operazione applicata al nodo
-		//sostituisci tutti i nodi MNODE
-		$thisClone.parent().find('[data-atom]').each(function(i, node) {
+		//sostituisci tutti i nodi MNODE excluding prototypes
+		$thisClone.parent().find('[data-atom]').not('[id]').each(function(i, node) {
 			if (i == 0) {
 				ReplaceOneMNODE(node, from_to, neglectRootSign);
 			} else {
