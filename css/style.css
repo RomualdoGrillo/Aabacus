@@ -17,10 +17,10 @@
 	  background-color: white;
 	  border: 1px solid #DAD9D9;
   }
-  #tela div,#tavolozza div,#result div, #tavolozza{
+  #canvas div,#tavolozza div,#result div, #tavolozza{
 	  align-items:center;
   }
-  #telaAnd,#tela > .secondMember{
+  #canvasAnd,#canvas > .secondMember{
 	  align-items:normal!important;
   }
   
@@ -76,7 +76,7 @@
   [data-atom],[class*="_role"]  {
   flex-shrink:0;
 	  }
-  #tela *{
+  #canvas *{
 	  flex-shrink:1;
   }
   [data-atom], [class*="_role"], #overlay, .rolescontainer {
@@ -164,7 +164,7 @@
   
   
   
-  body:not(.fitch) [data-atom="and"]:not(#telaAnd):not(#events *)>.ul_role {
+  body:not(.fitch) [data-atom="and"]:not(#canvasAnd):not(#events *)>.ul_role {
 	  border-style:solid;
 	  border-width: 0 0 0 20px;
 	  border-image:url(../images/GullBraceLeft.svg) 0 47 stretch;
@@ -317,7 +317,7 @@
 	padding: 0px;
   }
   
-  [data-atom="eq"]:not(#tela).asymmetric:not(.unlocked)>.secondMember>[data-atom]{
+  [data-atom="eq"]:not(#canvas).asymmetric:not(.unlocked)>.secondMember>[data-atom]{
 	  border-width:0px;
   }
   .unlocked [data-atom="eq"].asymmetric>.secondMember>[data-atom]{
@@ -371,7 +371,7 @@
 	  background-color: rgb(190, 195, 255);
   }
   
-  #telaRole {background-color: white;justify-content: flex-start;}/* #telaRole root always white*/
+  #canvasRole {background-color: white;justify-content: flex-start;}/* #canvasRole root always white*/
   
   .coloredBorders [class*="l_role"][data-type="bool"].empty ,.coloredBorders [class*="s_role"][data-type="bool"] {
 	  background-color: rgb(194, 243, 194);
@@ -408,7 +408,7 @@
 	  z-index:101;
   }
   
-  #telaRole .exclusiveFocus .forallSymbol{
+  #canvasRole .exclusiveFocus .forallSymbol{
 	  display: none
   }
   
@@ -452,7 +452,7 @@
 	  cursor: url(../images/collectUp.svg), auto;
   }*/
   /*
-  .hover:not(#telaRole),.hover:not(#telaRole)>*{
+  .hover:not(#canvasRole),.hover:not(#canvasRole)>*{
 	  background-color: yellow!important;
   }*/
   
@@ -479,7 +479,7 @@
   
   .infix{ z-index:2}
   
-  #telaRole :not(.empty)>.infix.proto{/*#telaRole  specifico il selector*/
+  #canvasRole :not(.empty)>.infix.proto{/*#canvasRole  specifico il selector*/
 	  display:none;
   }
   .s_role.exponent{margin:-8px;}
@@ -570,7 +570,7 @@
 	  flex-direction:column
   }
   
-  body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover){
+  body:not(.fixBorders) #canvasRole [data-atom][data-type=num]:not(:hover){
   border-color:transparent;
   }
   
@@ -611,40 +611,40 @@
   }
   
   
-  #telaRole.debug .input:not([data-atom]){ 
+  #canvasRole.debug .input:not([data-atom]){ 
 	  background-color: violet;
   }
   
-  #telaRole.debug .inputFocus:not([data-atom]){ 
+  #canvasRole.debug .inputFocus:not([data-atom]){ 
 	  background-color: red!important;
   }
   
-  #telaRole.debug .pattern:not([data-atom]){ 
+  #canvasRole.debug .pattern:not([data-atom]){ 
 	  background-color: yellow;
   }
   
-  #telaRole.debug .patternFocus:not([data-atom]){ 
+  #canvasRole.debug .patternFocus:not([data-atom]){ 
 	  background-color: yellowgreen;
   }
   
-  #telaRole.debug .matched:not([data-atom]){ 
+  #canvasRole.debug .matched:not([data-atom]){ 
 	  background-color: green;
   }
   
-  #telaRole.debug .operand:not([data-atom]){ 
+  #canvasRole.debug .operand:not([data-atom]){ 
 	  background-color: lightblue;
   }
   
   
   [data-atom="literal"] { background-color: lightgray ;}
   
-  #telaRole [data-atom="deftrue"][data-vis=collapsed]>*:not(.name){
+  #canvasRole [data-atom="deftrue"][data-vis=collapsed]>*:not(.name){
 	  display:none!important;
   }
-  #telaRole [data-atom="deftrue"][data-vis=collapsed]{
+  #canvasRole [data-atom="deftrue"][data-vis=collapsed]{
 	  border-bottom-right-radius: 0px!important;
   }
-  #telaRole [data-vis=collapsed], #telaRole [data-atom=ci][data-tag]{
+  #canvasRole [data-vis=collapsed], #canvasRole [data-atom=ci][data-tag]{
 	  align-self: stretch;
 	  min-height: 3px;
 	  background-image: url(../images/three-dots.svg);
@@ -654,7 +654,7 @@
   }
   
   
-  #telaRole [data-atom=or]>.ul_role>*{
+  #canvasRole [data-atom=or]>.ul_role>*{
 	  align-self:stretch;
   }
   .unlocked [data-atom=or]>.ul_role>*{
@@ -663,13 +663,13 @@
   
   
   
-  #telaRole [data-atom=or]>.ul_role>[data-vis=collapsed]{
+  #canvasRole [data-atom=or]>.ul_role>[data-vis=collapsed]{
 	  min-width:3px;
 	  background-image: url(../images/three-dots-vert.svg);
 	  background-position: center center;
   }
   
-  #tela *:not([data-atom=or])>*>[data-atom=or]{
+  #canvas *:not([data-atom=or])>*>[data-atom=or]{
 	  margin: 0px!important;
 	  border-color: transparent;
   }
@@ -678,11 +678,11 @@
 	  margin: -3px;
 	  border-color:var(--bool-color)!important;
   }
-  #telaRole [data-atom=or]>.ul_role>[data-atom]{
+  #canvasRole [data-atom=or]>.ul_role>[data-atom]{
 	  margin:-0.5px;
 	  border-radius:0px;
   }
-  #telaRole [data-atom=or]>.ul_role{
+  #canvasRole [data-atom=or]>.ul_role{
 	  background-color:var(--bool-bgcolor);
 	  border-radius:var(--div-smallradius);
   }
@@ -693,11 +693,11 @@
   }
   
   
-  #telaRole [data-atom=or]>.ul_role>[data-atom]:first-child{
+  #canvasRole [data-atom=or]>.ul_role>[data-atom]:first-child{
 	  border-bottom-left-radius: var(--div-smallradius);
 	  border-top-left-radius: var(--div-smallradius);
   }
-  #telaRole [data-atom=or]>.ul_role>[data-atom]:last-child{
+  #canvasRole [data-atom=or]>.ul_role>[data-atom]:last-child{
 	  border-bottom-right-radius: var(--div-smallradius);
 	  border-top-right-radius: var(--div-smallradius);
   }
@@ -780,15 +780,15 @@
 	  background-color:red;
   }
   
-  body:not(.fixBorders) #telaRole [data-atom][data-type=num]:not(:hover),
+  body:not(.fixBorders) #canvasRole [data-atom][data-type=num]:not(:hover),
   body:not(.fixBorders) #result [data-atom][data-type=num]:not(:hover)
   {border-color:transparent;}
   
-  #telaRole [data-atom][data-type=bool]{
+  #canvasRole [data-atom][data-type=bool]{
 	  border-radius:var(--div-smallradius);
   }
   
-  #telaRole [data-atom=not]{
+  #canvasRole [data-atom=not]{
 	  border-top-right-radius:1px!important;
   }
   

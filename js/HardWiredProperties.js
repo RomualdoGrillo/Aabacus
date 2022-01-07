@@ -874,7 +874,7 @@ function validRedundant($mouseDownAtom){
 function validCandidatesForPatternDrop($mouseDownAtom){
 	//exclude the current forall property
 	var $excludedMNODES= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
-	var valids = $('#telaRole [data-atom]:visible').not($excludedMNODES).filter(function( index ) {
+	var valids = $('#canvasRole [data-atom]:visible').not($excludedMNODES).filter(function( index ) {
 		//*****valid?***********
 		var result =(
 			//datatype is compatible

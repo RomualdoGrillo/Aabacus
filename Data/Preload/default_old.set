@@ -2,7 +2,7 @@
 	"debug":false,
 	"gameMode":false,
 	"gameModeSurpriseRes":false,
-	"lockTela":false,
+	"lockCanvas":false,
 	"resultHidden":true,
 	"visSettingSelected":1,
 	"visSettings":[

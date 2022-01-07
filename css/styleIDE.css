@@ -56,25 +56,25 @@ button>.ui-icon {
 	flex-direction: column;
 }
 
-#telaRole {
+#canvasRole {
 	flex-grow: 1;
 	overflow-y: auto;
 	margin: 0px;
 	padding: 15px;
 }
 
-#telaRole.debug {
+#canvasRole.debug {
 	background-color: rgb(255, 234, 251);
 	border-color: pink;
 	border-width: 3px;
 }
 
-#tela, #tela>.secondMember, #telaAnd {
+#canvas, #canvas>.secondMember, #canvasAnd {
 	flex-grow: 1;
 	/*eccezione: deve occupare tutto il container, non adattarsi al contenuto*/
 }
 
-#telaAnd {
+#canvasAnd {
 	border: none;
 }
 

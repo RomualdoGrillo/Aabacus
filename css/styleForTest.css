@@ -98,7 +98,7 @@ body.eforall [data-atom=forAll]>.row>.forallSymbol{
     opacity: 0;
   }
 }
-/*#telaRole *:not(.selected) {
+/*#canvasRole *:not(.selected) {
  	    -webkit-filter: grayscale(25%);
        -moz-filter: grayscale(25%);
          -o-filter: grayscale(25%);

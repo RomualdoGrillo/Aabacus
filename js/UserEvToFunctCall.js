@@ -31,7 +31,7 @@ function keyboardEvToFC($atom, keyPressed){
 }
 
 function DnDpropertiesInCanvas(propertiesDnD){
-	let propInCanvas = $('#telaRole [data-atom=ci][data-tag]').toArray()
+	let propInCanvas = $('#canvasRole [data-atom=ci][data-tag]').toArray()
 	let namelist = propInCanvas.map(function(e){return e.getAttribute('data-tag')})
 	
 	let propertiesKnokedOut = propertiesDnD.map(function(e){
@@ -53,7 +53,7 @@ function DnDpropertiesInCanvas(propertiesDnD){
 
 
 function directCall(key){
-	return $('#telaRole [data-rtl='+ key + ']')
+	return $('#canvasRole [data-rtl='+ key + ']')
 }
 
 function searchEventHandler(event){// trova la definizione della proprietà
@@ -88,7 +88,7 @@ function searchEventHandler(event){// trova la definizione della proprietà
 function searchForProperty(field,value,returnedField){
 	// trova la definizione della proprietà
 	if( value == undefined){ return undefined}
-	let candidates = Array.from( tela.querySelectorAll('[data-atom=deftrue]') );
+	let candidates = Array.from( canvas.querySelectorAll('[data-atom=deftrue]') );
 	let i=0;
 	while(candidates[i]){
 		let $role = candidates[i].MNODE_getRoles().filter('.' + field)

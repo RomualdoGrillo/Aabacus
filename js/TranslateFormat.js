@@ -89,7 +89,7 @@ function refreshGlued($startNode) {
 	//marca con classe glued gli atomi contenuti in un "minus" ecc..
 	//get starting point
 	if ($startNode == undefined) {
-		$containerNode = $("#telaRole");
+		$containerNode = $("#canvasRole");
 	} else {
 		$containerNode = MNODEparent($startNode);
 	}
@@ -117,7 +117,7 @@ function refreshGlued($startNode) {
 
 	});
 
-	var $stickyParents = $containerNode.find("[data-atom=eq].asymmetric:not(#tela)");
+	var $stickyParents = $containerNode.find("[data-atom=eq].asymmetric:not(#canvas)");
 	$stickyParents.each(function(i, val) {
 		var $toBeGlued = this.MNODE_getRoles().children().filter('[data-atom]');
 		//get the MNODE contained to be Glued

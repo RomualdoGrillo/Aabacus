@@ -19,7 +19,7 @@ function preloadAll(myUrl) {
 function injectAll(response,rootUrl){
 	//console.log(response);
 	let all = JSON.parse(response);
-	$('#telaRole').children().remove();
+	$('#canvasRole').children().remove();
 	if(all.tavolozza_html && all.tavolozza_html.string){//string data
 		//inject(all.tavolozza_html.string, $("#tavolozza"))
 		}
@@ -27,24 +27,24 @@ function injectAll(response,rootUrl){
 		loadAjaxAndInject(buildPath(rootUrl,all.tavolozza_html),$("#tavolozza"))
 	}
 	if(all.foundation_mml && all.foundation_mml.string){//string data
-		$('#tela').addClass('unlocked');
-		refreshAsymmEq($('#tela'));
-		inject(all.content_mml.string, $("#telaRole"),true);
+		$('#canvas').addClass('unlocked');
+		refreshAsymmEq($('#canvas'));
+		inject(all.content_mml.string, $("#canvasRole"),true);
 		}
 	else if(all.foundation_mml){//url
-		$('#tela').addClass('unlocked');
-		refreshAsymmEq($('#tela'));
-		loadAjaxAndInject(buildPath(rootUrl,all.foundation_mml),$("#telaRole"));
+		$('#canvas').addClass('unlocked');
+		refreshAsymmEq($('#canvas'));
+		loadAjaxAndInject(buildPath(rootUrl,all.foundation_mml),$("#canvasRole"));
 	}
 	if(all.content_mml && all.content_mml.string){//string data
-		$('#tela').addClass('unlocked');
-		refreshAsymmEq($('#tela'));
-		inject(all.content_mml.string, $("#telaRole"),true);
+		$('#canvas').addClass('unlocked');
+		refreshAsymmEq($('#canvas'));
+		inject(all.content_mml.string, $("#canvasRole"),true);
 		}
 	else if(all.content_mml){//url
-		$('#tela').addClass('unlocked');
-		refreshAsymmEq($('#tela'));
-		loadAjaxAndInject(buildPath(rootUrl,all.content_mml),$("#telaRole"));
+		$('#canvas').addClass('unlocked');
+		refreshAsymmEq($('#canvas'));
+		loadAjaxAndInject(buildPath(rootUrl,all.content_mml),$("#canvasRole"));
 	}
 	if(all.result_mml && all.result_mml.string){//string data
 		$('#result').children().remove();
@@ -66,14 +66,14 @@ function injectAll(response,rootUrl){
 	if(all.settings_json && all.settings_json.string){//string data
 			GLBsettings = JSON.parse(all.settings_json.string);
 			GLBsettingsToInterface();
-			RefreshEmptyInfixBraketsGlued($("#telaRole"))
+			RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 		}
 	else if(all.settings_json){//url
 		$.getJSON(buildPath(rootUrl,all.settings_json), function(parsedJSON){
 			//console.log(parsedJSON);
 			GLBsettings = parsedJSON
 			GLBsettingsToInterface();
-			RefreshEmptyInfixBraketsGlued($("#telaRole"))
+			RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 		});
 	}
 	
@@ -82,7 +82,7 @@ function injectAll(response,rootUrl){
 function injectAllMMLS(response,rootUrl){
 	let $MML = $(response)
 	$sections=$MML.filter('section')
-	$('#telaRole').children().remove();
+	$('#canvasRole').children().remove();
 	//**** palette
 	let $paletteContent = $sections.filter('[data-section=palette]').children();
 	$('#tavolozza').children(':not(.fundamental)').remove();
@@ -101,9 +101,9 @@ function injectAllMMLS(response,rootUrl){
 	}
 	let $canvasContent =  $sections.filter('[data-section=canvas]').children();
 	if($canvasContent.length!=0){
-		//$('#tela').addClass('unlocked');
-		refreshAsymmEq($('#tela'));
-		inject($canvasContent,$('#telaRole'),true);
+		//$('#canvas').addClass('unlocked');
+		refreshAsymmEq($('#canvas'));
+		inject($canvasContent,$('#canvasRole'),true);
 	}
 	let $resultContent = $sections.filter('[data-section=result]').children();
 	if($resultContent.length!=0){
@@ -121,14 +121,14 @@ function injectAllMMLS(response,rootUrl){
 		if (all.settings_json && all.settings_json.string) {//string data
 			GLBsettings = JSON.parse(all.settings_json.string);
 			GLBsettingsToInterface();
-			RefreshEmptyInfixBraketsGlued($("#telaRole"))
+			RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 		}
 		else if (all.settings_json) {//url
 			$.getJSON(buildPath(rootUrl, all.settings_json), function (parsedJSON) {
 				//console.log(parsedJSON);
 				GLBsettings = parsedJSON
 				GLBsettingsToInterface();
-				RefreshEmptyInfixBraketsGlued($("#telaRole"))
+				RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 			});
 		}
 	}
@@ -151,7 +151,7 @@ function loadAjaxAndInject(myUrl,target,toBeImported) {
 			},
 			success: function(response){
 			//alert("lettura file " + myUrl + " tramite Ajax OK - risposta : " + response);
-			if(!target){target=$("#telaRole")}
+			if(!target){target=$("#canvasRole")}
 			inject(response, target, undefined ,toBeImported)
 			}
 		});
@@ -181,7 +181,7 @@ function GLBsettingsToInterface() {
 		/*
 		//reorder terms and add or remove <br>
 		let onlyRemoveBr = varDisposition!='brTimes'
-		let arr= $('#telaRole [data-atom=times]').toArray()
+		let arr= $('#canvasRole [data-atom=times]').toArray()
 		let i = 0;
 		for(i=0;arr[i];i++){
 			reorderTimes($(arr[i]),onlyRemoveBr)
@@ -205,10 +205,10 @@ function GLBsettingsToInterface() {
 
 		}
 	}
-	if(GLBsettings.lockTela != undefined){
-				if(GLBsettings.lockTela){$('#tela').removeClass('unlocked')}
-				else{$('#tela').addClass('unlocked')}
-				refreshAsymmEq($('#tela'));
+	if(GLBsettings.lockCanvas != undefined){
+				if(GLBsettings.lockCanvas){$('#canvas').removeClass('unlocked')}
+				else{$('#canvas').addClass('unlocked')}
+				refreshAsymmEq($('#canvas'));
 	}
 }
 
@@ -257,5 +257,5 @@ mySettings.addEventListener('change', function(event) {
 		}
 	}
 	GLBsettingsToInterface();
-	RefreshEmptyInfixBraketsGlued($("#telaRole"))
+	RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 });

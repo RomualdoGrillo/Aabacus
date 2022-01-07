@@ -214,7 +214,7 @@ function swapMembersClone($origProp,mode){
     //createForThis($forall,$placeHolder)//todo: utilizzare stessa funzione rispetto a forThis manuale
     res.$cloneProp = MNODEclone($origProp);
     res.visualization =    wrapUnwrapUrlString( $origProp[0].style.backgroundImage ,'cutFirstDir')
-    if(debugMode){$('#telaRole').append(res.$cloneProp)}//debug 
+    if(debugMode){$('#canvasRole').append(res.$cloneProp)}//debug 
     MNODEextend(res.$cloneProp,true)
     //***********marca TUTTI I CLONI clone ************************************************
     res.$cloneProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone

@@ -12,8 +12,8 @@ function ssnapshot() {
 }
 
 ssnapshot.take = function(){
-		var $cloneTela = MNODEclone( $("#tela>.secondMember"),false,false )
-		FILO.push($cloneTela)
+		var $cloneCanvas = MNODEclone( $("#canvas>.secondMember"),false,false )
+		FILO.push($cloneCanvas)
 		
 		//----test------------------inserire due span in "index.html" per vedere i risultati
 		//var snap= $.trim($("#test").html())
@@ -23,14 +23,14 @@ ssnapshot.take = function(){
 		//$("#undoNames").html(testSnapshotNames.toString())
 		//----------------------------
 		//console.log('Stored snapshot. Number of snapshots= '+ FILO.length  )
-		//console.log($cloneTela)
+		//console.log($cloneCanvas)
 }
 
 ,  ssnapshot.undo = function(){
 		if (FILO.length > 1){
 			$(FILO.pop()).remove() // butta via l'ultima snapshot
 			var toBeRestored = FILO[FILO.length - 1].clone()// ripristina la penultima, in FILO devono essere presenti i cloni degli stati, non gli stati, altrimenti FILO.pop() distrugge stato
-			$("#tela>.secondMember").replaceWith(toBeRestored)
+			$("#canvas>.secondMember").replaceWith(toBeRestored)
 			ExtendAndInitializeTree(toBeRestored)
 			//----------test-----------------------
 			//$("#test").html(toBeRestored)
@@ -40,7 +40,7 @@ ssnapshot.take = function(){
 			//$("#undoNames").html(testSnapshotNames.toString())
 			//-------------------------------------
 			ExtendAndInitializeTree(toBeRestored)
-			//console.log('restored tela')
+			//console.log('restored canvas')
 			//console.log(toBeRestored)
 		}
 		else {

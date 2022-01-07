@@ -92,7 +92,7 @@ function MNODECreateDefinition(startNode) {
 	m2 = $newDef.find(".secondMember"); //trova secondo membro todo
 	m2.append($definens); //aggiungi contenuto al secondo membro
 	var $parList = $definens.find(".unselected");
-	$("#telaRole").append($newDef);
+	$("#canvasRole").append($newDef);
 	if ($parList.length > 0) {
 		let paramDefNames = ["x", "y", "z", "t", "k", "p", "q", "a", "b", "c", "d", "e", "f", "g", "h", "i", "l", "m", "n", "o", "q", "r", "s", "u", "v", "z",];
 		$newforAll = MNODEclone(prototypeSearch("forall")); //clona for each
@@ -378,7 +378,7 @@ function MNODE_addRole(dataType, content) {
 
 function validTargetsFromOpened($MNODEdragged) {
 	var numOfPlaces;
-	var valids = $('#telaRole,  [class*="_role"]:visible').filter(function () {
+	var valids = $('#canvasRole,  [class*="_role"]:visible').filter(function () {
 		//*****determine number of places********
 		numOfPlaces = getNumOfPlaces($(this));
 		//*****valid?***********
@@ -399,7 +399,7 @@ function validTargetsFromOpened($MNODEdragged) {
 }
 
 function validCandidatesForPatternDrop($MNODEdragged) {
-	var valids = $("#telaRole [data-atom]:visible").filter(function (index) {
+	var valids = $("#canvasRole [data-atom]:visible").filter(function (index) {
 		//*****valid?***********
 		var result =
 			//datatype is compatible
@@ -755,12 +755,12 @@ function refreshOneTimesDisp($MNODE, timesDisposition) {
 
 
 
-// RefreshEmptyInfixBraketsGlued($("#telaRole"),true,"eibgt")
+// RefreshEmptyInfixBraketsGlued($("#canvasRole"),true,"eibgt")
 function RefreshEmptyInfixBraketsGlued($startNode, tree, options) {
 	console.log('refreshed opt:' + options);
 	console.log($startNode);
 	if ($startNode == undefined || $startNode.length == 0) {
-		$startNode = $("#telaAnd")
+		$startNode = $("#canvasAnd")
 	}
 	var $Atoms; //lista degli atomi "da trattare"
 	if (tree != false) {

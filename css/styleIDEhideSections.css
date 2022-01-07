@@ -84,7 +84,7 @@ div.ide{
 	position:relative;
 }
 
-#tela{
+#canvas{
 	flex-grow:1;
 	margin-top:5px;
 }
@@ -133,7 +133,7 @@ body.gameModeSurpriseRes #result{
 }
 
 
-#telaRole>[data-atom]:first-child{
+#canvasRole>[data-atom]:first-child{
 	margin-bottom:25px;
 }
 

@@ -77,7 +77,7 @@ disadvantage: mixfix notation needs a different approach
 disadvantage: building new prototypes is less intuitive
 
 
-[data-atom="and"]:not(#telaAnd):not(.sortable-ghost)::before{
+[data-atom="and"]:not(#canvasAnd):not(.sortable-ghost)::before{
 	content:"";
 	position: absolute;
 	left: 2px;

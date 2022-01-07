@@ -61,8 +61,8 @@ function MakeSortableAndInjectMouseDown(event) {
 		//make targets sortable
 		let $validTgTOpen = validTargetsFromOpened($atomTarget);//i $validTgTOpen non vengono evidenziati con exclusive focus
 		if ($atomTarget.is('#tavolozza *')) {
-			//add tela as target
-			$validTgTOpen = $validTgTOpen.add('#telaRole');//will be encased!!//
+			//add canvas as target
+			$validTgTOpen = $validTgTOpen.add('#canvasRole');//will be encased!!//
 		}
 		$validTgTOpen.toArray().forEach(function (el) {
 			el.setAttribute('target', 'opened')
@@ -147,8 +147,8 @@ function onAdd(event) {
 	let dropped = myClone
 	//*********** move or clone
 	if (event.to.getAttribute('target') == 'opened') {
-		if (event.to.matches('#telaRole')) {
-			WrapWithDefIfNeededreturnTarget($('#telaRole'), $(dropped));
+		if (event.to.matches('#canvasRole')) {
+			WrapWithDefIfNeededreturnTarget($('#canvasRole'), $(dropped));
 		}
 
 		if ($(dropped).hasClass('toBeCloned')) {

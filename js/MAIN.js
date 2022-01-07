@@ -3,7 +3,7 @@ let GLBsettings
 let GLBtool =''
 let debugMode = false
 //debug,normal
-let tela = document.getElementById('telaRole');
+let canvas = document.getElementById('canvasRole');
 let exclusiveFocus
 let sorting = false;
 //usato solo per gestire gli eventi di dragover
@@ -46,9 +46,9 @@ $(document).on('keydown', function(e) {
 		changeTool();}// change tool
 	//ctrl+a 
 	else if (e.ctrlKey && (keyPressed === 'a')) {
-		$('#telaRole *').removeClass('selected');
-		$('#telaRole>[data-atom]').addClass('selected');
-		// select all: all the atoms in telaRole
+		$('#canvasRole *').removeClass('selected');
+		$('#canvasRole>[data-atom]').addClass('selected');
+		// select all: all the atoms in canvasRole
 	}//ctrl+c
 	else if (e.ctrlKey && (keyPressed === 'c')) {
 		ssnapshot.copy();
@@ -134,7 +134,7 @@ $('#fileToLoad').change(function(e) {
 	//passa di qui dopo che l'utente ha selezionato un nuovo file, non se l'utente preme annulla
 	//console.log('fileTOLoad change');
 	var fileToLoad = jQuery('#fileToLoad')[0].files[0];
-	var $target = $('#telaRole');
+	var $target = $('#canvasRole');
 	var fileName = fileToLoad.name;
 	var fileSuffix = fileName.split(".")[fileName.split(".").length - 1]
 	loadFileConvert(fileToLoad, $($target[0]), fileSuffix);
@@ -158,14 +158,14 @@ function clickHandler(event) {
 	//*************** Lock unlock ********
 	if ($(event.target).is('.asymmetric>.firstMember')) {
 		let $atom = $(event.target).parent();
-		if ($atom.is('#tela')) {
-			// tela fa eccezione perchè determina lo anche lo stato delle sezioni result e events
-			if(!GLBsettings.lockTela){
-				GLBsettings.lockTela=true;
-				$('#tela,#result,#events').removeClass('unlocked');
+		if ($atom.is('#canvas')) {
+			// canvas fa eccezione perchè determina lo anche lo stato delle sezioni result e events
+			if(!GLBsettings.lockCanvas){
+				GLBsettings.lockCanvas=true;
+				$('#canvas,#result,#events').removeClass('unlocked');
 			} else {
-				GLBsettings.lockTela=false;
-				$('#tela,#result,#events').addClass('unlocked');
+				GLBsettings.lockCanvas=false;
+				$('#canvas,#result,#events').addClass('unlocked');
 			}
 		} else {
 			$atom.toggleClass('unlocked');
@@ -379,10 +379,10 @@ function debugToggle() {
 	debugMode = !debugMode
 	//toggle debugMode
 	if (debugMode) {
-		$('#telaRole').addClass('debug');
+		$('#canvasRole').addClass('debug');
 		$('#tavolozza').addClass('hidden');
 	} else {
-		$('#telaRole').removeClass('debug');
+		$('#canvasRole').removeClass('debug');
 		$('#tavolozza').removeClass('hidden');
 	}
 }
@@ -456,7 +456,7 @@ function PActxVisualize(PActx) {
 		$visualization.insertAfter(PActx.$transform)
 		PActx.$transform.append($visualization);
 	} else {
-		$(tela).append($visualization)
+		$(canvas).append($visualization)
 		$visualization.css('position', 'relative');
 		$visualization.css('top', '0px');
 	}

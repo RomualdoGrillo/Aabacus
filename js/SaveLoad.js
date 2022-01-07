@@ -65,7 +65,7 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 }
 
 function WrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted){
-	if(  $targetNode.is('#telaRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
+	if(  $targetNode.is('#canvasRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
 		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
 		var $newDef = MNODEclone(prototypeSearch('eq','bool','asymmetric'));
 		$newDef.removeClass("unlocked")//cio' che viene caticato e' di default unlocked
@@ -80,12 +80,12 @@ function WrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted){
 	}
 }
 
-//inject(MMLstring,$('#telaRole'))
+//inject(MMLstring,$('#canvasRole'))
 function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
 {
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
 	
-	// if ( target accept booleans) al momento l'unico target è #telarole, in futuro si dovrà distinguere
+	// if ( target accept booleans) al momento l'unico target è #canvasrole, in futuro si dovrà distinguere
 	if($targetRoleOrAtom.is('[data-atom]')){
 		
 		//get all data attributes
@@ -123,7 +123,7 @@ function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
 function importAll($startNode){
 	//futuribile for()//fino a che c’è qualcosa da importare
 	if(!$startNode){
-		$startNode=$("#telaRole");
+		$startNode=$("#canvasRole");
 	}
 	$('body').find('[data-import]:not([importStatus=imported]):not([importStatus=failed])').each(function(i,el){//search for import
 
@@ -149,7 +149,7 @@ function AlltoMMLSstring(){
 	//palette
 	let paletteString = MNODEcreateMathmlString($('#tavolozza').children(':not(.fundamental)'),true);
 	//canvas
-	let canvasString = MNODEcreateMathmlString($('#telaAnd')[0].MNODE_getChildren(),true);
+	let canvasString = MNODEcreateMathmlString($('#canvasAnd')[0].MNODE_getChildren(),true);
 	//events
 	let eventsString = MNODEcreateMathmlString($('#events').children(),true);
 	//result

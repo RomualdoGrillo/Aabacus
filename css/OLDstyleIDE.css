@@ -24,7 +24,7 @@ button>.ui-icon {
  display:inline-block;
 }
 
-/*#tavolozza, #tela{ border: 1px solid #C9C9C9; }*/
+/*#tavolozza, #canvas{ border: 1px solid #C9C9C9; }*/
 
 #fileToLoad{visibility:hidden;}
 #create, #help {
@@ -54,10 +54,10 @@ border: 1px solid #000000;
 #tavolozza.hidden{
     display:none;
 }
-/*#telaRole{height:820px;flex-grow: 1;}
+/*#canvasRole{height:820px;flex-grow: 1;}
 */
 
-#telaRole{
+#canvasRole{
   flex-grow: 1;
   overflow-y:auto;
   margin: 0px;
@@ -66,17 +66,17 @@ border: 1px solid #000000;
   }
 
 
-#telaRole.debug{
+#canvasRole.debug{
     background-color: rgb(255, 234, 251);
     border-color: pink;
     border-width: 3px;
     }
 
-#tela, #tela>.secondMember, #telaAnd {
+#canvas, #canvas>.secondMember, #canvasAnd {
     flex-grow: 1;/*eccezione: deve occupare tutto il container, non adattarsi al contenuto*/
     }
     
-#telaAnd{
+#canvasAnd{
 	border:none;
 }
 

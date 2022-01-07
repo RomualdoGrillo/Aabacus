@@ -76,7 +76,7 @@ function serialNumber(mode){
 */
 
 function lookForResultAndCelebrate() {
-	let $expressions = $('#telaRole>*');
+	let $expressions = $('#canvasRole>*');
 	let found = false;
 	let i;
 	for (i = 0; i < $expressions.length; i++) {

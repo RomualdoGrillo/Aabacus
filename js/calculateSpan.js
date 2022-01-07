@@ -150,7 +150,7 @@ function  	$identifierSpan($identifier){
 		}
 		i++
 	}
-	return $('#telaRole'); //se non hai trovato nulla, lo span è l'intera tela
+	return $('#canvasRole'); //se non hai trovato nulla, lo span è l'intera canvas
 }
 
 function highlightOccurrences($identifier){
