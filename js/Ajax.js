@@ -24,7 +24,7 @@ function getAjax(fileType) {
 	  // CARICAMENTO TRAMITE GET/Ajax
 	  $.ajax({    
 			type: "GET",              
-			url: "./data/preload/preload.mml",
+			url: "./Data/Preload/preload.mml",
 			dataType: myDataType,
 	
 			error: function (e) {

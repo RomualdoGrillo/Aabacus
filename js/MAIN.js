@@ -20,7 +20,7 @@ MNODEextend($('body'), true);
 //preload will extend new atoms 
 let preloadPath = window.location.href.split('preloadPath=')[1]
 if (!preloadPath) {
-	preloadPath = './data/preload/preload.mmls'
+	preloadPath = './Data/Preload/PRELOAD.mmls'
 }
 preloadAll(preloadPath);
 //initialize lock icons??
