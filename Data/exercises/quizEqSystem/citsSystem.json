@@ -1,8 +1,0 @@
-{
-   "tavolozza_html":"./Data/exercises/quizEqSystem/quizEqSystem.prt",
-   "foundation_mml":"./Data/FOUNDATION.mml",
-   "gestToAction_mml":"./Data/Preload/gestToAction.mml",
-   "content_mml":"./Data/exercises/quizEqSystem/quizEqSyst.mml",
-   "result_mml":"./Data/exercises/quizEqSystem/quizEqresult.mml",
-   "settings_json":"./Data/exercises/quizEqSystem/gameHorTimes.set"
-}

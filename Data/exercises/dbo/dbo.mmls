@@ -1,0 +1,80 @@
+<section data-section="palette">
+<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/binaryOp.prt">import tavolozza</ci>
+</section>
+
+<section data-section="events">
+<apply type="bool">
+		<eventtoaction>
+		</eventtoaction>
+		<ci type="bool">a</ci>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">associativa</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<eventtoaction>
+		</eventtoaction>
+		<ci title="d" type="bool">s</ci>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">associativa</ci>
+			<ci type="bool">rtl</ci>
+		</apply>
+	</apply>
+</section>
+
+<section data-section="canvas">
+<apply data-import="./Data/BINARYFOUNDATION.mml" data-vis="" data-tag="PlusAssociativeBinary" data-type="bool">
+			<forall>
+			</forall>
+	</apply>
+	<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply data-type="num">
+				<plus>
+				</plus>
+				<ci data-type="num">a</ci>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<apply data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">b</ci>
+						<ci data-type="num">c</ci>
+					</apply>
+					<ci data-type="num">d</ci>
+				</apply>
+			</apply>
+	</apply>
+</section>
+
+<section data-section="result">
+<apply type="num">
+		<plus>
+		</plus>
+		<apply type="num">
+			<plus>
+			</plus>
+			<apply type="num">
+				<plus>
+				</plus>
+				<ci type="num">a</ci>
+				<ci type="num">b</ci>
+			</apply>
+			<ci type="num">c</ci>
+		</apply>
+		<ci type="num">d</ci>
+	</apply>
+</section>
+
+<section data-section="settings">
+	{
+   "settings_json":"./Data/exercises/dbo/dbo.set"
+    }
+</section>
