@@ -64,11 +64,12 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 	fileReader.readAsText(fileToLoad, "UTF-8");
 }
 
-function WrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted){
+function WrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
 	if(  $targetNode.is('#canvasRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
 		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
 		var $newDef = MNODEclone(prototypeSearch('eq','bool','asymmetric'));
-		$newDef.removeClass("unlocked")//cio' che viene caticato e' di default unlocked
+		if(unlocked){$newDef.addClass("unlocked")}
+		else{$newDef.removeClass("unlocked")}
 		$newDef.insertBefore($toBeInserted.eq(0));
 		$target = $newDef.find(".secondMember")
 		ExtendAndInitialize($newDef);// il contenuto è già stato esteso
