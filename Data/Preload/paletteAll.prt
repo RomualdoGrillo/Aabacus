@@ -192,9 +192,9 @@
 			</div>
 			<div data-proto="setdef" data-atom="set" data-type="set" class="atom">
 				{
-				<div class="s_role" data-type="obj"></div>
+				<div class="s_role bvar" data-type="obj"></div>
 				|
-				<div class="s_role" data-type="bool"></div>
+				<div class="s_role condition" data-type="bool"></div>
 				}
 			</div>
 

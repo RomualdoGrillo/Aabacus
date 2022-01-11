@@ -1,0 +1,54 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-type="set">
+			<set>
+			</set>
+			<ci data-type="bool">true</ci>
+			<apply data-vis="" data-type="bool">
+				<and>
+				</and>
+				<apply data-type="bool">
+					<and>
+					</and>
+					<apply data-vis="collapsed" data-type="bool">
+						<or>
+						</or>
+						<ci data-type="bool">omnivore</ci>
+						<ci data-type="bool">herbivore</ci>
+						<ci data-type="bool">carnovore</ci>
+					</apply>
+				</apply>
+				<apply data-type="bool">
+					<and>
+					</and>
+					<apply data-type="bool">
+						<or>
+						</or>
+						<apply data-type="bool">
+							<and>
+							</and>
+							<apply data-vis="collapsed" data-type="bool">
+								<or>
+								</or>
+								<ci data-type="bool">snakes</ci>
+								<ci data-type="bool">else</ci>
+							</apply>
+							<ci data-type="bool">reptiles</ci>
+						</apply>
+						<apply data-type="bool">
+							<and>
+							</and>
+							<apply data-vis="collapsed" data-type="bool">
+								<or>
+								</or>
+								<ci data-type="bool">sheeps</ci>
+								<ci data-type="bool">dogs</ci>
+							</apply>
+							<ci data-type="bool">mammals</ci>
+						</apply>
+						<ci data-type="bool">else</ci>
+					</apply>
+				</apply>
+				<ci data-type="bool">./data/Animalia.json</ci>
+			</apply>
+	</apply>
+</math>

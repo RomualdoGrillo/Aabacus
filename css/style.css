@@ -164,7 +164,7 @@
   
   
   
-  body:not(.fitch) [data-atom="and"]:not(#canvasAnd):not(#events *)>.ul_role {
+  body:not(.fitch) [data-atom="and"]:not(#canvasAnd):not(#events *):not(.condition *)>.ul_role {
 	  border-style:solid;
 	  border-width: 0 0 0 20px;
 	  border-image:url(../images/GullBraceLeft.svg) 0 47 stretch;

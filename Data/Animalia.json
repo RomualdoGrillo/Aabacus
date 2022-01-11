@@ -1,0 +1,22 @@
+{ "path": "",
+    "name": "animals",
+    "type": "directory",
+    "children": [ { "path": "animals/",
+                    "name": "mammals",
+                    "type": "directory",
+                    "children": []
+                    }
+                  { "path": "animals/",
+                    "name": "reptiles",
+                    "type": "directory",
+                    "children": []
+                  }
+                  {"tagStruct":"#feeding", 
+                    "path": "animals/",
+                    "name": "reptiles",
+                    "type": "directory",
+                    "children": []
+                  }
+                ]
+}
+   
