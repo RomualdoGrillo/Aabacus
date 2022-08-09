@@ -1,0 +1,41 @@
+{ "id": "chordata",
+    "children": [ { "id": "mammalia",
+                    "children": [
+                      {"id": "sheep_shaun"},
+                      {"id": "wolve_willy"},
+                      {"id": "monkey_mike"},
+                      {"id": "caw_caroline"}
+                      ]
+                    },
+                  { "id": "reptiles",
+                    "children": [
+                      {"id": "turtoise_tom"},
+                      {"id": "snake_sam"}
+                    ]
+                  },
+                  {"tagStruct":"#feeding", 
+                    "id": "carnivory",
+                    "children": [
+                      {"id": "wolve_willy"},
+                      {"id": "snake_sam"}
+                    ]
+                  },
+                  {"tagStruct":"#feeding",
+                    "id": "herbivory",
+                    "children": [
+                      {"tagStruct":"#feeding", 
+                        "id": "folivory",
+                        "children": [
+                          {"id": "sheep_shaun"},
+                          {"id": "turtoise_tom"}
+                        ]
+                      },
+                      {"tagStruct":"#feeding", 
+                        "id": "fructivory",
+                        "children": [{"id": "monkey_mike"}]
+                      }
+                    ]
+                  } 
+                ]
+}
+   
