@@ -760,7 +760,7 @@ function RefreshEmptyInfixBraketsGlued($startNode, tree, options) {
 	//console.log('refreshed opt:' + options);
 	//console.log($startNode);
 	if ($startNode == undefined || $startNode.length == 0) {
-		$startNode = $("#canvasAnd")
+		$startNode = $("#result,#canvasAnd")
 	}
 	var $Atoms; //lista degli atomi "da trattare"
 	if (tree != false) {
