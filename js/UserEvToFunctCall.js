@@ -31,9 +31,12 @@ function keyboardEvToFC($atom, keyPressed){
 }
 
 function DnDpropertiesInCanvas(propertiesDnD){
+	//example: an element ci must be in canvas with data-tag="associativeDnD"
 	let propInCanvas = $('#canvasRole [data-atom=ci][data-tag]').toArray()
 	let namelist = propInCanvas.map(function(e){return e.getAttribute('data-tag')})
-	
+	// same name "associativeDnD" must be in  propertiesDnD
+	//Adding a new DnD interna propertY:
+	//add an element to the array, add a ci to the canvas with data-tag...
 	let propertiesKnokedOut = propertiesDnD.map(function(e){
 		let index = namelist.indexOf(e.name)
 		if(index != -1){
