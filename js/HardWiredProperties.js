@@ -903,7 +903,7 @@ function validhanoiMove($mouseDownAtom){
 function hanoiMove(dragged,target,dropped){
 	var PActx = newPActx();
 	target[0].MNODE_getRoles().prepend($(dragged));
-	//PActx.visualization = "images/properties/hanoiMove.png"	
+	PActx.visualization = "images/properties/HanoiMove.png"	
 	PActx.matchedTF=true;
 	PActx.replacedAlready = true;
 	PActx.msg = "moved";
