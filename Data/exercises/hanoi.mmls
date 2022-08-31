@@ -1,0 +1,63 @@
+<section data-section="palette">
+	<div data-atom="hanoirod" data-proto="hanoirod" data-type="bool" class="atom" draggable="false" style="">
+		<div class="ol_role" data-type="num" style="flex-direction:column; min-width: 50px; min-height: 100px; justify-content: end; background-color: white; background-image: url(./images/Hanoirod.svg); background-size: 100% 100%">
+		</div>
+	</div>
+	<div data-atom="hanoi" data-proto="hanoi" data-type="bool" class="atom" draggable="false" style="">
+		<div class="ol_role" data-type="bool" style="min-width: 50px; min-height: 100px; justify-content: end; background-color: white">
+		</div>
+	</div>
+	<div data-atom="cn" data-proto="cn" data-type="num" class="atom" style="background-color: rgb(59, 111, 230); min-width: 20px;" draggable="false">
+					<div class="name" style="display:none">1</div>
+	</div>
+	<div data-atom="cn" data-proto="cn" data-type="num" class="atom" style="background-color: rgb(47, 119, 22); min-width: 30px;" draggable="false">
+					<div class="name" style="display:none">2</div>
+	</div>
+	<div data-atom="cn" data-proto="cn" data-type="num" class="atom" style="background-color: rgb(255, 199, 0); min-width: 40px;" draggable="false">
+					<div class="name" style="display:none">3</div>
+	</div>
+</section>
+<section data-section="canvas">
+	<apply data-type="bool">
+			<hanoi>
+			</hanoi>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+				<cn data-type="num">1</cn>
+				<cn data-type="num">2</cn>
+				<cn data-type="num">3</cn>
+			</apply>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+			</apply>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+			</apply>
+	</apply>
+</section>
+<section data-section="events">
+</section>
+<section data-section="result">
+	<apply data-type="bool">
+			<hanoi>
+			</hanoi>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+			</apply>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+			</apply>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+				<cn data-type="num">1</cn>
+				<cn data-type="num">2</cn>
+				<cn data-type="num">3</cn>
+			</apply>
+	</apply>
+</section>
