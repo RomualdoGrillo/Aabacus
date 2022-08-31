@@ -31,7 +31,8 @@ new PropertyDnD('collectDnD',validForColl,MNODEcollect,""),
 new PropertyDnD('partCollectDnD',validForPartColl,MNODEpartCollect,""),
 new PropertyDnD('replaceDnD',validReplaced,MNODELinkReplace,""),
 new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,""),
-new PropertyDnD('removeRedundantDnD',validRedundant,removeDropped,"")
+new PropertyDnD('removeRedundantDnD',validRedundant,removeDropped,""),
+new PropertyDnD('hanoiMoveDnD',validhanoiMove,hanoiMove,"")
 ]
 
 
@@ -886,6 +887,33 @@ function validCandidatesForPatternDrop($mouseDownAtom){
 	})
 	return valids//.not($mouseDownAtom.parent())
 }
+
+function validhanoiMove($mouseDownAtom){
+ //dragged must be top element in hanoi rod
+	let $parentRod = MNODEparent($mouseDownAtom)
+ 	if( !($parentRod.is("[data-atom=hanoirod]") && $mouseDownAtom.is(':first-child')) ){
+		return []
+	}
+	//parent parent must be hanoi
+	if (!MNODEparent($parentRod).is("[data-atom=hanoi]")){
+		return []
+	}
+	return $parentRod.siblings()
+}
+function hanoiMove(dragged,target,dropped){
+	var PActx = newPActx();
+	target[0].MNODE_getRoles().prepend($(dragged));
+	//PActx.visualization = "images/properties/hanoiMove.png"	
+	PActx.matchedTF=true;
+	PActx.replacedAlready = true;
+	PActx.msg = "moved";
+	//PActx.$transform = target.parent().parent()//not optimized, should update the older closest common parent
+	return PActx;
+}
+
+
+
+
 
 function removeDropped($dragged,$target){
 	var PActx = newPActx();

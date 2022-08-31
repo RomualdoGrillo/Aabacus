@@ -18,6 +18,7 @@
 	</div>
 </section>
 <section data-section="canvas">
+	<ci data-tag="hanoiMoveDnD" data-tagimg="./images/properties/HanoiMove.png" data-type="bool">true</ci>
 	<apply data-type="bool">
 			<hanoi>
 			</hanoi>
