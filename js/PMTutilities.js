@@ -550,7 +550,7 @@ function orderMatch(PActx,order,replaceInPatternOnly){
 }
 
  
-function adaptMatch(PActx,$Input, $Pattern, $span) {//Try: si può limitare al minimo lo span: $span = $pattern
+function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try: si può limitare al minimo lo span: $span = $pattern
 	//La funzione specifica i parametri presenti in $Pattern tentando di farlo coincidere con $Input 
 	//$span e' l'espressione all'interno della quale possono avvenire le sostituzioni.
 	//$span non deve per forza essere una proprietà o un forall
@@ -602,6 +602,7 @@ function adaptMatch(PActx,$Input, $Pattern, $span) {//Try: si può limitare al m
 					//todo: dovrò fare qualcosa per eq i cui due membri risulteranno non più commutabili
 					var $pattArg = $Pattern[patternIndex].MNODE_getChildren();
 					var $inArg = $Input[inputIndex].MNODE_getChildren();
+					var orderedList = $Input[inputIndex].MNODE_getRoles().is('.ol_role')
 					//var $parent = $Pattern.parent()//AdaptMatchUL sostituisce all'interno del dom, si deve poi sincronizzare la lista $pattern
 					if ($pattArg.length == 0 && $inArg.length == 0) {
 						//[] == [] se entrambe liste vuote allora MATCH
@@ -609,7 +610,7 @@ function adaptMatch(PActx,$Input, $Pattern, $span) {//Try: si può limitare al m
 					} else {
 						//probe un buon posto per mettere un breakpoint
 						//------------------> recursion
-						PActx = adaptMatch(PActx, $inArg, $pattArg, $span)
+						PActx = adaptMatch(PActx, $inArg, $pattArg, $span,orderedList)
 						currInputMatch=PActx.matchedTF
 						//<-----------------    
                 	}	
@@ -638,7 +639,12 @@ function adaptMatch(PActx,$Input, $Pattern, $span) {//Try: si può limitare al m
                 if(debugMode){currLine.attr('class', 'noMatch')};
                 //addClass non funziona con SVG        
             }
-            inputIndex++
+			if(functarg_orderedList){
+				break //se è una lista ordinata di argomenti non saltare all'input successivo se questo non combacia
+			}
+			else{
+				inputIndex++	
+			}
         }
         if(parType=="x___" || $resList.length>0){
         	currPattMatch=true
