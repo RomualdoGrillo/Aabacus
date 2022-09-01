@@ -898,7 +898,15 @@ function validhanoiMove($mouseDownAtom){
 	if (!MNODEparent($parentRod).is("[data-atom=hanoi]")){
 		return []
 	}
-	return $parentRod.siblings()
+	//check if the las element of each road is smaller than dragged
+	let draggedDiscNum = parseInt($mouseDownAtom[0].MNODE_getName());
+	let $filterdSiblings = $parentRod.siblings().filter(function(){
+		let $topDisc = this.MNODE_getChildren(':first');
+		if($topDisc.length == 0){return true};
+		let topDiscNum=parseInt($topDisc[0].MNODE_getName())
+		return topDiscNum>draggedDiscNum;
+	});
+	return $filterdSiblings
 }
 function hanoiMove(dragged,target,dropped){
 	var PActx = newPActx();
