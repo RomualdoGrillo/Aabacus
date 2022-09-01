@@ -62,3 +62,8 @@
 			</apply>
 	</apply>
 </section>
+<section data-section="settings">
+	{
+   "settings_json":"./Data/Preload/proof.set"
+    }
+</section>

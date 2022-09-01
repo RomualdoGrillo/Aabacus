@@ -1,0 +1,42 @@
+{
+	"debug":false,
+	"gameMode":true,
+	"gameModeSurpriseRes":false,
+	"lockCanvas":true,
+	"visSettingSelected":3,
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+		"timesVert":false,
+		"fixBorders":false,
+		"eforall":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+		"timesVert":false,
+		"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+		"timesVert":true,
+		"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"tooColored",
+		"colors":"coloredBorders",
+		"brackets":false,
+		"timesVert":true,
+		"fixBorders":true,
+		"eforall":false
+		}
+	]
+}
+
