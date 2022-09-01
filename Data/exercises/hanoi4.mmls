@@ -1,0 +1,74 @@
+<section data-section="palette">
+	<div data-atom="hanoirod" data-proto="hanoirod" data-type="bool" class="atom" draggable="false" style="">
+		<div class="ol_role" data-type="obj" style="flex-direction:column; min-width: 50px; min-height: 100px; justify-content: end; background-color: white; background-image: url(./images/Hanoirod.svg); background-size: 100% 100%">
+		</div>
+	</div>
+	<div data-atom="hanoi" data-proto="hanoi" data-type="bool" class="atom" draggable="false" style="">
+		<div class="ol_role" data-type="bool" style="min-width: 50px; min-height: 100px; justify-content: end; background-color: white">
+		</div>
+	</div>
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(59, 111, 230); min-width: 20px;" draggable="false">
+					<div class="name" style="display:none">1</div>
+	</div>
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(106, 174, 82); min-width: 28px;" draggable="false">
+					<div class="name" style="display:none">2</div>
+	</div>
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(255, 199, 0); min-width: 36px;" draggable="false">
+					<div class="name" style="display:none">3</div>
+	</div>
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(241, 128, 16); min-width: 44px;" draggable="false">
+					<div class="name" style="display:none">4</div>
+	</div>
+</section>
+<section data-section="canvas">
+	<ci data-tag="hanoiMoveDnD" data-tagimg="./images/properties/HanoiMove.png" data-type="bool">true</ci>
+	<apply data-type="bool">
+			<hanoi>
+			</hanoi>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+				<cn data-type="obj">1</cn>
+				<cn data-type="obj">2</cn>
+				<cn data-type="obj">3</cn>
+				<cn data-type="obj">4</cn>
+			</apply>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+			</apply>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+			</apply>
+	</apply>
+</section>
+<section data-section="events">
+</section>
+<section data-section="result">
+	<apply data-type="bool">
+			<hanoi>
+			</hanoi>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+			</apply>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+			</apply>
+			<apply data-type="bool">
+				<hanoirod>
+				</hanoirod>
+				<cn data-type="obj">1</cn>
+				<cn data-type="obj">2</cn>
+				<cn data-type="obj">3</cn>
+				<cn data-type="obj">4</cn>
+			</apply>
+	</apply>
+</section>
+<section data-section="settings">
+	{
+   "settings_json":"./Data/Preload/proof.set"
+    }
+</section>
