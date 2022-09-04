@@ -32,6 +32,5 @@
 				<div data-atom="segments" data-proto="segments" data-type="line" class="atom">
 					<div class="ul_role firstMember" data-type="point" data-accept="2"></div>
 					<div class="decoration segment"></div>
-					<div class="s_role secondMember" data-type="point" ></div>
 				</div>
 			
