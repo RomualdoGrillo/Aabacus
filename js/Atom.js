@@ -116,7 +116,7 @@ function MNODECreateDefinition(startNode) {
 			$(this).replaceWith($newNode);
 			var $Clone1 = MNODEclone($newNode); //clone da inserire in definendum
 			var $Clone2 = MNODEclone($newNode); //clone da inserire in forAll header
-			var $newRole = $('<span class="s_role" ></span>');
+			var $newRole = $('<span class="s_role" data-accept="1"></span>');
 			$newRole.attr("data-type", thisType);
 			//prepend comma
 			if (i > 0) {

@@ -1,7 +1,7 @@
 <div data-atom="eq" data-proto="eq" data-type="bool" class="atom">
-				<div class="s_role firstMember" data-type="obj" ></div>
+				<div class="s_role firstMember" data-type="obj" data-accept="1"></div>
 				<div class="decoration">=</div>
-				<div class="s_role secondMember" data-type="obj" ></div>
+				<div class="s_role secondMember" data-type="obj" data-accept="1"></div>
 			</div>
 			
 			<div data-proto="num" data-atom="ci" data-type="num" class="atom ">
@@ -34,10 +34,10 @@
 				<div data-proto="divide" data-atom="divide" class="atom column" data-type="num">
 					<div class="s_role numeratore" data-type="num"></div>
 					<div class="decoration"></div>
-					<div class="s_role denominatore" data-type="num" ></div>
+					<div class="s_role denominatore" data-type="num" data-accept="1"></div>
 				</div>
 				<div data-proto="power" data-atom="power" class="atom" data-type="num">
-					<div class="s_role base" data-type="num" >
+					<div class="s_role base" data-type="num" data-accept="1">
 						<div class="power_decoration"></div>
 					</div>
 					<div class="s_role exponent" data-type="num"></div>
@@ -51,24 +51,24 @@
 				|
 			</div>
 			<div data-atom="gt" data-proto="gt" data-type="bool" class="atom">
-				<div class="s_role firstMember" data-type="num" ></div>
+				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
 				<div class="decoration">></div>
-				<div class="s_role secondMember" data-type="num" ></div>
+				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
 			</div>
 			<div data-atom="geq" data-proto="geq" data-type="bool" class="atom">
-				<div class="s_role firstMember" data-type="num" ></div>
+				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
 				<div class="decoration">&#x2265;</div>
-				<div class="s_role secondMember" data-type="num" ></div>
+				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
 			</div>
 			<div data-atom="lt" data-proto="lt" data-type="bool" class="atom">
-				<div class="s_role firstMember" data-type="num" ></div>
+				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
 				<div class="decoration"><</div>
-				<div class="s_role secondMember" data-type="num" ></div>
+				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
 			</div>
 			<div data-atom="leq" data-proto="leq" data-type="bool" class="atom">
-				<div class="s_role firstMember" data-type="num" ></div>
+				<div class="s_role firstMember" data-type="num" data-accept="1"></div>
 				<div class="decoration">&#x2264;</div>
-				<div class="s_role secondMember" data-type="num" ></div>
+				<div class="s_role secondMember" data-type="num" data-accept="1"></div>
 			</div>
 			<div data-atom="ci" data-proto="bool" data-type="bool" class="atom">
 				<div class="name">true</div>
@@ -92,7 +92,7 @@
 					<div class="forallSymbol">∀</div>
 					<div class="bVar_role forAllHeader" data-type="obj"></div>
 				</div>
-				<div class="s_role forAllContent" data-type="bool" ></div>
+				<div class="s_role forAllContent" data-type="bool" data-accept="1"></div>
 			</div>
 			<!--
 			<div data-proto="ifthenelse" data-atom="ifthenelse" class="atom" data-type="bool">
@@ -151,7 +151,7 @@
 					<div class="bVar_role existsHeader" data-type="obj"></div>
 					<div class="decoration">|</div>
 				</div>
-				<div class="s_role existsContent" data-type="bool" ></div>
+				<div class="s_role existsContent" data-type="bool" data-accept="1"></div>
 			</div>
 			
 			<div data-proto="suchThat" data-atom="suchThat" data-type="obj" class="atom">
@@ -162,9 +162,9 @@
 		
 			<div data-atom="implies" data-proto="implies" data-type="bool" class="atom">
 				<div class="leftBar"></div>
-				<div class="s_role firstMember" data-type="bool" ></div>
+				<div class="s_role firstMember" data-type="bool" data-accept="1"></div>
 				<div class="decoration imply"></div>
-				<div class="s_role secondMember" data-type="bool" ></div>
+				<div class="s_role secondMember" data-type="bool" data-accept="1"></div>
 			</div>
 			<div data-proto="set" data-atom="set" data-type="set" class="atom">
 				{
