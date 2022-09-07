@@ -414,7 +414,7 @@ function getNumOfPlaces($role) {
 	if ($role.hasClass("s_role")) {
 		return [1,1]; //[min,max]
 	} 
-	let acceptString = $role.attr('accept')
+	let acceptString = $role.attr('data-accept')
 	return attrAcceptToMinMax(acceptString)
 }
 
