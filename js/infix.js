@@ -42,5 +42,23 @@ function refreshEmpty($startNode){
 	})
 }
 
-
+//let acceptString = $role.attr('accept')
+function attrAcceptToMinMax(acceptString){
+	let min
+	let max  
+	if(acceptString==undefined){
+		return [NaN,NaN]
+	}
+	let acceptLimits = acceptString.split(':')
+	if (acceptLimits.length==1){// "5"   precisely 5 elements
+		let fixed = parseInt(acceptLimits[0]);
+		min = fixed;
+		max = fixed;
+	}
+	else{//"2:3"
+		min = parseInt(acceptLimits[0]);
+		max = parseInt(acceptLimits[1]);
+	}
+	return [min,max]
+}
 
