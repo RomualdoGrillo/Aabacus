@@ -380,7 +380,7 @@ function validTargetsFromOpened($MNODEdragged) {
 	var numOfPlaces;
 	var valids = $('#canvasRole,  [class*="_role"]:visible').filter(function () {
 		//*****determine number of places********
-		numOfPlaces = getNumOfPlaces($(this));
+		numOfPlaces = getNumOfPlaces($(this))[1];
 		//*****valid?***********
 		var result =
 			//if $dragged is not a new definition, target must be opened or boolPtototype todo: check the dragged prototype really has value true
@@ -412,16 +412,38 @@ function validCandidatesForPatternDrop($MNODEdragged) {
 function getNumOfPlaces($role) {
 	//*****determine number of places********
 	if ($role.hasClass("s_role")) {
-		numOfPlaces = 1;
-	} else if (
-		$role.attr("data-accept") === undefined ||
-		parseInt($role.attr("data-accept")) === -1
-	) {
-		numOfPlaces = -1; //-1 means infinite
-	} else {
-		numOfPlaces = parseInt($role.attr("data-accept"));
+		return [1,1]; //[min,max]
+	} 
+	let acceptString = $role.attr('accept')
+	return attrAcceptToMinMax(acceptString)
+}
+
+//let acceptString = $role.attr('string_accept')
+function attrAcceptToMinMax(acceptString){
+	let min=0 
+	let max=-1 //default value -1 means ther's not upper limit 
+	if(acceptString==undefined){
+		return [min,max]//with default values
 	}
-	return numOfPlaces;
+	let acceptLimits = acceptString.split(':')
+	if (acceptLimits.length==1){// "5"   precisely 5 elements return [5,5]
+		let fixed = parseInt(acceptLimits[0]);
+		if (!isNaN(fixed)){
+			min = fixed;
+			max = fixed;
+		}
+	}
+	else{//"2:3"
+		let attrMin = parseInt(acceptLimits[0]);
+		if (!isNaN(attrMin)){//overwrite default only if not NaN
+			min = attrMin;
+		}
+		let attrMax = parseInt(acceptLimits[1]);
+		if (!isNaN(attrMax)){//overwrite default only if not NaN
+			max = attrMax;
+		}
+	}
+	return [min,max]
 }
 
 function overflowExsists(node) {

@@ -185,7 +185,7 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 				noBVarChildren = $children.not('bvar')
 				// globale per renderlo disponibile in each
 				$noBVarRole.each(function(i, e) {
-					var places = getNumOfPlaces($(e))
+					var places = getNumOfPlaces($(e))[1]
 					if (places === -1) {
 						places = undefined
 					}
