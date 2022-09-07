@@ -24,6 +24,7 @@ class PropertyDnD  {
 
 let propertiesDnD = [
 //new PropertyDnD('openedDnD',validTargetsFromOpened,),  // come gestisco il +ctrl?
+new PropertyDnD('cummutativeFixedListDnD',cummutativeFixedValid,cummutativeFixed,""),
 new PropertyDnD('associativeDnD',immediateAssValid,MNODEassociate,""),
 new PropertyDnD('distributiveDnD',validForDist,MNODEdistribute,""),
 new PropertyDnD('partDistributDnD',validForPartDist,MNODEPartDistribute,""),
@@ -122,8 +123,16 @@ function forThisValid(mouseDownNode){
 
 let $valids=$parameters.filter(function(i,el){return typeOk(mouseDownNode,$(el))});
 return $valids
+};
+function mario(){};
+function cummutativeFixedValid($mouseDownAtom){
+	const $parent = MNODEparent($mouseDownAtom);
+	//is the source role commutable?
+	//esistono s_roles commutabili?
 }
+function cummutativeFixed(dragged,target,dropped){
 
+}
 function immediateAssValid($mouseDownAtom){
 	const $parent = MNODEparent($mouseDownAtom);
 	let op;
