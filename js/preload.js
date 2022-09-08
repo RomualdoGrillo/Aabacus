@@ -165,6 +165,7 @@ function GLBsettingsToInterface() {
 	$('#BUTT_gameMode')[0].checked = GLBsettings.gameMode;
 	updateBodyClass('gameMode',GLBsettings.gameMode);
 	$('#BUTT_gameModeSurpriseRes')[0].checked = GLBsettings.gameModeSurpriseRes;
+	$('#result').attr('title',GLBsettings.resultString);
 	updateBodyClass('gameModeSurpriseRes',GLBsettings.gameModeSurpriseRes);
 	populateDropdown(GLBsettings.visSettings);
 	let visIndex = GLBsettings.visSettingSelected;

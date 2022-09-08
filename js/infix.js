@@ -39,7 +39,7 @@ function refreshEmpty($startNode){
 	$startNode.find('[class*="_role"]:not(.d_role)').each(function(i,e){
 	    let childrenNum = $(e).children().filter('[data-atom],.d_role').length
 		let minPlaces=getNumOfPlaces($(this))[0]
-		if(minPlaces!=-1){//manage dummies to ensure minimum places
+		if(minPlaces!=0){//manage dummies to ensure minimum places
 			let deltaDummies = minPlaces- childrenNum
 			if(deltaDummies>0){
 			//add dummies
