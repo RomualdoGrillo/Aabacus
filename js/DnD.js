@@ -126,7 +126,7 @@ function onMove(event) {
 	MNODEparent($(event.to)).addClass('dropTarget');
 }
 function onSort(event) {
-	RefreshEmptyInfixBraketsGlued(MNODEparent($(event.to)))	
+	RefreshEmptyInfixBraketsGlued(MNODEparent($(event.target)))	
 }
 
 function onAdd(event) {
