@@ -22,9 +22,9 @@ let preloadPath = window.location.href.split('preloadPath=')[1]
 if (!preloadPath) {
 	preloadPath = './Data/Preload/PRELOAD.mmls'
 }
-preloadAll(preloadPath);
+preloadAll(preloadPath);//ATTENTION contains asinchronous functions
 //initialize lock icons??
-RefreshEmptyInfixBraketsGlued();
+//RefreshEmptyInfixBraketsGlued();
 ssnapshot.take();
 document.addEventListener("click", clickHandler);
 document.addEventListener("dblclick", dblclickHandler);

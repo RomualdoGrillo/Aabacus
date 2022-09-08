@@ -128,10 +128,11 @@ function injectAllMMLS(response,rootUrl){
 				//console.log(parsedJSON);
 				GLBsettings = parsedJSON
 				GLBsettingsToInterface();
-				RefreshEmptyInfixBraketsGlued($("#canvasRole"))
+				//RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 			});
 		}
 	}
+	RefreshEmptyInfixBraketsGlued()
 }
 
 function loadAjaxAndInject(myUrl,target,toBeImported) {

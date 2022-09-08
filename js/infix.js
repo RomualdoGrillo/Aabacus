@@ -37,48 +37,49 @@ function refreshOneInfix($MNODEnode){
 
 
 function refreshOneEmpty($MNODE){
-	if($MNODE.MNODE_getRoles==undefined){return};
+	if($MNODE[0].MNODE_getRoles==undefined){return};
 	$MNODE[0].MNODE_getRoles().each(function(i,e){
-	    let childrenNum = $(e).children().filter('[data-atom],.d_role').length
+	    $(this).addClass('refreshed')
+		let childrenNum = $(e).children().filter('[data-atom],.d_rol').length
 		let minPlaces=getNumOfPlaces($(this))[0]
-		if(minPlaces!=0){//manage dummies to ensure minimum places
+		if(minPlaces>1){//manage dummies to ensure minimum places
 			let deltaDummies = minPlaces- childrenNum
 			if(deltaDummies>0){
 			//add dummies
 				for (var i = 0; i<deltaDummies; i++){
-					$(this).append($('<div class="d_role"></div>'))
+					$(this).append($('<div class="d_rol"></div>'))
 				}
 			}
 			else if(deltaDummies<0){
 				//remove dummies
 				for (var i = 0; i<-deltaDummies; i++){
-					$(this).find('.d_role:first').remove()
+					$(this).find('.d_rol:first').remove()
 				}
 			}
 		}
 		else{//manage "empty" class
-			if( childrenNum === 0 ){$(e).addClass('empty')}
+			if( minPlaces==0 && childrenNum == 0 ){$(e).addClass('empty')}
 	    	else{ $(e).removeClass('empty')}
 		}
 	})
 }
 /*
 function refreshEmpty($startNode){
-	$startNode.find('[class*="_role"]:not(.d_role)').each(function(i,e){
-	    let childrenNum = $(e).children().filter('[data-atom],.d_role').length
+	$startNode.find('[class*="_role"]:not(.d_rol)').each(function(i,e){
+	    let childrenNum = $(e).children().filter('[data-atom],.d_rol').length
 		let minPlaces=getNumOfPlaces($(this))[0]
 		if(minPlaces!=0){//manage dummies to ensure minimum places
 			let deltaDummies = minPlaces- childrenNum
 			if(deltaDummies>0){
 			//add dummies
 				for (var i = 0; i<deltaDummies; i++){
-					$(this).append($('<div class="d_role"></div>'))
+					$(this).append($('<div class="d_rol"></div>'))
 				}
 			}
 			else if(deltaDummies<0){
 				//remove dummies
 				for (var i = 0; i<-deltaDummies; i++){
-					$(this).find('.d_role:first').remove()
+					$(this).find('.d_rol:first').remove()
 				}
 			}
 		}
