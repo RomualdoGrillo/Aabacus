@@ -4,7 +4,8 @@
 	"gameModeSurpriseRes":false,
 	"lockCanvas":false,
 	"resultHidden":true,
-	"visSettingSelected":1,
+	"resultString":"tesi",
+	"visSettingSelected":3,
 	"visSettings":[
 		{
 		"name":"classic",
