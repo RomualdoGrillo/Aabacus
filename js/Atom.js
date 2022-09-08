@@ -792,7 +792,7 @@ function RefreshEmptyInfixBraketsGlued($startNode, tree, options) {
 	}
 	$Atoms.each(function (i, element) {
 		if (options == undefined || options.indexOf("e") != -1) {
-			refreshEmpty($(element));
+			refreshOneEmpty($(element));
 		}
 		if (options == undefined || options.indexOf("i") != -1) {
 			refreshOneInfix($(element));
