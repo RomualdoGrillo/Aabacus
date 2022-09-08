@@ -30,7 +30,6 @@
 				<div class="s_role" data-type="obj" ></div>
 				</div>
 				<div data-atom="segments" data-proto="segments" data-type="line" class="atom">
-					<div class="ul_role firstMember" data-type="point" data-accept="2"></div>
-					<div class="decoration segment"></div>
+					<div class="ul_role" data-type="point" data-accept="2">  <div class="decoration segment"></div>  </div>
 				</div>
 			

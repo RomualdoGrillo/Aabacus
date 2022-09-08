@@ -126,7 +126,7 @@
   }
   
   
-  [data-atom], [class*="_role"]{
+  [data-atom], [class*="_role"] {
 	  min-height:20px;
 	  min-width:16px;
 	  border-width: 1px;
@@ -366,8 +366,11 @@
   .coloredBorders [data-type="point"],.coloredBorders [data-type="line"] {
 	  border-color: rgb(70, 92, 188);
   }
-  .coloredBorders [class*="l_role"][data-type="point"].empty ,.coloredBorders [class*="s_role"][data-type="point"],
-  [class*="l_role"][data-type="line"].empty ,.coloredBorders [class*="s_role"][data-type="line"] {
+.coloredBorders [class*="l_role"][data-type="point"].empty,
+.coloredBorders [class*="s_role"][data-type="point"],
+[class*="l_role"][data-type="line"].empty,
+.coloredBorders [class*="s_role"][data-type="line"],
+.coloredBorders [class*="l_role"][data-type="point"]>.d_role{
 	  background-color: rgb(190, 195, 255);
   }
   

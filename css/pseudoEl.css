@@ -5,7 +5,35 @@ In this way infix and tag can exist at the same time
 */
 
 /***********   Infix Notation   *********/
-
+/*
+[data-atom=segment]>.ul_role>[data-atom]::before{
+	background-image: url(../images/segment.svg);
+	min-width: 22px;
+	min-width: 22px;
+}
+[data-atom=segment]>.ul_role>[data-atom]:not(:first-of-type){
+	margin-left: 11px; 
+}
+*/
+.inheritInfix{
+	background-size:0;
+}
+.inheritInfix>*:not(:first-of-type){
+	background-image:inherit;
+	background-size:0;
+	margin-left:20px;
+}
+.inheritInfix>*:not(:first-of-type)::before{
+	background-image:inherit;
+	background-position:center;
+	min-width: 20px;
+	/*background-color: red;*/
+	position: absolute;
+	content: "i";
+	color:transparent;
+	left: -21px;
+	pointer-events: none;
+}
 
 [data-atom=plus]>[class*="role"]>[data-atom]:not(:first-of-type),
 [data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type),
@@ -24,14 +52,16 @@ body[timesdisposition=brTimes] br + [data-atom]::before{
 }
 
 [data-atom=plus]>[class*="role"]>[data-atom]:not(:first-of-type):not([data-vis=resizable])::before,
-[data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type):not([data-vis=resizable])::before,
-[data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type):not([data-vis=resizable])::before {
+[data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type)::before,
+[data-atom=lt]>.ol_role>[data-atom]:not(:first-of-type)::before
+/*,[data-atom=segment]>.ul_role>[data-atom]:not(:first-of-type)::before*/{
 	/* background-color: red; */
 	position: absolute;
 	content: "+";/*&#x2264; for leq*/
 	left: -11.6px;
 	pointer-events: none;
 }
+
 [data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type)::before {
 	content:'\2264'!important;/*https://www.evotech.net/articles/testjsentities.html*/
 }

@@ -36,10 +36,27 @@ function refreshOneInfix($MNODEnode){
 }
 
 function refreshEmpty($startNode){
-	$startNode.find('[class*="_role"]').each(function(i,e){
-	    if( $(e).children().filter('[data-atom]').length===0 ){$(e).addClass('empty')}
-	    else{ $(e).removeClass('empty')}
+	$startNode.find('[class*="_role"]:not(.d_role)').each(function(i,e){
+	    let childrenNum = $(e).children().filter('[data-atom],.d_role').length
+		let minPlaces=getNumOfPlaces($(this))[0]
+		if(minPlaces!=-1){//manage dummies to ensure minimum places
+			let deltaDummies = minPlaces- childrenNum
+			if(deltaDummies>0){
+			//add dummies
+				for (var i = 0; i<deltaDummies; i++){
+					$(this).append($('<div class="d_role"></div>'))
+				}
+			}
+			else if(deltaDummies<0){
+				//remove dummies
+				for (var i = 0; i<-deltaDummies; i++){
+					$(this).find('.d_role:first').remove()
+				}
+			}
+		}
+		else{//manage "empty" class
+			if( childrenNum === 0 ){$(e).addClass('empty')}
+	    	else{ $(e).removeClass('empty')}
+		}
 	})
 }
-
-
