@@ -1,0 +1,68 @@
+<section data-section="palette">
+<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/palette.prt">import palette</ci>
+</section>
+
+<section data-section="events">
+<ci data-type="bool" data-import="./Data/Preload/gestToAction.mml">import events</ci>
+</section>
+
+<section data-section="canvas">
+
+<ci data-type="bool" data-import="./Data/FOUNDATION.mml">import FOUNDATION</ci>
+
+</section>
+
+<section data-section="result">
+</section>
+
+<section data-section="settings">
+	{
+	"debug":false,
+	"gameMode":false,
+	"gameModeSurpriseRes":true,
+	"lockCanvas":false,
+	"resultHidden":true,
+	"resultString":"tesi",
+	"visSettingSelected":3,
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+		"timesVert":false,
+        "timesDisposition":1,
+		"fixBorders":false,
+		"eforall":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+		"timesVert":false,
+		"timesDisposition":2,
+        "fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+		"timesVert":true,
+		"timesDisposition":3,
+        "fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"tooColored",
+		"colors":"coloredBorders",
+		"brackets":false,
+		"timesVert":true,
+        "timesDisposition":1,
+		"fixBorders":true,
+		"eforall":false
+		}
+	]
+}
+</section>
+
+

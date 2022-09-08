@@ -1,19 +1,14 @@
 <section data-section="palette">
 	<div data-atom="segment" data-proto="segment" data-type="line" class="atom" draggable="false">
 		<div class="ul_role inheritInfix" data-type="point" data-accept="2" style="background-image: url(../images/segment.svg)">
-
+		</div>
+	</div>
+	<div data-atom="midPoint" data-proto="midPoint" data-type="point" class="atom" style="">
+		<div class="ul_role inheritInfix" data-type="point" data-accept="2" style="background-image: url(../images/midPoint.svg)">
 		</div>
 	</div>
 	<div data-proto="point" data-atom="ci" data-type="point" class="atom" style="" draggable="false">
 		<div class="name">A</div>
-	</div>
-	<div data-atom="midPoint" data-proto="midPoint" data-type="point" class="atom" style="">
-		<div class="s_role firstMember" data-type="point">
-		</div>
-		<div class="decoration midPoint">
-		</div>
-		<div class="s_role secondMember" data-type="point">
-		</div>
 	</div>
 	<div data-atom="perpByPoint" data-proto="perpByPoint" data-type="line" class="atom" style="">
 		<div class="functName perpByPoint">PerpendicularLine(</div>

@@ -40,20 +40,20 @@ function refreshOneEmpty($MNODE){
 	if($MNODE[0].MNODE_getRoles==undefined){return};
 	$MNODE[0].MNODE_getRoles().each(function(i,e){
 	    $(this).addClass('refreshed')
-		let childrenNum = $(e).children().filter('[data-atom],.d_rol').length
+		let childrenNum = $(e).children().filter('[data-atom],.dummyrole').length
 		let minPlaces=getNumOfPlaces($(this))[0]
 		if(minPlaces>1){//manage dummies to ensure minimum places
 			let deltaDummies = minPlaces- childrenNum
 			if(deltaDummies>0){
 			//add dummies
 				for (var i = 0; i<deltaDummies; i++){
-					$(this).append($('<div class="d_rol"></div>'))
+					$(this).append($('<div class="dummyrole"></div>'))
 				}
 			}
 			else if(deltaDummies<0){
 				//remove dummies
 				for (var i = 0; i<-deltaDummies; i++){
-					$(this).find('.d_rol:first').remove()
+					$(this).find('.dummyrole:first').remove()
 				}
 			}
 		}
@@ -65,21 +65,21 @@ function refreshOneEmpty($MNODE){
 }
 /*
 function refreshEmpty($startNode){
-	$startNode.find('[class*="_role"]:not(.d_rol)').each(function(i,e){
-	    let childrenNum = $(e).children().filter('[data-atom],.d_rol').length
+	$startNode.find('[class*="_role"]:not(.dummyrole)').each(function(i,e){
+	    let childrenNum = $(e).children().filter('[data-atom],.dummyrole').length
 		let minPlaces=getNumOfPlaces($(this))[0]
 		if(minPlaces!=0){//manage dummies to ensure minimum places
 			let deltaDummies = minPlaces- childrenNum
 			if(deltaDummies>0){
 			//add dummies
 				for (var i = 0; i<deltaDummies; i++){
-					$(this).append($('<div class="d_rol"></div>'))
+					$(this).append($('<div class="dummyrole"></div>'))
 				}
 			}
 			else if(deltaDummies<0){
 				//remove dummies
 				for (var i = 0; i<-deltaDummies; i++){
-					$(this).find('.d_rol:first').remove()
+					$(this).find('.dummyrole:first').remove()
 				}
 			}
 		}
