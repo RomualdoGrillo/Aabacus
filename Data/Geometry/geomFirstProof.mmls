@@ -1,10 +1,10 @@
 <section data-section="palette">
 	<div data-atom="segment" data-proto="segment" data-type="line" class="atom" draggable="false">
-		<div class="ul_role inheritInfix" data-type="point" data-accept="2" style="background-image: url(../images/segment.svg)">
+		<div class="ul_role inheritInfix" data-type="point" data-accept="2" style="background-image: url(./images/segment.svg)">
 		</div>
 	</div>
 	<div data-atom="midPoint" data-proto="midPoint" data-type="point" class="atom" style="">
-		<div class="ul_role inheritInfix" data-type="point" data-accept="2" style="background-image: url(../images/midPoint.svg)">
+		<div class="ul_role inheritInfix" data-type="point" data-accept="2" style="background-image: url(./images/midPoint.svg)">
 		</div>
 	</div>
 	<div data-proto="point" data-atom="ci" data-type="point" class="atom" style="" draggable="false">
