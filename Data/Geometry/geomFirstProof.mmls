@@ -99,3 +99,8 @@
 		</apply>
 	</apply>
 </section>
+<section data-section="settings">
+	{
+   "settings_json":"./Data/exercises/quizEqSystem/gameHorTimes.set"
+    }
+</section>
