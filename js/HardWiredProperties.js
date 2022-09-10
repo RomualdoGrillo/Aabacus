@@ -153,7 +153,7 @@ function MNODEassociate(dragged,target,dropped){
 	else{
 		$(dragged).remove(); // if not cloning, clone was useful to visualize the starting point 	
 	}
-	PActx.visualization = "images/properties/associate.png"	
+	PActx.visualization = "images/properties/associate.svg"	
 	PActx.matchedTF=true;
 	PActx.replacedAlready = true;
 	PActx.msg = "associated";
@@ -225,7 +225,7 @@ function validForDist($mouseDownAtom){//op2 è il tipo di operazione sulla quale
 function MNODEPartDistribute($dragged,target,dropped){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/distributive.png"
+	PActx.visualization = "images/properties/distributive.svg"
 	let childrenIndex = MNODEparent($dragged).index()
 	let $parent = MNODEparent($dragged);
 	let opD ;
@@ -252,7 +252,7 @@ function MNODEPartDistribute($dragged,target,dropped){
 function MNODEdistribute($dragged,target,dropped){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/distributive.png"
+	PActx.visualization = "images/properties/distributive.svg"
 	let $parent = MNODEparent($dragged);
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
@@ -401,7 +401,7 @@ function validForPartColl($mouseDownAtom){
 function MNODEpartCollect($dragged,$target){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/collect.png"
+	PActx.visualization = "images/properties/collect.svg"
 	let $targetParent = MNODEparent($target);
 	let $siblingsT = $target.siblings('[data-atom]')
 	let opt = $targetParent.attr("data-atom")
@@ -473,7 +473,7 @@ function MNODEpartCollect($dragged,$target){
 function MNODEcollect($dragged,$target){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/collect.png"
+	PActx.visualization = "images/properties/collect.svg"
 	let $parent = MNODEparent($dragged);
 	let $parentParent = MNODEparent($parent);
 	let op = undefined;
@@ -663,7 +663,7 @@ function compose($toBeComp,firstVal,img){
 		$composed = ValToAtoms(partial);
 		$composed.addClass('selected');//selezione in uscita
 		PActx.$operand = $toBeComp;
-		PActx.visualization = "images/properties/compose.png";
+		PActx.visualization = "images/properties/compose.svg";
 		PActx.msg = "compose";
 		
 		
@@ -911,7 +911,7 @@ function validhanoiMove($mouseDownAtom){
 function hanoiMove(dragged,target,dropped){
 	var PActx = newPActx();
 	target[0].MNODE_getRoles().prepend($(dragged));
-	PActx.visualization = "images/properties/HanoiMove.png"	
+	PActx.visualization = "images/properties/HanoiMove.svg"	
 	PActx.matchedTF=true;
 	PActx.replacedAlready = true;
 	PActx.msg = "moved";
@@ -927,7 +927,7 @@ function removeDropped($dragged,$target){
 	var PActx = newPActx();
 	var $parent = MNODEparent($target)
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/collect.png"
+	PActx.visualization = "images/properties/collect.svg"
 	if($parent.attr("data-atom")=="and"){
 		$target.remove();//if contained in an and simply remove the redundant term		
 		$parent.addClass("refine_c");

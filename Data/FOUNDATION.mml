@@ -5,24 +5,24 @@
 			<apply data-vis="collapsed" data-tag="built in" data-type="bool">
 				<and>
 				</and>
-				<ci data-tagimg="./images/properties/compose.png" data-tag="compose" data-type="bool">built in</ci>
-				<ci data-tagimg="./images/properties/decompose.png" data-tag="decomposeInAProduct" data-type="bool">built in</ci>
-				<ci data-tagimg="./images/properties/decompose.png" data-tag="decomposeInASum" data-type="bool">true</ci>
+				<ci data-tagimg="./images/properties/compose.svg" data-tag="compose" data-type="bool">built in</ci>
+				<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeInAProduct" data-type="bool">built in</ci>
+				<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeInASum" data-type="bool">true</ci>
 				<ci data-tag="evaluateComparison" data-type="bool">built in</ci>
 				<apply data-and="horizontal" data-type="bool">
 					<and>
 					</and>
-					<ci data-tag="associativeDnD" data-tagimg="./images/properties/associate.png" data-type="bool">true</ci>
-					<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.png" data-type="bool">true</ci>
-					<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.png" data-type="bool">true</ci>
-					<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.png" data-type="bool">true</ci>
-					<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.png" data-type="bool">true</ci>
-					<ci data-tag="replaceDnD" data-tagimg="./images/properties/replace.png" data-type="bool">true</ci>
+					<ci data-tag="associativeDnD" data-tagimg="./images/properties/associate.svg" data-type="bool">true</ci>
+					<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+					<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+					<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+					<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+					<ci data-tag="replaceDnD" data-tagimg="./images/properties/replace.svg" data-type="bool">true</ci>
 					<ci data-tag="forThisDnD" data-type="bool">true</ci>
 					<ci data-tag="removeRedundantDnD" data-type="bool">true</ci>
 				</apply>
 			</apply>
-			<apply data-vis="collapsed" data-and="horizontal" data-tag="foundation" data-tagimg="./images/properties/distributive.png" data-type="bool">
+			<apply data-vis="collapsed" data-and="horizontal" data-tag="foundation" data-tagimg="./images/properties/distributive.svg" data-type="bool">
 				<and>
 				</and>
 				<apply data-vis="collapsed" data-tag="timesAssociate" data-type="bool">
@@ -145,7 +145,7 @@
 						</apply>
 					</apply>
 				</apply>
-				<apply data-vis="collapsed" data-tag="Opposite" data-tagimg="../Aabacus/images/properties/Annihilate.png" data-type="bool">
+				<apply data-vis="collapsed" data-tag="Opposite" data-tagimg="../Aabacus/images/properties/Annihilate.svg" data-type="bool">
 					<forall>
 					</forall>
 					<bvar>
@@ -312,7 +312,7 @@
 			<apply data-vis="collapsed" data-tag="derived" data-type="bool">
 				<and>
 				</and>
-				<apply data-vis="collapsed" data-tag="eqPlusMove" data-tagimg="./images/properties/replace.png" data-type="bool">
+				<apply data-vis="collapsed" data-tag="eqPlusMove" data-tagimg="./images/properties/replace.svg" data-type="bool">
 					<forall>
 					</forall>
 					<bvar>

@@ -3,7 +3,7 @@
 		<and>
 		</and>
 		
-		<apply type="bool" data-tag='testtag' data-tagimg='../Aabacus/images/properties/commutative.png'>
+		<apply type="bool" data-tag='testtag' data-tagimg='../Aabacus/images/properties/commutative.svg'>
 			<eq>
 			</eq>
 			<apply type="num">
@@ -27,7 +27,7 @@
 			<ci type="num">b</ci>
 		</apply>
 		
-		<apply type="bool" data-tag='test' data-tagimg='../Aabacus/images/properties/commutative.png'>
+		<apply type="bool" data-tag='test' data-tagimg='../Aabacus/images/properties/commutative.svg'>
 			<eq>
 			</eq>
 			<apply type="num">
@@ -39,7 +39,7 @@
 			<ci type="num">b</ci>
 		</apply>
 		
-		<apply type="bool" data-vis="collapsed" data-tag='eqPlusMove' data-tagimg='../Aabacus/images/properties/distributive.png'>
+		<apply type="bool" data-vis="collapsed" data-tag='eqPlusMove' data-tagimg='../Aabacus/images/properties/distributive.svg'>
 			<forall>
 			</forall>
 			<bvar>
@@ -88,7 +88,7 @@
 		</apply>
 		
 		
-		<apply type="bool" data-tag='test' data-tagimg='../Aabacus/images/properties/commutative.png'>
+		<apply type="bool" data-tag='test' data-tagimg='../Aabacus/images/properties/commutative.svg'>
 			<eq>
 			</eq>
 			<apply type="num">
