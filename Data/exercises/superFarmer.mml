@@ -2,7 +2,7 @@
 	<apply type="bool">
 		<and>
 		</and>
-		<apply title="s" type="bool">
+		<apply  type="bool">
 			<eq>
 			</eq>
 			<ci type="num">sheep</ci>
@@ -13,7 +13,7 @@
 				<ci type="num">rabbit</ci>
 			</apply>
 		</apply>
-		<apply title="s" type="bool">
+		<apply  type="bool">
 			<eq>
 			</eq>
 			<ci type="num">pig</ci>
