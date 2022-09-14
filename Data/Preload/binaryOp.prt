@@ -6,20 +6,20 @@
 
 
 <div data-proto="plus" data-atom="plus" data-type="num" class="atom ">
-	<div class="ol_role" data-type="num" ></div>
+	<div class="s_role" data-type="num" ></div>
 	+
-	<div class="ol_role" data-type="num" ></div>
+	<div class="s_role" data-type="num" ></div>
 </div>
 
 <div data-proto="times" data-atom="times" data-type="num" class="atom ">
-	<div class="ol_role" data-type="num" ></div>
+	<div class="s_role" data-type="num" ></div>
 	*
-	<div class="ol_role" data-type="num" ></div>
+	<div class="s_role" data-type="num" ></div>
 </div>
 			
 <div data-proto="times" data-atom="times" data-type="num" class="atom">
-	<div class="ol_role" data-type="num" ></div>
-	<div class="ol_role" data-type="num" ></div>
+	<div class="s_role" data-type="num" ></div>
+	<div class="s_role" data-type="num" ></div>
 </div>
 
 <div data-proto="forall" data-atom="forAll" class="atom" data-type="bool">
