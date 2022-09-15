@@ -102,7 +102,7 @@ function MNODECreateDefinition(startNode) {
 		//***create arguments container in definendum, that's a way to show brackets
 		//discarded alternative: ahow brackets on the first and last roles:
 		// would not adapt to the bigger role in th elist
-		var $rolescontainer = $('<span class="rolescontainer" ></span>');
+		var $rolescontainer = $('<div class="rolescontainer" ></div>');
 		$definendum.append($rolescontainer);
 		//*** add each parameter
 		$parList.each(function (i, val) {
@@ -116,7 +116,7 @@ function MNODECreateDefinition(startNode) {
 			$(this).replaceWith($newNode);
 			var $Clone1 = MNODEclone($newNode); //clone da inserire in definendum
 			var $Clone2 = MNODEclone($newNode); //clone da inserire in forAll header
-			var $newRole = $('<span class="s_role" ></span>');
+			var $newRole = $('<div class="s_role" ></div>');
 			$newRole.attr("data-type", thisType);
 			//prepend comma
 			if (i > 0) {
