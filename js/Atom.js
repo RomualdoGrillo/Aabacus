@@ -366,9 +366,10 @@ function MNODE_setName(newName) {
 	$(this).find(">.name").text(newName);
 }
 
-function MNODE_addRole(dataType, content) {
+function MNODE_addRole(dataType,content) {
 	var $newNode;
-	$newNode = $('<span class="role">' + content + "</span>").attr(
+	if(content==undefined){content=''}//default content = ''
+	$newNode = $('<div class="role">' + content + "</div>").attr(
 		"data-type",
 		dataType
 	); //data() e' un casino
@@ -577,14 +578,14 @@ function addTypeDecorations($atom) {
 	var b = $atom;
 	if (dataType === "num" && b.find(".leftDecoration").length == 0) {
 		//is decoration present already?
-		b.append($('<span class="leftDecoration"></span>'));
+		b.append($('<div class="leftDecoration"></div>'));
 	}
 	if (
 		(dataType === "num" || dataType === "bool") &&
 		b.find(".topDecoration").length == 0
 	) {
 		var b = $atom;
-		b.append($('<span class="topDecoration"></span>'));
+		b.append($('<div class="topDecoration"></div>'));
 	}
 }
 

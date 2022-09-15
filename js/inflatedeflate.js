@@ -24,7 +24,7 @@ function MNODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) 
 }
 
 function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImported) {
-	var $containerForClone = $('<span></span>')
+	var $containerForClone = $('<div></div>')
 	//$('#testSpan').html("") ;var $containerForClone = $('#testSpan');// debug
 	//var $thisClone = $($.parseXML(startNode).firstElementChild)
 	let $startNodeOrMML = $(startNodeOrMML)
@@ -173,7 +173,11 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 				//signsAsClasses($newNode,"SignsInNames_to_SignsAsClasses"); //convert to_signs_as_classes 
 			} else {
 				//append children in roles
-				var $tgtRoles = $newNode[0].MNODE_getRoles()
+				var $tgtRoles = $newNode[0].MNODE_getRoles();
+				if($tgtRoles.length==0){
+					$newNode[0].MNODE_addRole();
+					$tgtRoles = $newNode[0].MNODE_getRoles();
+				}
 				var $bVarRole = $tgtRoles.filter('.bVar_role');
 				var $noBVarRole = $tgtRoles.not('.bVar_role');
 				$newNode.prepend(nodeText);

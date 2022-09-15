@@ -28,7 +28,7 @@ function refreshOneInfix($MNODEnode){
 		if(i>0){
 			if(!$(e).prev().is('.infix:not(.proto)')){
 				//console.log(i);
-				//$('<span class="infix">*</span>').insertBefore($(e))
+				//$('<div class="infix">*</div>').insertBefore($(e))
 				$infixProto.clone().removeClass('proto').insertBefore($(e))
 			}
 		}
