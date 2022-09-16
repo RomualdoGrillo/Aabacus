@@ -366,13 +366,13 @@ function MNODE_setName(newName) {
 	$(this).find(">.name").text(newName);
 }
 
-function MNODE_addRole(dataType,content) {
+function MNODE_addRole(dataType,roleClass,content) {
 	var $newNode;
 	if(content==undefined){content=''}//default content = ''
+	if(roleClass==undefined){roleClass='ol_role'}//default ol_role ok for function calls
 	$newNode = $('<div class="role">' + content + "</div>").attr(
-		"data-type",
-		dataType
-	); //data() e' un casino
+		"data-type",dataType); //data() e' un casino
+	$newNode.addClass(roleClass);
 	$(this).append($newNode);
 	return $newNode;
 } //da usare quando si crea una nuova funzione o definizione
@@ -521,6 +521,11 @@ function prototypeSearch(className, dataType, requiredClass, name) {
 		let $prototype = MNODEclone($("[data-proto='']"));
 		$prototype.attr("data-atom", className);
 		$prototype.attr("data-type", dataType);
+		// add atomtype name as decoration name 
+		//Duplication the prototype is extended outside this function
+		//I nee to extend in order to use _setName
+		MNODEextend( $prototype);
+		$prototype[0].MNODE_setName(className)
 		//addTypeDecorations($prototype);
 		return $prototype;
 	}

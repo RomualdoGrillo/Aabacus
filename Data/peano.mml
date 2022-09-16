@@ -1,0 +1,127 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-vis="collapsed" data-and="horizontal" data-tag="induction" data-tagimg="./images/properties/induction.svg" data-type="bool">
+			<and>
+			</and>
+			<apply data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="bool">p()</ci>
+				</bvar>
+				<apply data-type="bool">
+					<implies>
+					</implies>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<apply data-type="obj">
+							<callfunction>
+							</callfunction>
+							<ci data-type="bool">p()</ci>
+							<ci data-type="num">0</ci>
+						</apply>
+						<apply data-type="bool">
+							<forall>
+							</forall>
+							<bvar>
+								<ci data-type="num">n</ci>
+							</bvar>
+							<apply data-type="bool">
+								<implies>
+								</implies>
+								<apply data-type="obj">
+									<callfunction>
+									</callfunction>
+									<ci data-type="bool">p()</ci>
+									<ci data-type="num">n</ci>
+								</apply>
+								<apply data-type="obj">
+									<callfunction>
+									</callfunction>
+									<ci data-type="bool">p()</ci>
+									<apply data-type="num">
+										<plus>
+										</plus>
+										<ci data-type="num">n</ci>
+										<ci data-type="num">1</ci>
+									</apply>
+								</apply>
+							</apply>
+						</apply>
+					</apply>
+					<apply data-type="bool">
+						<forall>
+						</forall>
+						<bvar>
+							<ci data-type="num">n</ci>
+						</bvar>
+						<apply data-type="obj">
+							<callfunction>
+							</callfunction>
+							<ci data-type="bool">p()</ci>
+							<ci data-type="num">n</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="bool">
+			<eq>
+			</eq>
+			<cn data-type="num">0</cn>
+	</apply>
+	<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="num">x</ci>
+				</bvar>
+				<apply data-type="bool">
+					<not>
+					</not>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<apply data-type="num">
+							<successivo>
+							</successivo>
+							<ci data-type="num">x</ci>
+						</apply>
+						<cn data-type="num">0</cn>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="num">x</ci>
+				</bvar>
+				<apply data-type="bool">
+					<not>
+					</not>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<apply data-type="num">
+							<successivo>
+							</successivo>
+							<ci data-type="num">x</ci>
+						</apply>
+						<ci data-type="num">x</ci>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="num">
+			<successivo>
+			</successivo>
+	</apply>
+</math>
