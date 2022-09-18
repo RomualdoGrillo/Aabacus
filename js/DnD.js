@@ -46,6 +46,7 @@ function MakeSortableAndInjectMouseDown(event) {
             if($startPointForValids.length==0){$startPointForValids=$atomTarget}
 			$atomTarget.addClass('attackPoint')
 			$validTgT = validCandidatesForPatternDrop($startPointForValids);
+			//$validTgT = validCandidatesForPatternDrop(  $($startPointForValids.toArray().reverse())  );
 			makeTargetsSortableRolesOrAtoms($validTgT.toArray(), 'dragPatternMatch');
 			
 			
@@ -213,7 +214,7 @@ function makeTargetsSortableRolesOrAtoms(targetsArray, propertyName) {
 		} else {
 			//target is not a role: for example in replacement it is an atom
 			let tgt = $('<div class="tgt"></div>')[0]
-			targetsArray[j].append(tgt);
+			targetsArray[j].prepend(tgt);
 			makeSortableMouseDown([tgt])
 		}
 		j++;

@@ -25,7 +25,7 @@
   }
   
   [title^="s"],[data-mark^="s"],[mark^="s"] {/*highlight elements marked with s*/
-	  border-color: yellow!important;
+	  border-color: blueviolet!important;
   }
   
   /*[data-atom="eq"].asymmetric sono le definizioni, in quel tipo di atomi
@@ -824,23 +824,25 @@
   /* .tgt DIVs are dynamically added to act as sortable targets
   
   /*[data-atom][target]::after,*/ .tgt{
-	  content: "";
 	  position:absolute;
-	  width: 30%;
-	  height: 30%;
 	  z-index: 1;
-	  justify-content: center;
-  }
+	  border-radius: inherit;
+	  width: 100%;
+	  height: 100%;
+	 }
   
   .dropTarget{
 	  border-color:blue!important;
 	  border-style:dashed;
   }
+  body[tool=autoAdapt] .dropTarget{
+	border-color: blueviolet!important;
+}
   
   .debug .tgt{
-	  border:1px solid blueviolet;
-	  background-color: violet;
-  }
+	  /* border:1px solid blueviolet; */
+	  background-color: #ee82ee73;
+	 }
   
   .tgt>*{/*target is not a pseudo element*/
 	  background-color:grey!important;

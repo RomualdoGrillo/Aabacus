@@ -39,7 +39,6 @@ function refreshOneInfix($MNODEnode){
 function refreshOneEmpty($MNODE){
 	if($MNODE[0].MNODE_getRoles==undefined){return};
 	$MNODE[0].MNODE_getRoles().each(function(i,e){
-	    $(this).addClass('refreshed')
 		let childrenNum = $(e).children().filter('[data-atom],.dummyrole').length
 		let minPlaces=getNumOfPlaces($(this))[0]
 		if(minPlaces>1){//manage dummies to ensure minimum places
