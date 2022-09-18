@@ -10,7 +10,7 @@
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci type="bool">associativa</ci>
+			<ci type="bool">PlusAssociativeBinary</ci>
 			<ci type="bool">ltr</ci>
 		</apply>
 	</apply>
@@ -21,7 +21,7 @@
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci type="bool">associativa</ci>
+			<ci type="bool">PlusAssociativeBinary</ci>
 			<ci type="bool">rtl</ci>
 		</apply>
 	</apply>
