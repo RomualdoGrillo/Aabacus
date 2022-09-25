@@ -29,8 +29,8 @@ div.ide{
 	z-index:1;
 }
 #leftColumn:not(:hover):not(.fixed){
-	margin-top: 150px;
-	left: -100px;
+	margin-top: 40px;
+	right: 97%;
 }
 
 #leftColumn,#rightColumn{
