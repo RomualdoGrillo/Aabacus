@@ -276,6 +276,7 @@ function clearSortableTargets() {
 	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
 	$('*').removeClass('dropTarget');
 	$('*').removeClass('TargetsCommonParent');
+	$('*').removeClass('refine_c');
 	while (tgts[i]) {
 		let sortable = Sortable.get(tgts[i]);
 		if (sortable) { sortable.destroy() };
