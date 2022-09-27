@@ -10,7 +10,7 @@
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci type="bool">PlusAssociativeBinary</ci>
+			<ci type="bool">Associativa_della_somma</ci>
 			<ci type="bool">ltr</ci>
 		</apply>
 	</apply>
@@ -21,20 +21,17 @@
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci type="bool">PlusAssociativeBinary</ci>
+			<ci type="bool">Associativa_della_somma</ci>
 			<ci type="bool">rtl</ci>
 		</apply>
 	</apply>
 </section>
 
 <section data-section="canvas">
-<apply data-import="./Data/BINARYFOUNDATION.mml" data-vis="" data-tag="PlusAssociativeBinary" data-type="bool">
+<apply data-import="./Data/BINARYFOUNDATION.mml" data-vis="" data-tag="Associativa_della_somma" data-type="bool">
 			<forall>
 			</forall>
-	</apply>
-	<apply data-type="bool">
-			<eq>
-			</eq>
+</apply>
 			<apply data-type="num">
 				<plus>
 				</plus>
@@ -51,7 +48,7 @@
 					<ci data-type="num">d</ci>
 				</apply>
 			</apply>
-	</apply>
+	
 </section>
 
 <section data-section="result">
