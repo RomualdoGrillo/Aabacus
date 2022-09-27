@@ -1,7 +1,5 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply type="bool">
-		<and>
-		</and>
+	
 		<apply  type="bool">
 			<eq>
 			</eq>
@@ -35,5 +33,5 @@
 				<ci type="num">pig</ci>
 			</apply>
 		</apply>
-	</apply>
+	
 </math>

@@ -1,0 +1,19 @@
+
+		
+			<div data-proto="cow" data-atom="ci" data-type="num" class="atom" style="min-width: 30px; background-image: url(./images/cow.png);
+			background-size: 100% 100%;">
+					<div class="name" style="display:none">cow</div>
+			</div>
+			<div data-proto="pig" data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/pig.png);
+			background-size: 100% 100%;">
+					<div class="name" style="display:none">pig</div>
+			</div>
+			<div data-proto="sheep" data-atom="ci" data-type="num" class="atom" style="min-width: 30px; background-image: url(./images/sheep.png);
+			background-size: 100% 100%;">
+					<div class="name" style="display:none">sheep</div>
+			</div>
+			<div data-proto="rabbit" data-atom="ci" data-type="num" class="atom" style=" background-image: url(./images/rabbit.png);
+			background-size: 100% 100%;">
+					<div class="name" style="display:none">rabbit</div>
+			</div>
+		
