@@ -1,5 +1,5 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply data-vis="" data-tag="Associativa_della_somma" data-type="bool">
+	<apply data-tag="AssociativaSomma" data-tagimg="./images/properties/associate.svg" data-vis="collapsed" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>

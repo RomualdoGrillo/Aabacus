@@ -6,29 +6,30 @@
 <apply type="bool">
 		<eventtoaction>
 		</eventtoaction>
-		<ci type="bool">a</ci>
+		<ci type="bool">→</ci>
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci type="bool">Associativa_della_somma</ci>
+			<ci type="bool">AssociativaSomma</ci>
 			<ci type="bool">ltr</ci>
 		</apply>
 	</apply>
 	<apply type="bool">
 		<eventtoaction>
 		</eventtoaction>
-		<ci title="d" type="bool">s</ci>
+		<ci title="d" type="bool">←</ci>
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci type="bool">Associativa_della_somma</ci>
+			<ci type="bool">AssociativaSomma</ci>
 			<ci type="bool">rtl</ci>
 		</apply>
 	</apply>
 </section>
 
 <section data-section="canvas">
-<apply data-import="./Data/BINARYFOUNDATION.mml" data-vis="" data-tag="Associativa_della_somma" data-type="bool">
+<ci data-type="bool">Applica la proprietà associativa della somma selezionando una parentesi e utilizzando i tasti  ← →</ci>
+<apply data-import="./Data/BINARYFOUNDATION.mml" data-vis="" data-tag="AssociativaSomma" data-type="bool">
 			<forall>
 			</forall>
 </apply>
