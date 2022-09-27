@@ -484,7 +484,8 @@ function MNODEcollect($dragged,$target){
 	MNODEparent($(".couldBeCollected")).addClass("refine_c")
 	//$dragged.insertBefore($parentParent);
 	$dragged.remove();
-	$(".couldBeCollected").remove()
+	//$(".couldBeCollected").remove()
+	$parentParent.find(".couldBeCollected").remove()
 	$parentParent.addClass("refine_c");
 	PActx.$transform =  extOp;
 	PActx.matchedTF=true
