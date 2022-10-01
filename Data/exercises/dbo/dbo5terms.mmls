@@ -1,0 +1,111 @@
+<section data-section="palette">
+<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/binaryOp.prt">import palette</ci>
+</section>
+
+<section data-section="events">
+<apply type="bool">
+		<eventtoaction>
+		</eventtoaction>
+		<ci type="bool">→</ci>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">AssociativaSomma</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<eventtoaction>
+		</eventtoaction>
+		<ci title="d" type="bool">←</ci>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">AssociativaSomma</ci>
+			<ci type="bool">rtl</ci>
+		</apply>
+	</apply>
+</section>
+
+<section data-section="canvas">
+	<ci data-type="bool">Applica la proprietà associativa della somma selezionando una parentesi e utilizzando i tasti  ← →</ci>
+	<apply data-import="./Data/BINARYFOUNDATION.mml" data-tag="AssociativaSomma" data-tagimg="./images/properties/associate.svg" data-vis="collapsed" data-type="bool">
+			<forall>
+			</forall>
+	</apply>
+	<apply data-type="num">
+			<plus>
+			</plus>
+			<apply data-type="num">
+				<plus>
+				</plus>
+				<ci data-type="num">a</ci>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<apply data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">b</ci>
+						<ci data-type="num">c</ci>
+					</apply>
+					<ci data-type="num">b</ci>
+				</apply>
+			</apply>
+			<ci data-type="num">c</ci>
+	</apply>
+</section>
+<section data-section="events">
+	<apply data-type="bool">
+			<eventtoaction>
+			</eventtoaction>
+			<ci data-type="bool">→</ci>
+			<apply data-type="obj">
+				<callfunction>
+				</callfunction>
+				<ci data-type="bool">AssociativaSomma</ci>
+				<ci data-type="bool">ltr</ci>
+			</apply>
+	</apply>
+	<apply data-type="bool">
+			<eventtoaction>
+			</eventtoaction>
+			<ci title="d" data-type="bool">←</ci>
+			<apply data-type="obj">
+				<callfunction>
+				</callfunction>
+				<ci data-type="bool">AssociativaSomma</ci>
+				<ci data-type="bool">rtl</ci>
+			</apply>
+	</apply>
+</section>
+<section data-section="result">
+	<apply data-type="num">
+			<plus>
+			</plus>
+			<apply data-type="num">
+				<plus>
+				</plus>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<ci data-type="num">a</ci>
+					<ci data-type="num">b</ci>
+				</apply>
+				<ci data-type="num">c</ci>
+			</apply>
+			<apply data-type="num">
+				<plus>
+				</plus>
+				<ci data-type="num">b</ci>
+				<ci data-type="num">c</ci>
+			</apply>
+	</apply>
+</section>
+
+
+<section data-section="settings">
+	{
+   "settings_json":"./Data/exercises/dbo/dbo.set"
+    }
+</section>
