@@ -1,0 +1,72 @@
+<section data-section="palette">
+	<div data-proto="plus" data-atom="plus" data-type="num" class="atom ">
+				<div class="ol_role" data-type="num"></div>
+	</div>
+</section>
+<section data-section="canvas">
+	<apply data-vis="collapsed" data-tag="plusAssociate"  data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">a__</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">b___</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply title="-mainP" data-type="num">
+					<plus>
+					</plus>
+					<apply title="s--c" data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">a</ci>
+					</apply>
+					<ci data-type="num">b</ci>
+				</apply>
+				<apply title="-mainP" data-type="num">
+					<plus>
+					</plus>
+					<ci title="s--c" data-type="num">a</ci>
+					<ci data-type="num">b</ci>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="num">
+			<plus>
+			</plus>
+			<ci data-type="num">a</ci>
+			<ci data-type="num">b</ci>
+			<ci data-type="num">c</ci>
+			<ci data-type="num">d</ci>
+			<ci data-type="num">e</ci>
+	</apply>
+</section>
+<section data-section="events">
+	<apply data-type="bool">
+			<eventtoaction>
+			</eventtoaction>
+			<ci data-type="bool">p</ci>
+			<apply data-type="obj">
+				<callfunction>
+				</callfunction>
+				<ci data-type="bool">plusAssociate</ci>
+				<ci data-type="bool">ltr</ci>
+			</apply>
+			<apply data-type="obj">
+				<callfunction>
+				</callfunction>
+				<ci data-type="bool">plusAssociate</ci>
+				<ci data-type="bool">rtl</ci>
+			</apply>
+	</apply>
+</section>
+<section data-section="result">
+</section>
+<section data-section="settings">
+	{
+   "settings_json":"./Data/exercises/dbo/dbo.set"
+    }
+</section>

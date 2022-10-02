@@ -1,5 +1,7 @@
 <section data-section="palette">
-<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/binaryOp.prt">import palette</ci>
+<div data-proto="plus" data-atom="plus" data-type="num" class="atom ">
+				<div class="ol_role" data-type="num"></div>
+			</div>
 </section>
 
 <section data-section="events">
@@ -28,7 +30,7 @@
 </section>
 
 <section data-section="canvas">
-	<ci data-type="bool">Applica la proprietà associativa della somma selezionando una parentesi e utilizzando i tasti  ← →</ci>
+	<ci data-type="bool">Applica la proprietà <br>associativa generalizzata:</ci>
 	<apply data-import="./Data/BINARYFOUNDATION.mml" data-tag="AssociativaSomma" data-tagimg="./images/properties/associate.svg" data-vis="collapsed" data-type="bool">
 			<forall>
 			</forall>
