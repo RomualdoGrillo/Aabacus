@@ -5,7 +5,7 @@
 	</div>-->
 </section>
 <section data-section="canvas">
-	<ci data-type="bool">Applica la proprietà associativa generalizzata: rimuovi una parentesi selezionandola e premendo "p",  seleziona più elementi e premi "p" per circondarli con una parentesi</ci>
+	<ci data-type="bool">Applica la proprietà associativa generalizzata: rimuovi una parentesi selezionandola e premendo "p",  seleziona più elementi e premi "p" per circondarli con una</ci>
 	<apply data-vis="collapsed" data-tag="plusAssociate" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
 			<forall>
 			</forall>
@@ -42,16 +42,16 @@
 			<apply data-type="num">
 				<plus>
 				</plus>
-				<ci data-type="num">a</ci>
-				<ci data-type="num">b</ci>
+				<ci data-type="num">1</ci>
+				<ci data-type="num">1</ci>
 				<apply data-type="num">
 					<plus>
 					</plus>
-					<ci data-type="num">c</ci>
-					<ci data-type="num">d</ci>
+					<ci data-type="num">1</ci>
+					<ci data-type="num">1</ci>
 				</apply>
 			</apply>
-			<ci data-type="num">e</ci>
+			<ci data-type="num">1</ci>
 	</apply>
 </section>
 <section data-section="events">
@@ -80,16 +80,16 @@
 			<apply data-type="num">
 				<plus>
 				</plus>
-				<ci data-type="num">a</ci>
-				<ci data-type="num">b</ci>
-				<ci data-type="num">c</ci>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<ci data-type="num">1</ci>
+					<ci data-type="num">1</ci>
+				</apply>
+				<ci data-type="num">1</ci>
 			</apply>
-			<apply data-type="num">
-				<plus>
-				</plus>
-				<ci data-type="num">d</ci>
-				<ci data-type="num">e</ci>
-			</apply>
+			<ci data-type="num">1</ci>
+			<ci data-type="num">1</ci>
 	</apply>
 </section>
 <section data-section="settings">
