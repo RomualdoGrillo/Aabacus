@@ -70,7 +70,7 @@
 						<apply title="-mainP" data-type="num">
 							<plus>
 							</plus>
-							<apply title="s--c" data-type="num">
+							<apply title="s-s" data-type="num">
 								<plus>
 								</plus>
 								<ci data-type="num">a</ci>
@@ -80,7 +80,7 @@
 						<apply title="-mainP" data-type="num">
 							<plus>
 							</plus>
-							<ci title="s--c" data-type="num">a</ci>
+							<ci title="s-s" data-type="num">a</ci>
 							<ci data-type="num">b</ci>
 						</apply>
 					</apply>
