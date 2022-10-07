@@ -145,7 +145,7 @@
 						</apply>
 					</apply>
 				</apply>
-				<apply data-vis="collapsed" data-tag="Opposite" data-tagimg="../Aabacus/images/properties/Annihilate.svg" data-type="bool">
+				<apply data-vis="collapsed" data-tag="Opposite" data-tagimg="./images/properties/Annihilate.svg" data-type="bool">
 					<forall>
 					</forall>
 					<bvar>
