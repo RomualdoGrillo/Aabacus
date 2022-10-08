@@ -94,6 +94,9 @@ body[timesdisposition=brTimes] br + [data-atom]::before{
 	pointer-events: none;
 }
 
+[timesdisposition=vertTimes] [data-variableorient=true]{
+	transform: rotate(90deg);
+}
 
 .sortable-drag::before{/*if before is removed you get a flickering, so it is just hidden*/
 	visibility:hidden;
@@ -143,19 +146,20 @@ disadvantage: building new prototypes is less intuitive
 /*[data-tag]::after{
 	content:attr(data-tag);*/
 [data-tag]::after/*,[title]:not([title=""]):hover::after*/{
-	content:attr(data-tag)attr(title);
+	content:
+	attr(data-tag)attr(title);
 	z-index: 1;
 	background-image: inherit;
 	background-color: white;
 	/* width: 40px;*/
-	min-height:25px;
+	min-height: 40px;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center left;
 	padding-right:2px;
 	border: 1px solid gray;
 	border-radius: 8px;
-	border-bottom-right-radius: 0px;
+	/* border-bottom-right-radius: 0px; */
 	/*position: absolute;
 	bottom: 95%;
 	right: 60%;
