@@ -1,0 +1,48 @@
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="canvas">
+	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-vis="" data-and="horizontal" data-type="bool">
+			<and>
+			</and>
+	</apply>
+	<ci data-type="bool">Dimostra che 3 + 2 è uguale a 5</ci>
+	<apply data-type="num">
+			<plus>
+			</plus>
+			<apply data-type="num">
+				<plus>
+				</plus>
+				<ci data-type="num">1</ci>
+				<ci data-type="num">1</ci>
+				<ci data-type="num">1</ci>
+			</apply>
+			<apply data-type="num">
+				<plus>
+				</plus>
+				<ci data-type="num">1</ci>
+				<ci data-type="num">1</ci>
+			</apply>
+	</apply>
+	
+</section>
+<section data-section="events">
+	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="result">
+<apply data-type="num">
+			<plus>
+			</plus>
+			<ci data-type="num">1</ci>
+			<ci data-type="num">1</ci>
+			<ci data-type="num">1</ci>
+			<ci data-type="num">1</ci>
+			<ci data-type="num">1</ci>
+	</apply>
+</section>
