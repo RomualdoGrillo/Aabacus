@@ -1,11 +1,30 @@
-{
+<section data-section="palette">
+<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/palette.prt">import palette</ci>
+</section>
+
+<section data-section="events">
+<ci data-type="bool" data-import="./Data/Preload/gestToAction.mml">import events</ci>
+</section>
+
+<section data-section="canvas">
+
+<ci data-type="bool" data-import="./Data/FOUNDATION_FIELD.mml">import FOUNDATION</ci>
+
+</section>
+
+<section data-section="result">
+</section>
+
+<section data-section="settings">
+	
+    {
 	"debug":false,
 	"gameMode":true,
 	"gameModeSurpriseRes":false,
 	"lockCanvas":true,
 	"resultHidden":false,
 	"visSettingSelected":1,
-	"tool":"",
+	"tool":"declare",
 	"visSettings":[
 		{
 		"name":"classic",
@@ -41,4 +60,6 @@
 		}
 	]
 }
+</section>
+
 

@@ -20,7 +20,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	}
 	
-	GLBDnD.toolWhenMousedown = GLBtool;
+	GLBDnD.toolWhenMousedown = GLBsettings.tool;
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
 		//********* autoAdapt ****************
 		if (MNODEclosedDef($(event.target))) {

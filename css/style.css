@@ -395,7 +395,10 @@
   .unselected[data-atom], .unselected[data-atom] [data-atom]{
 	  background-color:white!important;
   }
-  
+  .selectedTool[data-atom]{
+	border-color: blue!important;
+	background-color: rgb(245, 242, 186)!important;
+  }
   .debug .selected[data-atom] /*,.selected[data-atom]>.s_role>.glued*/{
 	  border-color: red!important;
   }
@@ -445,6 +448,9 @@
   }
   body[tool=autoAdapt] *{
 	  cursor: url(../images/shirt.png), auto;
+  }
+  body[tool=declare] *{
+	cursor: pointer;
   }
   /*.hover[target=distributive], .hover[target=distributiveDnD] *{ 
 	  cursor: url(../images/distributeDown.svg), auto;

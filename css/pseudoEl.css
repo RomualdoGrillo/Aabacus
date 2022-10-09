@@ -150,7 +150,8 @@ disadvantage: building new prototypes is less intuitive
 	attr(data-tag)attr(title);
 	z-index: 1;
 	background-image: inherit;
-	background-color: white;
+	border-color:inherit;
+	background-color: inherit;
 	/* width: 40px;*/
 	min-height: 40px;
 	background-size: contain;

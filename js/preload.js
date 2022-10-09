@@ -117,19 +117,18 @@ function injectAllMMLS(response,rootUrl){
 	let $settingsSection = $sections.filter('[data-section=settings]')
 	if ($settingsSection.length != 0) {
 		let all = JSON.parse($settingsSection.html());
-
-		if (all.settings_json && all.settings_json.string) {//string data
-			GLBsettings = JSON.parse(all.settings_json.string);
-			GLBsettingsToInterface();
-			RefreshEmptyInfixBraketsGlued($("#canvasRole"))
-		}
-		else if (all.settings_json) {//url
+		if (all.settings_json) {//url
 			$.getJSON(buildPath(rootUrl, all.settings_json), function (parsedJSON) {
 				//console.log(parsedJSON);
 				GLBsettings = parsedJSON
 				GLBsettingsToInterface();
 				//RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 			});
+		}
+		else {//string data
+			GLBsettings = all;
+			GLBsettingsToInterface();
+			RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 		}
 	}
 	RefreshEmptyInfixBraketsGlued()
@@ -211,6 +210,10 @@ function GLBsettingsToInterface() {
 				if(GLBsettings.lockCanvas){$('#canvas').removeClass('unlocked')}
 				else{$('#canvas').addClass('unlocked')}
 				refreshAsymmEq($('#canvas'));
+	}
+	if(GLBsettings.tool){
+		$('body').attr('tool',GLBsettings.tool);//update tool as class of <body> 
+    	console.log('GLBsettings.tool<='+ GLBsettings.tool)
 	}
 }
 

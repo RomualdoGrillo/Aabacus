@@ -1,6 +1,5 @@
 //************************Init*******************************
 let GLBsettings
-let GLBtool =''
 let debugMode = false
 //debug,normal
 let canvas = document.getElementById('canvasRole');
@@ -175,6 +174,16 @@ function clickHandler(event) {
 	} 
 	else if($thisMNODE.hasClass('unselectable')){
 		selectionManager("","","",true)//deselectAll
+	}
+	else if( ($thisMNODE.attr('data-atom')=='forAll' || $thisMNODE.attr('data-atom')=='eq' || $thisMNODE.attr('data-atom')=='ci' )&& $thisMNODE.attr('data-tag')){
+		//solo se è effettivamente una proprietà ed non un container
+		if($thisMNODE.hasClass('selectedTool')){
+			$thisMNODE.removeClass('selectedTool')
+		}
+		else{$('[data-atom]').removeClass('selectedTool')
+			$thisMNODE.addClass('selectedTool');
+			console.log('Selected tool: '+$thisMNODE.attr('data-tag'))
+		} 
 	}
 	else if(!$thisMNODE.hasClass('unselectable')){
 		selectionManager($thisMNODE,event.ctrlKey||event.metaKey,event.shiftKey)//on mac use command key instead of control
@@ -467,11 +476,11 @@ function removeVisualization() {
 	$('.visualization').remove()
 }
 
-const tools = ["", "copy", "autoAdapt"];
+const tools = ["", "copy", "autoAdapt","declare"];
 function changeTool(){
-	let currToolIndex = tools.indexOf(GLBtool)
+	let currToolIndex = tools.indexOf(GLBsettings.tool)
 	let newToolIndex = ((currToolIndex + 1) % tools.length)// start over when the list is over
-	GLBtool = tools[newToolIndex]//update tool in GLB
-	$('body').attr('tool',GLBtool);//update tool as class of <body> 
-    console.log('GLBtool<='+ GLBtool)
+	GLBsettings.tool = tools[newToolIndex]//update tool in GLB
+	$('body').attr('tool',GLBsettings.tool);//update tool as class of <body> 
+    console.log('GLBsettings.tool<='+ GLBsettings.tool)
 }
