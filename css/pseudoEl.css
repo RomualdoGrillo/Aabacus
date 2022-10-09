@@ -94,7 +94,7 @@ body[timesdisposition=brTimes] br + [data-atom]::before{
 	pointer-events: none;
 }
 
-[timesdisposition=vertTimes] [data-variableorient=true]{
+[timesdisposition=vertTimes] [data-variableorient=true]::after{
 	transform: rotate(90deg);
 }
 

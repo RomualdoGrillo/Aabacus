@@ -91,11 +91,11 @@ function MakeSortableAndInjectMouseDown(event) {
 		}
 		//make source sortable
 		let sort
-		if(GLBDnD.toolWhenMousedown==""){//if mode is normal
-			sort = $atomTarget[0].parentElement.matches('.ul_role') || !MNODEclosedDef($atomTarget);		
-		}
-		else{//never sort in "autoAdapt" or "copy" mode
+		if(GLBDnD.toolWhenMousedown=="autoAdapt" || GLBDnD.toolWhenMousedown=="copy" ){//never sort in "autoAdapt" or "copy" mode\
 			sort=false;
+		}
+		else{
+			sort = $atomTarget[0].parentElement.matches('.ul_role') || !MNODEclosedDef($atomTarget);
 		}
 		$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
 		let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]

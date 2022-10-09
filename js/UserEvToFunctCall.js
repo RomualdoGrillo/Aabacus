@@ -4,26 +4,45 @@
 
 
 
-function keyboardEvToFC($atom, keyPressed){
-	var $actions = searchEventHandler(keyPressed);
+function keyboardEvToFC($atom, keyPressed,e){
 	var PActx 
-	//prova in ordine ogni azione
-	for(var i=0;i<$actions.length;i++){
-		var actionString
-		var firstValString
-		try {
-    		actionString = $actions[i].MNODE_getRoles('.function').children()[0].MNODE_getName();
-			firstValString = $actions[i].MNODE_getRoles('.values').children()[0].MNODE_getName();	
-		}
-		catch(err) {}
+	if(GLBsettings.tool=="declare"){
+		var actionString = $('.selectedTool').attr('data-tag');
+		var direction = "ltr"
+		if( e.shiftKey){ direction = "rtl"}
 		
-		PActx = TryOnePropertyByName(actionString, $atom ,firstValString);
+		if(keyPressed==='\r' && actionString){
+			PActx = TryOnePropertyByName(actionString, $atom ,direction);
 	
-		if( PActx && PActx.matchedTF ){//proprietà applicata con successo
-			PActx.msg = actionString +" "+ firstValString
-			break
+			if( PActx && PActx.matchedTF ){//proprietà applicata con successo
+				PActx.msg = actionString +" "+ firstValString
+			}
 		}
 	}
+	else{
+
+		var $actions = searchEventHandler(keyPressed);
+		//prova in ordine ogni azione
+		for(var i=0;i<$actions.length;i++){
+			var actionString
+			var firstValString
+			try {
+				actionString = $actions[i].MNODE_getRoles('.function').children()[0].MNODE_getName();
+				firstValString = $actions[i].MNODE_getRoles('.values').children()[0].MNODE_getName();	
+			}
+			catch(err) {}
+			
+			PActx = TryOnePropertyByName(actionString, $atom ,firstValString);
+		
+			if( PActx && PActx.matchedTF ){//proprietà applicata con successo
+				PActx.msg = actionString +" "+ firstValString
+				break
+			}
+		}
+
+
+	}
+	
 	if(PActx == undefined){
 		PActx = newPActx()//if no property was applied pass a dummy PActx
 	}

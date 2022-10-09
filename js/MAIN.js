@@ -111,7 +111,7 @@ $(document).on('keydown', function(e) {
 		var $selected = $('.selected')
 		var PActx = newPActx();
 
-		PActx = keyboardEvToFC($selected, keyPressed);
+		PActx = keyboardEvToFC($selected, keyPressed,e);
 		
 		//*************** operazioni conclusive (dopo tutti i tentativi)*******************
 		PActxConclude(PActx)
