@@ -101,7 +101,7 @@
 </section>
 <section data-section="settings">
 	{
-   "settings_json":"./Data/Preload/default.set"
+   "import_json_settings":"./Data/Preload/default.set"
     }
 </section>
 

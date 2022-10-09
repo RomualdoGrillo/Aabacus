@@ -5,6 +5,7 @@
 	"lockCanvas":false,
 	"resultHidden":true,
 	"visSettingSelected":1,
+	"tool":"",
 	"visSettings":[
 		{
 		"name":"classic",

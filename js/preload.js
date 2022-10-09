@@ -117,8 +117,8 @@ function injectAllMMLS(response,rootUrl){
 	let $settingsSection = $sections.filter('[data-section=settings]')
 	if ($settingsSection.length != 0) {
 		let all = JSON.parse($settingsSection.html());
-		if (all.settings_json) {//url
-			$.getJSON(buildPath(rootUrl, all.settings_json), function (parsedJSON) {
+		if (all.import_json_settings) {//url
+			$.getJSON(buildPath(rootUrl, all.import_json_settings), function (parsedJSON) {
 				//console.log(parsedJSON);
 				GLBsettings = parsedJSON
 				GLBsettingsToInterface();
@@ -211,10 +211,11 @@ function GLBsettingsToInterface() {
 				else{$('#canvas').addClass('unlocked')}
 				refreshAsymmEq($('#canvas'));
 	}
-	if(GLBsettings.tool){
-		$('body').attr('tool',GLBsettings.tool);//update tool as class of <body> 
-    	console.log('GLBsettings.tool<='+ GLBsettings.tool)
-	}
+	let tool = GLBsettings.tool
+	if(tool==undefined){tool=''}
+	$('body').attr('tool',tool);//update tool as class of <body> 
+    	console.log('GLBsettings.tool<='+ tool)
+	
 }
 
 /*

@@ -4,6 +4,7 @@
 	"gameModeSurpriseRes":true,
 	"lockCanvas":true,
 	"visSettingSelected":1,
+	"tool":"",
 	"visSettings":[
 		{
 		"name":"classic",

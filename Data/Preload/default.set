@@ -6,12 +6,12 @@
 	"resultHidden":true,
 	"resultString":"tesi",
 	"visSettingSelected":3,
+	"tool":"",
 	"visSettings":[
 		{
 		"name":"classic",
 		"colors":"whiteBorders",
 		"brackets":true,
-		"timesVert":false,
         "timesDisposition":1,
 		"fixBorders":false,
 		"eforall":false
@@ -20,7 +20,6 @@
 		"name":"beauty",
 		"colors":"greyBorders",
 		"brackets":true,
-		"timesVert":false,
 		"timesDisposition":2,
         "fixBorders":false,
 		"eforall":true
@@ -29,7 +28,6 @@
 		"name":"advanced",
 		"colors":"coloredBorders",
 		"brackets":false,
-		"timesVert":true,
 		"timesDisposition":3,
         "fixBorders":false,
 		"eforall":true
@@ -38,7 +36,6 @@
 		"name":"tooColored",
 		"colors":"coloredBorders",
 		"brackets":false,
-		"timesVert":true,
         "timesDisposition":1,
 		"fixBorders":true,
 		"eforall":false

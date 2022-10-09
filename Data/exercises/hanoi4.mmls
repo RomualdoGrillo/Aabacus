@@ -69,6 +69,6 @@
 </section>
 <section data-section="settings">
 	{
-   "settings_json":"./Data/Preload/proof.set"
+   "import_json_settings":"./Data/Preload/proof.set"
     }
 </section>

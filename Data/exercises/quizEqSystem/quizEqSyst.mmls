@@ -99,7 +99,7 @@
 
 <section data-section="settings">
 	{
-   "settings_json":"./Data/exercises/quizEqSystem/gameHorTimes.set"
+   "import_json_settings":"./Data/exercises/quizEqSystem/gameHorTimes.set"
     }
 </section>
 

@@ -94,6 +94,6 @@
 </section>
 <section data-section="settings">
 	{
-   "settings_json":"./Data/exercises/dbo/dbo.set"
+   "import_json_settings":"./Data/exercises/dbo/dbo.set"
     }
 </section>
