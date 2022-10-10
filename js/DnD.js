@@ -74,10 +74,10 @@ function MakeSortableAndInjectMouseDown(event) {
 		//******** apply custom propeties listed in propertiesDnD[i] ***************
 		if (!$atomTarget.length || !$atomTarget[0].parentElement) { return }//precondition
 		let i = 0
-		let propertiesInCanvas = DnDpropertiesInCanvas(propertiesDnD)
-		while (propertiesInCanvas[i]) {
-			let targets = propertiesInCanvas[i].findTgt($atomTarget);
-			makeTargetsSortableRolesOrAtoms(targets, propertiesInCanvas[i].name)
+		let propInCanvasEnabled = DnDpropInCanvasEnabled(propertiesDnD)
+		while (propInCanvasEnabled[i]) {
+			let targets = propInCanvasEnabled[i].findTgt($atomTarget);
+			makeTargetsSortableRolesOrAtoms(targets, propInCanvasEnabled[i].name)
 			$validTgT = $validTgT.add($(targets))
 			i++
 		}

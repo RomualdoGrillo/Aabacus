@@ -9,7 +9,7 @@ function keyboardEvToFC($atom, keyPressed,e){
 	if(GLBsettings.tool=="declare"){
 		var actionString = $('.selectedTool').attr('data-tag');
 		var direction = "ltr"
-		if( e.shiftKey){ direction = "rtl"}
+		if( e && e.shiftKey){ direction = "rtl"}
 		
 		if(keyPressed==='\r' && actionString){
 			PActx = TryOnePropertyByName(actionString, $atom ,direction);
@@ -49,17 +49,20 @@ function keyboardEvToFC($atom, keyPressed,e){
 	return PActx
 }
 
-function DnDpropertiesInCanvas(propertiesDnD){
-	//example: an element ci must be in canvas with data-tag="associativeDnD"
-	let propInCanvas = $('#canvasRole [data-atom=ci][data-tag]').toArray()
-	let namelist = propInCanvas.map(function(e){return e.getAttribute('data-tag')})
+function DnDpropInCanvasEnabled(propertiesDnD){
+	//example: an element ci must be in canvas with data-tag="associativeDnD".  
+	let $propInCanvas = $('#canvasRole [data-atom=ci][data-tag]')
+	let propInCanvasEnabled 
+	if (GLBsettings.tool='declare'){propInCanvasEnabled = $propInCanvas.filter('.selectedTool').toArray()}
+	else{propInCanvasEnabled = $propInCanvas.toArray()}
+	let namelist = propInCanvasEnabled.map(function(e){return e.getAttribute('data-tag')})
 	// same name "associativeDnD" must be in  propertiesDnD
-	//Adding a new DnD interna propertY:
+	//Adding a new DnD internal property:
 	//add an element to the array, add a ci to the canvas with data-tag...
 	let propertiesKnokedOut = propertiesDnD.map(function(e){
 		let index = namelist.indexOf(e.name)
 		if(index != -1){
-			e.icon = propInCanvas[index].getAttribute('data-tagimg')
+			e.icon = propInCanvasEnabled[index].getAttribute('data-tagimg')
 			return e
 		}
 		else{
