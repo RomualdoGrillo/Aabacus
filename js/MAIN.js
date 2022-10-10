@@ -177,12 +177,29 @@ function clickHandler(event) {
 	}
 	else if( ($thisMNODE.attr('data-atom')=='forAll' || $thisMNODE.attr('data-atom')=='eq' || $thisMNODE.attr('data-atom')=='ci' )&& $thisMNODE.attr('data-tag')){
 		//solo se è effettivamente una proprietà ed non un container
+		let ImgPath = $thisMNODE.attr('data-tagimg')
+		let rtlImgPath = $thisMNODE.attr('data-tagimgrtl')
 		if($thisMNODE.hasClass('selectedTool')){
-			$thisMNODE.removeClass('selectedTool')
+			$thisMNODE.removeClass('selectedTool');
+			$thisMNODE.addClass('selectedToolrtl');
+			//change icon if possible 
+			if(rtlImgPath){
+				$thisMNODE.attr('style','background-image: url("' + rtlImgPath + '");')
+			}
+			console.log('Selected tool rtl: '+$thisMNODE.attr('data-tag'));
 		}
-		else{$('[data-atom]').removeClass('selectedTool')
+		else if($thisMNODE.hasClass('selectedToolrtl')){
+			$thisMNODE.removeClass('selectedToolrtl');
+			//change icon if possible 
+			if(ImgPath){
+				$thisMNODE.attr('style','background-image: url("' + ImgPath + '");')
+			}
+			console.log('removed class selectedToolrtl')
+		}
+		else{$('[data-atom]').removeClass('selectedTool');
+		$('[data-atom]').removeClass('selectedToolrtl');
 			$thisMNODE.addClass('selectedTool');
-			console.log('Selected tool: '+$thisMNODE.attr('data-tag'))
+			console.log('Selected tool: '+$thisMNODE.attr('data-tag'));
 		} 
 	}
 	else if(!$thisMNODE.hasClass('unselectable')){
