@@ -42,16 +42,16 @@
 			<apply data-type="num">
 				<plus>
 				</plus>
-				<ci data-type="num">1</ci>
-				<ci data-type="num">1</ci>
+				<cn data-type="num">1</cn>
+				<cn data-type="num">1</cn>
 				<apply data-type="num">
 					<plus>
 					</plus>
-					<ci data-type="num">1</ci>
-					<ci data-type="num">1</ci>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
 				</apply>
 			</apply>
-			<ci data-type="num">1</ci>
+			<cn data-type="num">1</cn>
 	</apply>
 </section>
 <section data-section="events">
@@ -83,13 +83,13 @@
 				<apply data-type="num">
 					<plus>
 					</plus>
-					<ci data-type="num">1</ci>
-					<ci data-type="num">1</ci>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
 				</apply>
-				<ci data-type="num">1</ci>
+				<cn data-type="num">1</cn>
 			</apply>
-			<ci data-type="num">1</ci>
-			<ci data-type="num">1</ci>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
 	</apply>
 </section>
 <section data-section="settings">

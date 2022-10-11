@@ -5,7 +5,15 @@
 	</apply>
 </section>
 <section data-section="canvas">
-	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-vis="" data-and="horizontal" data-type="bool">
+	<apply data-hide="true" data-type="bool">
+			<and>
+			</and>
+			<apply data-import="./Data/FOUNDATION.mml">
+				<and>
+				</and>
+			</apply>
+	</apply>
+	<apply data-import="./Data/FOUNDATION_FIELD.mml">
 			<and>
 			</and>
 	</apply>
@@ -16,15 +24,15 @@
 			<apply data-type="num">
 				<plus>
 				</plus>
-				<ci data-type="num">1</ci>
-				<ci data-type="num">1</ci>
-				<ci data-type="num">1</ci>
+				<cn data-type="num">1</cn>
+				<cn data-type="num">1</cn>
+				<cn data-type="num">1</cn>
 			</apply>
 			<apply data-type="num">
 				<plus>
 				</plus>
-				<ci data-type="num">1</ci>
-				<ci data-type="num">1</ci>
+				<cn data-type="num">1</cn>
+				<cn data-type="num">1</cn>
 			</apply>
 	</apply>
 	
@@ -40,11 +48,12 @@
 <apply data-type="num">
 			<plus>
 			</plus>
-			<ci data-type="num">1</ci>
-			<ci data-type="num">1</ci>
-			<ci data-type="num">1</ci>
-			<ci data-type="num">1</ci>
-			<ci data-type="num">1</ci>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
 	</apply>
 </section>
 <section data-section="settings">

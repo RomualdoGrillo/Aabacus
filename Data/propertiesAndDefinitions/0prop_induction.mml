@@ -18,7 +18,7 @@
 							<callfunction>
 							</callfunction>
 							<ci data-type="bool">p()</ci>
-							<ci data-type="num">0</ci>
+							<cn data-type="num">0</cn>
 						</apply>
 						<apply data-type="bool">
 							<forall>
@@ -43,7 +43,7 @@
 										<plus>
 										</plus>
 										<ci data-type="num">n</ci>
-										<ci data-type="num">1</ci>
+										<cn data-type="num">1</cn>
 									</apply>
 								</apply>
 							</apply>
