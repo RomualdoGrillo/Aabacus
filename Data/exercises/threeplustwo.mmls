@@ -5,7 +5,7 @@
 	</apply>
 </section>
 <section data-section="canvas">
-	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-vis="" data-and="horizontal" data-type="bool">
+	<apply data-import="./Data/FOUNDATION_FIELD.mml">
 			<and>
 			</and>
 	</apply>
