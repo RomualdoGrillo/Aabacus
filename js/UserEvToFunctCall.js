@@ -49,12 +49,14 @@ function keyboardEvToFC($atom, keyPressed,e){
 	return PActx
 }
 
-function DnDpropInCanvasEnabled(propertiesDnD){
-	//example: an element ci must be in canvas with data-tag="associativeDnD".  
-	let $propInCanvas = $('#canvasRole [data-atom=ci][data-tag]')
-	let propInCanvasEnabled 
-	if (GLBsettings.tool='declare'){propInCanvasEnabled = $propInCanvas.filter('.selectedTool').toArray()}
-	else{propInCanvasEnabled = $propInCanvas.toArray()}
+
+function getDnDpropEnabled(dataTag){
+	//get the list of hardwired DnD properties and return just the enabled ones
+	//example: an element must be in canvas with data-tag="associativeDnD".  
+	let $propInCanvas = $('#canvasRole [data-atom=ci][data-tag]') 
+	if (GLBsettings.tool=='declare'){$propInCanvas = $propInCanvas.filter('.selectedTool,.selectedTool *')}
+	if(dataTag){$propInCanvas = $propInCanvas.filter('[data-tag=' + dataTag + ']')}
+	let propInCanvasEnabled = $propInCanvas.toArray()
 	let namelist = propInCanvasEnabled.map(function(e){return e.getAttribute('data-tag')})
 	// same name "associativeDnD" must be in  propertiesDnD
 	//Adding a new DnD internal property:
@@ -62,6 +64,7 @@ function DnDpropInCanvasEnabled(propertiesDnD){
 	let propertiesKnokedOut = propertiesDnD.map(function(e){
 		let index = namelist.indexOf(e.name)
 		if(index != -1){
+			//get the icon from the reference element in the canvas
 			e.icon = propInCanvasEnabled[index].getAttribute('data-tagimg')
 			return e
 		}
@@ -72,13 +75,6 @@ function DnDpropInCanvasEnabled(propertiesDnD){
 
 	let filtered = propertiesKnokedOut.filter(function(e){ return e!=undefined})
 	return filtered
-}
-
-
-
-
-function directCall(key){
-	return $('#canvasRole [data-rtl='+ key + ']')
 }
 
 function searchEventHandler(event){// trova la definizione della proprietà

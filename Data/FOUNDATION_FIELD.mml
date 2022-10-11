@@ -2,7 +2,7 @@
 	<apply data-vis="" data-and="horizontal" data-type="bool">
 			<and>
 			</and>
-			<apply data-vis="" data-tag="fondamentali" data-type="bool">
+			<apply   data-type="bool">
 				<and>
 				</and>
 				<apply data-and="horizontal" data-type="bool">

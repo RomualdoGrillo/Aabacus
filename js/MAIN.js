@@ -172,11 +172,11 @@ function clickHandler(event) {
 		refreshAsymmEq($atom);
 		ssnapshot.take();
 	} 
-	else if($thisMNODE.hasClass('unselectable')){
-		selectionManager("","","",true)//deselectAll
-	}
-	else if( ($thisMNODE.attr('data-atom')=='forAll' || $thisMNODE.attr('data-atom')=='eq' || $thisMNODE.attr('data-atom')=='ci' )&& $thisMNODE.attr('data-tag')){
-		//solo se è effettivamente una proprietà ed non un container
+	//***selection of declared "yellow" tool
+	else if( ($thisMNODE.attr('data-atom')=='forAll' || $thisMNODE.attr('data-atom')=='eq' || $thisMNODE.attr('data-tag') )
+				&& $thisMNODE.attr('data-tag')
+				&& GLBsettings.tool=="declare"){
+		//solo se è effettivamente una proprietà e non un container
 		if($thisMNODE.hasClass('selectedTool')){
 			$thisMNODE.removeClass('selectedTool')
 		}
@@ -184,6 +184,10 @@ function clickHandler(event) {
 			$thisMNODE.addClass('selectedTool');
 			console.log('Selected tool: '+$thisMNODE.attr('data-tag'))
 		} 
+	}
+	//***selection manager "grey" highlight
+	else if($thisMNODE.hasClass('unselectable')){
+		selectionManager("","","",true)//deselectAll
 	}
 	else if(!$thisMNODE.hasClass('unselectable')){
 		selectionManager($thisMNODE,event.ctrlKey||event.metaKey,event.shiftKey)//on mac use command key instead of control

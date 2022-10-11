@@ -74,7 +74,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		//******** apply custom propeties listed in propertiesDnD[i] ***************
 		if (!$atomTarget.length || !$atomTarget[0].parentElement) { return }//precondition
 		let i = 0
-		let propInCanvasEnabled = DnDpropInCanvasEnabled(propertiesDnD)
+		let propInCanvasEnabled = getDnDpropEnabled()
 		while (propInCanvasEnabled[i]) {
 			let targets = propInCanvasEnabled[i].findTgt($atomTarget);
 			makeTargetsSortableRolesOrAtoms(targets, propInCanvasEnabled[i].name)
@@ -93,6 +93,11 @@ function MakeSortableAndInjectMouseDown(event) {
 		let sort
 		if(GLBDnD.toolWhenMousedown=="autoAdapt" || GLBDnD.toolWhenMousedown=="copy" ){//never sort in "autoAdapt" or "copy" mode\
 			sort=false;
+		}
+		else if(GLBDnD.toolWhenMousedown=="declare"){
+			//check if specific commutative property is selected
+			let actionString = $('.selectedTool').attr('data-dndprop');
+			//sort = false;
 		}
 		else{
 			sort = $atomTarget[0].parentElement.matches('.ul_role') || !MNODEclosedDef($atomTarget);
@@ -182,7 +187,7 @@ function onAdd(event) {
 		}
 		//*********** apply property in propertiesDnD
 		else {
-			let property = propertiesDnD.find(function (el) {
+			let property = getDnDpropEnabled().find(function (el) {
 				return el.name == targetProperty
 			});
 			if (property) {
