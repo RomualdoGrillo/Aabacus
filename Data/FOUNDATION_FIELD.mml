@@ -145,8 +145,8 @@
 							<apply title="--c" data-type="num">
 								<plus>
 								</plus>
-								<ci data-type="num">a</ci>
 								<cn data-type="num">0</cn>
+								<ci data-type="num">a</ci>
 							</apply>
 							<ci data-type="num">a</ci>
 						</apply>
@@ -165,8 +165,8 @@
 							<apply data-type="num">
 								<times>
 								</times>
-								<ci data-type="num">a</ci>
 								<cn data-type="num">1</cn>
+								<ci data-type="num">a</ci>
 							</apply>
 							<ci data-type="num">a</ci>
 						</apply>

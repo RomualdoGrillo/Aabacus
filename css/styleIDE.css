@@ -82,7 +82,7 @@ button>.ui-icon {
 	opacity: 1;
 }
 
-.hide {
+.hide, [data-hide] {
 	display: none;
 }
 

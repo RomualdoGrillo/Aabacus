@@ -592,7 +592,6 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
                 currLine = lineAB($($Pattern[patternIndex]), $($Input[inputIndex]));
                 PActx.lineList = PActx.lineList.add(currLine);
             }
-            //----probe----  buon posto per un break point
             if (compareExtMNODE($($Input[inputIndex]), $($Pattern[patternIndex]) , !isParameter, true)){
                 if(isParameter){//l'esterno va bene, usalo in parametro senza ulteriori controlli
 					currInputMatch=true
