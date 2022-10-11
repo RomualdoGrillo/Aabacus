@@ -9,7 +9,7 @@
 			<and>
 			</and>
 	</apply>
-	<ci data-type="bool">Dimostra che 3 + 2 è uguale a 5</ci>
+	<ci data-type="bool">Dimostra che 3 * 2 è uguale a 6</ci>
 	<apply data-type="num">
 			<times>
 			</times>

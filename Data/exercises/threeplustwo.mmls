@@ -27,13 +27,6 @@
 				<ci data-type="num">1</ci>
 			</apply>
 	</apply>
-	<apply data-type="num">
-			<times>
-			</times>
-			<cn data-type="num">1</cn>
-			<cn data-type="num">1</cn>
-			<cn data-type="num">1</cn>
-	</apply>
 	
 </section>
 <section data-section="events">
