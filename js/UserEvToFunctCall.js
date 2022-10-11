@@ -4,12 +4,13 @@
 
 
 
-function keyboardEvToFC($atom, keyPressed,e){
+function keyboardEvToFC($atom, keyPressed,event){
+	//if event is undefined, this is an internal call: use the property diregarding selecteTool
 	var PActx 
-	if(GLBsettings.tool=="declare"){
+	if(event && GLBsettings.tool=="declare" ){
 		var actionString = $('.selectedTool').attr('data-tag');
 		var direction = "ltr"
-		if( e && e.shiftKey){ direction = "rtl"}
+		if( event.shiftKey){ direction = "rtl"}
 		
 		if(keyPressed==='\r' && actionString){
 			PActx = TryOnePropertyByName(actionString, $atom ,direction);
