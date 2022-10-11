@@ -96,8 +96,9 @@ function MakeSortableAndInjectMouseDown(event) {
 		}
 		else if(GLBDnD.toolWhenMousedown=="declare"){
 			//check if specific commutative property is selected
-			let actionString = $('.selectedTool').attr('data-dndprop');
-			//sort = false;
+			/*let commutativeOf = $('.selectedTool').attr('data-commutative');
+			let op = $atomTarget[0].MNODEparent().attr('data-atom')
+			sort = (op==commutativeOf);*/
 		}
 		else{
 			sort = $atomTarget[0].parentElement.matches('.ul_role') || !MNODEclosedDef($atomTarget);
