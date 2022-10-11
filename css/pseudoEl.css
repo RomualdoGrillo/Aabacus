@@ -94,7 +94,7 @@ body[timesdisposition=brTimes] br + [data-atom]::before{
 	pointer-events: none;
 }
 
-[timesdisposition=vertTimes] [data-variableorient=true]::after{
+[timesdisposition=vertTimes] [data-variableorient=true][data-vis=collapsed]::after{
 	transform: rotate(90deg);
 }
 
@@ -147,7 +147,7 @@ disadvantage: building new prototypes is less intuitive
 	content:attr(data-tag);*/
 [data-tag]::after/*,[title]:not([title=""]):hover::after*/{
 	content:
-	attr(data-tag)attr(title);
+	attr(data-tag)/*attr(title)*/;
 	z-index: 1;
 	background-image: inherit;
 	border-color:inherit;

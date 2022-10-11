@@ -1,0 +1,193 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-vis="" data-and="horizontal" data-type="bool">
+			<and>
+			</and>
+			<apply   data-type="bool">
+				<and>
+				</and>
+				<apply data-and="horizontal" data-type="bool">
+					<and>
+					</and>
+					<ci data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" 
+					title="Proprietà commutativa: sposta gli addendi per riordinarli" data-type="bool">true</ci>
+					<ci data-variableorient="true" data-tag="commutativa" data-commutative="times" 
+					title="Proprietà commutativa: sposta i fattori per riordinarli" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+				</apply>
+				<apply data-and="horizontal" data-type="bool">
+					<and>
+					</and>
+					<apply data-vis="collapsed" data-tag="plusAssociate" data-tagimg="./images/properties/AssocGen.svg" data-type="bool"
+					title="Proprietà associativa della somma: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi">
+						<forall>
+						</forall>
+						<bvar>
+							<ci data-type="num">a__</ci>
+						</bvar>
+						<bvar>
+							<ci data-type="num">b___</ci>
+						</bvar>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<apply title="-mainP" data-type="num">
+								<plus>
+								</plus>
+								<apply title="s-s" data-type="num">
+									<plus>
+									</plus>
+									<ci data-type="num">a</ci>
+								</apply>
+								<ci data-type="num">b</ci>
+							</apply>
+							<apply title="-mainP" data-type="num">
+								<plus>
+								</plus>
+								<ci title="s-s" data-type="num">a</ci>
+								<ci data-type="num">b</ci>
+							</apply>
+						</apply>
+					</apply>
+					<apply data-variableorient="true" data-tagimg="./images/properties/AssocGen.svg" data-vis="collapsed" data-tag="timesAssociate" data-type="bool"
+										title="Proprietà associativa della moltiplicazione: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi">
+						<forall>
+						</forall>
+						<bvar>
+							<ci data-type="num">a__</ci>
+						</bvar>
+						<bvar>
+							<ci data-type="num">b___</ci>
+						</bvar>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<apply title="-mainP" data-type="num">
+								<times>
+								</times>
+								<apply title="s-s" data-type="num">
+									<times>
+									</times>
+									<ci data-type="num">a</ci>
+								</apply>
+								<ci data-type="num">b</ci>
+							</apply>
+							<apply title="-mainP" data-type="num">
+								<times>
+								</times>
+								<ci title="s-s" data-type="num">a</ci>
+								<ci data-type="num">b</ci>
+							</apply>
+						</apply>
+					</apply>
+				</apply>
+				<apply data-vis="" data-and="horizontal" data-type="bool">
+					<and>
+					</and>
+					<apply data-vis="collapsed" data-tag="Opposite" data-tagimg="./images/properties/antimatter.svg" data-type="bool"
+					title="Proprietà dell'opposto: Seleziona due elementi opposti circondati da una parentesi (a -a) e premi 'Invio' per trasformarli in uno 0. Seleziona uno 0 e premi 'Maiusc + Invio' per creare una coppia (a -a)">
+						<forall>
+						</forall>
+						<bvar>
+							<ci data-type="num">a</ci>
+						</bvar>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<apply title="--c" data-type="num">
+								<plus>
+								</plus>
+								<ci data-type="num">a</ci>
+								<apply data-type="num">
+									<minus>
+									</minus>
+									<ci data-type="num">a</ci>
+								</apply>
+							</apply>
+							<cn data-type="num">0</cn>
+						</apply>
+					</apply>
+					<apply data-variableorient="true" data-tagimg="./images/properties/antimatter.svg" data-vis="collapsed" data-tag="Reciprocal" data-type="bool"
+					title="Proprietà del reciproco: Seleziona due elementi reciproci circondati da una parentesi (a * 1/a) e premi 'Invio' per trasformarli in un 1. Seleziona un 1 e premi 'Maiusc + Invio' per creare una coppia (a * 1/a)">
+						<forall>
+						</forall>
+						<bvar>
+							<ci data-type="num">a</ci>
+						</bvar>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<apply data-type="num">
+								<times>
+								</times>
+								<ci data-type="num">a</ci>
+								<apply data-type="num">
+									<m_inverse>
+									</m_inverse>
+									<ci data-type="num">a</ci>
+								</apply>
+							</apply>
+							<cn data-type="num">1</cn>
+						</apply>
+					</apply>
+				</apply>
+				<apply data-and="horizontal" data-type="bool">
+					<and>
+					</and>
+					<apply data-tagimg="./images/properties/zero.svg" data-vis="collapsed" data-tag="defZero" data-type="bool"
+					title="Elemento neutro della somma: seleziona una coppia (a + 0) e premi Invio per eliminare lo 0. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '+0'"> 
+						<forall>
+						</forall>
+						<bvar>
+							<ci data-type="num">a</ci>
+						</bvar>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<apply title="--c" data-type="num">
+								<plus>
+								</plus>
+								<cn data-type="num">0</cn>
+								<ci data-type="num">a</ci>
+							</apply>
+							<ci data-type="num">a</ci>
+						</apply>
+					</apply>
+					<apply data-tagimg="./images/properties/one.svg" data-vis="collapsed" data-tag="defOne" data-type="bool"
+					title="Elemento neutro del prodotto: seleziona una coppia (a * 1) e premi 'Invio' per eliminare l' uno. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '* 1'">
+
+						<forall>
+						</forall>
+						<bvar>
+							<ci data-type="num">a</ci>
+						</bvar>
+						<apply data-vis="" data-type="bool">
+							<eq>
+							</eq>
+							<apply data-type="num">
+								<times>
+								</times>
+								<cn data-type="num">1</cn>
+								<ci data-type="num">a</ci>
+							</apply>
+							<ci data-type="num">a</ci>
+						</apply>
+					</apply>
+				</apply>
+				<apply data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="distributiva" data-type="bool"
+				title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli">
+					<and>
+					</and>
+					<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+					<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+					<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+					<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+				</apply>
+			</apply>
+			<apply data-tagimg="./images/properties/decompose.svg" data-vis="collapsed" data-tag="calcola" data-type="bool">
+				<and>
+				</and>
+				<ci data-tagimg="./images/properties/compose.svg" data-tag="compose" data-type="bool">built in</ci>
+				<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeInAProduct" data-type="bool">built in</ci>
+				<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeInASum" data-type="bool">true</ci>
+			</apply>
+	</apply>
+</math>
