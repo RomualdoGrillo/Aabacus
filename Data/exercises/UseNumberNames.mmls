@@ -5,6 +5,14 @@
 	</apply>
 </section>
 <section data-section="canvas">
+	<apply data-hide="true" data-type="bool">
+			<and>
+			</and>
+			<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
+				<and>
+				</and>
+			</apply>
+	</apply>
 	<apply data-vis="" data-and="horizontal" data-type="bool">
 			<and>
 			</and>
