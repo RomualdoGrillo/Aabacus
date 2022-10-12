@@ -1,0 +1,118 @@
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="canvas">
+	<apply data-hide="true" data-type="bool">
+			<and>
+			</and>
+			<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
+				<and>
+				</and>
+			</apply>
+	</apply>
+	<ci data-type="bool"> Distribuisci il fattore x portandolo dentro alla parentesi". Raccogli il fattore 2, trascinando un "2" sopra all'altro.</ci>
+	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-type="bool">
+			<and>
+			</and>
+	</apply>
+	<apply data-path="plus0 > ME" data-type="num">
+			<times>
+			</times>
+			<cn data-type="num">2</cn>
+			<apply data-type="num">
+				<plus>
+				</plus>
+				<apply data-type="num">
+					<times>
+					</times>
+					<ci data-type="num">K</ci>
+					<ci data-type="num">x</ci>
+				</apply>
+				<apply data-type="num">
+					<times>
+					</times>
+					<ci data-type="num">T</ci>
+					<ci data-type="num">x</ci>
+				</apply>
+			</apply>
+	</apply>
+</section>
+<section data-section="events">
+	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="result">
+	<apply data-type="num">
+			<times>
+			</times>
+			<cn data-type="num">2</cn>
+			<apply data-type="num">
+				<plus>
+				</plus>
+				<apply data-type="num">
+					<times>
+					</times>
+					<ci data-type="num">x</ci>
+					<ci data-type="num">b</ci>
+				</apply>
+				<apply data-type="num">
+					<times>
+					</times>
+					<ci data-type="num">x</ci>
+					<ci data-type="num">a</ci>
+				</apply>
+			</apply>
+	</apply>
+</section>
+
+<section data-section="settings">
+	
+    {
+	"debug":false,
+	"gameMode":true,
+	"gameModeSurpriseRes":false,
+	"lockCanvas":true,
+	"resultHidden":false,
+	"visSettingSelected":1,
+	"tool":"declare",
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+        "timesDisposition":0,
+		"fixBorders":false,
+		"eforall":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+        "timesDisposition":1,
+		"fixBorders":true,
+		"eforall":true
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"tooColored",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"fixBorders":true,
+		"eforall":false
+		}
+	]
+}
+</section>
