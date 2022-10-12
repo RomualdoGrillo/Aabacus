@@ -7,6 +7,14 @@
 </section>
 
 <section data-section="canvas">
+<apply data-hide="true" data-type="bool">
+			<and>
+			</and>
+			<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
+				<and>
+				</and>
+			</apply>
+</apply>
 <ci type="bool">Lo scopo è trovare il risultato dell'espressione. Si può scomporre e ricomporre in addendi (schiaccia frecce dx e sx) e in fattori (frecce su e giù). Si può inoltre cambiare l'odine dei termini con drag and drop. In questo esercizio non c'è una primitiva per la divisione, non si può fare 6:3 direttamente, ma si può comporre un numero ed il suo reciproco.</ci>
 	<apply type="num">
 		<plus>
