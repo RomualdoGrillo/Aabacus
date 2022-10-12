@@ -5,7 +5,7 @@
 	</apply>
 </section>
 <section data-section="canvas">
-	<apply data-hide="true" data-type="bool">
+	<apply data-hidex="true" data-type="bool">
 			<and>
 			</and>
 			<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
@@ -13,7 +13,7 @@
 				</and>
 			</apply>
 	</apply>
-	<ci data-type="bool"> Applica la proprietà commutativa generalizzata di somma e prodotto</ci>
+	<ci data-type="bool">Seleziona e applica la proprietà commutativa generalizzata della somma: trascina gli elementi per rimetterli in ordine</ci>
 	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-type="bool">
 			<and>
 			</and>
@@ -55,6 +55,8 @@
 			</apply>
 	</apply>
 </section>
+
+
 
 <section data-section="settings">
 	
