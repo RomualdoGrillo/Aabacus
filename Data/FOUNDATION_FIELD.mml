@@ -49,7 +49,8 @@
 				</apply>
 			</apply>
 		</apply>
-		<apply title="Proprietà associativa della moltiplicazione: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-variableorient="true" data-tagimg="./images/properties/AssocGen.svg" data-vis="collapsed" data-tag="timesAssociate" data-type="bool">
+		<apply title="Proprietà associativa della moltiplicazione: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi"
+		 data-variableorient="true" data-tagimg="./images/properties/AssocGen.svg" data-vis="collapsed" data-tag="AssociativaMoltiplicazione" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>
@@ -83,7 +84,8 @@
 	<apply data-vis="" data-and="horizontal" data-type="bool">
 		<and>
 		</and>
-		<apply title="Proprietà dell'opposto: Seleziona due elementi opposti circondati da una parentesi (a -a) e premi 'Invio' per trasformarli in uno 0. Seleziona uno 0 e premi 'Maiusc + Invio' per creare una coppia (a -a)" data-vis="collapsed" data-tag="Opposite" data-tagimg="./images/properties/antimatter.svg" data-type="bool">
+		<apply title="Proprietà dell'opposto: Seleziona due elementi opposti circondati da una parentesi (a -a) e premi 'Invio' per trasformarli in uno 0. Seleziona uno 0 e premi 'Maiusc + Invio' per creare una coppia (a -a)"
+		 data-vis="collapsed" data-tag="NumeroOpposto" data-tagimg="./images/properties/antimatter.svg" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>
@@ -105,7 +107,8 @@
 				<cn data-type="num">0</cn>
 			</apply>
 		</apply>
-		<apply title="Proprietà del reciproco: Seleziona due elementi reciproci circondati da una parentesi (a * 1/a) e premi 'Invio' per trasformarli in un 1. Seleziona un 1 e premi 'Maiusc + Invio' per creare una coppia (a * 1/a)" data-variableorient="true" data-tagimg="./images/properties/antimatter.svg" data-vis="collapsed" data-tag="Reciprocal" data-type="bool">
+		<apply title="Proprietà del reciproco: Seleziona due elementi reciproci circondati da una parentesi (a * 1/a) e premi 'Invio' per trasformarli in un 1. Seleziona un 1 e premi 'Maiusc + Invio' per creare una coppia (a * 1/a)" data-variableorient="true"
+		 data-tagimg="./images/properties/antimatter.svg" data-vis="collapsed" data-tag="NumeroReciproco" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>
@@ -131,7 +134,8 @@
 	<apply data-and="horizontal" data-type="bool">
 		<and>
 		</and>
-		<apply title="Elemento neutro della somma: seleziona una coppia (a + 0) e premi Invio per eliminare lo 0. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '+0'" data-tagimg="./images/properties/zero.svg" data-vis="collapsed" data-tag="defZero" data-type="bool">
+		<apply title="Elemento neutro della somma: seleziona una coppia (a + 0) e premi Invio per eliminare lo 0. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '+0'" data-tagimg="./images/properties/zero.svg"
+		 data-vis="collapsed" data-tag="NeutroDellaSomma" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>
@@ -149,7 +153,8 @@
 				<ci data-type="num">a</ci>
 			</apply>
 		</apply>
-		<apply title="Elemento neutro del prodotto: seleziona una coppia (a * 1) e premi 'Invio' per eliminare l' uno. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '* 1'" data-tagimg="./images/properties/one.svg" data-vis="collapsed" data-tag="defOne" data-type="bool">
+		<apply title="Elemento neutro del prodotto: seleziona una coppia (a * 1) e premi 'Invio' per eliminare l' uno. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '* 1'" data-tagimg="./images/properties/one.svg" data-vis="collapsed"
+		 data-tag="NeutroDellaMoltiplicazione" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>
@@ -168,7 +173,8 @@
 			</apply>
 		</apply>
 	</apply>
-	<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="distributiva" data-type="bool">
+	<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg"
+	 data-vis="collapsed" data-tag="Proprieta'Distributiva" data-type="bool">
 		<and>
 		</and>
 		<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
