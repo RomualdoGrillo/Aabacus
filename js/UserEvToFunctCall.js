@@ -69,6 +69,10 @@ function getDnDpropEnabled(dataTag){
 			e.icon = propInCanvasEnabled[index].getAttribute('data-tagimg')
 			return e
 		}
+		else if(e.name=="replaceDnD"){
+			e.icon = undefined
+			return e
+		}
 		else{
 			return undefined
 		} 
