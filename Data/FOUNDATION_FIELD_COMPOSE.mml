@@ -11,7 +11,7 @@
 					<ci data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" 
 					title="Proprietà commutativa: sposta gli addendi per riordinarli" data-type="bool">true</ci>
 					<ci data-variableorient="true" data-tag="commutativa" data-commutative="times" 
-					title="Proprietà commutativa: sposta i fattori per riordinarli" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+					title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
 				</apply>
 				<apply data-and="horizontal" data-type="bool">
 					<and>
