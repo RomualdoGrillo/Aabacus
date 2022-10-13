@@ -1,0 +1,35 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-type="bool">
+			<and>
+			</and>
+			<apply data-hide="true" data-type="bool">
+				<and>
+				</and>
+				<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
+					<and>
+					</and>
+				</apply>
+			</apply>
+			<apply data-and="horizontal" data-type="bool">
+				<and>
+				</and>
+				<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+				<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+			</apply>
+			<apply data-tagimg="./images/properties/decompose.svg" data-vis="collapsed" data-tag="calcola" data-type="bool">
+				<and>
+				</and>
+				<ci data-tagimg="./images/properties/compose.svg" data-tag="compose" data-type="bool">built in</ci>
+				<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeInAProduct" data-type="bool">built in</ci>
+				<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeInASum" data-type="bool">true</ci>
+			</apply>
+			<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="Proprieta'Distributiva" data-type="bool">
+				<and>
+				</and>
+				<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+				<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+				<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+				<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+			</apply>
+	</apply>
+</math>
