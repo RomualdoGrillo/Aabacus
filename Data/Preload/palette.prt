@@ -62,7 +62,7 @@
 			</div>
 			<div data-atom="lt" data-proto="lt" data-type="bool" class="atom">
 				<div class="s_role firstMember" data-type="num" ></div>
-				<div class="decoration"><</div>
+				<div class="decoration">&lt;</div>
 				<div class="s_role secondMember" data-type="num" ></div>
 			</div>
 			<div data-atom="leq" data-proto="leq" data-type="bool" class="atom">
