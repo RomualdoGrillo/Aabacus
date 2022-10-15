@@ -1,0 +1,26 @@
+<section data-section="palette">
+	<ci data-type="bool" data-and="horizontal" data-import="./Data/exercises/quizEqSystem/quizEqSystem.prt">import palette</ci>
+</section>
+<section data-section="canvas">
+	<apply data-type="num">
+		<plus>
+		</plus>
+		<cn data-type="num">2</cn>
+		<div data-atom="times" data-type="num" class="atom saveAsHtml" draggable="false" style="background-color: red;">
+			<div class="ul_role" data-type="num">
+				<cn data-type="num">6</cn>
+				<cn data-type="num">2</cn>
+			</div>
+		</div>
+		<apply data-type="num">
+			<minus>
+			</minus>
+			<cn data-type="num">1</cn>
+		</apply>
+	</apply>
+
+</section>
+
+
+
+
