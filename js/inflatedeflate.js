@@ -197,6 +197,7 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 					toBeAppended.attr("processed", "")
 					$(e).append(toBeAppended);
 				})
+				noBVarChildren.removeAttr('processed')
 			}
 		}
 		newData=originalData;

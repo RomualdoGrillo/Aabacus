@@ -3,7 +3,7 @@
 		<plus>
 		</plus>
 		<cn data-type="num">2</cn>
-		<div data-atom="times" data-type="num" class="atom saveAsHtml" draggable="false" style="background-color: red;" processed="">
+		<div data-atom="times" data-type="num" class="atom saveAsHtml" draggable="false" style="background-color: red;">
 			<div class="ul_role" data-type="num">
 				<cn data-type="num">6</cn>
 				<cn data-type="num">2</cn>
