@@ -1,0 +1,19 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-type="num">
+		<plus>
+		</plus>
+		<cn data-type="num">2</cn>
+		<div data-atom="times" data-type="num" class="atom saveAsHtml" draggable="false" style="background-color: red;" processed="">
+			<div class="ul_role" data-type="num">
+				<cn data-type="num">6</cn>
+				<cn data-type="num">2</cn>
+			</div>
+		</div>
+		<cn data-type="num">1</cn>
+		<apply data-type="num">
+			<minus>
+			</minus>
+			<cn data-type="num">1</cn>
+		</apply>
+	</apply>
+</math>
