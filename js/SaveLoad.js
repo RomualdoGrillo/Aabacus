@@ -39,7 +39,9 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 	{
 		var textFromFileLoaded = fileLoadedEvent.target.result;
 		if(fileSuffix === "mml"){
-			inject(textFromFileLoaded,$targetNode);
+			let $loaded = $parserForMixedMMLHTML(textFromFileLoaded);
+
+			inject($loaded,$targetNode);
 		}
 		else if(fileSuffix === "mmls"){
 			injectAllMMLS(textFromFileLoaded);
