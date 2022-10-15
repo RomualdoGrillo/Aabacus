@@ -25,9 +25,10 @@ function MNODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) 
 
 function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImported) {
 	var $containerForClone = $('<div></div>')
-	//$('#testSpan').html("") ;var $containerForClone = $('#testSpan');// debug
+	//$('#canvasRole').html("") ;var $containerForClone = $('#canvasRole');// debug
 	//var $thisClone = $($.parseXML(startNode).firstElementChild)
-	let $startNodeOrMML = $(startNodeOrMML)
+	let $startNodeOrMML = $(startNodeOrMML)// problema con file misti mml con html vedi Quaderno Aprile Giugno Agosto settembre ottobre 2022
+	//let $startNodeOrMML=$($.parseXML(startNodeOrMML)).children(':first')
 	//try to rebuild the here??
 	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
 		let $thisClone = $startNodeOrMML.clone()
@@ -44,7 +45,7 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 
 		//signsAsClassesSubtree($thisClone,"SignsAsClasses_to_MinusOp")// converti in modo che il segno meno sia una operazione applicata al nodo
 		//sostituisci tutti i nodi MNODE excluding prototypes
-		$thisClone.parent().find('[data-atom]').not('[data-proto]').each(function(i, node) {
+		$thisClone.parent().find('[data-atom]').not('[data-proto]').not('.saveAsHtml').each(function(i, node) {
 			if (i == 0) {
 				ReplaceOneMNODE(node, from_to, neglectRootSign);
 			} else {
@@ -79,8 +80,6 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 	//node is HTML node
 	let $node = $(node);
 	var $newNode
-	var isMinimized
-	var isMedium
 	var originalData
 	var title
 	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
@@ -150,8 +149,6 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 		if (atom === "math") {
 			$newNode = $node.children()
 			//unwrap "math"
-		} else if (atom === "saveAsHtml") {//gestire qui 
-		//non sostituire e non fare nulla
 		} else {
 			var $children = $node.children().not(':first')
 			//search for prototype
@@ -200,6 +197,7 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 					toBeAppended.attr("processed", "")
 					$(e).append(toBeAppended);
 				})
+				noBVarChildren.removeAttr('processed')
 			}
 		}
 		newData=originalData;
@@ -217,4 +215,29 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 		}
 	}
 	$node.replaceWith($newNode)
+}
+
+
+function $parserForMixedMMLHTML(toBeParsed){
+	// $(string) gives strange results when div or img are present
+	//$parserForMixedMMLHTML('<math xmlns="http://www.w3.org/1998/Math/MathML"><apply data-type="num"><plus></plus><cn data-type="num">2</cn><div data-atom="times" data-type="num" class="atom saveAsHtml" draggable="false" style="background-color: red;"><div class="ul_role" data-type="num"><cn data-type="num">6</cn><cn data-type="num">2</cn></div></div><apply data-type="num"><minus></minus><cn data-type="num">1</cn></apply></apply></math>')
+	let string
+	if (toBeParsed instanceof jQuery){string=toBeParsed[0].outerHTML}
+	else{string = toBeParsed};
+	let stringDix = string.replace(/<div/g, "<dix").replace(/div>/g, "dix>");
+	let $workTree = $(stringDix);
+	//$('#canvasRole').append($workTree)// debug
+	//replace one <dix> node with <div> 
+	let len = $workTree.find('dix').length
+	for(i=0;i<len;i++){
+		let $dix = $workTree.find('dix:first');
+		if($dix.length == 0){break}
+		let $children = $dix.children();
+		$children.remove();
+		let outer = $dix[0].outerHTML.replace(/<dix/g, "<div").replace(/dix>/g, "div>");;
+		let $outer = $(outer);
+		$dix.replaceWith($outer);
+		$outer.append($children);
+	}
+	return $workTree
 }
