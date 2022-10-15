@@ -27,11 +27,11 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 	var $containerForClone = $('<div></div>')
 	//$('#canvasRole').html("") ;var $containerForClone = $('#canvasRole');// debug
 	//var $thisClone = $($.parseXML(startNode).firstElementChild)
+	let $startNodeOrMML = $(startNodeOrMML)// problema con file misti mml con html vedi Quaderno Aprile Giugno Agosto settembre ottobre 2022
 	//let $startNodeOrMML=$($.parseXML(startNodeOrMML)).children(':first')
 	//try to rebuild the here??
 	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
-		let $startNode = $(startNodeOrMML)
-		let $thisClone = $startNode.clone()
+		let $thisClone = $startNodeOrMML.clone()
 		$containerForClone.append($thisClone)
 		//deflate todo: completare distinzione tra mml e mml + type
 
@@ -55,19 +55,12 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 		})
 	} else if (from_to === "mml_aab") {
 		//filtra solo le tag da importare
-		let $MML
-		if(typeof startNodeOrMML == 'string'){
-			$MML = $myParser(startNodeOrMML)
-		}
-		else{
-			$MML = startNodeOrMML
-		}
 		let $mmlTagSubset
 		if(toBeImported){
-			$mmlTagSubset = $MML.find('[data-tag=' + toBeImported + ']')
+			$mmlTagSubset = $startNodeOrMML.find('[data-tag=' + toBeImported + ']')
 		}
 		else{//if no item is specified import all
-			$mmlTagSubset = $MML
+			$mmlTagSubset = $startNodeOrMML
 			//wrap
 		}
 		$containerForClone.append($mmlTagSubset)

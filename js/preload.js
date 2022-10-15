@@ -266,14 +266,3 @@ mySettings.addEventListener('change', function(event) {
 	GLBsettingsToInterface();
 	RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 });
-
-
-function $myParser(mmlString){
-    //add a dummy root container, in case the file does not have one e.g. <section></section><section></section>
-	//import via $(string) or Jquery.parseXML() both are problematic so I use parser.parseFromString
-    let encasedMmlString = '<dummy>' + mmlString + '</dummy>';
-    let parser = new DOMParser();
-    let xmlTree = parser.parseFromString(encasedMmlString,"text/xml");
-    return $(xmlTree).children().children()
-
-}
