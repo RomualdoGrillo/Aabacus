@@ -215,3 +215,28 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 	}
 	$node.replaceWith($newNode)
 }
+
+
+function $parserForMixedMMLHTML(toBeParsed){
+	// $(string) gives strange results when div or img are present
+	//$parserForMixedMMLHTML('<math xmlns="http://www.w3.org/1998/Math/MathML"><apply data-type="num"><plus></plus><cn data-type="num">2</cn><div data-atom="times" data-type="num" class="atom saveAsHtml" draggable="false" style="background-color: red;"><div class="ul_role" data-type="num"><cn data-type="num">6</cn><cn data-type="num">2</cn></div></div><apply data-type="num"><minus></minus><cn data-type="num">1</cn></apply></apply></math>')
+	let string
+	if (toBeParsed instanceof jQuery){string=toBeParsed[0].outerHTML}
+	else{string = toBeParsed};
+	let stringDix = string.replace(/<div/g, "<dix").replace(/div>/g, "dix>");
+	let $workTree = $(stringDix);
+	//$('#canvasRole').append($workTree)// debug
+	//replace one <dix> node with <div> 
+	let len = $workTree.find('dix').length
+	for(i=0;i<len;i++){
+		let $dix = $workTree.find('dix:first');
+		if($dix.length == 0){break}
+		let $children = $dix.children();
+		$children.remove();
+		let outer = $dix[0].outerHTML.replace(/<dix/g, "<div").replace(/dix>/g, "div>");;
+		let $outer = $(outer);
+		$dix.replaceWith($outer);
+		$outer.append($children);
+	}
+	return $workTree
+}

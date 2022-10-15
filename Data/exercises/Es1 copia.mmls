@@ -1,0 +1,68 @@
+<section data-section="palette">
+<ci data-type="bool" data-and="horizontal" data-import="./Data/exercises/quizEqSystem/quizEqSystem.prt">import palette</ci>
+</section>
+
+<section data-section="events">
+<ci data-type="bool" data-import="./Data/Preload/gestToAction.mml">import events</ci>
+</section>
+
+<section data-section="canvas">
+<apply data-hide="true" data-type="bool">
+			<and>
+			</and>
+			<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
+				<and>
+				</and>
+			</apply>
+</apply>
+<ci type="bool">Lo scopo è trovare il risultato dell'espressione. Si può scomporre e ricomporre in addendi (schiaccia frecce dx e sx) e in fattori (frecce su e giù). Si può inoltre cambiare l'odine dei termini con drag and drop. In questo esercizio non c'è una primitiva per la divisione, non si può fare 6:3 direttamente, ma si può comporre un numero ed il suo reciproco.</ci>
+	<apply type="num">
+		<plus>
+		</plus>
+		<cn type="num">2</cn>
+		<apply type="num">
+			<times>
+			</times>
+			<cn type="num">6</cn>
+			<apply type="num">
+				<m_inverse>
+				</m_inverse>
+				<cn type="num">3</cn>
+			</apply>
+		</apply>
+		<apply type="num">
+			<minus>
+			</minus>
+			<cn type="num">1</cn>
+		</apply>
+	</apply>
+		<apply data-type="num">
+		<plus>
+		</plus>
+		<cn data-type="num">2</cn>
+		<div data-atom="times" data-type="num" class="atom saveAsHtml" draggable="false" style="background-color: red;">
+			<div class="ul_role" data-type="num">
+				<cn data-type="num">6</cn>
+				<cn data-type="num">2</cn>
+			</div>
+		</div>
+		<apply data-type="num">
+			<minus>
+			</minus>
+			<cn data-type="num">1</cn>
+		</apply>
+	</apply>
+
+</section>
+
+<section data-section="result">
+<cn type="num">3</cn>
+</section>
+
+<section data-section="settings">
+	{
+   "import_json_settings":"./Data/exercises/quizEqSystem/gameHorTimes.set"
+    }
+</section>
+
+
