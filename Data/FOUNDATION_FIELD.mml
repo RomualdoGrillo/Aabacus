@@ -1,25 +1,23 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply data-hide="true" data-type="bool">
-		<and>
-		</and>
-		<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
-			<and>
-			</and>
-		</apply>
-	</apply>
-
-
-
-	<apply data-and="horizontal" data-type="bool">
-		<and>
-		</and>
-		<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
-		<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
-	</apply>
-	<apply data-and="horizontal" data-type="bool">
-		<and>
-		</and>
-		<apply title="Proprietà associativa della somma: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-vis="collapsed" data-tag="plusAssociate" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
+	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
+						<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;">
+	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+		
+		
+		
+	
+						<div class="ul_role" data-type="bool">
+	<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+	<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+	</div>
+					</div>
+	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+		
+		
+		
+	
+						<div class="ul_role" data-type="bool">
+	<apply title="Proprietà associativa della somma: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-vis="collapsed" data-tag="plusAssociate" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>
@@ -48,9 +46,8 @@
 					<ci data-type="num">b</ci>
 				</apply>
 			</apply>
-		</apply>
-		<apply title="Proprietà associativa della moltiplicazione: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi"
-		 data-variableorient="true" data-tagimg="./images/properties/AssocGen.svg" data-vis="collapsed" data-tag="AssociativaMoltiplicazione" data-type="bool">
+	</apply>
+	<apply title="Proprietà associativa della moltiplicazione: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-variableorient="true" data-tagimg="./images/properties/AssocGen.svg" data-vis="collapsed" data-tag="AssociativaMoltiplicazione" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>
@@ -79,13 +76,16 @@
 					<ci data-type="num">b</ci>
 				</apply>
 			</apply>
-		</apply>
 	</apply>
-	<apply data-vis="" data-and="horizontal" data-type="bool">
-		<and>
-		</and>
-		<apply title="Proprietà dell'opposto: Seleziona due elementi opposti circondati da una parentesi (a -a) e premi 'Invio' per trasformarli in uno 0. Seleziona uno 0 e premi 'Maiusc + Invio' per creare una coppia (a -a)"
-		 data-vis="collapsed" data-tag="NumeroOpposto" data-tagimg="./images/properties/antimatter.svg" data-type="bool">
+	</div>
+					</div>
+	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+		
+		
+		
+	
+						<div class="ul_role" data-type="bool">
+	<apply title="Proprietà dell'opposto: Seleziona due elementi opposti circondati da una parentesi (a -a) e premi 'Invio' per trasformarli in uno 0. Seleziona uno 0 e premi 'Maiusc + Invio' per creare una coppia (a -a)" data-vis="collapsed" data-tag="NumeroOpposto" data-tagimg="./images/properties/antimatter.svg" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>
@@ -106,9 +106,8 @@
 				</apply>
 				<cn data-type="num">0</cn>
 			</apply>
-		</apply>
-		<apply title="Proprietà del reciproco: Seleziona due elementi reciproci circondati da una parentesi (a * 1/a) e premi 'Invio' per trasformarli in un 1. Seleziona un 1 e premi 'Maiusc + Invio' per creare una coppia (a * 1/a)" data-variableorient="true"
-		 data-tagimg="./images/properties/antimatter.svg" data-vis="collapsed" data-tag="NumeroReciproco" data-type="bool">
+	</apply>
+	<apply title="Proprietà del reciproco: Seleziona due elementi reciproci circondati da una parentesi (a * 1/a) e premi 'Invio' per trasformarli in un 1. Seleziona un 1 e premi 'Maiusc + Invio' per creare una coppia (a * 1/a)" data-variableorient="true" data-tagimg="./images/properties/antimatter.svg" data-vis="collapsed" data-tag="NumeroReciproco" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>
@@ -129,32 +128,16 @@
 				</apply>
 				<cn data-type="num">1</cn>
 			</apply>
-		</apply>
 	</apply>
-	<apply data-and="horizontal" data-type="bool">
-		<and>
-		</and>
-		<apply title="Elemento neutro della somma: seleziona una coppia (a + 0) e premi Invio per eliminare lo 0. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '+0'" data-tagimg="./images/properties/zero.svg"
-		 data-vis="collapsed" data-tag="NeutroDellaSomma" data-type="bool">
-			<forall>
-			</forall>
-			<bvar>
-				<ci data-type="num">a</ci>
-			</bvar>
-			<apply data-type="bool">
-				<eq>
-				</eq>
-				<apply title="--c" data-type="num">
-					<plus>
-					</plus>
-					<cn data-type="num">0</cn>
-					<ci data-type="num">a</ci>
-				</apply>
-				<ci data-type="num">a</ci>
-			</apply>
-		</apply>
-		<apply title="Elemento neutro del prodotto: seleziona una coppia (a * 1) e premi 'Invio' per eliminare l' uno. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '* 1'" data-tagimg="./images/properties/one.svg" data-vis="collapsed"
-		 data-tag="NeutroDellaMoltiplicazione" data-type="bool">
+	</div>
+					</div>
+	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+		
+		
+		
+	
+						<div class="ul_role" data-type="bool">
+	<apply title="Elemento neutro del prodotto: seleziona una coppia (a * 1) e premi 'Invio' per eliminare l' uno. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '* 1'" data-tagimg="./images/properties/one.svg" data-vis="collapsed" data-tag="NeutroDellaMoltiplicazione" data-type="bool">
 			<forall>
 			</forall>
 			<bvar>
@@ -171,16 +154,43 @@
 				</apply>
 				<ci data-type="num">a</ci>
 			</apply>
-		</apply>
 	</apply>
-	<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg"
-	 data-vis="collapsed" data-tag="Proprieta'Distributiva" data-type="bool">
-		<and>
-		</and>
-		<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
-		<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
-		<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
-		<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+	<apply title="Elemento neutro della somma: seleziona una coppia (a + 0) e premi Invio per eliminare lo 0. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '+0'" data-tagimg="./images/properties/zero.svg" data-vis="collapsed" data-tag="NeutroDellaSomma" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">a</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply title="--c" data-type="num">
+					<plus>
+					</plus>
+					<cn data-type="num">0</cn>
+					<ci data-type="num">a</ci>
+				</apply>
+				<ci data-type="num">a</ci>
+			</apply>
 	</apply>
-
+	</div>
+					</div>
+	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+		
+		
+		
+	
+						<div class="ul_role" data-type="bool">
+	<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="Proprieta'Distributiva" data-type="bool">
+			<and>
+			</and>
+			<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+			<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+			<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+			<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+	</apply>
+	</div>
+					</div>
+	</div>
+					</div>
 </math>
