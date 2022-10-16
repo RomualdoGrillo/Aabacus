@@ -190,6 +190,10 @@ function GLBsettingsToInterface() {
 		}
 		*/
 		//**************************************
+		cb_showNumerator1
+		$('#cb_showNumerator1')[0].checked = visSetting.showNumerator1;
+		updateBodyClass('showNumerator1',visSetting.showNumerator1);
+
 		$('#cb_fixBorders')[0].checked = visSetting.fixBorders;
 		updateBodyClass('fixBorders',visSetting.fixBorders);
 
@@ -215,7 +219,7 @@ function GLBsettingsToInterface() {
 	let tool = GLBsettings.tool
 	if(tool==undefined){tool=''}
 	$('body').attr('tool',tool);//update tool as class of <body> 
-    	console.log('GLBsettings.tool<='+ tool)
+    	//console.log('GLBsettings.tool<='+ tool)
 	
 }
 
@@ -257,6 +261,7 @@ mySettings.addEventListener('change', function(event) {
 			visSetting.brackets = $('#cb_showPar')[0].checked;
 			visSetting.timesDisposition = $('#timesDisposition')[0].selectedIndex
 			visSetting.fixBorders = $('#cb_fixBorders')[0].checked;
+			visSetting.showNumerator1 = $('#cb_showNumerator1')[0].checked;
 			visSetting.hidePlus = $('#cb_hidePlus')[0].checked;
 			visSetting.eforall = $('#cb_eforall')[0].checked;
 			let index = dd_colors.selectedIndex

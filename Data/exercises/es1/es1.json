@@ -1,7 +1,0 @@
-{
-   "content_mml":"./Data/es1.mml",
-   "result_mml":"./Data/exercises/es1/Esercizio1_res.mml",
-   "palette_html":"./Data/Preload/palette.prt",
-   "gestToAction_mml":"./Data/Preload/gestToAction.mml",
-   "settings_json":"./Data/Preload/game.set"
-}
