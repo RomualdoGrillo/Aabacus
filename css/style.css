@@ -781,7 +781,7 @@
   [data-atom=m_inverse]{
 	  flex-direction:column;
   }
-  [data-atom=m_inverse]>.numerator1{
+  body:not(.showNumerator1) [data-atom=m_inverse]>.numerator1{
 	  display:none;
   }
   

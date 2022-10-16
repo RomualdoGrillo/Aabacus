@@ -32,7 +32,8 @@
 		"brackets":true,
 		 "timesDisposition":0,
         "timesDisposition":1,
-		"fixBorders":false,
+		"showNumerator1":false,
+"fixBorders":false,
 		"eforall":false
 		},
 		{
@@ -41,7 +42,8 @@
 		"brackets":true,
 		 "timesDisposition":0,
 		"timesDisposition":2,
-        "fixBorders":false,
+        "showNumerator1":false,
+"fixBorders":false,
 		"eforall":true
 		},
 		{
@@ -50,7 +52,8 @@
 		"brackets":false,
 		"timesDisposition":1,
 		"timesDisposition":3,
-        "fixBorders":false,
+        "showNumerator1":false,
+"fixBorders":false,
 		"eforall":true
 		},
 		{
@@ -59,7 +62,8 @@
 		"brackets":false,
 		"timesDisposition":1,
         "timesDisposition":1,
-		"fixBorders":true,
+		"showNumerator1":false,
+"fixBorders":true,
 		"eforall":false
 		}
 	]

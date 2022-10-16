@@ -70,7 +70,8 @@
 		"colors":"whiteBorders",
 		"brackets":true,
         "timesDisposition":0,
-		"fixBorders":false,
+		"showNumerator1":false,
+"fixBorders":false,
 		"eforall":false
 		},
 		{
@@ -78,7 +79,8 @@
 		"colors":"greyBorders",
 		"brackets":true,
         "timesDisposition":1,
-		"fixBorders":true,
+		"showNumerator1":false,
+"fixBorders":true,
 		"eforall":true
 		},
 		{
@@ -86,7 +88,8 @@
 		"colors":"coloredBorders",
 		"brackets":false,
         "timesDisposition":1,
-		"fixBorders":false,
+		"showNumerator1":false,
+"fixBorders":false,
 		"eforall":true
 		},
 		{
@@ -94,7 +97,8 @@
 		"colors":"coloredBorders",
 		"brackets":false,
         "timesDisposition":1,
-		"fixBorders":true,
+		"showNumerator1":false,
+"fixBorders":true,
 		"eforall":false
 		}
 	]
