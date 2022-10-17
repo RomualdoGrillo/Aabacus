@@ -89,7 +89,9 @@ $(document).on('keydown', function(e) {
 			fileExtension= '.mmls';
 		}
 		else {
-			let contentString = MNODEcreateMathmlString($('.selected'), true);
+			let $toBeSaved = $('.selected');
+			$('.selected').removeClass('selected');
+			let contentString = MNODEcreateMathmlString($toBeSaved, true);
 			stringToBeSaved = '<math xmlns="http://www.w3.org/1998/Math/MathML">' + contentString + '</math>';
 			fileExtension= '.mml';
 		}
