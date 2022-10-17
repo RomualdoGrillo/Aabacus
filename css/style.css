@@ -205,11 +205,11 @@
   
   .minusDecoration, .leftDecoration {/* lefDecoration serve se rappresento segni "alterando" gli elementi numerici*/
 	  width: 5px;
-	  height: 1.5px;
+	  height: 1.4px;
 	  padding:0px;
 	  background-color: black;
 	  position: absolute;
-	  top: 48%;
+	  top: calc(50% - 0.7px);
 	  left:-1px;
   }
 	 .m_inverseDecoration , .topDecoration /*, .notDecoration */ {
@@ -219,11 +219,11 @@
 	  position: absolute;
 	  margin-left: auto;
 	  margin-right: auto;
-	  left: 0px;
-	  right: 0px;
+	  left: 1.2px;
+	  right: 1.2px;
 	  top: 1px;
 	  z-index:1;
-  }
+	 }
 	.notDecoration  {/*L shaped not */
 	  border-color: black!important;
 	  border-style: solid;
