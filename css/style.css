@@ -846,8 +846,8 @@
 	 }
   
   .dropTarget{
-	  border-color:blue!important;
-	  border-style:dashed;
+	  border-color:rgb(98, 98, 255)!important;
+	  /*border-style:dashed;*/
   }
   body[tool=autoAdapt] .dropTarget{
 	border-color: blueviolet!important;
