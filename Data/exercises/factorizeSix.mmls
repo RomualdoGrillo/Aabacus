@@ -17,7 +17,27 @@
 			<and>
 			</and>
 	</apply>
-	<ci data-type="bool">Dimostra che 3 * 2 è uguale a 6</ci>
+	<ci data-type="bool">Scomponi in fattori primi  il numero 6</ci>
+	<apply data-type="num">
+			<plus>
+			</plus>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
+			<cn data-type="num">1</cn>
+	</apply>
+	
+	
+</section>
+<section data-section="events">
+	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="result">
 	<apply data-type="num">
 			<times>
 			</times>
@@ -34,26 +54,6 @@
 				<cn data-type="num">1</cn>
 				<cn data-type="num">1</cn>
 			</apply>
-	</apply>
-	
-	
-</section>
-<section data-section="events">
-	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
-			<and>
-			</and>
-	</apply>
-</section>
-<section data-section="result">
-<apply data-type="num">
-			<plus>
-			</plus>
-			<cn data-type="num">1</cn>
-			<cn data-type="num">1</cn>
-			<cn data-type="num">1</cn>
-			<cn data-type="num">1</cn>
-			<cn data-type="num">1</cn>
-			<cn data-type="num">1</cn>
 	</apply>
 </section>
 <section data-section="settings">
