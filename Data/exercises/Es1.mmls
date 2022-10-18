@@ -1,21 +1,25 @@
 <section data-section="palette">
-<ci data-type="bool" data-and="horizontal" data-import="./Data/exercises/quizEqSystem/quizEqSystem.prt">import palette</ci>
+	<ci data-type="bool" data-and="horizontal" data-import="./Data/exercises/quizEqSystem/quizEqSystem.prt">import palette</ci>
 </section>
 
 <section data-section="events">
-<ci data-type="bool" data-import="./Data/Preload/gestToAction.mml">import events</ci>
+	<ci data-type="bool" data-import="./Data/Preload/gestToAction.mml">import events</ci>
 </section>
 
 <section data-section="canvas">
-<apply data-hide="true" data-type="bool">
+	<ci type="bool">Lo scopo è trovare il risultato dell'espressione. Si può scomporre e ricomporre in addendi (schiaccia frecce dx e sx) e in fattori (frecce su e giù). Si può inoltre cambiare l'odine dei termini con drag and drop. In questo esercizio non c'è una primitiva per la divisione, non si può fare 6:3 direttamente, ma si può comporre un numero ed il suo reciproco.</ci>
+	<apply data-hide="true" data-type="bool">
+		<and>
+		</and>
+		<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
 			<and>
 			</and>
-			<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
-				<and>
-				</and>
-			</apply>
-</apply>
-<ci type="bool">Lo scopo è trovare il risultato dell'espressione. Si può scomporre e ricomporre in addendi (schiaccia frecce dx e sx) e in fattori (frecce su e giù). Si può inoltre cambiare l'odine dei termini con drag and drop. In questo esercizio non c'è una primitiva per la divisione, non si può fare 6:3 direttamente, ma si può comporre un numero ed il suo reciproco.</ci>
+		</apply>
+	</apply>
+	<apply data-import="./Data/FOUNDATION_COMPOSE.mml" data-and="horizontal" data-type="bool">
+		<and>
+		</and>
+	</apply>
 	<apply type="num">
 		<plus>
 		</plus>
@@ -39,7 +43,7 @@
 </section>
 
 <section data-section="result">
-<cn type="num">3</cn>
+	<cn type="num">3</cn>
 </section>
 
 <section data-section="settings">
