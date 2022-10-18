@@ -1,0 +1,169 @@
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="canvas">
+	<apply data-hide="true" data-type="bool">
+			<and>
+			</and>
+			<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
+				<and>
+				</and>
+			</apply>
+	</apply>
+	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
+						
+					
+
+
+<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;">
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+		
+		
+		
+	
+						
+					
+
+
+<div class="ul_role" data-type="bool">
+	
+	
+	
+	
+
+	
+
+	
+<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+	<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+</div>
+</div>
+<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+		
+		
+		
+	
+						
+					
+
+
+<div class="ul_role" data-type="bool">
+	
+	
+	
+
+
+<apply data-tagimg="./images/properties/decompose.svg" data-vis="collapsed" data-tag="calcola" data-type="bool">
+<and>
+</and>
+<ci data-tagimg="./images/properties/compose.svg" data-tag="compose" data-type="bool">built in</ci>
+<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeInAProduct" data-type="bool">built in</ci>
+<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeInASum" data-type="bool">true</ci>
+</apply>
+</div>
+</div>
+<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+		
+		
+		
+	
+						
+					
+
+
+<div class="ul_role" data-type="bool">
+	
+	
+
+
+<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="Proprieta'Distributiva" data-type="bool">
+<and>
+</and>
+<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+</apply>
+</div>
+</div>
+</div>
+</div>
+<ci data-type="bool">Seleziona un numero e premi: ↑ per scomporlo in addendi; ↓ oppure ← per comporlo.</ci>
+<cn data-path="times0 > ME" data-type="num">12</cn>
+</section>
+<section data-section="events">
+	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="result">
+</section>
+<section data-section="settings">
+	
+    {
+	"debug":false,
+	"gameMode":true,
+	"gameModeSurpriseRes":false,
+	"lockCanvas":true,
+	"resultHidden":false,
+	"visSettingSelected":1,
+	"tool":"",
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+        "timesDisposition":0,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":true
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"tooColored",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":false
+		}
+	]
+}
+</section>
+

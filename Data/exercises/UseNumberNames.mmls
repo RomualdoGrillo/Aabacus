@@ -1,272 +1,106 @@
 <section data-section="palette">
 	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
-			<and>
-			</and>
+		<and>
+		</and>
 	</apply>
 </section>
 <section data-section="canvas">
 	<apply data-hide="true" data-type="bool">
+		<and>
+		</and>
+		<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
 			<and>
 			</and>
-			<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
-				<and>
-				</and>
-			</apply>
+		</apply>
 	</apply>
 	<apply data-vis="" data-and="horizontal" data-type="bool">
+		<and>
+		</and>
+		<apply data-import="./Data/FOUNDATION_FIELD.mml">
 			<and>
 			</and>
+		</apply>
+		<div data-atom="and" data-type="bool" class="atom saveAsHtml brackets" data-vis="" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
+		<div class="ul_role" data-type="bool">
 			<apply data-type="bool">
-				<and>
-				</and>
-				<apply data-and="horizontal" data-type="bool">
-					<and>
-					</and>
-					<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
-					<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
-				</apply>
-				<apply data-and="horizontal" data-type="bool">
-					<and>
-					</and>
-					<apply title="Proprietà associativa della somma: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-vis="collapsed" data-tag="plusAssociate" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
-						<forall>
-						</forall>
-						<bvar>
-							<ci data-type="num">a__</ci>
-						</bvar>
-						<bvar>
-							<ci data-type="num">b___</ci>
-						</bvar>
-						<apply data-type="bool">
-							<eq>
-							</eq>
-							<apply title="-mainP" data-type="num">
-								<plus>
-								</plus>
-								<apply title="s-s" data-type="num">
-									<plus>
-									</plus>
-									<ci data-type="num">a</ci>
-								</apply>
-								<ci data-type="num">b</ci>
-							</apply>
-							<apply title="-mainP" data-type="num">
-								<plus>
-								</plus>
-								<ci title="s-s" data-type="num">a</ci>
-								<ci data-type="num">b</ci>
-							</apply>
-						</apply>
-					</apply>
-					<apply title="Proprietà associativa della moltiplicazione: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-variableorient="true" data-tagimg="./images/properties/AssocGen.svg" data-vis="collapsed" data-tag="timesAssociate" data-type="bool">
-						<forall>
-						</forall>
-						<bvar>
-							<ci data-type="num">a__</ci>
-						</bvar>
-						<bvar>
-							<ci data-type="num">b___</ci>
-						</bvar>
-						<apply data-type="bool">
-							<eq>
-							</eq>
-							<apply title="-mainP" data-type="num">
-								<times>
-								</times>
-								<apply title="s-s" data-type="num">
-									<times>
-									</times>
-									<ci data-type="num">a</ci>
-								</apply>
-								<ci data-type="num">b</ci>
-							</apply>
-							<apply title="-mainP" data-type="num">
-								<times>
-								</times>
-								<ci title="s-s" data-type="num">a</ci>
-								<ci data-type="num">b</ci>
-							</apply>
-						</apply>
-					</apply>
-				</apply>
-				<apply data-vis="" data-and="horizontal" data-type="bool">
-					<and>
-					</and>
-					<apply title="Proprietà dell'opposto: Seleziona due elementi opposti circondati da una parentesi (a -a) e premi 'Invio' per trasformarli in uno 0. Seleziona uno 0 e premi 'Maiusc + Invio' per creare una coppia (a -a)" data-vis="collapsed" data-tag="Opposite" data-tagimg="./images/properties/antimatter.svg" data-type="bool">
-						<forall>
-						</forall>
-						<bvar>
-							<ci data-type="num">a</ci>
-						</bvar>
-						<apply data-type="bool">
-							<eq>
-							</eq>
-							<apply title="--c" data-type="num">
-								<plus>
-								</plus>
-								<ci data-type="num">a</ci>
-								<apply data-type="num">
-									<minus>
-									</minus>
-									<ci data-type="num">a</ci>
-								</apply>
-							</apply>
-							<cn data-type="num">0</cn>
-						</apply>
-					</apply>
-					<apply title="Proprietà del reciproco: Seleziona due elementi reciproci circondati da una parentesi (a * 1/a) e premi 'Invio' per trasformarli in un 1. Seleziona un 1 e premi 'Maiusc + Invio' per creare una coppia (a * 1/a)" data-variableorient="true" data-tagimg="./images/properties/antimatter.svg" data-vis="collapsed" data-tag="Reciprocal" data-type="bool">
-						<forall>
-						</forall>
-						<bvar>
-							<ci data-type="num">a</ci>
-						</bvar>
-						<apply data-type="bool">
-							<eq>
-							</eq>
-							<apply data-type="num">
-								<times>
-								</times>
-								<ci data-type="num">a</ci>
-								<apply data-type="num">
-									<m_inverse>
-									</m_inverse>
-									<ci data-type="num">a</ci>
-								</apply>
-							</apply>
-							<cn data-type="num">1</cn>
-						</apply>
-					</apply>
-				</apply>
-				<apply data-and="horizontal" data-type="bool">
-					<and>
-					</and>
-					<apply title="Elemento neutro della somma: seleziona una coppia (a + 0) e premi Invio per eliminare lo 0. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '+0'" data-tagimg="./images/properties/zero.svg" data-vis="collapsed" data-tag="defZero" data-type="bool">
-						<forall>
-						</forall>
-						<bvar>
-							<ci data-type="num">a</ci>
-						</bvar>
-						<apply data-type="bool">
-							<eq>
-							</eq>
-							<apply title="--c" data-type="num">
-								<plus>
-								</plus>
-								<cn data-type="num">0</cn>
-								<ci data-type="num">a</ci>
-							</apply>
-							<ci data-type="num">a</ci>
-						</apply>
-					</apply>
-					<apply title="Elemento neutro del prodotto: seleziona una coppia (a * 1) e premi 'Invio' per eliminare l' uno. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '* 1'" data-tagimg="./images/properties/one.svg" data-vis="collapsed" data-tag="defOne" data-type="bool">
-						<forall>
-						</forall>
-						<bvar>
-							<ci data-type="num">a</ci>
-						</bvar>
-						<apply data-vis="" data-type="bool">
-							<eq>
-							</eq>
-							<apply data-type="num">
-								<times>
-								</times>
-								<cn data-type="num">1</cn>
-								<ci data-type="num">a</ci>
-							</apply>
-							<ci data-type="num">a</ci>
-						</apply>
-					</apply>
-				</apply>
-				<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="distributiva" data-type="bool">
-					<and>
-					</and>
-					<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
-					<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
-					<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
-					<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+				<eq>
+				</eq>
+				<cn data-type="num">2</cn>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
 				</apply>
 			</apply>
-			<apply data-vis="" data-type="bool">
-				<and>
-				</and>
-				<apply data-type="bool">
-					<eq>
-					</eq>
-					<cn data-type="num">2</cn>
-					<apply data-type="num">
-						<plus>
-						</plus>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-					</apply>
-				</apply>
-				<apply data-type="bool">
-					<eq>
-					</eq>
-					<cn data-type="num">3</cn>
-					<apply data-type="num">
-						<plus>
-						</plus>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-					</apply>
-				</apply>
-				<apply data-type="bool">
-					<eq>
-					</eq>
-					<cn data-type="num">4</cn>
-					<apply data-type="num">
-						<plus>
-						</plus>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-					</apply>
-				</apply>
-				<apply data-type="bool">
-					<eq>
-					</eq>
-					<cn data-type="num">5</cn>
-					<apply data-type="num">
-						<plus>
-						</plus>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-					</apply>
-				</apply>
-				<apply data-type="bool">
-					<eq>
-					</eq>
-					<cn data-type="num">6</cn>
-					<apply data-type="num">
-						<plus>
-						</plus>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-						<cn data-type="num">1</cn>
-					</apply>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<cn data-type="num">3</cn>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
 				</apply>
 			</apply>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<cn data-type="num">4</cn>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<cn data-type="num">5</cn>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<cn data-type="num">6</cn>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+					<cn data-type="num">1</cn>
+				</apply>
+			</apply>
+		</div>
+	</div>
 	</apply>
 	<apply data-type="num">
-			<plus>
-			</plus>
-			<cn data-type="num">2</cn>
-			<cn data-type="num">3</cn>
+		<plus>
+		</plus>
+		<cn data-type="num">2</cn>
+		<cn data-type="num">3</cn>
 	</apply>
 </section>
 <section data-section="events">
 	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
-			<and>
-			</and>
+		<and>
+		</and>
 	</apply>
 </section>
 <section data-section="result">
