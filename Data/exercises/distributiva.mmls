@@ -13,11 +13,12 @@
 				</and>
 			</apply>
 	</apply>
-	<ci data-type="bool"> Distribuisci il fattore x portandolo dentro alla parentesi". Raccogli il fattore 2, trascinando un "2" sopra all'altro.</ci>
 	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-type="bool">
 			<and>
 			</and>
 	</apply>
+	<ci data-type="bool">Seleziona la proprietà distributiva e poi applicala:</ci>
+	<ci data-type="bool"> Distribuisci il fattore 2 portandolo dentro alla parentesi". Raccogli il fattore x, trascinando un "x" sopra all'altra.</ci>
 	<apply data-path="plus0 > ME" data-type="num">
 			<times>
 			</times>
@@ -47,26 +48,26 @@
 	</apply>
 </section>
 <section data-section="result">
-	<apply data-type="num">
+	<apply data-path="plus0 > ME" data-type="num">
 			<times>
 			</times>
-			<cn data-type="num">2</cn>
 			<apply data-type="num">
 				<plus>
 				</plus>
 				<apply data-type="num">
 					<times>
 					</times>
-					<ci data-type="num">x</ci>
-					<ci data-type="num">b</ci>
+					<ci data-type="num">K</ci>
+					<cn data-type="num">2</cn>
 				</apply>
 				<apply data-type="num">
 					<times>
 					</times>
-					<ci data-type="num">x</ci>
-					<ci data-type="num">a</ci>
+					<ci data-type="num">T</ci>
+					<cn data-type="num">2</cn>
 				</apply>
 			</apply>
+			<ci data-type="num">x</ci>
 	</apply>
 </section>
 
