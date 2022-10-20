@@ -32,7 +32,7 @@
 							<apply title="-mainP" data-type="num">
 								<plus>
 								</plus>
-								<apply title="s--s" data-type="num">
+								<apply title="s-s" data-type="num">
 									<plus>
 									</plus>
 									<ci data-type="num">a</ci>
@@ -42,7 +42,7 @@
 							<apply title="-mainP" data-type="num">
 								<plus>
 								</plus>
-								<ci title="s--s" data-type="num">a</ci>
+								<ci title="s-s" data-type="num">a</ci>
 								<ci data-type="num">b</ci>
 							</apply>
 						</apply>
@@ -62,7 +62,7 @@
 							<apply title="-mainP" data-type="num">
 								<times>
 								</times>
-								<apply title="s--s" data-type="num">
+								<apply title="s-s" data-type="num">
 									<times>
 									</times>
 									<ci data-type="num">a</ci>
@@ -72,7 +72,7 @@
 							<apply title="-mainP" data-type="num">
 								<times>
 								</times>
-								<ci title="s--s" data-type="num">a</ci>
+								<ci title="s-s" data-type="num">a</ci>
 								<ci data-type="num">b</ci>
 							</apply>
 						</apply>
