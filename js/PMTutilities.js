@@ -106,17 +106,21 @@ function removeDuplicatesFromString(string){
 	return res
 }
 
-function MNODEpath($MNODE,$spanRoot){
-	//crea una stringa che descrive la posizione dell'atomo 
+function MNODEpath($MNODE,$spanRoot,$matchedPattern){
+	//crea una stringa che descrive la posizione dell'atomo:
+	//la posizione orizzontale (che numero di figlio sei ) viene dall'input, le marcature dal pattern!! 
 	//esempio "eq0 > plus1 > ME"
 	var path="ME";
 	var $currMNODE = $MNODE;
-	var $currMNODEparent 
+	var $currPATT = $matchedPattern;
+	var $currMNODEparent
+	var $currPATTparent 
 	var nthchild
 	while(MNODEparent($currMNODE)[0]!= undefined &&//se non ci sono più parent validi fermati
 		($spanRoot==undefined || $currMNODE[0]!==$spanRoot[0])  )//se siamo arrivati al root, fermati
 		{
-		$currMNODEparent = MNODEparent($currMNODE)
+		$currMNODEparent = MNODEparent($currMNODE);
+		$currPATTparent = MNODEparent($currPATT);
 		if( $currMNODEparent.attr('data-atom')=="eq" ){
 			if( $currMNODE.parent().hasClass("firstMember")){nthchild=0}
 			else{nthchild=1}
@@ -124,8 +128,9 @@ function MNODEpath($MNODE,$spanRoot){
 		else{
 			nthchild=$currMNODEparent[0].MNODE_getChildren().index($currMNODE)
 		}
-		path = MNODEdescForPath($currMNODEparent) + nthchild + " > "+ path //nome del parent + posizione all'interno del parent
-		$currMNODE = $currMNODEparent
+		path = MNODEdescForPath($currPATTparent) + nthchild + " > "+ path //nome del parent + posizione all'interno del parent
+		$currMNODE = $currMNODEparent;
+		$currPATT = $currPATTparent
 	}
 	return path
 }
@@ -200,13 +205,13 @@ function newMNODEcompareOrder($sibling1,$sibling2){
 	var o1= MNODEdeepGetOrder($sibling1,description)[0]; //per ora considero solo la prima delle informazioni rilevanti
 	var o2= MNODEdeepGetOrder($sibling2,description)[0]; //todo:si potrebbe utilizzare anche la media
 	if( o1 != undefined && o2 != undefined ){
-			return o1 > o2
+			return o1 - o2
 	}
 	else if( o1 == undefined && o2 == 0 ){//se uno vuole essere primo e l'altro non ha preferenze...
-			return true
+			return -1
 	}
 	else{
-		return false  //non è possibile paragonare, quindi non spostare	
+		return 0  //non è possibile paragonare, quindi non spostare	
 	}
 }
 
@@ -653,7 +658,7 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
 				$resList.each(function(){
 					var mark = MNODESmarkUnmark($($Pattern[patternIndex]),undefined,"p")
 					if( mark.indexOf("f") ==-1 ){//registra path iniziale a meno che il paatern sia marcato “f" freePosition 
-						var path = MNODEpath($(this),PActx.$operand);
+						var path = MNODEpath($(this),PActx.$operand,$($Pattern[patternIndex]));
 						$(this).attr('data-path',path)
 					}
 				})
