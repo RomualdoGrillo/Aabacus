@@ -752,8 +752,8 @@ function decompose($toBeDec,direction,img){//"up" for factorize
 			}
 			*/
 			else if( toBeDec.type === "cn" ){//se l'elemento da scomporre è un numero'
-				var number = Number( MNODENumericCdsAsText($toBeDec) )
-				var primeFactors = primeFactorization(number);
+		
+				var primeFactors = primeFactorization(toBeDec.val);
 				
 				if(primeFactors.length >1){// se numero primo non fare nulla
 					$extOp = encaseIfNeeded($toBeDec,op);//se necessario crea una operazione container
@@ -772,7 +772,7 @@ function decompose($toBeDec,direction,img){//"up" for factorize
 				}
 			}
 			//non scomporre l'uno, creazione di coppie gestita altrove
-			if( !PActx.matchedTF && number!=1 ){//se le altre scomposizioni non sono applicabili fai comparire l'elemento neutro
+			if( !PActx.matchedTF && toBeDec.val!=1 ){//se le altre scomposizioni non sono applicabili fai comparire l'elemento neutro
 				$extOp = encaseIfNeeded($toBeDec,op);//se necessario crea una operazione container
 				//crea nuovo Atomo
 				var One = {type:"cn", val:1, sign:1, exp:1}
