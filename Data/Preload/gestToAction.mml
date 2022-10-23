@@ -182,6 +182,12 @@
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
+			<ci type="bool">orAbsorbingEl</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
 			<ci type="bool">notFalse</ci>
 			<ci type="bool">ltr</ci>
 		</apply>
