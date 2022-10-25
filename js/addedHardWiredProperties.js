@@ -1,3 +1,19 @@
+function tabelline($toBeComp,firstVal,img){
+	//limit to times 
+	var $parent=MNODEparent($toBeComp);
+	var op = $parent.attr('data-atom');
+	if(op !== "times"){
+		return 
+		//return newPActx()
+	}
+	//limit to simple numbers 4 , 90, 300 no nambers with multiple non zero digits
+
+	compose($toBeComp,firstVal,img);
+}
+
+
+
+
 function composePlusOnly($toBeComp,firstVal,img){
 	var $parent=MNODEparent($toBeComp);
 	var op = $parent.attr('data-atom');
