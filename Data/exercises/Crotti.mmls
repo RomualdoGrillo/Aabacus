@@ -1,0 +1,460 @@
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="canvas">
+	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
+		
+	
+
+<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;">
+			
+			
+			
+			
+			
+		
+
+
+
+
+
+
+
+<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
+
+
+
+				
+			
+
+<div class="ul_role" data-type="bool">
+					
+					
+				
+	
+
+	
+<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+	<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+</div>
+</div>
+<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
+
+
+
+				
+			
+
+<div class="ul_role" data-type="bool">
+					
+					
+				
+
+
+
+<apply title="Proprietà associativa della somma: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-vis="collapsed" data-tag="plusAssociate" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
+<forall>
+</forall>
+<bvar>
+		<ci data-type="num">a__</ci>
+</bvar>
+<bvar>
+		<ci data-type="num">b___</ci>
+</bvar>
+<apply data-type="bool">
+		<eq>
+		</eq>
+		<apply title="-mainP" data-type="num">
+			<plus>
+			</plus>
+			<apply title="s--s" data-type="num">
+				<plus>
+				</plus>
+				<ci data-type="num">a</ci>
+			</apply>
+			<ci data-type="num">b</ci>
+		</apply>
+		<apply title="-mainP" data-type="num">
+			<plus>
+			</plus>
+			<ci title="s--s" data-type="num">a</ci>
+			<ci data-type="num">b</ci>
+		</apply>
+</apply>
+</apply>
+<apply title="Proprietà associativa della moltiplicazione: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-variableorient="true" data-tagimg="./images/properties/AssocGen.svg" data-vis="collapsed" data-tag="AssociativaMoltiplicazione" data-type="bool">
+		<forall>
+		</forall>
+		<bvar>
+			<ci data-type="num">a__</ci>
+		</bvar>
+		<bvar>
+			<ci data-type="num">b___</ci>
+		</bvar>
+		<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply title="-mainP" data-type="num">
+				<times>
+				</times>
+				<apply title="s--s" data-type="num">
+					<times>
+					</times>
+					<ci data-type="num">a</ci>
+				</apply>
+				<ci data-type="num">b</ci>
+			</apply>
+			<apply title="-mainP" data-type="num">
+				<times>
+				</times>
+				<ci title="s--s" data-type="num">a</ci>
+				<ci data-type="num">b</ci>
+			</apply>
+		</apply>
+</apply>
+</div>
+</div>
+<div data-atom="and" data-type="bool" class="atom saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
+
+
+
+				
+			
+
+<div class="ul_role" data-type="bool">
+					
+					
+				
+
+
+<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeTens" data-type="bool">built in</ci>
+<ci data-tagimg="./images/properties/tabelline.svg" data-tag="tabelline" data-type="bool">built in</ci>
+</div>
+</div>
+<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
+
+
+
+				
+			
+
+<div class="ul_role" data-type="bool">
+					
+				
+
+<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="Proprieta'Distributiva" data-type="bool">
+<and>
+</and>
+<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+</apply>
+</div>
+</div>
+</div>
+</div>
+<apply data-type="num">
+		<times>
+		</times>
+		<cn data-type="num">71</cn>
+		<cn data-type="num">234</cn>
+</apply>
+</section>
+<section data-section="events">
+	<apply data-type="bool">
+			<and>
+			</and>
+			<apply data-type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci data-type="bool">t</ci>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">OrNeutral</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci data-type="bool">←</ci>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">compose</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">composeXorNotX</ci>
+					<ci data-type="bool">rtl</ci>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci data-type="bool">↓</ci>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">compose</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">AndNeutral</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">timesAbsorbingEl</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci data-type="bool">↑</ci>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">decomposeTimes</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">AndNeutral</ci>
+					<ci data-type="bool">rtl</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">Reciprocal</ci>
+					<ci data-type="bool">rtl</ci>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci data-type="bool">→</ci>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">decomposeTens</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">Opposite</ci>
+					<ci data-type="bool">rtl</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">defZero</ci>
+					<ci data-type="bool">rtl</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">composeXorNotX</ci>
+					<ci data-type="bool">rtl</ci>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci data-type="bool">m</ci>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">eqPlusMove</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">eqPlusMoveAlone</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">eqTimesMove</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci data-type="bool">c</ci>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">OppositeOfOpposite</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">InvOfOpposite</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">evaluateComparison</ci>
+					<ci data-type="bool">int</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">simpPlusSingleTerm</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">simpTimesSingleFactor</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">defOne</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">OrNeutral</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">AndNeutral</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">andAbsorbingEl</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">orAbsorbingEl</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">notFalse</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">zeroAsEmptyPlus</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">oneAsEmptyTimes</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">plusAssociate</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">timesAssociate</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">andAssociate</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">orAssociate</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<eventtoaction>
+				</eventtoaction>
+				<ci data-type="bool">p</ci>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">plusAssociate</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">plusAssociate</ci>
+					<ci data-type="bool">rtl</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">timesAssociate</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">timesAssociate</ci>
+					<ci data-type="bool">rtl</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">orAssociate</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">orAssociate</ci>
+					<ci data-type="bool">rtl</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">andAssociate</ci>
+					<ci data-type="bool">ltr</ci>
+				</apply>
+				<apply data-type="obj">
+					<callfunction>
+					</callfunction>
+					<ci data-type="bool">andAssociate</ci>
+					<ci data-type="bool">rtl</ci>
+				</apply>
+			</apply>
+	</apply>
+</section>
+<section data-section="result">
+</section>
