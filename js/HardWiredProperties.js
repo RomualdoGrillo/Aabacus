@@ -492,9 +492,6 @@ function MNODEcollect($dragged,$target){
 	return PActx
 }
 
-
-
-
 function compose($toBeComp,firstVal,img){
 	var $originaltoBeComp = $toBeComp //per poter ripristinare lo stato iniziale
 	var PActx = newPActx();
@@ -507,8 +504,8 @@ function compose($toBeComp,firstVal,img){
 		//controlla se si tratta di elemento neutro, in tal caso fallo semplicemente sparire.
 		var tBcClass = $toBeComp.attr("data-atom"); 
 		if( tBcClass === "cn" || tBcClass === "ci"){
-			var name = $toBeComp[0].MNODE_getName()
 			/*
+			var name = $toBeComp[0].MNODE_getName()
 			if( (op === "times" && name === "1")||
 				(op === "plus" && name === "0")||
 				(op === "and" && name === "true")||
@@ -691,42 +688,6 @@ function decomposeInASum($toBeDec,firstVal,img){
 	return decompose($toBeDec,"right",img);
 }
 
-function decomposeTens($toBeDec,undefined,img){
-	var PActx = newPActx();
-	PActx.$operand = $toBeDec;
-	var op = ""
-	var $extOp = ""
-	//var $toBeDec=$('.selected')
-	var TBDdataType = $toBeDec.attr("data-type")
-	//**** la funzione può essere applicata?
-	if($toBeDec.length !== 1){console.log("cant decompose " + $toBeDec.length + " elements"); return}
-	let TBDType = $toBeDec.attr("data-atom");
-	if( TBDType != "cn" ){//se l'elemento da scomporre è un numero'
-	console.log("can only decompose a cn not a" + TBDType ); return}
-	//**** applica la funzione
-	var toBeDec = AtomsToVal($toBeDec)
-	//var primeFactors = primeFactorization(number);
-	let terms = separateTensHundreds(toBeDec.val);	
-	if(terms.length >1){
-		$extOp = encaseIfNeeded($toBeDec,'plus');//se necessario crea una operazione container
-		var prototype=prototypeSearch("cn","num")
-		terms.forEach(function(e,i){
-			$clone = MNODEclone(prototype);
-			$clone.attr('data-atom','cn');
-			$clone[0].MNODE_setName(e)
-			$clone.insertAfter($toBeDec);
-			if(i == (terms.length -1)){
-				$clone.addClass('selected');// l'ultimo fattore rimane selezionato
-			}
-		})
-		$toBeDec.remove();
-		PActx.matchedTF = true;
-		PActx.replacedAlready = true;
-		PActx.visualization = img;
-		PActx.msg = "decomposeTens" 	
-	}
-	return PActx
-}
 
 function decompose($toBeDec,direction,img){//"up" for factorize
 	var PActx = newPActx();
