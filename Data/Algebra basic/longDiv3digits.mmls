@@ -1,0 +1,55 @@
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="canvas">
+	<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
+			<and>
+			</and>
+	</apply>
+	<ci data-type="bool">Long division with decimal numbers examples:  447/12</ci>
+	<apply data-type="num">
+			<plus>
+			</plus>
+			<apply data-type="num">
+				<times>
+				</times>
+				<cn data-type="num">4</cn>
+				<cn data-type="num">10</cn>
+				<cn data-type="num">10</cn>
+			</apply>
+			<apply data-type="num">
+				<times>
+				</times>
+				<cn data-type="num">4</cn>
+				<cn data-type="num">10</cn>
+			</apply>
+			<cn data-type="num">7</cn>
+			<apply data-type="num">
+				<times>
+				</times>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<apply data-type="num">
+						<times>
+						</times>
+						<cn data-type="num">1</cn>
+						<cn data-type="num">10</cn>
+					</apply>
+					<cn data-type="num">2</cn>
+				</apply>
+				<cn data-type="num">0</cn>
+			</apply>
+	</apply>
+</section>
+<section data-section="events">
+	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="result">
+</section>

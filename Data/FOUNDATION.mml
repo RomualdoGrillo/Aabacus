@@ -696,7 +696,7 @@
 					<forall>
 					</forall>
 					<bvar>
-						<ci data-type="num">others___</ci>
+						<ci data-type="num">a___</ci>
 					</bvar>
 					<apply data-type="bool">
 						<eq>
@@ -705,7 +705,7 @@
 							<times>
 							</times>
 							<cn data-type="num">0</cn>
-							<ci data-type="num">others</ci>
+							<ci data-type="num">a</ci>
 						</apply>
 						<cn data-type="num">0</cn>
 					</apply>
