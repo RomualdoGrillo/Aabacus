@@ -46,3 +46,41 @@ function MNODENumericCdsAsText($MNODE){
   }
   return res
 }
+
+function separateNumberIntoUnits(n) {
+  if (n == 0) return [0];
+  // n = Math.floor(n); // needed for decimal numbers
+  var arr = [];
+  var i = 1;
+
+  while (n > 0 && arr.length < 2 ) {// limit result to two terms
+    let currentDigit = n % 10;
+    if(currentDigit){//do not insert zeroes
+      arr.push((n % 10) * i); 
+    }
+    n = Math.floor(n / 10);
+    i *= 10
+  }
+
+  return arr;
+}
+
+function separateTensHundreds(n) {
+  if (n == 0) return [0];
+  // n = Math.floor(n); // needed for decimal numbers
+  var arr = [];
+  var p = 10;
+
+  while (n != 0 && arr.length < 1 ) {// limit result to 1 terms + remainder
+    let currentSlice = n % p;
+    if(currentSlice){//do not insert zeroes
+      arr.push(currentSlice);
+      n = n - currentSlice; 
+    }
+    p *= 10
+  }
+  if(n){//if remainder
+    arr.push(n);
+  }
+  return arr;
+}
