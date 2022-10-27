@@ -501,10 +501,11 @@ function compose($toBeComp,firstVal,img){
 	if($toBeComp.length == 0){PActx.msg = ("nothing selected"); return PActx}
 	//se 1 solo selezionato cerca di comporlo con l'antecedente'
 	if($toBeComp.length == 1){
+		//---tenta semplificazioni banali
 		//controlla se si tratta di elemento neutro, in tal caso fallo semplicemente sparire.
+		/*
 		var tBcClass = $toBeComp.attr("data-atom"); 
 		if( tBcClass === "cn" || tBcClass === "ci"){
-			/*
 			var name = $toBeComp[0].MNODE_getName()
 			if( (op === "times" && name === "1")||
 				(op === "plus" && name === "0")||
@@ -517,11 +518,9 @@ function compose($toBeComp,firstVal,img){
 				PActx.matchedTF = true;
 				return	PActx
 			}
-			*/
-
 		}
+		*/
 		var $AtomBesideSelected
-
 		//Attualmente il contenuto dei role si dispone leftRight e topDown mentre comporre è visto come left e down.
 		//di conseguenza per decidere qual'è l'elemento con cui comporre devo distiguere a seconda dell'orientazione.'
 		if( $toBeComp.parent().css('flex-direction') === "row"){
