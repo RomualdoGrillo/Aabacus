@@ -285,6 +285,7 @@ function dblclickHandler(event) {
 	}
 	*/
 	/********closed still not handled **********/
+	/*
 	else if (closed && atomClass === 'cn') {
 		let n = Number( MNODENumericCdsAsText($atomDblclicked) );
 		if(Number.isInteger(n) && n>0){
@@ -326,6 +327,7 @@ function dblclickHandler(event) {
 				$atomDblclicked.replaceWith($composed)
 			}
 	}//closed or opened
+	*/
 	//******** expand collapse ***********
 	//else if (atomClass != 'ci' && atomClass != 'cn' && atomClass != 'plus') {
 	else if (atomClass == 'forAll' || atomClass == 'and') {
