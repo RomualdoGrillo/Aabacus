@@ -87,8 +87,8 @@
 			</div>
 			<div data-atom="and" data-type="bool" class="atom saveAsHtml brackets" data-and="horizontal" style="border-width: 0px;" draggable="false">
 				<div class="ul_role" data-type="bool">
-					<ci data-tagimg="./images/properties/decompose.svg" data-tag="composePlusOnly" data-type="bool">built in</ci>
-					<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeTens" data-type="bool">built in</ci>
+					<ci data-tagimg="./images/properties/compose.svg" data-tag="composePlusOnly" data-type="bool">built in</ci>
+					<ci data-tagimg="./images/properties/tensunits.svg" data-tag="decomposeTens" data-type="bool">built in</ci>
 					<ci data-tagimg="./images/properties/tabelline.svg" data-tag="tabelline" data-type="bool">built in</ci>
 				</div>
 			</div>
@@ -439,12 +439,13 @@
 	</apply>
 </section>
 <section data-section="result">
+	<cn data-type="num">6408</cn>
 </section>
 <section data-section="settings">
     {
 	"debug":false,
 	"gameMode":true,
-	"gameModeSurpriseRes":false,
+	"gameModeSurpriseRes":true,
 	"lockCanvas":true,
 	"resultHidden":false,
 	"visSettingSelected":1,

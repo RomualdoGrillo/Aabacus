@@ -520,21 +520,7 @@ function compose($toBeComp,firstVal,img){
 			}
 		}
 		*/
-		var $AtomBesideSelected
-		//Attualmente il contenuto dei role si dispone leftRight e topDown mentre comporre è visto come left e down.
-		//di conseguenza per decidere qual'è l'elemento con cui comporre devo distiguere a seconda dell'orientazione.'
-		if( $toBeComp.parent().css('flex-direction') === "row"){
-			$AtomBesideSelected = $(".selected").prevAll('[data-atom]:first');
-		}
-		else{
-			$AtomBesideSelected = $(".selected").nextAll('[data-atom]:first');
-		}
-		$AtomBesideSelected.addClass("selected");
-		$toBeComp = $toBeComp.add($AtomBesideSelected);
-		//debug colors
-		$('*').removeClass("toBeComposed");
-    	//Debug add colors
-    	MNODEnodesAddClass($toBeComp,"toBeComposed");	
+		$toBeComp = $toBeComposedWithSiblings($toBeComp);//aventually add siblings to be composed
 	}
 	if( !checkSiblings($toBeComp)){PActx.msg = ("not siblings"); return PActx}
 	//*** calcolo generale 

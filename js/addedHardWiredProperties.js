@@ -1,14 +1,31 @@
 function tabelline($toBeComp,firstVal,img){
-	//limit to times 
-	var $parent=MNODEparent($toBeComp);
-	var op = $parent.attr('data-atom');
-	if(op !== "times"){
-		return 
-		//return newPActx()
+	//limit to times
+	var op = $toBeComp.attr('data-atom');
+	if(op == "times"){
+		//if a times operation is selected, operate on his children
+		$toBeComp = $toBeComp[0].MNODE_getChildren()
 	}
-	//limit to simple numbers 4 , 90, 300 no nambers with multiple non zero digits
-
-	compose($toBeComp,firstVal,img);
+	else{
+		var $parent=MNODEparent($toBeComp);
+		op = $parent.attr('data-atom');
+		if(op !== "times"){
+			return 
+			//return newPActx()
+		}
+	}
+	if($toBeComp.length==1){//in case you have 1 only item to be composed try to add a sibling
+		$toBeComp = $toBeComposedWithSiblings($toBeComp)
+	}
+	if($toBeComp.length==2){
+		//limit to simple numbers 4 , 90, 300 no nambers with multiple non zero digits
+		let i=0;
+		while($toBeComp[i]){
+			let value = AtomsToVal( $($toBeComp[i])).val
+			if(  separateTensHundreds(value).length != 1 ){return}
+		i++}
+	return compose($toBeComp,firstVal,img);	
+	}
+	
 }
 
 
@@ -21,7 +38,7 @@ function composePlusOnly($toBeComp,firstVal,img){
 		return 
 		//return newPActx()
 	}
-	compose($toBeComp,firstVal,img);
+	return compose($toBeComp,firstVal,img);
 }
 
 
@@ -31,7 +48,6 @@ function decomposeTens($toBeDec,undefined,img){
 	var op = ""
 	var $extOp = ""
 	//var $toBeDec=$('.selected')
-	var TBDdataType = $toBeDec.attr("data-type")
 	//**** la funzione può essere applicata?
 	if($toBeDec.length !== 1){console.log("cant decompose " + $toBeDec.length + " elements"); return}
 	let TBDType = $toBeDec.attr("data-atom");
@@ -60,4 +76,22 @@ function decomposeTens($toBeDec,undefined,img){
 		PActx.msg = "decomposeTens" 	
 	}
 	return PActx
+}
+
+function $toBeComposedWithSiblings($selected){
+	var $AtomBesideSelected
+	//Attualmente il contenuto dei role si dispone leftRight e topDown mentre comporre è visto come left e down.
+	//di conseguenza per decidere qual'è l'elemento con cui comporre devo distiguere a seconda dell'orientazione.'
+	if( $selected.parent().css('flex-direction') === "row"){
+		$AtomBesideSelected = $selected.prevAll('[data-atom]:first');
+	}
+	else{
+		$AtomBesideSelected = $selected.nextAll('[data-atom]:first');
+	}
+	$selected = $selected.add($AtomBesideSelected);
+	//debug colors
+	$('*').removeClass("toBeComposed");
+	//Debug add colors
+	MNODEnodesAddClass($selected,"toBeComposed");
+	return 	$selected
 }
