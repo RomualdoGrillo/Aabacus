@@ -606,7 +606,8 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
 					//todo: dovrò fare qualcosa per eq i cui due membri risulteranno non più commutabili
 					var $pattArg = $Pattern[patternIndex].MNODE_getChildren();
 					var $inArg = $Input[inputIndex].MNODE_getChildren();
-					var orderedList = $Input[inputIndex].MNODE_getRoles().is('.ol_role')
+					var orderedList = ( $Input[inputIndex].MNODE_getRoles().is('.ol_role') ||
+									   $Pattern[patternIndex].getAttribute("data-nosort")=='true');
 					//var $parent = $Pattern.parent()//AdaptMatchUL sostituisce all'interno del dom, si deve poi sincronizzare la lista $pattern
 					if ($pattArg.length == 0 && $inArg.length == 0) {
 						//[] == [] se entrambe liste vuote allora MATCH
