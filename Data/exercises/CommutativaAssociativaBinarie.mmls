@@ -1,95 +1,70 @@
 <section data-section="palette">
-	<apply data-and="horizontal" data-import="./Data/Preload/binaryOp.prt" data-type="bool">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
 			<and>
 			</and>
 	</apply>
 </section>
 <section data-section="canvas">
+	<ci data-type="bool">Applica la proprietà commutativa spostando gli elementi con drag and drop</ci>
 	<ci data-type="bool">Applica la proprietà associativa della somma selezionando una parentesi e utilizzando i tasti  ← →</ci>
-	<ci data-type="bool">Applica la proprietà commutativa della somma selezionando una parentesi e utilizzando il tasto c</ci>
-	<apply data-tag="CommutativaSomma" data-tagimg="./images/properties/commutative.svg" data-vis="collapsed" data-type="bool">
-			<forall>
-			</forall>
-			<bvar>
+	<div data-atom="and" data-type="bool" class="atom brackets saveAsHtml showAsPlaceholder" data-and="horizontal" style="border-width: 0px;" draggable="false">
+		
+	
+<div class="ul_role" data-type="bool">
+			
+			
+			
+		
+
+
+<apply data-tag="CommutativaSomma" data-tagimg="./images/properties/commutative.svg" data-vis="collapsed" data-type="bool">
+	<forall>
+	</forall>
+	<bvar>
+			<ci data-type="num">a</ci>
+	</bvar>
+	<bvar>
+			<ci data-type="num">b</ci>
+	</bvar>
+	<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply title="s--" data-type="num">
+				<plus>
+				</plus>
 				<ci data-type="num">a</ci>
-			</bvar>
-			<bvar>
 				<ci data-type="num">b</ci>
-			</bvar>
-			<apply data-type="bool">
-				<eq>
-				</eq>
-				<apply title="s--" data-type="num">
-					<plus>
-					</plus>
-					<ci data-type="num">a</ci>
-					<ci data-type="num">b</ci>
-				</apply>
-				<apply title="s--" data-type="num">
-					<plus>
-					</plus>
-					<ci data-type="num">b</ci>
-					<ci data-type="num">a</ci>
-				</apply>
+			</apply>
+			<apply title="s--" data-type="num">
+				<plus>
+				</plus>
+				<ci data-type="num">b</ci>
+				<ci data-type="num">a</ci>
 			</apply>
 	</apply>
-	
-	<apply data-tag="AssociativaSomma" data-tagimg="./images/properties/associate.svg" data-vis="collapsed" data-type="bool">
-			<forall>
-			</forall>
-			<bvar>
-				<ci data-type="num">a</ci>
-			</bvar>
-			<bvar>
-				<ci data-type="num">b</ci>
-			</bvar>
-			<bvar>
-				<ci data-type="num">c</ci>
-			</bvar>
-			<apply data-type="bool">
-				<eq>
-				</eq>
-				<apply data-type="num">
-					<plus>
-					</plus>
-					<apply title="s--" data-type="num">
-						<plus>
-						</plus>
-						<ci data-type="num">a</ci>
-						<ci data-type="num">b</ci>
-					</apply>
-					<ci data-type="num">c</ci>
-				</apply>
-				<apply data-type="num">
-					<plus>
-					</plus>
-					<ci data-type="num">a</ci>
-					<apply title="s--" data-type="num">
-						<plus>
-						</plus>
-						<ci data-type="num">b</ci>
-						<ci data-type="num">c</ci>
-					</apply>
-				</apply>
-			</apply>
-	</apply>
-	
-	<apply data-type="num">
+</apply>
+<apply data-import="./Data/BINARYFOUNDATION.mml" data-tag="AssociativaSomma" data-tagimg="./images/properties/associate.svg" data-vis="collapsed" data-type="bool">
+		<forall>
+		</forall>
+</apply>
+</div>
+</div>
+<apply data-type="num">
+		<plus>
+		</plus>
+		<apply data-type="num">
 			<plus>
 			</plus>
-			<ci data-type="num">x</ci>
+			<ci data-type="num">a</ci>
 			<apply data-type="num">
 				<plus>
 				</plus>
-				<apply data-type="num">
-					<plus>
-					</plus>
-					<ci data-type="num">y</ci>
-					<ci data-type="num">z</ci>
-				</apply>
-				<ci data-type="num">k</ci>
+				<ci data-type="num">b</ci>
+				<ci data-type="num">c</ci>
 			</apply>
-	</apply>
+		</apply>
+		<ci data-type="num">e</ci>
+</apply>
 </section>
 <section data-section="events">
 	<apply data-type="bool">
@@ -106,7 +81,7 @@
 	<apply data-type="bool">
 			<eventtoaction>
 			</eventtoaction>
-			<ci data-type="bool">←</ci>
+			<ci title="d" data-type="bool">←</ci>
 			<apply data-type="obj">
 				<callfunction>
 				</callfunction>
@@ -125,11 +100,61 @@
 				<apply data-type="num">
 					<plus>
 					</plus>
-					<ci data-type="num">x</ci>
-					<ci data-type="num">y</ci>
+					<ci data-type="num">a</ci>
+					<ci data-type="num">b</ci>
 				</apply>
-				<ci data-type="num">z</ci>
+				<ci data-type="num">e</ci>
 			</apply>
-			<ci data-type="num">k</ci>
+			<ci data-type="num">c</ci>
 	</apply>
+</section>
+
+<section data-section="settings">
+    {
+	"debug":false,
+	"gameMode":true,
+	"gameModeSurpriseRes":false,
+	"lockCanvas":true,
+	"resultHidden":false,
+	"visSettingSelected":1,
+	"tool":"",
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+        "timesDisposition":0,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":true
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"tooColored",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":false
+		}
+	]
+}
 </section>

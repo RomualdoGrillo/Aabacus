@@ -1,5 +1,5 @@
 <section data-section="palette">
-<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/binaryOp.prt">import palette</ci>
+<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/palette.prt">import palette</ci>
 </section>
 
 <section data-section="events">
