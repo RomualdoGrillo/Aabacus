@@ -1,38 +1,38 @@
 <section data-section="palette">
 	<div data-proto="forall" data-atom="forAll" class="atom" data-type="bool">
-				<div class="row">
-					<div class="forallSymbol">∀</div>
-					<div class="bVar_role forAllHeader" data-type="obj">
-</div>
-				</div>
-				<div class="s_role forAllContent" data-type="bool" >
-</div>
-</div>
-<div data-atom="implies" data-proto="implies" data-type="bool" class="atom">
-	<div class="s_role firstMember" data-type="bool" >
-</div>
-	<div class="decoration imply">
-</div>
-	<div class="s_role secondMember" data-type="bool" >
-</div>
-</div>
-<div data-proto="divisible" data-atom="divisible" class="atom" data-type="bool">
-				
-					<div class="s_role number" data-type="num">
-</div>
+		<div class="row">
+			<div class="forallSymbol">∀</div>
+			<div class="bVar_role forAllHeader" data-type="obj">
+			</div>
+		</div>
+		<div class="s_role forAllContent" data-type="bool">
+		</div>
+	</div>
+	<div data-atom="implies" data-proto="implies" data-type="bool" class="atom">
+		<div class="s_role firstMember" data-type="bool">
+		</div>
+		<div class="decoration imply">
+		</div>
+		<div class="s_role secondMember" data-type="bool">
+		</div>
+	</div>
+	<div data-proto="divisible" data-atom="divisible" class="atom" data-type="bool">
+
+		<div class="s_role number" data-type="num">
+		</div>
 					divisible by
-					<div class="s_role divisor" data-type="num">
-</div>
-</div>
-<div data-proto="num" data-atom="ci" data-type="num" class="atom">
-				<div class="name">x</div>
-</div>
-<div data-proto="num" data-atom="cn" data-type="num" class="atom">
-				<div class="name">3</div>
-</div>
-<div data-proto="num" data-atom="cn" data-type="num" class="atom">
-				<div class="name">6</div>
-</div>
+		<div class="s_role divisor" data-type="num">
+		</div>
+	</div>
+	<div data-proto="num" data-atom="ci" data-type="num" class="atom">
+		<div class="name">x</div>
+	</div>
+	<div data-proto="num" data-atom="cn" data-type="num" class="atom">
+		<div class="name">3</div>
+	</div>
+	<div data-proto="num" data-atom="cn" data-type="num" class="atom">
+		<div class="name">6</div>
+	</div>
 </section>
 <section data-section="canvas">
 	<ci data-type="bool">Traduci: se un numero è divisibile per 6, allora è anche divisibile per 3.</ci>
@@ -41,27 +41,27 @@
 </section>
 <section data-section="result">
 	<apply data-type="bool">
-			<forall>
-			</forall>
-			<bvar>
-				<ci data-type="num">x</ci>
-			</bvar>
+		<forall>
+		</forall>
+		<bvar>
+			<ci data-type="num">x</ci>
+		</bvar>
+		<apply data-type="bool">
+			<implies>
+			</implies>
 			<apply data-type="bool">
-				<implies>
-				</implies>
-				<apply data-type="bool">
-					<divisible>
-					</divisible>
-					<ci data-type="num">x</ci>
-					<cn data-type="num">6</cn>
-				</apply>
-				<apply data-type="bool">
-					<divisible>
-					</divisible>
-					<ci data-type="num">x</ci>
-					<cn data-type="num">3</cn>
-				</apply>
+				<divisible>
+				</divisible>
+				<ci data-type="num">x</ci>
+				<cn data-type="num">6</cn>
 			</apply>
+			<apply data-type="bool">
+				<divisible>
+				</divisible>
+				<ci data-type="num">x</ci>
+				<cn data-type="num">3</cn>
+			</apply>
+		</apply>
 	</apply>
 </section>
 <section data-section="settings">
