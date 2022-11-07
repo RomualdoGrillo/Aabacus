@@ -146,10 +146,7 @@ function MNODEReplace($replaced, $replacer) {
 	ExtendAndInitializeTree($clone);
 }
 
-function MNODELinkReplace($link, $replaced) {
-	//changed argument order to comply with 1Dragged 2Target
-	MNODEReplaceLink($replaced, $link);
-}
+
 
 function MNODEReplaceLink($replaced, $link) {
 	//get the other member of the link, futuribile: uguaglianza tra molti membri, necessario sistema per scegliere tra membri

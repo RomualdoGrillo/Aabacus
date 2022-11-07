@@ -840,6 +840,15 @@ function validReplaced($mouseDownAtom){
 	return valids
 }
 
+function MNODELinkReplace($link, $replaced){
+	var PActx = newPActx();
+	PActx.replacedAlready = true;
+	PActx.visualization = "images/properties/replace.svg"
+	//changed argument order to comply with 1Dragged 2Target
+	MNODEReplaceLink($replaced, $link);
+	PActx.matchedTF=true
+	return PActx
+}
 
 function validRedundant($mouseDownAtom){
 	//validRedundant($('.selected'))
