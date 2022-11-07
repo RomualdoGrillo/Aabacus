@@ -133,7 +133,11 @@ function onMove(event) {
 	MNODEparent($(event.to)).addClass('dropTarget');
 }
 function onSort(event) {
-	RefreshEmptyInfixBraketsGlued(MNODEparent($(event.target)))	
+	RefreshEmptyInfixBraketsGlued(MNODEparent($(event.target)))
+}
+function onUpdate(event) {
+	clickSound.play()
+	//lookForResultAndCelebrate();
 }
 
 function onAdd(event) {
@@ -243,6 +247,7 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 					pull: 'clone',
 				},
 				sort: sort,
+				onUpdate:onUpdate,// Changed sorting within list
 				onSort:onSort,
 				onStart: startHandlerMouseDown,
 				onAdd: onAdd,
