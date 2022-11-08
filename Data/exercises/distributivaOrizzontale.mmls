@@ -22,7 +22,6 @@
 	<apply data-path="plus0 > ME" data-type="num">
 			<times>
 			</times>
-			<cn data-type="num">2</cn>
 			<apply data-type="num">
 				<plus>
 				</plus>
@@ -39,6 +38,7 @@
 					<ci data-type="num">x</ci>
 				</apply>
 			</apply>
+			<cn data-type="num">2</cn>
 	</apply>
 </section>
 <section data-section="events">
@@ -97,7 +97,7 @@
 		"brackets":true,
         "timesDisposition":0,
 		"showNumerator1":false,
-"fixBorders":true,
+"fixBorders":false,
 		"eforall":true
 		},
 		{
