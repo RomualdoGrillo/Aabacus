@@ -137,7 +137,7 @@ function onSort(event) {
 }
 function onUpdate(event) {
 	clickSound.play()
-	//lookForResultAndCelebrate();
+	lookForResultAndCelebrate();
 }
 
 function onAdd(event) {

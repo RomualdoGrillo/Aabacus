@@ -507,7 +507,7 @@ function PMcleanAndPost(PActx){
 
 
 
-function orderMatch(PActx,order,replaceInPatternOnly){
+function orderMatch(PActx,order,replaceInPatternOnly,strictOrder){
 	//se order = true, deve passare PActx.$cloneProp
 	//************Imposta valori di default************
 	if(order==undefined){order=true};
@@ -532,7 +532,7 @@ function orderMatch(PActx,order,replaceInPatternOnly){
     //*********** chiama il PatternMatch ricorsivo dandogli le liste iniziali
     //----------------------------------------------->
     
-    PActx = adaptMatch(PActx,PActx.$operand, $pattern, $span);
+    PActx = adaptMatch(PActx,PActx.$operand, $pattern, $span,strictOrder);
     //************Riordina******************************************************************
     if(order){
     	orderUL(PActx.$transform)//futuribile: riordinare solo ciò che verrà poi utilizzato, cioè il transform
@@ -607,7 +607,8 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
 					var $pattArg = $Pattern[patternIndex].MNODE_getChildren();
 					var $inArg = $Input[inputIndex].MNODE_getChildren();
 					var orderedList = ( $Input[inputIndex].MNODE_getRoles().is('.ol_role') ||
-									   $Pattern[patternIndex].getAttribute("data-nosort")=='true');
+									   $Pattern[patternIndex].getAttribute("data-nosort")=='true'||
+									  functarg_orderedList);
 					//var $parent = $Pattern.parent()//AdaptMatchUL sostituisce all'interno del dom, si deve poi sincronizzare la lista $pattern
 					if ($pattArg.length == 0 && $inArg.length == 0) {
 						//[] == [] se entrambe liste vuote allora MATCH

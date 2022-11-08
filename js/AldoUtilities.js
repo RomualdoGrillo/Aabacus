@@ -80,7 +80,7 @@ function lookForResultAndCelebrate() {
 	let found = false;
 	let i;
 	for (i = 0; i < $expressions.length; i++) {
-		found = compareWithResult($expressions.eq(i), $('#result>*'))
+		found = compareWithResult($expressions.eq(i), $('#result>*'),true)//Alwais look for a strict match: result must have same order
 		if (found) {
 			break
 		}
@@ -93,13 +93,13 @@ function lookForResultAndCelebrate() {
 	return found
 }
 
-function compareWithResult($expression, $result) {
+function compareWithResult($expression, $result,strictOrder) {
 	var MyPActx = newPActx();
 	MyPActx.$operand = $expression;
 	//compare with a clone of the result
 	MyPActx.$pattern = MNODEclone($result);
 	MNODEextend(MyPActx.$pattern, true);
-	return orderMatch(MyPActx, false, true).matchedTF
+	return orderMatch(MyPActx, false, true, strictOrder).matchedTF
 }
 
 function getCol(matrix, col) {
