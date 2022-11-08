@@ -20,7 +20,8 @@
 
 		<div class="s_role number" data-type="num">
 		</div>
-					divisible by
+		<div >		divisibile per
+		</div>
 		<div class="s_role divisor" data-type="num">
 		</div>
 	</div>
