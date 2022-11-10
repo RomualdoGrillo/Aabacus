@@ -480,7 +480,7 @@ function PActxVisualize(PActx) {
 	}
 	setTimeout(removeVisualization, 3000);
 }
-function VisualizeCelebration(imagePath,$nextToElement,timeout) {
+function VisualizeCelebration(imagePath,timeout) {
 	// VisualizeCelebration('images/properties/zero.svg',PActx.$transform,3000) 
 	if (!imagePath ){return} //nothing to visualize
 	let visContent = '<img src="' + imagePath + '">';

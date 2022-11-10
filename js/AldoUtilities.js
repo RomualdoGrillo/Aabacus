@@ -88,7 +88,7 @@ function lookForResultAndCelebrate() {
 	if (found) {
 		victorySound.play();
 		$('body').removeClass('gameModeSurpriseRes');
-		VisualizeCelebration('images/goal.png',undefined)
+		VisualizeCelebration('images/goal.svg');
 		//alert('esattooooo!!!!')
 	}
 	return found
