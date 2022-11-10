@@ -462,14 +462,14 @@ function PActxConclude(PActx) {
 }
 
 function PActxVisualize(PActx) {
-	let visContet
+	let visContent
 	if (!PActx.visualization ) {
-		visContet = PActx.msg
+		visContent = PActx.msg
 	} else {
-		visContet = '<img src="' + PActx.visualization + '">';
+		visContent = '<img src="' + PActx.visualization + '">';
 	}
 	removeVisualization()
-	let $visualization = $('<div class="visualization">' + visContet + '</div>')
+	let $visualization = $('<div class="visualization">' + visContent + '</div>')
 	if (PActx.$transform && PActx.$transform.is('body *')) {//if the trasform exixts an is still in canvas
 		$visualization.insertAfter(PActx.$transform)
 		PActx.$transform.append($visualization);
@@ -480,9 +480,23 @@ function PActxVisualize(PActx) {
 	}
 	setTimeout(removeVisualization, 3000);
 }
+function VisualizeCelebration(imagePath,$nextToElement,timeout) {
+	// VisualizeCelebration('images/properties/zero.svg',PActx.$transform,3000) 
+	if (!imagePath ){return} //nothing to visualize
+	let visContent = '<img src="' + imagePath + '">';
+	let $visualization = $('<div class="celebration">' + visContent + '</div>')
+	$('#result').append($visualization)
+	if(timeout){
+		setTimeout(removeCelebration,timeout);
+	}
+}
+
 
 function removeVisualization() {
 	$('.visualization').remove()
+}
+function removeCelebration() {
+	$('.celebration').remove()
 }
 
 const tools = ["", "copy", "autoAdapt","declare"];

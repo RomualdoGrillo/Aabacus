@@ -13,7 +13,7 @@
 				</and>
 			</apply>
 	</apply>
-	<ci data-type="bool"> Distribuisci il fattore x portandolo dentro alla parentesi". Raccogli il fattore 2, trascinando un "2" sopra all'altro.</ci>
+	<ci data-type="bool"> Applica le proprietà degli elementi neutri della somma e del prodotto. Semplifica l'espressione.</ci>
 	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-type="bool">
 			<and>
 			</and>

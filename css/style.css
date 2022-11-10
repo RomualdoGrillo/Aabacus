@@ -777,6 +777,10 @@
 	  padding:8px;
 	  height:30px;
   }
+
+.celebration>img{
+	height: 35px;	
+}
   
   [data-atom=m_inverse]{
 	  flex-direction:column;
