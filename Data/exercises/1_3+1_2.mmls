@@ -96,7 +96,7 @@
 	"gameMode":true,
 	"gameModeSurpriseRes":false,
 	"lockCanvas":true,
-	"resultHidden":false,
+	"resultHidden":true,
 	"visSettingSelected":1,
 	"tool":"",
 	"visSettings":[
@@ -113,7 +113,7 @@
 		"name":"beauty",
 		"colors":"greyBorders",
 		"brackets":true,
-        "timesDisposition":1,
+        "timesDisposition":2,
 		"showNumerator1":false,
 "fixBorders":true,
 		"eforall":true
