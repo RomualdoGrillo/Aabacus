@@ -224,7 +224,7 @@ function $parserForMixedMMLHTML(toBeParsed){
 	let string
 	if (toBeParsed instanceof jQuery){string=toBeParsed[0].outerHTML}
 	else{string = toBeParsed};
-	let stringDix = string.replace(/<div/g, "<dix").replace(/div>/g, "dix>");
+	let stringDix = string.replace(/<div>/g, "<dix>").replace(/<div /g, "<dix ").replace(/div>/g, "dix>");
 	let $workTree = $(stringDix);
 	//$('#canvasRole').append($workTree)// debug
 	//replace one <dix> node with <div> 
@@ -234,7 +234,7 @@ function $parserForMixedMMLHTML(toBeParsed){
 		if($dix.length == 0){break}
 		let $children = $dix.children();
 		$children.remove();
-		let outer = $dix[0].outerHTML.replace(/<dix/g, "<div").replace(/dix>/g, "div>");;
+		let outer = $dix[0].outerHTML.replace(/<dix>/g, "<div>").replace(/<dix /g, "<div ").replace(/dix>/g, "div>");;
 		let $outer = $(outer);
 		$dix.replaceWith($outer);
 		$outer.append($children);
