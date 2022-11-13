@@ -7,13 +7,13 @@
 		<div class="ol_role" data-type="bool" style="min-width: 50px; min-height: 100px; justify-content: end; background-color: white">
 		</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(59, 111, 230); min-width: 20px;" draggable="false">
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(59, 111, 230); min-width: 20px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">1</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(47, 119, 22); min-width: 30px;" draggable="false">
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(47, 119, 22); min-width: 30px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">2</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(255, 199, 0); min-width: 40px;" draggable="false">
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(255, 199, 0); min-width: 40px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">3</div>
 	</div>
 </section>

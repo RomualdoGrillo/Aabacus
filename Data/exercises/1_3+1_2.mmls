@@ -94,9 +94,9 @@
     {
 	"debug":false,
 	"gameMode":true,
-	"gameModeSurpriseRes":false,
+	"gameModeSurpriseRes":true,
 	"lockCanvas":true,
-	"resultHidden":true,
+	"resultHidden":false,
 	"visSettingSelected":1,
 	"tool":"",
 	"visSettings":[

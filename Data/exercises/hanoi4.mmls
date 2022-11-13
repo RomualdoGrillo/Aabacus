@@ -7,16 +7,16 @@
 		<div class="ol_role" data-type="bool" style="min-width: 50px; min-height: 100px; justify-content: end; background-color: white">
 		</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(59, 111, 230); min-width: 20px;" draggable="false">
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(59, 111, 230); min-width: 20px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">1</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(106, 174, 82); min-width: 28px;" draggable="false">
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(106, 174, 82); min-width: 28px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">2</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(255, 199, 0); min-width: 36px;" draggable="false">
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(255, 199, 0); min-width: 36px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">3</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(241, 128, 16); min-width: 44px;" draggable="false">
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(241, 128, 16); min-width: 44px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">4</div>
 	</div>
 </section>
