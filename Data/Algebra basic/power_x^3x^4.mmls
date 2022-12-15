@@ -46,6 +46,27 @@
 			</div>
 		</div>
 	</div>
+	<apply data-tag="powerOne" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">a_</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">n_</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<power>
+					</power>
+					<ci data-type="num">a_</ci>
+					<cn data-type="num">1</cn>
+				</apply>
+				<ci data-type="num">a_</ci>
+			</apply>
+	</apply>
 	<apply data-tag="likeBaseSlice" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
 			<forall>
 			</forall>
@@ -114,6 +135,18 @@
 				<callfunction>
 				</callfunction>
 				<ci data-type="bool">likeBaseSlice</ci>
+				<ci data-type="bool">rtl</ci>
+			</apply>
+			<apply data-type="obj">
+				<callfunction>
+				</callfunction>
+				<ci data-type="bool">powerOne</ci>
+				<ci data-type="bool">ltr</ci>
+			</apply>
+			<apply data-type="obj">
+				<callfunction>
+				</callfunction>
+				<ci data-type="bool">powerOne</ci>
 				<ci data-type="bool">rtl</ci>
 			</apply>
 	</apply>
