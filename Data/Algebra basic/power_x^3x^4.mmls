@@ -1,0 +1,132 @@
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="canvas">
+	<apply data-hide="true" data-type="bool">
+		<and>
+		</and>
+		<apply data-import="./Data/FOUNDATION.mml">
+			<and>
+			</and>
+		</apply>
+	</apply>
+	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
+		<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;">
+			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+				<div class="ul_role" data-type="bool">
+					<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+					<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+				</div>
+			</div>
+			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+				<div class="ul_role" data-type="bool">
+					<apply data-tagimg="./images/properties/decompose.svg" data-vis="collapsed" data-tag="calcola" data-type="bool">
+						<and>
+						</and>
+						<ci data-tagimg="./images/properties/compose.svg" data-tag="compose" data-type="bool">built in</ci>
+						<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeInAProduct" data-type="bool">built in</ci>
+						<ci data-tagimg="./images/properties/decompose.svg" data-tag="decomposeInASum" data-type="bool">true</ci>
+					</apply>
+				</div>
+			</div>
+			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+				<div class="ul_role" data-type="bool">
+					<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="Proprieta'Distributiva" data-type="bool">
+						<and>
+						</and>
+						<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+						<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+						<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+						<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+					</apply>
+				</div>
+			</div>
+		</div>
+	</div>
+	<apply data-tag="likeBaseSlice" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">a_</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">n_</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<power>
+					</power>
+					<ci data-type="num">a_</ci>
+					<apply data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">n_</ci>
+						<cn data-type="num">1</cn>
+					</apply>
+				</apply>
+				<apply data-type="num">
+					<times>
+					</times>
+					<apply data-type="num">
+						<power>
+						</power>
+						<ci data-type="num">a_</ci>
+						<ci data-type="num">n_</ci>
+					</apply>
+					<ci data-type="num">a_</ci>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="num">
+			<times>
+			</times>
+			<apply data-type="num">
+				<power>
+				</power>
+				<ci data-type="num">x</ci>
+				<cn data-type="num">3</cn>
+			</apply>
+			<apply data-type="num">
+				<power>
+				</power>
+				<ci data-type="num">x</ci>
+				<cn data-type="num">4</cn>
+			</apply>
+	</apply>
+</section>
+<section data-section="events">
+	<apply data-type="bool">
+			<eventtoaction>
+			</eventtoaction>
+			<ci data-type="bool">p</ci>
+			<apply data-type="obj">
+				<callfunction>
+				</callfunction>
+				<ci data-type="bool">plusAssociate</ci>
+				<ci data-type="bool">ltr</ci>
+			</apply>
+			<apply data-type="obj">
+				<callfunction>
+				</callfunction>
+				<ci data-type="bool">plusAssociate</ci>
+				<ci data-type="bool">rtl</ci>
+			</apply>
+	</apply>
+	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
+		<and>
+		</and>
+	</apply>
+</section>
+<section data-section="result">
+	<apply data-type="num">
+			<power>
+			</power>
+			<ci data-type="num">x</ci>
+			<cn data-type="num">7</cn>
+	</apply>
+</section>

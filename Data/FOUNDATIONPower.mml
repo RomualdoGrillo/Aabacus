@@ -1,0 +1,196 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply title="likeBase" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">a_</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">n_</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<power>
+					</power>
+					<ci data-type="num">a_</ci>
+					<apply data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">n_</ci>
+						<cn data-type="num">1</cn>
+					</apply>
+				</apply>
+				<apply data-type="num">
+					<times>
+					</times>
+					<apply data-type="num">
+						<power>
+						</power>
+						<ci data-type="num">a_</ci>
+						<ci data-type="num">n_</ci>
+					</apply>
+					<ci data-type="num">a_</ci>
+				</apply>
+			</apply>
+	</apply>
+	<apply title="likeBase" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">a_</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">n_</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">m_</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<times>
+					</times>
+					<apply data-type="num">
+						<power>
+						</power>
+						<ci data-type="num">a_</ci>
+						<ci data-type="num">n_</ci>
+					</apply>
+					<apply data-type="num">
+						<power>
+						</power>
+						<ci data-type="num">a_</ci>
+						<ci data-type="num">m_</ci>
+					</apply>
+				</apply>
+				<apply data-type="num">
+					<power>
+					</power>
+					<ci data-type="num">a_</ci>
+					<apply data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">n_</ci>
+						<ci data-type="num">m_</ci>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply data-type="num">
+				<times>
+				</times>
+				<apply data-type="num">
+					<power>
+					</power>
+					<ci data-type="num">a_</ci>
+					<ci data-type="num">n_</ci>
+				</apply>
+				<apply data-type="num">
+					<power>
+					</power>
+					<ci data-type="num">a_</ci>
+					<ci data-type="num">m_</ci>
+				</apply>
+			</apply>
+			<apply data-type="num">
+				<power>
+				</power>
+				<ci data-type="num">a_</ci>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<ci data-type="num">n_</ci>
+					<ci data-type="num">m_</ci>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">a_</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">b_</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">n_</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<times>
+					</times>
+					<apply data-type="num">
+						<power>
+						</power>
+						<ci data-type="num">a_</ci>
+						<ci data-type="num">n_</ci>
+					</apply>
+					<apply data-type="num">
+						<power>
+						</power>
+						<ci data-type="num">b_</ci>
+						<ci data-type="num">n_</ci>
+					</apply>
+				</apply>
+				<apply data-type="num">
+					<power>
+					</power>
+					<apply data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">a_</ci>
+						<ci data-type="num">b_</ci>
+					</apply>
+					<ci data-type="num">n_</ci>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">a_</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">n_</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">m_</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="num">
+					<power>
+					</power>
+					<apply data-type="num">
+						<power>
+						</power>
+						<ci data-type="num">a_</ci>
+						<ci data-type="num">n_</ci>
+					</apply>
+					<ci data-type="num">m_</ci>
+				</apply>
+				<apply data-type="num">
+					<power>
+					</power>
+					<ci data-type="num">a_</ci>
+					<apply data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">n_</ci>
+						<ci data-type="num">m_</ci>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+</math>
