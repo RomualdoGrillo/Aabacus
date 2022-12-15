@@ -130,3 +130,53 @@
 			<cn data-type="num">7</cn>
 	</apply>
 </section>
+<section data-section="settings">
+	
+    {
+	"debug":false,
+	"gameMode":true,
+	"gameModeSurpriseRes":true,
+	"lockCanvas":true,
+	"resultHidden":false,
+	"visSettingSelected":1,
+	"tool":"",
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+        "timesDisposition":0,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+        "timesDisposition":2,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":true
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"tooColored",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":false
+		}
+	]
+}
+</section>
