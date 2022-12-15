@@ -597,6 +597,7 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
                 currLine = lineAB($($Pattern[patternIndex]), $($Input[inputIndex]));
                 PActx.lineList = PActx.lineList.add(currLine);
             }
+			//probe un buon posto per mettere un breakpoint
             if (compareExtMNODE($($Input[inputIndex]), $($Pattern[patternIndex]) , !isParameter, true)){
                 if(isParameter){//l'esterno va bene, usalo in parametro senza ulteriori controlli
 					currInputMatch=true
@@ -614,7 +615,6 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
 						//[] == [] se entrambe liste vuote allora MATCH
 						currInputMatch=true
 					} else {
-						//probe un buon posto per mettere un breakpoint
 						//------------------> recursion
 						PActx = adaptMatch(PActx, $inArg, $pattArg, $span,orderedList)
 						currInputMatch=PActx.matchedTF
