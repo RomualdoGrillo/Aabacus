@@ -1,7 +1,7 @@
 <section data-section="palette">
 	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
-			<and>
-			</and>
+		<and>
+		</and>
 	</apply>
 </section>
 <section data-section="canvas">
@@ -47,108 +47,108 @@
 		</div>
 	</div>
 	<apply data-tag="powerOne" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
-			<forall>
-			</forall>
-			<bvar>
+		<forall>
+		</forall>
+		<bvar>
+			<ci data-type="num">a_</ci>
+		</bvar>
+		<bvar>
+			<ci data-type="num">n_</ci>
+		</bvar>
+		<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply data-type="num">
+				<power>
+				</power>
 				<ci data-type="num">a_</ci>
-			</bvar>
-			<bvar>
-				<ci data-type="num">n_</ci>
-			</bvar>
-			<apply data-type="bool">
-				<eq>
-				</eq>
-				<apply data-type="num">
-					<power>
-					</power>
-					<ci data-type="num">a_</ci>
-					<cn data-type="num">1</cn>
-				</apply>
-				<ci data-type="num">a_</ci>
+				<cn data-type="num">1</cn>
 			</apply>
+			<ci data-type="num">a_</ci>
+		</apply>
 	</apply>
 	<apply data-tag="likeBaseSlice" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
-			<forall>
-			</forall>
-			<bvar>
+		<forall>
+		</forall>
+		<bvar>
+			<ci data-type="num">a_</ci>
+		</bvar>
+		<bvar>
+			<ci data-type="num">n_</ci>
+		</bvar>
+		<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply data-type="num">
+				<power>
+				</power>
 				<ci data-type="num">a_</ci>
-			</bvar>
-			<bvar>
-				<ci data-type="num">n_</ci>
-			</bvar>
-			<apply data-type="bool">
-				<eq>
-				</eq>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<cn data-type="num">1</cn>
+					<ci data-type="num">n_</ci>
+				</apply>
+			</apply>
+			<apply data-type="num">
+				<times>
+				</times>
 				<apply data-type="num">
 					<power>
 					</power>
 					<ci data-type="num">a_</ci>
-					<apply data-type="num">
-						<plus>
-						</plus>
-						<cn data-type="num">1</cn>
-						<ci data-type="num">n_</ci>
-					</apply>
+					<ci data-type="num">n_</ci>
 				</apply>
-				<apply data-type="num">
-					<times>
-					</times>
-					<apply data-type="num">
-						<power>
-						</power>
-						<ci data-type="num">a_</ci>
-						<ci data-type="num">n_</ci>
-					</apply>
-					<ci data-type="num">a_</ci>
-				</apply>
+				<ci data-type="num">a_</ci>
 			</apply>
+		</apply>
 	</apply>
 	<apply data-type="num">
-			<times>
-			</times>
-			<apply data-type="num">
-				<power>
-				</power>
-				<ci data-type="num">x</ci>
-				<cn data-type="num">3</cn>
-			</apply>
-			<apply data-type="num">
-				<power>
-				</power>
-				<ci data-type="num">x</ci>
-				<cn data-type="num">4</cn>
-			</apply>
+		<times>
+		</times>
+		<apply data-type="num">
+			<power>
+			</power>
+			<ci data-type="num">x</ci>
+			<cn data-type="num">2</cn>
+		</apply>
+		<apply data-type="num">
+			<power>
+			</power>
+			<ci data-type="num">y</ci>
+			<cn data-type="num">2</cn>
+		</apply>
 	</apply>
 </section>
 <section data-section="events">
 	<apply data-type="bool">
-			<eventtoaction>
-			</eventtoaction>
-			<ci data-type="bool">x</ci>
-			<apply data-type="obj">
-				<callfunction>
-				</callfunction>
-				<ci data-type="bool">likeBaseSlice</ci>
-				<ci data-type="bool">ltr</ci>
-			</apply>
-			<apply data-type="obj">
-				<callfunction>
-				</callfunction>
-				<ci data-type="bool">likeBaseSlice</ci>
-				<ci data-type="bool">rtl</ci>
-			</apply>
-			<apply data-type="obj">
-				<callfunction>
-				</callfunction>
-				<ci data-type="bool">powerOne</ci>
-				<ci data-type="bool">ltr</ci>
-			</apply>
-			<apply data-type="obj">
-				<callfunction>
-				</callfunction>
-				<ci data-type="bool">powerOne</ci>
-				<ci data-type="bool">rtl</ci>
-			</apply>
+		<eventtoaction>
+		</eventtoaction>
+		<ci data-type="bool">x</ci>
+		<apply data-type="obj">
+			<callfunction>
+			</callfunction>
+			<ci data-type="bool">likeBaseSlice</ci>
+			<ci data-type="bool">ltr</ci>
+		</apply>
+		<apply data-type="obj">
+			<callfunction>
+			</callfunction>
+			<ci data-type="bool">likeBaseSlice</ci>
+			<ci data-type="bool">rtl</ci>
+		</apply>
+		<apply data-type="obj">
+			<callfunction>
+			</callfunction>
+			<ci data-type="bool">powerOne</ci>
+			<ci data-type="bool">ltr</ci>
+		</apply>
+		<apply data-type="obj">
+			<callfunction>
+			</callfunction>
+			<ci data-type="bool">powerOne</ci>
+			<ci data-type="bool">rtl</ci>
+		</apply>
 	</apply>
 	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
 		<and>
@@ -157,10 +157,15 @@
 </section>
 <section data-section="result">
 	<apply data-type="num">
-			<power>
-			</power>
-			<ci data-type="num">x</ci>
-			<cn data-type="num">7</cn>
+		<power>
+		</power>
+		<apply data-type="num">
+			<times>
+			</times>
+				<ci data-type="num">x</ci>
+				<ci data-type="num">y</ci>
+		</apply>
+		<cn data-type="num">2</cn>
 	</apply>
 </section>
 <section data-section="settings">
