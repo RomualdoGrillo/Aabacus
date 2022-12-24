@@ -29,11 +29,10 @@ document.addEventListener("click", clickHandler);
 document.addEventListener("dblclick", dblclickHandler);
 //document.querySelectorAll('[data-atom]').forEach(function(i,e){ refreshAsymmEq($(e))})
 //***********************************************************
-$(document).on('mousedown', MakeSortableAndInjectMouseDown);
+$(document).on('mousedown', mousedownHandler);
 $(document).on('touchstart', MakeSortableAndInjectMouseDown);
 $(document).on('mouseup', MouseUpCleanup);
 $(document).on('touchend', MouseUpCleanup);//not tested
-
 
 $(document).on('keydown', function(e) {
 	var keyPressed = keyToCharacter(e.which).toLowerCase();
@@ -153,6 +152,14 @@ function MNODENselectable(startElement) {
 		return startElement.closest('[data-atom]');
 	}
 }
+
+function mousedownHandler(e){
+	//***************Highlight scope and references ***********
+	//mousedown on a parameter?
+	//look for scope
+	MakeSortableAndInjectMouseDown(e);
+}
+
 
 function clickHandler(event) {
 	let $thisMNODE = MNODENselectable($(event.target));
