@@ -139,7 +139,6 @@ function  	$identifierSpan($identifier){
 	//determina il campo di validità dell'identificatore
 	//risali fino a trovare un container che può avere Bvar 
 	//controlla se l'identifier è tra quelle bvar
-	var $span
 	var $containingForAlls = $identifier.parents('[data-atom=forAll]');
 	//todo: andrebbero considrati tutti i parents che contengono Bvar, non solo i forAll
 	var i=0
@@ -153,14 +152,34 @@ function  	$identifierSpan($identifier){
 	return $('#canvasRole'); //se non hai trovato nulla, lo span è l'intera canvas
 }
 
-function highlightOccurrences($identifier){
+function highlightOccurrences($identifier,addClass){
 	//evidenzia lo span e le occorrenze dell'identificatore
 	var $span = $identifierSpan($identifier);
 	//todo: evidenzia lo span
-	var $occurrences = $MNODEParameterSearch($span,$identifier).not($identifier);
+	let $occurrences =$findOccurrences($identifier,undefined,true)
 	$occurrences.each(function(){
 		// crea linee
-		lineAB($(this),$identifier)	
+		lineAB($(this),$identifier,addClass)	
 	})	 
+}
+
+// example use:
+// function $findOccurrences($identifier,$identifierSpan($identifier))
+function $findOccurrences($wanted,$span,excludeHidden){
+	if(!$span){$span = $identifierSpan($wanted);}
+	//todo: questa ricerca non distingue le variabili interne "Bvar".
+	// Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
+	let $candidates
+	if(excludeHidden){
+		$candidates= $span.find("[data-atom]:visible")
+	}
+	else{//default
+		$candidates = $span.find("[data-atom]")
+	}
+	let $occurrences = $candidates.filter(function () {
+		//return MNODEEqual($atom_param[0],this)
+		return compareExtMNODE($wanted, $(this), true, false);
+	});
+	return	 $occurrences
 }
 

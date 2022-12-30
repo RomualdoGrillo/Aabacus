@@ -41,7 +41,7 @@ function composePlusOnly($toBeComp,firstVal,img){
 	return compose($toBeComp,firstVal,img);
 }
 
-
+ 
 function decomposeTens($toBeDec,undefined,img){
 	var PActx = newPActx();
 	PActx.$operand = $toBeDec;

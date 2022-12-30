@@ -865,6 +865,12 @@
 	  background-color: #ee82ee73;
 	 }
   
+.focusSpan{
+	border-color:rgb(98, 98, 255)!important;
+}
+.downstream1{
+	background-color: #4d68ff!important;
+}
   .tgt>*{/*target is not a pseudo element*/
 	  background-color:grey!important;
 	  /*visibility:hidden;*/

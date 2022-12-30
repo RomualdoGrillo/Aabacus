@@ -208,16 +208,7 @@ function MNODECreateSpaceForDeduction($hypothesis) {
 	return spaceForDeduction;
 }
 
-//todo: questa ricerca non distingue le variabili interne "Bvar".
-// Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
-function $MNODEParameterSearch($startNode, $atom_param) {
-	// cerca nodi uguali al parametro dato
-	var result = $startNode.find("[data-atom]").filter(function (index) {
-		//return MNODEEqual($atom_param[0],this)
-		return compareExtMNODE($atom_param, $(this), true, false);
-	});
-	return result;
-}
+
 
 function MNODEReplaceAll(
 	$startNode,
@@ -227,7 +218,7 @@ function MNODEReplaceAll(
 	var $replaced = $(replaced);
 	var $replacer = $(replacer);
 	$startNode = $($startNode); //se per caso passo uno start node non $
-	var $occurrences = $MNODEParameterSearch($startNode, replaced);
+	var $occurrences = $findOccurrences($replaced,$startNode,false)
 	var result = $.each($occurrences, function (i, o) {
 		MNODEReplace($(o), $replacer);
 	});
@@ -288,7 +279,7 @@ function formatForall($forall, $toBeRenamed) {
 	var oldName = $toBeRenamed[0].MNODE_getName();
 	var newName = "(" + oldName + ")";
 	//cerca le occorrenze e marca ciascuna occorrenza
-	var $occurrences = $MNODEParameterSearch($forall, $toBeRenamed);
+	var $occurrences = $findOccurrences($toBeRenamed,$forall);
 	$occurrences.each(function () {
 		this.MNODE_setName(newName);
 	});

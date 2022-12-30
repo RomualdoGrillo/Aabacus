@@ -28,7 +28,7 @@ function overwriteFromHeader($forAll) {
     $parameterList.each(function() {
         var name = this.MNODE_getName(true);
         if(name.indexOf("_")==-1){name=name+"_"}//se compaiono in hader sono comunque dei parametri variabili
-        var $occurrences = $MNODEParameterSearch($forAll,$(this));
+        var $occurrences = $findOccurrences($(this),$forAll);
 		$occurrences.each(function(){
 			this.MNODE_setName(name)
 		})
@@ -442,7 +442,7 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
             //per determinare l'operando conta solo il primo par all'interno dell'header
             var $refPattPar = $($pattParameters[1]);
             //cerca il parametro di riferimento all'interno del content'
-            $refPattParFirstOcc = $($MNODEParameterSearch(PActx.$pattern,$refPattPar)[0])
+            $refPattParFirstOcc = $($findOccurrences($refPattPar,PActx.$pattern)[0])
         }
         if( $refPattParFirstOcc.length == 0){
              //se non esiste un sottopattern con marcatura corrispondente, fai corrispondere all'intero pattern'

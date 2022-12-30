@@ -7,10 +7,12 @@
 </svg>
 */
 
-function lineAB($from,$to)//aggiungi una linea che collega i due elementi
+function lineAB($from,$to,addClass)//aggiungi una linea che collega i due elementi
 {
 	var lc=$("#protoLine").clone()//clona il prototipo di linea
 	lc.removeAttr("id")
+	if(addClass){
+	lc.attr('class', addClass)}
 	lc.attr({
 		x1: $from.offset().left + $from.outerWidth()/2,
 		y1: $from.offset().top  + $from.outerHeight()/2,

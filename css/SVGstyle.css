@@ -17,15 +17,15 @@ line, marker{
 	stroke:#959492;
 	fill:#afaeab
 }
-line.matched{
+line.matched{ 
 	stroke:green
 }
 .arrow{
       stroke-width:1; 
-      marker-end:url(#markerArrow);
+      marker-end:url(#triangle);
 }
 
-}
+
 svg path {
   transition: d 0.35s;
 }

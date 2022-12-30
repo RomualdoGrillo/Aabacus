@@ -19,6 +19,17 @@ function MakeSortableAndInjectMouseDown(event) {
 	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	}
+	//**** highlight Span and Parameters
+	if($atomTarget.attr('data-atom')=='ci'){
+		$identifierSpan($atomTarget).addClass('focusSpan');
+	}
+	highlightOccurrences($atomTarget);
+
+	//**** highlight DOWNSTREAM 
+	// add class downstream1, downstrwam2, downstream3, downstreamuFurther
+	if($atomTarget.attr('data-type')=='bool'){
+		$PropositionLevelAndDownstream($atomTarget,false).addClass('downstream1');
+	}
 	
 	GLBDnD.toolWhenMousedown = GLBsettings.tool;
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
@@ -276,6 +287,8 @@ function cleanupDnD() {
 	//Sortend is not fired if click without drag
 	//Documentation:
 	//https://docs.google.com/drawings/d/1sASg3RC51sOYWCRIxJjdRI_lL0ZKpATyPaFWfkVxT70/edit
+	$('*').removeClass('focusSpan')
+	$('*').removeClass('downstream1')
 	clearSortableTargets()
 	clearLines()//todo: distinguish between hints and PatternMatching and other lines
 }
