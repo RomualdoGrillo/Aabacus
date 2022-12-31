@@ -157,10 +157,11 @@ function highlightOccurrences($identifier,addClass){
 	var $span = $identifierSpan($identifier);
 	//todo: evidenzia lo span
 	let $occurrences =$findOccurrences($identifier,undefined,true)
-	$occurrences.each(function(){
+	$occurrences.addClass(addClass);
+	/*$occurrences.each(function(){
 		// crea linee
 		lineAB($(this),$identifier,addClass)	
-	})	 
+	})*/	 
 }
 
 // example use:
