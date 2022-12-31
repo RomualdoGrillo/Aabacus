@@ -386,12 +386,17 @@
   .coloredBorders [class*="l_role"][data-type="obj"].empty ,.coloredBorders [class*="s_role"][data-type="obj"],.coloredBorders [class*="bVar_role"][data-type="obj"] {
 	  background-color: var(--default-bgcolor);
   }
-  
+
+.mu_connected[data-atom]{
+	  border-color: Grey!important;	
+}
+
   /*.selected[data-atom], .selected[data-atom]>.s_role>.glued ,.selected[data-atom]>.s_role>.glued[data-atom]>*{*/
   .selected[data-atom], .selected[data-atom] [data-atom],.selected[data-atom]::after{
 	  background-color: #aaa;
 	  border-color:Grey!important;
   }
+
   .unselected[data-atom], .unselected[data-atom] [data-atom]{
 	  background-color:white!important;
   }
