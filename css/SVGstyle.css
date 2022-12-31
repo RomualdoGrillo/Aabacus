@@ -21,8 +21,11 @@ line.matched{
 	stroke:green
 }
 .arrow{
-      stroke-width:1; 
+      stroke-width:3; 
       marker-end:url(#triangle);
+}
+.link{
+	stroke-width:1; 
 }
 
 

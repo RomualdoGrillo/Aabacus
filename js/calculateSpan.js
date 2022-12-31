@@ -164,7 +164,7 @@ function highlightOccurrences($identifier,addClass){
 }
 
 // example use:
-// function $findOccurrences($identifier,$identifierSpan($identifier))
+// $findOccurrences($identifier,$identifierSpan($identifier))
 function $findOccurrences($wanted,$span,excludeHidden){
 	if(!$span){$span = $identifierSpan($wanted);}
 	//todo: questa ricerca non distingue le variabili interne "Bvar".

@@ -23,7 +23,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	if($atomTarget.attr('data-atom')=='ci'){
 		$identifierSpan($atomTarget).addClass('focusSpan');
 	}
-	highlightOccurrences($atomTarget);
+	highlightOccurrences($atomTarget,'link');
 
 	//**** highlight DOWNSTREAM 
 	// add class downstream1, downstrwam2, downstream3, downstreamuFurther
