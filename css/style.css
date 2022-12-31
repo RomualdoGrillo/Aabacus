@@ -411,9 +411,10 @@
 	  border-color: blue!important;
 	  z-index:1 } 
   
-  .exclusiveFocus, [data-vis=resizable], .waiting, .mu_targetsCommonParentx {/*grayout all but .exclusiveFocus DIV */
+  .exclusiveFocus, [data-vis=resizable], .waiting, .mu_targetsCommonParentx, .mu_span {/*grayout all but .exclusiveFocus DIV */
 	  z-index:100;
-	  box-shadow: 0 0 0 999px #9695958a;
+	  box-shadow: 0 0 0 999px #b8b8b88a;
+	  transition: all, 1s;
   }
   .exclusiveFocus2{
 	  z-index:101;

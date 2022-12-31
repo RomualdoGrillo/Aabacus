@@ -154,8 +154,8 @@ function  	$identifierSpan($identifier){
 
 function highlightOccurrences($identifier,addClass){
 	//evidenzia lo span e le occorrenze dell'identificatore
-	var $span = $identifierSpan($identifier);
-	//todo: evidenzia lo span
+	let $span = $identifierSpan($identifier);
+	$span.addClass('mu_span')//todo: evidenzia lo span
 	let $occurrences =$findOccurrences($identifier,undefined,true)
 	$occurrences.addClass(addClass);
 	/*$occurrences.each(function(){
