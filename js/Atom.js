@@ -455,7 +455,7 @@ function MNODEclone($node, Extend, removeID) {//default: Extend and RemoveID
 		$toBeCleaned.removeAttr("importStatus");
 		$toBeCleaned.removeClass("hide");
 		$toBeCleaned.removeClass("fundamental");
-		$toBeCleaned.removeClass("couldBeCollected");
+		$toBeCleaned.removeClass("mu_CouldBeCollected");
 	}
 	return $clone;
 }

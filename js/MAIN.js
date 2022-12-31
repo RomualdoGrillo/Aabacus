@@ -452,7 +452,7 @@ function PActxConclude(PActx) {
 		//********** Post *************
 		refreshAndReplace(PActx);
 		if (PActx.$transform) {
-			RepeatedRefine_c(PActx.$transform,'c','.refine_c');//Apply "c" to every Node in the branch marked with '.refine_c'
+			Repeatedmu_Refine_c(PActx.$transform,'c','.mu_Refine_c');//Apply "c" to every Node in the branch marked with '.mu_Refine_c'
 		}
 		ssnapshot.take();
 		RefreshEmptyInfixBraketsGlued($('body'),true);

@@ -406,7 +406,7 @@
 	  border-color: blue!important;
 	  z-index:1 } 
   
-  .exclusiveFocus, [data-vis=resizable], .waiting, .TargetsCommonParentx {/*grayout all but .exclusiveFocus DIV */
+  .exclusiveFocus, [data-vis=resizable], .waiting, .mu_targetsCommonParentx {/*grayout all but .exclusiveFocus DIV */
 	  z-index:100;
 	  box-shadow: 0 0 0 999px #9695958a;
   }
@@ -852,11 +852,11 @@
 	  justify-content: center;
 	 }
   
-  .dropTarget{
+  .mu_DropTarget{
 	  border-color:rgb(98, 98, 255)!important;
 	  /*border-style:dashed;*/
   }
-  body[tool=autoAdapt] .dropTarget{
+  body[tool=autoAdapt] .mu_DropTarget{
 	border-color: blueviolet!important;
 }
   
@@ -865,10 +865,10 @@
 	  background-color: #ee82ee73;
 	 }
   
-.focusSpan{
+.mu_FocusSpan{
 	border-color:rgb(98, 98, 255)!important;
 }
-.downstream1{
+.mu_Downstream1{
 	background-color: #4d68ff!important;
 }
   .tgt>*{/*target is not a pseudo element*/

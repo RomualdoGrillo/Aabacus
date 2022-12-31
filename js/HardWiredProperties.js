@@ -242,7 +242,7 @@ function MNODEPartDistribute($dragged,target,dropped){
 	});
 	let previous = $clone[0].MNODE_getRoles().children().eq(childrenIndex-1);
 	$dragged.insertAfter(previous);
-	$parent.addClass("refine_c");
+	$parent.addClass("mu_Refine_c");
 	dropped.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
@@ -259,7 +259,7 @@ function MNODEdistribute($dragged,target,dropped){
 	let opD = opIsDistDop(op);
 	var $prototype = prototypeSearch(op)// for example search for times proto
 	$(target)[0].MNODE_getChildren().each(function(i,e){
-		e.classList.add("refine_c");
+		e.classList.add("mu_Refine_c");
 		var $clone = MNODEclone($prototype)//create times
 		var $cloneDragged = MNODEclone($dragged)// clone dragged
 		$clone.insertBefore($(this));
@@ -273,8 +273,8 @@ function MNODEdistribute($dragged,target,dropped){
 		//$cloneDragged.css({display:""})
 	})
 	var $draggedParent = $dragged[0].MNODEparent(); 
-	$draggedParent.addClass("refine_c");//mark external operation as remove if pointless
-	$(target).addClass("refine_c");//mark target operation as remove if pointless
+	$draggedParent.addClass("mu_Refine_c");//mark external operation as remove if pointless
+	$(target).addClass("mu_Refine_c");//mark target operation as remove if pointless
 	$dragged.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
@@ -286,7 +286,7 @@ function validForColl($mouseDownAtom){
 	var op = undefined
 	if($parent !== undefined){op = $parent.attr("data-atom")};//look for targets
 	var opD = opIsDistDop(op);
-	//$('*').removeClass('toBeCollected').removeClass('couldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
+	//$('*').removeClass('mu_ToBeCollected').removeClass('mu_CouldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
 	//*******test preliminari
 	if ($parent == undefined){
 		return $() //empty $ array
@@ -313,7 +313,7 @@ function validForColl($mouseDownAtom){
 				//console.log("controllo factor");
 				//console.log(factor);
 				if(MNODEEqual(factor,$mouseDownAtom[0])){
-					$(factor).addClass("couldBeCollected")
+					$(factor).addClass("mu_CouldBeCollected")
 					okForThisTerm = true;
 					break
 				}
@@ -321,7 +321,7 @@ function validForColl($mouseDownAtom){
 		}
 		else{// altrimenti controlla lui stesso
 			if(MNODEEqual(term,$mouseDownAtom[0])){
-					$(term).addClass("couldBeCollected")
+					$(term).addClass("mu_CouldBeCollected")
 					okForThisTerm = true;
 				}
 		}
@@ -361,7 +361,7 @@ function validForPartColl($mouseDownAtom){
 		}
 	}
 	
-	//$('*').removeClass('toBeCollected').removeClass('couldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
+	//$('*').removeClass('mu_ToBeCollected').removeClass('mu_CouldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
 	//*******test preliminari
 	
 	if ( 
@@ -411,7 +411,7 @@ function MNODEpartCollect($dragged,$target){
 	let opd = $draggedParent.attr("data-atom")
 		
 	let $commonGranParent = MNODEparent($targetParent);
-	$commonGranParent.addClass("refine_c");
+	$commonGranParent.addClass("mu_Refine_c");
 
 
 	if(opt==opd && opIsDistDop(opt)){//both have same distributable op
@@ -480,13 +480,13 @@ function MNODEcollect($dragged,$target){
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
 	var extOp 
 	extOp = encaseIfNeeded($parentParent,op)
-	MNODEparent($dragged).addClass("refine_c")
-	MNODEparent($(".couldBeCollected")).addClass("refine_c")
+	MNODEparent($dragged).addClass("mu_Refine_c")
+	MNODEparent($(".mu_CouldBeCollected")).addClass("mu_Refine_c")
 	//$dragged.insertBefore($parentParent);
 	$dragged.remove();
-	//$(".couldBeCollected").remove()
-	$parentParent.find(".couldBeCollected").remove()
-	$parentParent.addClass("refine_c");
+	//$(".mu_CouldBeCollected").remove()
+	$parentParent.find(".mu_CouldBeCollected").remove()
+	$parentParent.addClass("mu_Refine_c");
 	PActx.$transform =  extOp;
 	PActx.matchedTF=true
 	return PActx
@@ -655,7 +655,7 @@ function compose($toBeComp,firstVal,img){
 		$composed.insertBefore(PActx.$operand[0]);
 		PActx.$operand.remove()
 		//ExtendAndInitializeTree($composed);
-		$parent.addClass('refine_c');
+		$parent.addClass('mu_Refine_c');
 		PActx.$transform = $parent;
 		PActx.visualization = img
 	}
@@ -710,7 +710,7 @@ function decompose($toBeDec,direction,img){//"up" for factorize
 				}
 				//******Rimuovi il MINUS
 				$minusContent.insertAfter($minus);
-				$minusContent.addClass("refine_c");//if the content was a "times" it may by dissolved if the parent is also times
+				$minusContent.addClass("mu_Refine_c");//if the content was a "times" it may by dissolved if the parent is also times
 				$minus.remove();
 				
 				//var $roleContainingFactors = $minusContent[0].MNODE_getRoles();
@@ -945,7 +945,7 @@ function removeDropped($dragged,$target){
 	PActx.visualization = "images/properties/collect.svg"
 	if($parent.attr("data-atom")=="and"){
 		$target.remove();//if contained in an and simply remove the redundant term		
-		$parent.addClass("refine_c");
+		$parent.addClass("mu_Refine_c");
 	}
 	else{
 		var $clone = MNODEclone( prototypeSearch("ci","bool") )

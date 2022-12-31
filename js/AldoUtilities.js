@@ -267,3 +267,25 @@ function writeData($node,dataObject){
 	  }
 }
 
+function removeClassByPrefix($startNode,prefix,tree) {
+//example:  removeClassByPrefix(undefined,'temp') //remove all temporary classes
+	if(!prefix){return}
+
+	if ($startNode == undefined || $startNode.length == 0) {
+		$startNode = $("#result,#canvasAnd,#palette")
+	}
+	var $elements; //list of elements to be cleaned
+	if (tree != false) {
+		$elements = $startNode.add($startNode.find('div[class*="' + prefix + '"]'));
+	} else {
+		$elements = $startNode;
+	}
+	$elements.map(function(){
+		for(var i = this.classList.length - 1; i >= 0; i--) {
+			if(this.classList[i].startsWith(prefix)) {
+				this.classList.remove(this.classList[i]);
+			}
+		}
+	
+	})
+}

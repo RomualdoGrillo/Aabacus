@@ -21,14 +21,14 @@ function MakeSortableAndInjectMouseDown(event) {
 	}
 	//**** highlight Span and Parameters
 	if($atomTarget.attr('data-atom')=='ci'){
-		$identifierSpan($atomTarget).addClass('focusSpan');
+		$identifierSpan($atomTarget).addClass('mu_FocusSpan');
 	}
 	highlightOccurrences($atomTarget,'link');
 
 	//**** highlight DOWNSTREAM 
-	// add class downstream1, downstrwam2, downstream3, downstreamuFurther
+	// add class mu_Downstream1, downstrwam2, downstream3, downstreamuFurther
 	if($atomTarget.attr('data-type')=='bool'){
-		$PropositionLevelAndDownstream($atomTarget,false).addClass('downstream1');
+		$PropositionLevelAndDownstream($atomTarget,false).addClass('mu_Downstream1');
 	}
 	
 	GLBDnD.toolWhenMousedown = GLBsettings.tool;
@@ -98,7 +98,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		if($validTgT.length!=0){
 			let $draggedAndTargets = $atomTarget.add($validTgT); 
 			$commParent = $(commonParent( $draggedAndTargets.toArray() ));	
-			$commParent.addClass('TargetsCommonParent')
+			$commParent.addClass('mu_targetsCommonParent')
 		}
 		//make source sortable
 		let sort
@@ -140,8 +140,8 @@ function startHandlerMouseDown(event) {
 
 }
 function onMove(event) {
-	$('.dropTarget').removeClass('dropTarget');
-	MNODEparent($(event.to)).addClass('dropTarget');
+	$('.mu_DropTarget').removeClass('mu_DropTarget');
+	MNODEparent($(event.to)).addClass('mu_DropTarget');
 }
 function onSort(event) {
 	RefreshEmptyInfixBraketsGlued(MNODEparent($(event.target)))
@@ -287,8 +287,7 @@ function cleanupDnD() {
 	//Sortend is not fired if click without drag
 	//Documentation:
 	//https://docs.google.com/drawings/d/1sASg3RC51sOYWCRIxJjdRI_lL0ZKpATyPaFWfkVxT70/edit
-	$('*').removeClass('focusSpan')
-	$('*').removeClass('downstream1')
+	removeClassByPrefix(undefined,'mu_') //clear classes on mouseup
 	clearSortableTargets()
 	clearLines()//todo: distinguish between hints and PatternMatching and other lines
 }
@@ -297,10 +296,6 @@ function cleanupDnD() {
 function clearSortableTargets() {
 	let tgts = document.querySelectorAll('.tgt');
 	let i = 0;
-	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
-	$('*').removeClass('dropTarget');
-	$('*').removeClass('TargetsCommonParent');
-	$('*').removeClass('refine_c');
 	while (tgts[i]) {
 		let sortable = Sortable.get(tgts[i]);
 		if (sortable) { sortable.destroy() };
