@@ -858,6 +858,7 @@ function validReplaced($mouseDownAtom){
 	let $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
 	//let $span = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation))
 	//var $candidates = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation)).find('[data-atom]:visible').addClass('mu_Downstream1');Z
+	let $candidates = $RecursiveTreeExplorerCriterium($equation,$propositionImmediateJurisdiction).addClass('mu_Downstream1')
 	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
 	let valids = $occurrences.not($excludedMembers)
 	valids.each(function(){

@@ -15,12 +15,14 @@ function $PropositionDownstreamRec($startAtom){
 	if( $ParentAtom.is('[data-atom=and]')){
 		$validRoles = $startRole;
 	}
-	$validRoles = $validRoles.add($getDiscendenceRec($startRole,$PropositionLevelAndDownstream) );
+	$validRoles = $validRoles.add($RecursiveTreeExplorerCriterium($startRole,$PropositionLevelAndDownstream) );
 	return $validRoles
 }
-function propositionJurisdiction($proposition){
-	//find all upstream ANDs in wich proposition can be applied
-	//add all downstrem ANDs and ORs
+function $propositionImmediateJurisdiction($proposition){
+	//upstream if it's ans AND
+	let result=MNODEparent($proposition).filter('[data-atom=and]');
+	//downstream ANDs and OR
+	return result.add($proposition[0].MNODE_getChildren('[data-atom=and],[data-atom=or]'));
 }
 
 function $PropositionUpstreamRec($startAtom,$outerRoleLimit){
@@ -64,27 +66,35 @@ function $AssRolesRec($startAtom,immediate,$startRole){
 			$validRoles = $SameOpInOut($startRole)
 		}
 		else{//
-			$validRoles =   $getDiscendenceRec($startRole,$SameOpInOut);	
+			$validRoles =   $RecursiveTreeExplorerCriterium($startRole,$SameOpInOut);	
 		}
 	}
 	return $validRoles
 }
-function $getDiscendenceRec($startNode,selectFunc,$excluded){
+function $RecursiveTreeExplorerCriterium($startNode,selectionStringOrFunction,$foundAlready){
+//test:  $RecursiveTreeExplorerCriterium($('.selected'),'[data-atom]')  
 //criterium:selector string or function() return items at distace 1 from $startNode and fitered with some criteria  
 //futuribile
 //safeMode:false fast search structure is acyclic criterium excludes start node adds elements one step away
 //        :true safe structure can be cyclic 
-//currentResults are passed via excluded
-	if(typeof(s)=="string"){
-		selectFunc =  function($startNode){return $startNode.find(selectFunc)}
+//currentResults are passed via $foundAlready
+	let selectionFunction
+	if(typeof(selectionStringOrFunction)=="string"){
+		selectionFunction =  function($startNode){return $startNode.find(selectionStringOrFunction)}
 	}
-	let $directChildren =  selectFunc($startNode).not($excluded);
+	else{
+		selectionFunction = selectionStringOrFunction 
+	}
+	if(!$foundAlready){$foundAlready=$()}
+	$foundAlready = $foundAlready.add($startNode)
+	let $directChildren =  selectionFunction($startNode).not($foundAlready);
 	let i=0
-	let $discendence = $directChildren
+	$foundAlready = $foundAlready.add($directChildren)
+	let $discendence = $directChildren;
 	while($directChildren[i]){
 		//lineAB($startNode,$directChildren.eq(i))
 		//---recursive
-		$discendence = $discendence.add($getDiscendenceRec( $directChildren.eq(i),selectFunc,$startNode));
+		$discendence = $discendence.add($RecursiveTreeExplorerCriterium( $directChildren.eq(i),selectionFunction,$foundAlready));
 	i++}
 	return $discendence
 }
