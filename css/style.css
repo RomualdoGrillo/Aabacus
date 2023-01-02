@@ -411,7 +411,7 @@
 	  border-color: blue!important;
 	  z-index:1 } 
   
-  .exclusiveFocus, [data-vis=resizable], .waiting, .mu_targetsCommonParentx, .mu_span {/*grayout all but .exclusiveFocus DIV */
+  .exclusiveFocus, [data-vis=resizable], .waiting, .mu_targetsCommonParentx, .mu_span {/*grayout what'soutside exclusiveFocus DIV */
 	  z-index:100;
 	  box-shadow: 0 0 0 999px #b8b8b88a;
 	  transition: all, 1s;
@@ -871,9 +871,6 @@
 	  background-color: #ee82ee73;
 	 }
   
-.mu_FocusSpan{
-	border-color:rgb(98, 98, 255)!important;
-}
 .mu_Downstream1{
 	background-color: #4d68ff!important;
 }
