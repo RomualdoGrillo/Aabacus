@@ -1,0 +1,20 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-vis="collapsed" data-tag="andIdempotence" data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="bool">a</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="bool">
+					<and>
+					</and>
+					<ci data-type="bool">a</ci>
+					<ci data-type="bool">a</ci>
+				</apply>
+				<ci data-type="bool">a</ci>
+			</apply>
+	</apply>
+</math>
