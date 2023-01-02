@@ -111,7 +111,7 @@ function revert(event){//revert a sortablejs onAdd event
 
 function forThisValid(mouseDownNode){
 	let dataType = mouseDownNode[0].getAttribute('data-type');
-	let $excludedForall = $identifierSpan($(mouseDownNode)).filter('[data-atom=forAll]');
+	let $excludedForall = $identifierSpanForAll($(mouseDownNode)).filter('[data-atom=forAll]');
 	let forAlls = $('[data-atom=forAll]:visible').not($excludedForall).toArray();//querySelectAll does not work with :visible?
 	let $parameters = $()
 	let i=0

@@ -135,7 +135,7 @@ function $PropositionUpstream($startRole){
 
 
 
-function  	$identifierSpan($identifier){
+function  	$identifierSpanForAll($identifier){
 	//determina il campo di validità dell'identificatore
 	//risali fino a trovare un container che può avere Bvar 
 	//controlla se l'identifier è tra quelle bvar
@@ -149,13 +149,13 @@ function  	$identifierSpan($identifier){
 		}
 		i++
 	}
-	return $('#canvasRole'); //se non hai trovato nulla, lo span è l'intera canvas
+	return $('#canvasAnd'); //se non hai trovato nulla, lo span è l'intera canvas
 }
 
 function highlightOccurrences($identifier,addClass){
 	//evidenzia lo span e le occorrenze dell'identificatore
-	let $span = $identifierSpan($identifier);
-	$span.addClass('mu_span')//todo: evidenzia lo span
+	let $span = $identifierSpanForAll($identifier);
+	$span.not('#canvasAnd').addClass('mu_span')//highlight span unless it's the whole canvas
 	let $occurrences =$findOccurrences($identifier,undefined,true)
 	$occurrences.addClass(addClass);
 	/*$occurrences.each(function(){
@@ -163,11 +163,17 @@ function highlightOccurrences($identifier,addClass){
 		lineAB($(this),$identifier,addClass)	
 	})*/	 
 }
+function visulizeJurisdiction($item){
+	let $level0;
+	$level0.addClass('mu_jurisdiction0');
+
+
+}
 
 // example use:
-// $findOccurrences($identifier,$identifierSpan($identifier))
+// $findOccurrences($identifier,$identifierSpanForAll($identifier))
 function $findOccurrences($wanted,$span,excludeHidden){
-	if(!$span){$span = $identifierSpan($wanted);}
+	if(!$span){$span = $identifierSpanForAll($wanted);}
 	//todo: questa ricerca non distingue le variabili interne "Bvar".
 	// Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
 	let $candidates

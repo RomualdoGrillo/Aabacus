@@ -21,7 +21,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	}
 	//**** highlight Span and Parameters
 	if($atomTarget.attr('data-atom')=='ci'){
-		$identifierSpan($atomTarget).addClass('mu_FocusSpan');
+		$identifierSpanForAll($atomTarget).addClass('mu_FocusSpan');
 	}
 	highlightOccurrences($atomTarget,'mu_connected');
 

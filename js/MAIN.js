@@ -254,7 +254,7 @@ function dblclickHandler(event) {
 	//******** forThis prompt ***********
 	let $toBeSpecified
 	if (closed && atomClass === 'ci') {
-		$toBeSpecified = parameterInHeader($atomDblclicked,$identifierSpan($atomDblclicked))}
+		$toBeSpecified = parameterInHeader($atomDblclicked,$identifierSpanForAll($atomDblclicked))}
 	if ($toBeSpecified && $toBeSpecified.length!=0) {
 		var newVal = prompt('Specify a value')
 		if (newVal != null) {
