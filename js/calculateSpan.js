@@ -18,6 +18,10 @@ function $PropositionDownstreamRec($startAtom){
 	$validRoles = $validRoles.add($getDiscendenceRec($startRole,$PropositionLevelAndDownstream) );
 	return $validRoles
 }
+function propositionJurisdiction($proposition){
+	//find all upstream ANDs in wich proposition can be applied
+	//add all downstrem ANDs and ORs
+}
 
 function $PropositionUpstreamRec($startAtom,$outerRoleLimit){
 //testing
@@ -59,7 +63,7 @@ function $AssRolesRec($startAtom,immediate,$startRole){
 		if(immediate){
 			$validRoles = $SameOpInOut($startRole)
 		}
-		else{//recursive
+		else{//
 			$validRoles =   $getDiscendenceRec($startRole,$SameOpInOut);	
 		}
 	}
@@ -162,12 +166,6 @@ function highlightOccurrences($identifier,addClass){
 		// crea linee
 		lineAB($(this),$identifier,addClass)	
 	})*/	 
-}
-function visulizeJurisdiction($item){
-	let $level0;
-	$level0.addClass('mu_jurisdiction0');
-
-
 }
 
 // example use:

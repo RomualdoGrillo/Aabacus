@@ -819,17 +819,16 @@ function decompose($toBeDec,direction,img){//"up" for factorize
 }
 
 function validReplacedOLD($mouseDownAtom){
-	// cerca nodi uguali a mousedown node 
-	var $equation = MNODEparent($mouseDownAtom)
-	var $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
 	if( !$mouseDownAtom.parent().parent().is("[data-atom=eq]:not(.asymmetric)") ){
 		return []//not from an equation	
 	}
+	let $equation = MNODEparent($mouseDownAtom)
+	var $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
 	if(!($mouseDownAtom.parent().hasClass('firstMember')||$mouseDownAtom.parent().hasClass('secondMember'))){
 	return []}// dragged is not a membrer of equation
 	//ricerca limitata ad elementi visibili
 	//var $candidates = PropositionValidSpan($equation).filter(':visible')
-	var $candidates = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation)).find('[data-atom]:visible')
+	var $candidates = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation)).find('[data-atom]:visible').addClass('mu_Downstream1');
 	var valids = $candidates.not($excludedMembers).filter(function( index ) {//escludi mousedownnode stesso dai possibili risultati
 		return MNODEEqual(this,$mouseDownAtom[0],false,true/* trascura il segno root quindi -<esp> può essere sostituita con <esp> a patto che poi si cambi il segno*/)
 	})
@@ -838,6 +837,13 @@ function validReplacedOLD($mouseDownAtom){
 		lineAB($mouseDownAtom,$(this),'arrow');	
 	})	 
 	return valids
+}
+function isEquationMember($mouseDownAtom){
+	//  
+	if( !$mouseDownAtom.parent().parent().is("[data-atom=eq]:not(.asymmetric)") ){
+		return []//not from an equation	
+	}
+	return MNODEparent($mouseDownAtom)
 }
 
 
@@ -850,8 +856,9 @@ function validReplaced($mouseDownAtom){
 	}
 	let $equation = MNODEparent($mouseDownAtom)
 	let $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
-	let $span = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation))
-	let $occurrences = $findOccurrences($mouseDownAtom,$span,true)//ricerca limitata ad elementi visibili
+	//let $span = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation))
+	//var $candidates = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation)).find('[data-atom]:visible').addClass('mu_Downstream1');Z
+	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
 	let valids = $occurrences.not($excludedMembers)
 	valids.each(function(){
 		// crea linee

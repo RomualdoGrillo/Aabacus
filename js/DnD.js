@@ -21,16 +21,15 @@ function MakeSortableAndInjectMouseDown(event) {
 	}
 	//**** highlight Span and Parameters
 	if($atomTarget.attr('data-atom')=='ci'){
-		$identifierSpanForAll($atomTarget).addClass('mu_FocusSpan');
+		highlightOccurrences($atomTarget,'mu_connected');
 	}
-	highlightOccurrences($atomTarget,'mu_connected');
 
 	//**** highlight DOWNSTREAM 
 	// add class mu_Downstream1, downstrwam2, downstream3, downstreamuFurther
-	if($atomTarget.attr('data-type')=='bool'){
-		$PropositionLevelAndDownstream($atomTarget,false).addClass('mu_Downstream1');
+	/*if($atomTarget.attr('data-type')=='bool'){
+		$PropositionLevelAndDownstream($atomTarget.parent(),false).addClass('mu_Downstream1');
 	}
-	
+	*/
 	GLBDnD.toolWhenMousedown = GLBsettings.tool;
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
 		//********* autoAdapt ****************
