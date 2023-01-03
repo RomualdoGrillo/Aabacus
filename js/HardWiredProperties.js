@@ -818,26 +818,7 @@ function decompose($toBeDec,direction,img){//"up" for factorize
 	return PActx	
 }
 
-function validReplacedOLD($mouseDownAtom){
-	if( !$mouseDownAtom.parent().parent().is("[data-atom=eq]:not(.asymmetric)") ){
-		return []//not from an equation	
-	}
-	let $equation = MNODEparent($mouseDownAtom)
-	var $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
-	if(!($mouseDownAtom.parent().hasClass('firstMember')||$mouseDownAtom.parent().hasClass('secondMember'))){
-	return []}// dragged is not a membrer of equation
-	//ricerca limitata ad elementi visibili
-	//var $candidates = PropositionValidSpan($equation).filter(':visible')
-	var $candidates = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation)).find('[data-atom]:visible').addClass('mu_Downstream1');
-	var valids = $candidates.not($excludedMembers).filter(function( index ) {//escludi mousedownnode stesso dai possibili risultati
-		return MNODEEqual(this,$mouseDownAtom[0],false,true/* trascura il segno root quindi -<esp> può essere sostituita con <esp> a patto che poi si cambi il segno*/)
-	})
-	valids.each(function(){
-		// crea linee
-		lineAB($mouseDownAtom,$(this),'arrow');	
-	})	 
-	return valids
-}
+
 function isEquationMember($mouseDownAtom){
 	//  
 	if( !$mouseDownAtom.parent().parent().is("[data-atom=eq]:not(.asymmetric)") ){
@@ -856,7 +837,6 @@ function validReplaced($mouseDownAtom){
 	}
 	let $equation = MNODEparent($mouseDownAtom)
 	let $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
-	//let $span = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation))
 	//var $candidates = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation)).find('[data-atom]:visible').addClass('mu_Downstream1');Z
 	let $candidates = $RecursiveTreeExplorerCriterium($equation,$propositionImmediateJurisdiction).addClass('mu_Downstream1')
 	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
@@ -884,8 +864,12 @@ function validRedundant($mouseDownAtom){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	var $candidates = $PropositionDownstreamRec($mouseDownAtom).find('[data-atom]:visible').not($mouseDownAtom);
-	var valids = $candidates.filter(function( index ) {//escludi mousedownnode stesso dai possibili risultati
+	let $jurisdiction = $RecursiveTreeExplorerCriterium($mouseDownAtom,$propositionImmediateJurisdiction).addClass('mu_Downstream1').filter('[data-atom]:visible')
+	let $children=$();
+	for(i=0;$jurisdiction[i];i++){
+    	$children=$children.add($jurisdiction[i].MNODE_getChildren());
+    }
+	var valids = $children.not($mouseDownAtom).filter(function( index ) {//escludi mousedownnode stesso dai possibili risultati
 		return MNODEEqual(this,$mouseDownAtom[0],false,true)
 	})
 	valids.each(function(){
