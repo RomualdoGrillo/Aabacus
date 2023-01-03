@@ -128,21 +128,16 @@ function immediateAssValid($mouseDownAtom){
 	const $parent = MNODEparent($mouseDownAtom);
 	let op;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
-	let validTargets = $();
+	let $validTargetRoles = $();
 	if( OpIsAssociative(op)){
-		//parent is a target-associative?
-		if(MNODEparent($parent).attr("data-atom") === op ){
-			validTargets = validTargets.add( MNODEparent($parent)[0].MNODE_getRoles());
-		}
-		//children are validTargets?
-		var MNODEchildren = $parent[0].MNODE_getChildren();
-		MNODEchildren.each(function(i,e){
-			 if( $(e).attr("data-atom") === op ){
-			validTargets = validTargets.add(e.MNODE_getRoles());
-			 }
+		let $validTgtAtoms = $ImmediateAssociativeAtom($parent)
+		// to get every associative target (not just immediate):
+		//let $validTgtAtoms = $RecursiveTreeExplorerCriterium($parent,$ImmediateAssociativeAtom)
+		$validTgtAtoms.each(function(i,e){
+			$validTargetRoles = $validTargetRoles.add(e.MNODE_getRoles());
 		});
 	}
-	return validTargets
+	return $validTargetRoles
 }
 
 function MNODEassociate(dragged,target,dropped){

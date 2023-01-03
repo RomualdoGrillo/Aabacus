@@ -20,9 +20,28 @@ function $PropositionDownstreamRec($startAtom){
 }
 function $propositionImmediateJurisdiction($proposition){
 	//upstream if it's ans AND
-	let result=MNODEparent($proposition).filter('[data-atom=and]');
+	let $result=MNODEparent($proposition).filter('[data-atom=and]');
 	//downstream ANDs and OR
-	return result.add($proposition[0].MNODE_getChildren('[data-atom=and],[data-atom=or]'));
+	return $result.add($proposition[0].MNODE_getChildren('[data-atom=and],[data-atom=or]'));
+}
+function $ImmediateAssociativeAtom($starAssociativeOperation){
+	//test: $ImmediateAssociativeAtom($('.selected')) selected should be associative operation
+	let op = $starAssociativeOperation.attr("data-atom");
+	let $result = $();
+	//upstream if it's same operation
+	let $parent = MNODEparent($starAssociativeOperation)
+	if($parent.attr("data-atom") === op){
+		$result = $result.add( $parent );
+	} MNODEparent($starAssociativeOperation).filter('[data-atom=' + op + ']');
+	//downstream same operation
+	let MNODEchildren = $starAssociativeOperation[0].MNODE_getChildren();
+		MNODEchildren.each(function(i,e){
+		if( $(e).attr("data-atom") === op ){
+			//$result = $result.add(e.MNODE_getRoles());
+			$result = $result.add($(e));
+		}
+	});
+	return $result
 }
 
 function $PropositionUpstreamRec($startAtom,$outerRoleLimit){
