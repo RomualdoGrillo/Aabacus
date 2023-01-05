@@ -153,18 +153,7 @@ function $PropositionLevelAndDownstream($startRole,limitTomove){
 	}
 	return $validRoles
 }
-function $PropositionUpstream($startRole){
-	//proposition written in $validRoles are  also valid in $startRole
-	//if you look for proposition that can be moved (not cloned) in $startRole
-	//that's not the right function 
-	let $validRoles = $();
-	let $startAtom = MNODEparent($startRole);
-	let op = $startAtom.attr("data-atom");
-	let $ParentAtom = MNODEparent($startAtom);
-	let opP = $startAtom.attr("data-atom");
-	if(opP=="and" || opP=="implies"){$validRoles=$ParentAtom[0].MNODE_getRoles()}
-	return $validRoles
-}
+
 
 
 
