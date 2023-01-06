@@ -86,7 +86,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		let i = 0
 		let propInCanvasEnabled = getDnDpropEnabled()
 		while (propInCanvasEnabled[i]) {
-			let targets = propInCanvasEnabled[i].findTgt($atomTarget);
+			let targets = propInCanvasEnabled[i].findTgt($atomTarget,(event.ctrlKey || event.metaKey));
 			makeTargetsSortableRolesOrAtoms(targets, propInCanvasEnabled[i].name)
 			$validTgT = $validTgT.add($(targets))
 			i++
@@ -187,7 +187,7 @@ function onAdd(event) {
 			//---->real target is Atom so dropped in ad hoc tgt role
 			target = event.to.parentElement;
 		} else {
-			//---->target is a role (no need to create ad hoc tgt)
+			//---->target is a role (no need for ad hoc tgt)
 			target = event.to
 		}
 		let targetProperty = target.getAttribute('target');
@@ -207,6 +207,7 @@ function onAdd(event) {
 			});
 			if (property) {
 				let PActx = property.apply($(event.item), $(event.to.parentElement), $(dropped))
+				PActx.visualization = property.icon //an element must appear on the canvas to enable the property, such element also contains the icon for that property
 				if (adHocTgt) {
 					(event.to).remove()
 				}

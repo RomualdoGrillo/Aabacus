@@ -23,7 +23,7 @@ class PropertyDnD  {
 }
 
 let propertiesDnD = [
-//new PropertyDnD('openedDnD',validTargetsFromOpened,),  // come gestisco il +ctrl?
+//PRIORITY: last property overwrites previous targets
 new PropertyDnD('associativeDnD',immediateAssValid,MNODEassociate,""),
 new PropertyDnD('distributiveDnD',validForDist,MNODEdistribute,""),
 new PropertyDnD('partDistributDnD',validForPartDist,MNODEPartDistribute,""),
@@ -31,9 +31,11 @@ new PropertyDnD('collectDnD',validForColl,MNODEcollect,""),
 new PropertyDnD('partCollectDnD',validForPartColl,MNODEpartCollect,""),
 new PropertyDnD('replaceDnD',validReplaced,MNODELinkReplace,""),
 new PropertyDnD('forThisDnD',forThisValid,forThisPar_focus_nofocus,""),
-new PropertyDnD('removeRedundantDnD',validRedundant,removeDropped,""),
+new PropertyDnD('removeRedundantDnD',validRedundant,removeRedundant,""),
+new PropertyDnD('addRedundantDnD',validAddRedundant,addRedundant,""),
 new PropertyDnD('hanoiMoveDnD',validhanoiMove,hanoiMove,"")
 ]
+
 
 
 
@@ -148,7 +150,6 @@ function MNODEassociate(dragged,target,dropped){
 	else{
 		$(dragged).remove(); // if not cloning, clone was useful to visualize the starting point 	
 	}
-	PActx.visualization = "images/properties/associate.svg"	
 	PActx.matchedTF=true;
 	PActx.replacedAlready = true;
 	PActx.msg = "associated";
@@ -169,7 +170,10 @@ function getKeyByValue(dictionary,value ) {
 
 
 
-function validForPartDist($mouseDownAtom){
+function validForPartDist($mouseDownAtom,ctrlOrMeta){
+	if(ctrlOrMeta){ 
+		return []
+	}
 	let $parent = MNODEparent($mouseDownAtom);
 	var $siblings = $parent.siblings('[data-atom]');
 	if($siblings.length == 0){return $()}//nothing to distribute
@@ -194,7 +198,10 @@ function validForPartDist($mouseDownAtom){
 
 
 
-function validForDist($mouseDownAtom){//op2 è il tipo di operazione sulla quale si distribuisce
+function validForDist($mouseDownAtom,ctrlOrMeta){//op2 è il tipo di operazione sulla quale si distribuisce
+	if(ctrlOrMeta){ 
+		return []
+	}
 	var $parent = MNODEparent($mouseDownAtom);
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
@@ -220,7 +227,6 @@ function validForDist($mouseDownAtom){//op2 è il tipo di operazione sulla quale
 function MNODEPartDistribute($dragged,target,dropped){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/distributive.svg"
 	let childrenIndex = MNODEparent($dragged).index()
 	let $parent = MNODEparent($dragged);
 	let opD ;
@@ -247,7 +253,6 @@ function MNODEPartDistribute($dragged,target,dropped){
 function MNODEdistribute($dragged,target,dropped){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/distributive.svg"
 	let $parent = MNODEparent($dragged);
 	let op = undefined;
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
@@ -396,7 +401,6 @@ function validForPartColl($mouseDownAtom){
 function MNODEpartCollect($dragged,$target){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/collect.svg"
 	let $targetParent = MNODEparent($target);
 	let $siblingsT = $target.siblings('[data-atom]')
 	let opt = $targetParent.attr("data-atom")
@@ -468,7 +472,6 @@ function MNODEpartCollect($dragged,$target){
 function MNODEcollect($dragged,$target){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/collect.svg"
 	let $parent = MNODEparent($dragged);
 	let $parentParent = MNODEparent($parent);
 	let op = undefined;
@@ -642,7 +645,6 @@ function compose($toBeComp,firstVal,img){
 		$composed = ValToAtoms(partial);
 		$composed.addClass('selected');//selezione in uscita
 		PActx.$operand = $toBeComp;
-		PActx.visualization = "images/properties/compose.svg";
 		PActx.msg = "compose";
 		
 		
@@ -846,32 +848,59 @@ function validReplaced($mouseDownAtom){
 function MNODELinkReplace($link, $replaced){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/replace.svg"
 	//changed argument order to comply with 1Dragged 2Target
 	MNODEReplaceLink($replaced, $link);
 	PActx.matchedTF=true
 	return PActx
 }
 
-function validRedundant($mouseDownAtom){
+function validRedundant($mouseDownAtom,ctrlOrMeta){
 	//validRedundant($('.selected'))
 	// cerca nodi uguali a mousedown node 
+	if(ctrlOrMeta){ 
+		return []
+	}
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
 	let $jurisdiction = $RecursiveTreeExplorerCriterium($mouseDownAtom,$propositionImmediateJurisdiction).addClass('mu_Downstream1').filter('[data-atom]:visible')
-	let $children=$();
+	
+	
+		let $children=$();
+		for(i=0;$jurisdiction[i];i++){
+			$children=$children.add($jurisdiction[i].MNODE_getChildren());
+		}
+		var valids = $children.not($mouseDownAtom).filter(function() {//escludi mousedownnode stesso dai possibili risultati
+			return MNODEEqual(this,$mouseDownAtom[0],false,true)
+		})
+		valids.each(function(){
+			// crea linee
+			lineAB($mouseDownAtom,$(this),'arrow removeredundant');	
+		})	 
+		return valids
+	
+}
+function validAddRedundant($mouseDownAtom,ctrlOrMeta){
+	//validRedundant($('.selected'))
+	// cerca nodi uguali a mousedown node 
+	if(!ctrlOrMeta){ 
+		return []
+	}
+	if( !$mouseDownAtom.is("[data-type=bool]") ){
+		return []//not a boolean expression	
+	}
+	let $jurisdiction = $RecursiveTreeExplorerCriterium($mouseDownAtom,$propositionImmediateJurisdiction).addClass('mu_Downstream1').filter('[data-atom]:visible')
+	let $targets=$();
 	for(i=0;$jurisdiction[i];i++){
-    	$children=$children.add($jurisdiction[i].MNODE_getChildren());
+		let atomType=$jurisdiction[i].getAttribute('data-atom')
+		if( atomType=='and' ){//todo: still not perfect: e.g. what happens if ther's a "not"?
+			$targets=$targets.add($jurisdiction[i].MNODE_getRoles());
+		}
+		else if(atomType=='or'|| atomType=='imply'){//children are valid targets
+			$targets=$targets.add($jurisdiction[i].MNODE_getChildren())
+		}
     }
-	var valids = $children.not($mouseDownAtom).filter(function( index ) {//escludi mousedownnode stesso dai possibili risultati
-		return MNODEEqual(this,$mouseDownAtom[0],false,true)
-	})
-	valids.each(function(){
-		// crea linee
-		lineAB($mouseDownAtom,$(this),'arrow');	
-	})	 
-	return valids
+	return $targets
 }
 
 function validCandidatesForPatternDrop($mouseDownAtom){
@@ -913,7 +942,6 @@ function validhanoiMove($mouseDownAtom){
 function hanoiMove(dragged,target,dropped){
 	var PActx = newPActx();
 	target[0].MNODE_getRoles().prepend($(dragged));
-	PActx.visualization = "images/properties/HanoiMove.svg"	
 	PActx.matchedTF=true;
 	PActx.replacedAlready = true;
 	PActx.msg = "moved";
@@ -925,11 +953,10 @@ function hanoiMove(dragged,target,dropped){
 
 
 
-function removeDropped($dragged,$target){
+function removeRedundant($dragged,$target){
 	var PActx = newPActx();
 	var $parent = MNODEparent($target)
 	PActx.replacedAlready = true;
-	PActx.visualization = "images/properties/collect.svg"
 	if($parent.attr("data-atom")=="and"){
 		$target.remove();//if contained in an and simply remove the redundant term		
 		$parent.addClass("mu_Refine_c");
@@ -940,7 +967,24 @@ function removeDropped($dragged,$target){
 		$target.replaceWith($clone);
 	}
 	PActx.matchedTF=true
+	PActx.msg="removed Redundant"
 	return PActx
+}
+
+function addRedundant($dragged,$target,$dropped){
+	if($target.attr('data-atom')){//if target is an atom, create an AND around it
+		let $extOp = encaseWithOperation($target,'and')
+		let $targetRole = $extOp[0].MNODE_getRoles()
+		let PActx = MNODEassociate($dragged,$targetRole,$dropped)
+		PActx.matchedTF = true;
+		PActx.replacedAlready = true;
+		PActx.msg = "created and and added Redundant"
+	}
+	else{
+		let PActx = MNODEassociate($dragged,$target,$dropped)
+		PActx.msg = "added Redundant"
+		return PActx
+	}
 }
 
 function evaluateComparison($exp){

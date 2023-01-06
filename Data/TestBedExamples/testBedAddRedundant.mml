@@ -1,0 +1,136 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-type="bool">
+			<and>
+			</and>
+			<apply data-type="bool">
+				<and>
+				</and>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<ci data-type="num">y</ci>
+					<apply data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">x</ci>
+						<cn data-type="num">2</cn>
+					</apply>
+				</apply>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<ci data-type="num">y</ci>
+					<apply data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">x</ci>
+						<cn data-type="num">1</cn>
+					</apply>
+				</apply>
+				<apply data-type="bool">
+					<or>
+					</or>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<ci data-type="num">y</ci>
+						<apply data-type="num">
+							<times>
+							</times>
+							<ci data-type="num">x</ci>
+							<cn data-type="num">2</cn>
+						</apply>
+					</apply>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<ci data-type="num">y</ci>
+						<apply data-type="num">
+							<plus>
+							</plus>
+							<ci data-type="num">x</ci>
+							<cn data-type="num">1</cn>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<ci data-type="num">y</ci>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<ci data-type="num">x</ci>
+					<cn data-type="num">1</cn>
+				</apply>
+			</apply>
+			<apply data-type="bool">
+				<or>
+				</or>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<ci data-type="num">y</ci>
+					<apply data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">x</ci>
+						<cn data-type="num">2</cn>
+					</apply>
+				</apply>
+				<apply data-type="bool">
+					<and>
+					</and>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<ci data-type="num">y</ci>
+						<apply data-type="num">
+							<times>
+							</times>
+							<ci data-type="num">x</ci>
+							<cn data-type="num">2</cn>
+						</apply>
+					</apply>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<ci data-type="num">y</ci>
+						<apply data-type="num">
+							<plus>
+							</plus>
+							<ci data-type="num">x</ci>
+							<cn data-type="num">1</cn>
+						</apply>
+					</apply>
+					<apply data-type="bool">
+						<or>
+						</or>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<ci data-type="num">y</ci>
+							<apply data-type="num">
+								<times>
+								</times>
+								<ci data-type="num">x</ci>
+								<cn data-type="num">2</cn>
+							</apply>
+						</apply>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<ci data-type="num">y</ci>
+							<apply data-type="num">
+								<plus>
+								</plus>
+								<ci data-type="num">x</ci>
+								<cn data-type="num">1</cn>
+							</apply>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+</math>

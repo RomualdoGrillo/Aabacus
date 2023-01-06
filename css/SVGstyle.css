@@ -14,7 +14,7 @@ line.noMatch {
 	stroke: red;
 }
 line, marker{
-	stroke:#959492;
+	/* stroke:#959492; */
 	fill:#afaeab
 }
 line.matched{ 
@@ -24,6 +24,10 @@ line.matched{
       stroke-width:3; 
       marker-end:url(#triangle);
 }
+.removeredundant{
+	stroke: red;
+}
+
 .link{
 	stroke-width:1; 
 }

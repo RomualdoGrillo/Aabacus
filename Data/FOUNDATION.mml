@@ -19,7 +19,8 @@
 					<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
 					<ci data-tag="replaceDnD" data-tagimg="./images/properties/replace.svg" data-type="bool">true</ci>
 					<ci data-tag="forThisDnD" data-type="bool">true</ci>
-					<ci data-tag="removeRedundantDnD" data-type="bool">true</ci>
+					<ci data-tag="removeRedundantDnD" data-tagimg="./images/properties/removeRedundant.svg" data-type="bool">true</ci>
+					<ci data-tag="addRedundantDnD" data-tagimg="./images/properties/duplicate.svg" data-type="bool">true</ci>
 				</apply>
 			</apply>
 			<apply data-vis="collapsed" data-and="horizontal" data-tag="foundation" data-tagimg="./images/properties/distributive.svg" data-type="bool">
