@@ -387,17 +387,6 @@ function validTargetsFromOpened($MNODEdragged) {
 	return valids.not($MNODEdragged.parent());
 }
 
-function validCandidatesForPatternDrop($MNODEdragged) {
-	var valids = $("#canvasRole [data-atom]:visible").filter(function (index) {
-		//*****valid?***********
-		var result =
-			//datatype is compatible
-			typeOk($MNODEdragged, $(this)) && MNODEfrozenDef($(this)).length == 0;
-		return result;
-	});
-	return valids; //.not($MNODEdragged.parent())
-}
-
 function getNumOfPlaces($role) {
 	//*****determine number of places********
 	if ($role.hasClass("s_role")) {

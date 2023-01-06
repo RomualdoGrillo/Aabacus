@@ -863,9 +863,7 @@ function validRedundant($mouseDownAtom,ctrlOrMeta){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	let $jurisdiction = $RecursiveTreeExplorerCriterium($mouseDownAtom,$propositionImmediateJurisdiction).addClass('mu_Downstream1').filter('[data-atom]:visible')
-	
-	
+	let $jurisdiction = $calculateJurisdiction($mouseDownAtom).addClass('mu_Downstream1').filter('[data-atom]:visible')
 		let $children=$();
 		for(i=0;$jurisdiction[i];i++){
 			$children=$children.add($jurisdiction[i].MNODE_getChildren());
@@ -889,7 +887,7 @@ function validAddRedundant($mouseDownAtom,ctrlOrMeta){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	let $jurisdiction = $RecursiveTreeExplorerCriterium($mouseDownAtom,$propositionImmediateJurisdiction).addClass('mu_Downstream1').filter('[data-atom]:visible')
+	let $jurisdiction = $calculateJurisdiction($mouseDownAtom).addClass('mu_Downstream1').filter('[data-atom]:visible')
 	let $targets=$();
 	for(i=0;$jurisdiction[i];i++){
 		let atomType=$jurisdiction[i].getAttribute('data-atom')
@@ -903,15 +901,17 @@ function validAddRedundant($mouseDownAtom,ctrlOrMeta){
 	return $targets
 }
 
-function validCandidatesForPatternDrop($mouseDownAtom){
+function validCandidatesForPatternDrop($mouseDownAtom,$originalProperty){
 	//exclude the current forall property
-	var $excludedMNODES= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
-	var valids = $('#canvasRole [data-atom]:visible').not($excludedMNODES).filter(function( index ) {
+	let $excludedMNODES= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
+	let $jurisdiction = $calculateJurisdiction($originalProperty).addClass('mu_Downstream1').filter('[data-atom]:visible')
+	let $candidates = $jurisdiction.find('[data-atom]:visible').addBack()
+	let valids = $candidates.not($excludedMNODES).filter(function( index ) {
 		//*****valid?***********
 		var result =(
 			//datatype is compatible
 			typeOk($mouseDownAtom,$(this))
-			&&
+			&&	
 			MNODEfrozenDef($(this)).length == 0
 			)
 		return result

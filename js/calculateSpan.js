@@ -206,3 +206,7 @@ function $findOccurrences($wanted,$span,excludeHidden){
 	return	 $occurrences
 }
 
+function $calculateJurisdiction($startAtom){
+	// .addClass('mu_Downstream1').filter('[data-atom]:visible')
+	return $jurisdiction = $RecursiveTreeExplorerCriterium($startAtom,$propositionImmediateJurisdiction)
+}

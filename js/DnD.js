@@ -55,7 +55,7 @@ function MakeSortableAndInjectMouseDown(event) {
 			let $startPointForValids = searchForMarkedInSubtree($RoleMember,"s",'m',true)//"s" e' la marcatura cercata, "m" vuol dire cerca una marcatura, non un link o post
             if($startPointForValids.length==0){$startPointForValids=$atomTarget}
 			$atomTarget.addClass('attackPoint')
-			$validTgT = validCandidatesForPatternDrop($startPointForValids);
+			$validTgT = validCandidatesForPatternDrop($startPointForValids,GLBDnD.$originalProperty);
 			//$validTgT = validCandidatesForPatternDrop(  $($startPointForValids.toArray().reverse())  );
 			makeTargetsSortableRolesOrAtoms($validTgT.toArray(), 'dragPatternMatch');
 			
