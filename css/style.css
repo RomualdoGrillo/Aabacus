@@ -856,6 +856,9 @@
 	  width: 100%;
 	  height: 100%;
 	  justify-content: center;
+	  background-size: 20px;
+	  background-repeat: no-repeat;
+	  background-position-x: center;
 	 }
   
   .mu_DropTarget{

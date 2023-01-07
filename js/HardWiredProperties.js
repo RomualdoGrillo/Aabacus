@@ -871,10 +871,12 @@ function validRedundant($mouseDownAtom,ctrlOrMeta){
 		var valids = $children.not($mouseDownAtom).filter(function() {//escludi mousedownnode stesso dai possibili risultati
 			return MNODEEqual(this,$mouseDownAtom[0],false,true)
 		})
+		/*
 		valids.each(function(){
 			// crea linee
 			lineAB($mouseDownAtom,$(this),'arrow removeredundant');	
-		})	 
+		})
+		*/	 
 		return valids
 	
 }

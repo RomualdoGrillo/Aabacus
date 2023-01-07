@@ -87,7 +87,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		let propInCanvasEnabled = getDnDpropEnabled()
 		while (propInCanvasEnabled[i]) {
 			let targets = propInCanvasEnabled[i].findTgt($atomTarget,(event.ctrlKey || event.metaKey));
-			makeTargetsSortableRolesOrAtoms(targets, propInCanvasEnabled[i].name)
+			makeTargetsSortableRolesOrAtoms(targets, propInCanvasEnabled[i].name, propInCanvasEnabled[i].icon)
 			$validTgT = $validTgT.add($(targets))
 			i++
 		}
@@ -225,7 +225,7 @@ function onAdd(event) {
 	clickSound.play();
 }
 
-function makeTargetsSortableRolesOrAtoms(targetsArray, propertyName) {
+function makeTargetsSortableRolesOrAtoms(targetsArray, propertyName, icon) {
 	let j = 0;
 	while (targetsArray[j]) {
 		targetsArray[j].setAttribute('target', propertyName);
@@ -235,6 +235,9 @@ function makeTargetsSortableRolesOrAtoms(targetsArray, propertyName) {
 		} else {
 			//target is not a role: for example in replacement it is an atom
 			let tgt = $('<div class="tgt"></div>')[0]
+			if(icon){
+					$(tgt).css('background-image',wrapUnwrapUrlString(icon));
+			}
 			targetsArray[j].prepend(tgt);
 			makeSortableMouseDown([tgt])
 		}
