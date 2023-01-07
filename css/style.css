@@ -443,12 +443,6 @@
 	  background-color: green!important;
   }
   
-   
-  .debug [target=distributiveDnD] *{
-	  background-color: #d69ece!important;
-	  cursor: url(../images/distributeDown.svg), auto;
-  }
-  
   body[tool=copy] *{
 	  cursor: copy;
   }
@@ -458,18 +452,6 @@
   body[tool=declare] *{
 	cursor: pointer;
   }
-  /*.hover[target=distributive], .hover[target=distributiveDnD] *{ 
-	  cursor: url(../images/distributeDown.svg), auto;
-  }*/
-  
-  /*.[target=collection], [target=collectDnD] {
-	  background-color: aqua!important;
-	  cursor: url(../images/collectUp.svg), auto;
-  }*/
-  /*
-  .hover:not(#canvasRole),.hover:not(#canvasRole)>*{
-	  background-color: yellow!important;
-  }*/
   
   /* all valid targets */
   [target]:not([target=""]) {
