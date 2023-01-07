@@ -23,7 +23,7 @@
 					<ci data-tag="addRedundantDnD" data-tagimg="./images/properties/duplicate.svg" data-type="bool">true</ci>
 				</apply>
 			</apply>
-			<apply data-vis="collapsed" data-and="horizontal" data-tag="foundation" data-tagimg="./images/properties/distributive.svg" data-type="bool">
+			<apply data-vis="collapsed" data-and="horizontal" data-tag="foundation"  data-type="bool">
 				<and>
 				</and>
 				<apply data-vis="collapsed" data-tag="timesAssociate" data-type="bool">

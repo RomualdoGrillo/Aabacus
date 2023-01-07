@@ -14,18 +14,15 @@ line.noMatch {
 	stroke: red;
 }
 line, marker{
-	/* stroke:#959492; */
+	stroke:#959492;
 	fill:#afaeab
 }
 line.matched{ 
 	stroke:green
 }
 .arrow{
-      stroke-width:3; 
+      stroke-width:2; 
       marker-end:url(#triangle);
-}
-.removeredundant{
-	stroke: red;
 }
 
 .link{
