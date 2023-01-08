@@ -102,8 +102,8 @@
   }
   
   .expandedAsTree [data-atom]{
-	  top: 60px;
-  }
+	  top: 20px;
+	 }
   
   [data-atom="minus"] , [data-atom="m_inverse"] , [data-atom="not"] {
 	  padding: 0;

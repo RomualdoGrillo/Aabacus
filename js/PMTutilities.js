@@ -180,7 +180,7 @@ function orderUL($property){
 		var $firstMember = e.MNODE_getRoles('.firstMember').children()
 		var $secondMember = e.MNODE_getRoles('.secondMember').children()
 		if( $firstMember != undefined && $secondMember != undefined){
-			if( newMNODEcompareOrder($firstMember,$secondMember) ){
+			if( newMNODEcompareOrder($firstMember,$secondMember)>0 ){
 				//in questi casi inverti primo e secondo membro;
 				//$firstMember.prepend($secondMember);
 				e.MNODE_getRoles('.firstMember').append($secondMember);
@@ -208,7 +208,7 @@ function newMNODEcompareOrder($sibling1,$sibling2){
 			return o1 - o2
 	}
 	else if( o1 == undefined && o2 == 0 ){//se uno vuole essere primo e l'altro non ha preferenze...
-			return -1
+			return +1 //sono da spostare
 	}
 	else{
 		return 0  //non è possibile paragonare, quindi non spostare	
