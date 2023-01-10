@@ -23,13 +23,13 @@ function MakeSortableAndInjectMouseDown(event) {
 	if($atomTarget.attr('data-atom')=='ci'){
 		highlightOccurrences($atomTarget,'mu_connected');
 	}
-
+	
 	//**** highlight DOWNSTREAM 
-	// add class mu_Downstream1, downstrwam2, downstream3, downstreamuFurther
-	/*if($atomTarget.attr('data-type')=='bool'){
-		$PropositionLevelAndDownstream($atomTarget.parent(),false).addClass('mu_Downstream1');
+	// add class mu_Downstream1
+	if($atomTarget.attr('data-type')=='bool'){
+		$calculateJurisdictionUpstream($atomTarget.parent()).addClass('mu_span');
 	}
-	*/
+	
 	GLBDnD.toolWhenMousedown = GLBsettings.tool;
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
 		//********* autoAdapt ****************
@@ -81,7 +81,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		makeSortableMouseDown($validTgTOpen.toArray(), true);
 	}
 	else {
-		//******** apply custom propeties listed in propertiesDnD[i] ***************
+		//******** apply propeties listed in propertiesDnD[i] ***************
 		if (!$atomTarget.length || !$atomTarget[0].parentElement) { return }//precondition
 		let i = 0
 		let propInCanvasEnabled = getDnDpropEnabled()
@@ -206,7 +206,10 @@ function onAdd(event) {
 				return el.name == targetProperty
 			});
 			if (property) {
-				let PActx = property.apply($(event.item), $(event.to.parentElement), $(dropped))
+				let $droppedIn
+				if($(event.to).hasClass('tgt')){ $droppedIn = $(event.to.parentElement)}//skip dummy tgt if present
+				else{$droppedIn = $(event.to)}
+				let PActx = property.apply($(event.item), $droppedIn, $(dropped))
 				PActx.visualization = property.icon //an element must appear on the canvas to enable the property, such element also contains the icon for that property
 				if (adHocTgt) {
 					(event.to).remove()
@@ -231,7 +234,12 @@ function makeTargetsSortableRolesOrAtoms(targetsArray, propertyName, icon) {
 		targetsArray[j].setAttribute('target', propertyName);
 		if (targetsArray[j].matches('.ul_role')) {
 			//target is a role: for example associative property   
-			makeSortableMouseDown([targetsArray[j]])
+			makeSortableMouseDown([targetsArray[j]]);
+			let notAtgt = $('<div class="notAtgt"></div>')[0]
+			if(icon){
+					$(notAtgt).css('background-image',wrapUnwrapUrlString(icon));
+			}
+			targetsArray[j].append(notAtgt);
 		} else {
 			//target is not a role: for example in replacement it is an atom
 			let tgt = $('<div class="tgt"></div>')[0]
@@ -297,7 +305,7 @@ function cleanupDnD() {
 
 
 function clearSortableTargets() {
-	let tgts = document.querySelectorAll('.tgt');
+	let tgts = document.querySelectorAll('.tgt,.notAtgt');
 	let i = 0;
 	while (tgts[i]) {
 		let sortable = Sortable.get(tgts[i]);

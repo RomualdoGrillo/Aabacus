@@ -1,0 +1,113 @@
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="canvas">
+	<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
+			<and>
+			</and>
+	</apply>
+	<apply data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="bool">P</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="bool">Q</ci>
+			</bvar>
+			<apply data-type="bool">
+				<eq>
+				</eq>
+				<apply data-type="bool">
+					<implies>
+					</implies>
+					<ci data-type="bool">P</ci>
+					<ci data-type="bool">Q</ci>
+				</apply>
+				<apply data-type="bool">
+					<not>
+					</not>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<ci data-type="bool">P</ci>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">Q</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="bool">
+			<implies>
+			</implies>
+			<apply data-type="bool">
+				<implies>
+				</implies>
+				<ci data-type="bool">P</ci>
+				<ci data-type="bool">Q</ci>
+			</apply>
+			<apply data-type="bool">
+				<and>
+				</and>
+				<apply data-type="bool">
+					<implies>
+					</implies>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<ci data-type="bool">P</ci>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">Q</ci>
+						</apply>
+					</apply>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<ci data-type="bool">P</ci>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">Q</ci>
+						</apply>
+						<ci data-type="bool">Q</ci>
+						<ci data-type="bool">false</ci>
+					</apply>
+				</apply>
+				<apply data-type="bool">
+					<not>
+					</not>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<ci data-type="bool">P</ci>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">Q</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+</section>
+<section data-section="events">
+	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="result">
+</section>
+<section data-section="settings">
+	{
+   "import_json_settings":"./Data/exercises/quizEqSystem/gameHorTimes.set"
+    }
+</section>

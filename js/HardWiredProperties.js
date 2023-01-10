@@ -834,8 +834,10 @@ function validReplaced($mouseDownAtom){
 	}
 	let $equation = MNODEparent($mouseDownAtom)
 	let $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
+	let $startRole = $equation.parent();
 	//var $candidates = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation)).find('[data-atom]:visible').addClass('mu_Downstream1');Z
-	let $candidates = $RecursiveTreeExplorerCriterium($equation,$propositionImmediateJurisdiction).addClass('mu_Downstream1')
+	let $jurisdictionRoles = $calculateJurisdictionRoles($startRole).addClass('mu_Downstream1')
+	let $candidates = $jurisdictionRoles.find('[data-atom]:visible')
 	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
 	let valids = $occurrences.not($excludedMembers)
 	valids.each(function(){
@@ -863,21 +865,22 @@ function validRedundant($mouseDownAtom,ctrlOrMeta){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	let $jurisdiction = $calculateJurisdiction($mouseDownAtom).addClass('mu_Downstream1').filter('[data-atom]:visible')
+	let $startRole = $mouseDownAtom.parent()
+	let $jurisdictionRoles = $calculateJurisdictionRoles($startRole).addClass('mu_Downstream1').filter(':visible')
 		let $children=$();
-		for(i=0;$jurisdiction[i];i++){
-			$children=$children.add($jurisdiction[i].MNODE_getChildren());
+		for(i=0;$jurisdictionRoles[i];i++){
+			$children=$children.add($($jurisdictionRoles[i]).children('[data-atom]'));
 		}
-		var valids = $children.not($mouseDownAtom).filter(function() {//escludi mousedownnode stesso dai possibili risultati
+		var $valids = $children.not($mouseDownAtom).filter(function() {//escludi mousedownnode stesso dai possibili risultati
 			return MNODEEqual(this,$mouseDownAtom[0],false,true)
 		})
 		/*
-		valids.each(function(){
+		$valids.each(function(){
 			// crea linee
 			lineAB($mouseDownAtom,$(this),'arrow removeredundant');	
 		})
 		*/	 
-		return valids
+		return $valids
 	
 }
 function validAddRedundant($mouseDownAtom,ctrlOrMeta){
@@ -889,26 +892,28 @@ function validAddRedundant($mouseDownAtom,ctrlOrMeta){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	let $jurisdiction = $calculateJurisdiction($mouseDownAtom).addClass('mu_Downstream1').filter('[data-atom]:visible')
-	let $targets=$();
-	for(i=0;$jurisdiction[i];i++){
-		let atomType=$jurisdiction[i].getAttribute('data-atom')
-		if( atomType=='and' ){//todo: still not perfect: e.g. what happens if ther's a "not"?
-			$targets=$targets.add($jurisdiction[i].MNODE_getRoles());
+	let $targets = $calculateTargetsAddRedundantAtomsAndRoles($mouseDownAtom.parent()).addClass('mu_Downstream1')
+	/*  *** should I add some Atom too?
+	for(i=0;$jurisdictionRoles[i];i++){
+		let atomType= MNODEparent($($jurisdictionRoles[i])).getAttribute('data-atom')
+		if( atomType=='and' ){//todo: in case ther's a not, maybe De Morgan is needed
+			$targets=$targets.add($jurisdictionRoles);
 		}
 		else if(atomType=='or'|| atomType=='imply'){//children are valid targets
-			$targets=$targets.add($jurisdiction[i].MNODE_getChildren())
+			$targets=$targets.add(jurisdictionRoles)
 		}
     }
+	*/
 	return $targets
 }
+
 
 function validCandidatesForPatternDrop($mouseDownAtom,$originalProperty){
 	//exclude the current forall property
 	let $excludedMNODES= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
-	let $jurisdiction = $calculateJurisdiction($originalProperty).addClass('mu_Downstream1').filter('[data-atom]:visible')
-	let $candidates = $jurisdiction.find('[data-atom]:visible').addBack()
-	let valids = $candidates.not($excludedMNODES).filter(function( index ) {
+	let $jurisdictionRoles = $calculateJurisdictionRoles($originalProperty).addClass('mu_Downstream1').filter('[data-atom]:visible')
+	let $candidates = $jurisdictionRoles.find('[data-atom]:visible')
+	let $valids = $candidates.not($excludedMNODES).filter(function( index ) {
 		//*****valid?***********
 		var result =(
 			//datatype is compatible
@@ -918,7 +923,7 @@ function validCandidatesForPatternDrop($mouseDownAtom,$originalProperty){
 			)
 		return result
 	})
-	return valids//.not($mouseDownAtom.parent())
+	return $valids//.not($mouseDownAtom.parent())
 }
 
 function validhanoiMove($mouseDownAtom){
@@ -974,19 +979,20 @@ function removeRedundant($dragged,$target){
 }
 
 function addRedundant($dragged,$target,$dropped){
+	let PActx
 	if($target.attr('data-atom')){//if target is an atom, create an AND around it
 		let $extOp = encaseWithOperation($target,'and')
 		let $targetRole = $extOp[0].MNODE_getRoles()
-		let PActx = MNODEassociate($dragged,$targetRole,$dropped)
+		PActx = MNODEassociate($dragged,$targetRole,$dropped)
 		PActx.matchedTF = true;
 		PActx.replacedAlready = true;
-		PActx.msg = "created and and added Redundant"
+		PActx.msg = "created and, added Redundant"
 	}
 	else{
-		let PActx = MNODEassociate($dragged,$target,$dropped)
+		PActx = MNODEassociate($dragged,$target,$dropped)
 		PActx.msg = "added Redundant"
-		return PActx
 	}
+	return PActx
 }
 
 function evaluateComparison($exp){
