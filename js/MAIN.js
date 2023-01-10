@@ -116,6 +116,7 @@ $(document).on('keydown', function(e) {
 		PActx = keyboardEvToFC($selected, keyPressed,e);
 		
 		//*************** operazioni conclusive (dopo tutti i tentativi)*******************
+		cleanupDnD()
 		PActxConclude(PActx)
 	}
 });
@@ -454,8 +455,8 @@ function PActxConclude(PActx) {
 		if (PActx.$transform) {
 			Repeatedmu_Refine_c(PActx.$transform,'c','.mu_Refine_c');//Apply "c" to every Node in the branch marked with '.mu_Refine_c'
 		}
-		ssnapshot.take();
 		RefreshEmptyInfixBraketsGlued($('body'),true);
+		ssnapshot.take();
 		lookForResultAndCelebrate();
 		PActxVisualize(PActx);
 	}

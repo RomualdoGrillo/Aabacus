@@ -143,6 +143,7 @@ function immediateAssValid($mouseDownAtom){
 }
 
 function MNODEassociate(dragged,target,dropped){
+	//dropped has been inserted already, just remove dragged if not cloning
 	var PActx = newPActx();
 	if($(dropped).hasClass('toBeCloned')){
 			$(dropped).removeClass('toBeCloned');
@@ -979,19 +980,19 @@ function removeRedundant($dragged,$target){
 }
 
 function addRedundant($dragged,$target,$dropped){
-	let PActx
+	let PActx = newPActx();
+	$($dropped).removeClass('toBeCloned');//in case class 'toBeCloned' is present rempve it
 	if($target.attr('data-atom')){//if target is an atom, create an AND around it
-		let $extOp = encaseWithOperation($target,'and')
-		let $targetRole = $extOp[0].MNODE_getRoles()
-		PActx = MNODEassociate($dragged,$targetRole,$dropped)
-		PActx.matchedTF = true;
-		PActx.replacedAlready = true;
-		PActx.msg = "created and, added Redundant"
+	let $extOp = encaseWithOperation($target,'and')
+	$target = $extOp[0].MNODE_getRoles()
+	PActx.msg = "created and, added Redundant"
+	$target.append($dropped);
 	}
 	else{
-		PActx = MNODEassociate($dragged,$target,$dropped)
 		PActx.msg = "added Redundant"
 	}
+	PActx.matchedTF=true;
+	PActx.replacedAlready = true;
 	return PActx
 }
 
