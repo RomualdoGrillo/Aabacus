@@ -62,6 +62,38 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 			$stepStoneORtarget = $stepStoneORtarget.add($startAtom.parent())
 		}
 	}//downstream
+	$stepStoneORtarget = $stepStoneORtarget.add($children);
+	$children.each(function(){
+		let op = $(this).attr("data-atom");
+		if( op == 'and' || op == 'or' || op == 'implies'){
+			$stepStoneORtarget = $stepStoneORtarget.add(this.MNODE_getRoles()[0])//add roles
+		}
+		//else if(op == 'not'){ this is a target for DeMorgan}
+	})
+	//downstream implies firstMember
+	if ( (startNode_op == 'implies') && $role.hasClass('firstMember')) {
+		$secondMember = $startAtom[0].MNODE_getRoles('.secondMember');
+		$stepStoneORtarget = $stepStoneORtarget.add($secondMember);
+	}
+	return $stepStoneORtarget
+}
+
+/*
+function $immediateJurisdictionRolesForAddRedundant($role) {
+	if($role.is('[data-atom]')){
+		return $() // Target atoms are just proxy for underlyng role.
+		//recursive exploration happens jumping fron role to upstream and downstrem role.
+	}
+	let $startAtom = MNODEparent($role)
+	let startNode_op = $startAtom.attr("data-atom");
+	let $stepStoneORtarget = $()
+	let $children = $role.children('[data-atom]');
+	if (startNode_op == 'and'){
+		//upstream if it's an AND
+		if (MNODEparent($startAtom).is('[data-atom=and]')) {
+			$stepStoneORtarget = $stepStoneORtarget.add($startAtom.parent())
+		}
+	}//downstream
 	else{// $startNode is not an and
 		$stepStoneORtarget = $stepStoneORtarget.add($children.not('[data-atom=and]'));
 	}
@@ -81,6 +113,7 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 	return $stepStoneORtarget
 }
 
+*/
 
 
 
@@ -340,18 +373,23 @@ function $calculateJurisdictionUpstream($startRole) {
 
 function $calculateTargetsAddRedundantAtomsAndRoles($startRole) {
 	let $allTargets = $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRolesForAddRedundant).filter(':visible');
-	return $allTargets.filter(function(){
-		if( $(this).is('[data-atom]')){
-			return true}
+	//1)) filter out atoms, some atom will be added back in 2))
+	return $allTargets.not('[data-atom]').map(function(){
+		//2))if this role can't accept a drop, make the children atom his proxy
+		let op =	MNODEparent($(this)).attr("data-atom");
+		if( op == 'or'){
+			return $(this).children('[data-atom]').not('[data-atom=and]').toArray()
+		}
+		else if( op == 'implies' && !isTherePlaceForAnother($(this))){
+			return $(this).children('[data-atom]')[0]
+		}
 		else{
-			let op =	MNODEparent($(this)).attr("data-atom");
-			if( op == 'or'){return false}
-			if( op == 'implies'){
-				return isTherePlaceForAnother($(this));
-			}
-			else{
-				return true
-			}
-		}	
+			return this
+		}
 	})
 }
+/*
+if( op == 'implies'){
+				return isTherePlaceForAnother($(this));
+			}
+*/

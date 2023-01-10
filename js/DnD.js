@@ -8,7 +8,7 @@ let GLBDnD = { toolWhenMousedown: "" }
 function MakeSortableAndInjectMouseDown(event) {
 	let $validTgT=$();
 	/********cleanup*******/
-	if (debugMode) {//that's just for debug mode, in normal mode targets are clened on mouseup
+	if (debugMode) {//that's just for debug mode, in normal mode targets are cleaned on mouseup
 		cleanupDnD()
 	}
 	/******** from target to Atom target *************/
@@ -300,6 +300,10 @@ function cleanupDnD() {
 	//https://docs.google.com/drawings/d/1sASg3RC51sOYWCRIxJjdRI_lL0ZKpATyPaFWfkVxT70/edit
 	removeClassByPrefix(undefined,'mu_') //clear classes on mouseup
 	clearSortableTargets()
+	clearLines()//todo: distinguish between hints and PatternMatching and other lines
+}
+function hideTargetsOnMouseUp(){
+	removeClassByPrefix(undefined,'mu_') //clear "estetic" classes not used to apply property
 	clearLines()//todo: distinguish between hints and PatternMatching and other lines
 }
 
