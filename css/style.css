@@ -832,7 +832,8 @@
   /* .tgt DIVs are dynamically added to act as sortable targets
   
   /*[data-atom][target]::after, */ .tgt, .notAtgt {
-	  position:absolute;
+	pointer-events:none;  
+	position:absolute;
 	  z-index: 1;
 	  border-radius: inherit;
 	  width: 100%;
