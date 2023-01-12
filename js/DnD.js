@@ -7,8 +7,6 @@ let GLBDnD = { toolWhenMousedown: "" }
 
 function MakeSortableAndInjectMouseDown(event) {
 	let $validTgT=$();
-	/********cleanup*******/
-	cleanupDnD()
 	/******** from target to Atom target *************/
 	//glued vs no glued
 	let $atomTarget
@@ -17,6 +15,8 @@ function MakeSortableAndInjectMouseDown(event) {
 	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	}
+	/********cleanup*******/
+	cleanupDnD() //cleanup must happen after $atomTarget is determined!!! Othrwise you may remove the element clicked on
 	//***selection manager "grey" highlight
 	if($atomTarget.hasClass('unselectable')){
 		selectionManager("","","",true)//deselectAll
