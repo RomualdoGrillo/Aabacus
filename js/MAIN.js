@@ -188,13 +188,6 @@ function clickHandler(event) {
 			console.log('Selected tool: '+$thisMNODE.attr('data-tag'))
 		} 
 	}
-	//***selection manager "grey" highlight
-	else if($thisMNODE.hasClass('unselectable')){
-		selectionManager("","","",true)//deselectAll
-	}
-	else if(!$thisMNODE.hasClass('unselectable')){
-		selectionManager($thisMNODE,event.ctrlKey||event.metaKey,event.shiftKey)//on mac use command key instead of control
-	}
 }
 function selectionManager($clickedMNODE,ctrl,shift,deselectAll){
 	if(deselectAll){

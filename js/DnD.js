@@ -17,6 +17,13 @@ function MakeSortableAndInjectMouseDown(event) {
 	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	}
+	//***selection manager "grey" highlight
+	if($atomTarget.hasClass('unselectable')){
+		selectionManager("","","",true)//deselectAll
+	}
+	else{
+		selectionManager($atomTarget,event.ctrlKey||event.metaKey,event.shiftKey)//on mac use command key instead of control
+	}
 	//**** highlight Span and Parameters
 	if($atomTarget.attr('data-atom')=='ci'){
 		highlightOccurrences($atomTarget,'mu_connected');
