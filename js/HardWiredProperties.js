@@ -835,16 +835,13 @@ function validReplaced($mouseDownAtom){
 	}
 	let $equation = MNODEparent($mouseDownAtom)
 	let $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
-	let $startRole = $equation.parent();
-	//var $candidates = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation)).find('[data-atom]:visible').addClass('mu_Downstream1');Z
-	let $jurisdictionRoles = $calculateJurisdictionRoles($startRole).addClass('mu_Downstream1')
-	let $candidates = $jurisdictionRoles.find('[data-atom]:visible')
+	let $candidates = $PropositionsAffectedByStartProposition($equation).addClass('mu_Downstream1')
 	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
 	let valids = $occurrences.not($excludedMembers)
 	valids.each(function(){
 		// crea linee
 		lineAB($mouseDownAtom,$(this),'arrow');	
-	})	 
+	})	  
 	return valids
 }
 
@@ -866,24 +863,13 @@ function validRedundant($mouseDownAtom,ctrlOrMeta){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	let $startRole = $mouseDownAtom.parent()
-	let $jurisdictionRoles = $calculateJurisdictionRoles($startRole).addClass('mu_Downstream1').filter(':visible')
-		let $children=$();
-		for(i=0;$jurisdictionRoles[i];i++){
-			$children=$children.add($($jurisdictionRoles[i]).children('[data-atom]'));
-		}
-		var $valids = $children.not($mouseDownAtom).filter(function() {//escludi mousedownnode stesso dai possibili risultati
-			return MNODEEqual(this,$mouseDownAtom[0],false,true)
-		})
-		/*
-		$valids.each(function(){
-			// crea linee
-			lineAB($mouseDownAtom,$(this),'arrow removeredundant');	
-		})
-		*/	 
-		return $valids
-	
+	let $candidates = $PropositionsAffectedByStartProposition($mouseDownAtom).filter(':visible').addClass('mu_Downstream1')
+	let $valids = $candidates.not($mouseDownAtom).filter(function() {//escludi mousedownnode stesso dai possibili risultati
+		return MNODEEqual(this,$mouseDownAtom[0],false,true)
+	})
+	return $valids
 }
+
 function validAddRedundant($mouseDownAtom,ctrlOrMeta){
 	//validRedundant($('.selected'))
 	// cerca nodi uguali a mousedown node 

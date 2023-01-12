@@ -1,23 +1,4 @@
-//move
 
-//move with distribute_collect
-
-//copy from    //copy to
-
-
-function $PropositionDownstreamRec($startAtom) {
-	//testing
-	//$PropositionDownstreamRec($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')})
-	let op = $startAtom.attr("data-atom");
-	let $startRole = $startAtom.parent();
-	let $ParentAtom = MNODEparent($startAtom);
-	let $validRoles = $()
-	if ($ParentAtom.is('[data-atom=and]')) {
-		$validRoles = $startRole;
-	}
-	$validRoles = $validRoles.add($RecursiveTreeExplorerCriterium($startRole, $PropositionLevelAndDownstream));
-	return $validRoles
-}
 function $immediateJurisdictionRoleUpstream($role) {
 	let $startAtom = MNODEparent($role)
 	let $result = $()
@@ -27,25 +8,6 @@ function $immediateJurisdictionRoleUpstream($role) {
 	}
 	return $result
 }
-
-function $immediateJurisdictionRoles($role) {
-	let $startAtom = MNODEparent($role)
-	let $ANDsORs = $()// ANDs and ORs whose roles must be added
-	let $result = $()
-	//upstream if it's ans AND
-	if ($startAtom.is('[data-atom=and]')) {
-		$result = $result.add($startAtom.parent())
-	}
-	//downstream implies firstMember
-	if ($role.hasClass('firstMember') && $startAtom.is('[data-atom=implies]')) {
-		$result = $result.add($startAtom[0].MNODE_getRoles('.secondMember'))
-	}
-	//downstream ANDs and OR
-	$ANDsORs = $ANDsORs.add($role.children('[data-atom=and],[data-atom=or]'));
-	let $ANDsRoles = $ANDsORs.map(function () { return this.MNODE_getRoles()[0] });
-	return $result.add($ANDsRoles);
-}
-
 
 function $immediateJurisdictionRolesForAddRedundant($role) {
 	if($role.is('[data-atom]')){
@@ -372,6 +334,7 @@ function $calculateJurisdictionUpstream($startRole) {
 }
 
 function $calculateTargetsAddRedundantAtomsAndRoles($startRole) {
+	//staring point must be a role!!
 	let $allTargets = $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRolesForAddRedundant).filter(':visible');
 	//1)) filter out atoms, some atom will be added back in 2))
 	return $allTargets.not('[data-atom]').map(function(){
@@ -388,8 +351,17 @@ function $calculateTargetsAddRedundantAtomsAndRoles($startRole) {
 		}
 	})
 }
-/*
-if( op == 'implies'){
-				return isTherePlaceForAnother($(this));
-			}
-*/
+
+function $PropositionsAffectedByStartProposition($startProposition) {
+	let $propositionParent = MNODEparent($startProposition)
+	let propParentOp = $propositionParent.attr('data-atom') 
+	if(propParentOp=='and' || propParentOp=='implies'){
+		let $startRole = $startProposition.parent()
+		let $allTargets = $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRolesForAddRedundant).filter(':visible');
+		//1)) filter out roles
+		return $allTargets.filter('[data-atom]')	
+	}
+	else{
+		return $()//there's no start role if the proposition parent is or etc...
+	}
+}
