@@ -199,8 +199,8 @@ function validForPartDist($mouseDownAtom,ctrlOrMeta){
 
 
 
-function validForDist($mouseDownAtom,ctrlOrMeta){//op2 è il tipo di operazione sulla quale si distribuisce
-	if(ctrlOrMeta){ 
+function validForDist($mouseDownAtom,ctrlOrMeta,altKey){//op2 è il tipo di operazione sulla quale si distribuisce
+	if(ctrlOrMeta || altKey ){ 
 		return []
 	}
 	var $parent = MNODEparent($mouseDownAtom);
@@ -854,10 +854,10 @@ function MNODELinkReplace($link, $replaced){
 	return PActx
 }
 
-function validRedundant($mouseDownAtom,ctrlOrMeta){
+function validRedundant($mouseDownAtom,ctrlOrMeta,altKey){
 	//validRedundant($('.selected'))
 	// cerca nodi uguali a mousedown node 
-	if(ctrlOrMeta){ 
+	if(!altKey){ 
 		return []
 	}
 	if( !$mouseDownAtom.is("[data-type=bool]") ){

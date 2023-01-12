@@ -40,50 +40,6 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 	return $stepStoneORtarget
 }
 
-/*
-function $immediateJurisdictionRolesForAddRedundant($role) {
-	if($role.is('[data-atom]')){
-		return $() // Target atoms are just proxy for underlyng role.
-		//recursive exploration happens jumping fron role to upstream and downstrem role.
-	}
-	let $startAtom = MNODEparent($role)
-	let startNode_op = $startAtom.attr("data-atom");
-	let $stepStoneORtarget = $()
-	let $children = $role.children('[data-atom]');
-	if (startNode_op == 'and'){
-		//upstream if it's an AND
-		if (MNODEparent($startAtom).is('[data-atom=and]')) {
-			$stepStoneORtarget = $stepStoneORtarget.add($startAtom.parent())
-		}
-	}//downstream
-	else{// $startNode is not an and
-		$stepStoneORtarget = $stepStoneORtarget.add($children.not('[data-atom=and]'));
-	}
-	$children.each(function(){
-		let op = $(this).attr("data-atom");
-		if( op == 'and' || op == 'or' || op == 'implies'){
-			$stepStoneORtarget = $stepStoneORtarget.add(this.MNODE_getRoles()[0])//add roles
-		}
-		//else if(op == 'not'){ this is a target for DeMorgan}
-	})
-	//downstream implies firstMember
-	if ( (startNode_op == 'implies') && $role.hasClass('firstMember')) {
-		$secondMember = $startAtom[0].MNODE_getRoles('.secondMember');
-		$stepStoneORtarget = $stepStoneORtarget.add($secondMember);
-	}
-	//some filter out step stones: exclude OR roles, exclude full roles
-	return $stepStoneORtarget
-}
-
-*/
-
-
-
-
-
-
-
-
 function $immediateTargetsAddRedundantAtomsAndRoles($roleORatom) {
 	let $result = $()
 	if (!$roleORatom.is('[data-atom]')) {

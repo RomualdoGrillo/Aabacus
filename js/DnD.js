@@ -91,7 +91,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		let i = 0
 		let propInCanvasEnabled = getDnDpropEnabled()
 		while (propInCanvasEnabled[i]) {
-			let targets = propInCanvasEnabled[i].findTgt($atomTarget,(event.ctrlKey || event.metaKey));
+			let targets = propInCanvasEnabled[i].findTgt($atomTarget,(event.ctrlKey || event.metaKey),event.altKey);
 			makeTargetsSortableRolesOrAtoms(targets, propInCanvasEnabled[i].name, propInCanvasEnabled[i].icon)
 			$validTgT = $validTgT.add($(targets))
 			i++
