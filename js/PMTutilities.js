@@ -333,7 +333,11 @@ function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
 	//******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
 	let $origProp = findPMPropByName(propName)
 	if ($origProp.length == 0) {
-		console.log('property not found:' + propName)
+		let PActxForError = newPActx()
+		PActxForError.error = true;
+		PActxForError.msg = 'property not found:' + propName 
+		console.log(PActxForError.msg)
+		return PActxForError
 	}
 	else {
 		if ($origProp.attr('data-atom')=="ci") {//internal property?

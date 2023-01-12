@@ -109,3 +109,7 @@ button>.ui-icon {
 ::-webkit-scrollbar-corner {
 	background-color: transparent;
 }
+
+.error {
+    background-color: red;
+}

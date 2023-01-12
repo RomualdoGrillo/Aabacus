@@ -10,7 +10,9 @@ function newPActx(){
 		$transform: undefined,//must be the the biggest element changed, his parent will be considered when upadating infix ecc..
 		$equation: undefined,
 		replacedAlready: false ,
-		lineList:$()}
+		lineList:$(),
+		error:false
+	}
 }
 
 class PropertyDnD  {
