@@ -8,9 +8,7 @@ let GLBDnD = { toolWhenMousedown: "" }
 function MakeSortableAndInjectMouseDown(event) {
 	let $validTgT=$();
 	/********cleanup*******/
-	if (debugMode) {//that's just for debug mode, in normal mode targets are cleaned on mouseup
-		cleanupDnD()
-	}
+	cleanupDnD()
 	/******** from target to Atom target *************/
 	//glued vs no glued
 	let $atomTarget
@@ -284,9 +282,9 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 	return sortables
 }
 function MouseUpCleanup(event) {
-	//console.log(event)
 	if (!debugMode) {//in debugMode i target sono lasciati visibili
-		cleanupDnD()
+		hideTargetsOnMouseUp()// targets are hidden, not removed 
+		//cleanupDnD()//if I remove targets and the "onAdd" event fires after Mouseup, the onAdd handler may be in error because of disappeared targets
 	}
 }
 
@@ -303,8 +301,8 @@ function cleanupDnD() {
 	clearLines()//todo: distinguish between hints and PatternMatching and other lines
 }
 function hideTargetsOnMouseUp(){
-	removeClassByPrefix(undefined,'mu_') //clear "estetic" classes not used to apply property
-	clearLines()//todo: distinguish between hints and PatternMatching and other lines
+	$('.tgt,.notAtgt').css('background-image','none')
+	clearLines()
 }
 
 
