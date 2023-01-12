@@ -110,6 +110,6 @@ button>.ui-icon {
 	background-color: transparent;
 }
 
-.error {
-    background-color: red;
+[data-atom].error {
+    background-color: red!important;
 }
