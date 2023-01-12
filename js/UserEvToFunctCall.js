@@ -132,7 +132,7 @@ function searchForProperty(field,value,returnedField){
 
 
 
-function Repeatedmu_Refine_c($transform,key,selector){
+function RepeatedRefine_c($transform,key,selector){
 	var i=0
 	var semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
 	let $transformParentRole = $transform.parent()//se il transform viene sostituito, continua a cercare a partire da l suo parent
