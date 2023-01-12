@@ -303,17 +303,22 @@ function cleanupDnD() {
 	//Sortend is not fired if click without drag
 	//Documentation:
 	//https://docs.google.com/drawings/d/1sASg3RC51sOYWCRIxJjdRI_lL0ZKpATyPaFWfkVxT70/edit
-	removeClassByPrefix(undefined,'mu_') //clear classes on mouseup
+	removeClassByPrefix(undefined,'mu_') //clear classes in case mouseup failed to fire
 	clearSortableTargets()
 	clearLines()//todo: distinguish between hints and PatternMatching and other lines
 }
 function hideTargetsOnMouseUp(){
+	removeClassByPrefix(undefined,'mu_') //clear classes on mouseup
 	$('.tgt,.notAtgt').css('background-image','none')
 	clearLines()
 }
 
 
 function clearSortableTargets() {
+	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
+	$('*').removeClass('dropTarget');
+	$('*').removeClass('TargetsCommonParent');
+	$('*').removeClass('refine_c'); 
 	let tgts = document.querySelectorAll('.tgt,.notAtgt');
 	let i = 0;
 	while (tgts[i]) {
