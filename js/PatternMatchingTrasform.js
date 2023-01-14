@@ -80,7 +80,7 @@ function replaceInForall($parameter,$newVal,$property){
 
 
 function containsBvar($member,$forAll){//contiene bvar?
-    if($forAll.attr('data-atom') != 'forall'){return false}//if there is no outer forall.. no need for further inspection
+    if($forAll.attr('data-atom') != 'forAll'){return false}//if there is no outer forall.. no need for further inspection
     $candidates = $member.add( $member.find('[data-atom]') );
     $bvars = $candidates.filter(function(){
         return parameterType( $(this),$forAll ).slice(-1) === "_"
