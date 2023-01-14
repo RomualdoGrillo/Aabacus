@@ -444,6 +444,7 @@ function swapElements(obj1, obj2) {
 function PActxConclude(PActx) {
 	if (PActx.matchedTF == true) {
 		//********** Post *************
+		if(debugMode){console.log('CONCLUDE')}
 		refreshAndReplace(PActx);
 		if (PActx.$transform) {
 			RepeatedRefine_c(PActx.$transform,'c','.Refine_c');//Apply "c" to every Node in the branch marked with '.Refine_c'

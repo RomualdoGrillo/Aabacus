@@ -330,9 +330,9 @@ function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
 	//a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
 	//"apre un fascicolo" e tenta di "dare seguito" all'ordine
-	//******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
 	let $origProp = findPMPropByName(propName)
 	if ($origProp.length == 0) {
+		//******************* ERROR no property with propName **************
 		let PActxForError = newPActx()
 		PActxForError.error = true;
 		PActxForError.msg = 'property not found:' + propName 
@@ -340,12 +340,21 @@ function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
 		return PActxForError
 	}
 	else {
-		if ($origProp.attr('data-atom')=="ci") {//internal property?
+		let PActx
+		let propCustomInternal
+		if($origProp.attr('data-atom')=="ci") {//internal property?
+		//******************* Hard Wired property**************
 			let img = $origProp.attr('data-tagimg');
-			console.log("auto call: " + propName + " img: " + img);
-			return window[propName]($par1, firstVal, img) //todo: gestire errore 
+			propCustomInternal = 'int'
+			PActx = window[propName]($par1, firstVal, img) //todo: gestire errore 
 		}
-		return InstructAndTryOnePMT($origProp, $par1, firstVal, justTry, $origProp.attr('data-tagimg'))
+		else{
+		//******************* Configurable property written in the canvas**********
+			PActx = InstructAndTryOnePMT($origProp, $par1, firstVal, justTry, $origProp.attr('data-tagimg'))
+			propCustomInternal = 'ext'
+		}
+		if(debugMode){console.log('***success?: "'+ PActx.matchedTF +  ' " *****: '+ propCustomInternal + ' " *****tried: '+ propName)}
+		return PActx
 	}
 }
 
