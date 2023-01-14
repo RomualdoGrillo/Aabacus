@@ -311,9 +311,14 @@ function MNODESmarkUnmark($Atom,value,attrName,usePermanentMark){
 function MNODEappendInABSPosition($atom,$refMNODE,relativePosition){
 //posiziona in modo assoluto $atom vicino a un MNODE di riferimento $refMNODE
 //Se si tratta di forall piazzare il pattern circondato dal suo forall.
-	$('body').append($atom);
+	$('#divOverlay').append($atom);
     $atom.css('position', 'absolute');
-    if(relativePosition=="beside"){
+	if($refMNODE.is('#canvasAnd')){
+		//put it on the right
+		$atom.css('right', 200);
+    	$atom.css('top', 100);	
+	}
+    else if(relativePosition=="beside"){
 	//Se è il clone di un clone fallo comparire sovrapposto al "clonato" solo spostato di qualche pixel.
 		$atom.css('left', $refMNODE.offset().left + $refMNODE.width() + 12);
     	$atom.css('top', $refMNODE.offset().top - 75);
@@ -393,14 +398,15 @@ function InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry){//instruct pra
     //"s" è usato come punto di partenza
     // l'uguaglianza "usa e getta"che contiene il pattern è rimossa dal documento
     // una volta utilizzata finirà nel garbage collection
-	if(debugMode){PActx.$cloneProp.remove()
-		hideAllMarks()
-	}//debugMode
+	
 	if( PActx && PActx.matchedTF ){//proprietà applicata con successo
 		PActx = PMcleanAndPost(PActx);
 	}
 	MNODESmarkUnmark($par1,"");
 	PActx.visualization =  	cloningRes.visualization
+	if(debugMode){PActx.$cloneProp.remove()
+		hideAllMarks()
+	}//debugMode
 	return PActx
 }
 
