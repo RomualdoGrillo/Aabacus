@@ -46,14 +46,11 @@
 			</div>
 		</div>
 	</div>
-	<apply data-tag="powerOne" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
+	<apply data-vis="collapsed" data-tag="expOne" data-tagimg="./images/properties/expOne.svg" data-type="bool">
 		<forall>
 		</forall>
 		<bvar>
 			<ci data-type="num">a_</ci>
-		</bvar>
-		<bvar>
-			<ci data-type="num">n_</ci>
 		</bvar>
 		<apply data-type="bool">
 			<eq>
@@ -67,7 +64,7 @@
 			<ci data-type="num">a_</ci>
 		</apply>
 	</apply>
-	<apply data-tag="likeBaseSlice" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
+	<apply data-vis="collapsed" data-tag="commonBaseSlice" data-tagimg="./images/properties/commomnBaseSlice.svg" data-type="bool">
 		<forall>
 		</forall>
 		<bvar>

@@ -963,6 +963,7 @@ function removeRedundant($dragged,$target){
 		$target.replaceWith($clone);
 	}
 	PActx.matchedTF=true
+	PActx.$transform=$parent
 	PActx.msg="removed Redundant"
 	return PActx
 }
