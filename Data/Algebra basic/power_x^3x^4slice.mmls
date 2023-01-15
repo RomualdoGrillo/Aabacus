@@ -64,7 +64,7 @@
 						<forall>
 						</forall>
 					</apply>
-					<apply data-and="horizontal" data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="commonBase" data-tagimg="./images/properties/commomnBaseSlice.svg" data-type="bool">
+					<apply data-and="horizontal" data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="commonBaseSlice" data-tagimg="./images/properties/commomnBaseSlice.svg" data-type="bool">
 						<forall>
 						</forall>
 					</apply>
