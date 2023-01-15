@@ -46,59 +46,13 @@
 			</div>
 		</div>
 	</div>
-	<apply data-vis="collapsed" data-tag="expOne" data-tagimg="./images/properties/expOne.svg" data-type="bool">
-		<forall>
-		</forall>
-		<bvar>
-			<ci data-type="num">a_</ci>
-		</bvar>
-		<apply data-type="bool">
-			<eq>
-			</eq>
-			<apply data-type="num">
-				<power>
-				</power>
-				<ci data-type="num">a_</ci>
-				<cn data-type="num">1</cn>
-			</apply>
-			<ci data-type="num">a_</ci>
-		</apply>
+	<apply data-import="./Data/FOUNDATIONpower.mml" data-tag="expOne" data-and="horizontal" data-type="bool">
+		<and>
+		</and>
 	</apply>
-	<apply data-vis="collapsed" data-tag="commonBaseSlice" data-tagimg="./images/properties/commomnBaseSlice.svg" data-type="bool">
-		<forall>
-		</forall>
-		<bvar>
-			<ci data-type="num">a_</ci>
-		</bvar>
-		<bvar>
-			<ci data-type="num">n_</ci>
-		</bvar>
-		<apply data-type="bool">
-			<eq>
-			</eq>
-			<apply data-type="num">
-				<power>
-				</power>
-				<ci data-type="num">a_</ci>
-				<apply data-type="num">
-					<plus>
-					</plus>
-					<cn data-type="num">1</cn>
-					<ci data-type="num">n_</ci>
-				</apply>
-			</apply>
-			<apply data-type="num">
-				<times>
-				</times>
-				<apply data-type="num">
-					<power>
-					</power>
-					<ci data-type="num">a_</ci>
-					<ci data-type="num">n_</ci>
-				</apply>
-				<ci data-type="num">a_</ci>
-			</apply>
-		</apply>
+	<apply data-import="./Data/FOUNDATIONpower.mml" data-tag="commonBaseSlice" data-and="horizontal" data-type="bool">
+		<and>
+		</and>
 	</apply>
 	<apply data-type="num">
 		<times>
@@ -159,8 +113,8 @@
 		<apply data-type="num">
 			<times>
 			</times>
-				<ci data-type="num">x</ci>
-				<ci data-type="num">y</ci>
+			<ci data-type="num">x</ci>
+			<ci data-type="num">y</ci>
 		</apply>
 		<cn data-type="num">2</cn>
 	</apply>
