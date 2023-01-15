@@ -392,7 +392,7 @@ function getNumOfPlaces($role) {
 }
 
 function isTherePlaceForAnother($role) {
-	var numOfPlaces = getNumOfPlaces($role)
+	var numOfPlaces = getNumOfPlaces($role)[1];
 	var numOfChildren = $role.children().filter("[data-atom]").length
 	return (numOfPlaces == -1 ||
 		numOfChildren < numOfPlaces)
