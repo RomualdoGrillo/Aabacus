@@ -14,15 +14,24 @@
 		</apply>
 	</apply>
 	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
-		<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;">
+
+		<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;" target="associativeDnD">
+
+
+
 			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
 				<div class="ul_role" data-type="bool">
+
+
 					<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
 					<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
 				</div>
 			</div>
 			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
 				<div class="ul_role" data-type="bool">
+
 					<apply data-tagimg="./images/properties/decompose.svg" data-vis="collapsed" data-tag="calcola" data-type="bool">
 						<and>
 						</and>
@@ -33,7 +42,9 @@
 				</div>
 			</div>
 			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
 				<div class="ul_role" data-type="bool">
+
 					<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="Proprieta'Distributiva" data-type="bool">
 						<and>
 						</and>
@@ -44,17 +55,23 @@
 					</apply>
 				</div>
 			</div>
+			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
+				<div class="ul_role" data-type="bool">
+
+
+					<apply data-and="horizontal" data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="expOne" data-tagimg="./images/properties/expOne.svg" data-type="bool">
+						<forall>
+						</forall>
+					</apply>
+					<apply data-and="horizontal" data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="commonBaseSlice" data-tagimg="./images/properties/commomnBaseSlice.svg" data-type="bool">
+						<forall>
+						</forall>
+					</apply>
+				</div>
+			</div>
 		</div>
 	</div>
-	<apply data-import="./Data/FOUNDATIONpower.mml" data-tag="expOne" data-and="horizontal" data-type="bool">
-		<and>
-		</and>
-	</apply>
-	<apply data-import="./Data/FOUNDATIONpower.mml" data-tag="commonBaseSlice" data-and="horizontal" data-type="bool">
-		<and>
-		</and>
-	</apply>
-	
 	<apply data-type="num">
 			<times>
 			</times>
