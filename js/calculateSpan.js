@@ -40,61 +40,6 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 	return $stepStoneORtarget
 }
 
-function $immediateTargetsAddRedundantAtomsAndRoles($roleORatom) {
-	let $result = $()
-	if (!$roleORatom.is('[data-atom]')) {
-		let $startAtom = $roleORatom
-		if ($startAtom.is('[data-atom=and]')) {
-			//upstream if it's an AND
-			if (MNODEparent($startAtom).is('[data-atom=and]')) {
-				$result = $result.add($startAtom.parent())
-			}
-			let $children = $roleORatom.children('[data-atom]');
-			//downstream ANDs 
-			let $ANDs = $children.filter('[data-atom=and]');
-			let $ANDsRoles = $ANDs.map(function () { return this.MNODE_getRoles()[0] });
-			$result = $result.add($ANDsRoles);
-			//downstream non ANDs
-			let $others = $children.not('[data-atom=and]');
-			$result = $result.add($others);
-
-		}
-		//downstream implies firstMember
-		if ($startAtom.is('[data-atom=implies]') && $roleORatom.hasClass('firstMember')) {
-			$secondMember = $startAtom[0].MNODE_getRoles('.secondMember');
-			$result = $result.add($emptyRoleOrChildren($secondMember));
-		}
-	}
-	else { //******** ATOM
-		//upstream AND
-		if (MNODEparent($roleORatom).is('[data-atom=and]')) {
-			$result = $result.add($roleORatom.parent())
-		}
-		let atomType = $roleORatom.attr('data-atom')
-		if (atomType == 'and') {
-			$result = $result.add($roleORatom[0].MNODE_getRoles());
-		}
-		if (atomType == 'or') {
-			$result = $result.add($roleORatom[0].MNODE_getChildren());
-		}
-		else if (atomType == 'implies') {
-			let $roles = $roleORatom[0].MNODE_getRoles();
-			$result = $result.add($roles.map(function () {
-				return $emptyRoleOrChildren($(this))[0]
-			}))
-		}
-	}
-	return $result
-}
-function $emptyRoleOrChildren($role) {
-	//if a children exists it is returned insted of his role 
-	let $children = $role.children('[data-atom]');
-	if ($children.length > 0) {
-		return $children
-	}
-	else { return $role }
-}
-
 function $ImmediateAssociativeAtom($starAssociativeOperation) {
 	//test: $ImmediateAssociativeAtom($('.selected')) selected should be associative operation
 	let op = $starAssociativeOperation.attr("data-atom");
