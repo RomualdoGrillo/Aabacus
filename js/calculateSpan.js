@@ -9,7 +9,6 @@ function $immediateJurisdictionRoleUpstream($role) {
 	return $result
 }
 
-function $immediateJurisdictionRolesForAddRedundant($role) {
 	if($role.is('[data-atom]')){
 		return $() // Target atoms are just proxy for underlyng role.
 		//recursive exploration happens jumping fron role to upstream and downstrem role.
@@ -17,7 +16,6 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 	let $startAtom = MNODEparent($role)
 	let startNode_op = $startAtom.attr("data-atom");
 	let $stepStoneORtarget = $()
-	let $children = $role.children('[data-atom]');
 	if (startNode_op == 'and'){
 		//upstream if it's an AND
 		if (MNODEparent($startAtom).is('[data-atom=and]')) {
@@ -29,6 +27,9 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 		let op = $(this).attr("data-atom");
 		if( op == 'and' || op == 'or' || op == 'implies'){
 			$stepStoneORtarget = $stepStoneORtarget.add(this.MNODE_getRoles()[0])//add roles
+		}
+		else if(op == 'forAll'){
+			$stepStoneORtarget = $stepStoneORtarget.add(this.MNODE_getRoles('.forAllContent')[0])//add roles
 		}
 		//else if(op == 'not'){ this is a target for DeMorgan}
 	})
@@ -149,31 +150,6 @@ function $SameOpInOut($startRole) {
 	}
 	return $validRoles
 }
-function $PropositionLevelAndDownstream($startRole, limitTomove) {
-	//limitTomove:true limit to roles you can move into (and associative)
-	let $validRoles = $();
-	if (!limitTomove && $startRole.is('[data-atom=implies]>:first-child')) {
-		$validRoles = MNODEparent($startRole).find('>.s_role:last')
-	}
-	else {
-		let $atoms = $startRole.find('[data-atom=and]')
-		if (!limitTomove) {
-			$atoms = $atoms.add($startRole.find('[data-atom=or],[data-atom=eq].asymmetric,[data-atom=implies]')).filter(':visible')
-		}
-		$validRoles = $atoms.map(function () {
-			if (this.matches('[data-atom=implies]')) {
-				return this.MNODE_getRoles().toArray()
-			}
-			else {
-				return this.MNODE_getRoles().last()[0]
-			}//last role is ok for forall an definition	
-		})
-	}
-	return $validRoles
-}
-
-
-
 
 function $identifierSpanForAll($identifier) {
 	//determina il campo di validità dell'identificatore
@@ -224,10 +200,6 @@ function $findOccurrences($wanted, $span, excludeHidden) {
 	return $occurrences
 }
 
-function $calculateJurisdictionRoles($startRole) {
-	// .addClass('mu_Downstream1').filter('[data-atom]:visible')
-	return $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRoles)
-}
 
 function $calculateJurisdictionUpstream($startRole) {
 	// .addClass('mu_Downstream1').filter('[data-atom]:visible')

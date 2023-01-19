@@ -837,7 +837,7 @@ function validReplaced($mouseDownAtom){
 	}
 	let $equation = MNODEparent($mouseDownAtom)
 	let $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
-	let $candidates = $PropositionsAffectedByStartProposition($equation).addClass('mu_Downstream1')
+	let $candidates = $PropositionsAffectedByStartProposition($equation).filter(':visible').addClass('mu_Downstream1')
 	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
 	let valids = $occurrences.not($excludedMembers)
 	valids.each(function(){
@@ -898,10 +898,12 @@ function validAddRedundant($mouseDownAtom,ctrlOrMeta){
 
 
 function validCandidatesForPatternDrop($mouseDownAtom,$originalProperty){
-	//exclude the current forall property
-	let $excludedMNODES= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
-	let $jurisdictionRoles = $calculateJurisdictionRoles($originalProperty).addClass('mu_Downstream1').filter('[data-atom]:visible')
-	let $candidates = $jurisdictionRoles.find('[data-atom]:visible')
+	//exclude the $originalProperty
+	let $excludedMNODES= $originalProperty.find('[data-atom]').addBack();
+	//let $excludedMNODES= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
+	//let $jurisdictionRoles = $calculateJurisdictionRoles($originalProperty).addClass('mu_Downstream1').filter('[data-atom]:visible')
+	//let $candidates = $jurisdictionRoles.find('[data-atom]:visible')
+	let $candidates = $PropositionsAffectedByStartProposition($originalProperty).filter(':visible').addClass('mu_Downstream1');
 	let $valids = $candidates.not($excludedMNODES).filter(function( index ) {
 		//*****valid?***********
 		var result =(
