@@ -62,7 +62,7 @@ function MakeSortableAndInjectMouseDown(event) {
 			$atomTarget.addClass('attackPoint')
 			$validTgT = validCandidatesForPatternDrop($startPointForValids,GLBDnD.$originalProperty);
 			//$validTgT = validCandidatesForPatternDrop(  $($startPointForValids.toArray().reverse())  );
-			makeTargetsSortableRolesOrAtoms($validTgT.toArray(), 'dragPatternMatch');
+			makeTargetsSortableRolesOrAtoms($validTgT.toArray().reverse(), 'dragPatternMatch');//order is important!!!!
 			
 			
 			
@@ -86,7 +86,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		makeSortableMouseDown($validTgTOpen.toArray(), true);
 	}
 	else {
-		//******** apply propeties listed in propertiesDnD[i] ***************
+		//********  determine validTargets for propeties listed in propertiesDnD[i] ***************
 		if (!$atomTarget.length || !$atomTarget[0].parentElement) { return }//precondition
 		let i = 0
 		let propInCanvasEnabled = getDnDpropEnabled()
