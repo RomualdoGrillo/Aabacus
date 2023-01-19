@@ -235,8 +235,7 @@ function $PropositionsAffectedByStartProposition($startProposition) {
 	if(propParentOp=='and' || propParentOp=='implies'){
 		let $startRole = $startProposition.parent()
 		let $allTargets = $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRolesForAddRedundant,$excludedRoles).filter(':visible');
-		//1)) filter out roles
-		return $allTargets.filter('[data-atom]')	
+		return $allTargets.filter('[data-atom]').filter(function(){return !this.contains($startProposition[0])})//filter out ancestors	
 	}
 	else{
 		return $()//there's no start role if the proposition parent is or etc...
