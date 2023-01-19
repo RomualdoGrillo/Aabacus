@@ -659,7 +659,7 @@
 						<ci data-type="bool">true</ci>
 					</apply>
 				</apply>
-				<apply data-vis="collapsed" data-tag="simpPlusSingleTerm" data-type="bool">
+				<apply data-vis="collapsed" data-tag="PlusSingleTerm" data-type="bool">
 					<forall>
 					</forall>
 					<bvar>
@@ -676,7 +676,7 @@
 						<ci data-type="num">x</ci>
 					</apply>
 				</apply>
-				<apply data-vis="collapsed" data-tag="simpTimesSingleFactor" data-type="bool">
+				<apply data-vis="collapsed" data-tag="TimesSingleFactor" data-type="bool">
 					<forall>
 					</forall>
 					<bvar>
@@ -691,6 +691,40 @@
 							<ci data-type="num">x</ci>
 						</apply>
 						<ci data-type="num">x</ci>
+					</apply>
+				</apply>
+				<apply data-vis="collapsed" data-tag="AndSingleChild" data-type="bool">
+					<forall>
+					</forall>
+					<bvar>
+						<ci data-type="bool">x_</ci>
+					</bvar>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<apply data-type="bool">
+							<and>
+							</and>
+							<ci data-type="bool">x</ci>
+						</apply>
+						<ci data-type="bool">x</ci>
+					</apply>
+				</apply>
+				<apply data-vis="collapsed" data-tag="OrSingleChild" data-type="bool">
+					<forall>
+					</forall>
+					<bvar>
+						<ci data-type="bool">x_</ci>
+					</bvar>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<apply data-type="bool">
+							<or>
+							</or>
+							<ci data-type="bool">x</ci>
+						</apply>
+						<ci data-type="bool">x</ci>
 					</apply>
 				</apply>
 				<apply data-vis="collapsed" data-tag="timesAbsorbingEl" data-type="bool">

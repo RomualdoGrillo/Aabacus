@@ -109,3 +109,7 @@ button>.ui-icon {
 ::-webkit-scrollbar-corner {
 	background-color: transparent;
 }
+
+[data-atom].error {
+    background-color: red!important;
+}

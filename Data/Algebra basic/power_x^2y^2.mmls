@@ -13,16 +13,26 @@
 			</and>
 		</apply>
 	</apply>
+
 	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
-		<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;">
+
+		<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;" target="associativeDnD">
+
+
+
 			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
 				<div class="ul_role" data-type="bool">
+
+
 					<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
 					<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
 				</div>
 			</div>
 			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
 				<div class="ul_role" data-type="bool">
+
 					<apply data-tagimg="./images/properties/decompose.svg" data-vis="collapsed" data-tag="calcola" data-type="bool">
 						<and>
 						</and>
@@ -33,7 +43,9 @@
 				</div>
 			</div>
 			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
 				<div class="ul_role" data-type="bool">
+
 					<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="Proprieta'Distributiva" data-type="bool">
 						<and>
 						</and>
@@ -44,65 +56,25 @@
 					</apply>
 				</div>
 			</div>
+			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+
+				<div class="ul_role" data-type="bool">
+
+
+					<apply data-and="horizontal" data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="expOne" data-tagimg="./images/properties/expOne.svg" data-type="bool">
+						<forall>
+						</forall>
+					</apply>
+					<apply data-and="horizontal" data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="commonBaseSlice" data-tagimg="./images/properties/commomnBaseSlice.svg" data-type="bool">
+						<forall>
+						</forall>
+					</apply>
+				</div>
+			</div>
 		</div>
 	</div>
-	<apply data-tag="powerOne" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
-		<forall>
-		</forall>
-		<bvar>
-			<ci data-type="num">a_</ci>
-		</bvar>
-		<bvar>
-			<ci data-type="num">n_</ci>
-		</bvar>
-		<apply data-type="bool">
-			<eq>
-			</eq>
-			<apply data-type="num">
-				<power>
-				</power>
-				<ci data-type="num">a_</ci>
-				<cn data-type="num">1</cn>
-			</apply>
-			<ci data-type="num">a_</ci>
-		</apply>
-	</apply>
-	<apply data-tag="likeBaseSlice" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
-		<forall>
-		</forall>
-		<bvar>
-			<ci data-type="num">a_</ci>
-		</bvar>
-		<bvar>
-			<ci data-type="num">n_</ci>
-		</bvar>
-		<apply data-type="bool">
-			<eq>
-			</eq>
-			<apply data-type="num">
-				<power>
-				</power>
-				<ci data-type="num">a_</ci>
-				<apply data-type="num">
-					<plus>
-					</plus>
-					<cn data-type="num">1</cn>
-					<ci data-type="num">n_</ci>
-				</apply>
-			</apply>
-			<apply data-type="num">
-				<times>
-				</times>
-				<apply data-type="num">
-					<power>
-					</power>
-					<ci data-type="num">a_</ci>
-					<ci data-type="num">n_</ci>
-				</apply>
-				<ci data-type="num">a_</ci>
-			</apply>
-		</apply>
-	</apply>
+
+
 	<apply data-type="num">
 		<times>
 		</times>
@@ -162,8 +134,8 @@
 		<apply data-type="num">
 			<times>
 			</times>
-				<ci data-type="num">x</ci>
-				<ci data-type="num">y</ci>
+			<ci data-type="num">x</ci>
+			<ci data-type="num">y</ci>
 		</apply>
 		<cn data-type="num">2</cn>
 	</apply>

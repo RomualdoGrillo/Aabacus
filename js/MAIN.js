@@ -116,6 +116,7 @@ $(document).on('keydown', function(e) {
 		PActx = keyboardEvToFC($selected, keyPressed,e);
 		
 		//*************** operazioni conclusive (dopo tutti i tentativi)*******************
+		cleanupDnD()
 		PActxConclude(PActx)
 	}
 });
@@ -186,13 +187,6 @@ function clickHandler(event) {
 			$thisMNODE.addClass('selectedTool');
 			console.log('Selected tool: '+$thisMNODE.attr('data-tag'))
 		} 
-	}
-	//***selection manager "grey" highlight
-	else if($thisMNODE.hasClass('unselectable')){
-		selectionManager("","","",true)//deselectAll
-	}
-	else if(!$thisMNODE.hasClass('unselectable')){
-		selectionManager($thisMNODE,event.ctrlKey||event.metaKey,event.shiftKey)//on mac use command key instead of control
 	}
 }
 function selectionManager($clickedMNODE,ctrl,shift,deselectAll){
@@ -450,12 +444,13 @@ function swapElements(obj1, obj2) {
 function PActxConclude(PActx) {
 	if (PActx.matchedTF == true) {
 		//********** Post *************
+		if(debugMode){console.log('CONCLUDE')}
 		refreshAndReplace(PActx);
 		if (PActx.$transform) {
-			Repeatedmu_Refine_c(PActx.$transform,'c','.mu_Refine_c');//Apply "c" to every Node in the branch marked with '.mu_Refine_c'
+			RepeatedRefine_c(PActx.$transform,'c','.Refine_c');//Apply "c" to every Node in the branch marked with '.Refine_c'
 		}
-		ssnapshot.take();
 		RefreshEmptyInfixBraketsGlued($('body'),true);
+		ssnapshot.take();
 		lookForResultAndCelebrate();
 		PActxVisualize(PActx);
 	}

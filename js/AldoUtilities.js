@@ -272,7 +272,7 @@ function removeClassByPrefix($startNode,prefix,tree) {
 	if(!prefix){return}
 
 	if ($startNode == undefined || $startNode.length == 0) {
-		$startNode = $("#result,#canvasAnd,#palette")
+		$startNode = $("#result,#canvas,#palette")
 	}
 	var $elements; //list of elements to be cleaned
 	if (tree != false) {

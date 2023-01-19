@@ -1,0 +1,28 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-type="bool">
+			<implies>
+			</implies>
+			<apply data-type="bool">
+				<and>
+				</and>
+				<ci data-type="bool">E</ci>
+				<apply data-type="bool">
+					<or>
+					</or>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<apply data-type="bool">
+							<and>
+							</and>
+							<ci data-type="bool">A</ci>
+							<ci data-type="bool">B</ci>
+						</apply>
+						<ci data-type="bool">C</ci>
+					</apply>
+					<ci data-type="bool">D</ci>
+				</apply>
+			</apply>
+			<ci data-type="bool">F</ci>
+	</apply>
+</math>

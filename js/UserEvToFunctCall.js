@@ -5,7 +5,7 @@
 
 
 function keyboardEvToFC($atom, keyPressed,event){
-	//if event is undefined, this is an internal call: use the property diregarding selecteTool
+	//if event is undefined, this is an internal call: use the property disregarding selectedTool
 	var PActx 
 	if(event && GLBsettings.tool=="declare" ){
 		var actionString = $('.selectedTool').attr('data-tag');
@@ -14,7 +14,6 @@ function keyboardEvToFC($atom, keyPressed,event){
 		
 		if(keyPressed==='\r' && actionString){
 			PActx = TryOnePropertyByName(actionString, $atom ,direction);
-	
 			if( PActx && PActx.matchedTF ){//proprietà applicata con successo
 				PActx.msg = actionString +" "+ firstValString
 			}
@@ -34,8 +33,8 @@ function keyboardEvToFC($atom, keyPressed,event){
 			catch(err) {}
 			
 			PActx = TryOnePropertyByName(actionString, $atom ,firstValString);
-		
-			if( PActx && PActx.matchedTF ){//proprietà applicata con successo
+			if( PActx && PActx.error){$($actions[i]).addClass('error').attr('error',PActx.msg)}
+			else if( PActx && PActx.matchedTF ){//proprietà applicata con successo
 				PActx.msg = actionString +" "+ firstValString
 				break
 			}
@@ -132,7 +131,7 @@ function searchForProperty(field,value,returnedField){
 
 
 
-function Repeatedmu_Refine_c($transform,key,selector){
+function RepeatedRefine_c($transform,key,selector){
 	var i=0
 	var semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
 	let $transformParentRole = $transform.parent()//se il transform viene sostituito, continua a cercare a partire da l suo parent

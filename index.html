@@ -20,11 +20,6 @@
 			</marker>
 			<line id="protoLine" x1="100" y1="50.5" x2="300" y2="50.5"  stroke="black" stroke-width="3"/>
 		</svg>
-		<div id="divOverlay">
-			<!-- alla DIV posso dare "position:absolute" all SVG no -->
-			<svg id="svgContainer" width="100%" height="100%"></svg>
-		</div>
-		
 		<div id="leftColumn" class="columnSection">
 			<input type="checkbox" class="fixButton" onclick="this.parentElement.classList.toggle('fixed')">
 			<div id="events" class="row ide ol_role">
@@ -87,6 +82,10 @@
 					</div>
 				</div>
 			</div>
+			<div id="divOverlay">
+				<!-- alla DIV posso dare "position:absolute" all SVG no -->
+				<svg id="svgContainer" width="100%" height="100%"></svg>
+			</div>
 			<div id="result" class="row ide"></div>
 		</div>
 		<div id="rightColumn" class="columnSection ide">
@@ -131,16 +130,6 @@
 							<option id="greyBorders">grey</option>
 							<option id="coloredBorders">Rainbow</option>
 						</select>
-						
-						<!--<form id="myForm">
-							<label for="fname">First name:</label>
-							<br>
-							<input type="text" id="fname" name="fname" value="John">
-							<br>
-							<label for="lname">Last name:</label>
-							<br>
-							<input type="text" id="lname" name="lname" value="Doe">
-						</form> -->
 						<!--<div class="checkbox">
 					<input type="checkbox" id="cb_showFuctName" onclick="$('body').toggleClass('showFuctName')" title="show names of function instad of icons (when both are available) ">
 					show txt
