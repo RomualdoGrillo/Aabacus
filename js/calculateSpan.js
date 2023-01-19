@@ -9,6 +9,8 @@ function $immediateJurisdictionRoleUpstream($role) {
 	return $result
 }
 
+function $immediateJurisdictionRolesForAddRedundant($role) {
+	//excluded is used to avoid exploring into startProposition when looking for for consequences of such proposition
 	if($role.is('[data-atom]')){
 		return $() // Target atoms are just proxy for underlyng role.
 		//recursive exploration happens jumping fron role to upstream and downstrem role.
@@ -16,6 +18,7 @@ function $immediateJurisdictionRoleUpstream($role) {
 	let $startAtom = MNODEparent($role)
 	let startNode_op = $startAtom.attr("data-atom");
 	let $stepStoneORtarget = $()
+	let $children = $role.children('[data-atom]');
 	if (startNode_op == 'and'){
 		//upstream if it's an AND
 		if (MNODEparent($startAtom).is('[data-atom=and]')) {
@@ -107,13 +110,13 @@ function $AssRolesRec($startAtom, immediate, $startRole) {
 	}
 	return $validRoles
 }
-function $RecursiveTreeExplorerCriterium($startNode, selectionStringOrFunction, $foundAlready) {
+function $RecursiveTreeExplorerCriterium($startNode, selectionStringOrFunction, $exploredAlready) {
 	//test:  $RecursiveTreeExplorerCriterium($('.selected'),'[data-atom]')  
 	//criterium:selector string or function() return items at distace 1 from $startNode and fitered with some criteria  
 	//futuribile
 	//safeMode:false fast search structure is acyclic criterium excludes start node adds elements one step away
 	//        :true safe structure can be cyclic 
-	//currentResults are passed via $foundAlready
+	//currentResults are passed via $exploredAlready
 	let selectionFunction
 	if (typeof (selectionStringOrFunction) == "string") {
 		selectionFunction = function ($startNode) { return $startNode.find(selectionStringOrFunction) }
@@ -121,16 +124,16 @@ function $RecursiveTreeExplorerCriterium($startNode, selectionStringOrFunction, 
 	else {
 		selectionFunction = selectionStringOrFunction
 	}
-	if (!$foundAlready) { $foundAlready = $() }
-	$foundAlready = $foundAlready.add($startNode)
-	let $directChildren = selectionFunction($startNode).not($foundAlready);
+	if (!$exploredAlready) { $exploredAlready = $() }
+	$exploredAlready = $exploredAlready.add($startNode)
+	let $directChildren = selectionFunction($startNode).not($exploredAlready);
 	let i = 0
-	$foundAlready = $foundAlready.add($directChildren)
+	$exploredAlready = $exploredAlready.add($directChildren)
 	let $discendence = $directChildren;
 	while ($directChildren[i]) {
 		//lineAB($startNode,$directChildren.eq(i))
 		//---recursive
-		$discendence = $discendence.add($RecursiveTreeExplorerCriterium($directChildren.eq(i), selectionFunction, $foundAlready));
+		$discendence = $discendence.add($RecursiveTreeExplorerCriterium($directChildren.eq(i), selectionFunction, $exploredAlready));
 		i++
 	}
 	return $discendence
@@ -228,9 +231,10 @@ function $calculateTargetsAddRedundantAtomsAndRoles($startRole) {
 function $PropositionsAffectedByStartProposition($startProposition) {
 	let $propositionParent = MNODEparent($startProposition)
 	let propParentOp = $propositionParent.attr('data-atom') 
+	let $excludedRoles = $startProposition[0].MNODE_getRoles();
 	if(propParentOp=='and' || propParentOp=='implies'){
 		let $startRole = $startProposition.parent()
-		let $allTargets = $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRolesForAddRedundant).filter(':visible');
+		let $allTargets = $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRolesForAddRedundant,$excludedRoles).filter(':visible');
 		//1)) filter out roles
 		return $allTargets.filter('[data-atom]')	
 	}
