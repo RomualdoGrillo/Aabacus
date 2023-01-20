@@ -36,7 +36,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	}
 	
 	GLBDnD.toolWhenMousedown = GLBsettings.tool;
-	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
+	if (GLBDnD.toolWhenMousedown == 'autoAdapt'){
 		//********* autoAdapt ****************
 		if (MNODEclosedDef($(event.target))) {
 			GLBDnD.$originalProperty = $(event.target).closest('[data-atom=forAll]');
@@ -62,10 +62,7 @@ function MakeSortableAndInjectMouseDown(event) {
 			$atomTarget.addClass('attackPoint')
 			$validTgT = validCandidatesForPatternDrop($startPointForValids,GLBDnD.$originalProperty);
 			//$validTgT = validCandidatesForPatternDrop(  $($startPointForValids.toArray().reverse())  );
-			makeTargetsSortableRolesOrAtoms($validTgT.toArray().reverse(), 'dragPatternMatch');//order is important!!!!
-			
-			
-			
+			makeTargetsSortableRolesOrAtoms($validTgT.toArray().sort(CriterionParentSon), 'dragPatternMatch');//order is important!!!!
 		}
 		else {
 			//no forall property
