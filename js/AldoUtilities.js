@@ -290,8 +290,8 @@ function removeClassByPrefix($startNode,prefix,tree) {
 	})
 }
 
-CriterionParentSon(a,b){
-    if( a.contains(b) ){return -1}
-    else if( a.contains(b) ){return 1}
+function CriterionParentSon(a,b){
+    if( b.contains(a) ){return -1}
+    else if( b.contains(a) ){return 1}
     else { return 0}
 }
