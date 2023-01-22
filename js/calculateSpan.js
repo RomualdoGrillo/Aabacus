@@ -274,20 +274,6 @@ function $calculateJurisdictionUpstream($startRole) {
 }
 
 
-function $PropositionsAffectedByStartProposition($startProposition) {
-	let $propositionParent = MNODEparent($startProposition)
-	let propParentOp = $propositionParent.attr('data-atom')
-	let $excludedRoles = $startProposition[0].MNODE_getRoles();
-	if (propParentOp == 'and' || propParentOp == 'implies') {
-		let $startRole = $startProposition.parent()
-		let $allTargets = $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRolesForAddRedundant, $excludedRoles).filter(':visible');
-		return $allTargets.filter('[data-atom]').filter(function () { return !this.contains($startProposition[0]) })//filter out ancestors	
-	}
-	else {
-		return $()// there's no start role if the proposition parent is or etc...
-	}
-}
-
 function $PropositionsAffectedByStartPropositionROLES($startProposition) {
 	//test: $PropositionsAffectedByStartPropositionROLES($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')});
 	let $roles = $RolesAffectedByStartPropositionROLES($startProposition)

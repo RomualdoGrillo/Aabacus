@@ -836,7 +836,7 @@ function validModusPonens($mouseDownAtom){
 	let $equation = MNODEparent($mouseDownAtom)
 	let $excludedMembers=$equation.find('[data-atom]');
 	// cerca nodi uguali a mousedown node
-	let $candidates = $PropositionsAffectedByStartProposition($equation).filter(':visible').addClass('mu_Downstream1')
+	let $candidates = $PropositionsAffectedByStartPropositionROLES($equation).filter(':visible').addClass('mu_Downstream1')
 	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
 	let valids = $occurrences.not($excludedMembers)
 	valids.each(function(){
@@ -855,7 +855,7 @@ function validReplaced($mouseDownAtom){
 	let $equation = MNODEparent($mouseDownAtom)
 	let $excludedMembers=$equation.find('[data-atom]');
 	// cerca nodi uguali a mousedown node
-	let $candidates = $PropositionsAffectedByStartProposition($equation).filter(':visible').addClass('mu_Downstream1')
+	let $candidates = $PropositionsAffectedByStartPropositionROLES($equation).filter(':visible').addClass('mu_Downstream1')
 	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
 	let valids = $occurrences.not($excludedMembers)
 	valids.each(function(){
@@ -883,8 +883,11 @@ function validRedundant($mouseDownAtom,ctrlOrMeta,altKey){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	let $targets = $calculateTargetsAddRedundantROLES($mouseDownAtom).filter(':visible').addClass('mu_Downstream1')
-	return $targets
+	let $candidates = $PropositionsAffectedByStartPropositionROLES($mouseDownAtom).filter(':visible').addClass('mu_Downstream1')
+	let $valids = $candidates.not($mouseDownAtom).filter(function() {//escludi mousedownnode stesso dai possibili risultati
+		return MNODEEqual(this,$mouseDownAtom[0],false,true)
+	})
+	return $valids
 }
 
 function validAddRedundant($mouseDownAtom,ctrlOrMeta){
@@ -896,10 +899,7 @@ function validAddRedundant($mouseDownAtom,ctrlOrMeta){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	//filter out:
-	//1) ANDs?
-	//2) atoms contained in an and: redundant will be simply added to the parent
-	let $targets = $PropositionsAffectedByStartProposition($mouseDownAtom).filter(function(){return !this.MNODEparent().is('[data-atom=and]')});
+	let $targets = $calculateTargetsAddRedundantROLES($mouseDownAtom).filter(':visible').addClass('mu_Downstream1')
 	return $targets
 }
 
@@ -910,7 +910,7 @@ function validCandidatesForPatternDrop($mouseDownAtom,$originalProperty){
 	//let $excludedMNODES= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
 	//let $jurisdictionRoles = $calculateJurisdictionRoles($originalProperty).addClass('mu_Downstream1').filter('[data-atom]:visible')
 	//let $candidates = $jurisdictionRoles.find('[data-atom]:visible')
-	let $candidates = $PropositionsAffectedByStartProposition($originalProperty).filter(':visible').addClass('mu_Downstream1');
+	let $candidates = $PropositionsAffectedByStartPropositionROLES($originalProperty).filter(':visible').addClass('mu_Downstream1');
 	let $valids = $candidates.not($excludedMNODES).filter(function( index ) {
 		//*****valid?***********
 		var result =(
