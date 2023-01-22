@@ -126,14 +126,14 @@ function $RecursiveTreeExplorerCriterium($startNode, selectionStringOrFunction, 
 	}
 	if (!$exploredAlready) { $exploredAlready = $() }
 	$exploredAlready = $exploredAlready.add($startNode)
-	let $directChildren = selectionFunction($startNode).not($exploredAlready);
+	let $immediateDiscendence = selectionFunction($startNode).not($exploredAlready);
 	let i = 0
-	$exploredAlready = $exploredAlready.add($directChildren)
-	let $discendence = $directChildren;
-	while ($directChildren[i]) {
-		//lineAB($startNode,$directChildren.eq(i))
+	$exploredAlready = $exploredAlready.add($immediateDiscendence)
+	let $discendence = $immediateDiscendence;
+	while ($immediateDiscendence[i]) {
+		//lineAB($startNode,$immediateDiscendence.eq(i))
 		//---recursive
-		$discendence = $discendence.add($RecursiveTreeExplorerCriterium($directChildren.eq(i), selectionFunction, $exploredAlready));
+		$discendence = $discendence.add($RecursiveTreeExplorerCriterium($immediateDiscendence.eq(i), selectionFunction, $exploredAlready));
 		i++
 	}
 	return $discendence
