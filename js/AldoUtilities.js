@@ -295,3 +295,9 @@ function CriterionParentSon(a,b){
     else if( b.contains(a) ){return 1}
     else { return 0}
 }
+
+function CriterionSonParent(a,b){
+    if( a.contains(b) ){return 1}
+    else if( b.contains(a) ){return -1}
+    else { return 0}
+}
