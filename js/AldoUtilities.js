@@ -291,7 +291,7 @@ function removeClassByPrefix($startNode,prefix,tree) {
 }
 
 function CriterionParentSon(a,b){
-    if( b.contains(a) ){return -1}
+    if( a.contains(b) ){return -1}
     else if( b.contains(a) ){return 1}
     else { return 0}
 }
