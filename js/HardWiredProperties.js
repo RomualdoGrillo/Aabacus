@@ -827,16 +827,34 @@ function isEquationMember($mouseDownAtom){
 	return MNODEparent($mouseDownAtom)
 }
 
+function validModusPonens($mouseDownAtom){
+	if(!($mouseDownAtom.parent().hasClass('firstMember')||$mouseDownAtom.parent().hasClass('secondMember'))){
+		return []}// dragged is not a membrer of implies or equation 
+	if( !$mouseDownAtom.parent().parent().is("[data-atom=implies]") ){
+		return []//not from an implies
+	}
+	let $equation = MNODEparent($mouseDownAtom)
+	let $excludedMembers=$equation.find('[data-atom]');
+	// cerca nodi uguali a mousedown node
+	let $candidates = $PropositionsAffectedByStartProposition($equation).filter(':visible').addClass('mu_Downstream1')
+	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
+	let valids = $occurrences.not($excludedMembers)
+	valids.each(function(){
+		// crea linee
+		lineAB($mouseDownAtom,$(this),'arrow');	
+	})	  
+	return valids
+}
 
 function validReplaced($mouseDownAtom){
 	if(!($mouseDownAtom.parent().hasClass('firstMember')||$mouseDownAtom.parent().hasClass('secondMember'))){
-		return []}// dragged is not a membrer of equation
-	// cerca nodi uguali a mousedown node 
+		return []}// dragged is not a membrer of equation 
 	if( !$mouseDownAtom.parent().parent().is("[data-atom=eq]:not(.asymmetric)") ){
 		return []//not from an equation	
 	}
 	let $equation = MNODEparent($mouseDownAtom)
-	let $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
+	let $excludedMembers=$equation.find('[data-atom]');
+	// cerca nodi uguali a mousedown node
 	let $candidates = $PropositionsAffectedByStartProposition($equation).filter(':visible').addClass('mu_Downstream1')
 	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
 	let valids = $occurrences.not($excludedMembers)
@@ -865,11 +883,8 @@ function validRedundant($mouseDownAtom,ctrlOrMeta,altKey){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	let $candidates = $PropositionsAffectedByStartProposition($mouseDownAtom).filter(':visible').addClass('mu_Downstream1')
-	let $valids = $candidates.not($mouseDownAtom).filter(function() {//escludi mousedownnode stesso dai possibili risultati
-		return MNODEEqual(this,$mouseDownAtom[0],false,true)
-	})
-	return $valids
+	let $targets = $calculateTargetsAddRedundantROLES($mouseDownAtom).filter(':visible').addClass('mu_Downstream1')
+	return $targets
 }
 
 function validAddRedundant($mouseDownAtom,ctrlOrMeta){
@@ -881,18 +896,10 @@ function validAddRedundant($mouseDownAtom,ctrlOrMeta){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	let $targets = $calculateTargetsAddRedundantAtomsAndRoles($mouseDownAtom.parent()).addClass('mu_Downstream1')
-	/*  *** should I add some Atom too?
-	for(i=0;$jurisdictionRoles[i];i++){
-		let atomType= MNODEparent($($jurisdictionRoles[i])).getAttribute('data-atom')
-		if( atomType=='and' ){//todo: in case ther's a not, maybe De Morgan is needed
-			$targets=$targets.add($jurisdictionRoles);
-		}
-		else if(atomType=='or'|| atomType=='imply'){//children are valid targets
-			$targets=$targets.add(jurisdictionRoles)
-		}
-    }
-	*/
+	//filter out:
+	//1) ANDs?
+	//2) atoms contained in an and: redundant will be simply added to the parent
+	let $targets = $PropositionsAffectedByStartProposition($mouseDownAtom).filter(function(){return !this.MNODEparent().is('[data-atom=and]')});
 	return $targets
 }
 
