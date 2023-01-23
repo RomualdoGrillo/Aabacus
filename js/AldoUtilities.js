@@ -297,7 +297,29 @@ function CriterionParentSon(a,b){
 }
 
 function CriterionSonParent(a,b){
-    if( a.contains(b) ){return 1}
-    else if( b.contains(a) ){return -1}
-    else { return 0}
+    if( a.contains(b) ){
+		console.log(a)
+		console.log('contains')
+		console.log(b)
+		return 1}
+    else if( b.contains(a) ){
+		console.log(b)
+		console.log('contains')
+		console.log(a)
+		return -1}
+    else {
+		console.log(a)
+		console.log('no order')
+		console.log(b)
+	return 0}
+}
+
+function ArrayNewOrder(inArray,mapToOldPlaces){
+    //costruisco il nuovo vettore prendendo dai posti indicati da mapToOldPlaces 
+    let Alength = mapToOldPlaces.length
+    let outArray = Array.apply( null , Array(Alength))
+    for(i=0; i < mapToOldPlaces.length ;i++){
+		outArray[i] = inArray[mapToOldPlaces[i]]
+    }
+    return outArray
 }

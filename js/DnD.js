@@ -61,10 +61,26 @@ function MakeSortableAndInjectMouseDown(event) {
             if($startPointForValids.length==0){$startPointForValids=$atomTarget}
 			$atomTarget.addClass('attackPoint')
 			$validTgT = validCandidatesForPatternDrop($startPointForValids,GLBDnD.$originalProperty);
+			let validTgT
 			//order is important!!!!
 			//WORKS but I don't know why: apparently if I sort with criteriion Son->parent does not work, if I sort Parent->son than reverse it works
 			//makeTargetsSortableRolesOrAtoms($validTgT.toArray().sort(CriterionSonParent), 'dragPatternMatch');//not working
-			makeTargetsSortableRolesOrAtoms($validTgT.toArray().sort(CriterionParentSon).reverse(), 'dragPatternMatch');//working		
+			// validTgT = $validTgT.toArray() //notWorking
+			validTgT = $validTgT.toArray()
+			validTgT.sort(CriterionSonParent)//notWorking
+			//validTgT = $validTgT.toArray().sort(CriterionParentSon)//notWorking
+			//validTgT = $validTgT.toArray().sort(CriterionParentSon).reverse()//working
+			//*****testing
+			let mappa = [0,1,2,3,4,5,6,7,8,9,10,11]
+			//let mappa = [0,1,2,3,4,5,10]
+			//let mappa = [0,2,3,4,5]
+
+			//let mappa = [1,6,7,8,9,10,11]
+			console.log(validTgT)
+			validTgT = ArrayNewOrder(validTgT,mappa)
+			console.log(validTgT)
+			//*************
+			makeTargetsSortableRolesOrAtoms(validTgT, 'dragPatternMatch');	
 		}
 		else {
 			//no forall property
