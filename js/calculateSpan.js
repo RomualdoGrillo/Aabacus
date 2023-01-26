@@ -239,7 +239,7 @@ function highlightOccurrences($identifier, addClass) {
 	//evidenzia lo span e le occorrenze dell'identificatore
 	let $span = $identifierSpanForAll($identifier);
 	$span.not('#canvasAnd').addClass('mu_span')//highlight span unless it's the whole canvas
-	let $occurrences = $findOccurrences($identifier, undefined, true)
+	let $occurrences = $findOccurrences($identifier, undefined).filter(':visible');
 	$occurrences.addClass(addClass);
 	/*$occurrences.each(function(){
 		// crea linee
@@ -247,19 +247,18 @@ function highlightOccurrences($identifier, addClass) {
 	})*/
 }
 
-// example use:
-// $findOccurrences($identifier,$identifierSpanForAll($identifier))
-function $findOccurrences($wanted, $span, excludeHidden) {
-	if (!$span) { $span = $identifierSpanForAll($wanted); }
-	//todo: questa ricerca non distingue le variabili interne "Bvar".
-	// Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
-	let $candidates
-	if (excludeHidden) {
-		$candidates = $span.find("[data-atom]:visible")
-	}
-	else {//default
+
+function $findOccurrences($wanted, $span, $candidates) {
+	// example use:
+	// $findOccurrences($identifier,$identifierSpanForAll($identifier))
+	if (!$candidates) {
+		if (!$span) {
+			$span = $identifierSpanForAll($wanted);
+		}
 		$candidates = $span.find("[data-atom]")
 	}
+	//todo: questa ricerca non distingue le variabili interne "Bvar".
+	// Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
 	let $occurrences = $candidates.filter(function () {
 		//return MNODEEqual($atom_param[0],this)
 		return compareExtMNODE($wanted, $(this), true, false);
@@ -311,8 +310,8 @@ function $calculateTargetsAddRedundantROLES($startProposition) {
 	//propagate all Roles excluding start Atom //note: apply to yourself?
 	let $roles = $RolesAffectedByStartPropositionROLES($startProposition)
 	//from roles to targets:
-		// two types of boolean roles exist:1) those with TRUE as neutral elements 2) OTHERS
-		// OR belongs to the second group!!!
+	// two types of boolean roles exist:1) those with TRUE as neutral elements 2) OTHERS
+	// OR belongs to the second group!!!
 	return $targets = $roles.map(function () {
 		let op = MNODEparent($(this)).attr("data-atom");
 		if (op == 'or') {
