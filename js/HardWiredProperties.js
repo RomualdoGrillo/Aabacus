@@ -10,7 +10,9 @@ function newPActx(){
 		$transform: undefined,//must be the the biggest element changed, his parent will be considered when upadating infix ecc..
 		$equation: undefined,
 		replacedAlready: false ,
-		lineList:$()}
+		lineList:$(),
+		error:false
+	}
 }
 
 class PropertyDnD  {
@@ -143,6 +145,7 @@ function immediateAssValid($mouseDownAtom){
 }
 
 function MNODEassociate(dragged,target,dropped){
+	//dropped has been inserted already, just remove dragged if not cloning
 	var PActx = newPActx();
 	if($(dropped).hasClass('toBeCloned')){
 			$(dropped).removeClass('toBeCloned');
@@ -198,8 +201,8 @@ function validForPartDist($mouseDownAtom,ctrlOrMeta){
 
 
 
-function validForDist($mouseDownAtom,ctrlOrMeta){//op2 è il tipo di operazione sulla quale si distribuisce
-	if(ctrlOrMeta){ 
+function validForDist($mouseDownAtom,ctrlOrMeta,altKey){//op2 è il tipo di operazione sulla quale si distribuisce
+	if(ctrlOrMeta || altKey ){ 
 		return []
 	}
 	var $parent = MNODEparent($mouseDownAtom);
@@ -243,7 +246,7 @@ function MNODEPartDistribute($dragged,target,dropped){
 	});
 	let previous = $clone[0].MNODE_getRoles().children().eq(childrenIndex-1);
 	$dragged.insertAfter(previous);
-	$parent.addClass("mu_Refine_c");
+	$parent.addClass("Refine_c");
 	dropped.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
@@ -259,7 +262,7 @@ function MNODEdistribute($dragged,target,dropped){
 	let opD = opIsDistDop(op);
 	var $prototype = prototypeSearch(op)// for example search for times proto
 	$(target)[0].MNODE_getChildren().each(function(i,e){
-		e.classList.add("mu_Refine_c");
+		e.classList.add("Refine_c");
 		var $clone = MNODEclone($prototype)//create times
 		var $cloneDragged = MNODEclone($dragged)// clone dragged
 		$clone.insertBefore($(this));
@@ -273,8 +276,8 @@ function MNODEdistribute($dragged,target,dropped){
 		//$cloneDragged.css({display:""})
 	})
 	var $draggedParent = $dragged[0].MNODEparent(); 
-	$draggedParent.addClass("mu_Refine_c");//mark external operation as remove if pointless
-	$(target).addClass("mu_Refine_c");//mark target operation as remove if pointless
+	$draggedParent.addClass("Refine_c");//mark external operation as remove if pointless
+	$(target).addClass("Refine_c");//mark target operation as remove if pointless
 	$dragged.remove();
 	PActx.$transform =  $parent;
 	PActx.matchedTF=true
@@ -286,7 +289,7 @@ function validForColl($mouseDownAtom){
 	var op = undefined
 	if($parent !== undefined){op = $parent.attr("data-atom")};//look for targets
 	var opD = opIsDistDop(op);
-	//$('*').removeClass('mu_ToBeCollected').removeClass('mu_CouldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
+	//$('*').removeClass('ToBeCollected').removeClass('CouldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
 	//*******test preliminari
 	if ($parent == undefined){
 		return $() //empty $ array
@@ -313,7 +316,7 @@ function validForColl($mouseDownAtom){
 				//console.log("controllo factor");
 				//console.log(factor);
 				if(MNODEEqual(factor,$mouseDownAtom[0])){
-					$(factor).addClass("mu_CouldBeCollected")
+					$(factor).addClass("CouldBeCollected")
 					okForThisTerm = true;
 					break
 				}
@@ -321,7 +324,7 @@ function validForColl($mouseDownAtom){
 		}
 		else{// altrimenti controlla lui stesso
 			if(MNODEEqual(term,$mouseDownAtom[0])){
-					$(term).addClass("mu_CouldBeCollected")
+					$(term).addClass("CouldBeCollected")
 					okForThisTerm = true;
 				}
 		}
@@ -361,7 +364,7 @@ function validForPartColl($mouseDownAtom){
 		}
 	}
 	
-	//$('*').removeClass('mu_ToBeCollected').removeClass('mu_CouldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
+	//$('*').removeClass('ToBeCollected').removeClass('CouldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
 	//*******test preliminari
 	
 	if ( 
@@ -410,7 +413,7 @@ function MNODEpartCollect($dragged,$target){
 	let opd = $draggedParent.attr("data-atom")
 		
 	let $commonGranParent = MNODEparent($targetParent);
-	$commonGranParent.addClass("mu_Refine_c");
+	$commonGranParent.addClass("Refine_c");
 
 
 	if(opt==opd && opIsDistDop(opt)){//both have same distributable op
@@ -478,13 +481,13 @@ function MNODEcollect($dragged,$target){
 	if ($parent !== undefined){op = $parent.attr("data-atom")}
 	var extOp 
 	extOp = encaseIfNeeded($parentParent,op)
-	MNODEparent($dragged).addClass("mu_Refine_c")
-	MNODEparent($(".mu_CouldBeCollected")).addClass("mu_Refine_c")
+	MNODEparent($dragged).addClass("Refine_c")
+	MNODEparent($(".CouldBeCollected")).addClass("Refine_c")
 	//$dragged.insertBefore($parentParent);
 	$dragged.remove();
-	//$(".mu_CouldBeCollected").remove()
-	$parentParent.find(".mu_CouldBeCollected").remove()
-	$parentParent.addClass("mu_Refine_c");
+	//$(".CouldBeCollected").remove()
+	$parentParent.find(".CouldBeCollected").remove()
+	$parentParent.addClass("Refine_c");
 	PActx.$transform =  extOp;
 	PActx.matchedTF=true
 	return PActx
@@ -652,7 +655,7 @@ function compose($toBeComp,firstVal,img){
 		$composed.insertBefore(PActx.$operand[0]);
 		PActx.$operand.remove()
 		//ExtendAndInitializeTree($composed);
-		$parent.addClass('mu_Refine_c');
+		$parent.addClass('Refine_c');
 		PActx.$transform = $parent;
 		PActx.visualization = img
 	}
@@ -707,7 +710,7 @@ function decompose($toBeDec,direction,img){//"up" for factorize
 				}
 				//******Rimuovi il MINUS
 				$minusContent.insertAfter($minus);
-				$minusContent.addClass("mu_Refine_c");//if the content was a "times" it may by dissolved if the parent is also times
+				$minusContent.addClass("Refine_c");//if the content was a "times" it may by dissolved if the parent is also times
 				$minus.remove();
 				
 				//var $roleContainingFactors = $minusContent[0].MNODE_getRoles();
@@ -834,14 +837,13 @@ function validReplaced($mouseDownAtom){
 	}
 	let $equation = MNODEparent($mouseDownAtom)
 	let $excludedMembers=$equation.find('>.firstMember * , >.secondMember *');
-	//var $candidates = $PropositionDownstreamRec($equation).add($PropositionUpstreamRec($equation)).find('[data-atom]:visible').addClass('mu_Downstream1');Z
-	let $candidates = $RecursiveTreeExplorerCriterium($equation,$propositionImmediateJurisdiction).addClass('mu_Downstream1')
+	let $candidates = $PropositionsAffectedByStartProposition($equation).filter(':visible').addClass('mu_Downstream1')
 	let $occurrences = $findOccurrences($mouseDownAtom,$candidates,true)//ricerca limitata ad elementi visibili
 	let valids = $occurrences.not($excludedMembers)
 	valids.each(function(){
 		// crea linee
 		lineAB($mouseDownAtom,$(this),'arrow');	
-	})	 
+	})	  
 	return valids
 }
 
@@ -854,32 +856,22 @@ function MNODELinkReplace($link, $replaced){
 	return PActx
 }
 
-function validRedundant($mouseDownAtom,ctrlOrMeta){
+function validRedundant($mouseDownAtom,ctrlOrMeta,altKey){
 	//validRedundant($('.selected'))
 	// cerca nodi uguali a mousedown node 
-	if(ctrlOrMeta){ 
+	if(!altKey){ 
 		return []
 	}
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	let $jurisdiction = $calculateJurisdiction($mouseDownAtom).addClass('mu_Downstream1').filter('[data-atom]:visible')
-		let $children=$();
-		for(i=0;$jurisdiction[i];i++){
-			$children=$children.add($jurisdiction[i].MNODE_getChildren());
-		}
-		var valids = $children.not($mouseDownAtom).filter(function() {//escludi mousedownnode stesso dai possibili risultati
-			return MNODEEqual(this,$mouseDownAtom[0],false,true)
-		})
-		/*
-		valids.each(function(){
-			// crea linee
-			lineAB($mouseDownAtom,$(this),'arrow removeredundant');	
-		})
-		*/	 
-		return valids
-	
+	let $candidates = $PropositionsAffectedByStartProposition($mouseDownAtom).filter(':visible').addClass('mu_Downstream1')
+	let $valids = $candidates.not($mouseDownAtom).filter(function() {//escludi mousedownnode stesso dai possibili risultati
+		return MNODEEqual(this,$mouseDownAtom[0],false,true)
+	})
+	return $valids
 }
+
 function validAddRedundant($mouseDownAtom,ctrlOrMeta){
 	//validRedundant($('.selected'))
 	// cerca nodi uguali a mousedown node 
@@ -889,26 +881,30 @@ function validAddRedundant($mouseDownAtom,ctrlOrMeta){
 	if( !$mouseDownAtom.is("[data-type=bool]") ){
 		return []//not a boolean expression	
 	}
-	let $jurisdiction = $calculateJurisdiction($mouseDownAtom).addClass('mu_Downstream1').filter('[data-atom]:visible')
-	let $targets=$();
-	for(i=0;$jurisdiction[i];i++){
-		let atomType=$jurisdiction[i].getAttribute('data-atom')
-		if( atomType=='and' ){//todo: still not perfect: e.g. what happens if ther's a "not"?
-			$targets=$targets.add($jurisdiction[i].MNODE_getRoles());
+	let $targets = $calculateTargetsAddRedundantAtomsAndRoles($mouseDownAtom.parent()).addClass('mu_Downstream1')
+	/*  *** should I add some Atom too?
+	for(i=0;$jurisdictionRoles[i];i++){
+		let atomType= MNODEparent($($jurisdictionRoles[i])).getAttribute('data-atom')
+		if( atomType=='and' ){//todo: in case ther's a not, maybe De Morgan is needed
+			$targets=$targets.add($jurisdictionRoles);
 		}
 		else if(atomType=='or'|| atomType=='imply'){//children are valid targets
-			$targets=$targets.add($jurisdiction[i].MNODE_getChildren())
+			$targets=$targets.add(jurisdictionRoles)
 		}
     }
+	*/
 	return $targets
 }
 
+
 function validCandidatesForPatternDrop($mouseDownAtom,$originalProperty){
-	//exclude the current forall property
-	let $excludedMNODES= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
-	let $jurisdiction = $calculateJurisdiction($originalProperty).addClass('mu_Downstream1').filter('[data-atom]:visible')
-	let $candidates = $jurisdiction.find('[data-atom]:visible').addBack()
-	let valids = $candidates.not($excludedMNODES).filter(function( index ) {
+	//exclude the $originalProperty
+	let $excludedMNODES= $originalProperty.find('[data-atom]').addBack();
+	//let $excludedMNODES= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
+	//let $jurisdictionRoles = $calculateJurisdictionRoles($originalProperty).addClass('mu_Downstream1').filter('[data-atom]:visible')
+	//let $candidates = $jurisdictionRoles.find('[data-atom]:visible')
+	let $candidates = $PropositionsAffectedByStartProposition($originalProperty).filter(':visible').addClass('mu_Downstream1');
+	let $valids = $candidates.not($excludedMNODES).filter(function( index ) {
 		//*****valid?***********
 		var result =(
 			//datatype is compatible
@@ -918,7 +914,7 @@ function validCandidatesForPatternDrop($mouseDownAtom,$originalProperty){
 			)
 		return result
 	})
-	return valids//.not($mouseDownAtom.parent())
+	return $valids//.not($mouseDownAtom.parent())
 }
 
 function validhanoiMove($mouseDownAtom){
@@ -961,7 +957,7 @@ function removeRedundant($dragged,$target){
 	PActx.replacedAlready = true;
 	if($parent.attr("data-atom")=="and"){
 		$target.remove();//if contained in an and simply remove the redundant term		
-		$parent.addClass("mu_Refine_c");
+		$parent.addClass("Refine_c");
 	}
 	else{
 		var $clone = MNODEclone( prototypeSearch("ci","bool") )
@@ -969,24 +965,26 @@ function removeRedundant($dragged,$target){
 		$target.replaceWith($clone);
 	}
 	PActx.matchedTF=true
+	PActx.$transform=$parent
 	PActx.msg="removed Redundant"
 	return PActx
 }
 
 function addRedundant($dragged,$target,$dropped){
+	let PActx = newPActx();
+	$($dropped).removeClass('toBeCloned');//in case class 'toBeCloned' is present rempve it
 	if($target.attr('data-atom')){//if target is an atom, create an AND around it
-		let $extOp = encaseWithOperation($target,'and')
-		let $targetRole = $extOp[0].MNODE_getRoles()
-		let PActx = MNODEassociate($dragged,$targetRole,$dropped)
-		PActx.matchedTF = true;
-		PActx.replacedAlready = true;
-		PActx.msg = "created and and added Redundant"
+	let $extOp = encaseWithOperation($target,'and')
+	$target = $extOp[0].MNODE_getRoles()
+	PActx.msg = "created and, added Redundant"
+	$target.append($dropped);
 	}
 	else{
-		let PActx = MNODEassociate($dragged,$target,$dropped)
 		PActx.msg = "added Redundant"
-		return PActx
 	}
+	PActx.matchedTF=true;
+	PActx.replacedAlready = true;
+	return PActx
 }
 
 function evaluateComparison($exp){

@@ -60,11 +60,19 @@
 				<div class="ul_role" data-type="bool">
 
 
-					<apply data-and="horizontal" data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="expOne" data-tagimg="./images/properties/expOne.svg" data-type="bool">
+					<apply data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="expOne" data-tagimg="./images/properties/expOne.svg" data-type="bool">
 						<forall>
 						</forall>
 					</apply>
-					<apply data-and="horizontal" data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="commonBase" data-tagimg="./images/properties/commomnBaseSlice.svg" data-type="bool">
+					<apply data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="commonBase" data-tagimg="./images/properties/commomnBaseSlice.svg" data-type="bool">
+						<forall>
+						</forall>
+					</apply>
+					<apply data-and="horizontal" data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="commonExponent" data-tagimg="./images/properties/commonExponent.svg" data-type="bool">
+						<forall>
+						</forall>
+					</apply>
+					<apply data-and="horizontal" data-import="./Data/FOUNDATIONpower.mml" data-vis="collapsed" data-tag="powerOfPower" data-tagimg="./images/properties/powerOfPower.svg" data-type="bool">
 						<forall>
 						</forall>
 					</apply>
@@ -72,6 +80,11 @@
 			</div>
 		</div>
 	</div>
+	<apply data-type="num">
+				<power>
+				</power>
+			
+
 	<apply data-type="num">
 			<times>
 			</times>
@@ -85,8 +98,10 @@
 				<power>
 				</power>
 				<ci data-type="num">x</ci>
-				<cn data-type="num">4</cn>
+				<cn data-type="num">2</cn>
 			</apply>
+	</apply>
+	<cn data-type="num">2</cn>
 	</apply>
 </section>
 <section data-section="events">
@@ -129,7 +144,7 @@
 			<power>
 			</power>
 			<ci data-type="num">x</ci>
-			<cn data-type="num">7</cn>
+			<cn data-type="num">10</cn>
 	</apply>
 </section>
 <section data-section="settings">

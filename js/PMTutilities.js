@@ -311,9 +311,14 @@ function MNODESmarkUnmark($Atom,value,attrName,usePermanentMark){
 function MNODEappendInABSPosition($atom,$refMNODE,relativePosition){
 //posiziona in modo assoluto $atom vicino a un MNODE di riferimento $refMNODE
 //Se si tratta di forall piazzare il pattern circondato dal suo forall.
-	$('body').append($atom);
+	$('#divOverlay').append($atom);
     $atom.css('position', 'absolute');
-    if(relativePosition=="beside"){
+	if($refMNODE.is('#canvasAnd')){
+		//put it on the right
+		$atom.css('right', 200);
+    	$atom.css('top', 100);	
+	}
+    else if(relativePosition=="beside"){
 	//Se è il clone di un clone fallo comparire sovrapposto al "clonato" solo spostato di qualche pixel.
 		$atom.css('left', $refMNODE.offset().left + $refMNODE.width() + 12);
     	$atom.css('top', $refMNODE.offset().top - 75);
@@ -330,18 +335,31 @@ function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
 	//a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
 	//"apre un fascicolo" e tenta di "dare seguito" all'ordine
-	//******************* prova ad applicare PROPRIETA'CONFIGURABILE **************
 	let $origProp = findPMPropByName(propName)
 	if ($origProp.length == 0) {
-		console.log('property not found:' + propName)
+		//******************* ERROR no property with propName **************
+		let PActxForError = newPActx()
+		PActxForError.error = true;
+		PActxForError.msg = 'property not found:' + propName 
+		console.log(PActxForError.msg)
+		return PActxForError
 	}
 	else {
-		if ($origProp.attr('data-atom')=="ci") {//internal property?
+		let PActx
+		let propCustomInternal
+		if($origProp.attr('data-atom')=="ci") {//internal property?
+		//******************* Hard Wired property**************
 			let img = $origProp.attr('data-tagimg');
-			console.log("auto call: " + propName + " img: " + img);
-			return window[propName]($par1, firstVal, img) //todo: gestire errore 
+			propCustomInternal = 'int'
+			PActx = window[propName]($par1, firstVal, img) //todo: gestire errore 
 		}
-		return InstructAndTryOnePMT($origProp, $par1, firstVal, justTry, $origProp.attr('data-tagimg'))
+		else{
+		//******************* Configurable property written in the canvas**********
+			PActx = InstructAndTryOnePMT($origProp, $par1, firstVal, justTry, $origProp.attr('data-tagimg'))
+			propCustomInternal = 'ext'
+		}
+		if(debugMode){console.log('***success?: "'+ PActx.matchedTF +  ' " *****: '+ propCustomInternal + ' " *****tried: '+ propName)}
+		return PActx
 	}
 }
 
@@ -380,14 +398,15 @@ function InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry){//instruct pra
     //"s" è usato come punto di partenza
     // l'uguaglianza "usa e getta"che contiene il pattern è rimossa dal documento
     // una volta utilizzata finirà nel garbage collection
-	if(debugMode){PActx.$cloneProp.remove()
-		hideAllMarks()
-	}//debugMode
+	
 	if( PActx && PActx.matchedTF ){//proprietà applicata con successo
 		PActx = PMcleanAndPost(PActx);
 	}
 	MNODESmarkUnmark($par1,"");
 	PActx.visualization =  	cloningRes.visualization
+	if(debugMode){PActx.$cloneProp.remove()
+		hideAllMarks()
+	}//debugMode
 	return PActx
 }
 
@@ -488,7 +507,7 @@ function PMcleanAndPost(PActx){
 	    	let postMarks = MNODESmarkUnmark($(this),undefined,"p");
 	    	if(postMarks.indexOf('c') != -1){// is "c" one of the post markings?
 				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
-	    		$(this).addClass('mu_Refine_c');
+	    		$(this).addClass('Refine_c');
 	    	}
 	    	//************remove all PM marks***********
     		$(this).removeClass('taken');

@@ -218,7 +218,7 @@ function MNODEReplaceAll(
 	var $replaced = $(replaced);
 	var $replacer = $(replacer);
 	$startNode = $($startNode); //se per caso passo uno start node non $
-	var $occurrences = $findOccurrences($replaced,$startNode,false)
+	var $occurrences = $findOccurrences($replaced, $startNode, false)
 	var result = $.each($occurrences, function (i, o) {
 		MNODEReplace($(o), $replacer);
 	});
@@ -279,7 +279,7 @@ function formatForall($forall, $toBeRenamed) {
 	var oldName = $toBeRenamed[0].MNODE_getName();
 	var newName = "(" + oldName + ")";
 	//cerca le occorrenze e marca ciascuna occorrenza
-	var $occurrences = $findOccurrences($toBeRenamed,$forall);
+	var $occurrences = $findOccurrences($toBeRenamed, $forall);
 	$occurrences.each(function () {
 		this.MNODE_setName(newName);
 	});
@@ -354,22 +354,19 @@ function MNODE_setName(newName) {
 	$(this).find(">.name").text(newName);
 }
 
-function MNODE_addRole(dataType,roleClass,content) {
+function MNODE_addRole(dataType, roleClass, content) {
 	var $newNode;
-	if(content==undefined){content=''}//default content = ''
-	if(roleClass==undefined){roleClass='ol_role'}//default ol_role ok for function calls
+	if (content == undefined) { content = '' }//default content = ''
+	if (roleClass == undefined) { roleClass = 'ol_role' }//default ol_role ok for function calls
 	$newNode = $('<div class="role">' + content + "</div>").attr(
-		"data-type",dataType); //data() e' un casino
+		"data-type", dataType); //data() e' un casino
 	$newNode.addClass(roleClass);
 	$(this).append($newNode);
 	return $newNode;
 } //da usare quando si crea una nuova funzione o definizione
 
 function validTargetsFromOpened($MNODEdragged) {
-	var numOfPlaces;
 	var valids = $('#canvasRole,  [class*="_role"]:visible').filter(function () {
-		//*****determine number of places********
-		numOfPlaces = getNumOfPlaces($(this))[1];
 		//*****valid?***********
 		var result =
 			//if $dragged is not a new definition, target must be opened or boolPtototype todo: check the dragged prototype really has value true
@@ -379,9 +376,7 @@ function validTargetsFromOpened($MNODEdragged) {
 			//datatype is compatible
 			typeOk($MNODEdragged, $(this)) &&
 			//is there place for another?
-			(numOfPlaces === -1 ||
-				$(this).children().filter("[data-atom]").length < numOfPlaces);
-
+			isTherePlaceForAnother($(this))
 		return result;
 	});
 	return valids.not($MNODEdragged.parent());
@@ -390,38 +385,46 @@ function validTargetsFromOpened($MNODEdragged) {
 function getNumOfPlaces($role) {
 	//*****determine number of places********
 	if ($role.hasClass("s_role")) {
-		return [1,1]; //[min,max]
-	} 
+		return [1, 1]; //[min,max]
+	}
 	let acceptString = $role.attr('data-accept')
 	return attrAcceptToMinMax(acceptString)
 }
 
+function isTherePlaceForAnother($role) {
+	var numOfPlaces = getNumOfPlaces($role)[1];
+	var numOfChildren = $role.children().filter("[data-atom]").length
+	return (numOfPlaces == -1 ||
+		numOfChildren < numOfPlaces)
+}
+
+
 //let acceptString = $role.attr('string_accept')
-function attrAcceptToMinMax(acceptString){
-	let min=0 
-	let max=-1 //default value -1 means ther's not upper limit 
-	if(acceptString==undefined){
-		return [min,max]//with default values
+function attrAcceptToMinMax(acceptString) {
+	let min = 0
+	let max = -1 //default value -1 means ther's not upper limit 
+	if (acceptString == undefined) {
+		return [min, max]//with default values
 	}
 	let acceptLimits = acceptString.split(':')
-	if (acceptLimits.length==1){// "5"   precisely 5 elements return [5,5]
+	if (acceptLimits.length == 1) {// "5"   precisely 5 elements return [5,5]
 		let fixed = parseInt(acceptLimits[0]);
-		if (!isNaN(fixed)){
+		if (!isNaN(fixed)) {
 			min = fixed;
 			max = fixed;
 		}
 	}
-	else{//"2:3"
+	else {//"2:3"
 		let attrMin = parseInt(acceptLimits[0]);
-		if (!isNaN(attrMin)){//overwrite default only if not NaN
+		if (!isNaN(attrMin)) {//overwrite default only if not NaN
 			min = attrMin;
 		}
 		let attrMax = parseInt(acceptLimits[1]);
-		if (!isNaN(attrMax)){//overwrite default only if not NaN
+		if (!isNaN(attrMax)) {//overwrite default only if not NaN
 			max = attrMax;
 		}
 	}
-	return [min,max]
+	return [min, max]
 }
 
 function overflowExsists(node) {
@@ -444,7 +447,7 @@ function MNODEclone($node, Extend, removeID) {//default: Extend and RemoveID
 		$toBeCleaned.removeAttr("importStatus");
 		$toBeCleaned.removeClass("hide");
 		$toBeCleaned.removeClass("fundamental");
-		$toBeCleaned.removeClass("mu_CouldBeCollected");
+		$toBeCleaned.removeClass("CouldBeCollected");
 	}
 	return $clone;
 }
@@ -465,7 +468,7 @@ function prototypeSearch(className, dataType, requiredClass, name) {
 	//if(found 1 tag){return}
 	//if(found >1 tag){return}
 	var type = dataType; //per poter usare questo valore nell 'each'
-	
+
 	$prototypes = $prototypes.filter(function () {
 		return (
 			this.getAttribute("data-atom").toLowerCase() == className &&
@@ -501,7 +504,7 @@ function prototypeSearch(className, dataType, requiredClass, name) {
 		// add atomtype name as decoration name 
 		//Duplication the prototype is extended outside this function
 		//I nee to extend in order to use _setName
-		MNODEextend( $prototype);
+		MNODEextend($prototype);
 		$prototype[0].MNODE_setName(className)
 		//addTypeDecorations($prototype);
 		return $prototype;
@@ -652,17 +655,17 @@ function AtomsToVal($currAtom, res) {
 		}
 	} else if (op === "power") {
 		let $exponent = $currAtom[0].MNODE_getChildren(':last');//:first child is exponent\
-		if($exponent.attr("data-atom")=="cn"){ 
+		if ($exponent.attr("data-atom") == "cn") {
 			//------>
 			let resExp = AtomsToVal($exponent);
 			//<-----
-			res.exp = res.exp * resExp.val;  
+			res.exp = res.exp * resExp.val;
 			let $base = $currAtom[0].MNODE_getChildren(':first');//:first child is base
 			//------>
 			res.val = AtomsToVal($base).val;
 			//<-----
 		}
-		else{
+		else {
 			//can't manage x^y 
 		}
 		res.type = op;
@@ -703,7 +706,7 @@ function ValToAtoms(partial) {
 		}
 		$target = $clone[0].MNODE_getRoles();
 	}
-	else if (partial.exp!=1){
+	else if (partial.exp != 1) {
 		//power
 		$clone = MNODEclone(prototypeSearch("power"));
 		if ($target !== undefined) {
@@ -715,9 +718,9 @@ function ValToAtoms(partial) {
 		$exponent[0].MNODE_setName(partial.exp);
 		$clone[0].MNODE_getRoles('.exponent').append($exponent);
 		$target = $clone[0].MNODE_getRoles('.base');
-		
+
 	}
-	$clone = MNODEclone(prototypeSearch(partial.type, "num",undefined,partial.val));
+	$clone = MNODEclone(prototypeSearch(partial.type, "num", undefined, partial.val));
 	$clone[0].MNODE_setName(partial.val);
 	$clone.attr("data-atom", partial.type); //uso un generico prototipo num e qui specifico se cn o ci
 	if ($target !== undefined) {
@@ -747,7 +750,7 @@ function refreshOneBracket($MNODE) {
 }
 
 function refreshOneTimesDisp($MNODE, timesDisposition) {
-	if(!$MNODE.is('[data-atom=times]')){return}//procedi solo se è un atom di tipo times
+	if (!$MNODE.is('[data-atom=times]')) { return }//procedi solo se è un atom di tipo times
 	if (timesDisposition == "brTimes") {
 		reorderTimes($MNODE)
 	}
@@ -824,8 +827,8 @@ function MNODEEqual(node1, node2, checkType, neglectRootSign) {
 		return false;
 	}
 	return (
-		node1.MNODEcreateMathmlString(undefined,checkType, neglectRootSign) ===
-		node2.MNODEcreateMathmlString(undefined,checkType, neglectRootSign)
+		node1.MNODEcreateMathmlString(undefined, checkType, neglectRootSign) ===
+		node2.MNODEcreateMathmlString(undefined, checkType, neglectRootSign)
 	);
 	//return adaptMatch(undefined,$(node1),$(node2),$(node2))//sostituita comparazione "grezza" con comparazione ricorsiva
 }
@@ -971,7 +974,7 @@ function reorderTimes($startTimes, brRemove) {
 			}
 		}
 		//** se però non c'è numeratore, allora togli il br*/
-		if(!numeratorFound){
+		if (!numeratorFound) {
 			$(role).find('br').remove();
 		}
 	} catch (error) {

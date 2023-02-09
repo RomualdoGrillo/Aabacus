@@ -80,6 +80,7 @@ function replaceInForall($parameter,$newVal,$property){
 
 
 function containsBvar($member,$forAll){//contiene bvar?
+    if($forAll.attr('data-atom') != 'forAll'){return false}//if there is no outer forall.. no need for further inspection
     $candidates = $member.add( $member.find('[data-atom]') );
     $bvars = $candidates.filter(function(){
         return parameterType( $(this),$forAll ).slice(-1) === "_"
@@ -214,7 +215,7 @@ function swapMembersClone($origProp,mode){
     //createForThis($forall,$placeHolder)//todo: utilizzare stessa funzione rispetto a forThis manuale
     res.$cloneProp = MNODEclone($origProp);
     res.visualization =    wrapUnwrapUrlString( $origProp[0].style.backgroundImage ,'cutFirstDir')
-    if(debugMode){$('#canvasRole').append(res.$cloneProp)}//debug 
+    //if(debugMode){$('#canvasRole').append(res.$cloneProp)}//debug 
     MNODEextend(res.$cloneProp,true)
     //***********marca TUTTI I CLONI clone ************************************************
     res.$cloneProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone

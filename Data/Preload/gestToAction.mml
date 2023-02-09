@@ -152,13 +152,25 @@
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci type="bool">simpPlusSingleTerm</ci>
+			<ci type="bool">PlusSingleTerm</ci>
 			<ci type="bool">ltr</ci>
 		</apply>
 		<apply type="obj">
 			<callfunction>
 			</callfunction>
-			<ci type="bool">simpTimesSingleFactor</ci>
+			<ci type="bool">TimesSingleFactor</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">AndSingleChild</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">OrSingleChild</ci>
 			<ci type="bool">ltr</ci>
 		</apply>
 		<apply type="obj">

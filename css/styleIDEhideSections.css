@@ -134,8 +134,8 @@ body.gameModeSurpriseRes #result{
 }
 
 
-#canvasRole>[data-atom]:first-child{
-	margin-bottom:25px;
+#canvasRole>[data-and=horizontal]{
+	 margin-bottom:25px;
 }
 
 .fixButton{

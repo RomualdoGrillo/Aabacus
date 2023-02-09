@@ -453,10 +453,7 @@
 	cursor: pointer;
   }
   
-  /* all valid targets */
-  [target]:not([target=""]) {
-	  background-color: #eaeaea!important;
-  }
+  
   /* source role of the dragging*/ 
   .debug [from] {
 	  background-color: palevioletred;
@@ -791,6 +788,9 @@
 	  background-color:red;
   }
   
+  .debug .mu_Downstream1,.debug .mu_Downstream1 *{
+	/*background-color: #4d68ff!important;*/
+}
   body:not(.fixBorders) #canvasRole [data-atom][data-type=num]:not(:hover),
   body:not(.fixBorders) #result [data-atom][data-type=num]:not(:hover)
   {border-color:transparent;}
@@ -831,8 +831,9 @@
   /***********   tgt DUMMY element   *********/
   /* .tgt DIVs are dynamically added to act as sortable targets
   
-  /*[data-atom][target]::after,*/ .tgt{
-	  position:absolute;
+  /*[data-atom][target]::after, */ .tgt, .notAtgt {
+	pointer-events:none;  
+	position:absolute;
 	  z-index: 1;
 	  border-radius: inherit;
 	  width: 100%;
@@ -841,7 +842,16 @@
 	  background-size: 20px;
 	  background-repeat: no-repeat;
 	  background-position-x: center;
-	 }
+	}
+	.notAtgt{/* a div into a role causes problem for disposition of other elements even if position is absolute*/
+		width: 100px;
+		height: 100px;
+	}
+ /* all valid targets */
+ /*
+ [target]:not([target=""]) {
+	background-color: #eaeaea!important;
+}*/
   
   .mu_DropTarget{
 	  border-color:rgb(98, 98, 255)!important;

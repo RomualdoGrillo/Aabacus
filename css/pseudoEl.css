@@ -167,7 +167,7 @@ disadvantage: building new prototypes is less intuitive
 	box-shadow: 2px 3px 5px 0px grey;*/
 }
 [data-tag][data-tagimg]::after{
-	padding-left: 45px;
+	padding-left: 39px;
 }
 
 [data-tag]:not([data-vis=collapsed]):not([data-atom=ci]){

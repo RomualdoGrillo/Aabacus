@@ -7,10 +7,6 @@ let GLBDnD = { toolWhenMousedown: "" }
 
 function MakeSortableAndInjectMouseDown(event) {
 	let $validTgT=$();
-	/********cleanup*******/
-	if (debugMode) {//that's just for debug mode, in normal mode targets are clened on mouseup
-		cleanupDnD()
-	}
 	/******** from target to Atom target *************/
 	//glued vs no glued
 	let $atomTarget
@@ -19,17 +15,26 @@ function MakeSortableAndInjectMouseDown(event) {
 	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	}
+	/********cleanup*******/
+	cleanupDnD() //cleanup must happen after $atomTarget is determined!!! Othrwise you may remove the element clicked on
+	//***selection manager "grey" highlight
+	if($atomTarget.hasClass('unselectable')){
+		selectionManager("","","",true)//deselectAll
+	}
+	else{
+		selectionManager($atomTarget,event.ctrlKey||event.metaKey,event.shiftKey)//on mac use command key instead of control
+	}
 	//**** highlight Span and Parameters
 	if($atomTarget.attr('data-atom')=='ci'){
 		highlightOccurrences($atomTarget,'mu_connected');
 	}
-
+	
 	//**** highlight DOWNSTREAM 
-	// add class mu_Downstream1, downstrwam2, downstream3, downstreamuFurther
-	/*if($atomTarget.attr('data-type')=='bool'){
-		$PropositionLevelAndDownstream($atomTarget.parent(),false).addClass('mu_Downstream1');
+	// add class mu_Downstream1
+	if($atomTarget.attr('data-type')=='bool'){
+		$calculateJurisdictionUpstream($atomTarget.parent()).addClass('mu_span');
 	}
-	*/
+	
 	GLBDnD.toolWhenMousedown = GLBsettings.tool;
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
 		//********* autoAdapt ****************
@@ -57,7 +62,7 @@ function MakeSortableAndInjectMouseDown(event) {
 			$atomTarget.addClass('attackPoint')
 			$validTgT = validCandidatesForPatternDrop($startPointForValids,GLBDnD.$originalProperty);
 			//$validTgT = validCandidatesForPatternDrop(  $($startPointForValids.toArray().reverse())  );
-			makeTargetsSortableRolesOrAtoms($validTgT.toArray(), 'dragPatternMatch');
+			makeTargetsSortableRolesOrAtoms($validTgT.toArray().reverse(), 'dragPatternMatch');//order is important!!!!
 			
 			
 			
@@ -81,12 +86,12 @@ function MakeSortableAndInjectMouseDown(event) {
 		makeSortableMouseDown($validTgTOpen.toArray(), true);
 	}
 	else {
-		//******** apply custom propeties listed in propertiesDnD[i] ***************
+		//********  determine validTargets for propeties listed in propertiesDnD[i] ***************
 		if (!$atomTarget.length || !$atomTarget[0].parentElement) { return }//precondition
 		let i = 0
 		let propInCanvasEnabled = getDnDpropEnabled()
 		while (propInCanvasEnabled[i]) {
-			let targets = propInCanvasEnabled[i].findTgt($atomTarget,(event.ctrlKey || event.metaKey));
+			let targets = propInCanvasEnabled[i].findTgt($atomTarget,(event.ctrlKey || event.metaKey),event.altKey);
 			makeTargetsSortableRolesOrAtoms(targets, propInCanvasEnabled[i].name, propInCanvasEnabled[i].icon)
 			$validTgT = $validTgT.add($(targets))
 			i++
@@ -206,7 +211,10 @@ function onAdd(event) {
 				return el.name == targetProperty
 			});
 			if (property) {
-				let PActx = property.apply($(event.item), $(event.to.parentElement), $(dropped))
+				let $droppedIn
+				if($(event.to).hasClass('tgt')){ $droppedIn = $(event.to.parentElement)}//skip dummy tgt if present
+				else{$droppedIn = $(event.to)}
+				let PActx = property.apply($(event.item), $droppedIn, $(dropped))
 				PActx.visualization = property.icon //an element must appear on the canvas to enable the property, such element also contains the icon for that property
 				if (adHocTgt) {
 					(event.to).remove()
@@ -231,7 +239,12 @@ function makeTargetsSortableRolesOrAtoms(targetsArray, propertyName, icon) {
 		targetsArray[j].setAttribute('target', propertyName);
 		if (targetsArray[j].matches('.ul_role')) {
 			//target is a role: for example associative property   
-			makeSortableMouseDown([targetsArray[j]])
+			makeSortableMouseDown([targetsArray[j]]);
+			let notAtgt = $('<div class="notAtgt"></div>')[0]
+			if(icon){
+					$(notAtgt).css('background-image',wrapUnwrapUrlString(icon));
+			}
+			targetsArray[j].append(notAtgt);
 		} else {
 			//target is not a role: for example in replacement it is an atom
 			let tgt = $('<div class="tgt"></div>')[0]
@@ -276,9 +289,9 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 	return sortables
 }
 function MouseUpCleanup(event) {
-	//console.log(event)
 	if (!debugMode) {//in debugMode i target sono lasciati visibili
-		cleanupDnD()
+		hideTargetsOnMouseUp()// targets are hidden, not removed 
+		//cleanupDnD()//if I remove targets and the "onAdd" event fires after Mouseup, the onAdd handler may be in error because of disappeared targets
 	}
 }
 
@@ -290,14 +303,23 @@ function cleanupDnD() {
 	//Sortend is not fired if click without drag
 	//Documentation:
 	//https://docs.google.com/drawings/d/1sASg3RC51sOYWCRIxJjdRI_lL0ZKpATyPaFWfkVxT70/edit
-	removeClassByPrefix(undefined,'mu_') //clear classes on mouseup
+	removeClassByPrefix(undefined,'mu_') //clear classes in case mouseup failed to fire
 	clearSortableTargets()
 	clearLines()//todo: distinguish between hints and PatternMatching and other lines
+}
+function hideTargetsOnMouseUp(){
+	removeClassByPrefix(undefined,'mu_') //clear classes on mouseup
+	$('.tgt,.notAtgt').css('background-image','none')
+	clearLines()
 }
 
 
 function clearSortableTargets() {
-	let tgts = document.querySelectorAll('.tgt');
+	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
+	$('*').removeClass('dropTarget');
+	$('*').removeClass('TargetsCommonParent');
+	$('*').removeClass('refine_c'); 
+	let tgts = document.querySelectorAll('.tgt,.notAtgt');
 	let i = 0;
 	while (tgts[i]) {
 		let sortable = Sortable.get(tgts[i]);
