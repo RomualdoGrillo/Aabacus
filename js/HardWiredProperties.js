@@ -995,11 +995,11 @@ function addRedundant($dragged, $target, $dropped) {
 	if ($target.attr('data-atom')) {//if target is an atom, create an AND around it
 		let $extOp = encaseWithOperation($target, 'and')
 		$target = $extOp[0].MNODE_getRoles()
-		PActx.msg = "created and, added Redundant"
+		PActx.msg = "created and, added Redundant or deduction"
 		$target.append($dropped);
 	}
 	else {
-		PActx.msg = "added Redundant"
+		PActx.msg = "added Redundant or deduction"
 	}
 	PActx.matchedTF = true;
 	PActx.replacedAlready = true;
