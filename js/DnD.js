@@ -36,7 +36,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	}
 	
 	GLBDnD.toolWhenMousedown = GLBsettings.tool;
-	if (GLBDnD.toolWhenMousedown == 'autoAdapt') {
+	if (GLBDnD.toolWhenMousedown == 'autoAdapt'){
 		//********* autoAdapt ****************
 		if (MNODEclosedDef($(event.target))) {
 			GLBDnD.$originalProperty = $(event.target).closest('[data-atom=forAll]');
@@ -61,11 +61,10 @@ function MakeSortableAndInjectMouseDown(event) {
             if($startPointForValids.length==0){$startPointForValids=$atomTarget}
 			$atomTarget.addClass('attackPoint')
 			$validTgT = validCandidatesForPatternDrop($startPointForValids,GLBDnD.$originalProperty);
-			//$validTgT = validCandidatesForPatternDrop(  $($startPointForValids.toArray().reverse())  );
-			makeTargetsSortableRolesOrAtoms($validTgT.toArray().reverse(), 'dragPatternMatch');//order is important!!!!
-			
-			
-			
+			//order is important!!!!
+			//WORKS but I don't know why: apparently if I sort with criteriion Son->parent does not work, if I sort Parent->son than reverse it works
+			//makeTargetsSortableRolesOrAtoms($validTgT.toArray().sort(CriterionSonParent), 'dragPatternMatch');//not working
+			makeTargetsSortableRolesOrAtoms($validTgT.toArray().sort(CriterionParentSon).reverse(), 'dragPatternMatch');//working		
 		}
 		else {
 			//no forall property

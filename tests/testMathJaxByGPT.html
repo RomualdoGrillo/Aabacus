@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/startup.js" integrity="sha512-TVq6RFk599KMqPh7Ri0yEAxHbJ0dcxSSPgvMuzQUg0wu4z+X7z2PsibMbbzAq/AHloHdxMW0FdvKv9k4s8niuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        jax: ["input/TeX","output/SVG"],
+        extensions: ["tex2jax.js"],
+        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      });
+    </script>
+  </head>
+  <body>
+    <div>
+      <label for="expression">Enter a math expression:</label>
+      <input type="text" id="expression" name="expression">
+    </div>
+    <div>
+      <button onclick="translateToMathML()">Translate</button>
+    </div>
+    <div id="output"></div>
+    <script>
+      function translateToMathML() {
+        const expression = document.getElementById("expression").value;
+        const mathML = "<math>" + MathJax.tex2jax.getMathML(expression) + "</math>";
+        document.getElementById("output").innerHTML = mathML;
+      }
+    </script>
+  </body>
+</html>

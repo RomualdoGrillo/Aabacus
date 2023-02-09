@@ -218,7 +218,7 @@ function MNODEReplaceAll(
 	var $replaced = $(replaced);
 	var $replacer = $(replacer);
 	$startNode = $($startNode); //se per caso passo uno start node non $
-	var $occurrences = $findOccurrences($replaced, $startNode, false)
+	var $occurrences = $findOccurrences($replaced, $startNode)
 	var result = $.each($occurrences, function (i, o) {
 		MNODEReplace($(o), $replacer);
 	});

@@ -854,9 +854,9 @@
 }*/
   
   .mu_DropTarget{
-	  border-color:rgb(98, 98, 255)!important;
+	  border-color: rgb(98 100 255)!important;
 	  /*border-style:dashed;*/
-  }
+	 }
   body[tool=autoAdapt] .mu_DropTarget{
 	border-color: blueviolet!important;
 }
