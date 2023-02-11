@@ -401,6 +401,28 @@ function validForPartColl($mouseDownAtom){
 	return $valids	
 }
 
+function MNODEpartCollectThreeCases($dragged,$target){
+	let PActx = newPActx();
+	PActx.replacedAlready = true;
+	PActx.visualization = "images/properties/collect.svg"
+	let $commonParent = MNODEparent( $(commonParentOfTwo(a,b)) );
+	let opCP = $commonParent.$targetParent.attr("data-atom");
+	//can be collected
+
+	let $targetParent = MNODEparent($target);
+	let $siblingsT = $target.siblings('[data-atom]')
+	let opt = $targetParent.attr("data-atom")
+		
+	let $draggedParent = MNODEparent($dragged);
+	let $siblingsD = $dragged.siblings('[data-atom]')
+	let opd = $draggedParent.attr("data-atom")
+}
+
+
+
+
+
+
 function MNODEpartCollect($dragged,$target){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
