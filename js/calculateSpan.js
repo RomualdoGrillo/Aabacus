@@ -9,9 +9,44 @@ function $immediateJurisdictionRoleUpstream($role) {
 	return $result
 }
 
+function $immediateJurisdictionRolesNEW($role) {
+	//excluded is used to avoid exploring into startProposition when looking for for consequences of such proposition
+	let $startAtom = MNODEparent($role)
+	let startAtom_op = $startAtom.attr("data-atom");
+	let $immediateDiscendence = $()
+	let $parentAtom = MNODEparent($startAtom);
+	//-immediate propagate roles, excluding start node
+	//-upstream: And
+	if ($parentAtom.is('[data-atom=and]')) {
+		$immediateDiscendence = $immediateDiscendence.add($parentAtom[0].MNODE_getRoles())
+	}
+	//-sameLevel: implies firstMember to secondMember
+	if ((startAtom_op == 'implies') && $role.hasClass('firstMember')) {
+		$secondMember = $startAtom[0].MNODE_getRoles('.secondMember');
+		$immediateDiscendence = $immediateDiscendence.add($secondMember);
+	}
+	//-downstream: all boolean roles
+	let $children = $role.children('[data-atom]');
+	$children.each(function () {
+		$immediateDiscendence = $immediateDiscendence.add(this.MNODE_getRoles('[data-type=bool]'))//add roles
+		//let op = $(this).attr("data-atom");
+		//if( op == 'and' || op == 'or' || op == 'implies'){
+		//	$immediateDiscendence = $immediateDiscendence.add(this.MNODE_getRoles()[0])//add roles
+		//}
+		//else if(op == 'forAll'){
+		//	$immediateDiscendence = $immediateDiscendence.add(this.MNODE_getRoles('.forAllContent')[0])//add roles
+		//}
+	})
+	return $immediateDiscendence
+}
+
+
+
+
+
 function $immediateJurisdictionRolesForAddRedundant($role) {
 	//excluded is used to avoid exploring into startProposition when looking for for consequences of such proposition
-	if($role.is('[data-atom]')){
+	if ($role.is('[data-atom]')) {
 		return $() // Target atoms are just proxy for underlyng role.
 		//recursive exploration happens jumping fron role to upstream and downstrem role.
 	}
@@ -19,25 +54,25 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 	let startNode_op = $startAtom.attr("data-atom");
 	let $stepStoneORtarget = $()
 	let $children = $role.children('[data-atom]');
-	if (startNode_op == 'and'){
+	if (startNode_op == 'and') {
 		//upstream if it's an AND
 		if (MNODEparent($startAtom).is('[data-atom=and]')) {
 			$stepStoneORtarget = $stepStoneORtarget.add($startAtom.parent())
 		}
 	}//downstream
 	$stepStoneORtarget = $stepStoneORtarget.add($children);
-	$children.each(function(){
+	$children.each(function () {
 		let op = $(this).attr("data-atom");
-		if( op == 'and' || op == 'or' || op == 'implies'){
+		if (op == 'and' || op == 'or' || op == 'implies') {
 			$stepStoneORtarget = $stepStoneORtarget.add(this.MNODE_getRoles()[0])//add roles
 		}
-		else if(op == 'forAll'){
+		else if (op == 'forAll') {
 			$stepStoneORtarget = $stepStoneORtarget.add(this.MNODE_getRoles('.forAllContent')[0])//add roles
 		}
 		//else if(op == 'not'){ this is a target for DeMorgan}
 	})
 	//downstream implies firstMember
-	if ( (startNode_op == 'implies') && $role.hasClass('firstMember')) {
+	if ((startNode_op == 'implies') && $role.hasClass('firstMember')) {
 		$secondMember = $startAtom[0].MNODE_getRoles('.secondMember');
 		$stepStoneORtarget = $stepStoneORtarget.add($secondMember);
 	}
@@ -110,6 +145,35 @@ function $AssRolesRec($startAtom, immediate, $startRole) {
 	}
 	return $validRoles
 }
+function $RecursiveTreeExplorerCriteriumROLES($startRole, selectionStringOrFunction, $exploredAlreadyROLES) {
+	//test:  $RecursiveTreeExplorerCriterium($('.selected'),'[data-atom]')  
+	//criterium:selector string or function() return items at distace 1 from $startRole and fitered with some criteria  
+	//futuribile
+	//safeMode:false fast search structure is acyclic criterium excludes start node adds elements one step away
+	//        :true safe structure can be cyclic 
+	//currentResults are passed via $exploredAlreadyROLES
+	let selectionFunction
+	if (typeof (selectionStringOrFunction) == "string") {
+		selectionFunction = function ($startRole) { return $startRole.find(selectionStringOrFunction) }
+	}
+	else {
+		selectionFunction = selectionStringOrFunction
+	}
+	if (!$exploredAlreadyROLES) { $exploredAlreadyROLES = $() }
+	$exploredAlreadyROLES = $exploredAlreadyROLES.add($startRole)
+	let $immediateDiscendence = selectionFunction($startRole).not($exploredAlreadyROLES);
+	let i = 0
+	$exploredAlreadyROLES = $exploredAlreadyROLES.add($immediateDiscendence)
+	let $discendence = $immediateDiscendence;
+	while ($immediateDiscendence[i]) {
+		//lineAB($startRole,$immediateDiscendence.eq(i))
+		//---recursive
+		$discendence = $discendence.add($RecursiveTreeExplorerCriteriumROLES($immediateDiscendence.eq(i), selectionFunction, $exploredAlreadyROLES));
+		i++
+	}
+	return $discendence
+}
+
 function $RecursiveTreeExplorerCriterium($startNode, selectionStringOrFunction, $exploredAlready) {
 	//test:  $RecursiveTreeExplorerCriterium($('.selected'),'[data-atom]')  
 	//criterium:selector string or function() return items at distace 1 from $startNode and fitered with some criteria  
@@ -126,14 +190,14 @@ function $RecursiveTreeExplorerCriterium($startNode, selectionStringOrFunction, 
 	}
 	if (!$exploredAlready) { $exploredAlready = $() }
 	$exploredAlready = $exploredAlready.add($startNode)
-	let $directChildren = selectionFunction($startNode).not($exploredAlready);
+	let $immediateDiscendence = selectionFunction($startNode).not($exploredAlready);
 	let i = 0
-	$exploredAlready = $exploredAlready.add($directChildren)
-	let $discendence = $directChildren;
-	while ($directChildren[i]) {
-		//lineAB($startNode,$directChildren.eq(i))
+	$exploredAlready = $exploredAlready.add($immediateDiscendence)
+	let $discendence = $immediateDiscendence;
+	while ($immediateDiscendence[i]) {
+		//lineAB($startNode,$immediateDiscendence.eq(i))
 		//---recursive
-		$discendence = $discendence.add($RecursiveTreeExplorerCriterium($directChildren.eq(i), selectionFunction, $exploredAlready));
+		$discendence = $discendence.add($RecursiveTreeExplorerCriterium($immediateDiscendence.eq(i), selectionFunction, $exploredAlready));
 		i++
 	}
 	return $discendence
@@ -175,7 +239,7 @@ function highlightOccurrences($identifier, addClass) {
 	//evidenzia lo span e le occorrenze dell'identificatore
 	let $span = $identifierSpanForAll($identifier);
 	$span.not('#canvasAnd').addClass('mu_span')//highlight span unless it's the whole canvas
-	let $occurrences = $findOccurrences($identifier, undefined, true)
+	let $occurrences = $findOccurrences($identifier, undefined).filter(':visible');
 	$occurrences.addClass(addClass);
 	/*$occurrences.each(function(){
 		// crea linee
@@ -183,19 +247,18 @@ function highlightOccurrences($identifier, addClass) {
 	})*/
 }
 
-// example use:
-// $findOccurrences($identifier,$identifierSpanForAll($identifier))
-function $findOccurrences($wanted, $span, excludeHidden) {
-	if (!$span) { $span = $identifierSpanForAll($wanted); }
-	//todo: questa ricerca non distingue le variabili interne "Bvar".
-	// Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
-	let $candidates
-	if (excludeHidden) {
-		$candidates = $span.find("[data-atom]:visible")
-	}
-	else {//default
+
+function $findOccurrences($wanted, $span, $candidates) {
+	// example use:
+	// $findOccurrences($identifier,$identifierSpanForAll($identifier))
+	if (!$candidates) {
+		if (!$span) {
+			$span = $identifierSpanForAll($wanted);
+		}
 		$candidates = $span.find("[data-atom]")
 	}
+	//todo: questa ricerca non distingue le variabili interne "Bvar".
+	// Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
 	let $occurrences = $candidates.filter(function () {
 		//return MNODEEqual($atom_param[0],this)
 		return compareExtMNODE($wanted, $(this), true, false);
@@ -209,35 +272,61 @@ function $calculateJurisdictionUpstream($startRole) {
 	return $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRoleUpstream)
 }
 
-function $calculateTargetsAddRedundantAtomsAndRoles($startRole) {
-	//staring point must be a role!!
-	let $allTargets = $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRolesForAddRedundant).filter(':visible');
-	//1)) filter out atoms, some atom will be added back in 2))
-	return $allTargets.not('[data-atom]').map(function(){
-		//2))if this role can't accept a drop, make the children atom his proxy
-		let op =	MNODEparent($(this)).attr("data-atom");
-		if( op == 'or'){
-			return $(this).children('[data-atom]').not('[data-atom=and]').toArray()
-		}
-		else if( op == 'implies' && !isTherePlaceForAnother($(this))){
-			return $(this).children('[data-atom]')[0]
-		}
-		else{
-			return this
-		}
+
+function $PropositionsAffectedByStartPropositionROLES($startProposition) {
+	//test: $PropositionsAffectedByStartPropositionROLES($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')});
+	let $roles = $RolesAffectedByStartPropositionROLES($startProposition)
+	//from roles to targets:
+	return $targets = $roles.map(function () {
+		return $(this).children('[data-atom]').not('[data-atom=and]').toArray()
 	})
 }
 
-function $PropositionsAffectedByStartProposition($startProposition) {
+function $RolesAffectedByStartPropositionROLES($startProposition) {
+	//test: $RolesAffectedByStartPropositionROLES($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')});
+	//if startAtom parent is AND or imply, get starting role from start node:  
 	let $propositionParent = MNODEparent($startProposition)
-	let propParentOp = $propositionParent.attr('data-atom') 
+	let propParentOp = $propositionParent.attr('data-atom')
+	let $startRole
 	let $excludedRoles = $startProposition[0].MNODE_getRoles();
-	if(propParentOp=='and' || propParentOp=='implies'){
-		let $startRole = $startProposition.parent()
-		let $allTargets = $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRolesForAddRedundant,$excludedRoles).filter(':visible');
-		return $allTargets.filter('[data-atom]').filter(function(){return !this.contains($startProposition[0])})//filter out ancestors	
+	let $roles = $()
+	if (propParentOp == 'and') {
+		$startRole = $startProposition.parent()
 	}
-	else{
-		return $()//there's no start role if the proposition parent is or etc...
+	else if (propParentOp == 'implies' && $startProposition.hasClass('firstMember')) {
+		if ((startAtom_op == 'implies') && $role)
+			$startRole = $propositionParent[0].MNODE_getRoles('.secondMember');
 	}
+	if ($startRole) {
+		//propagate all Roles excluding start Node //note: apply to yourself?
+		$roles = $RecursiveTreeExplorerCriteriumROLES($startRole, $immediateJurisdictionRolesNEW, $excludedRoles)
+		$roles = $roles.add($startRole);
+	}
+	return $roles
+}
+
+function $calculateTargetsAddRedundantROLES($startProposition) {
+	//test: $validAddRedundantROLES($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')});
+	//propagate all Roles excluding start Atom //note: apply to yourself?
+	let $roles = $RolesAffectedByStartPropositionROLES($startProposition)
+	//from roles to targets:
+	// two types of boolean roles exist:1) those with TRUE as neutral elements 2) OTHERS
+	// OR belongs to the second group!!!
+	return $targets = $roles.map(function () {
+		let op = MNODEparent($(this)).attr("data-atom");
+		if (op == 'or') {
+			//---OR roles are replaced with contained atoms if they are not ANDs.
+			//---OR empty roles are removed
+			return $(this).children('[data-atom]').not('[data-atom=and]').toArray()
+		}
+		else if (!isTherePlaceForAnother($(this))) {
+			//---full boolean roles are replaced with contained atom if it's not an AND.
+			return $(this).children('[data-atom]').not('[data-atom=and]')[0]
+		}
+		else {
+			//---empty boolean roles are targets
+			//---AND roles are targets
+			return this
+		}
+	})
 }
