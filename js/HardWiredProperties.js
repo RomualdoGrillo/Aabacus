@@ -186,6 +186,7 @@ function validForPartDist($mouseDownAtom, ctrlOrMeta) {
 	let op = opIsDistDop("", opD);
 	if (op && MNODEparent($parent).attr("data-atom") == op) {
 		return MNODEparent(MNODEparent($parent)).find('>.ul_role')
+		//return MNODEparent($parent).find('>.ul_role')
 	}
 	/*
 	if(op && MNODEparent($parent).attr("data-atom") === op){//check if parent of parent is the right op
