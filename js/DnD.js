@@ -10,8 +10,11 @@ function MakeSortableAndInjectMouseDown(event) {
 	/******** from target to Atom target *************/
 	//glued vs no glued
 	let $atomTarget
+	if( !$(event.target).is('#canvas *,#palette *')){
+		return //nothing to drag
+	}
 	if (MNODEclosedDef($(event.target))) {
-		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not(.glued)');
+		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not([data-undraggable]):not(.glued)');//undraggable is used for the cnvas, data-undraggable is for content
 	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	}

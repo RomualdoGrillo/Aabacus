@@ -22,10 +22,10 @@
 </section>
 <section data-section="canvas">
 	<ci data-tag="hanoiMoveDnD" data-tagimg="./images/properties/HanoiMove.svg" data-type="bool" title="Puoi spostare un disco per volta prendendolo dalla cima e mettedolo in cima ad un'altra colonna, nessun disco può poggiare su un disco più piccolo.">true</ci>
-	<apply data-type="bool">
+	<apply data-undraggable data-type="bool">
 			<hanoi>
 			</hanoi>
-			<apply data-type="bool">
+			<apply data-undraggable data-type="bool">
 				<hanoirod>
 				</hanoirod>
 				<cn data-type="obj">1</cn>
@@ -33,11 +33,11 @@
 				<cn data-type="obj">3</cn>
 				<cn data-type="obj">4</cn>
 			</apply>
-			<apply data-type="bool">
+			<apply data-undraggable data-type="bool">
 				<hanoirod>
 				</hanoirod>
 			</apply>
-			<apply data-type="bool">
+			<apply data-undraggable data-type="bool">
 				<hanoirod>
 				</hanoirod>
 			</apply>
