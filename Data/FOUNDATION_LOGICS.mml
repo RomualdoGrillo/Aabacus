@@ -1,5 +1,5 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply data-vis="" data-tag="logics" data-type="bool">
+	<apply data-vis="collapsed" data-tag="logics" data-type="bool">
 			<and>
 			</and>
 			<apply data-vis="collapsed" data-tag="ModusTollens" data-type="bool">
@@ -294,6 +294,82 @@
 								<ci data-type="bool">a</ci>
 							</apply>
 							<ci data-type="bool">true</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+			<apply data-vis="collapsed" data-tag="DeMorganAND" data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="bool">a</ci>
+				</bvar>
+				<bvar>
+					<ci data-type="bool">b</ci>
+				</bvar>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<not>
+						</not>
+						<apply data-type="bool">
+							<and>
+							</and>
+							<ci data-type="bool">a</ci>
+							<ci data-type="bool">b</ci>
+						</apply>
+					</apply>
+					<apply data-type="bool">
+						<or>
+						</or>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">a</ci>
+						</apply>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">b</ci>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+			<apply data-vis="collapsed" data-tag="DeMorganOR" data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="bool">a</ci>
+				</bvar>
+				<bvar>
+					<ci data-type="bool">b</ci>
+				</bvar>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply data-type="bool">
+						<not>
+						</not>
+						<apply data-type="bool">
+							<or>
+							</or>
+							<ci data-type="bool">a</ci>
+							<ci data-type="bool">b</ci>
+						</apply>
+					</apply>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">a</ci>
+						</apply>
+						<apply data-type="bool">
+							<not>
+							</not>
+							<ci data-type="bool">b</ci>
 						</apply>
 					</apply>
 				</apply>
