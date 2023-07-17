@@ -1,0 +1,42 @@
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
+<section data-section="canvas">
+	<apply data-type="bool">
+			<or>
+			</or>
+			<apply data-type="bool">
+				<and>
+				</and>
+				<ci data-type="bool">Europe</ci>
+				<ci data-type="bool">Bolkestein</ci>
+				<apply data-type="bool">
+					<or>
+					</or>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<ci data-type="bool">Italy</ci>
+						<ci data-type="bool">ItalianLaw</ci>
+					</apply>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<ci data-type="bool">France</ci>
+						<ci data-type="bool">FrenchLaw</ci>
+					</apply>
+					<ci data-type="bool">else</ci>
+				</apply>
+			</apply>
+			<ci data-type="bool">else</ci>
+	</apply>
+</section>
+<section data-section="events">
+	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
+			<and>
+			</and>
+	</apply>
+</section>
