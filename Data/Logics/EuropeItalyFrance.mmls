@@ -5,6 +5,8 @@
 	</apply>
 </section>
 <section data-section="canvas">
+<ci data-type="bool" data-import="./Data/FOUNDATION.mml">import FOUNDATION</ci>
+
 	<apply data-type="bool">
 			<or>
 			</or>
@@ -39,4 +41,9 @@
 			<and>
 			</and>
 	</apply>
+</section>
+<section data-section="settings">
+	{
+   "import_json_settings":"./Data/Preload/default.set"
+    }
 </section>
