@@ -48,7 +48,7 @@
 	</apply>
 </section>
 <section data-section="canvas">
-	<ci data-type="bool">"per un punto passa una e una sola retta" in termini di tipi: "il tipo della funzione sotto è punto,altroPunto=&gt;retta"</ci>
+	<ci data-type="bool">"per due punti passa una e una sola retta" in termini di tipi: "il tipo della funzione sotto è punto,altroPunto=&gt;retta"</ci>
 	<apply data-type="bool">
 		<eq>
 		</eq>
