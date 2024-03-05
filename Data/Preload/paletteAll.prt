@@ -152,9 +152,12 @@
 				<div class="s_role existsContent" data-type="bool" ></div>
 			</div>
 			<div data-proto="root" data-atom="root" data-type="obj" class="atom">
-				√<div class="s_role" data-type="num"></div>
+				<!-- inserito anche l'esponente, vedi specifiche mathml -->
+				<div class="s_role degree" data-type="num"></div>
+				<div class="root_decoration">√</div>
+				<div class="s_role radicand" data-type="num"></div>
 			</div>
-			<!-- root andrebbe inserito anche l'esponente, vedi specifiche mathml -->
+			
 			<div data-proto="abs" data-atom="abs" data-type="num" class="atom">
 				|<div class="s_role" data-type="num"></div>
 				|
