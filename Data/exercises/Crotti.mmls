@@ -23,7 +23,7 @@
 			</div>
 			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 				<div class="ul_role" data-type="bool">
-					<apply title="Proprietà associativa della somma: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-vis="collapsed" data-tag="AssociativaSomma" data-tagimg="./images/properties/AssocGen.png" data-type="bool">
+					<apply title="Proprietà associativa della somma: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-vis="collapsed" data-tag="AssociativaSomma" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
 						<forall>
 						</forall>
 						<bvar>
@@ -53,7 +53,7 @@
 							</apply>
 						</apply>
 					</apply>
-					<apply title="Proprietà associativa della moltiplicazione: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-variableorient="true" data-tagimg="./images/properties/AssocGen.png" data-vis="collapsed" data-tag="AssociativaMoltiplicazione" data-type="bool">
+					<apply title="Proprietà associativa della moltiplicazione: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-variableorient="true" data-tagimg="./images/properties/AssocGen.svg" data-vis="collapsed" data-tag="AssociativaMoltiplicazione" data-type="bool">
 						<forall>
 						</forall>
 						<bvar>
