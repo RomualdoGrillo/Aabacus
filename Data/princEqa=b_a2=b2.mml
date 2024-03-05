@@ -1,0 +1,63 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<apply data-type="bool">
+			<deftrue>
+			</deftrue>
+			<ci data-type="bool">prinEqQuadrato</ci>
+			<apply data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="num">a</ci>
+				</bvar>
+				<bvar>
+					<ci data-type="num">b</ci>
+				</bvar>
+				<apply data-type="bool">
+					<implies>
+					</implies>
+					<apply data-type="bool">
+						<and>
+						</and>
+						<apply data-type="bool">
+							<geq>
+							</geq>
+							<ci data-type="num">b</ci>
+							<cn data-type="num">0</cn>
+						</apply>
+						<apply data-type="bool">
+							<geq>
+							</geq>
+							<ci data-type="num">a</ci>
+							<cn data-type="num">0</cn>
+						</apply>
+					</apply>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<ci data-type="num">a</ci>
+							<ci data-type="num">b</ci>
+						</apply>
+						<apply data-type="bool">
+							<eq>
+							</eq>
+							<apply data-type="num">
+								<power>
+								</power>
+								<ci data-type="num">a</ci>
+								<cn data-type="num">2</cn>
+							</apply>
+							<apply data-type="num">
+								<power>
+								</power>
+								<ci data-type="num">b</ci>
+								<cn data-type="num">2</cn>
+							</apply>
+						</apply>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+</math>
