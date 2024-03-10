@@ -451,6 +451,7 @@ function PActxConclude(PActx) {
 		}
 		RefreshEmptyInfixBraketsGlued($('body'),true);
 		ssnapshot.take();
+		if(GLBsettings.movesCounter!=undefined){GLBsettings.movesCounter++};
 		lookForResultAndCelebrate();
 		PActxVisualize(PActx);
 	}
