@@ -13,7 +13,8 @@
 				</and>
 			</apply>
 	</apply>
-	<ci data-type="bool">Seleziona e applica la proprietà commutativa generalizzata della somma: trascina gli elementi per rimetterli in ordine</ci>
+	<ci data-type="bool">Seleziona la proprietà commutativa generalizzata della somma: clicca sull'icona che la raffigura</ci>
+	<ci data-type="bool">Applica la proprietà commutativa generalizzata: trascina gli elementi per rimetterli in ordine</ci>
 	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-type="bool">
 			<and>
 			</and>
