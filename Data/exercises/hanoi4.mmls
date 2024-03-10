@@ -74,6 +74,7 @@
 	"gameModeSurpriseRes":false,
 	"lockCanvas":true,
 	"resultHidden":false,
+	"palette":"hidden",
 	"movesCounter":0,
 	"movesMinNumber":15,
 	"visSettingSelected":1,

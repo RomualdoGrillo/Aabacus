@@ -25,10 +25,10 @@
 </section>
 <section data-section="canvas">
 	<ci data-tag="hanoiMoveDnD" data-tagimg="./images/properties/HanoiMove.svg" data-type="bool" title="Puoi spostare un disco per volta prendendolo dalla cima e mettedolo in cima ad un'altra colonna, nessun disco può poggiare su un disco più piccolo.">true</ci>
-	<apply data-type="bool">
+	<apply data-undraggable data-type="bool">
 			<hanoi>
 			</hanoi>
-			<apply data-type="bool">
+			<apply data-undraggable data-type="bool">
 				<hanoirod>
 				</hanoirod>
 				<cn data-type="obj">1</cn>
@@ -37,11 +37,11 @@
 				<cn data-type="obj">4</cn>
 				<cn data-type="obj">5</cn>
 			</apply>
-			<apply data-type="bool">
+			<apply data-undraggable data-type="bool">
 				<hanoirod>
 				</hanoirod>
 			</apply>
-			<apply data-type="bool">
+			<apply data-undraggable data-type="bool">
 				<hanoirod>
 				</hanoirod>
 			</apply>
@@ -73,7 +73,54 @@
 	</apply>
 </section>
 <section data-section="settings">
-	{
-   "import_json_settings":"./Data/Preload/proof.set"
-    }
+	 {
+	"debug":false,
+	"gameMode":true,
+	"gameModeSurpriseRes":false,
+	"lockCanvas":true,
+	"resultHidden":false,
+	"palette":"hidden",
+	"movesCounter":0,
+	"movesMinNumber":31,
+	"visSettingSelected":1,
+	"tool":"",
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+        "timesDisposition":0,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":true
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"tooColored",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":false
+		}
+	]
+}
 </section>
