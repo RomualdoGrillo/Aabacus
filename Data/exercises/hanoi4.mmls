@@ -75,7 +75,7 @@
 	"lockCanvas":true,
 	"resultHidden":false,
 	"movesCounter":0,
-	"movesMinNumber":10,
+	"movesMinNumber":15,
 	"visSettingSelected":1,
 	"tool":"",
 	"visSettings":[

@@ -113,3 +113,11 @@ button>.ui-icon {
 [data-atom].error {
     background-color: red!important;
 }
+
+#statusDisplay {
+	position: absolute;
+	top: 0;
+	right: 100px;
+	color: black;
+	z-index: 2;
+}  

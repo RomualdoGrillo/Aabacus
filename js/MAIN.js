@@ -451,7 +451,9 @@ function PActxConclude(PActx) {
 		}
 		RefreshEmptyInfixBraketsGlued($('body'),true);
 		ssnapshot.take();
-		if(GLBsettings.movesCounter!=undefined){GLBsettings.movesCounter++};
+		if(GLBsettings.movesCounter!=undefined)
+		{GLBsettings.movesCounter++};
+		displayMoves(GLBsettings.movesCounter);	
 		lookForResultAndCelebrate();
 		PActxVisualize(PActx);
 	}
@@ -502,4 +504,11 @@ function changeTool(){
 	GLBsettings.tool = tools[newToolIndex]//update tool in GLB
 	$('body').attr('tool',GLBsettings.tool);//update tool as class of <body> 
     console.log('GLBsettings.tool<='+ GLBsettings.tool)
+}
+
+function displayMoves(points) {
+	// Select the <span> element
+	const pointsSpan = document.querySelector('#statusDisplay');
+	// Update the text content with the points
+	pointsSpan.textContent = `Moves:${points}`;
 }
