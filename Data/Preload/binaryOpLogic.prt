@@ -1,0 +1,38 @@
+<div data-atom="eq" data-proto="eq" data-type="bool" class="atom">
+	<div class="s_role firstMember" data-type="obj" ></div>
+	<div class="decoration">=</div>
+	<div class="s_role secondMember" data-type="obj" ></div>
+</div>
+
+
+<div data-proto="plus" data-atom="plus" data-type="num" class="atom ">
+	<div class="s_role" data-type="num" ></div>
+	+
+	<div class="s_role" data-type="num" ></div>
+</div>
+
+<div data-proto="times" data-atom="times" data-type="num" class="atom ">
+	<div class="s_role" data-type="num" ></div>
+	*
+	<div class="s_role" data-type="num" ></div>
+</div>
+
+<div data-proto="or" data-atom="or" data-type="bool" class="atom ">
+	<div class="s_role" data-type="bool" ></div>
+	or
+	<div class="s_role" data-type="bool" ></div>
+</div>
+
+<div data-proto="and" data-atom="and" data-type="bool" class="atom ">
+	<div class="s_role" data-type="bool" ></div>
+	and
+	<div class="s_role" data-type="bool" ></div>
+</div>
+
+<div data-proto="forall" data-atom="forAll" class="atom" data-type="bool">
+	<div class="row">
+	<div class="forallSymbol">∀</div>
+	<div class="bVar_role forAllHeader" data-type="obj"></div>
+	</div>
+	<div class="s_role forAllContent" data-type="bool" ></div>
+</div>

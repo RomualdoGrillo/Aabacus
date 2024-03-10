@@ -417,7 +417,7 @@
   .unselected[data-atom], .unselected[data-atom] [data-atom]{
 	  background-color:white!important;
   }
-  .selectedTool[data-atom]{
+  .selectedTool[data-atom]::after{
 	border-color: blue!important;
 	background-color: rgb(245, 242, 186)!important;
   }
