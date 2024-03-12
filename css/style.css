@@ -418,9 +418,9 @@
 	  background-color:white!important;
   }
   .selectedTool[data-atom]::after{
-	border-color: blue!important;
+	/* border-color: blue!important; */
 	background-color: rgb(245, 242, 186)!important;
-  }
+	}
   .debug .selected[data-atom] /*,.selected[data-atom]>.s_role>.glued*/{
 	  border-color: red!important;
   }
