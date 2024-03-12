@@ -75,7 +75,7 @@ function serialNumber(mode){
 }
 */
 
-function lookForResultAndCelebrate() {
+function lookForResultAndCelebrate(movesCounter,movesMinNumber) {
 	let $expressions = $('#canvasRole>*');
 	let found = false;
 	let i;
@@ -88,6 +88,10 @@ function lookForResultAndCelebrate() {
 	if (found) {
 		victorySound.play();
 		$('body').removeClass('gameModeSurpriseRes');
+		if(movesCounter && movesMinNumber && movesCounter<=movesMinNumber){
+			VisualizeCelebration('images/goal.svg');
+			VisualizeCelebration('images/likeAboss.png');
+		}
 		VisualizeCelebration('images/goal.svg');
 		//alert('esattooooo!!!!')
 	}

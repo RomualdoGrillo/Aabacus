@@ -454,7 +454,7 @@ function PActxConclude(PActx) {
 		if(GLBsettings.movesCounter!=undefined)
 		{GLBsettings.movesCounter++};
 		displayMoves(GLBsettings.movesCounter);	
-		lookForResultAndCelebrate();
+		lookForResultAndCelebrate(GLBsettings.movesCounter,GLBsettings.movesMinNumber)
 		PActxVisualize(PActx);
 	}
 }
@@ -506,9 +506,18 @@ function changeTool(){
     console.log('GLBsettings.tool<='+ GLBsettings.tool)
 }
 
-function displayMoves(points) {
-	// Select the <span> element
-	const pointsSpan = document.querySelector('#statusDisplay');
-	// Update the text content with the points
-	pointsSpan.textContent = `Moves:${points}`;
+function displayMoves(moves) {
+	// Update the text content with the moves
+	let displayedText
+	if(moves){
+		displayedText = `Moves:${moves}`;
+	}
+	else{
+		displayedText = ``;
+	}
+	// Select the <span> element and put the text there
+	const movesSpan = document.querySelector('#statusDisplay');
+	if (movesSpan) {
+		movesSpan.textContent=displayedText;
+	}
 }

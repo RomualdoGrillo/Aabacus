@@ -154,7 +154,7 @@ function onSort(event) {
 }
 function onUpdate(event) {
 	clickSound.play()
-	lookForResultAndCelebrate();
+	lookForResultAndCelebrate(GLBsettings.movesCounter,GLBsettings.movesMinNumber);
 }
 
 function onAdd(event) {
