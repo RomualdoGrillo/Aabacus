@@ -88,11 +88,10 @@ function lookForResultAndCelebrate(movesCounter,movesMinNumber) {
 	if (found) {
 		victorySound.play();
 		$('body').removeClass('gameModeSurpriseRes');
-		if(movesCounter && movesMinNumber && movesCounter<=movesMinNumber){
-			VisualizeCelebration('images/goal.svg');
-			VisualizeCelebration('images/likeAboss.png');
-		}
 		VisualizeCelebration('images/goal.svg');
+		if(movesCounter && movesMinNumber && movesCounter<=movesMinNumber){
+			VisualizeCelebration('images/goldMedal.png');
+		}
 		//alert('esattooooo!!!!')
 	}
 	return found
