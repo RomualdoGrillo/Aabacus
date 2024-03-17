@@ -163,6 +163,33 @@ function loadAjaxAndInject(myUrl,target,toBeImported) {
 let dd_colors = $('#select_colors')[0]
 let $dd_visSelection = $('#visSettingSelected');
 function GLBsettingsToInterface() {
+	
+	if(GLBsettings.lockCanvas != undefined){
+		if(GLBsettings.lockCanvas){$('#canvas').removeClass('unlocked')}
+		else{$('#canvas').addClass('unlocked')}
+		refreshAsymmEq($('#canvas'));
+	}
+	let tool = GLBsettings.tool
+	if(tool==undefined){tool=''}
+	$('body').attr('tool',tool);//update tool as class of <body> 
+	//console.log('GLBsettings.tool<='+ tool)
+	//**************** sections SHOW/HIDE  **************
+	//palette
+	if(GLBsettings.hidePalette)
+	{$('#paletteRow').addClass('sectionHide')}
+	else
+	{$('#paletteRow').removeClass('sectionHide')}
+	//left column
+	if(GLBsettings.hideLeftColumn)
+	{$('#leftColumn').addClass('sectionHide')}
+	else
+	{$('#leftColumn').removeClass('sectionHide')}
+	//right column
+	if(GLBsettings.hideRightColumn)
+	{$('#rightColumn').addClass('sectionHide')}
+	else
+	{$('#rightColumn').removeClass('sectionHide')}
+	//**************** settings in Right column **************
 	$('#BUTT_gameMode')[0].checked = GLBsettings.gameMode;
 	updateBodyClass('gameMode',GLBsettings.gameMode);
 	$('#BUTT_gameModeSurpriseRes')[0].checked = GLBsettings.gameModeSurpriseRes;
@@ -211,15 +238,6 @@ function GLBsettingsToInterface() {
 
 		}
 	}
-	if(GLBsettings.lockCanvas != undefined){
-				if(GLBsettings.lockCanvas){$('#canvas').removeClass('unlocked')}
-				else{$('#canvas').addClass('unlocked')}
-				refreshAsymmEq($('#canvas'));
-	}
-	let tool = GLBsettings.tool
-	if(tool==undefined){tool=''}
-	$('body').attr('tool',tool);//update tool as class of <body> 
-    	//console.log('GLBsettings.tool<='+ tool)
 	
 }
 
