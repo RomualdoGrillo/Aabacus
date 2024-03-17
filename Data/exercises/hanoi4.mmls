@@ -16,7 +16,7 @@
 	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(255, 199, 0); min-width: 36px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">3</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(241, 128, 16); min-width: 44px; border-color:grey" draggable="false">
+	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: red; min-width: 44px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">4</div>
 	</div>
 </section>
