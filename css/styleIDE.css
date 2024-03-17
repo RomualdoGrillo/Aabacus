@@ -63,7 +63,7 @@ button>.ui-icon {
 	padding: 15px;
 }
 
-#canvasRole.debug {
+body.debug {
 	background-color: rgb(255, 234, 251);
 	border-color: pink;
 	border-width: 3px;

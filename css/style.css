@@ -622,27 +622,27 @@
   }
   
   
-  #canvasRole.debug .input:not([data-atom]){ 
+  body.debug .input:not([data-atom]){ 
 	  background-color: violet;
   }
   
-  #canvasRole.debug .inputFocus:not([data-atom]){ 
+  body.debug .inputFocus:not([data-atom]){ 
 	  background-color: red!important;
   }
   
-  #canvasRole.debug .pattern:not([data-atom]){ 
+  body.debug .pattern:not([data-atom]){ 
 	  background-color: yellow;
   }
   
-  #canvasRole.debug .patternFocus:not([data-atom]){ 
+  body.debug .patternFocus:not([data-atom]){ 
 	  background-color: yellowgreen;
   }
   
-  #canvasRole.debug .matched:not([data-atom]){ 
+  body.debug .matched:not([data-atom]){ 
 	  background-color: green;
   }
   
-  #canvasRole.debug .operand:not([data-atom]){ 
+  body.debug .operand:not([data-atom]){ 
 	  background-color: lightblue;
   }
   

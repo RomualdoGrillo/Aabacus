@@ -391,10 +391,10 @@ function debugToggle() {
 	debugMode = !debugMode
 	//toggle debugMode
 	if (debugMode) {
-		$('#canvasRole').addClass('debug');
+		$('body').addClass('debug');
 		$('#palette').addClass('hidden');
 	} else {
-		$('#canvasRole').removeClass('debug');
+		$('body').removeClass('debug');
 		$('#palette').removeClass('hidden');
 	}
 }
