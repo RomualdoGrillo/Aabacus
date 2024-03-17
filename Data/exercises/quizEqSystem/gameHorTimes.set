@@ -3,6 +3,9 @@
 	"gameMode":true,
 	"gameModeSurpriseRes":true,
 	"lockCanvas":true,
+	"hidePalette":true,
+	"hideLeftColumn":true,
+	"hideRightColumn":true,
 	"visSettingSelected":1,
 	"tool":"",
 	"visSettings":[
