@@ -82,6 +82,6 @@
 </section>
 <section data-section="settings">
 	{
-   "import_json_settings":"./Data/Preload/game.set"
+   "import_json_settings":"./Data/Preload/translate.set"
     }
 </section>
