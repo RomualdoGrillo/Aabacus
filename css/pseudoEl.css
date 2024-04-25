@@ -187,7 +187,10 @@ disadvantage: building new prototypes is less intuitive
 	border-width:0px;
 	align-self: center!important;
 }
-
+[data-vis=collapsed][data-tagimg]{/*collapsed around their image icon*/
+	padding:0px;
+  }
+  
 [data-vis=collapsed][data-tag]:not([data-tagimg])::after,
 [data-atom=ci][data-tag]:not([data-tagimg])::after
 {
