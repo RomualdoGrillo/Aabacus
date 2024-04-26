@@ -53,16 +53,19 @@ body:not(.debug) #leftColumn.sectionHide,
 	overflow: auto;
 }
 
-body:not(.debug) #paletteRow.sectionHide,
-#paletteRow:not(:hover):not(.fixed)
+body:not(.debug) #paletteRow[vis="show"]>.fixButton{
+	display:none;
+}
+body:not(.debug) #paletteRow[vis="hide"],
+#paletteRow[vis="dynamic"]:not(:hover):not(.fixed)
 {
 	height:10px;
 	z-index:1;
 	opacity:0;
 		margin-left: 50px;
 }
-body:not(.debug) #paletteRow.sectionHide *,
-#paletteRow:not(:hover):not(.fixed) *
+body:not(.debug) #paletteRow[vis="hide"] *,
+#paletteRow[vis="dynamic"]:not(:hover):not(.fixed) *
 {
 	display:none;
 }

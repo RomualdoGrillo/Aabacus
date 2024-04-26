@@ -123,7 +123,7 @@
 	"gameMode":true,
 	"gameModeSurpriseRes":false,
 	"lockCanvas":true,
-	"hidePalette":true,
+	"visPalette":"hide",
 	"hideLeftColumn":true,
 	"hideRightColumn":true,
 	"resultHidden":false,

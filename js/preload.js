@@ -175,10 +175,8 @@ function GLBsettingsToInterface() {
 	//console.log('GLBsettings.tool<='+ tool)
 	//**************** sections SHOW/HIDE  **************
 	//palette
-	if(GLBsettings.hidePalette)
-	{$('#paletteRow').addClass('sectionHide')}
-	else
-	{$('#paletteRow').removeClass('sectionHide')}
+	if(GLBsettings.visPalette)
+	{$('#paletteRow').attr('vis',GLBsettings.visPalette)}
 	//left column
 	if(GLBsettings.hideLeftColumn)
 	{$('#leftColumn').addClass('sectionHide')}

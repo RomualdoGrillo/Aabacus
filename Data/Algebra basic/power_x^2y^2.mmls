@@ -147,7 +147,7 @@
 	"gameMode":true,
 	"gameModeSurpriseRes":true,
 	"lockCanvas":true,
-	"hidePalette":true,
+	"visPalette":"hide",
 	"hideLeftColumn":true,
 	"hideRightColumn":true,
 	"resultHidden":false,
