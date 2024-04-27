@@ -19,7 +19,7 @@
 	</apply>
 	<ci data-type="bool">Seleziona la proprietà distributiva e poi applicala:</ci>
 	<ci data-type="bool"> Distribuisci il fattore 2 portandolo dentro alla parentesi". Raccogli il fattore x, trascinando un "x" sopra all'altra.</ci>
-	<apply data-path="plus0 > ME" data-type="num">
+	<apply data-type="num">
 			<times>
 			</times>
 			<cn data-type="num">2</cn>
@@ -48,7 +48,7 @@
 	</apply>
 </section>
 <section data-section="result">
-	<apply data-path="plus0 > ME" data-type="num">
+	<apply data-type="num">
 			<times>
 			</times>
 			<apply data-type="num">

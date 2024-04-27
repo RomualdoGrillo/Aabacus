@@ -106,7 +106,7 @@
 </div>
 </div>
 <ci data-type="bool">Seleziona un numero e premi: ↑ per scomporlo in addendi; ↓ oppure ← per comporlo.</ci>
-<cn data-path="times0 > ME" data-type="num">12</cn>
+<cn data-type="num">12</cn>
 </section>
 <section data-section="events">
 	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">

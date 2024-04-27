@@ -19,26 +19,31 @@
 	</apply>
 	<ci data-type="bool">Seleziona la proprietà distributiva e poi applicala:</ci>
 	<ci data-type="bool"> Distribuisci il fattore 2 portandolo dentro alla parentesi". Raccogli il fattore x, trascinando un "x" sopra all'altra.</ci>
-	<apply data-path="plus0 > ME" data-type="num">
-			<times>
-			</times>
-			<apply data-type="num">
-				<plus>
-				</plus>
+	<apply>	
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<apply data-type="num">
+				<times>
+				</times>
 				<apply data-type="num">
-					<times>
-					</times>
-					<ci data-type="num">K</ci>
-					<ci data-type="num">x</ci>
+					<plus>
+					</plus>
+					<apply data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">K</ci>
+						<ci data-type="num">x</ci>
+					</apply>
+					<apply data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">T</ci>
+						<ci data-type="num">x</ci>
+					</apply>
 				</apply>
-				<apply data-type="num">
-					<times>
-					</times>
-					<ci data-type="num">T</ci>
-					<ci data-type="num">x</ci>
-				</apply>
-			</apply>
-			<cn data-type="num">2</cn>
+				<cn data-type="num">2</cn>
+		</apply>
 	</apply>
 </section>
 <section data-section="events">
@@ -48,26 +53,31 @@
 	</apply>
 </section>
 <section data-section="result">
-	<apply data-path="plus0 > ME" data-type="num">
-			<times>
-			</times>
-			<apply data-type="num">
-				<plus>
-				</plus>
+<apply>	
+		<eq>
+		</eq>
+		<ci>expression</ci>	
+		<apply data-type="num">
+				<times>
+				</times>
 				<apply data-type="num">
-					<times>
-					</times>
-					<ci data-type="num">K</ci>
-					<cn data-type="num">2</cn>
+					<plus>
+					</plus>
+					<apply data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">K</ci>
+						<cn data-type="num">2</cn>
+					</apply>
+					<apply data-type="num">
+						<times>
+						</times>
+						<ci data-type="num">T</ci>
+						<cn data-type="num">2</cn>
+					</apply>
 				</apply>
-				<apply data-type="num">
-					<times>
-					</times>
-					<ci data-type="num">T</ci>
-					<cn data-type="num">2</cn>
-				</apply>
-			</apply>
-			<ci data-type="num">x</ci>
+				<ci data-type="num">x</ci>
+		</apply>
 	</apply>
 </section>
 
