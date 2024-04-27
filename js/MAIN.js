@@ -121,10 +121,6 @@ $(document).on('keydown', function(e) {
 	}
 });
 
-//************  Create! button **************
-$('#create-link').click(function() {
-	$(".selected")[0].MNODECreateDefinition()
-})
 
 //************ Help button**************
 $("#help-link").click(function(event) {
