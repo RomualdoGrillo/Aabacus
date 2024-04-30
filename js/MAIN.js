@@ -154,7 +154,7 @@ function MNODENselectable(startElement) {
 function clickHandler(event) {
 	let $thisMNODE = MNODENselectable($(event.target));
 	//*************** Lock unlock ********
-	if ($(event.target).is('.asymmetric>.firstMember')) {
+	if ($(event.target).is('[data-viseq=asymmetric]>.firstMember')) {
 		let $atom = $(event.target).parent();
 		if ($atom.is('#canvas')) {
 			// canvas fa eccezione perchè determina lo anche lo stato delle sezioni result e events
@@ -279,7 +279,7 @@ function dblclickHandler(event) {
 	else if (closed && atomClass === 'cn') {
 		let n = Number( MNODENumericCdsAsText($atomDblclicked) );
 		if(Number.isInteger(n) && n>0){
-			let $plus =encaseWithOperation($atomDblclicked,'plus');
+			let $plus =wrapWithOperation($atomDblclicked,'plus');
 			$plus.attr('data-vis','resizable');
 			$atomDblclicked.remove()
 			//crea il numero 1
@@ -302,7 +302,7 @@ function dblclickHandler(event) {
 			if(n_children % n_columns == 0){
 				let n_rows = n_children / n_columns;
 				console.log('decoposed!!!')
-				encaseIfNeeded($atomDblclicked,'times')
+				wrapIfNeeded($atomDblclicked,'times')
 				let $factor_r = ValToAtoms({type:"cn", val:n_rows, sign:1, exp:1})
 				let $factor_c = ValToAtoms({type:"cn", val:n_columns, sign:1, exp:1})
 				let $factors = $factor_r.add($factor_c); 
@@ -402,7 +402,7 @@ function ExtendAndInitializeTree($startElement){
 function ExtendAndInitialize($Atom){
 	MNODEextend($Atom, true)
 	//initialize lock icon
-	if($Atom.is('[data-atom].asymmetric')){
+	if($Atom.is('[data-atom][data-viseq=asymmetric]')){
 		refreshAsymmEq($Atom)
 	}
 }

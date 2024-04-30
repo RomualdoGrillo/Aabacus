@@ -28,20 +28,20 @@
 	  border-color: blueviolet!important;
   }
   
-  /*[data-atom="eq"].asymmetric sono le definizioni, in quel tipo di atomi
+  /*[data-atom="eq"][data-viseq=asymmetric] sono le definizioni, in quel tipo di atomi
   il bordo del primo membro sporge dal background venendo a "fondersi" con il bordo esterno verde
   per una questione estetica
   
-  [data-atom="eq"].asymmetric *{
+  [data-atom="eq"][data-viseq=asymmetric] *{
 	  border-color:white;
   }
   */
   
-  [data-atom].asymmetric,[data-atom="eq"].asymmetric>.firstMember {
+  [data-atom][data-viseq=asymmetric],[data-atom="eq"][data-viseq=asymmetric]>.firstMember {
 	  border: 1px solid #DAD9D9;
   }
   /*
-  .greyBorders [data-atom].asymmetric,[data-atom="eq"].asymmetric>.firstMember,.ide {
+  .greyBorders [data-atom][data-viseq=asymmetric],[data-atom="eq"][data-viseq=asymmetric]>.firstMember,.ide {
 	  border: 1px solid #aaa;/* necessario un selector specifico almeno quanto quello usato sopra
   }
   
@@ -50,7 +50,7 @@
   }
   
   .greyBorders [class*="_role"].empty {background-color:  #e6e6e6;}
-  [data-atom].asymmetric>.firstMember {background-color:  #ffffff;}/*lo sfondo del lucchetto ha sempre sfondo bianco*/
+  [data-atom][data-viseq=asymmetric]>.firstMember {background-color:  #ffffff;}/*lo sfondo del lucchetto ha sempre sfondo bianco*/
   
   
   .rolescontainer{
@@ -192,7 +192,7 @@
 	  margin:2px;
   }
   /* le definizioni occupano piu' spazio a causa del sigillo che sporge*/
-  /*[data-atom="and"]>.ul_role>[data-atom].asymmetric{
+  /*[data-atom="and"]>.ul_role>[data-atom][data-viseq=asymmetric]{
 	  margin-top:2px;
   }*/
   
@@ -313,12 +313,12 @@
 	  bottom: 0px;
   }
   
-  .asymmetric  {
+  [data-viseq=asymmetric]  {
 	  /* border-top-left-radius: 8px; */
 	  margin-bottom: 5px;
   }
   
-  .asymmetric>.firstMember {
+  [data-viseq=asymmetric]>.firstMember {
 	  border-radius: 8px;
 	  position: absolute;
 	  left: -9px;
@@ -330,22 +330,22 @@
   }
   
   
-  .asymmetric  {
+  [data-viseq=asymmetric]  {
 	padding: 0px;
   }
   
-  [data-atom="eq"]:not(#canvas).asymmetric:not(.unlocked)>.secondMember>[data-atom]{
+  [data-atom="eq"]:not(#canvas)[data-viseq=asymmetric]:not(.unlocked)>.secondMember>[data-atom]{
 	  border-width:0px;
   }
-  .unlocked [data-atom="eq"].asymmetric>.secondMember>[data-atom]{
+  .unlocked [data-atom="eq"][data-viseq=asymmetric]>.secondMember>[data-atom]{
 	  border-width:1px;
   }
-  .unlocked [data-atom="eq"].asymmetric,[data-atom="eq"].asymmetric.unlocked {
+  .unlocked [data-atom="eq"][data-viseq=asymmetric],[data-atom="eq"][data-viseq=asymmetric].unlocked {
 	  padding:3px;
   }
   
   
-  .asymmetric >.decoration {
+  [data-viseq=asymmetric] >.decoration {
 	  display: none;
   }
   
@@ -377,7 +377,7 @@
   /*box-shadow: 0px 0.5px 2px 0.5px rgb(125, 125, 125);*/
    /*box-shadow: 0px 0.5px 3px 0px rgb(9, 132, 9);*/;
 	 }
-  .coloredBorders .asymmetric>.s_role.firstMember {
+  .coloredBorders [data-viseq=asymmetric]>.s_role.firstMember {
 	  border-color: green;
   }
   .coloredBorders [data-type="point"],.coloredBorders [data-type="line"] {
@@ -441,12 +441,12 @@
 	  display: none
   }
   
-  .unlocked, .unlocked [data-atom],.unlocked.asymmetric>.firstMember, .unlocked .asymmetric>.firstMember{
+  .unlocked, .unlocked [data-atom],.unlocked[data-viseq=asymmetric]>.firstMember, .unlocked [data-viseq=asymmetric]>.firstMember{
 	border-style: dashed;
   }
   
   /*trucco per far sembrare il sigillo parte del contorno esterno*/
-  [data-atom=eq].asymmetric>.firstMember{
+  [data-atom=eq][data-viseq=asymmetric]>.firstMember{
 	  /* border-top: white; */
 	  border-bottom: white;
 	  border-right: #ffffff;

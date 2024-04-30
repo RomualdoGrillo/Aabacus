@@ -80,7 +80,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		let $validTgTOpen = validTargetsFromOpened($atomTarget);//i $validTgTOpen non vengono evidenziati con exclusive focus
 		if ($atomTarget.is('#palette *')) {
 			//add canvas as target
-			$validTgTOpen = $validTgTOpen.add('#canvasRole');//will be encased!!//
+			$validTgTOpen = $validTgTOpen.add('#canvasRole');//will be wrapped!!//
 		}
 		$validTgTOpen.toArray().forEach(function (el) {
 			el.setAttribute('target', 'opened')
@@ -153,6 +153,7 @@ function onSort(event) {
 	RefreshEmptyInfixBraketsGlued(MNODEparent($(event.target)))
 }
 function onUpdate(event) {
+	console.log('*onUpdate');
 	clickSound.play()
 	lookForResultAndCelebrate(GLBsettings.movesCounter,GLBsettings.movesMinNumber);
 }

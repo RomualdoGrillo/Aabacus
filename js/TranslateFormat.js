@@ -5,7 +5,7 @@ function MNODEfactorizeMinus($startNode) {
 		return
 	}
 	//è circondato un meno?
-	$extOp = encaseIfNeeded($startNode, "times");
+	$extOp = wrapIfNeeded($startNode, "times");
 	//se necessario crea una operazione container
 	//aggiungi un fattore "-1"
 	var prototype = prototypeSearch("ci", "num");
@@ -67,7 +67,7 @@ function signsAsClasses($atom, mode /* SignsInNames_to_SignsAsClasses SignsAsCla
 	else if (mode == "SignsAsClasses_to_MinusOp") {
 		if ($atom.hasClass('minus')) {
 			$atom.removeClass('minus');
-			encaseWithOperation($atom, "minus")
+			wrapWithOperation($atom, "minus")
 		}
 	} else if (mode == "MinusOp_to_SignsAsClasses") {
 		var $MNODEchildren = $atom[0].MNODE_getRoles().children().filter('[data-atom]')
@@ -102,7 +102,7 @@ function refreshGlued($startNode) {
 		let op = e.getAttribute("data-atom");
 		if (glueFunctions.indexOf(op) != -1) {
 			return true
-		} else if (op = 'eq' && e.classList.contains('asymmetric')) {
+		} else if (op = 'eq' && e.getAttribute("data-viseq")=='asymmetric' ) {
 			return true
 		}
 	});
@@ -117,7 +117,7 @@ function refreshGlued($startNode) {
 
 	});
 
-	var $stickyParents = $containerNode.find("[data-atom=eq].asymmetric:not(#canvas)");
+	var $stickyParents = $containerNode.find("[data-atom=eq][data-viseq=asymmetric]:not(#canvas)");
 	$stickyParents.each(function(i, val) {
 		var $toBeGlued = this.MNODE_getRoles().children().filter('[data-atom]');
 		//get the MNODE contained to be Glued
@@ -135,7 +135,7 @@ function MNODEtranslateFormat(mode,$startNode,applyToSubtreeAlso){//translate fr
 	if(  $startNode.attr("data-atom") == "cn" &&  $startNode[0].MNODE_getName() === "1" ){return} // se 1 o -1 non vascomposto ulteriormente
     if($startNode.hasClass('minus')){
         var op = "times";
-		$extOp = encaseIfNeeded($startNode,op);//se necessario crea una operazione container
+		$extOp = wrapIfNeeded($startNode,op);//se necessario crea una operazione container
 		var prototype=prototypeSearch("ci","num");//aggiungi un fattore "-1"
 		$clone = MNODEclone(prototype);
 		$clone.attr('data-atom','cn');

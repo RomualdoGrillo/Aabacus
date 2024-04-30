@@ -66,22 +66,7 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 	fileReader.readAsText(fileToLoad, "UTF-8");
 }
 
-function WrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
-	if(  $targetNode.is('#canvasRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
-		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
-		var $newDef = MNODEclone(prototypeSearch('eq','bool','asymmetric'));
-		if(unlocked){$newDef.addClass("unlocked")}
-		else{$newDef.removeClass("unlocked")}
-		$newDef.insertBefore($toBeInserted.eq(0));
-		$target = $newDef.find(".secondMember")
-		ExtendAndInitialize($newDef);// il contenuto è già stato esteso
-		$target.append($toBeInserted);
-		return $target
-	}
-	else{
-		return $targetNode
-	}
-}
+
 
 //inject(MMLstring,$('#canvasRole'))
 function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
@@ -97,7 +82,7 @@ function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
 		if(originalImportData){
 			if($convertedTree.length>1){
 				// Needs "and" container if multiple items? 
-				$convertedTree=encaseWithOperation($convertedTree,'and')		
+				$convertedTree=wrapWithOperation($convertedTree,'and')		
 			}
 			$convertedTree.attr('data-import',originalImportData);
 			$convertedTree.attr('data-and',originalImportAndVis);

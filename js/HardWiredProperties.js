@@ -194,7 +194,7 @@ function validForPartDist($mouseDownAtom, ctrlOrMeta) {
 			return MNODEparent(MNODEparent($parent))
 		}
 		else{
-			return encaseWithOperation($siblingsT,op)
+			return wrapWithOperation($siblingsT,op)
 		}
 	}
 	*/
@@ -238,7 +238,7 @@ function MNODEPartDistribute($dragged, target, dropped) {
 	if ($parent !== undefined) { opD = $parent.attr("data-atom") }
 	let op = opIsDistDop("", opD);
 	var $siblings = $parent.siblings('[data-atom]'); // ottieni la lista degli altri fattori
-	$extOp = encaseIfNeeded(MNODEparent($parent), opD);//se necessario crea una operazione container
+	$extOp = wrapIfNeeded(MNODEparent($parent), opD);//se necessario crea una operazione container
 	let $prototype = prototypeSearch(op);
 	let $clone = MNODEclone($prototype)//create times
 	$clone.insertBefore(dropped);
@@ -436,7 +436,7 @@ function MNODEpartCollect($dragged, $target) {
 			}
 		}
 		else {
-			$termT = (encaseWithOperation($siblingsT, opt));
+			$termT = (wrapWithOperation($siblingsT, opt));
 		}
 		if ($siblingsD.length == 1) {
 			if (!$opPlus && $siblingsD.eq(0).attr("data-atom") == opPlus) {//if 'plus' ther's no need to create a new plus container
@@ -451,7 +451,7 @@ function MNODEpartCollect($dragged, $target) {
 			}
 		}
 		else {
-			$termD = (encaseWithOperation($siblingsD, opt));
+			$termD = (wrapWithOperation($siblingsD, opt));
 		}
 		if (!$opPlus) {//if a suitable "plus" container has not been found create a new one
 			$opPlus = MNODEclone($prototype)//create times
@@ -482,7 +482,7 @@ function MNODEcollect($dragged, $target) {
 	let op = undefined;
 	if ($parent !== undefined) { op = $parent.attr("data-atom") }
 	var extOp
-	extOp = encaseIfNeeded($parentParent, op)
+	extOp = wrapIfNeeded($parentParent, op)
 	MNODEparent($dragged).addClass("Refine_c")
 	MNODEparent($(".CouldBeCollected")).addClass("Refine_c")
 	//$dragged.insertBefore($parentParent);
@@ -706,7 +706,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 				}
 				else {
 					if ($minusContent.attr('data-atom') !== 'times') {//è necessario aggiungere una enclosure di tipo "times"
-						$minusContent = encaseWithOperation($minusContent, 'times')
+						$minusContent = wrapWithOperation($minusContent, 'times')
 					}
 					$minusContent[0].MNODE_getRoles().prepend($minusOne);
 				}
@@ -724,7 +724,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 			}
 			/*
 			else if( toBeDec.sign === -1 ){
-				$extOp = encaseIfNeeded($toBeDec,op);//se necessario crea una operazione container
+				$extOp = wrapIfNeeded($toBeDec,op);//se necessario crea una operazione container
 				//crea nuovo Atomo
 				var minusOne = {type:"cn", val:1, sign:-1, exp:1}
 				var $minusOne = ValToAtoms(minusOne);
@@ -743,7 +743,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 				var primeFactors = primeFactorization(toBeDec.val);
 
 				if (primeFactors.length > 1) {// se numero primo non fare nulla
-					$extOp = encaseIfNeeded($toBeDec, op);//se necessario crea una operazione container
+					$extOp = wrapIfNeeded($toBeDec, op);//se necessario crea una operazione container
 					var prototype = prototypeSearch("cn", "num")
 					primeFactors.forEach(function (e, i) {
 						$clone = MNODEclone(prototype);
@@ -760,7 +760,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 			}
 			//non scomporre l'uno, creazione di coppie gestita altrove
 			if (!PActx.matchedTF && toBeDec.val != 1) {//se le altre scomposizioni non sono applicabili fai comparire l'elemento neutro
-				$extOp = encaseIfNeeded($toBeDec, op);//se necessario crea una operazione container
+				$extOp = wrapIfNeeded($toBeDec, op);//se necessario crea una operazione container
 				//crea nuovo Atomo
 				var One = { type: "cn", val: 1, sign: 1, exp: 1 }
 				var $One = ValToAtoms(One);
@@ -773,7 +773,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 			op = "plus";
 			if (toBeDec.type === "cn" && toBeDec.val % 1 == 0 && toBeDec.val > 1 && toBeDec.exp == 1) {//controllare che il numero sia intero?
 
-				$extOp = encaseIfNeeded($toBeDec, op);//se necessario crea una operazione container
+				$extOp = wrapIfNeeded($toBeDec, op);//se necessario crea una operazione container
 				//crea nuovo Atomo
 				var plusMinusOne = { type: "cn", val: 1, sign: toBeDec.sign, exp: 1 }//il segno di toBeDec passa a +-1 
 				// scompongo in (n-1)+1
@@ -794,7 +794,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 		//scomposizione di un numero in verticale è fattorizzazione : op = times
 		if(direction == "up"){
 			op = "and";
-			$extOp = encaseIfNeeded($toBeDec,op);//se necessaro crea una operazione container
+			$extOp = wrapIfNeeded($toBeDec,op);//se necessaro crea una operazione container
 			var prototype=prototypeSearch("ci","bool")
 			$clone = MNODEclone(prototype);
 			$clone.text("true");
@@ -823,14 +823,14 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 
 function isEquationMember($mouseDownAtom) {
 	//  
-	if (!$mouseDownAtom.parent().parent().is("[data-atom=eq]:not(.asymmetric)")) {
+	if (!$mouseDownAtom.parent().parent().is("[data-atom=eq]:not([data-viseq=asymmetric])")) {
 		return []//not from an equation	
 	}
 	return MNODEparent($mouseDownAtom)
 }
 
 function validReplaced($mouseDownAtom) {
-	if (!$mouseDownAtom.parent().parent().is("[data-atom=eq]:not(.asymmetric)")) {
+	if (!$mouseDownAtom.parent().parent().is("[data-atom=eq]:not([data-viseq=asymmetric])")) {
 		return []//not from an equation	or implies
 	}
 	if (!($mouseDownAtom.parent().hasClass('firstMember') || $mouseDownAtom.parent().hasClass('secondMember'))) {
@@ -875,7 +875,7 @@ function MNODEModusPonens($premiseInProperty, $premise){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	if(!MNODEparent($premise).is('[data-atom=and]')){
-		//encase with AND
+		//wrap with AND
 	}
 	//create clone
 	
@@ -994,7 +994,7 @@ function addRedundant($dragged, $target, $dropped) {
 	let PActx = newPActx();
 	$($dropped).removeClass('toBeCloned');//in case class 'toBeCloned' is present rempve it
 	if ($target.attr('data-atom')) {//if target is an atom, create an AND around it
-		let $extOp = encaseWithOperation($target, 'and')
+		let $extOp = wrapWithOperation($target, 'and')
 		$target = $extOp[0].MNODE_getRoles()
 		PActx.msg = "created and, added Redundant or deduction"
 		$target.append($dropped);

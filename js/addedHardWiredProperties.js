@@ -58,7 +58,7 @@ function decomposeTens($toBeDec,undefined,img){
 	//var primeFactors = primeFactorization(number);
 	let terms = separateTensHundreds(toBeDec.val);	
 	if(terms.length >1){
-		$extOp = encaseIfNeeded($toBeDec,'plus');//se necessario crea una operazione container
+		$extOp = wrapIfNeeded($toBeDec,'plus');//se necessario crea una operazione container
 		var prototype=prototypeSearch("cn","num")
 		terms.forEach(function(e,i){
 			$clone = MNODEclone(prototype);

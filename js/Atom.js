@@ -70,7 +70,8 @@ function MNODECreateDefinition(startNode) {
 	}
 	var outType = $(startNode).attr("data-type");
 	var $newDef = MNODEclone(
-		prototypeSearch("eq", "bool", undefined, "asymmetric")
+		//prototypeSearch("eq", "bool","asymmetric")
+		prototypeSearch("eq", "bool",)
 	); //crea una nuova definizine
 	//*********************** definendum **********************
 	//attuale)al momento vengono inseriti n ruoli singoli quanti sono i parametri
@@ -512,7 +513,27 @@ function prototypeSearch(className, dataType, requiredClass, name) {
 	return $prototypes.last(); //in case you find more prototypes
 }
 
-function encaseWithOperation($MNODEelement, op) {
+/**
+ * wraps the given MNODE element with an operation.
+ *
+ * If the parent of the MNODE element already has the specified operation, this function
+ * simply returns the parent element. Otherwise, it creates a new clone of the prototype
+ * for the operation, inserts it before the MNODE element, and moves the MNODE element
+ * to be a child of the new clone.
+ *
+ * @param {jQuery} $MNODEelement - The MNODE element to wrap with the operation.
+ * @param {string} op - The operation to wrap the MNODE element with.
+ * @returns {jQuery} The new clone element that wraps the MNODE element.
+ */
+function wrapIfNeeded($MNODEelement, op) {
+	if (MNODEparent($MNODEelement).attr("data-atom") === op) {
+		//no need to cteate external op
+		return MNODEparent($MNODEelement);
+	} else {
+		return wrapWithOperation($MNODEelement, op);
+	}
+}
+function wrapWithOperation($MNODEelement, op) {
 	//create external operation to $MNODEelement, $MNODEelement is 1 element or a list of adjacent elements
 	var $prototype = prototypeSearch(op);
 	var $clone = MNODEclone($prototype);
@@ -522,14 +543,23 @@ function encaseWithOperation($MNODEelement, op) {
 	return $clone;
 }
 
-function encaseIfNeeded($MNODEelement, op) {
-	if (MNODEparent($MNODEelement).attr("data-atom") === op) {
-		//no need to cteate external op
-		return MNODEparent($MNODEelement);
-	} else {
-		return encaseWithOperation($MNODEelement, op);
+function WrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
+	if(  $targetNode.is('#canvasRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
+		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
+		var $newDef = MNODEclone(prototypeSearch('eq','bool',''));
+		if(unlocked){$newDef.addClass("unlocked")}
+		else{$newDef.removeClass("unlocked")}
+		$newDef.insertBefore($toBeInserted.eq(0));
+		$target = $newDef.find(".secondMember")
+		ExtendAndInitialize($newDef);// il contenuto è già stato esteso
+		$target.append($toBeInserted);
+		return $target
+	}
+	else{
+		return $targetNode
 	}
 }
+
 
 function checkCn($s) {
 	//controlla che siano numeri e siano siblings

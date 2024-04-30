@@ -124,7 +124,7 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 		}
 		// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
 		let newData = originalData
-		delete newData.atom
+		delete newData.atom//data-atom is manged above
 		writeData($newNode,newData)
 
 		

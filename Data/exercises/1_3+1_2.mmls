@@ -46,27 +46,32 @@
 			</div>
 		</div>
 	</div>
-	<apply data-type="num">
-		<plus>
-		</plus>
+	<apply data-viseq="asymmetric">	
+		<eq>
+		</eq>
+		<ci>expression</ci>	
 		<apply data-type="num">
-			<times>
-			</times>
-			<cn data-type="num">1</cn>
+			<plus>
+			</plus>
 			<apply data-type="num">
-				<m_inverse>
-				</m_inverse>
-				<cn data-type="num">2</cn>
+				<times>
+				</times>
+				<cn data-type="num">1</cn>
+				<apply data-type="num">
+					<m_inverse>
+					</m_inverse>
+					<cn data-type="num">2</cn>
+				</apply>
 			</apply>
-		</apply>
-		<apply data-type="num">
-			<times>
-			</times>
-			<cn data-type="num">1</cn>
 			<apply data-type="num">
-				<m_inverse>
-				</m_inverse>
-				<cn data-type="num">3</cn>
+				<times>
+				</times>
+				<cn data-type="num">1</cn>
+				<apply data-type="num">
+					<m_inverse>
+					</m_inverse>
+					<cn data-type="num">3</cn>
+				</apply>
 			</apply>
 		</apply>
 	</apply>
@@ -78,14 +83,19 @@
 	</apply>
 </section>
 <section data-section="result">
-	<apply data-type="num">
-		<times>
-		</times>
-		<cn data-type="num">5</cn>
+	<apply data-viseq="asymmetric">	
+		<eq>
+		</eq>
+		<ci>expression</ci>		
 		<apply data-type="num">
-			<m_inverse>
-			</m_inverse>
-			<cn data-type="num">6</cn>
+			<times>
+			</times>
+			<cn data-type="num">5</cn>
+			<apply data-type="num">
+				<m_inverse>
+				</m_inverse>
+				<cn data-type="num">6</cn>
+			</apply>
 		</apply>
 	</apply>
 </section>
