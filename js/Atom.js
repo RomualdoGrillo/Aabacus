@@ -70,7 +70,7 @@ function MNODECreateDefinition(startNode) {
 	}
 	var outType = $(startNode).attr("data-type");
 	var $newDef = MNODEclone(
-		//prototypeSearch("eq", "bool","asymmetric")
+		// prototypeSearch('eq','bool','[data-viseq=asymmetric]');
 		prototypeSearch("eq", "bool",)
 	); //crea una nuova definizine
 	//*********************** definendum **********************
@@ -454,16 +454,16 @@ function MNODEclone($node, Extend, removeID) {//default: Extend and RemoveID
 }
 
 var symbols = ["ci", "cn", "csymbol"];
-function prototypeSearch(className, dataType, requiredClass, name) {
+function prototypeSearch(className, dataType, selector, name) {
 	//alcune classi, ad esempio "ci", possono avere vari datatype
 	//get all prototypes  (futuribile: preindex prototypes)
 	var $prototypes = $("#palette").find("[data-atom][data-proto]");
 	//filter for required
-	if (requiredClass) {
-		$prototypes = $prototypes.filter("." + requiredClass);
+	if (selector) {
+		$prototypes = $prototypes.filter(selector);
 	}
 	if ($prototypes.length == 0) {
-		console.log("prototype not found:" + className + requiredClass);
+		console.log("prototype not found:" + className + selector);
 		return $();
 	}
 	//if(found 1 tag){return}
@@ -546,7 +546,7 @@ function wrapWithOperation($MNODEelement, op) {
 function wrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
 	if(  $targetNode.is('#canvasRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
 		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
-		var $newDef = MNODEclone(prototypeSearch('eq','bool',''));
+		var $newDef = MNODEclone(prototypeSearch('eq','bool','[data-viseq=asymmetric]'));
 		if(unlocked){$newDef.addClass("unlocked")}
 		else{$newDef.removeClass("unlocked")}
 		$newDef.insertBefore($toBeInserted.eq(0));
