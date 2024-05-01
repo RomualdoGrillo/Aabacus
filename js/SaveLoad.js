@@ -44,8 +44,10 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 			inject($loaded,$targetNode);
 		}
 		else if(fileSuffix === "mmls"){
-			injectAllMMLS(textFromFileLoaded);
-			//injectAll(textFromFileLoaded);
+			if(confirm('This will discart the existing canvas and replace it with the new one. Are you sure?')){
+				$('#canvas').addClass('unlocked');
+				injectAllMMLS(textFromFileLoaded);
+			}
 		}
 		else if(fileSuffix === "json"){
 			injectAll(textFromFileLoaded);
