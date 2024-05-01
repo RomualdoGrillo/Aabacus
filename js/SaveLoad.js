@@ -44,8 +44,10 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 			inject($loaded,$targetNode);
 		}
 		else if(fileSuffix === "mmls"){
-			injectAllMMLS(textFromFileLoaded);
-			//injectAll(textFromFileLoaded);
+			if(confirm('This will discart the existing canvas and replace it with the new one. Are you sure?')){
+				$('#canvas').addClass('unlocked');
+				injectAllMMLS(textFromFileLoaded);
+			}
 		}
 		else if(fileSuffix === "json"){
 			injectAll(textFromFileLoaded);
@@ -69,7 +71,7 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 
 
 //inject(MMLstring,$('#canvasRole'))
-function inject(MMLstring,$targetRoleOrAtom,doNotwrap,toBeImported)
+function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
 {
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
 	
@@ -94,12 +96,11 @@ function inject(MMLstring,$targetRoleOrAtom,doNotwrap,toBeImported)
 		$targetRoleOrAtom.replaceWith($convertedTree);
 	}
 	else{
-		$targetRoleOrAtom.append($convertedTree);
-		if(doNotwrap!=true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
-			$convertedTree.each(function() {
-				wrapWithDefIfNeededreturnTarget($targetRoleOrAtom,$(this))
-			});
+		if(doNotWrap=!true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
+			$target = WrapWithDefIfNeededreturnTarget($targetRoleOrAtom,$convertedTree)
 		}
+	
+		$targetRoleOrAtom.append($convertedTree);
 	}
 	
 	
