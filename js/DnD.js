@@ -177,7 +177,7 @@ function onAdd(event) {
 	//*********** move or clone
 	if (event.to.getAttribute('target') == 'opened') {
 		if (event.to.matches('#canvasRole')) {
-			WrapWithDefIfNeededreturnTarget($('#canvasRole'), $(dropped),true);
+			wrapWithDefIfNeededreturnTarget($('#canvasRole'), $(dropped),true);
 		}
 
 		if ($(dropped).hasClass('toBeCloned')) {

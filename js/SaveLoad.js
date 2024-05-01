@@ -69,7 +69,7 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 
 
 //inject(MMLstring,$('#canvasRole'))
-function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
+function inject(MMLstring,$targetRoleOrAtom,doNotwrap,toBeImported)
 {
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
 	
@@ -94,11 +94,12 @@ function inject(MMLstring,$targetRoleOrAtom,doNotWrap,toBeImported)
 		$targetRoleOrAtom.replaceWith($convertedTree);
 	}
 	else{
-		if(doNotWrap=!true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
-			$target = WrapWithDefIfNeededreturnTarget($targetRoleOrAtom,$convertedTree)
-		}
-	
 		$targetRoleOrAtom.append($convertedTree);
+		if(doNotwrap!=true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
+			$convertedTree.each(function() {
+				wrapWithDefIfNeededreturnTarget($targetRoleOrAtom,$(this))
+			});
+		}
 	}
 	
 	

@@ -543,7 +543,7 @@ function wrapWithOperation($MNODEelement, op) {
 	return $clone;
 }
 
-function WrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
+function wrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
 	if(  $targetNode.is('#canvasRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
 		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
 		var $newDef = MNODEclone(prototypeSearch('eq','bool',''));
