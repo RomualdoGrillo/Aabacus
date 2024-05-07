@@ -367,7 +367,7 @@ function MNODE_addRole(dataType, roleClass, content) {
 } //da usare quando si crea una nuova funzione o definizione
 
 function validTargetsFromOpened($MNODEdragged) {
-	var valids = $('#canvasRole,  [class*="_role"]:visible').filter(function () {
+	var valids = $('#canvasRole, #canvasRole [class*="_role"]:visible').filter(function () {
 		//*****valid?***********
 		var result =
 			//if $dragged is not a new definition, target must be opened or boolPtototype todo: check the dragged prototype really has value true
