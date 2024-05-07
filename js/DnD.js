@@ -18,6 +18,9 @@ function MakeSortableAndInjectMouseDown(event) {
 	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	}
+	if($atomTarget.length==0){
+		return//no unlocked parent to drag
+	}
 	/********cleanup*******/
 	cleanupDnD() //cleanup must happen after $atomTarget is determined!!! Othrwise you may remove the element clicked on
 	//***selection manager "grey" highlight
