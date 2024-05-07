@@ -88,7 +88,7 @@ function injectAllMMLS(response,rootUrl){
 	let $paletteContent = $sections.filter('[data-section=palette]').children();
 	$('#palette').children(':not(.fundamental)').remove();
 	if($paletteContent.length!=0){
-		inject($paletteContent, $("#palette"),true);
+		inject($paletteContent, $("#palette"));
 		if (!debugMode){importAll($("#palette"))};
 		//setTimeout(importAll($("#palette")), 3000);
 		//all prototypes must be ready before rendering other sections
@@ -99,20 +99,20 @@ function injectAllMMLS(response,rootUrl){
 	$('#events').children().remove();
 	if($eventsContent.length!=0){
 		//$('#events').children('').remove();
-		inject($eventsContent, $('#events'),true);
+		inject($eventsContent, $('#events'));
 	}
 	//**** content
 	let $canvasContent =  $sections.filter('[data-section=canvas]').children();
 	if($canvasContent.length!=0){
 		//$('#canvas').addClass('unlocked');
 		refreshAsymmEq($('#canvas'));
-		inject($canvasContent,$('#canvasRole'),false);
+		inject($canvasContent,$('#canvasRole'),'boolean');
 	}
 	//**** result
 	let $resultContent = $sections.filter('[data-section=result]').children();
 	if($resultContent.length!=0){
 		$('#result').children().remove();
-		inject($resultContent, $('#result'),true);
+		inject($resultContent, $('#result'),'boolean');
 	}
 	//************import all**********
 	if (!debugMode){importAll()}

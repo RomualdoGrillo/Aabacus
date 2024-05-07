@@ -367,20 +367,27 @@ function MNODE_addRole(dataType, roleClass, content) {
 } //da usare quando si crea una nuova funzione o definizione
 
 function validTargetsFromOpened($MNODEdragged) {
-	var valids = $('#canvasRole,  [class*="_role"]:visible').filter(function () {
-		//*****valid?***********
-		var result =
-			//if $dragged is not a new definition, target must be opened or boolPtototype todo: check the dragged prototype really has value true
-			(!MNODEclosedDef(this) ||
-				$MNODEdragged.is("[data-proto=asymmeq]") ||
-				$MNODEdragged.is("[data-proto=bool]")) &&
-			//datatype is compatible
-			typeOk($MNODEdragged, $(this)) &&
-			//is there place for another?
-			isTherePlaceForAnother($(this))
-		return result;
-	});
+	var valids = $('#canvasRole,  [class*="_role"]:visible').filter(canDraggedBeDroopedInThisRole($MNODEdragged));
 	return valids.not($MNODEdragged.parent());
+}
+
+
+function canDraggedBeDroopedInThisRole($MNODEdragged){
+	//datatype is compatible
+	if(!typeOk($MNODEdragged, $(this))){return false}
+	//******target is OPENED 
+	if(!MNODEclosedDef(this)){  
+		//is there place for another?
+		return isTherePlaceForAnother($(this))
+	}
+	//******target is CLOSED 
+	else{
+		//New definition and neutral element of conjunction is are properties constituent of the environment, so fundamental the environment can't work without it.
+		// parent is 'And' and dragged is new definition or 'true' 
+		MNODEparent($(this)).attr('data-atom')=='and' &&
+		$MNODEdragged.is("[data-proto=asymmeq]") ||
+		$MNODEdragged[0].MNODE_getName() == "true"
+	}
 }
 
 function getNumOfPlaces($role) {
