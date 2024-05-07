@@ -367,18 +367,18 @@ function MNODE_addRole(dataType, roleClass, content) {
 } //da usare quando si crea una nuova funzione o definizione
 
 function validTargetsFromOpened($MNODEdragged) {
-	var valids = $('#canvasRole, #canvasRole [class*="_role"]:visible').filter(canDraggedBeDroopedInThisRole($MNODEdragged));
+	var valids = $('#canvasRole, #canvasRole [class*="_role"]:visible').filter(function(i,e){return canDraggedBeDroopedInThisRole($MNODEdragged,$(this))})
 	return valids.not($MNODEdragged.parent());
 }
 
 
-function canDraggedBeDroopedInThisRole($MNODEdragged){
+function canDraggedBeDroopedInThisRole($MNODEdragged,$role){
 	//datatype is compatible
-	if(!typeOk($MNODEdragged, $(this))){return false}
+	if(!typeOk($MNODEdragged, $role)){return false}
 	//******target is OPENED 
-	if(!MNODEclosedDef(this)){  
+	if(!MNODEclosedDef($role[0])){  
 		//is there place for another?
-		return isTherePlaceForAnother($(this))
+		return isTherePlaceForAnother($role)
 	}
 	//******target is CLOSED 
 	else{
