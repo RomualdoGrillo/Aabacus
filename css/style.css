@@ -704,11 +704,11 @@
   }
   
   
-  #canvasRole [data-atom=or]>.ul_role>[data-atom]:first-child{
+  #canvasRole [data-atom=or]>.ul_role>[data-atom]:first-of-type{
 	  border-bottom-left-radius: var(--div-smallradius);
 	  border-top-left-radius: var(--div-smallradius);
   }
-  #canvasRole [data-atom=or]>.ul_role>[data-atom]:last-child{
+  #canvasRole [data-atom=or]>.ul_role>[data-atom]:last-of-type{/*last child is problematic because invisible pseudo targets are filtered because are div*/
 	  border-bottom-right-radius: var(--div-smallradius);
 	  border-top-right-radius: var(--div-smallradius);
   }

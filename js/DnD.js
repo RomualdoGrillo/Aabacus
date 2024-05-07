@@ -246,7 +246,7 @@ function makeTargetsSortableRolesOrAtoms(targetsArray, propertyName, icon) {
 		if (targetsArray[j].matches('.ul_role')) {
 			//target is a role: for example associative property   
 			makeSortableMouseDown([targetsArray[j]]);
-			let notAtgt = $('<div class="notAtgt"></div>')[0]
+			let notAtgt = $('<span class="notAtgt"></span>')[0]
 			if(icon){
 					$(notAtgt).css('background-image',wrapUnwrapUrlString(icon));
 			}
