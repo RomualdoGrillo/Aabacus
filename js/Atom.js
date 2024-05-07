@@ -367,7 +367,7 @@ function MNODE_addRole(dataType, roleClass, content) {
 } //da usare quando si crea una nuova funzione o definizione
 
 function validTargetsFromOpened($MNODEdragged) {
-	var valids = $('#canvasRole,  [class*="_role"]:visible').filter(canDraggedBeDroopedInThisRole($MNODEdragged));
+	var valids = $('#canvasRole, #canvasRole [class*="_role"]:visible').filter(canDraggedBeDroopedInThisRole($MNODEdragged));
 	return valids.not($MNODEdragged.parent());
 }
 
