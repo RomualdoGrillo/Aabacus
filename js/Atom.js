@@ -367,11 +367,12 @@ function MNODE_addRole(dataType, roleClass, content) {
 } //da usare quando si crea una nuova funzione o definizione
 
 function validTargetsFromOpened($MNODEdragged) {
-	var valids = $('#canvasRole, #canvasRole [class*="_role"]:visible').filter(function(i,e){return canDraggedBeDroopedInThisRole($MNODEdragged,$(this))})
+	var valids = $('#canvasRole, #canvasRole [class*="_role"]:visible').filter(function(i,e){
+		return canDraggedBeDroopedInRoleYesWrapNo($MNODEdragged,$(this))!='no'})
 	return valids.not($MNODEdragged.parent());
 }
 
-
+/*
 function canDraggedBeDroopedInThisRole($MNODEdragged,$role){
 	//datatype is compatible
 	if(!typeOk($MNODEdragged, $role)){return false}
@@ -387,6 +388,29 @@ function canDraggedBeDroopedInThisRole($MNODEdragged,$role){
 		MNODEparent($(this)).attr('data-atom')=='and' &&
 		$MNODEdragged.is("[data-proto=asymmeq]") ||
 		$MNODEdragged[0].MNODE_getName() == "true"
+	}
+}
+*/
+
+function canDraggedBeDroopedInRoleYesWrapNo($MNODEdragged,$role){
+	//******target is OPENED and there is space for another
+	if(!MNODEclosedDef($role[0]) && isTherePlaceForAnother($role) ){  
+		if( typeOk($MNODEdragged, $role)){//datatype is compatible
+			return 'yes'
+		}
+		else{
+			return 'needsWrap'
+		}
+	}
+	//******target is CLOSED 
+	else if(MNODEparent($role).attr('data-atom')=='and' &&
+			$MNODEdragged.is("[data-proto=asymmeq]") || $MNODEdragged[0].MNODE_getName() == "true"){
+			// parent is 'And' and dragged is new definition or 'true' 
+			//New definition and neutral element of conjunction are properties constituent of the environment, so fundamental the environment can't work without it.	
+		return 'yes'
+	}
+	else{
+		return 'no'
 	}
 }
 
@@ -551,8 +575,9 @@ function wrapWithOperation($MNODEelement, op) {
 }
 
 function wrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
-	if(  $targetNode.is('#canvasRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
-		// se il target è closed o l'espressione caricata non è booleana è necessario incapsulare con una nuova definizione 
+	
+	//if(  $targetNode.is('#canvasRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
+	if(  canDraggedBeDroopedInRoleYesWrapNo($toBeInserted,$targetNode)=='needsWrap' ) {
 		var $newDef = MNODEclone(prototypeSearch('eq','bool','[data-viseq=asymmetric]'));
 		if(unlocked){$newDef.addClass("unlocked")}
 		else{$newDef.removeClass("unlocked")}

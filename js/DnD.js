@@ -179,10 +179,12 @@ function onAdd(event) {
 	let dropped = myClone
 	//*********** move or clone
 	if (event.to.getAttribute('target') == 'opened') {
+		/*
 		if (event.to.matches('#canvasRole')) {
 			wrapWithDefIfNeededreturnTarget($('#canvasRole'), $(dropped),true);
 		}
-
+		*/
+		wrapWithDefIfNeededreturnTarget($(event.to), $(dropped),true)
 		if ($(dropped).hasClass('toBeCloned')) {
 			$(dropped).removeClass('toBeCloned');
 		} else {
