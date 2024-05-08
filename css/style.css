@@ -663,6 +663,10 @@
 	  background-position: bottom center;
 	  transition: all, 0.30s;
   }
+
+ #canvasRole [data-tag]{
+	min-height: 25px;
+ }
   
   
   #canvasRole [data-atom=or]>.ul_role>*{
