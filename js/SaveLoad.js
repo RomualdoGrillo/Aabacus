@@ -83,7 +83,7 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 function inject(MMLstring, $targetRoleOrAtom, containerRequirements, toBeImported)
 {
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
-	
+	ExtendAndInitializeTree($convertedTree);
 	// if ( target accept booleans) al momento l'unico target è #canvasrole, in futuro si dovrà distinguere
 	if($targetRoleOrAtom.is('[data-atom]')){
 		
@@ -114,7 +114,6 @@ function inject(MMLstring, $targetRoleOrAtom, containerRequirements, toBeImporte
 	}
 	
 	
-	ExtendAndInitializeTree($convertedTree);
 	//var $refreshStartPoint = MNODEparent($convertedTree);
 	//if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
 	ssnapshot.take(); 
