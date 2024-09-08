@@ -1,5 +1,5 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply data-vis="collapsed" data-and="horizontal" data-tag="induction" data-tagimg="./images/properties/induction.svg" data-type="bool">
+	<apply data-vis="collapsed" data-and="horizontal" data-tag="induction" data-tagimg="./images/properties/Induction.svg" data-type="bool">
 			<and>
 			</and>
 			<apply data-type="bool">
