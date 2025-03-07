@@ -1,123 +1,140 @@
-Body {
-	display: flex;
-	font-family: arial;
-	background-color: #ffffff;
-	/*overflow:hidden*/
-	user-select: none;
-	/* supported by Chrome and Opera */
-	-webkit-user-select: none;
-	/* Safari */
-	-khtml-user-select: none;
-	/* Konqueror HTML */
-	-moz-user-select: none;
-	/* Firefox */
-	-ms-user-select: none;
-	/* Internet Explorer/Edge */
+body {
+  display: flex;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #ffffff;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text-color);
+  line-height: 1.5;
 }
 
 #help-link {
-	background-color: whitesmoke;
-	margin: 3px;
+  background-color: var(--default-bgcolor);
+  margin: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-color);
+  transition: all var(--transition-fast);
 }
 
-.title {
-	flex-shrink: 0;
+#help-link:hover {
+  background-color: var(--primary-color);
+  color: white;
 }
 
-button>.ui-icon {
-	display: inline-block;
+button {
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
-#fileToLoad {
-	visibility: hidden;
+button:hover {
+  filter: brightness(1.1);
 }
 
-#create, #help {
-	border: 1px solid #000000;
-}
-
-#help-link {
-	border-radius: 8px;
-	border-width: 1;
-	background-color: whitesmoke;
-}
-
-#paletteRow {
-	/* overflow-x: hidden; */
-}
-
-
-
-#settings {
-	flex-direction: column;
-}
-
-#visSetup {
-	flex-direction: column;
+button:active {
+  transform: translateY(1px);
 }
 
 #canvasRole {
-	flex-grow: 1;
-	overflow-y: auto;
-	margin: 0px;
-	padding: 15px;
+  flex-grow: 1;
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--spacing-md);
+  background-color: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
-body.debug {
-	background-color: rgb(255, 234, 251);
-	border-color: pink;
-	border-width: 3px;
-}
-
-#canvas, #canvas>.secondMember, #canvasAnd {
-	flex-grow: 1;
-	/*eccezione: deve occupare tutto il container, non adattarsi al contenuto*/
-}
-
-#canvasAnd {
-	border: none;
-}
-
-.DefButtonOn {
-	opacity: 1;
-}
-
-.hide, [data-hide] {
-	display: none;
-}
-
+/* Modern scrollbar styling */
 ::-webkit-scrollbar {
-	width: 22px;
-	height: 18px;
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--default-bgcolor);
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-	height: 6px;
-	border: 8px solid rgba(165, 187, 82, 0);
-	background-clip: padding-box;
-	-webkit-border-radius: 12px;
-	background-color: rgba(0, 0, 0, 0.15);
-	-webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+  background-color: var(--primary-color);
+  border: 3px solid var(--default-bgcolor);
+  border-radius: 6px;
+  transition: background-color var(--transition-fast);
 }
 
-::-webkit-scrollbar-button {
-	width: 0;
-	height: 0;
-	display: none;
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--secondary-color);
 }
 
-::-webkit-scrollbar-corner {
-	background-color: transparent;
+#settings {
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
 }
 
-[data-atom].error {
-    background-color: red!important;
+.hide, [data-hide] {
+  display: none !important;
+}
+
+#fileToLoad {
+  visibility: hidden;
+}
+
+#create, #help {
+  border: 1px solid #000000;
+}
+
+.title {
+  flex-shrink: 0;
+}
+
+button>.ui-icon {
+  display: inline-block;
+}
+
+#paletteRow {
+  /* overflow-x: hidden; */
+}
+
+#visSetup {
+  flex-direction: column;
+}
+
+#canvas, #canvas>.secondMember, #canvasAnd {
+  flex-grow: 1;
+  /*eccezione: deve occupare tutto il container, non adattarsi al contenuto*/
+}
+
+#canvasAnd {
+  border: none;
+}
+
+.DefButtonOn {
+  opacity: 1;
+}
+
+body.debug {
+  background-color: rgb(255, 234, 251);
+  border-color: pink;
+  border-width: 3px;
 }
 
 #statusDisplay {
-	position: absolute;
-	top: 0;
-	right: 100px;
-	color: black;
-	z-index: 2;
-}  
+  position: absolute;
+  top: 0;
+  right: 100px;
+  color: black;
+  z-index: 2;
+}
+
+[data-atom].error {
+  background-color: red!important;
+}
