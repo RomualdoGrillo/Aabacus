@@ -1,5 +1,123 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-	<apply data-vis="collapsed" data-and="horizontal" data-tag="induction" data-tagimg="./images/properties/induction.svg" data-type="bool">
+	
+	<apply data-type="bool">
+			<eq>
+			</eq>
+			<cn data-type="num">0</cn>
+	</apply>
+	<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="num">x</ci>
+				</bvar>
+				<apply data-type="bool">
+					<not>
+					</not>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<apply data-type="num">
+							<successivo>
+							</successivo>
+							<ci data-type="num">x</ci>
+						</apply>
+						<cn data-type="num">0</cn>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="num">x</ci>
+				</bvar>
+				<apply data-type="bool">
+					<not>
+					</not>
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<apply data-type="num">
+							<successivo>
+							</successivo>
+							<ci data-type="num">x</ci>
+						</apply>
+						<ci data-type="num">x</ci>
+					</apply>
+				</apply>
+			</apply>
+	</apply>
+	<apply data-type="num">
+			<successivo>
+			</successivo>
+	</apply>
+
+	<apply data-type="bool">
+			<forall>
+			</forall>
+			<bvar>
+				<ci data-type="num">x</ci>
+			</bvar>
+			<bvar>
+				<ci data-type="num">y</ci>
+			</bvar>
+			<apply data-type="bool">
+				<implies>
+				</implies>
+
+
+
+				<apply data-type="bool">
+					<not>
+					</not>
+
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<apply data-type="num">
+							<successivo>
+							</successivo>
+							<ci data-type="num">x</ci>
+						</apply>
+						<apply data-type="num">
+							<successivo>
+							</successivo>
+							<ci data-type="num">y</ci>
+						</apply>
+					</apply>
+
+				</apply>
+				
+
+
+				<apply data-type="bool">
+					<not>
+					</not>
+
+					<apply data-type="bool">
+						<eq>
+						</eq>
+						<ci data-type="num">x</ci>
+						<ci data-type="num">y</ci>
+					</apply>
+				
+				</apply>
+				
+
+
+			</apply>
+	</apply>
+
+
+	<apply data-vis="collapsed" data-and="horizontal" data-tag="induction" data-tagimg="./images/properties/Induction.svg" data-type="bool">
 			<and>
 			</and>
 			<apply data-type="bool">
@@ -64,64 +182,5 @@
 					</apply>
 				</apply>
 			</apply>
-	</apply>
-	<apply data-type="bool">
-			<eq>
-			</eq>
-			<cn data-type="num">0</cn>
-	</apply>
-	<apply data-type="bool">
-			<eq>
-			</eq>
-			<apply data-type="bool">
-				<forall>
-				</forall>
-				<bvar>
-					<ci data-type="num">x</ci>
-				</bvar>
-				<apply data-type="bool">
-					<not>
-					</not>
-					<apply data-type="bool">
-						<eq>
-						</eq>
-						<apply data-type="num">
-							<successivo>
-							</successivo>
-							<ci data-type="num">x</ci>
-						</apply>
-						<cn data-type="num">0</cn>
-					</apply>
-				</apply>
-			</apply>
-	</apply>
-	<apply data-type="bool">
-			<eq>
-			</eq>
-			<apply data-type="bool">
-				<forall>
-				</forall>
-				<bvar>
-					<ci data-type="num">x</ci>
-				</bvar>
-				<apply data-type="bool">
-					<not>
-					</not>
-					<apply data-type="bool">
-						<eq>
-						</eq>
-						<apply data-type="num">
-							<successivo>
-							</successivo>
-							<ci data-type="num">x</ci>
-						</apply>
-						<ci data-type="num">x</ci>
-					</apply>
-				</apply>
-			</apply>
-	</apply>
-	<apply data-type="num">
-			<successivo>
-			</successivo>
 	</apply>
 </math>

@@ -71,10 +71,19 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 
 
 //inject(MMLstring,$('#canvasRole'))
-function inject(MMLstring,$targetRoleOrAtom,doNotwrap,toBeImported)
+/**
+ * Injects an MML string into a target element, handling various cases such as wrapping the content and preserving existing data attributes.
+ *
+ * @param {string} MMLstring - The MML string to be injected.
+ * @param {jQuery} $targetRoleOrAtom - The target element to inject the MML string into.
+ * @param {boolean} containerRequirements - A flag indicating whether the content should not be wrapped.
+ * @param {boolean} toBeImported - A flag indicating whether the content is being imported.
+ * @returns {void}
+ */
+function inject(MMLstring, $targetRoleOrAtom, containerRequirements, toBeImported)
 {
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
-	
+	ExtendAndInitializeTree($convertedTree);
 	// if ( target accept booleans) al momento l'unico target è #canvasrole, in futuro si dovrà distinguere
 	if($targetRoleOrAtom.is('[data-atom]')){
 		
@@ -97,7 +106,7 @@ function inject(MMLstring,$targetRoleOrAtom,doNotwrap,toBeImported)
 	}
 	else{
 		$targetRoleOrAtom.append($convertedTree);
-		if(doNotwrap!=true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
+		if(containerRequirements='bool'){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
 			$convertedTree.each(function() {
 				wrapWithDefIfNeededreturnTarget($targetRoleOrAtom,$(this))
 			});
@@ -105,7 +114,6 @@ function inject(MMLstring,$targetRoleOrAtom,doNotwrap,toBeImported)
 	}
 	
 	
-	ExtendAndInitializeTree($convertedTree);
 	//var $refreshStartPoint = MNODEparent($convertedTree);
 	//if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
 	ssnapshot.take(); 

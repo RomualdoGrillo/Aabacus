@@ -18,6 +18,9 @@ function MakeSortableAndInjectMouseDown(event) {
 	} else {
 		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
 	}
+	if($atomTarget.length==0){
+		return//no unlocked parent to drag
+	}
 	/********cleanup*******/
 	cleanupDnD() //cleanup must happen after $atomTarget is determined!!! Othrwise you may remove the element clicked on
 	//***selection manager "grey" highlight
@@ -176,10 +179,12 @@ function onAdd(event) {
 	let dropped = myClone
 	//*********** move or clone
 	if (event.to.getAttribute('target') == 'opened') {
+		/*
 		if (event.to.matches('#canvasRole')) {
 			wrapWithDefIfNeededreturnTarget($('#canvasRole'), $(dropped),true);
 		}
-
+		*/
+		wrapWithDefIfNeededreturnTarget($(event.to), $(dropped),true)
 		if ($(dropped).hasClass('toBeCloned')) {
 			$(dropped).removeClass('toBeCloned');
 		} else {
@@ -243,7 +248,7 @@ function makeTargetsSortableRolesOrAtoms(targetsArray, propertyName, icon) {
 		if (targetsArray[j].matches('.ul_role')) {
 			//target is a role: for example associative property   
 			makeSortableMouseDown([targetsArray[j]]);
-			let notAtgt = $('<div class="notAtgt"></div>')[0]
+			let notAtgt = $('<span class="notAtgt"></span>')[0]
 			if(icon){
 					$(notAtgt).css('background-image',wrapUnwrapUrlString(icon));
 			}

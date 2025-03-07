@@ -1,0 +1,69 @@
+<section data-section="palette">
+</section>
+
+<section data-section="events">
+</section>
+
+<section data-section="canvas">
+</section>
+
+<section data-section="result">
+</section>
+<section data-section="settings">
+	{
+	"debug":false
+}   
+</section>
+<section data-section="settingsOriginal">
+	{
+	"import_json_settings":"./Data/exercises/dbo/dbo.set",
+	"debug":false,
+	"gameMode":true,
+	"gameModeSurpriseRes":false,
+	"lockCanvas":true,
+	"visPalette":"hide",
+	"hideLeftColumn":true,
+	"hideRightColumn":true,
+	"resultHidden":false,
+	"visSettingSelected":1,
+	"tool":"",
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+		 "timesDisposition":0,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+		 "timesDisposition":0,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+		 "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"tooColored",
+		"colors":"coloredBorders",
+		"brackets":false,
+		"timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":false
+		}
+	]
+}   
+</section>
