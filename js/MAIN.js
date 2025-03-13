@@ -157,7 +157,7 @@ function clickHandler(event) {
 	if ($(event.target).is('[data-viseq=asymmetric]>.firstMember')) {
 		let $atom = $(event.target).parent();
 		if ($atom.is('#canvas')) {
-			// canvas fa eccezione perchè determina lo anche lo stato delle sezioni result e events
+			// canvas fa eccezione perchè determina anche lo stato delle sezioni result e events
 			if(!GLBsettings.lockCanvas){
 				GLBsettings.lockCanvas=true;
 				$('#canvas,#result,#events').removeClass('unlocked');
