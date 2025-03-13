@@ -8,19 +8,16 @@ let GLBDnD = { toolWhenMousedown: "" }
 function MakeSortableAndInjectMouseDown(event) {
 	let $validTgT=$();
 	/******** from target to Atom target *************/
-	//glued vs no glued
 	let $atomTarget
 	if( !$(event.target).is('#canvas *,#palette *')){
 		return //nothing to drag
 	}
-	if (MNODEclosedDef($(event.target))) {
-		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable):not([data-undraggable]):not(.glued)');//undraggable is used for the cnvas, data-undraggable is for content
-	} else {
-		$atomTarget = $(event.target).closest('[data-atom]:not(.undraggable)');
-	}
-	if($atomTarget.length==0){
+	//get the first draggable parent
+	$atomTarget = MNODENselectable($(event.target));
+if($atomTarget.length==0){
 		return//no unlocked parent to drag
 	}
+	
 	/********cleanup*******/
 	cleanupDnD() //cleanup must happen after $atomTarget is determined!!! Othrwise you may remove the element clicked on
 	//***selection manager "grey" highlight
@@ -355,5 +352,3 @@ function clearSortableTargets() {
 	}
 
 }
-
-
