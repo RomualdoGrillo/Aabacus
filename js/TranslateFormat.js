@@ -83,69 +83,51 @@ function signsAsClasses($atom, mode /* SignsInNames_to_SignsAsClasses SignsAsCla
 	// se numero allora classe "cn"
 }
 
-//**** glued
-var glueFunctions = ["minus", "m_inverse", "not"]
+/**
+ * Array di funzioni che richiedono l'effetto "glued" sui loro elementi figli
+ * Include operatori come minus, m_inverse, not
+ */
+var glueFunctions = ["minus", "m_inverse", "not"];
+
+/**
+ * Aggiorna gli elementi che devono essere "incollati" (glued) nel DOM
+ * @param {jQuery|undefined} $startNode - Nodo di partenza opzionale
+ */
 function refreshGlued($startNode) {
-	//marca con classe glued gli atomi contenuti in un "minus" ecc..
-	//get starting point
-	if ($startNode == undefined) {
-		$containerNode = $("#canvasRole");
-	} else {
-		$containerNode = MNODEparent($startNode);
-	}
-	//Clear previous Glued
-	$containerNode.find(".glued").removeClass("glued")
-	//search for Gluing elements
-	//
-	//var $stickyParents = $containerNode.parent().find( "[data-atom='"+ glueFunctions[j] +"']" );
-	var $stickyParents = $containerNode.parent().find("[data-atom]").filter(function(i, e) {
-		let op = e.getAttribute("data-atom");
-		if (glueFunctions.indexOf(op) != -1) {
-			return true
-		} else if (op = 'eq' && e.getAttribute("data-viseq")=='asymmetric' ) {
-			return true
-		}
-	});
-
-	$stickyParents.each(function(i, val) {
-		var $toBeGlued = this.MNODE_getRoles().children().filter('[data-atom]');
-		//get the MNODE contained to be Glued
-		$toBeGlued.addClass('glued')
-		/*if( $toBeGlued.length == 1){
-						$toBeGlued[0].MNODE_getNodes().addClass("glued");	
-					}*/
-
-	});
-
-	var $stickyParents = $containerNode.find("[data-atom=eq][data-viseq=asymmetric]:not(#canvas)");
-	$stickyParents.each(function(i, val) {
-		var $toBeGlued = this.MNODE_getRoles().children().filter('[data-atom]');
-		//get the MNODE contained to be Glued
-		if ($toBeGlued.length == 1) {
-			$toBeGlued[0].MNODE_getNodes().addClass("glued");
-		}
-	});
+    // Determina il nodo contenitore da cui iniziare la ricerca
+    const $containerNode = $startNode ? MNODEparent($startNode) : $("#canvasRole");
+    
+    // Rimuove la classe "glued" da tutti gli elementi precedentemente marcati
+    $containerNode.find(".glued").removeClass("glued");
+    
+    // Trova tutti gli elementi con attributo data-atom che corrispondono ai criteri
+    const $stickyParents = $containerNode.parent().find("[data-atom]").filter(function(i, element) {
+        const operatorType = element.getAttribute("data-atom");
+        
+        // Verifica se l'operatore è nella lista delle funzioni "glued"
+        if (glueFunctions.indexOf(operatorType) !== -1) {
+            return true;
+        } 
+        // Verifica se è un'equazione asimmetrica
+        else if (operatorType === 'eq' && element.getAttribute("data-viseq") === 'asymmetric') {
+            return true;
+        }
+        return false;
+    });
+    
+    // Applica la classe "glued" ai figli degli elementi trovati
+    $stickyParents.each(function() {
+        const $toBeGlued = this.MNODE_getRoles().children().filter('[data-atom]');
+        $toBeGlued.addClass('glued');
+    });
+    
+    // Gestione speciale per equazioni asimmetriche all'interno del contenitore
+    $containerNode.find("[data-atom=eq][data-viseq=asymmetric]:not(#canvas)").each(function() {
+        const $toBeGlued = this.MNODE_getRoles().children().filter('[data-atom]');
+        
+        // Se c'è un solo figlio, applica "glued" a tutti i suoi nodi
+        if ($toBeGlued.length === 1) {
+            $toBeGlued[0].MNODE_getNodes().addClass("glued");
+        }
+    });
 }
-
-/*
-function MNODEtranslateFormat(mode,$startNode,applyToSubtreeAlso){//translate from (-a) minus as class to (-1)(a)
-    //todo: implementare applyToSubtreeAlso
-    //**** condizioni necessarie per applicare la funzione *****
-    if(  $startNode.attr("data-type") !=="num" ){return} //deve essere di tipo numerico
-	if(  $startNode.attr("data-atom") == "cn" &&  $startNode[0].MNODE_getName() === "1" ){return} // se 1 o -1 non vascomposto ulteriormente
-    if($startNode.hasClass('minus')){
-        var op = "times";
-		$extOp = wrapIfNeeded($startNode,op);//se necessario crea una operazione container
-		var prototype=prototypeSearch("ci","num");//aggiungi un fattore "-1"
-		$clone = MNODEclone(prototype);
-		$clone.attr('data-atom','cn');
-		$clone[0].MNODE_setName("1");
-		$clone.addClass('minus');
-		$clone.insertAfter($startNode);
-		$startNode.removeClass('minus');//togli il segno meno dall'elemento da scomporre
-		refreshInfix($extOp);
-		ssnapshot.take();
-	}
-
-}
-*/
