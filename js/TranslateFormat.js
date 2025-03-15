@@ -109,9 +109,11 @@ function refreshGlued($startNode) {
             return true;
         } 
         // Verifica se è un'equazione asimmetrica
-        else if (operatorType === 'eq' && element.getAttribute("data-viseq") === 'asymmetric') {
+        /*
+		else if (operatorType === 'eq' && $(element).is('[data-viseq=asymmetric]:not(#canvas)')) {
             return true;
         }
+		*/
         return false;
     });
     
@@ -119,15 +121,5 @@ function refreshGlued($startNode) {
     $stickyParents.each(function() {
         const $toBeGlued = this.MNODE_getRoles().children().filter('[data-atom]');
         $toBeGlued.addClass('glued');
-    });
-    
-    // Gestione speciale per equazioni asimmetriche all'interno del contenitore
-    $containerNode.find("[data-atom=eq][data-viseq=asymmetric]:not(#canvas)").each(function() {
-        const $toBeGlued = this.MNODE_getRoles().children().filter('[data-atom]');
-        
-        // Se c'è un solo figlio, applica "glued" a tutti i suoi nodi
-        if ($toBeGlued.length === 1) {
-            $toBeGlued[0].MNODE_getNodes().addClass("glued");
-        }
     });
 }
