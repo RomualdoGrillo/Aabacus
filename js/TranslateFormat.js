@@ -109,11 +109,9 @@ function refreshGlued($startNode) {
             return true;
         } 
         // Verifica se è un'equazione asimmetrica
-        /*
-		else if (operatorType === 'eq' && $(element).is('[data-viseq=asymmetric]:not(#canvas)')) {
+        else if (operatorType === 'eq' && isDefinition(element)) {
             return true;
         }
-		*/
         return false;
     });
     

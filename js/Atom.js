@@ -21,6 +21,7 @@ atom = {
 	MNODEparent: MNODEparent,
 	MNODEcreateMathmlString: MNODEcreateMathmlString,
 	MNODEclosedDef: MNODEclosedDef,
+	isDefinition: isDefinition,
 	MNODECreateDefinition: MNODECreateDefinition,
 	MNODE_replaceWith: MNODE_replaceWith,
 	MNODE_getNodes: MNODE_getNodes,
@@ -47,6 +48,12 @@ function MNODEclosedDef(Node) {
 	//stabilisci se l'elemento "Node" e' aperto e si puo modificare liberamente
 	return $(Node).closest(".unlocked").length == 0;
 }
+
+function isDefinition(Node) {
+	//controlla se l'elemento è una definizione verificando se ha l'attributo data-viseq="asymmetric"
+	return $(Node).is('[data-viseq="asymmetric"]');
+}
+
 function MNODEfrozenDef(Node) {
 	//!! to be refined
 	return $(Node).closest("[data-tag]");

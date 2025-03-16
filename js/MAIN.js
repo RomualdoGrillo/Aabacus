@@ -154,7 +154,7 @@ function MNODENselectable(startElement) {
 
 function clickHandler(event) {
 	//*************** Lock unlock ********
-	if ($(event.target).is('[data-viseq=asymmetric]>.firstMember')) {
+	if ($(event.target).parent().is(function() { return isDefinition(this); }) && $(event.target).is('.firstMember')) {
 		let $atom = $(event.target).parent();
 		if ($atom.is('#canvas')) {
 			// canvas fa eccezione perchè determina anche lo stato delle sezioni result e events
@@ -405,7 +405,7 @@ function ExtendAndInitializeTree($startElement) {
 function ExtendAndInitialize($Atom) {
 	MNODEextend($Atom, true)
 	//initialize lock icon
-	if ($Atom.is('[data-atom][data-viseq=asymmetric]')) {
+	if ($Atom.is('[data-atom]') && isDefinition($Atom[0])) {
 		refreshAsymmEq($Atom)
 	}
 }

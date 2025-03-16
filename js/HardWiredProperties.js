@@ -823,14 +823,14 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 
 function isEquationMember($mouseDownAtom) {
 	//  
-	if (!$mouseDownAtom.parent().parent().is("[data-atom=eq]:not([data-viseq=asymmetric])")) {
+	if (!($mouseDownAtom.parent().parent().is("[data-atom=eq]") && !isDefinition($mouseDownAtom.parent().parent()[0]))) {
 		return []//not from an equation	
 	}
 	return MNODEparent($mouseDownAtom)
 }
 
 function validReplaced($mouseDownAtom) {
-	if (!$mouseDownAtom.parent().parent().is("[data-atom=eq]:not([data-viseq=asymmetric])")) {
+	if (!($mouseDownAtom.parent().parent().is("[data-atom=eq]") && !isDefinition($mouseDownAtom.parent().parent()[0]))) {
 		return []//not from an equation	or implies
 	}
 	if (!($mouseDownAtom.parent().hasClass('firstMember') || $mouseDownAtom.parent().hasClass('secondMember'))) {
