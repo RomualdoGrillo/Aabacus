@@ -302,13 +302,13 @@
 			<apply data-type="obj">
 				<callfunction>
 				</callfunction>
-				<ci data-type="bool">simpPlusSingleTerm</ci>
+				<ci data-type="bool">PlusSingleTerm</ci>
 				<ci data-type="bool">ltr</ci>
 			</apply>
 			<apply data-type="obj">
 				<callfunction>
 				</callfunction>
-				<ci data-type="bool">simpTimesSingleFactor</ci>
+				<ci data-type="bool">TimesSingleFactor</ci>
 				<ci data-type="bool">ltr</ci>
 			</apply>
 			<apply data-type="obj">
