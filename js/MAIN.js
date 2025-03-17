@@ -35,14 +35,15 @@ $(document).on('mouseup', MouseUpCleanup);
 $(document).on('touchend', MouseUpCleanup);//not tested
 
 
-$(document).on('keydown', function(e) {
+$(document).on('keydown', function (e) {
 	var keyPressed = keyToCharacter(e.which).toLowerCase();
 	console.log('key pressed:' + keyPressed + ' code: ' + e.which)
-	
-	if (e.which == 16 || e.which == 17){}//console.log("filter ctrl and Maiusc if alone")
+
+	if (e.which == 16 || e.which == 17) { }//console.log("filter ctrl and Maiusc if alone")
 	//TAB 
-	else if(keyPressed === '\t'){
-		changeTool();}// change tool
+	else if (keyPressed === '\t') {
+		changeTool();
+	}// change tool
 	//ctrl+a 
 	else if (e.ctrlKey && (keyPressed === 'a')) {
 		$('#canvasRole *').removeClass('selected');
@@ -82,23 +83,23 @@ $(document).on('keydown', function(e) {
 	else if (e.shiftKey && (keyPressed === 's')) {
 		console.log("Shift + s")
 		let fileExtension
-		let stringToBeSaved 
+		let stringToBeSaved
 
 		if ($('.selected').length == 0) {//se nulla in particolare è selezionato salva tutto
 			stringToBeSaved = AlltoMMLSstring();
-			fileExtension= '.mmls';
+			fileExtension = '.mmls';
 		}
 		else {
 			let $toBeSaved = $('.selected');
 			$('.selected').removeClass('selected');
 			let contentString = MNODEcreateMathmlString($toBeSaved, true);
 			stringToBeSaved = '<math xmlns="http://www.w3.org/1998/Math/MathML">' + contentString + '</math>';
-			fileExtension= '.mml';
+			fileExtension = '.mml';
 		}
-		;if (stringToBeSaved) {
-			var fileName = prompt('Save as... Attenzione: Il file verrà salvato nella cartella "Download" !! non è possibile salvare in altre cartelle','noname')
+		; if (stringToBeSaved) {
+			var fileName = prompt('Save as... Attenzione: Il file verrà salvato nella cartella "Download" !! non è possibile salvare in altre cartelle', 'noname')
 			if (fileName !== null) {
-				saveTextAsFile(stringToBeSaved, fileName + fileExtension );
+				saveTextAsFile(stringToBeSaved, fileName + fileExtension);
 			}
 		}
 	}//shift+l load file
@@ -108,13 +109,13 @@ $(document).on('keydown', function(e) {
 		$('#fileToLoad').trigger('click');
 		// #fileToLoad: ad esso è associato un evento vedi sotto	
 		//}
-	} else if($('.selected').length != 0){
+	} else if ($('.selected').length != 0) {
 		//****************applica proprietà***********
 		var $selected = $('.selected')
 		var PActx = newPActx();
 
-		PActx = keyboardEvToFC($selected, keyPressed,e);
-		
+		PActx = keyboardEvToFC($selected, keyPressed, e);
+
 		//*************** operazioni conclusive (dopo tutti i tentativi)*******************
 		cleanupDnD()
 		PActxConclude(PActx)
@@ -123,11 +124,11 @@ $(document).on('keydown', function(e) {
 
 
 //************ Help button**************
-$("#help-link").click(function(event) {
+$("#help-link").click(function (event) {
 	window.open('./Help/Help.html');
 });
 //***** auto load file after a file is choosen***************
-$('#fileToLoad').change(function(e) {
+$('#fileToLoad').change(function (e) {
 	//console.log(e);
 	//passa di qui dopo che l'utente ha selezionato un nuovo file, non se l'utente preme annulla
 	//console.log('fileTOLoad change');
@@ -152,17 +153,16 @@ function MNODENselectable(startElement) {
 }
 
 function clickHandler(event) {
-	let $thisMNODE = MNODENselectable($(event.target));
 	//*************** Lock unlock ********
 	if ($(event.target).is('[data-viseq=asymmetric]>.firstMember')) {
 		let $atom = $(event.target).parent();
 		if ($atom.is('#canvas')) {
-			// canvas fa eccezione perchè determina lo anche lo stato delle sezioni result e events
-			if(!GLBsettings.lockCanvas){
-				GLBsettings.lockCanvas=true;
+			// canvas fa eccezione perchè determina anche lo stato delle sezioni result e events
+			if (!GLBsettings.lockCanvas) {
+				GLBsettings.lockCanvas = true;
 				$('#canvas,#result,#events').removeClass('unlocked');
 			} else {
-				GLBsettings.lockCanvas=false;
+				GLBsettings.lockCanvas = false;
 				$('#canvas,#result,#events').addClass('unlocked');
 			}
 		} else {
@@ -170,25 +170,27 @@ function clickHandler(event) {
 		}
 		refreshAsymmEq($atom);
 		ssnapshot.take();
-	} 
-	//***selection of declared "yellow" tool
-	else if( ($thisMNODE.attr('data-atom')=='forAll' || $thisMNODE.attr('data-atom')=='eq' || $thisMNODE.attr('data-tag') )
-				&& $thisMNODE.attr('data-tag')
-				&& GLBsettings.tool=="declare"){
-		//solo se è effettivamente una proprietà e non un container
-		if($thisMNODE.hasClass('selectedTool')){
-			$thisMNODE.removeClass('selectedTool')
-		}
-		else{$('[data-atom]').removeClass('selectedTool')
-			$thisMNODE.addClass('selectedTool');
-			console.log('Selected tool: '+$thisMNODE.attr('data-tag'))
-		} 
 	}
+
 }
-function selectionManager($clickedMNODE,ctrl,shift,deselectAll){
-	if(deselectAll){
+function selectionManager($clickedMNODE, ctrl, shift, deselectAll) {
+	if (deselectAll) {
 		//clear selected unselected
 		$('[data-atom]').removeClass('selected').removeClass('unselected');
+	}
+	//***selection of declared "yellow" tool
+	else if (($clickedMNODE.attr('data-atom') == 'forAll' || $clickedMNODE.attr('data-atom') == 'eq' || $clickedMNODE.attr('data-tag'))
+		&& $clickedMNODE.attr('data-tag')
+		&& GLBsettings.tool == "declare") {
+		//solo se è effettivamente una proprietà e non un container
+		if ($clickedMNODE.hasClass('selectedTool')) {
+			$clickedMNODE.removeClass('selectedTool')
+		}
+		else {
+			$('[data-atom]').removeClass('selectedTool')
+			$clickedMNODE.addClass('selectedTool');
+			console.log('Selected tool: ' + $clickedMNODE.attr('data-tag'))
+		}
 	}
 	else if (ctrl) {
 		//click +ctrl on .MNODE   ---multi select---
@@ -244,16 +246,17 @@ function dblclickHandler(event) {
 	//******** forThis prompt ***********
 	let $toBeSpecified
 	if (closed && atomClass === 'ci') {
-		$toBeSpecified = parameterInHeader($atomDblclicked,$identifierSpanForAll($atomDblclicked))}
-	if ($toBeSpecified && $toBeSpecified.length!=0) {
+		$toBeSpecified = parameterInHeader($atomDblclicked, $identifierSpanForAll($atomDblclicked))
+	}
+	if ($toBeSpecified && $toBeSpecified.length != 0) {
 		var newVal = prompt('Specify a value')
 		if (newVal != null) {
 			var $newNode
 			let $operation = dummyParser(newVal)
-			if($operation){//dummy parser to parse x>0 etc...
-				$newNode=$operation;
+			if ($operation) {//dummy parser to parse x>0 etc...
+				$newNode = $operation;
 			}
-			else{
+			else {
 				var type = $toBeSpecified.attr('data-type')
 				$newNode = MNODEclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
 				$newNode[0].MNODE_setName(newVal);
@@ -321,8 +324,8 @@ function dblclickHandler(event) {
 	//******** expand collapse ***********
 	//else if (atomClass != 'ci' && atomClass != 'cn' && atomClass != 'plus') {
 	else if (atomClass == 'forAll' || atomClass == 'and') {
-		if($atomDblclicked.is('[data-vis=collapsed]')){$atomDblclicked.attr('data-vis','')}
-		else{$atomDblclicked.attr('data-vis','collapsed')}
+		if ($atomDblclicked.is('[data-vis=collapsed]')) { $atomDblclicked.attr('data-vis', '') }
+		else { $atomDblclicked.attr('data-vis', 'collapsed') }
 	}//opened
 	//******** dblclick on ci ***********
 	else if (!closed && (atomClass == 'ci' || atomClass == 'cn')) {
@@ -395,14 +398,14 @@ function debugToggle() {
 	}
 }
 
-function ExtendAndInitializeTree($startElement){
-    MNODEapplyFunctToTree($startElement,true,ExtendAndInitialize)
+function ExtendAndInitializeTree($startElement) {
+	MNODEapplyFunctToTree($startElement, true, ExtendAndInitialize)
 }
 
-function ExtendAndInitialize($Atom){
+function ExtendAndInitialize($Atom) {
 	MNODEextend($Atom, true)
 	//initialize lock icon
-	if($Atom.is('[data-atom][data-viseq=asymmetric]')){
+	if ($Atom.is('[data-atom][data-viseq=asymmetric]')) {
 		refreshAsymmEq($Atom)
 	}
 }
@@ -410,11 +413,11 @@ function ExtendAndInitialize($Atom){
 
 
 function cancelSelected() {
-	toBeCancelled = $('.selected').filter(function(index) {
+	toBeCancelled = $('.selected').filter(function (index) {
 		return !MNODEclosedDef(this);
 	})
 	if (toBeCancelled.length != 0) {
-		toBeCancelled.each(function(i, element) {
+		toBeCancelled.each(function (i, element) {
 			$(element).remove()
 		});
 		RefreshEmptyInfixBraketsGlued();
@@ -440,24 +443,23 @@ function swapElements(obj1, obj2) {
 function PActxConclude(PActx) {
 	if (PActx.matchedTF == true) {
 		//********** Post *************
-		if(debugMode){console.log('CONCLUDE')}
+		if (debugMode) { console.log('CONCLUDE') }
 		refreshAndReplace(PActx);
 		if (PActx.$transform) {
-			RepeatedRefine_c(PActx.$transform,'c','.Refine_c');//Apply "c" to every Node in the branch marked with '.Refine_c'
+			RepeatedRefine_c(PActx.$transform, 'c', '.Refine_c');//Apply "c" to every Node in the branch marked with '.Refine_c'
 		}
-		RefreshEmptyInfixBraketsGlued($('body'),true);
+		RefreshEmptyInfixBraketsGlued($('body'), true);
 		ssnapshot.take();
-		if(GLBsettings.movesCounter!=undefined)
-		{GLBsettings.movesCounter++};
-		displayMoves(GLBsettings.movesCounter);	
-		lookForResultAndCelebrate(GLBsettings.movesCounter,GLBsettings.movesMinNumber)
+		if (GLBsettings.movesCounter != undefined) { GLBsettings.movesCounter++ };
+		displayMoves(GLBsettings.movesCounter);
+		lookForResultAndCelebrate(GLBsettings.movesCounter, GLBsettings.movesMinNumber)
 		PActxVisualize(PActx);
 	}
 }
 
 function PActxVisualize(PActx) {
 	let visContent
-	if (!PActx.visualization ) {
+	if (!PActx.visualization) {
 		visContent = PActx.msg
 	} else {
 		visContent = '<img src="' + PActx.visualization + '">';
@@ -474,14 +476,14 @@ function PActxVisualize(PActx) {
 	}
 	setTimeout(removeVisualization, 3000);
 }
-function VisualizeCelebration(imagePath,timeout) {
+function VisualizeCelebration(imagePath, timeout) {
 	// VisualizeCelebration('images/properties/zero.svg',PActx.$transform,3000) 
-	if (!imagePath ){return} //nothing to visualize
+	if (!imagePath) { return } //nothing to visualize
 	let visContent = '<img src="' + imagePath + '">';
 	let $visualization = $('<div class="celebration">' + visContent + '</div>')
 	$('#result').append($visualization)
-	if(timeout){
-		setTimeout(removeCelebration,timeout);
+	if (timeout) {
+		setTimeout(removeCelebration, timeout);
 	}
 }
 
@@ -493,27 +495,27 @@ function removeCelebration() {
 	$('.celebration').remove()
 }
 
-const tools = ["", "copy", "autoAdapt","declare"];
-function changeTool(){
+const tools = ["", "copy", "autoAdapt", "declare"];
+function changeTool() {
 	let currToolIndex = tools.indexOf(GLBsettings.tool)
 	let newToolIndex = ((currToolIndex + 1) % tools.length)// start over when the list is over
 	GLBsettings.tool = tools[newToolIndex]//update tool in GLB
-	$('body').attr('tool',GLBsettings.tool);//update tool as class of <body> 
-    console.log('GLBsettings.tool<='+ GLBsettings.tool)
+	$('body').attr('tool', GLBsettings.tool);//update tool as class of <body> 
+	console.log('GLBsettings.tool<=' + GLBsettings.tool)
 }
 
 function displayMoves(moves) {
 	// Update the text content with the moves
 	let displayedText
-	if(moves){
+	if (moves) {
 		displayedText = `Moves:${moves}`;
 	}
-	else{
+	else {
 		displayedText = ``;
 	}
 	// Select the <span> element and put the text there
 	const movesSpan = document.querySelector('#statusDisplay');
 	if (movesSpan) {
-		movesSpan.textContent=displayedText;
+		movesSpan.textContent = displayedText;
 	}
 }

@@ -60,6 +60,7 @@ body[timesdisposition=brTimes] br + [data-atom]::before{
 	content: "+";/*&#x2264; for leq*/
 	left: -11.6px;
 	pointer-events: none;
+	color:black;
 }
 
 [data-atom=leq]>.ol_role>[data-atom]:not(:first-of-type)::before {
