@@ -27,7 +27,7 @@ preloadAll(preloadPath);//ATTENTION contains asinchronous functions
 ssnapshot.take();
 document.addEventListener("click", clickHandler);
 document.addEventListener("dblclick", dblclickHandler);
-//document.querySelectorAll('[data-atom]').forEach(function(i,e){ refreshAsymmEq($(e))})
+//document.querySelectorAll('[data-atom]').forEach(function(i,e){ MNODErefreshAsymmEq($(e))})
 //***********************************************************
 $(document).on('mousedown', MakeSortableAndInjectMouseDown);
 $(document).on('touchstart', MakeSortableAndInjectMouseDown);
@@ -143,14 +143,7 @@ $('#fileToLoad').change(function (e) {
 
 //***********************************************************
 
-function MNODENselectable(startElement) {
-	//risali passo passo la struttura DOM fino a trovare un elemento MNODE
-	if (MNODEclosedDef(startElement)) {
-		return startElement.closest('[data-atom]:not(.unselectable):not(.glued)');
-	} else {
-		return startElement.closest('[data-atom]');
-	}
-}
+// Function moved to Atom.js and added to atom object
 
 function clickHandler(event) {
 	//*************** Lock unlock ********
@@ -168,7 +161,7 @@ function clickHandler(event) {
 		} else {
 			$atom.toggleClass('unlocked');
 		}
-		refreshAsymmEq($atom);
+		MNODErefreshAsymmEq($atom);
 		ssnapshot.take();
 	}
 
@@ -334,18 +327,7 @@ function dblclickHandler(event) {
 
 }
 
-function refreshAsymmEq($atom) {
-	// adegua l'icona del lucchetto allo stato unlocked/non unlocked
-	var $firstMember = $atom.find('>.firstMember')
-	$firstMember.addClass("ui-icon");
-	if ($atom.hasClass('unlocked')) {
-		$firstMember.addClass("ui-icon-unlocked");
-		$firstMember.removeClass("ui-icon-bullet");
-	} else {
-		$firstMember.addClass("ui-icon-bullet");
-		$firstMember.removeClass("ui-icon-unlocked");
-	}
-}
+// Function moved to Atom.js and added to atom object as MNODErefreshAsymmEq
 
 function keyToCharacter(key) {
 	if (key === 37) {
@@ -406,7 +388,7 @@ function ExtendAndInitialize($Atom) {
 	MNODEextend($Atom, true)
 	//initialize lock icon
 	if ($Atom.is('[data-atom]') && isDefinition($Atom[0])) {
-		refreshAsymmEq($Atom)
+		MNODErefreshAsymmEq($Atom)
 	}
 }
 

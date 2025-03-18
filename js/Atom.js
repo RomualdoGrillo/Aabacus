@@ -23,6 +23,8 @@ atom = {
 	MNODEclosedDef: MNODEclosedDef,
 	isDefinition: isDefinition,
 	MNODECreateDefinition: MNODECreateDefinition,
+	MNODENselectable: MNODENselectable,
+	MNODErefreshAsymmEq: MNODErefreshAsymmEq,
 	MNODE_replaceWith: MNODE_replaceWith,
 	MNODE_getNodes: MNODE_getNodes,
 	MNODE_getRoles: MNODE_getRoles,
@@ -961,6 +963,28 @@ function MNODE_overlay(mode) {
 		$(this).append('<div id="overlay">');
 	} else {
 		$("#overlay").remove();
+	}
+}
+
+function MNODENselectable(startElement) {
+	//risali passo passo la struttura DOM fino a trovare un elemento MNODE
+	if (MNODEclosedDef(startElement)) {
+		return startElement.closest('[data-atom]:not(.unselectable):not(.glued)');
+	} else {
+		return startElement.closest('[data-atom]');
+	}
+}
+
+function MNODErefreshAsymmEq($atom) {
+	// adegua l'icona del lucchetto allo stato unlocked/non unlocked
+	var $firstMember = $atom.find('>.firstMember')
+	$firstMember.addClass("ui-icon");
+	if ($atom.hasClass('unlocked')) {
+		$firstMember.addClass("ui-icon-unlocked");
+		$firstMember.removeClass("ui-icon-bullet");
+	} else {
+		$firstMember.addClass("ui-icon-bullet");
+		$firstMember.removeClass("ui-icon-unlocked");
 	}
 }
 
