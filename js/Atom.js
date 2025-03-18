@@ -575,7 +575,7 @@ function wrapIfNeeded($MNODEelement, op) {
 }
 function wrapWithOperation($MNODEelement, op){
 	//create external operation to $MNODEelement, $MNODEelement is 1 element or a list of adjacent elements
-	var $prototype = prototypeSearch(op);
+	var $prototype;
 	var roleindex = 0 //the wrapping operation may have more roles, use the first one
 	if (op=="def"){
 		$prototype = prototypeSearch("eq","bool","[data-viseq=asymmetric]");//special case for definition
@@ -587,7 +587,7 @@ function wrapWithOperation($MNODEelement, op){
 	var $clone = MNODEclone($prototype);
 	//MNODEparent($MNODEelement).replaceWith($clone);//replace provoca la distruzione degli eventi nel replaced
 	$clone.insertBefore($MNODEelement.eq(0));
-	$MNODEelement.appendTo($clone[0].MNODE_getRoles(roleindex));
+	$MNODEelement.appendTo($clone[0].MNODE_getRoles().eq(roleindex));
 	return $clone;
 }
 
