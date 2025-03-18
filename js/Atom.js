@@ -595,14 +595,11 @@ function wrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
 	
 	//if(  $targetNode.is('#canvasRole') && (MNODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
 	if(  canDraggedBeDroopedInRoleYesWrapNo($toBeInserted,$targetNode)=='needsWrap' ) {
-		var $newDef = MNODEclone(prototypeSearch('eq','bool','[data-viseq=asymmetric]'));
+		var $newDef = wrapWithOperation($toBeInserted, "def");
 		if(unlocked){$newDef.addClass("unlocked")}
 		else{$newDef.removeClass("unlocked")}
-		$newDef.insertBefore($toBeInserted.eq(0));
-		$target = $newDef.find(".secondMember")
 		ExtendAndInitialize($newDef);// il contenuto è già stato esteso
-		$target.append($toBeInserted);
-		return $target
+		return $newDef.find(".secondMember");
 	}
 	else{
 		return $targetNode
