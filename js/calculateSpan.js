@@ -1,4 +1,3 @@
-
 function $immediateJurisdictionRoleUpstream($role) {
 	let $startAtom = MNODEparent($role)
 	let $result = $()
@@ -218,21 +217,37 @@ function $SameOpInOut($startRole) {
 	return $validRoles
 }
 
+/**
+ * Determines the scope (span) of a given identifier by searching upwards in the DOM tree.
+ * It looks for the closest ancestor element representing a 'forAll' quantifier
+ * that declares the identifier as a bound variable (Bvar) in its header.
+ *
+ * @param {jQuery} $identifier - The jQuery object representing the identifier element.
+ * @returns {jQuery} The closest ancestor 'forAll' element that binds the identifier,
+ *                   or the element with ID 'canvasAnd' if no such binding ancestor is found (representing the global scope).
+ */
 function $identifierSpanForAll($identifier) {
-	//determina il campo di validità dell'identificatore
-	//risali fino a trovare un container che può avere Bvar 
-	//controlla se l'identifier è tra quelle bvar
-	var $containingForAlls = $identifier.parents('[data-atom=forAll]');
-	//todo: andrebbero considrati tutti i parents che contengono Bvar, non solo i forAll
-	var i = 0
-	while ($containingForAlls[i]) {
-		if (parameterInHeader($identifier, $($containingForAlls[i]))) {
-			// l'$identifier si trova tra i paramettri del forall
-			return $($containingForAlls[i])
+	// Determina il campo di validità dell'identificatore
+	// Risali fino a trovare un container ('forAll') che può avere Bvar (Bound Variables)
+	// Controlla se l'identifier è tra quelle bvar nel header del container.
+
+	// Get all ancestor elements marked as 'forAll' quantifiers, ordered from closest to furthest.
+	// TODO: Consider other parent node types that can contain Bound Variables (Bvar), not just 'forAll'.
+	const $potentialScopes = $identifier.parents('[data-atom=forAll]');
+
+	// Iterate through the potential scopes, starting from the closest one.
+	for (let i = 0; i < $potentialScopes.length; i++) {
+		const $currentScope = $($potentialScopes[i]);
+		// Check if the identifier is declared as a parameter within the header of this scope.
+		if (parameterInHeader($identifier, $currentScope)) {
+			// Found the innermost scope that binds the identifier.
+			return $currentScope;
 		}
-		i++
 	}
-	return $('#canvasAnd'); //se non hai trovato nulla, lo span è l'intera canvas
+
+	// If no specific binding scope ('forAll') was found among the ancestors,
+	// assume the identifier's scope is the entire canvas (global scope).
+	return $('#canvasAnd');
 }
 
 function highlightOccurrences($identifier, addClass) {
