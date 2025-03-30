@@ -1,6 +1,6 @@
 //UI Event to function call
 //traduce i comandi dell'utente, in questo caso inpartiti via mouse e tastiera,
-// in chiamate a funzioni del modulo MNODE
+// in chiamate a funzioni del modulo exprNode
 
 
 
@@ -27,8 +27,8 @@ function keyboardEvToFC($atom, keyPressed,event){
 			var actionString
 			var firstValString
 			try {
-				actionString = $actions[i].MNODE_getRoles('.function').children()[0].MNODE_getName();
-				firstValString = $actions[i].MNODE_getRoles('.values').children()[0].MNODE_getName();	
+				actionString = $actions[i].exprNode_getRoles('.function').children()[0].exprNode_getName();
+				firstValString = $actions[i].exprNode_getRoles('.values').children()[0].exprNode_getName();	
 			}
 			catch(err) {}
 			
@@ -84,15 +84,15 @@ function getDnDpropEnabled(dataTag){
 function searchEventHandler(event){// trova la definizione della proprietà
    var res
    var $found = $('#events').find('[data-atom="eventtoaction"]').filter(function(index){
-        var $role = this.MNODE_getRoles('.event');
+        var $role = this.exprNode_getRoles('.event');
         if($role.length !== 1){
             console.warn('Role not found' + field);
             res = $()
             return res
         }
-        var MNODE = $role.children()[0]
-        if( MNODE !== undefined){
-            return MNODE.MNODE_getName().toLowerCase() === event.toLowerCase()//case insensitive
+        var exprNode = $role.children()[0]
+        if( exprNode !== undefined){
+            return exprNode.exprNode_getName().toLowerCase() === event.toLowerCase()//case insensitive
         }
         else{
         	res = $()
@@ -100,7 +100,7 @@ function searchEventHandler(event){// trova la definizione della proprietà
         }
     })
     if ($found.length !== 0){
-        res = $found[0].MNODE_getRoles('.actions').children()
+        res = $found[0].exprNode_getRoles('.actions').children()
     }
     else{ res = $()}
     return  res
@@ -116,14 +116,14 @@ function searchForProperty(field,value,returnedField){
 	let candidates = Array.from( canvas.querySelectorAll('[data-atom=deftrue]') );
 	let i=0;
 	while(candidates[i]){
-		let $role = candidates[i].MNODE_getRoles().filter('.' + field)
+		let $role = candidates[i].exprNode_getRoles().filter('.' + field)
 		if($role.length !== 1){
 			console.warn('Role not found' + field);
 		}
-		let MNODEvalue = $role.children()[0]
-		if(MNODEvalue !== undefined && MNODEvalue.MNODE_getName().toLowerCase() === value.toLowerCase() ){
+		let exprNodevalue = $role.children()[0]
+		if(exprNodevalue !== undefined && exprNodevalue.exprNode_getName().toLowerCase() === value.toLowerCase() ){
 		    //case insensitive
-        	return   $( candidates[i].MNODE_getRoles().filter("." + returnedField ).children()[0] ) 
+        	return   $( candidates[i].exprNode_getRoles().filter("." + returnedField ).children()[0] ) 
 		}	
 	i++}
 }

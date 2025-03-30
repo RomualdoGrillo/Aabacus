@@ -227,7 +227,7 @@
   
   
   
-  /*************specifici per tipo di MNODEO ***************/
+  /*************specifici per tipo di exprNodeO ***************/
   
   [data-atom="power"],[data-atom="root"]{
 	  display: inline-grid!important;/* grid works but breaka the num/den disposition*/

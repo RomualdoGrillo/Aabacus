@@ -101,8 +101,8 @@ function compareWithResult($expression, $result,strictOrder) {
 	var MyPActx = newPActx();
 	MyPActx.$operand = $expression;
 	//compare with a clone of the result
-	MyPActx.$pattern = MNODEclone($result);
-	MNODEextend(MyPActx.$pattern, true);
+	MyPActx.$pattern = exprNodeclone($result);
+	exprNodeextend(MyPActx.$pattern, true);
 	return orderMatch(MyPActx, false, true, strictOrder).matchedTF
 }
 
@@ -139,7 +139,7 @@ function getOffset( el ) {
 }
 function getPositionsOfChildren($parentAtom){
 	let arr =[]
-	arr = $parentAtom[0].MNODE_getChildren().toArray()
+	arr = $parentAtom[0].exprNode_getChildren().toArray()
 	for(i=0;arr[i];i++){
 		arr[i]=getOffset(arr[i])
 	}
@@ -175,11 +175,11 @@ function dummyParser(string){
 	else if(splittedgt.length==2){splitted=splittedgt; op='gt'}
 	else if(splittedeq.length==2){splitted=splittedeq; op='eq'}
 	if(op){
-		let $operation = MNODEclone( prototypeSearch(op) )
+		let $operation = exprNodeclone( prototypeSearch(op) )
 		let first = identifierToAtom(splitted[0]);
 		let second = identifierToAtom(splitted[1]);
-		$operation[0].MNODE_getRoles('.firstMember').append(first)
-		$operation[0].MNODE_getRoles('.secondMember').append(second)
+		$operation[0].exprNode_getRoles('.firstMember').append(first)
+		$operation[0].exprNode_getRoles('.secondMember').append(second)
 		return $operation
 	}
 }
@@ -193,8 +193,8 @@ function identifierToAtom(string){
 	else{
 		atomType = 'cn'
 	}
-	$clone = MNODEclone( prototypeSearch("cn","num") )
-	$clone[0].MNODE_setName(string);
+	$clone = exprNodeclone( prototypeSearch("cn","num") )
+	$clone[0].exprNode_setName(string);
 	$clone.attr('data-atom', atomType);//uso un generico prototipo num e qui specifico se cn o ci
 	return	$clone
 }
@@ -216,14 +216,14 @@ function commonParentOfTwo(a, b) {
 }
 
 
-function gradeInMonomial($MNODE, varName) {
+function gradeInMonomial($exprNode, varName) {
 	let $factors
 	let totalGrade = 0
-	if ($MNODE.attr('data-atom') == 'times') {//multiple factors?
-		$factors = $MNODE[0].MNODE_getChildren()
+	if ($exprNode.attr('data-atom') == 'times') {//multiple factors?
+		$factors = $exprNode[0].exprNode_getChildren()
 	}
 	else {
-		$factors = $MNODE
+		$factors = $exprNode
 	}
 	for(let i=0;$factors[i];i++){
 		let type=$factors.eq(i).attr('data-atom')
@@ -245,12 +245,12 @@ function sortByGrade(array,varName) {
     });
 }
 
-function updateContainerView($MNODE,view,par){
+function updateContainerView($exprNode,view,par){
 	if(view=='grid'){
 		//set parent
-		$MNODE[0].MNODE_getRoles().css('display','grid').css('grid-auto-flow','column').css('justify-items','center') //(data-view,"viewAsGrid");
+		$exprNode[0].exprNode_getRoles().css('display','grid').css('grid-auto-flow','column').css('justify-items','center') //(data-view,"viewAsGrid");
 		//set children
-		let $children = $MNODE[0].MNODE_getChildren()
+		let $children = $exprNode[0].exprNode_getChildren()
 		//childrenArr = sortByGrade(childrenArr);
 		for(i=0;$children[i];i++){
 			console.log(i)

@@ -12,7 +12,7 @@ function ssnapshot() {
 }
 
 ssnapshot.take = function(){
-		var $cloneCanvas = MNODEclone( $("#canvas>.secondMember"),false,false )
+		var $cloneCanvas = exprNodeclone( $("#canvas>.secondMember"),false,false )
 		FILO.push($cloneCanvas)
 		
 		//----test------------------inserire due span in "index.html" per vedere i risultati
@@ -50,11 +50,11 @@ ssnapshot.take = function(){
 }
 
 ssnapshot.copy = function(){
-	ssnapshot.clipBoard = MNODEclone($(".selected"),false,false);
+	ssnapshot.clipBoard = exprNodeclone($(".selected"),false,false);
 }
 ssnapshot.paste = function(){
 	if(ssnapshot.clipBoard.length != 0){
-		var $newCds = MNODEclone( ssnapshot.clipBoard,true,false ); //extend, do not removeID
+		var $newCds = exprNodeclone( ssnapshot.clipBoard,true,false ); //extend, do not removeID
 		$(".selected").replaceWith( $newCds );
 	}
 }

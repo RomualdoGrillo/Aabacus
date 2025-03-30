@@ -1,5 +1,5 @@
 function $immediateJurisdictionRoleUpstream($role) {
-	let $startAtom = MNODEparent($role)
+	let $startAtom = exprNodeparent($role)
 	let $result = $()
 	//upstream if it's ans AND
 	if ($startAtom.is('[data-atom=and]')) {
@@ -10,30 +10,30 @@ function $immediateJurisdictionRoleUpstream($role) {
 
 function $immediateJurisdictionRolesNEW($role) {
 	//excluded is used to avoid exploring into startProposition when looking for for consequences of such proposition
-	let $startAtom = MNODEparent($role)
+	let $startAtom = exprNodeparent($role)
 	let startAtom_op = $startAtom.attr("data-atom");
 	let $immediateDiscendence = $()
-	let $parentAtom = MNODEparent($startAtom);
+	let $parentAtom = exprNodeparent($startAtom);
 	//-immediate propagate roles, excluding start node
 	//-upstream: And
 	if ($parentAtom.is('[data-atom=and]')) {
-		$immediateDiscendence = $immediateDiscendence.add($parentAtom[0].MNODE_getRoles())
+		$immediateDiscendence = $immediateDiscendence.add($parentAtom[0].exprNode_getRoles())
 	}
 	//-sameLevel: implies firstMember to secondMember
 	if ((startAtom_op == 'implies') && $role.hasClass('firstMember')) {
-		$secondMember = $startAtom[0].MNODE_getRoles('.secondMember');
+		$secondMember = $startAtom[0].exprNode_getRoles('.secondMember');
 		$immediateDiscendence = $immediateDiscendence.add($secondMember);
 	}
 	//-downstream: all boolean roles
 	let $children = $role.children('[data-atom]');
 	$children.each(function () {
-		$immediateDiscendence = $immediateDiscendence.add(this.MNODE_getRoles('[data-type=bool]'))//add roles
+		$immediateDiscendence = $immediateDiscendence.add(this.exprNode_getRoles('[data-type=bool]'))//add roles
 		//let op = $(this).attr("data-atom");
 		//if( op == 'and' || op == 'or' || op == 'implies'){
-		//	$immediateDiscendence = $immediateDiscendence.add(this.MNODE_getRoles()[0])//add roles
+		//	$immediateDiscendence = $immediateDiscendence.add(this.exprNode_getRoles()[0])//add roles
 		//}
 		//else if(op == 'forAll'){
-		//	$immediateDiscendence = $immediateDiscendence.add(this.MNODE_getRoles('.forAllContent')[0])//add roles
+		//	$immediateDiscendence = $immediateDiscendence.add(this.exprNode_getRoles('.forAllContent')[0])//add roles
 		//}
 	})
 	return $immediateDiscendence
@@ -49,13 +49,13 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 		return $() // Target atoms are just proxy for underlyng role.
 		//recursive exploration happens jumping fron role to upstream and downstrem role.
 	}
-	let $startAtom = MNODEparent($role)
+	let $startAtom = exprNodeparent($role)
 	let startNode_op = $startAtom.attr("data-atom");
 	let $stepStoneORtarget = $()
 	let $children = $role.children('[data-atom]');
 	if (startNode_op == 'and') {
 		//upstream if it's an AND
-		if (MNODEparent($startAtom).is('[data-atom=and]')) {
+		if (exprNodeparent($startAtom).is('[data-atom=and]')) {
 			$stepStoneORtarget = $stepStoneORtarget.add($startAtom.parent())
 		}
 	}//downstream
@@ -63,16 +63,16 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 	$children.each(function () {
 		let op = $(this).attr("data-atom");
 		if (op == 'and' || op == 'or' || op == 'implies') {
-			$stepStoneORtarget = $stepStoneORtarget.add(this.MNODE_getRoles()[0])//add roles
+			$stepStoneORtarget = $stepStoneORtarget.add(this.exprNode_getRoles()[0])//add roles
 		}
 		else if (op == 'forAll') {
-			$stepStoneORtarget = $stepStoneORtarget.add(this.MNODE_getRoles('.forAllContent')[0])//add roles
+			$stepStoneORtarget = $stepStoneORtarget.add(this.exprNode_getRoles('.forAllContent')[0])//add roles
 		}
 		//else if(op == 'not'){ this is a target for DeMorgan}
 	})
 	//downstream implies firstMember
 	if ((startNode_op == 'implies') && $role.hasClass('firstMember')) {
-		$secondMember = $startAtom[0].MNODE_getRoles('.secondMember');
+		$secondMember = $startAtom[0].exprNode_getRoles('.secondMember');
 		$stepStoneORtarget = $stepStoneORtarget.add($secondMember);
 	}
 	return $stepStoneORtarget
@@ -83,15 +83,15 @@ function $ImmediateAssociativeAtom($starAssociativeOperation) {
 	let op = $starAssociativeOperation.attr("data-atom");
 	let $result = $();
 	//upstream if it's same operation
-	let $parent = MNODEparent($starAssociativeOperation)
+	let $parent = exprNodeparent($starAssociativeOperation)
 	if ($parent.attr("data-atom") === op) {
 		$result = $result.add($parent);
-	} MNODEparent($starAssociativeOperation).filter('[data-atom=' + op + ']');
+	} exprNodeparent($starAssociativeOperation).filter('[data-atom=' + op + ']');
 	//downstream same operation
-	let MNODEchildren = $starAssociativeOperation[0].MNODE_getChildren();
-	MNODEchildren.each(function (i, e) {
+	let exprNodechildren = $starAssociativeOperation[0].exprNode_getChildren();
+	exprNodechildren.each(function (i, e) {
 		if ($(e).attr("data-atom") === op) {
-			//$result = $result.add(e.MNODE_getRoles());
+			//$result = $result.add(e.exprNode_getRoles());
 			$result = $result.add($(e));
 		}
 	});
@@ -100,7 +100,7 @@ function $ImmediateAssociativeAtom($starAssociativeOperation) {
 
 function $PropositionUpstreamRec($startAtom, $outerRoleLimit) {
 	//testing
-	//$PropositionUpstreamRec($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')});
+	//$PropositionUpstreamRec($('.selected')).each(function(){exprNodeparent($(this)).addClass('selected')});
 
 	let op = $startAtom.attr("data-atom");
 	let $validRoles = $()
@@ -113,7 +113,7 @@ function $PropositionUpstreamRec($startAtom, $outerRoleLimit) {
 	}
 	$validRoles = $parentRoles.map(function () {
 		if (this.matches('[data-atom=implies]>.s_role:nth-child(2)')) {
-			return MNODEparent($(this))[0].MNODE_getRoles()[0]//return the first role of the implies  	
+			return exprNodeparent($(this))[0].exprNode_getRoles()[0]//return the first role of the implies  	
 		}
 		else if (this.matches('[data-atom=and]>.ul_role')) {
 			let $roles = $AssRolesRec(undefined, false, $(this)).add($(this))
@@ -127,11 +127,11 @@ function $PropositionUpstreamRec($startAtom, $outerRoleLimit) {
 
 function $AssRolesRec($startAtom, immediate, $startRole) {
 	//testing
-	//$AssRolesRec($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')})
+	//$AssRolesRec($('.selected')).each(function(){exprNodeparent($(this)).addClass('selected')})
 	if (!$startRole) {
 		$startRole = $startAtom.parent();
 	}
-	let $ParentAtom = MNODEparent($startAtom);
+	let $ParentAtom = exprNodeparent($startAtom);
 	let op = $ParentAtom.attr("data-atom");
 	let $validRoles = $()
 	if (OpIsAssociative(op)) {
@@ -207,12 +207,12 @@ function $AtomChildren($startNode){
 }
 */
 function $SameOpInOut($startRole) {
-	let $startAtom = MNODEparent($startRole);
+	let $startAtom = exprNodeparent($startRole);
 	let op = $startAtom.attr("data-atom");
 	let $validRoles = $startRole.find('>[data-atom=' + op + ']>.ul_role');
-	let $parentMNODE = MNODEparent($startAtom);
-	if ($parentMNODE.attr("data-atom") == op) {//parent
-		$validRoles = $validRoles.add($parentMNODE[0].MNODE_getRoles())//children
+	let $parentexprNode = exprNodeparent($startAtom);
+	if ($parentexprNode.attr("data-atom") == op) {//parent
+		$validRoles = $validRoles.add($parentexprNode[0].exprNode_getRoles())//children
 	}
 	return $validRoles
 }
@@ -275,8 +275,8 @@ function $findOccurrences($wanted, $span, $candidates) {
 	//todo: questa ricerca non distingue le variabili interne "Bvar".
 	// Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
 	let $occurrences = $candidates.filter(function () {
-		//return MNODEEqual($atom_param[0],this)
-		return compareExtMNODE($wanted, $(this), true, false);
+		//return exprNodeEqual($atom_param[0],this)
+		return compareExtexprNode($wanted, $(this), true, false);
 	});
 	return $occurrences
 }
@@ -289,7 +289,7 @@ function $calculateJurisdictionUpstream($startRole) {
 
 
 function $PropositionsAffectedByStartPropositionROLES($startProposition) {
-	//test: $PropositionsAffectedByStartPropositionROLES($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')});
+	//test: $PropositionsAffectedByStartPropositionROLES($('.selected')).each(function(){exprNodeparent($(this)).addClass('selected')});
 	let $roles = $RolesAffectedByStartPropositionROLES($startProposition)
 	//from roles to targets:
 	return $targets = $roles.map(function () {
@@ -298,19 +298,19 @@ function $PropositionsAffectedByStartPropositionROLES($startProposition) {
 }
 
 function $RolesAffectedByStartPropositionROLES($startProposition) {
-	//test: $RolesAffectedByStartPropositionROLES($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')});
+	//test: $RolesAffectedByStartPropositionROLES($('.selected')).each(function(){exprNodeparent($(this)).addClass('selected')});
 	//if startAtom parent is AND or imply, get starting role from start node:  
-	let $propositionParent = MNODEparent($startProposition)
+	let $propositionParent = exprNodeparent($startProposition)
 	let propParentOp = $propositionParent.attr('data-atom')
 	let $startRole
-	let $excludedRoles = $startProposition[0].MNODE_getRoles();
+	let $excludedRoles = $startProposition[0].exprNode_getRoles();
 	let $roles = $()
 	if (propParentOp == 'and') {
 		$startRole = $startProposition.parent()
 	}
 	else if (propParentOp == 'implies' && $startProposition.hasClass('firstMember')) {
 		if ((startAtom_op == 'implies') && $role)
-			$startRole = $propositionParent[0].MNODE_getRoles('.secondMember');
+			$startRole = $propositionParent[0].exprNode_getRoles('.secondMember');
 	}
 	if ($startRole) {
 		//propagate all Roles excluding start Node //note: apply to yourself?
@@ -321,14 +321,14 @@ function $RolesAffectedByStartPropositionROLES($startProposition) {
 }
 
 function $calculateTargetsAddRedundantROLES($startProposition) {
-	//test: $validAddRedundantROLES($('.selected')).each(function(){MNODEparent($(this)).addClass('selected')});
+	//test: $validAddRedundantROLES($('.selected')).each(function(){exprNodeparent($(this)).addClass('selected')});
 	//propagate all Roles excluding start Atom //note: apply to yourself?
 	let $roles = $RolesAffectedByStartPropositionROLES($startProposition)
 	//from roles to targets:
 	// two types of boolean roles exist:1) those with TRUE as neutral elements 2) OTHERS
 	// OR belongs to the second group!!!
 	return $targets = $roles.map(function () {
-		let op = MNODEparent($(this)).attr("data-atom");
+		let op = exprNodeparent($(this)).attr("data-atom");
 		if (op == 'or') {
 			//---OR roles are replaced with contained atoms if they are not ANDs.
 			//---OR empty roles are removed

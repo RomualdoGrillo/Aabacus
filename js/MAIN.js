@@ -14,7 +14,7 @@ ssnapshot()
 let sortablesSelectorString = '.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_role'
 let sortablesExcluded = '[data-atom=minus]>*,[data-atom=m_inverse]>*,[data-atom=not]>*'
 //glued
-MNODEextend($('body'), true);
+exprNodeextend($('body'), true);
 //************ Preload  ************
 //preload will extend new atoms 
 let preloadPath = window.location.href.split('preloadPath=')[1]
@@ -69,7 +69,7 @@ $(document).on('keydown', function (e) {
 		console.log("control + x")
 	}//auto create function definition
 	else if (e.ctrlKey && (keyPressed === 'b')) { //baptize
-		MNODECreateDefinition($('.selected')[0])
+		exprNodeCreateDefinition($('.selected')[0])
 		console.log("control + b")
 	}//canc or del  code of "cancel" = 46 code of "del" = 8
 	else if (e.which === 46 || e.which === 8) {
@@ -92,7 +92,7 @@ $(document).on('keydown', function (e) {
 		else {
 			let $toBeSaved = $('.selected');
 			$('.selected').removeClass('selected');
-			let contentString = MNODEcreateMathmlString($toBeSaved, true);
+			let contentString = exprNodecreateMathmlString($toBeSaved, true);
 			stringToBeSaved = '<math xmlns="http://www.w3.org/1998/Math/MathML">' + contentString + '</math>';
 			fileExtension = '.mml';
 		}
@@ -143,9 +143,9 @@ $('#fileToLoad').change(function (e) {
 
 //***********************************************************
 
-function MNODENselectable(startElement) {
-	//risali passo passo la struttura DOM fino a trovare un elemento MNODE
-	if (MNODEclosedDef(startElement)) {
+function exprNodeNselectable(startElement) {
+	//risali passo passo la struttura DOM fino a trovare un elemento exprNode
+	if (exprNodeclosedDef(startElement)) {
 		return startElement.closest('[data-atom]:not(.unselectable):not(.glued)');
 	} else {
 		return startElement.closest('[data-atom]');
@@ -173,57 +173,57 @@ function clickHandler(event) {
 	}
 
 }
-function selectionManager($clickedMNODE, ctrl, shift, deselectAll) {
+function selectionManager($clickedexprNode, ctrl, shift, deselectAll) {
 	if (deselectAll) {
 		//clear selected unselected
 		$('[data-atom]').removeClass('selected').removeClass('unselected');
 	}
 	//***selection of declared "yellow" tool
-	else if (($clickedMNODE.attr('data-atom') == 'forAll' || $clickedMNODE.attr('data-atom') == 'eq' || $clickedMNODE.attr('data-tag'))
-		&& $clickedMNODE.attr('data-tag')
+	else if (($clickedexprNode.attr('data-atom') == 'forAll' || $clickedexprNode.attr('data-atom') == 'eq' || $clickedexprNode.attr('data-tag'))
+		&& $clickedexprNode.attr('data-tag')
 		&& GLBsettings.tool == "declare") {
 		//solo se è effettivamente una proprietà e non un container
-		if ($clickedMNODE.hasClass('selectedTool')) {
-			$clickedMNODE.removeClass('selectedTool')
+		if ($clickedexprNode.hasClass('selectedTool')) {
+			$clickedexprNode.removeClass('selectedTool')
 		}
 		else {
 			$('[data-atom]').removeClass('selectedTool')
-			$clickedMNODE.addClass('selectedTool');
-			console.log('Selected tool: ' + $clickedMNODE.attr('data-tag'))
+			$clickedexprNode.addClass('selectedTool');
+			console.log('Selected tool: ' + $clickedexprNode.attr('data-tag'))
 		}
 	}
 	else if (ctrl) {
-		//click +ctrl on .MNODE   ---multi select---
-		if ($clickedMNODE.hasClass('selected')) {
-			$clickedMNODE.find('[data-atom]').removeClass('selected').removeClass('unselected');
-		} else if ($clickedMNODE.closest('.selected').length != 0) {//if an ancestor is selected already, ignore click
+		//click +ctrl on .exprNode   ---multi select---
+		if ($clickedexprNode.hasClass('selected')) {
+			$clickedexprNode.find('[data-atom]').removeClass('selected').removeClass('unselected');
+		} else if ($clickedexprNode.closest('.selected').length != 0) {//if an ancestor is selected already, ignore click
 		} else {
-			$clickedMNODE.addClass('selected');
+			$clickedexprNode.addClass('selected');
 		}
 	} else if (shift) {
 		//click +shift on [data-atom]   ---unselect---
-		if ($clickedMNODE.hasClass('selected')) {
-			$clickedMNODE.removeClass('selected');
-			$clickedMNODE.find('[data-atom]').removeClass('selected').removeClass('unselected');
-		} else if ($clickedMNODE.hasClass('unselected')) {
-			$clickedMNODE.removeClass('unselected');
-			$clickedMNODE.find('[data-atom]').removeClass('selected').removeClass('unselected');
-		} else if (($clickedMNODE.closest('.selected').length != 0) && ($clickedMNODE.closest('.unselected').length == 0)) {
+		if ($clickedexprNode.hasClass('selected')) {
+			$clickedexprNode.removeClass('selected');
+			$clickedexprNode.find('[data-atom]').removeClass('selected').removeClass('unselected');
+		} else if ($clickedexprNode.hasClass('unselected')) {
+			$clickedexprNode.removeClass('unselected');
+			$clickedexprNode.find('[data-atom]').removeClass('selected').removeClass('unselected');
+		} else if (($clickedexprNode.closest('.selected').length != 0) && ($clickedexprNode.closest('.unselected').length == 0)) {
 			//se è selected, a meno che non sia unselected		
 
-			$clickedMNODE.addClass('unselected');
-			$clickedMNODE.find('[data-atom]').removeClass('selected').removeClass('unselected');
+			$clickedexprNode.addClass('unselected');
+			$clickedexprNode.find('[data-atom]').removeClass('selected').removeClass('unselected');
 		}
 	} else {
 		//click on [data-atom]   ---select---
 
-		if ($clickedMNODE.hasClass('selected')) {
+		if ($clickedexprNode.hasClass('selected')) {
 			$('[data-atom]').removeClass('selected').removeClass('unselected');
 			//clear selected unselected
 		} else {
 			$('[data-atom]').removeClass('selected').removeClass('unselected');
 			//clear selected unselected
-			$clickedMNODE.addClass('selected');
+			$clickedexprNode.addClass('selected');
 		}
 	}
 }
@@ -237,10 +237,10 @@ function selectionManager($clickedMNODE, ctrl, shift, deselectAll) {
 
 
 function dblclickHandler(event) {
-	let target = MNODENselectable(event.target);
+	let target = exprNodeNselectable(event.target);
 	let $atomDblclicked = $(target)
 	let atomClass = $atomDblclicked.attr('data-atom');
-	let closed = MNODEclosedDef($atomDblclicked)
+	let closed = exprNodeclosedDef($atomDblclicked)
 	console.log('dblclick');
 	//closed
 	//******** forThis prompt ***********
@@ -258,8 +258,8 @@ function dblclickHandler(event) {
 			}
 			else {
 				var type = $toBeSpecified.attr('data-type')
-				$newNode = MNODEclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
-				$newNode[0].MNODE_setName(newVal);
+				$newNode = exprNodeclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
+				$newNode[0].exprNode_setName(newVal);
 				$newNode.attr('data-type', type)
 			}
 			forThisPar_focus_nofocus($newNode, $toBeSpecified);
@@ -280,7 +280,7 @@ function dblclickHandler(event) {
 	/********closed still not handled **********/
 	/*
 	else if (closed && atomClass === 'cn') {
-		let n = Number( MNODENumericCdsAsText($atomDblclicked) );
+		let n = Number( exprNodeNumericCdsAsText($atomDblclicked) );
 		if(Number.isInteger(n) && n>0){
 			let $plus =wrapWithOperation($atomDblclicked,'plus');
 			$plus.attr('data-vis','resizable');
@@ -289,19 +289,19 @@ function dblclickHandler(event) {
 			var One = {type:"cn", val:1, sign:1, exp:1}
 			for(i=0;i<n;i++){
 				//clona atom 1
-				$plus[0].MNODE_getRoles().append(ValToAtoms(One))
+				$plus[0].exprNode_getRoles().append(ValToAtoms(One))
 			}	
 		}
 	}
 	else if ($atomDblclicked.is('[data-vis=resizable]')){
-			let $role=$atomDblclicked[0].MNODE_getRoles().eq(0);
+			let $role=$atomDblclicked[0].exprNode_getRoles().eq(0);
 			let firstChild = $role.find('>[data-atom]')[0]
 			let fcWidth = firstChild.offsetWidth
 			//var fcstyle = element.currentStyle || window.getComputedStyle(firstChild);
 			var fcstyle = window.getComputedStyle(firstChild);
 			let fcMargins = parseFloat(fcstyle.marginLeft) + parseFloat(fcstyle.marginRight)
 			let n_columns = Math.floor( $role[0].offsetWidth/(fcWidth+fcMargins) )
-			let n_children = $atomDblclicked[0].MNODE_getChildren().length
+			let n_children = $atomDblclicked[0].exprNode_getChildren().length
 			if(n_children % n_columns == 0){
 				let n_rows = n_children / n_columns;
 				console.log('decoposed!!!')
@@ -329,7 +329,7 @@ function dblclickHandler(event) {
 	}//opened
 	//******** dblclick on ci ***********
 	else if (!closed && (atomClass == 'ci' || atomClass == 'cn')) {
-		MNODErenamePrompt($atomDblclicked);
+		exprNoderenamePrompt($atomDblclicked);
 	}
 
 }
@@ -368,9 +368,9 @@ function refreshAndReplace(PActx) {
 
 	if (PActx.replacedAlready == true) {
 		// sostituzione già effettuano internamente alla proprietà
-		$toBeRefreshed = MNODEparent(PActx.$transform)
+		$toBeRefreshed = exprNodeparent(PActx.$transform)
 	} else {
-		$toBeRefreshed = MNODEparent(PActx.$operand)
+		$toBeRefreshed = exprNodeparent(PActx.$operand)
 		PActx.$transform.insertBefore(PActx.$operand[0]);
 		PActx.$operand.remove()
 		//********select on exit
@@ -399,11 +399,11 @@ function debugToggle() {
 }
 
 function ExtendAndInitializeTree($startElement) {
-	MNODEapplyFunctToTree($startElement, true, ExtendAndInitialize)
+	exprNodeapplyFunctToTree($startElement, true, ExtendAndInitialize)
 }
 
 function ExtendAndInitialize($Atom) {
-	MNODEextend($Atom, true)
+	exprNodeextend($Atom, true)
 	//initialize lock icon
 	if ($Atom.is('[data-atom]') && isDefinition($Atom[0])) {
 		refreshAsymmEq($Atom)
@@ -414,7 +414,7 @@ function ExtendAndInitialize($Atom) {
 
 function cancelSelected() {
 	toBeCancelled = $('.selected').filter(function (index) {
-		return !MNODEclosedDef(this);
+		return !exprNodeclosedDef(this);
 	})
 	if (toBeCancelled.length != 0) {
 		toBeCancelled.each(function (i, element) {

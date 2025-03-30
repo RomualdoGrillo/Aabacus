@@ -27,13 +27,13 @@ class PropertyDnD {
 
 let propertiesDnD = [
 	//PRIORITY: last property overwrites previous targets
-	new PropertyDnD('associativeDnD', immediateAssValid, MNODEassociate, ""),
-	new PropertyDnD('distributiveDnD', validForDist, MNODEdistribute, ""),
-	new PropertyDnD('partDistributDnD', validForPartDist, MNODEPartDistribute, ""),
-	new PropertyDnD('collectDnD', validForColl, MNODEcollect, ""),
-	new PropertyDnD('partCollectDnD', validForPartColl, MNODEpartCollect, ""),
-	new PropertyDnD('replaceDnD', validReplaced, MNODELinkReplace, ""),
-	new PropertyDnD('modusPonensDnD', validModusPonens, MNODEModusPonens, ""),
+	new PropertyDnD('associativeDnD', immediateAssValid, exprNodeassociate, ""),
+	new PropertyDnD('distributiveDnD', validForDist, exprNodedistribute, ""),
+	new PropertyDnD('partDistributDnD', validForPartDist, exprNodePartDistribute, ""),
+	new PropertyDnD('collectDnD', validForColl, exprNodecollect, ""),
+	new PropertyDnD('partCollectDnD', validForPartColl, exprNodepartCollect, ""),
+	new PropertyDnD('replaceDnD', validReplaced, exprNodeLinkReplace, ""),
+	new PropertyDnD('modusPonensDnD', validModusPonens, exprNodeModusPonens, ""),
 	new PropertyDnD('forThisDnD', forThisValid, forThisPar_focus_nofocus, ""),
 	new PropertyDnD('removeRedundantDnD', validRedundant, removeRedundant, ""),
 	new PropertyDnD('addRedundantDnD', validAddRedundant, addRedundant, ""),
@@ -43,12 +43,12 @@ let propertiesDnD = [
 
 
 
-function MNODEneedsBracket($MNODE) {
-	var MNODEclass = $MNODE.attr('data-atom')  //
-	var parentClass = MNODEparent($MNODE).attr('data-atom')//
+function exprNodeneedsBracket($exprNode) {
+	var exprNodeclass = $exprNode.attr('data-atom')  //
+	var parentClass = exprNodeparent($exprNode).attr('data-atom')//
 	// futuribile:
 	//var parentRole = da completare per poter distinguere se in quale "role" è contenuto
-	//la stringa che identifica la posizione dovrebbe diventare <MNODEtype>.<role>
+	//la stringa che identifica la posizione dovrebbe diventare <exprNodetype>.<role>
 
 
 	//in each row: first element needs bracket if contained in itself or one of the elements in his row
@@ -61,17 +61,17 @@ function MNODEneedsBracket($MNODE) {
 		["or"]
 	];
 	//check PEMDAS order of operations 
-	var MNODEclassIndex = getCol(MatrixBaracketNeeded, 0).indexOf(MNODEclass)
-	if (MNODEclassIndex != -1) {
-		var row = MatrixBaracketNeeded[MNODEclassIndex];
+	var exprNodeclassIndex = getCol(MatrixBaracketNeeded, 0).indexOf(exprNodeclass)
+	if (exprNodeclassIndex != -1) {
+		var row = MatrixBaracketNeeded[exprNodeclassIndex];
 		if (row.indexOf(parentClass) != -1) {// found in matrix
 			return true
 		}
 	}
 	//check if plus timess etc.. have one or zero children
 	let needMoreThanOneChild = ["plus", "times", "power"]
-	if (needMoreThanOneChild.indexOf(MNODEclass) != -1 &&
-		$MNODE[0].MNODE_getChildren().length < 2) {
+	if (needMoreThanOneChild.indexOf(exprNodeclass) != -1 &&
+		$exprNode[0].exprNode_getChildren().length < 2) {
 		return true //highlight 0 or one child
 	}
 	return false // bracket not needed
@@ -130,7 +130,7 @@ function forThisValid(mouseDownNode) {
 }
 
 function immediateAssValid($mouseDownAtom) {
-	const $parent = MNODEparent($mouseDownAtom);
+	const $parent = exprNodeparent($mouseDownAtom);
 	let op;
 	if ($parent !== undefined) { op = $parent.attr("data-atom") }
 	let $validTargetRoles = $();
@@ -139,13 +139,13 @@ function immediateAssValid($mouseDownAtom) {
 		// to get every associative target (not just immediate):
 		//let $validTgtAtoms = $RecursiveTreeExplorerCriterium($parent,$ImmediateAssociativeAtom)
 		$validTgtAtoms.each(function (i, e) {
-			$validTargetRoles = $validTargetRoles.add(e.MNODE_getRoles());
+			$validTargetRoles = $validTargetRoles.add(e.exprNode_getRoles());
 		});
 	}
 	return $validTargetRoles
 }
 
-function MNODEassociate(dragged, target, dropped) {
+function exprNodeassociate(dragged, target, dropped) {
 	//dropped has been inserted already, just remove dragged if not cloning
 	var PActx = newPActx();
 	if ($(dropped).hasClass('toBeCloned')) {
@@ -178,20 +178,20 @@ function validForPartDist($mouseDownAtom, ctrlOrMeta) {
 	if (ctrlOrMeta) {
 		return []
 	}
-	let $parent = MNODEparent($mouseDownAtom);
+	let $parent = exprNodeparent($mouseDownAtom);
 	var $siblings = $parent.siblings('[data-atom]');
 	if ($siblings.length == 0) { return $() }//nothing to distribute
 	let opD = undefined;
 	if ($parent !== undefined) { opD = $parent.attr("data-atom") }
 	let op = opIsDistDop("", opD);
-	if (op && MNODEparent($parent).attr("data-atom") == op) {
-		return MNODEparent(MNODEparent($parent)).find('>.ul_role')
-		//return MNODEparent($parent).find('>.ul_role')
+	if (op && exprNodeparent($parent).attr("data-atom") == op) {
+		return exprNodeparent(exprNodeparent($parent)).find('>.ul_role')
+		//return exprNodeparent($parent).find('>.ul_role')
 	}
 	/*
-	if(op && MNODEparent($parent).attr("data-atom") === op){//check if parent of parent is the right op
-		if(MNODEparent(MNODEparent($parent))){
-			return MNODEparent(MNODEparent($parent))
+	if(op && exprNodeparent($parent).attr("data-atom") === op){//check if parent of parent is the right op
+		if(exprNodeparent(exprNodeparent($parent))){
+			return exprNodeparent(exprNodeparent($parent))
 		}
 		else{
 			return wrapWithOperation($siblingsT,op)
@@ -207,7 +207,7 @@ function validForDist($mouseDownAtom, ctrlOrMeta, altKey) {//op2 è il tipo di o
 	if (ctrlOrMeta || altKey) {
 		return []
 	}
-	var $parent = MNODEparent($mouseDownAtom);
+	var $parent = exprNodeparent($mouseDownAtom);
 	let op = undefined;
 	if ($parent !== undefined) { op = $parent.attr("data-atom") }
 	let opD = opIsDistDop(op);
@@ -220,7 +220,7 @@ function validForDist($mouseDownAtom, ctrlOrMeta, altKey) {//op2 è il tipo di o
 		let i=0;
 		
 		while($validAtoms[i]){
-			$validTargets = $validTargets.add($validAtoms[i].MNODE_getRoles()[0])
+			$validTargets = $validTargets.add($validAtoms[i].exprNode_getRoles()[0])
 		i++	
 		} 	
 		return $validTargets*/
@@ -229,24 +229,24 @@ function validForDist($mouseDownAtom, ctrlOrMeta, altKey) {//op2 è il tipo di o
 	return [] //empty array
 }
 
-function MNODEPartDistribute($dragged, target, dropped) {
+function exprNodePartDistribute($dragged, target, dropped) {
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	let childrenIndex = MNODEparent($dragged).index()
-	let $parent = MNODEparent($dragged);
+	let childrenIndex = exprNodeparent($dragged).index()
+	let $parent = exprNodeparent($dragged);
 	let opD;
 	if ($parent !== undefined) { opD = $parent.attr("data-atom") }
 	let op = opIsDistDop("", opD);
 	var $siblings = $parent.siblings('[data-atom]'); // ottieni la lista degli altri fattori
-	$extOp = wrapIfNeeded(MNODEparent($parent), opD);//se necessario crea una operazione container
+	$extOp = wrapIfNeeded(exprNodeparent($parent), opD);//se necessario crea una operazione container
 	let $prototype = prototypeSearch(op);
-	let $clone = MNODEclone($prototype)//create times
+	let $clone = exprNodeclone($prototype)//create times
 	$clone.insertBefore(dropped);
 	$siblings.each(function (i, e) {
-		var $siblingClone = MNODEclone($(e));
-		$clone[0].MNODE_getRoles().append($siblingClone);
+		var $siblingClone = exprNodeclone($(e));
+		$clone[0].exprNode_getRoles().append($siblingClone);
 	});
-	let previous = $clone[0].MNODE_getRoles().children().eq(childrenIndex - 1);
+	let previous = $clone[0].exprNode_getRoles().children().eq(childrenIndex - 1);
 	$dragged.insertAfter(previous);
 	$parent.addClass("Refine_c");
 	dropped.remove();
@@ -255,29 +255,29 @@ function MNODEPartDistribute($dragged, target, dropped) {
 	return PActx
 }
 
-function MNODEdistribute($dragged, target, dropped) {
+function exprNodedistribute($dragged, target, dropped) {
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	let $parent = MNODEparent($dragged);
+	let $parent = exprNodeparent($dragged);
 	let op = undefined;
 	if ($parent !== undefined) { op = $parent.attr("data-atom") }
 	let opD = opIsDistDop(op);
 	var $prototype = prototypeSearch(op)// for example search for times proto
-	$(target)[0].MNODE_getChildren().each(function (i, e) {
+	$(target)[0].exprNode_getChildren().each(function (i, e) {
 		e.classList.add("Refine_c");
-		var $clone = MNODEclone($prototype)//create times
-		var $cloneDragged = MNODEclone($dragged)// clone dragged
+		var $clone = exprNodeclone($prototype)//create times
+		var $cloneDragged = exprNodeclone($dragged)// clone dragged
 		$clone.insertBefore($(this));
-		$clone[0].MNODE_getRoles().append($cloneDragged);
+		$clone[0].exprNode_getRoles().append($cloneDragged);
 		if ($dragged.index() > target.index()) {
-			$clone[0].MNODE_getRoles().prepend($(this));
+			$clone[0].exprNode_getRoles().prepend($(this));
 		}
 		else {
-			$clone[0].MNODE_getRoles().append($(this));
+			$clone[0].exprNode_getRoles().append($(this));
 		}
 		//$cloneDragged.css({display:""})
 	})
-	var $draggedParent = $dragged[0].MNODEparent();
+	var $draggedParent = $dragged[0].exprNodeparent();
 	$draggedParent.addClass("Refine_c");//mark external operation as remove if pointless
 	$(target).addClass("Refine_c");//mark target operation as remove if pointless
 	$dragged.remove();
@@ -287,7 +287,7 @@ function MNODEdistribute($dragged, target, dropped) {
 }
 
 function validForColl($mouseDownAtom) {
-	var $parent = MNODEparent($mouseDownAtom);
+	var $parent = exprNodeparent($mouseDownAtom);
 	var op = undefined
 	if ($parent !== undefined) { op = $parent.attr("data-atom") };//look for targets
 	var opD = opIsDistDop(op);
@@ -296,7 +296,7 @@ function validForColl($mouseDownAtom) {
 	if ($parent == undefined) {
 		return $() //empty $ array
 	}
-	var $parentParent = MNODEparent($parent);
+	var $parentParent = exprNodeparent($parent);
 	if (
 		opD == undefined
 		||
@@ -307,17 +307,17 @@ function validForColl($mouseDownAtom) {
 		return $() //empty $ array
 	}
 	//***** test su ciascun termine
-	var $terms = $parentParent[0].MNODE_getChildren() // ottieni la lista degli addendi
+	var $terms = $parentParent[0].exprNode_getChildren() // ottieni la lista degli addendi
 	for (i = 0; i < $terms.length; i++) {
 		var term = $terms[i]
 		var okForThisTerm = false;
 		if ($(term).attr('data-atom') == op) {// se l'addendo è di tipo times controlla ogni fattore
-			var $factors = term.MNODE_getChildren()
+			var $factors = term.exprNode_getChildren()
 			for (j = 0; j < $factors.length; j++) {
 				var factor = $factors[j]
 				//console.log("controllo factor");
 				//console.log(factor);
-				if (MNODEEqual(factor, $mouseDownAtom[0])) {
+				if (exprNodeEqual(factor, $mouseDownAtom[0])) {
 					$(factor).addClass("CouldBeCollected")
 					okForThisTerm = true;
 					break
@@ -325,7 +325,7 @@ function validForColl($mouseDownAtom) {
 			}
 		}
 		else {// altrimenti controlla lui stesso
-			if (MNODEEqual(term, $mouseDownAtom[0])) {
+			if (exprNodeEqual(term, $mouseDownAtom[0])) {
 				$(term).addClass("CouldBeCollected")
 				okForThisTerm = true;
 			}
@@ -337,12 +337,12 @@ function validForColl($mouseDownAtom) {
 		}
 	};
 	console.log('okForCollection')
-	//return $parentParent[0].MNODE_getRoles()
-	return MNODEparent($parentParent).find('>.ul_role')//target is the external atom	
+	//return $parentParent[0].exprNode_getRoles()
+	return exprNodeparent($parentParent).find('>.ul_role')//target is the external atom	
 }
 
 function validForPartColl($mouseDownAtom) {
-	var $parent = MNODEparent($mouseDownAtom);
+	var $parent = exprNodeparent($mouseDownAtom);
 	if ($parent == undefined) {
 		return $() //empty $ array
 	}
@@ -353,7 +353,7 @@ function validForPartColl($mouseDownAtom) {
 	var op = $parent.attr("data-atom");
 	var opP = opIsDistDop(op);
 	if (opP) {// dragged is into a "times"
-		$plusParent = MNODEparent($parent);//candidate plus parent will be checked later
+		$plusParent = exprNodeparent($parent);//candidate plus parent will be checked later
 		opT = op
 	}
 	else {
@@ -384,18 +384,18 @@ function validForPartColl($mouseDownAtom) {
 		var term = $siblings[i]
 		var okForThisTerm = false;
 		if ($(term).attr('data-atom') == opT) {// se l'addendo è di tipo times controlla ogni fattore
-			var $factors = term.MNODE_getChildren()
+			var $factors = term.exprNode_getChildren()
 			for (j = 0; j < $factors.length; j++) {
 				var factor = $factors[j]
 				//console.log("controllo factor");
 				//console.log(factor);
-				if (MNODEEqual(factor, $mouseDownAtom[0])) {
+				if (exprNodeEqual(factor, $mouseDownAtom[0])) {
 					$valids = $valids.add(factor);
 				}
 			}
 		}
 		else {// altrimenti controlla lui stesso
-			if (MNODEEqual(term, $mouseDownAtom[0])) {
+			if (exprNodeEqual(term, $mouseDownAtom[0])) {
 				$valids = $valids.add(term);
 			}
 		}
@@ -403,18 +403,18 @@ function validForPartColl($mouseDownAtom) {
 	return $valids
 }
 
-function MNODEpartCollect($dragged, $target) {
+function exprNodepartCollect($dragged, $target) {
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	let $targetParent = MNODEparent($target);
+	let $targetParent = exprNodeparent($target);
 	let $siblingsT = $target.siblings('[data-atom]')
 	let opt = $targetParent.attr("data-atom")
 
-	let $draggedParent = MNODEparent($dragged);
+	let $draggedParent = exprNodeparent($dragged);
 	let $siblingsD = $dragged.siblings('[data-atom]')
 	let opd = $draggedParent.attr("data-atom")
 
-	let $commonGranParent = MNODEparent($targetParent);
+	let $commonGranParent = exprNodeparent($targetParent);
 	$commonGranParent.addClass("Refine_c");
 
 
@@ -427,7 +427,7 @@ function MNODEpartCollect($dragged, $target) {
 		if ($siblingsT.length == 1) {
 			if ($siblingsT.eq(0).attr("data-atom") == opPlus) {//if 'plus' ther's no need to create a new plus container
 				$opPlus = $siblingsT
-				$termT = $siblingsT[0].MNODE_getChildren()
+				$termT = $siblingsT[0].exprNode_getChildren()
 				$termT.remove();//svuoto il target plus e poi lo riempio ordinatamente
 				//il plus si trova già all'interno del target, quindi non lo sposto
 			}
@@ -441,7 +441,7 @@ function MNODEpartCollect($dragged, $target) {
 		if ($siblingsD.length == 1) {
 			if (!$opPlus && $siblingsD.eq(0).attr("data-atom") == opPlus) {//if 'plus' ther's no need to create a new plus container
 				$opPlus = $siblingsD
-				$termD = $siblingsD[0].MNODE_getChildren()
+				$termD = $siblingsD[0].exprNode_getChildren()
 				$termD.remove();//svuoto il target plus e poi lo riempio ordinatamente
 				$opPlus.insertBefore($termT);//preferisco mettere sempre il plus all'interno del target 
 				$termT.remove();
@@ -454,11 +454,11 @@ function MNODEpartCollect($dragged, $target) {
 			$termD = (wrapWithOperation($siblingsD, opt));
 		}
 		if (!$opPlus) {//if a suitable "plus" container has not been found create a new one
-			$opPlus = MNODEclone($prototype)//create times
+			$opPlus = exprNodeclone($prototype)//create times
 			$opPlus.insertBefore($termT);
 			$termT.remove();
 		}
-		var $plusRole = $opPlus[0].MNODE_getRoles()
+		var $plusRole = $opPlus[0].exprNode_getRoles()
 		if ($targetParent.index() > $draggedParent.index()) {//order of terms is inherited from order of oarents
 			$plusRole.append($termD);
 			$plusRole.append($termT);
@@ -467,24 +467,24 @@ function MNODEpartCollect($dragged, $target) {
 			$plusRole.append($termT);
 			$plusRole.append($termD);
 		}
-		PActx.$transform = MNODEparent($draggedParent);
+		PActx.$transform = exprNodeparent($draggedParent);
 		$draggedParent.remove()
 		PActx.matchedTF = true
 		return PActx
 	}
 }
 
-function MNODEcollect($dragged, $target) {
+function exprNodecollect($dragged, $target) {
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	let $parent = MNODEparent($dragged);
-	let $parentParent = MNODEparent($parent);
+	let $parent = exprNodeparent($dragged);
+	let $parentParent = exprNodeparent($parent);
 	let op = undefined;
 	if ($parent !== undefined) { op = $parent.attr("data-atom") }
 	var extOp
 	extOp = wrapIfNeeded($parentParent, op)
-	MNODEparent($dragged).addClass("Refine_c")
-	MNODEparent($(".CouldBeCollected")).addClass("Refine_c")
+	exprNodeparent($dragged).addClass("Refine_c")
+	exprNodeparent($(".CouldBeCollected")).addClass("Refine_c")
 	//$dragged.insertBefore($parentParent);
 	$dragged.remove();
 	//$(".CouldBeCollected").remove()
@@ -499,7 +499,7 @@ function compose($toBeComp, firstVal, img) {
 	var $originaltoBeComp = $toBeComp //per poter ripristinare lo stato iniziale
 	var PActx = newPActx();
 	//**** la funzione può essere applicata?
-	var $parent = MNODEparent($toBeComp);
+	var $parent = exprNodeparent($toBeComp);
 	var op = $parent.attr('data-atom');
 	if ($toBeComp.length == 0) { PActx.msg = ("nothing selected"); return PActx }
 	//se 1 solo selezionato cerca di comporlo con l'antecedente'
@@ -509,7 +509,7 @@ function compose($toBeComp, firstVal, img) {
 		/*
 		var tBcClass = $toBeComp.attr("data-atom"); 
 		if( tBcClass === "cn" || tBcClass === "ci"){
-			var name = $toBeComp[0].MNODE_getName()
+			var name = $toBeComp[0].exprNode_getName()
 			if( (op === "times" && name === "1")||
 				(op === "plus" && name === "0")||
 				(op === "and" && name === "true")||
@@ -528,7 +528,7 @@ function compose($toBeComp, firstVal, img) {
 	if (!checkSiblings($toBeComp)) { PActx.msg = ("not siblings"); return PActx }
 	//*** calcolo generale 
 	//Pattern Matching
-	MNODESmarkUnmark($toBeComp, "d")
+	exprNodeSmarkUnmark($toBeComp, "d")
 	//calcolo via algoritmi specifici
 	if (op !== "plus" && op !== "times" && op !== "or") { PActx.msg = ("no composition defined for: " + op); return PActx };
 	//**** calcolo via algoritmo ****
@@ -664,7 +664,7 @@ function compose($toBeComp, firstVal, img) {
 	else {//rimetti le cose come stavano tranne le semplificazioni iniziali
 		$('.selected').removeClass('selected')
 		$originaltoBeComp.addClass('selected')
-		MNODESmarkUnmark($toBeComp, "")
+		exprNodeSmarkUnmark($toBeComp, "")
 	}
 	return PActx
 }
@@ -698,8 +698,8 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 				var $minusOne = ValToAtoms(minusOne);
 
 				//stabilisci dove va aggiunto il -1
-				var $minusParent = MNODEparent($minus);
-				var $minusContent = $minus[0].MNODE_getChildren();
+				var $minusParent = exprNodeparent($minus);
+				var $minusContent = $minus[0].exprNode_getChildren();
 				$extOp = $minusParent;
 				if ($minusParent.attr('data-atom') == 'times') {//aggiungi il -1 all'interno del minus parent
 					$minusOne.insertBefore($minus);
@@ -708,14 +708,14 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 					if ($minusContent.attr('data-atom') !== 'times') {//è necessario aggiungere una enclosure di tipo "times"
 						$minusContent = wrapWithOperation($minusContent, 'times')
 					}
-					$minusContent[0].MNODE_getRoles().prepend($minusOne);
+					$minusContent[0].exprNode_getRoles().prepend($minusOne);
 				}
 				//******Rimuovi il MINUS
 				$minusContent.insertAfter($minus);
 				$minusContent.addClass("Refine_c");//if the content was a "times" it may by dissolved if the parent is also times
 				$minus.remove();
 
-				//var $roleContainingFactors = $minusContent[0].MNODE_getRoles();
+				//var $roleContainingFactors = $minusContent[0].exprNode_getRoles();
 				//$roleContainingFactors.prepend($minusOne);
 
 				$toBeDec = $minusContent;
@@ -746,9 +746,9 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 					$extOp = wrapIfNeeded($toBeDec, op);//se necessario crea una operazione container
 					var prototype = prototypeSearch("cn", "num")
 					primeFactors.forEach(function (e, i) {
-						$clone = MNODEclone(prototype);
+						$clone = exprNodeclone(prototype);
 						$clone.attr('data-atom', 'cn');
-						$clone[0].MNODE_setName(e)
+						$clone[0].exprNode_setName(e)
 						$clone.insertAfter($toBeDec);
 						if (i == (primeFactors.length - 1)) {
 							$clone.addClass('selected');// l'ultimo fattore rimane selezionato
@@ -796,12 +796,12 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 			op = "and";
 			$extOp = wrapIfNeeded($toBeDec,op);//se necessaro crea una operazione container
 			var prototype=prototypeSearch("ci","bool")
-			$clone = MNODEclone(prototype);
+			$clone = exprNodeclone(prototype);
 			$clone.text("true");
 			$clone.insertAfter($toBeDec);
 			$clone.css({display:""});
 		}
-		else if( $toBeDec[0].MNODE_getName() === "true"){
+		else if( $toBeDec[0].exprNode_getName() === "true"){
 			op = "or";
 			var $X_or_NotX = searchForProperty("name","X_or_NotX");// trova la definizione della proprietà da applicare
 			createForThis($X_or_NotX,$toBeDec);
@@ -810,7 +810,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 	*/
 	if (PActx.matchedTF) {
 		//RefreshEmptyInfixBraketsGlued($extOp,true,"eibg")
-		PActx.$transform = MNODEparent($extOp)
+		PActx.$transform = exprNodeparent($extOp)
 		//ssnapshot.take();
 		//elementi sostituiti internamente
 		PActx.replacedAlready = true;
@@ -826,7 +826,7 @@ function isEquationMember($mouseDownAtom) {
 	if (!($mouseDownAtom.parent().parent().is("[data-atom=eq]") && !isDefinition($mouseDownAtom.parent().parent()[0]))) {
 		return []//not from an equation	
 	}
-	return MNODEparent($mouseDownAtom)
+	return exprNodeparent($mouseDownAtom)
 }
 
 function validReplaced($mouseDownAtom) {
@@ -851,7 +851,7 @@ function validModusPonens($mouseDownAtom) {
 
 
 function findvalidReplacedOrPremise($mouseDownAtom) {
-	let $equation = MNODEparent($mouseDownAtom)
+	let $equation = exprNodeparent($mouseDownAtom)
 	let $excludedMembers = $equation.find('[data-atom]');
 	// cerca nodi uguali a mousedown node
 	let $candidates = $PropositionsAffectedByStartPropositionROLES($equation).find('[data-atom]').addBack().filter(':visible').addClass('mu_Downstream1').not($excludedMembers)
@@ -864,23 +864,23 @@ function findvalidReplacedOrPremise($mouseDownAtom) {
 	return $valids
 }
 
-function MNODELinkReplace($link, $replaced) {
+function exprNodeLinkReplace($link, $replaced) {
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	MNODEReplaceLink($replaced, $link);
+	exprNodeReplaceLink($replaced, $link);
 	PActx.matchedTF = true
 	return PActx
 }
-function MNODEModusPonens($premiseInProperty, $premise){
+function exprNodeModusPonens($premiseInProperty, $premise){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	if(!MNODEparent($premise).is('[data-atom=and]')){
+	if(!exprNodeparent($premise).is('[data-atom=and]')){
 		//wrap with AND
 	}
 	//create clone
 	
-	let $clone = MNODEclone(
-		MNODEparent($premiseInProperty)[0].MNODE_getRoles(".secondMember").children()
+	let $clone = exprNodeclone(
+		exprNodeparent($premiseInProperty)[0].exprNode_getRoles(".secondMember").children()
 	);
 	//isert deduction after $premise
 	$clone.insertAfter($premise);
@@ -898,7 +898,7 @@ function validRedundant($mouseDownAtom, ctrlOrMeta, altKey) {
 	}
 	let $candidates = $PropositionsAffectedByStartPropositionROLES($mouseDownAtom).filter(':visible').addClass('mu_Downstream1')
 	let $valids = $candidates.not($mouseDownAtom).filter(function () {//escludi mousedownnode stesso dai possibili risultati
-		return MNODEEqual(this, $mouseDownAtom[0], false, true)
+		return exprNodeEqual(this, $mouseDownAtom[0], false, true)
 	})
 	return $valids
 }
@@ -919,18 +919,18 @@ function validAddRedundant($mouseDownAtom, ctrlOrMeta) {
 
 function validCandidatesForPatternDrop($mouseDownAtom, $originalProperty) {
 	//exclude the $originalProperty
-	let $excludedMNODES = $originalProperty.find('[data-atom]').addBack();
-	//let $excludedMNODES= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
+	let $excludedexprNodeS = $originalProperty.find('[data-atom]').addBack();
+	//let $excludedexprNodeS= $mouseDownAtom.closest('[data-atom=forAll]').find('[data-atom]').addBack();
 	//let $jurisdictionRoles = $calculateJurisdictionRoles($originalProperty).addClass('mu_Downstream1').filter('[data-atom]:visible')
 	//let $candidates = $jurisdictionRoles.find('[data-atom]:visible')
 	let $candidates = $PropositionsAffectedByStartPropositionROLES($originalProperty).filter(':visible').addClass('mu_Downstream1');
-	let $valids = $candidates.not($excludedMNODES).filter(function (index) {
+	let $valids = $candidates.not($excludedexprNodeS).filter(function (index) {
 		//*****valid?***********
 		var result = (
 			//datatype is compatible
 			typeOk($mouseDownAtom, $(this))
 			&&
-			MNODEfrozenDef($(this)).length == 0
+			exprNodefrozenDef($(this)).length == 0
 		)
 		return result
 	})
@@ -939,27 +939,27 @@ function validCandidatesForPatternDrop($mouseDownAtom, $originalProperty) {
 
 function validhanoiMove($mouseDownAtom) {
 	//dragged must be top element in hanoi rod
-	let $parentRod = MNODEparent($mouseDownAtom)
+	let $parentRod = exprNodeparent($mouseDownAtom)
 	if (!($parentRod.is("[data-atom=hanoirod]") && $mouseDownAtom.is(':first-child'))) {
 		return []
 	}
 	//parent parent must be hanoi
-	if (!MNODEparent($parentRod).is("[data-atom=hanoi]")) {
+	if (!exprNodeparent($parentRod).is("[data-atom=hanoi]")) {
 		return []
 	}
 	//check if the las element of each road is smaller than dragged
-	let draggedDiscNum = parseInt($mouseDownAtom[0].MNODE_getName());
+	let draggedDiscNum = parseInt($mouseDownAtom[0].exprNode_getName());
 	let $filterdSiblings = $parentRod.siblings().filter(function () {
-		let $topDisc = this.MNODE_getChildren(':first');
+		let $topDisc = this.exprNode_getChildren(':first');
 		if ($topDisc.length == 0) { return true };
-		let topDiscNum = parseInt($topDisc[0].MNODE_getName())
+		let topDiscNum = parseInt($topDisc[0].exprNode_getName())
 		return topDiscNum > draggedDiscNum;
 	});
 	return $filterdSiblings
 }
 function hanoiMove(dragged, target, dropped) {
 	var PActx = newPActx();
-	target[0].MNODE_getRoles().prepend($(dragged));
+	target[0].exprNode_getRoles().prepend($(dragged));
 	PActx.matchedTF = true;
 	PActx.replacedAlready = true;
 	PActx.msg = "moved";
@@ -973,15 +973,15 @@ function hanoiMove(dragged, target, dropped) {
 
 function removeRedundant($dragged, $target) {
 	var PActx = newPActx();
-	var $parent = MNODEparent($target)
+	var $parent = exprNodeparent($target)
 	PActx.replacedAlready = true;
 	if ($parent.attr("data-atom") == "and") {
 		$target.remove();//if contained in an and simply remove the redundant term		
 		$parent.addClass("Refine_c");
 	}
 	else {
-		var $clone = MNODEclone(prototypeSearch("ci", "bool"))
-		$clone[0].MNODE_setName('true');
+		var $clone = exprNodeclone(prototypeSearch("ci", "bool"))
+		$clone[0].exprNode_setName('true');
 		$target.replaceWith($clone);
 	}
 	PActx.matchedTF = true
@@ -995,7 +995,7 @@ function addRedundant($dragged, $target, $dropped) {
 	$($dropped).removeClass('toBeCloned');//in case class 'toBeCloned' is present rempve it
 	if ($target.attr('data-atom')) {//if target is an atom, create an AND around it
 		let $extOp = wrapWithOperation($target, 'and')
-		$target = $extOp[0].MNODE_getRoles()
+		$target = $extOp[0].exprNode_getRoles()
 		PActx.msg = "created and, added Redundant or deduction"
 		$target.append($dropped);
 	}
@@ -1013,9 +1013,9 @@ function evaluateComparison($exp) {
 	PActx.$operand = $exp;
 	var atomClass = $exp.attr('data-atom');
 	if (comparisons.indexOf(atomClass) != -1) {
-		var $firstMember = $exp[0].MNODE_getRoles('.firstMember').children();
+		var $firstMember = $exp[0].exprNode_getRoles('.firstMember').children();
 		var firstMember = AtomsToVal($firstMember);
-		var $secondMember = $exp[0].MNODE_getRoles('.secondMember').children();
+		var $secondMember = $exp[0].exprNode_getRoles('.secondMember').children();
 		var secondMember = AtomsToVal($secondMember);
 		if (!isNaN(firstMember.computedVal) && !isNaN(secondMember.computedVal)) {
 			var prototype = prototypeSearch("ci", "bool")
@@ -1037,9 +1037,9 @@ function evaluateComparison($exp) {
 			}
 			var stringResult
 			if (result) { stringResult = "true" } else { stringResult = "false" }
-			var $clone = MNODEclone(prototype);
+			var $clone = exprNodeclone(prototype);
 			// $clone.attr('data-atom','cn');
-			$clone[0].MNODE_setName(stringResult)
+			$clone[0].exprNode_setName(stringResult)
 			$clone.insertAfter($exp);
 			$clone.addClass('selected');// il risultato rimane selezionato
 			$exp.remove();
@@ -1056,15 +1056,15 @@ function forThisPar_focus_nofocus($specificValue, $parameter) {
 
 	//a parameter in a forall is specific by a $specificValue
 	let $forall
-	//if(MNODEparent($parameter).hasClass('exclusiveFocus')){//the forall is in focus
-	$forall = MNODEparent($parameter)
+	//if(exprNodeparent($parameter).hasClass('exclusiveFocus')){//the forall is in focus
+	$forall = exprNodeparent($parameter)
 	/*}
 	else{//the forall is not in focus -> create a clone
 		let index=$parameter.index();
-		$forall=createForThis(MNODEparent($parameter),MNODEparent($parameter));
+		$forall=createForThis(exprNodeparent($parameter),exprNodeparent($parameter));
 		$parameter=$(GetforAllHeader($forall).children()[index])
 	}*/
-	PActx.$transform = MNODEForThisPar($parameter, $specificValue)
+	PActx.$transform = exprNodeForThisPar($parameter, $specificValue)
 	PActx.matchedTF = true;
 	PActx.replacedAlready = true;
 	PActx.msg = "forThis"

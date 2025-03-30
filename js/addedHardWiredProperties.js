@@ -3,10 +3,10 @@ function tabelline($toBeComp,firstVal,img){
 	var op = $toBeComp.attr('data-atom');
 	if(op == "times"){
 		//if a times operation is selected, operate on his children
-		$toBeComp = $toBeComp[0].MNODE_getChildren()
+		$toBeComp = $toBeComp[0].exprNode_getChildren()
 	}
 	else{
-		var $parent=MNODEparent($toBeComp);
+		var $parent=exprNodeparent($toBeComp);
 		op = $parent.attr('data-atom');
 		if(op !== "times"){
 			return 
@@ -32,7 +32,7 @@ function tabelline($toBeComp,firstVal,img){
 
 
 function composePlusOnly($toBeComp,firstVal,img){
-	var $parent=MNODEparent($toBeComp);
+	var $parent=exprNodeparent($toBeComp);
 	var op = $parent.attr('data-atom');
 	if(op !== "plus"){
 		return 
@@ -61,9 +61,9 @@ function decomposeTens($toBeDec,undefined,img){
 		$extOp = wrapIfNeeded($toBeDec,'plus');//se necessario crea una operazione container
 		var prototype=prototypeSearch("cn","num")
 		terms.forEach(function(e,i){
-			$clone = MNODEclone(prototype);
+			$clone = exprNodeclone(prototype);
 			$clone.attr('data-atom','cn');
-			$clone[0].MNODE_setName(e)
+			$clone[0].exprNode_setName(e)
 			$clone.insertAfter($toBeDec);
 			if(i == (terms.length -1)){
 				$clone.addClass('selected');// l'ultimo fattore rimane selezionato
@@ -92,6 +92,6 @@ function $toBeComposedWithSiblings($selected){
 	//debug colors
 	$('*').removeClass("toBeComposed");
 	//Debug add colors
-	MNODEnodesAddClass($selected,"toBeComposed");
+	exprNodenodesAddClass($selected,"toBeComposed");
 	return 	$selected
 }

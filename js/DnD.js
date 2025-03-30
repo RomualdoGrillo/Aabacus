@@ -13,7 +13,7 @@ function MakeSortableAndInjectMouseDown(event) {
 		return //nothing to drag
 	}
 	//get the first draggable parent
-	$atomTarget = MNODENselectable($(event.target));
+	$atomTarget = exprNodeNselectable($(event.target));
 if($atomTarget.length==0){
 		return//no unlocked parent to drag
 	}
@@ -41,13 +41,13 @@ if($atomTarget.length==0){
 	GLBDnD.toolWhenMousedown = GLBsettings.tool;
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt'){
 		//********* autoAdapt ****************
-		if (MNODEclosedDef($(event.target))) {
+		if (exprNodeclosedDef($(event.target))) {
 			GLBDnD.$originalProperty = $(event.target).closest('[data-atom=forAll]');
 			if(GLBDnD.$originalProperty.length==0){return};
 			let $forallContent=GetforAllContentRole(GLBDnD.$originalProperty).children();
 			let $equation=$($forallContent[0]);
 			if(!$equation.is('[data-atom=eq]')){console.log('forall content is not an equation'); return}
-			let $eqRoleMembers=$equation[0].MNODE_getRoles('.firstMember,.secondMember');
+			let $eqRoleMembers=$equation[0].exprNode_getRoles('.firstMember,.secondMember');
 			let $RoleMember = $eqRoleMembers.filter(function(i,e){return e.contains(event.target)})
             if($RoleMember.length==0){return}
             //decide if ltr or rtl
@@ -73,7 +73,7 @@ if($atomTarget.length==0){
 			//no forall property
 		}
 	}
-	else if (GLBDnD.toolWhenMousedown == 'copy' || !MNODEclosedDef($(event.target)) || $atomTarget.is('#palette *')) {
+	else if (GLBDnD.toolWhenMousedown == 'copy' || !exprNodeclosedDef($(event.target)) || $atomTarget.is('#palette *')) {
 		//*********from opened****************
 		
 		//make targets sortable
@@ -114,13 +114,13 @@ if($atomTarget.length==0){
 		else if(GLBDnD.toolWhenMousedown=="declare"){
 			//check if specific commutative property is selected
 			let commutativeOf = $('.selectedTool').attr('data-commutative');
-			let op = $atomTarget[0].MNODEparent().attr('data-atom')
+			let op = $atomTarget[0].exprNodeparent().attr('data-atom')
 			sort = (op==commutativeOf);
 		}
 		else{
-			sort = $atomTarget[0].parentElement.matches('.ul_role') || !MNODEclosedDef($atomTarget);
+			sort = $atomTarget[0].parentElement.matches('.ul_role') || !exprNodeclosedDef($atomTarget);
 		}
-		$atomTarget[0].parentElement.setAttribute('from', 'fromNode')
+		$atomTarget[0].parentElement.setAttribute('from', 'froexprNode')
 		let fromSortable = makeSortableMouseDown([$atomTarget[0].parentElement], sort)[0]
 		//inject start event
 		fromSortable._onTapStart(event);
@@ -147,10 +147,10 @@ function startHandlerMouseDown(event) {
 }
 function onMove(event) {
 	$('.mu_DropTarget').removeClass('mu_DropTarget');
-	MNODEparent($(event.to)).addClass('mu_DropTarget');
+	exprNodeparent($(event.to)).addClass('mu_DropTarget');
 }
 function onSort(event) {
-	RefreshEmptyInfixBraketsGlued(MNODEparent($(event.target)))
+	RefreshEmptyInfixBraketsGlued(exprNodeparent($(event.target)))
 }
 function onUpdate(event) {
 	console.log('*onUpdate');
@@ -159,17 +159,17 @@ function onUpdate(event) {
 }
 
 function onAdd(event) {
-	//replacing sortablejs defaul clone with myClone (removed id, extends MNODE etc..)
+	//replacing sortablejs defaul clone with myClone (removed id, extends exprNode etc..)
 	//item stays in place myclone dropped in new place
 	event.item.classList.remove('showAsPlaceholder');
 	let myClone
 	//if moving, id and tags must remain!
 	if($(event.item).hasClass('toBeCloned')){
-		myClone = MNODEclone($(event.item))[0]//remove id and tag
+		myClone = exprNodeclone($(event.item))[0]//remove id and tag
 		event.item.classList.remove('toBeCloned');
 	}
 	else{
-		myClone = MNODEclone($(event.item),true,false)[0]//do not remove id and tag
+		myClone = exprNodeclone($(event.item),true,false)[0]//do not remove id and tag
 	}
 	event.item.replaceWith(myClone)
 	event.clone.replaceWith(event.item)//questo è l'elemento che rimane nella posizione di partenza
@@ -206,7 +206,7 @@ function onAdd(event) {
 		if (targetProperty == 'dragPatternMatch') {
 			
 			
-			let PActx = InstructAndTryOnePMT(GLBDnD.$originalProperty, MNODEparent($(event.to)), GLBDnD.direction)
+			let PActx = InstructAndTryOnePMT(GLBDnD.$originalProperty, exprNodeparent($(event.to)), GLBDnD.direction)
 			PActx.msg = GLBDnD.$originalProperty.closest('[data-tag]').attr('data-tag')
 			PActxConclude(PActx)
 		}

@@ -114,7 +114,7 @@ function inject(MMLstring, $targetRoleOrAtom, containerRequirements, toBeImporte
 	}
 	
 	
-	//var $refreshStartPoint = MNODEparent($convertedTree);
+	//var $refreshStartPoint = exprNodeparent($convertedTree);
 	//if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
 	ssnapshot.take(); 
 }
@@ -146,13 +146,13 @@ function importAll($startNode){
 
 function AlltoMMLSstring(){
 	//palette
-	let paletteString = MNODEcreateMathmlString($('#palette').children(':not(.fundamental)'),true);
+	let paletteString = exprNodecreateMathmlString($('#palette').children(':not(.fundamental)'),true);
 	//canvas
-	let canvasString = MNODEcreateMathmlString($('#canvasAnd')[0].MNODE_getChildren(),true);
+	let canvasString = exprNodecreateMathmlString($('#canvasAnd')[0].exprNode_getChildren(),true);
 	//events
-	let eventsString = MNODEcreateMathmlString($('#events').children(),true);
+	let eventsString = exprNodecreateMathmlString($('#events').children(),true);
 	//result
-	let resultString = MNODEcreateMathmlString($('#result').children(),true);
+	let resultString = exprNodecreateMathmlString($('#result').children(),true);
 	//save settings
 	let MMLSString =
 	'<section data-section="palette">' + paletteString + '</section>'+

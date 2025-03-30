@@ -9,10 +9,10 @@ function refreshInfix($startNode,rootAndSubTree){//todo:obsoleta, sostituita con
 
 }
 
-function refreshOneInfix($MNODEnode){
-	if($MNODEnode[0].MNODE_getRoles === undefined){return}// invalid parameter
-	var $role=$MNODEnode[0].MNODE_getRoles();
-	var $MNODEchildren = $role.children().filter('[data-atom]');
+function refreshOneInfix($exprNodenode){
+	if($exprNodenode[0].exprNode_getRoles === undefined){return}// invalid parameter
+	var $role=$exprNodenode[0].exprNode_getRoles();
+	var $exprNodechildren = $role.children().filter('[data-atom]');
 	var $InfixChildren = $role.children().filter('.infix:not(.proto)');
 	var $infixProto = $role.find('>.infix.proto');
 	//procedura "cambia solo il necessario"
@@ -24,7 +24,7 @@ function refreshOneInfix($MNODEnode){
 		}
 	})
 	//per ogni elemento atom tranne il primo: se non sei preceduto da infix, aggiungine uno
-	$MNODEchildren.each(function(i,e){
+	$exprNodechildren.each(function(i,e){
 		if(i>0){
 			if(!$(e).prev().is('.infix:not(.proto)')){
 				//console.log(i);
@@ -36,9 +36,9 @@ function refreshOneInfix($MNODEnode){
 }
 
 
-function refreshOneEmpty($MNODE){
-	if($MNODE[0].MNODE_getRoles==undefined){return};
-	$MNODE[0].MNODE_getRoles().each(function(i,e){
+function refreshOneEmpty($exprNode){
+	if($exprNode[0].exprNode_getRoles==undefined){return};
+	$exprNode[0].exprNode_getRoles().each(function(i,e){
 		let childrenNum = $(e).children().filter('[data-atom],.dummyrole').length
 		let minPlaces=getNumOfPlaces($(this))[0]
 		if(minPlaces>1){//manage dummies to ensure minimum places

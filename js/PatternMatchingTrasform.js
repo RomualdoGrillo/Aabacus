@@ -23,7 +23,7 @@ function repeatInstructAndTryOnePMT(field,propName,firstVal,$atom1){
 */
 
 /*
-function equalExtMNODE($node1,$node2,checkTypeAndName,checkDragTarget){
+function equalExtexprNode($node1,$node2,checkTypeAndName,checkDragTarget){
     var res
     if(checkDragTarget){// precondition equal titles
        if( !titleRequirement($node1,$node2) ){
@@ -37,13 +37,13 @@ function equalExtMNODE($node1,$node2,checkTypeAndName,checkDragTarget){
     { return false}
     else if( symbols.indexOf($node1.attr("data-atom")) != -1  )//is a symbol
     {
-       res = $node1[0].MNODE_getName() === $node2[0].MNODE_getName()  
+       res = $node1[0].exprNode_getName() === $node2[0].exprNode_getName()  
     }
     else{
         res = true//no more tests required
     }  
-    MNODEnodesAddClass($node1,!res);//debug 
-    MNODEnodesAddClass($node2,!res);//debug
+    exprNodenodesAddClass($node1,!res);//debug 
+    exprNodenodesAddClass($node2,!res);//debug
     return res
 }
 */
@@ -54,11 +54,11 @@ function equalExtMNODE($node1,$node2,checkTypeAndName,checkDragTarget){
 function parameterInHeader($parameter,$property){
     if ($property.attr('data-atom') !== 'forAll'){ return undefined}
     var $bvars = GetforAllHeader($property).children('[data-atom]');
-    var parameterName = $parameter[0].MNODE_getName();
+    var parameterName = $parameter[0].exprNode_getName();
     var i
     for(var i=0; i<$bvars.length ;i++){
-        var bvaTag = $bvars[i].MNODE_getName(true)
-        var bvarName = $bvars[i].MNODE_getName();//ottieni il nome privato degli underscore __
+        var bvaTag = $bvars[i].exprNode_getName(true)
+        var bvarName = $bvars[i].exprNode_getName();//ottieni il nome privato degli underscore __
         if(parameterName === bvarName){
             return $($bvars[i]) 
         }
@@ -69,11 +69,11 @@ function replaceInForall($parameter,$newVal,$property){
     //individua il parametro dall'header' se presente
     var $parHeader = parameterInHeader($parameter,$property);
     if( $parHeader != undefined){
-        return MNODEForThisPar($parHeader,$newVal);//restituisce la proprietà eventualmente modificata
+        return exprNodeForThisPar($parHeader,$newVal);//restituisce la proprietà eventualmente modificata
     }
     else{
         //sostituisci ovunque
-        MNODEReplaceAll($property,$parameter,$newVal)
+        exprNodeReplaceAll($property,$parameter,$newVal)
         return $property  
     }
 }
@@ -108,8 +108,8 @@ function searchBvarByName($forall,Name){
     var i
     var $match = undefined
     for(var i=0; i<$bvars.length ;i++){
-        var bvarName__ = $bvars[i].MNODE_getName(true)
-        var bvarName = $bvars[i].MNODE_getName();//ottieni il nome privato degli underscore __
+        var bvarName__ = $bvars[i].exprNode_getName(true)
+        var bvarName = $bvars[i].exprNode_getName();//ottieni il nome privato degli underscore __
         if(Name === bvarName){
             $match = $($bvars[i]); 
             break
@@ -120,20 +120,20 @@ function searchBvarByName($forall,Name){
 */
 
 
-function parameterType($MNODE,$prop){
+function parameterType($exprNode,$prop){
     //is it a symbol?
-    var className = $MNODE.attr('data-atom');
+    var className = $exprNode.attr('data-atom');
     if(symbols.indexOf(className) == -1){//not a symbol?(ci,cs,csymbol)
         return "n"
     }
-    var parameterName = $MNODE[0].MNODE_getName(true);
+    var parameterName = $exprNode[0].exprNode_getName(true);
     //****** compatibilità con notazione "Mathematica"
     //search if name's tail is _ __ ___
     if(parameterName.slice(-3) === "___" ){return "x___"}//x___
     else if(parameterName.slice(-2) === "__" ){return "x__"}//x__
     else if(parameterName.slice(-1) === "_" ){return "x_"}//x_
     //******search if bvar in a forAll
-    //var $forAllParent = $MNODE.closest('[data-atom="forAll"]');
+    //var $forAllParent = $exprNode.closest('[data-atom="forAll"]');
     if($prop == undefined || $prop.attr('data-atom') !== "forAll"){
             return "x" //se non c'è un forall la variabile è di sicuro "fissa"
     }
@@ -142,8 +142,8 @@ function parameterType($MNODE,$prop){
     var i
     var $match = undefined
     for(var i=0; i<$bvars.length ;i++){
-        var bvaTag = $bvars[i].MNODE_getName(true)
-        var bvarName = $bvars[i].MNODE_getName();//ottieni il nome privato degli underscore __
+        var bvaTag = $bvars[i].exprNode_getName(true)
+        var bvarName = $bvars[i].exprNode_getName();//ottieni il nome privato degli underscore __
         if(parameterName === bvarName){
             $match = $($bvars[i]); 
             break
@@ -213,10 +213,10 @@ function swapMembersClone($origProp,mode){
     //********* CLONA prop ************************************************
     var propCdsClass = $origProp.attr('data-atom');
     //createForThis($forall,$placeHolder)//todo: utilizzare stessa funzione rispetto a forThis manuale
-    res.$cloneProp = MNODEclone($origProp);
+    res.$cloneProp = exprNodeclone($origProp);
     res.visualization =    wrapUnwrapUrlString( $origProp[0].style.backgroundImage ,'cutFirstDir')
     //if(debugMode){$('#canvasRole').append(res.$cloneProp)}//debug 
-    MNODEextend(res.$cloneProp,true)
+    exprNodeextend(res.$cloneProp,true)
     //***********marca TUTTI I CLONI clone ************************************************
     res.$cloneProp.find('[data-atom]').addBack().addClass('PMclone')//is a pattern matching clone
 
@@ -243,8 +243,8 @@ function swapMembersClone($origProp,mode){
     //*********** determina primo e secondo membro************
     // a seconda di "mode" costruisci la giusta equazione.
     if(mode === "rtl"){
-        var $firstMember = $equation[0].MNODE_getRoles('.firstMember');
-        var $secondMember = $equation[0].MNODE_getRoles('.secondMember');
+        var $firstMember = $equation[0].exprNode_getRoles('.firstMember');
+        var $secondMember = $equation[0].exprNode_getRoles('.secondMember');
         var $firstMemberContent = $firstMember.children().remove();
         var $secondMemberContent = $secondMember.children().remove();
         $firstMember.append($secondMemberContent);

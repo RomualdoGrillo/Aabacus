@@ -1,7 +1,7 @@
 var leafTags = ["cn", "ci", "csymbol"];
 
 
-function MNODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) {
+function exprNodecreateMathmlString($startNodes,describeDataType, neglectRootSign) {
 	//per poter chiamare sia come funzione che come metodo
 	if ($startNodes == undefined) {
 		$startNodes = $(this);
@@ -35,21 +35,21 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 		$containerForClone.append($thisClone)
 		//deflate todo: completare distinzione tra mml e mml + type
 
-		//estendi tutti i nodi MNODE
+		//estendi tutti i nodi exprNode
 		$thisClone.parent().find('[data-atom]').each(function(i, node) {
 			$.extend(node, atom)
 		})
 		//rimuovi il contenuto importato da altri files
-		$thisClone.parent().find('[data-import]').each(function(i, node){node.MNODE_getChildren().remove()});
+		$thisClone.parent().find('[data-import]').each(function(i, node){node.exprNode_getChildren().remove()});
 	
 
 		//signsAsClassesSubtree($thisClone,"SignsAsClasses_to_MinusOp")// converti in modo che il segno meno sia una operazione applicata al nodo
-		//sostituisci tutti i nodi MNODE excluding prototypes
+		//sostituisci tutti i nodi exprNode excluding prototypes
 		$thisClone.parent().find('[data-atom]').not('[data-proto]').not('.saveAsHtml').each(function(i, node) {
 			if (i == 0) {
-				ReplaceOneMNODE(node, from_to, neglectRootSign);
+				ReplaceOneexprNode(node, from_to, neglectRootSign);
 			} else {
-				ReplaceOneMNODE(node, from_to, false);
+				ReplaceOneexprNode(node, from_to, false);
 				//never neglect sign if not root 
 			}
 		})
@@ -68,7 +68,7 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 		//ottieni l'elenco dei nodi' da sostituire
 		$mmlTagSubset.parent().find('apply,cn,ci,bind,math').each(function(i, node) {
 			//console.log(node);
-			ReplaceOneMNODE(node, from_to);
+			ReplaceOneexprNode(node, from_to);
 		})
 		//signsAsClasses($containerForClone.children(),"MinusOp_to_SignsAsClasses"); // converti root node
 		//signsAsClassesSubtree($containerForClone.children(),"MinusOp_to_SignsAsClasses");	// converti il resto dell'albero'	
@@ -76,7 +76,7 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 	return $containerForClone.children()
 }
 
-function ReplaceOneMNODE(node, from_to, neglectSign) {
+function ReplaceOneexprNode(node, from_to, neglectSign) {
 	//node is HTML node
 	let $node = $(node);
 	var $newNode
@@ -97,19 +97,19 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 		var nodeText = ""
 		if (leafTags.indexOf(originalData.atom.toLowerCase()) !== -1) {
 			//if [cn;ci;csymbol] then the content is the text, else some role must be present
-			nodeText = node.MNODE_getName(true);
+			nodeText = node.exprNode_getName(true);
 			$newNode = $('<' + originalData.atom.toLowerCase() + '/>');
 			$newNode.text(nodeText)
 		} else {
 			/*
-			var $role= node.MNODE_getRoles();
+			var $role= node.exprNode_getRoles();
 			var $bVarChildren=$role.filter('.bVar_role').children().filter('[data-atom]')// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
 			var $nobBvarchildren=$role.not('.bVar_role').children().filter('[data-atom]')
 			*/
-			var $bVarChildren = node.MNODE_getRoles('.bVar_role').children().filter('[data-atom]')
+			var $bVarChildren = node.exprNode_getRoles('.bVar_role').children().filter('[data-atom]')
 			// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
-			var $nobBvarchildren = node.MNODE_getRoles(':not(.bVar_role)').children().filter('[data-atom]')
-			var $htmlDivChildren = node.MNODE_getRoles(':not(.bVar_role)').children().filter(':not([data-atom])').filter('.saveAsHtml')
+			var $nobBvarchildren = node.exprNode_getRoles(':not(.bVar_role)').children().filter('[data-atom]')
+			var $htmlDivChildren = node.exprNode_getRoles(':not(.bVar_role)').children().filter(':not([data-atom])').filter('.saveAsHtml')
 			//salvo ciò che è .saveAsHtmlL
 			$newNode = $('<apply></apply>')
 			$newNode.text(nodeText)
@@ -157,23 +157,23 @@ function ReplaceOneMNODE(node, from_to, neglectSign) {
 			if(!dataType){dataType=$node.attr("data-type")};
 			var $prototype = prototypeSearch(atom, dataType,undefined,nodeText)
 			if($prototype.length==0){console.log('prototype not found prototypeSearch()');console.log([atom, $node.attr("type"),undefined,nodeText])}
-			$newNode = MNODEclone($prototype)
-			MNODEextend($newNode)
+			$newNode = exprNodeclone($prototype)
+			exprNodeextend($newNode)
 			// extend the new node
 			if (leafTags.indexOf(atom.toLowerCase()) !== -1) {
 				//todo: eccezione if leafTag with children
 				try {
-					$newNode[0].MNODE_setName($node.text());
+					$newNode[0].exprNode_setName($node.text());
 				} catch (err) {
 					console.log('error on prototype '+atom+" "+ $node.attr("type"))
 				}
 				//signsAsClasses($newNode,"SignsInNames_to_SignsAsClasses"); //convert to_signs_as_classes 
 			} else {
 				//append children in roles
-				var $tgtRoles = $newNode[0].MNODE_getRoles();
+				var $tgtRoles = $newNode[0].exprNode_getRoles();
 				if($tgtRoles.length==0){
-					$newNode[0].MNODE_addRole();
-					$tgtRoles = $newNode[0].MNODE_getRoles();
+					$newNode[0].exprNode_addRole();
+					$tgtRoles = $newNode[0].exprNode_getRoles();
 				}
 				var $bVarRole = $tgtRoles.filter('.bVar_role');
 				var $noBVarRole = $tgtRoles.not('.bVar_role');
