@@ -18,7 +18,7 @@ exprNode_nomemetodo possono essere chiamati solo come metodi
 ad esempio exprNodeparent può essere invocato come metodo di un exprNode oppure come
 funzione su un qualsiasi elemento html anche se non è un exprNode 
 */
-atom = {
+exprNode = {
 	exprNodeparent: exprNodeparent,
 	exprNodecreateMathmlString: exprNodecreateMathmlString,
 	exprNodeclosedDef: exprNodeclosedDef,
@@ -1002,7 +1002,7 @@ function exprNodefrozenDef(Node){
 
 /************** exprNode UTILITIES  not API ***********************/
 function exprNodeextend($startNode, applyToSubtreeAlso) {
-	//add methods from object "atom"
+	//add methods from object "exprNode"
 	var $toBeExtended;
 	if (!applyToSubtreeAlso) {
 		$toBeExtended = $startNode.filter("[data-atom]"); //in ogni caso estendo solo i '[data-atom]'
@@ -1014,7 +1014,7 @@ function exprNodeextend($startNode, applyToSubtreeAlso) {
 
 	$toBeExtended.each(function (index) {
 		// tutti gli HTML nodes con classe .exprNode
-		$.extend(this, atom); //pare non si possa fare altrimenti non riesco a estendere $(this)
+		$.extend(this, exprNode); //pare non si possa fare altrimenti non riesco a estendere $(this)
 	});
 }
 
