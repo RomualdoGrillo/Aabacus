@@ -18,6 +18,18 @@ exprNode_nomemetodo possono essere chiamati solo come metodi
 ad esempio exprNodeparent può essere invocato come metodo di un exprNode oppure come
 funzione su un qualsiasi elemento html anche se non è un exprNode 
 */
+/* ---- Expression Global Utilities ---- */
+
+/**
+ * Restituisce il nodo radice dell'espressione matematica principale.
+ * @returns {jQuery} L'oggetto jQuery che rappresenta il nodo radice con attributo [data-atom],
+ *                   o un oggetto jQuery vuoto se non trovato.
+ */
+function getExpressionRootNode() {
+    // Trova il primo figlio con [data-atom] all'interno del contenitore principale
+    return $("#canvas>.secondMember").children("[data-atom]").first();
+}
+
 exprNode = {
 	exprNodeparent: exprNodeparent,
 	exprNodecreateMathmlString: exprNodecreateMathmlString,
@@ -35,6 +47,7 @@ exprNode = {
 	exprNode_dissolveContainer: exprNode_dissolveContainer,
 	exprNode_overlay: exprNode_overlay,
 };
+/* ---- exprNode Methods/Functions ---- */
 
 function exprNodeparent($startNode) {
 	//per poter chiamare sia come funzione che come metodo
