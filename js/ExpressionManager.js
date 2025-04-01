@@ -1,5 +1,6 @@
-// atoms.js dovrebbe costituire lo strato di comunicazione tra
-//l'albero degli exprNodeS ed il resto del software
+// In questo file dovrebbero comparire tutte le funzioni che manipolano l'espressione matematica
+//todo: in teoria tutte le operazioni sull'espressione dovrebbero avvenire tramite queste funzioni, anche se per ora questa riformattazione del codice non è ancora avvenuta
+//todo: cercare,tutti i punti in cui il codice  al di fuori di questo file e sostituire la manipolazione diretta di elementi html che costituiscono l'espressione matematica con chiamate a questo file 
 
 /*
 Nota: non sempre � comodo usare exprNodeobject.exprNodemethod()
