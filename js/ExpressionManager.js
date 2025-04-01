@@ -22,12 +22,12 @@ funzione su un qualsiasi elemento html anche se non è un exprNode
 
 /**
  * Restituisce il nodo radice dell'espressione matematica principale.
- * @returns {jQuery} L'oggetto jQuery che rappresenta il nodo radice con attributo [data-atom],
- *                   o un oggetto jQuery vuoto se non trovato.
+ * @returns {HTMLElement|null} L'elemento HTML (DOM element) che rappresenta il nodo radice con attributo [data-atom],
+ *                            o null se non trovato.
  */
 function getExpressionRootNode() {
     // Trova il primo figlio con [data-atom] all'interno del contenitore principale
-    return $("#canvas>.secondMember").children("[data-atom]").first();
+    return $("#canvas>.secondMember").children("[data-atom]")[0];
 }
 
 exprNode = {
