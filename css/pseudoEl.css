@@ -6,12 +6,12 @@ In this way infix and tag can exist at the same time
 
 /***********   Infix Notation   *********/
 /*
-[data-enode=segment]>.ul_role>[data-enode]::before{
+[data-ENODE=segment]>.ul_role>[data-ENODE]::before{
 	background-image: url(../images/segment.svg);
 	min-width: 22px;
 	min-width: 22px;
 }
-[data-enode=segment]>.ul_role>[data-enode]:not(:first-of-type){
+[data-ENODE=segment]>.ul_role>[data-ENODE]:not(:first-of-type){
 	margin-left: 11px; 
 }
 */
@@ -35,26 +35,26 @@ In this way infix and tag can exist at the same time
 	pointer-events: none;
 }
 
-[data-enode=plus]>[class*="role"]>[data-enode]:not(:first-of-type),
-[data-enode=leq]>.ol_role>[data-enode]:not(:first-of-type),
-[data-enode=lt]>.ol_role>[data-enode]:not(:first-of-type)
+[data-ENODE=plus]>[class*="role"]>[data-ENODE]:not(:first-of-type),
+[data-ENODE=leq]>.ol_role>[data-ENODE]:not(:first-of-type),
+[data-ENODE=lt]>.ol_role>[data-ENODE]:not(:first-of-type)
 {
 	margin-left: 11px;/*space for infix symbol*/
 }
-[data-enode=plus][data-vis=resizable]>[class*="role"]>[data-enode]/*:not(.sortable-drag)*/{
+[data-ENODE=plus][data-vis=resizable]>[class*="role"]>[data-ENODE]/*:not(.sortable-drag)*/{
 	margin: 4px;
 }
-body.hidePlus [data-enode=plus]>[class*="role"]>[data-enode]::before{
+body.hidePlus [data-ENODE=plus]>[class*="role"]>[data-ENODE]::before{
 	color:transparent;	
 }
-body[timesdisposition=brTimes] br + [data-enode]::before{
+body[timesdisposition=brTimes] br + [data-ENODE]::before{
 	background-color:transparent!important;	
 }
 
-[data-enode=plus]>[class*="role"]>[data-enode]:not(:first-of-type):not([data-vis=resizable])::before,
-[data-enode=leq]>.ol_role>[data-enode]:not(:first-of-type)::before,
-[data-enode=lt]>.ol_role>[data-enode]:not(:first-of-type)::before
-/*,[data-enode=segment]>.ul_role>[data-enode]:not(:first-of-type)::before*/{
+[data-ENODE=plus]>[class*="role"]>[data-ENODE]:not(:first-of-type):not([data-vis=resizable])::before,
+[data-ENODE=leq]>.ol_role>[data-ENODE]:not(:first-of-type)::before,
+[data-ENODE=lt]>.ol_role>[data-ENODE]:not(:first-of-type)::before
+/*,[data-ENODE=segment]>.ul_role>[data-ENODE]:not(:first-of-type)::before*/{
 	/* background-color: red; */
 	position: absolute;
 	content: "+";/*&#x2264; for leq*/
@@ -63,14 +63,14 @@ body[timesdisposition=brTimes] br + [data-enode]::before{
 	color:black;
 }
 
-[data-enode=leq]>.ol_role>[data-enode]:not(:first-of-type)::before {
+[data-ENODE=leq]>.ol_role>[data-ENODE]:not(:first-of-type)::before {
 	content:'\2264'!important;/*https://www.evotech.net/articles/testjsentities.html*/
 }
-[data-enode=lt]>.ol_role>[data-enode]:not(:first-of-type)::before {
+[data-ENODE=lt]>.ol_role>[data-ENODE]:not(:first-of-type)::before {
 	content: '<'!important;
 }
 
-[data-enode=times]>.ul_role>[data-enode]:not(:first-of-type)::before {
+[data-ENODE=times]>.ul_role>[data-ENODE]:not(:first-of-type)::before {
 	background-color: black;
 	position: absolute;
 	content:"";
@@ -81,15 +81,15 @@ body[timesdisposition=brTimes] br + [data-enode]::before{
 	border-radius: 3px;
 	top: calc(50% - 1.75px);
 }
-[data-enode=times]>.ul_role>[data-enode]:not(:first-of-type)/*:not(.sortable-drag)*/{
+[data-ENODE=times]>.ul_role>[data-ENODE]:not(:first-of-type)/*:not(.sortable-drag)*/{
 	margin-left: 0.5px; /*space for infix symbol*/
 }
 
-[timesdisposition=vertTimes] [data-enode=times]>.ul_role>[data-enode]:not(:first-of-type)/*:not(.sortable-drag)*/{
+[timesdisposition=vertTimes] [data-ENODE=times]>.ul_role>[data-ENODE]:not(:first-of-type)/*:not(.sortable-drag)*/{
 	margin-top: 0.5px; /*space for infix symbol*/
 }
 
-[timesdisposition=vertTimes] [data-enode=times]>.ul_role>[data-enode]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
+[timesdisposition=vertTimes] [data-ENODE=times]>.ul_role>[data-ENODE]:not(:first-of-type)/*:not(.sortable-drag)*/::before {
 	top:-3px;
 	left:calc(50% - 1.75px);
 	pointer-events: none;
@@ -111,7 +111,7 @@ disadvantage: mixfix notation needs a different approach
 disadvantage: building new prototypes is less intuitive
 
 
-[data-enode="and"]:not(#canvasAnd):not(.sortable-ghost)::before{
+[data-ENODE="and"]:not(#canvasAnd):not(.sortable-ghost)::before{
 	content:"";
 	position: absolute;
 	left: 2px;
@@ -122,7 +122,7 @@ disadvantage: building new prototypes is less intuitive
 	background-size: contain;
 	background-repeat: no-repeat;
 }
-[data-enode="deftrue"]::before{
+[data-ENODE="deftrue"]::before{
 	content:attr(data-decoration);
 	position: absolute;
 	left: -200px;
@@ -137,7 +137,7 @@ disadvantage: building new prototypes is less intuitive
 
 /***********   Tags   ***********/
 
-[data-tag]:not([data-vis=collapsed]):not([data-enode=ci])::after{
+[data-tag]:not([data-vis=collapsed]):not([data-ENODE=ci])::after{
 	position: absolute;
 	bottom: 95%;
 	right: 60%;
@@ -171,18 +171,18 @@ disadvantage: building new prototypes is less intuitive
 	padding-left: 39px;
 }
 
-[data-tag]:not([data-vis=collapsed]):not([data-enode=ci]){
+[data-tag]:not([data-vis=collapsed]):not([data-ENODE=ci]){
  background-position:-9999px -9999px;
  background-repeat: no-repeat;
 }
 
 
 [data-vis=collapsed][data-tag]>*,
-[data-enode=ci][data-tag]>*{
+[data-ENODE=ci][data-tag]>*{
 	display:none;
 }
 [data-vis=collapsed][data-tag],
-[data-enode=ci][data-tag]{
+[data-ENODE=ci][data-tag]{
 	/*width:20px;*/
 	height: 20px;
 	border-width:0px;
@@ -193,15 +193,15 @@ disadvantage: building new prototypes is less intuitive
   }
   
 [data-vis=collapsed][data-tag]:not([data-tagimg])::after,
-[data-enode=ci][data-tag]:not([data-tagimg])::after
+[data-ENODE=ci][data-tag]:not([data-tagimg])::after
 {
 	background:white;
 	padding-left:0px;
 }
 [data-vis=collapsed][data-tag][data-tagimg]::after,
-[data-enode=ci][data-tag][data-tagimg]::after{
+[data-ENODE=ci][data-tag][data-tagimg]::after{
 	font-size:0px;
 }
-[data-enode="and"][data-and=horizontal]>.ul_role{
+[data-ENODE="and"][data-and=horizontal]>.ul_role{
 	padding:2px!important;
 }

@@ -1,14 +1,14 @@
 /*
-function repeatInstructAndTryOnePMT(field,propName,firstVal,$enode1){
-    var $enodeList 
+function repeatInstructAndTryOnePMT(field,propName,firstVal,$ENODE1){
+    var $ENODEList 
     var match = 0;
     var res 
     for(ii=0;ii<5;ii++){ //limitato per evitare loop infiniti
         if( match<ii){return }//ho fatto un giro a vuoto: senza trovare nulla
-        $enodeList = $enode1.add($enode1.find('[data-enode]'));
-        for(j=0; j<$enodeList.length ;j++){
-            res = TryOnePropertyByName(field,propName, $($enodeList[j]) ,firstVal) //da rivedere cambiati i parametri e sostituire tryProp() con checkProp()
-            //tryRes = tryProp(field,propName,mode,$($enodeList[j]))
+        $ENODEList = $ENODE1.add($ENODE1.find('[data-ENODE]'));
+        for(j=0; j<$ENODEList.length ;j++){
+            res = TryOnePropertyByName(field,propName, $($ENODEList[j]) ,firstVal) //da rivedere cambiati i parametri e sostituire tryProp() con checkProp()
+            //tryRes = tryProp(field,propName,mode,$($ENODEList[j]))
             
             if( tryRes.matchedTF === true ){
                 match++;
@@ -23,27 +23,27 @@ function repeatInstructAndTryOnePMT(field,propName,firstVal,$enode1){
 */
 
 /*
-function equalExtenode($node1,$node2,checkTypeAndName,checkDragTarget){
+function equalExtENODE($node1,$node2,checkTypeAndName,checkDragTarget){
     var res
     if(checkDragTarget){// precondition equal titles
        if( !titleRequirement($node1,$node2) ){
            return false //titles do not match
        }
     }
-    if( $node1.attr("data-enode") !== $node2.attr("data-enode") )//notSameClass
+    if( $node1.attr("data-ENODE") !== $node2.attr("data-ENODE") )//notSameClass
     { return false}
     else if( checkTypeAndName == false){ return true}// no deeper tests required
     else if( !($node1.attr("data-type") === $node2.attr("data-type"))) //notSameType
     { return false}
-    else if( symbols.indexOf($node1.attr("data-enode")) != -1  )//is a symbol
+    else if( symbols.indexOf($node1.attr("data-ENODE")) != -1  )//is a symbol
     {
-       res = $node1[0].enode_getName() === $node2[0].enode_getName()  
+       res = $node1[0].ENODE_getName() === $node2[0].ENODE_getName()  
     }
     else{
         res = true//no more tests required
     }  
-    enodenodesAddClass($node1,!res);//debug 
-    enodenodesAddClass($node2,!res);//debug
+    ENODEnodesAddClass($node1,!res);//debug 
+    ENODEnodesAddClass($node2,!res);//debug
     return res
 }
 */
@@ -52,13 +52,13 @@ function equalExtenode($node1,$node2,checkTypeAndName,checkDragTarget){
 
 
 function parameterInHeader($parameter,$property){
-    if ($property.attr('data-enode') !== 'forAll'){ return undefined}
-    var $bvars = GetforAllHeader($property).children('[data-enode]');
-    var parameterName = $parameter[0].enode_getName();
+    if ($property.attr('data-ENODE') !== 'forAll'){ return undefined}
+    var $bvars = GetforAllHeader($property).children('[data-ENODE]');
+    var parameterName = $parameter[0].ENODE_getName();
     var i
     for(var i=0; i<$bvars.length ;i++){
-        var bvaTag = $bvars[i].enode_getName(true)
-        var bvarName = $bvars[i].enode_getName();//ottieni il nome privato degli underscore __
+        var bvaTag = $bvars[i].ENODE_getName(true)
+        var bvarName = $bvars[i].ENODE_getName();//ottieni il nome privato degli underscore __
         if(parameterName === bvarName){
             return $($bvars[i]) 
         }
@@ -69,19 +69,19 @@ function replaceInForall($parameter,$newVal,$property){
     //individua il parametro dall'header' se presente
     var $parHeader = parameterInHeader($parameter,$property);
     if( $parHeader != undefined){
-        return enodeForThisPar($parHeader,$newVal);//restituisce la proprietà eventualmente modificata
+        return ENODEForThisPar($parHeader,$newVal);//restituisce la proprietà eventualmente modificata
     }
     else{
         //sostituisci ovunque
-        enodeReplaceAll($property,$parameter,$newVal)
+        ENODEReplaceAll($property,$parameter,$newVal)
         return $property  
     }
 }
 
 
 function containsBvar($member,$forAll){//contiene bvar?
-    if($forAll.attr('data-enode') != 'forAll'){return false}//if there is no outer forall.. no need for further inspection
-    $candidates = $member.add( $member.find('[data-enode]') );
+    if($forAll.attr('data-ENODE') != 'forAll'){return false}//if there is no outer forall.. no need for further inspection
+    $candidates = $member.add( $member.find('[data-ENODE]') );
     $bvars = $candidates.filter(function(){
         return parameterType( $(this),$forAll ).slice(-1) === "_"
     })
@@ -104,12 +104,12 @@ function reformatForallProp($prop,$transform){
 
 /*
 function searchBvarByName($forall,Name){
-    var $bvars = GetforAllHeader($forall).children('[data-enode]');
+    var $bvars = GetforAllHeader($forall).children('[data-ENODE]');
     var i
     var $match = undefined
     for(var i=0; i<$bvars.length ;i++){
-        var bvarName__ = $bvars[i].enode_getName(true)
-        var bvarName = $bvars[i].enode_getName();//ottieni il nome privato degli underscore __
+        var bvarName__ = $bvars[i].ENODE_getName(true)
+        var bvarName = $bvars[i].ENODE_getName();//ottieni il nome privato degli underscore __
         if(Name === bvarName){
             $match = $($bvars[i]); 
             break
@@ -120,30 +120,30 @@ function searchBvarByName($forall,Name){
 */
 
 
-function parameterType($enode,$prop){
+function parameterType($ENODE,$prop){
     //is it a symbol?
-    var className = $enode.attr('data-enode');
+    var className = $ENODE.attr('data-ENODE');
     if(symbols.indexOf(className) == -1){//not a symbol?(ci,cs,csymbol)
         return "n"
     }
-    var parameterName = $enode[0].enode_getName(true);
+    var parameterName = $ENODE[0].ENODE_getName(true);
     //****** compatibilità con notazione "Mathematica"
     //search if name's tail is _ __ ___
     if(parameterName.slice(-3) === "___" ){return "x___"}//x___
     else if(parameterName.slice(-2) === "__" ){return "x__"}//x__
     else if(parameterName.slice(-1) === "_" ){return "x_"}//x_
     //******search if bvar in a forAll
-    //var $forAllParent = $enode.closest('[data-enode="forAll"]');
-    if($prop == undefined || $prop.attr('data-enode') !== "forAll"){
+    //var $forAllParent = $ENODE.closest('[data-ENODE="forAll"]');
+    if($prop == undefined || $prop.attr('data-ENODE') !== "forAll"){
             return "x" //se non c'è un forall la variabile è di sicuro "fissa"
     }
     var $forAllParent = $prop;    
-    var $bvars = GetforAllHeader($forAllParent).children('[data-enode]');
+    var $bvars = GetforAllHeader($forAllParent).children('[data-ENODE]');
     var i
     var $match = undefined
     for(var i=0; i<$bvars.length ;i++){
-        var bvaTag = $bvars[i].enode_getName(true)
-        var bvarName = $bvars[i].enode_getName();//ottieni il nome privato degli underscore __
+        var bvaTag = $bvars[i].ENODE_getName(true)
+        var bvarName = $bvars[i].ENODE_getName();//ottieni il nome privato degli underscore __
         if(parameterName === bvarName){
             $match = $($bvars[i]); 
             break
@@ -182,7 +182,7 @@ function ParameterNameToType(name){
 
 function searchForMarked($patternMember,mark){//all'interno di una espressione cerca un elemento marcarto
     //return marked element
-    return $patternMember.find('[data-enode]').filter(function(){
+    return $patternMember.find('[data-ENODE]').filter(function(){
         return ( $(this).attr('title') === mark )
     })
 }
@@ -193,11 +193,11 @@ function levelsToAncestor($marked,$patternMember){
     if($marked.is($patternMember)){
         return 0
     }
-    else if( $marked.parents('[data-enode]').filter($patternMember).length == 0 ){// $patternMember deve essere ancestor di $marked 
+    else if( $marked.parents('[data-ENODE]').filter($patternMember).length == 0 ){// $patternMember deve essere ancestor di $marked 
         return NaN
     }
     else{
-        var $parentLevels = $marked.parentsUntil( $patternMember ,'[data-enode]')
+        var $parentLevels = $marked.parentsUntil( $patternMember ,'[data-ENODE]')
         return $parentLevels.length + 1 // $patternMembercsi trova n livelli più in aòto di $marked  
     }
 }
@@ -211,14 +211,14 @@ function swapMembersClone($origProp,mode){
     var res = {foundTF:false, msg:"", $cloneProp: "",visualization:""}
     
     //********* CLONA prop ************************************************
-    var propCdsClass = $origProp.attr('data-enode');
+    var propCdsClass = $origProp.attr('data-ENODE');
     //createForThis($forall,$placeHolder)//todo: utilizzare stessa funzione rispetto a forThis manuale
-    res.$cloneProp = enodeclone($origProp);
+    res.$cloneProp = ENODEclone($origProp);
     res.visualization =    wrapUnwrapUrlString( $origProp[0].style.backgroundImage ,'cutFirstDir')
     //if(debugMode){$('#canvasRole').append(res.$cloneProp)}//debug 
-    enodeextend(res.$cloneProp,true)
+    ENODEextend(res.$cloneProp,true)
     //***********marca TUTTI I CLONI clone ************************************************
-    res.$cloneProp.find('[data-enode]').addBack().addClass('PMclone')//is a pattern matching clone
+    res.$cloneProp.find('[data-ENODE]').addBack().addClass('PMclone')//is a pattern matching clone
 
     //***********trova l'equazione ************************************************
     var $equation
@@ -230,8 +230,8 @@ function swapMembersClone($origProp,mode){
     else{
         $equation = res.$cloneProp;
     }
-    if ( $equation.attr('data-enode') !== "eq"){// todo: controllare che ci sia una relazione transitiva
-        res.msg= "no equation found in this prop: " + $equation.attr('data-enode')
+    if ( $equation.attr('data-ENODE') !== "eq"){// todo: controllare che ci sia una relazione transitiva
+        res.msg= "no equation found in this prop: " + $equation.attr('data-ENODE')
         if(debugMode){res.$cloneProp.remove()}//debug 
         return res
     }
@@ -243,8 +243,8 @@ function swapMembersClone($origProp,mode){
     //*********** determina primo e secondo membro************
     // a seconda di "mode" costruisci la giusta equazione.
     if(mode === "rtl"){
-        var $firstMember = $equation[0].enode_getRoles('.firstMember');
-        var $secondMember = $equation[0].enode_getRoles('.secondMember');
+        var $firstMember = $equation[0].ENODE_getRoles('.firstMember');
+        var $secondMember = $equation[0].ENODE_getRoles('.secondMember');
         var $firstMemberContent = $firstMember.children().remove();
         var $secondMemberContent = $secondMember.children().remove();
         $firstMember.append($secondMemberContent);

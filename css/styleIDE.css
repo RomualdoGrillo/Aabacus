@@ -135,6 +135,6 @@ body.debug {
   z-index: 2;
 }
 
-[data-enode].error {
+[data-ENODE].error {
   background-color: red!important;
 }

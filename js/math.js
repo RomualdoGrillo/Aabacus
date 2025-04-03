@@ -15,16 +15,16 @@ function primeFactorization(num){
   return (x === num) ? result : primeFactorization(num/x, result) ;
 }
 /*
-function enodegetNumber($enode){
-  var $elementUnderTest = $enode
+function ENODEgetNumber($ENODE){
+  var $elementUnderTest = $ENODE
   var sign = 1
-  while( $elementUnderTest.attr('data-enode') === "minus" ){
+  while( $elementUnderTest.attr('data-ENODE') === "minus" ){
     //passa all'elemento interno
-    $elementUnderTest = $elementUnderTest[0].enode_getRoles().children(':first');
+    $elementUnderTest = $elementUnderTest[0].ENODE_getRoles().children(':first');
     sign = sign * -1
   }
-  if( $elementUnderTest.attr('data-enode') == "cn"){// se è un simbolo
-    var res = sign * Number($elementUnderTest[0].enode_getName()) 
+  if( $elementUnderTest.attr('data-ENODE') == "cn"){// se è un simbolo
+    var res = sign * Number($elementUnderTest[0].ENODE_getName()) 
   }
   else{
     res="NaN"
@@ -32,15 +32,15 @@ function enodegetNumber($enode){
   return res
 }
 */
-function enodeNumericCdsAsText($enode){
-  var $elementUnderTest = $enode
+function ENODENumericCdsAsText($ENODE){
+  var $elementUnderTest = $ENODE
   var sign = 1
-  while( $elementUnderTest.attr('data-enode') === "minus" ){
+  while( $elementUnderTest.attr('data-ENODE') === "minus" ){
     //passa all'elemento interno
-    $elementUnderTest = $elementUnderTest[0].enode_getRoles().children(':first');
+    $elementUnderTest = $elementUnderTest[0].ENODE_getRoles().children(':first');
     sign = sign * -1
   }
-  var res = $elementUnderTest[0].enode_getName();
+  var res = $elementUnderTest[0].ENODE_getName();
   if( sign == -1 ){//se necessario aggiungi segno meno
     res = "-" + res
   }

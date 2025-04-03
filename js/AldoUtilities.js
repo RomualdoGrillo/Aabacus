@@ -101,8 +101,8 @@ function compareWithResult($expression, $result,strictOrder) {
 	var MyPActx = newPActx();
 	MyPActx.$operand = $expression;
 	//compare with a clone of the result
-	MyPActx.$pattern = enodeclone($result);
-	enodeextend(MyPActx.$pattern, true);
+	MyPActx.$pattern = ENODEclone($result);
+	ENODEextend(MyPActx.$pattern, true);
 	return orderMatch(MyPActx, false, true, strictOrder).matchedTF
 }
 
@@ -137,9 +137,9 @@ function getOffset( el ) {
     }
     return [_x,_y]
 }
-function getPositionsOfChildren($parentenode){
+function getPositionsOfChildren($parentENODE){
 	let arr =[]
-	arr = $parentenode[0].enode_getChildren().toArray()
+	arr = $parentENODE[0].ENODE_getChildren().toArray()
 	for(i=0;arr[i];i++){
 		arr[i]=getOffset(arr[i])
 	}
@@ -175,27 +175,27 @@ function dummyParser(string){
 	else if(splittedgt.length==2){splitted=splittedgt; op='gt'}
 	else if(splittedeq.length==2){splitted=splittedeq; op='eq'}
 	if(op){
-		let $operation = enodeclone( prototypeSearch(op) )
-		let first = identifierToenode(splitted[0]);
-		let second = identifierToenode(splitted[1]);
-		$operation[0].enode_getRoles('.firstMember').append(first)
-		$operation[0].enode_getRoles('.secondMember').append(second)
+		let $operation = ENODEclone( prototypeSearch(op) )
+		let first = identifierToENODE(splitted[0]);
+		let second = identifierToENODE(splitted[1]);
+		$operation[0].ENODE_getRoles('.firstMember').append(first)
+		$operation[0].ENODE_getRoles('.secondMember').append(second)
 		return $operation
 	}
 }
 
-function identifierToenode(string){
+function identifierToENODE(string){
 	let num = parseInt(string)
-	let enodeType 
+	let ENODEType 
 	if(isNaN(parseInt(string))){
-		enodeType = 'ci'
+		ENODEType = 'ci'
 	}
 	else{
-		enodeType = 'cn'
+		ENODEType = 'cn'
 	}
-	$clone = enodeclone( prototypeSearch("cn","num") )
-	$clone[0].enode_setName(string);
-	$clone.attr('data-enode', enodeType);//uso un generico prototipo num e qui specifico se cn o ci
+	$clone = ENODEclone( prototypeSearch("cn","num") )
+	$clone[0].ENODE_setName(string);
+	$clone.attr('data-ENODE', ENODEType);//uso un generico prototipo num e qui specifico se cn o ci
 	return	$clone
 }
 
@@ -216,19 +216,19 @@ function commonParentOfTwo(a, b) {
 }
 
 
-function gradeInMonomial($enode, varName) {
+function gradeInMonomial($ENODE, varName) {
 	let $factors
 	let totalGrade = 0
-	if ($enode.attr('data-enode') == 'times') {//multiple factors?
-		$factors = $enode[0].enode_getChildren()
+	if ($ENODE.attr('data-ENODE') == 'times') {//multiple factors?
+		$factors = $ENODE[0].ENODE_getChildren()
 	}
 	else {
-		$factors = $enode
+		$factors = $ENODE
 	}
 	for(let i=0;$factors[i];i++){
-		let type=$factors.eq(i).attr('data-enode')
+		let type=$factors.eq(i).attr('data-ENODE')
 		if(type=="ci"||type=="power"){
-			digested=enodesToVal($factors.eq(i));
+			digested=ENODEsToVal($factors.eq(i));
 			//xyz=$($factors[i]){} //translate to values
 			if(varName==undefined || digested.val==varName){//add the exponent
 				totalGrade= totalGrade + digested.exp;
@@ -245,12 +245,12 @@ function sortByGrade(array,varName) {
     });
 }
 
-function updateContainerView($enode,view,par){
+function updateContainerView($ENODE,view,par){
 	if(view=='grid'){
 		//set parent
-		$enode[0].enode_getRoles().css('display','grid').css('grid-auto-flow','column').css('justify-items','center') //(data-view,"viewAsGrid");
+		$ENODE[0].ENODE_getRoles().css('display','grid').css('grid-auto-flow','column').css('justify-items','center') //(data-view,"viewAsGrid");
 		//set children
-		let $children = $enode[0].enode_getChildren()
+		let $children = $ENODE[0].ENODE_getChildren()
 		//childrenArr = sortByGrade(childrenArr);
 		for(i=0;$children[i];i++){
 			console.log(i)

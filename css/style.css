@@ -34,7 +34,7 @@
   --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-[data-enode] {
+[data-ENODE] {
   background-color: white;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -42,7 +42,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-[data-enode]:hover {
+[data-ENODE]:hover {
   box-shadow: var(--shadow-md);
 }
 
@@ -55,9 +55,9 @@
   transition: background-color var(--transition-normal);
 }
 
-.selected[data-enode], 
-.selected[data-enode] [data-enode],
-.selected[data-enode]::after {
+.selected[data-ENODE], 
+.selected[data-ENODE] [data-ENODE],
+.selected[data-ENODE]::after {
   background-color: var(--primary-color);
   color: white;
   border-color: var(--primary-color) !important;
@@ -99,7 +99,7 @@
 	  /* align-items:center; */
   }
   
-  [data-enode] {
+  [data-ENODE] {
 	  background-color: white;
 	  border: 1px solid #DAD9D9;
   }
@@ -114,29 +114,29 @@
 	  border-color: blueviolet!important;
   }
   
-  /*[data-enode="eq"][data-viseq=asymmetric] sono le definizioni, in quel tipo di enodei
+  /*[data-ENODE="eq"][data-viseq=asymmetric] sono le definizioni, in quel tipo di ENODEi
   il bordo del primo membro sporge dal background venendo a "fondersi" con il bordo esterno verde
   per una questione estetica
   
-  [data-enode="eq"][data-viseq=asymmetric] *{
+  [data-ENODE="eq"][data-viseq=asymmetric] *{
 	  border-color:white;
   }
   */
   
-  [data-enode][data-viseq=asymmetric],[data-enode="eq"][data-viseq=asymmetric]>.firstMember {
+  [data-ENODE][data-viseq=asymmetric],[data-ENODE="eq"][data-viseq=asymmetric]>.firstMember {
 	  border: 1px solid #DAD9D9;
   }
   /*
-  .greyBorders [data-enode][data-viseq=asymmetric],[data-enode="eq"][data-viseq=asymmetric]>.firstMember,.ide {
+  .greyBorders [data-ENODE][data-viseq=asymmetric],[data-ENODE="eq"][data-viseq=asymmetric]>.firstMember,.ide {
 	  border: 1px solid #aaa;/* necessario un selector specifico almeno quanto quello usato sopra
   }
   
-  .greyBorders [data-enode] {
+  .greyBorders [data-ENODE] {
 	  border-color: #aaa;
   }
   
   .greyBorders [class*="_role"].empty {background-color:  #e6e6e6;}
-  [data-enode][data-viseq=asymmetric]>.firstMember {background-color:  #ffffff;}/*lo sfondo del lucchetto ha sempre sfondo bianco*/
+  [data-ENODE][data-viseq=asymmetric]>.firstMember {background-color:  #ffffff;}/*lo sfondo del lucchetto ha sempre sfondo bianco*/
   
   
   .rolescontainer{
@@ -146,10 +146,10 @@
   }
   
   
-  [data-enode], .rolescontainer {
+  [data-ENODE], .rolescontainer {
 	  padding: 3px;
   }
-  [data-enode='cn'],[data-enode='ci']{
+  [data-ENODE='cn'],[data-ENODE='ci']{
 	  padding: 1px; 
   }
   
@@ -159,13 +159,13 @@
   }*/
   
   
-  [data-enode],[class*="_role"]  {
+  [data-ENODE],[class*="_role"]  {
   flex-shrink:0;
 	  }
   #canvas *{
 	  flex-shrink:1;
   }
-  [data-enode], [class*="_role"], #overlay, .dummyrole,.rolescontainer {
+  [data-ENODE], [class*="_role"], #overlay, .dummyrole,.rolescontainer {
 	  position:relative;
 	  /*border: 1px black solid; just for debug*/
 	  border-radius: var(--div-radius);
@@ -187,22 +187,22 @@
 	  flex-direction:column;
   }
   
-  .expandedAsTree [data-enode]{
+  .expandedAsTree [data-ENODE]{
 	  top: 20px;
 	 }
   
-  [data-enode="minus"] , [data-enode="m_inverse"] , [data-enode="not"] {
+  [data-ENODE="minus"] , [data-ENODE="m_inverse"] , [data-ENODE="not"] {
 	  padding: 0;
   }
-  .unlocked [data-enode="minus"],.unlocked [data-enode="m_inverse"],.unlocked [data-enode="not"] {/* se unlocked scavalca il padding=0 impostato sopra*/
+  .unlocked [data-ENODE="minus"],.unlocked [data-ENODE="m_inverse"],.unlocked [data-ENODE="not"] {/* se unlocked scavalca il padding=0 impostato sopra*/
 	padding: 3px;
   }
   
   
-  [data-enode]:not(.minus)>.leftDecoration {
+  [data-ENODE]:not(.minus)>.leftDecoration {
 	  display:none;
   }
-  [data-enode]:not(.inverse)>.topDecoration {
+  [data-ENODE]:not(.inverse)>.topDecoration {
 	  display:none;
   }
   
@@ -212,13 +212,13 @@
   }
   
   
-  [data-enode], [class*="_role"],.dummyrole {
+  [data-ENODE], [class*="_role"],.dummyrole {
 	  min-height:20px;
 	  min-width:16px;
 	  border-width: 1px;
   }
-  .exponent [data-enode], .exponent [class*="_role"], .exponent[class*="_role"],
-  .degree [data-enode], .degree [class*="_role"], .degree[class*="_role"]{
+  .exponent [data-ENODE], .exponent [class*="_role"], .exponent[class*="_role"],
+  .degree [data-ENODE], .degree [class*="_role"], .degree[class*="_role"]{
 	  font-size:small;
 	  min-height:12px;
 	  min-width:10px;
@@ -227,9 +227,9 @@
   
   
   
-  /*************specifici per tipo di enodeO ***************/
+  /*************specifici per tipo di ENODEO ***************/
   
-  [data-enode="power"],[data-enode="root"]{
+  [data-ENODE="power"],[data-ENODE="root"]{
 	  display: inline-grid!important;/* grid works but breaka the num/den disposition*/
 	  grid-template-columns: minmax(12px, max-content) minmax(8px, max-content);
 	  grid-gap: 0px;
@@ -267,37 +267,37 @@
   
   
   
-  body:not(.fitch):not([tool=declare]) [data-enode="and"]:not(#canvasAnd):not(#events *):not(.condition *)>.ul_role {
+  body:not(.fitch):not([tool=declare]) [data-ENODE="and"]:not(#canvasAnd):not(#events *):not(.condition *)>.ul_role {
 	  border-style:solid;
 	  border-width: 0 0 0 20px;
 	  border-image:url(../images/GullBraceLeft.svg) 0 47 stretch;
 	  padding-left:0.5em;
   }
   
-  [data-enode="and"]>.ul_role>[data-enode]{
+  [data-ENODE="and"]>.ul_role>[data-ENODE]{
 	  margin:2px;
   }
   /* le definizioni occupano piu' spazio a causa del sigillo che sporge*/
-  /*[data-enode="and"]>.ul_role>[data-enode][data-viseq=asymmetric]{
+  /*[data-ENODE="and"]>.ul_role>[data-ENODE][data-viseq=asymmetric]{
 	  margin-top:2px;
   }*/
   
   /*questo per ottenere disposizione verticale in times e and*/
-  [timesdisposition=vertTimes] [data-enode="times"] >[class*="_role"] {
+  [timesdisposition=vertTimes] [data-ENODE="times"] >[class*="_role"] {
 	   flex-direction:column;
   }
   
-  [timesdisposition=brTimes] [data-enode=times]>.ul_role{
+  [timesdisposition=brTimes] [data-ENODE=times]>.ul_role{
 	  display:inline;
 	  text-align:center;
   }
-  [timesdisposition=brTimes] [data-enode=times]>.ul_role>*{
+  [timesdisposition=brTimes] [data-ENODE=times]>.ul_role>*{
 	  display:inline-flex;
 	  vertical-align: middle;
   }
   
   
-  [data-enode="plus"]>.decoration.left {
+  [data-ENODE="plus"]>.decoration.left {
 	  width:5px;
 	  height:90%;
 	  padding:0px;
@@ -347,23 +347,23 @@
 	  border-radius:2px;
   }
   
-  [data-enode="forAll"]{
+  [data-ENODE="forAll"]{
 	  flex-direction:column;
   }
   
-  [data-enode="ifthenelse"]{
+  [data-ENODE="ifthenelse"]{
 	  align-items:stretch;
   }
   
   
   
    
-  [data-enode="divide"]>.decoration {
+  [data-ENODE="divide"]>.decoration {
 	  height: 1.5px;
 	  align-self:stretch;
 	  background-color: black;
   }
-  [data-enode="not"]>.decoration {
+  [data-ENODE="not"]>.decoration {
 	  height:2px;
 	  padding:0px;
 	  background-color: black;
@@ -379,12 +379,12 @@
 	  display:none;
   }
   
-  [data-enode="eq"] {
+  [data-ENODE="eq"] {
 	  min-height:12px;
 	  min-width:12px;
 	  /*colori*/
   }
-  [data-enode="eq"]>.decoration{
+  [data-ENODE="eq"]>.decoration{
 	  padding:1px;
   }
 	  
@@ -420,13 +420,13 @@
 	padding: 0px;
   }
   
-  [data-enode="eq"]:not(#canvas)[data-viseq=asymmetric]:not(.unlocked)>.secondMember>[data-enode]{
+  [data-ENODE="eq"]:not(#canvas)[data-viseq=asymmetric]:not(.unlocked)>.secondMember>[data-ENODE]{
 	  border-width:0px;
   }
-  .unlocked [data-enode="eq"][data-viseq=asymmetric]>.secondMember>[data-enode]{
+  .unlocked [data-ENODE="eq"][data-viseq=asymmetric]>.secondMember>[data-ENODE]{
 	  border-width:1px;
   }
-  .unlocked [data-enode="eq"][data-viseq=asymmetric],[data-enode="eq"][data-viseq=asymmetric].unlocked {
+  .unlocked [data-ENODE="eq"][data-viseq=asymmetric],[data-ENODE="eq"][data-viseq=asymmetric].unlocked {
 	  padding:3px;
   }
   
@@ -443,7 +443,7 @@
 	  }
   
   /*--------------coloredBorders--------------- */
-  .coloredBorders [data-type=""][data-enode] {
+  .coloredBorders [data-type=""][data-ENODE] {
 	  border-color: rgb(140, 112, 103);
   }
   
@@ -457,7 +457,7 @@
   .coloredBorders [class*="l_role"][data-type="num"].empty ,.coloredBorders [class*="s_role"][data-type="num"] {
 	  background-color: var(--num-bgcolor);
   }
-  .coloredBorders [data-type="bool"][data-enode] {
+  .coloredBorders [data-type="bool"][data-ENODE] {
 	  border-color: var(--bool-color)
   
   /*box-shadow: 0px 0.5px 2px 0.5px rgb(125, 125, 125);*/
@@ -482,7 +482,7 @@
   .coloredBorders [class*="l_role"][data-type="bool"].empty ,.coloredBorders [class*="s_role"][data-type="bool"] {
 	  background-color: rgb(194, 243, 194);
   }
-  .coloredBorders [data-type="obj"][data-enode] {
+  .coloredBorders [data-type="obj"][data-ENODE] {
 	  border-color: rgb(148, 136, 148);
 	  /*box-shadow: 0px 0px 3px 1px rgba(175, 175, 175, 0.6);*/
   }
@@ -490,27 +490,27 @@
 	  background-color: var(--default-bgcolor);
   }
 
-.mu_connected[data-enode]{
+.mu_connected[data-ENODE]{
 	  border-color: Grey!important;	
 }
 
-  /*.selected[data-enode], .selected[data-enode]>.s_role>.glued ,.selected[data-enode]>.s_role>.glued[data-enode]>*{*/
-  .selected[data-enode], .selected[data-enode] [data-enode],.selected[data-enode]::after{
+  /*.selected[data-ENODE], .selected[data-ENODE]>.s_role>.glued ,.selected[data-ENODE]>.s_role>.glued[data-ENODE]>*{*/
+  .selected[data-ENODE], .selected[data-ENODE] [data-ENODE],.selected[data-ENODE]::after{
 	  background-color: #aaa;
 	  border-color:Grey!important;
   }
 
-  .unselected[data-enode], .unselected[data-enode] [data-enode]{
+  .unselected[data-ENODE], .unselected[data-ENODE] [data-ENODE]{
 	  background-color:white!important;
   }
-  .selectedTool[data-enode]::after{
+  .selectedTool[data-ENODE]::after{
 	/* border-color: blue!important; */
 	background-color: rgb(245, 242, 186)!important;
 	}
-  .debug .selected[data-enode] /*,.selected[data-enode]>.s_role>.glued*/{
+  .debug .selected[data-ENODE] /*,.selected[data-ENODE]>.s_role>.glued*/{
 	  border-color: red!important;
   }
-  .debug .unselected[data-enode]  {
+  .debug .unselected[data-ENODE]  {
 	  border-color: blue!important;
 	  z-index:1 } 
   
@@ -527,12 +527,12 @@
 	  display: none
   }
   
-  .unlocked, .unlocked [data-enode],.unlocked[data-viseq=asymmetric]>.firstMember, .unlocked [data-viseq=asymmetric]>.firstMember{
+  .unlocked, .unlocked [data-ENODE],.unlocked[data-viseq=asymmetric]>.firstMember, .unlocked [data-viseq=asymmetric]>.firstMember{
 	border-style: dashed;
   }
   
   /*trucco per far sembrare il sigillo parte del contorno esterno*/
-  [data-enode=eq][data-viseq=asymmetric]>.firstMember{
+  [data-ENODE=eq][data-viseq=asymmetric]>.firstMember{
 	  /* border-top: white; */
 	  border-bottom: white;
 	  border-right: #ffffff;
@@ -562,11 +562,11 @@
 	  background-color: palevioletred;
   }
   
-  body.hidePlus [data-enode="times"]{
+  body.hidePlus [data-ENODE="times"]{
 	  border-color:transparent!important;
 	  padding:0px;
   }
-  .unlocked [data-enode="times"]{
+  .unlocked [data-ENODE="times"]{
 	  border-color:var(--num-color)!important;
 	  padding:3px;
   }
@@ -585,7 +585,7 @@
 	  pointer-events: none;
   }
   
-  [data-enode="implies"] {
+  [data-ENODE="implies"] {
 	  flex-direction:column
   }
   .leftBar{
@@ -600,7 +600,7 @@
 	  background-position-x: center;
   }
   
-  body.fitch [data-enode=implies]{
+  body.fitch [data-ENODE=implies]{
 	  align-items: flex-start!important;
 	  padding-left:9px!important;
   }
@@ -642,7 +642,7 @@
 	  background-repeat: no-repeat;
 	  background-position-x: center;
   }
-  [data-enode=eventtoaction]>*{
+  [data-ENODE=eventtoaction]>*{
 	  align-self:baseline;
   }
   .functName {
@@ -667,7 +667,7 @@
 	  flex-direction:column
   }
   
-  body:not(.fixBorders) #canvasRole [data-enode][data-type=num]:not(:hover){
+  body:not(.fixBorders) #canvasRole [data-ENODE][data-type=num]:not(:hover){
   border-color:transparent;
   }
   
@@ -677,7 +677,7 @@
   /*written here to prevale over all other class css rules*/ 
   
   
-  /* roles inside glued enodes should still work*/
+  /* roles inside glued ENODEs should still work*/
   /* .glued,.glued>*{
 	  pointer-events: none; 
   }*/
@@ -703,45 +703,45 @@
 	  
   }
   
-  .debug .toBeComposed:not([data-enode]){
+  .debug .toBeComposed:not([data-ENODE]){
 	  background-color: #32ABAB;
   }
   
   
-  body.debug .input:not([data-enode]){ 
+  body.debug .input:not([data-ENODE]){ 
 	  background-color: violet;
   }
   
-  body.debug .inputFocus:not([data-enode]){ 
+  body.debug .inputFocus:not([data-ENODE]){ 
 	  background-color: red!important;
   }
   
-  body.debug .pattern:not([data-enode]){ 
+  body.debug .pattern:not([data-ENODE]){ 
 	  background-color: yellow;
   }
   
-  body.debug .patternFocus:not([data-enode]){ 
+  body.debug .patternFocus:not([data-ENODE]){ 
 	  background-color: yellowgreen;
   }
   
-  body.debug .matched:not([data-enode]){ 
+  body.debug .matched:not([data-ENODE]){ 
 	  background-color: green;
   }
   
-  body.debug .operand:not([data-enode]){ 
+  body.debug .operand:not([data-ENODE]){ 
 	  background-color: lightblue;
   }
   
   
-  [data-enode="literal"] { background-color: lightgray ;}
+  [data-ENODE="literal"] { background-color: lightgray ;}
   
-  #canvasRole [data-enode="deftrue"][data-vis=collapsed]>*:not(.name){
+  #canvasRole [data-ENODE="deftrue"][data-vis=collapsed]>*:not(.name){
 	  display:none!important;
   }
-  #canvasRole [data-enode="deftrue"][data-vis=collapsed]{
+  #canvasRole [data-ENODE="deftrue"][data-vis=collapsed]{
 	  border-bottom-right-radius: 0px!important;
   }
-  #canvasRole [data-vis=collapsed], #canvasRole [data-enode=ci][data-tag]{
+  #canvasRole [data-vis=collapsed], #canvasRole [data-ENODE=ci][data-tag]{
 	  align-self: stretch;
 	  min-height: 3px;
 	  background-image: url(../images/three-dots.svg);
@@ -755,55 +755,55 @@
  }
   
   
-  #canvasRole [data-enode=or]>.ul_role>*{
+  #canvasRole [data-ENODE=or]>.ul_role>*{
 	  align-self:stretch;
   }
-  .unlocked [data-enode=or]>.ul_role>*{
+  .unlocked [data-ENODE=or]>.ul_role>*{
 	  align-self:auto!important;
   }
   
   
   
-  #canvasRole [data-enode=or]>.ul_role>[data-vis=collapsed]{
+  #canvasRole [data-ENODE=or]>.ul_role>[data-vis=collapsed]{
 	  min-width:3px;
 	  background-image: url(../images/three-dots-vert.svg);
 	  background-position: center center;
   }
   
-  #canvas *:not([data-enode=or])>*>[data-enode=or]{
+  #canvas *:not([data-ENODE=or])>*>[data-ENODE=or]{
 	  margin: 0px!important;
 	  border-color: transparent;
   }
-  .unlocked [data-enode=or]{
+  .unlocked [data-ENODE=or]{
 	  background-color: white!important;
 	  margin: -3px;
 	  border-color:var(--bool-color)!important;
   }
-  #canvasRole [data-enode=or]>.ul_role>[data-enode]{
+  #canvasRole [data-ENODE=or]>.ul_role>[data-ENODE]{
 	  margin:-0.5px;
 	  border-radius:0px;
   }
-  #canvasRole [data-enode=or]>.ul_role{
+  #canvasRole [data-ENODE=or]>.ul_role{
 	  background-color:var(--bool-bgcolor);
 	  border-radius:var(--div-smallradius);
   }
   
   
-  .unlocked [data-enode=or]>.ul_role>[data-enode]{
+  .unlocked [data-ENODE=or]>.ul_role>[data-ENODE]{
 	  margin:0px!important;
   }
   
   
-  #canvasRole [data-enode=or]>.ul_role>[data-enode]:first-of-type{
+  #canvasRole [data-ENODE=or]>.ul_role>[data-ENODE]:first-of-type{
 	  border-bottom-left-radius: var(--div-smallradius);
 	  border-top-left-radius: var(--div-smallradius);
   }
-  #canvasRole [data-enode=or]>.ul_role>[data-enode]:last-of-type{/*last child is problematic because invisible pseudo targets are filtered because are div*/
+  #canvasRole [data-ENODE=or]>.ul_role>[data-ENODE]:last-of-type{/*last child is problematic because invisible pseudo targets are filtered because are div*/
 	  border-bottom-right-radius: var(--div-smallradius);
 	  border-top-right-radius: var(--div-smallradius);
   }
   
-  .unlocked [data-enode=or]>.ul_role>[data-enode]{
+  .unlocked [data-ENODE=or]>.ul_role>[data-ENODE]{
 	  border-radius:var(--div-smallradius)!important;
   }
   
@@ -847,7 +847,7 @@
   
   }
   /*
-  [data-vis=resizable]>.ul_role>[data-enode]{
+  [data-vis=resizable]>.ul_role>[data-ENODE]{
 	  margin:0!important;
   }
   */
@@ -877,40 +877,40 @@
 	margin-left: 10px;	
 }
   
-  [data-enode=m_inverse]{
+  [data-ENODE=m_inverse]{
 	  flex-direction:column;
   }
-  body:not(.showNumerator1) [data-enode=m_inverse]>.numerator1{
+  body:not(.showNumerator1) [data-ENODE=m_inverse]>.numerator1{
 	  display:none;
   }
   
-  [data-enode=m_inverse]>.numerator1{
+  [data-ENODE=m_inverse]>.numerator1{
 	top:10px;
 		margin-left:-2px;
 		padding-top:3px;
 		margin-bottom:-3px;
 	}
 
-  .debug [data-enode].taken{
+  .debug [data-ENODE].taken{
 	  background-color:red;
   }
   
   .debug .mu_Downstream1,.debug .mu_Downstream1 *{
 	/*background-color: #4d68ff!important;*/
 }
-  body:not(.fixBorders) #canvasRole [data-enode][data-type=num]:not(:hover),
-  body:not(.fixBorders) #result [data-enode][data-type=num]:not(:hover)
+  body:not(.fixBorders) #canvasRole [data-ENODE][data-type=num]:not(:hover),
+  body:not(.fixBorders) #result [data-ENODE][data-type=num]:not(:hover)
   {border-color:transparent;}
   
-  #canvasRole [data-enode][data-type=bool]{
+  #canvasRole [data-ENODE][data-type=bool]{
 	  border-radius:var(--div-smallradius);
   }
   
-  #canvasRole [data-enode=not]{
+  #canvasRole [data-ENODE=not]{
 	  border-top-right-radius:1px!important;
   }
   
-  [data-enode=conditional], [data-enode=ifthenelse]{
+  [data-ENODE=conditional], [data-ENODE=ifthenelse]{
 	  display:grid;
   }
   .row1{
@@ -938,7 +938,7 @@
   /***********   tgt DUMMY element   *********/
   /* .tgt DIVs are dynamically added to act as sortable targets
   
-  /*[data-enode][target]::after, */ .tgt, .notAtgt {
+  /*[data-ENODE][target]::after, */ .tgt, .notAtgt {
 	pointer-events:none;  
 	position:absolute;
 	  z-index: 1;

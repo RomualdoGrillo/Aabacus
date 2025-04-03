@@ -634,11 +634,11 @@
     var $ = window.jQuery || window.Zepto;
 
     if (Polymer && Polymer.dom) {
-      return Polymer.dom(el).cloneNode(true);
+      return Polymer.dom(el).clonENODE(true);
     } else if ($) {
       return $(el).clone(true)[0];
     } else {
-      return el.cloneNode(true);
+      return el.clonENODE(true);
     }
   }
 
@@ -1747,7 +1747,7 @@
           ghostRelativeParentInitialScroll = getRelativeScrollOffset(ghostRelativeParent);
         }
 
-        ghostEl = dragEl.cloneNode(true);
+        ghostEl = dragEl.clonENODE(true);
         toggleClass(ghostEl, options.ghostClass, false);
         toggleClass(ghostEl, options.fallbackClass, true);
         toggleClass(ghostEl, options.dragClass, true);

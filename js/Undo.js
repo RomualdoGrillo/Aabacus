@@ -14,8 +14,8 @@ function ssnapshot() {
 ssnapshot.take = function(){
 		var rootElement = getExpressionRootNode(); // Ottiene HTMLElement
 		if (rootElement) {
-			// Converte in jQuery prima di passarlo a enodeclone
-			var $cloneRoot = enodeclone( $(rootElement), false, false ); // Passa e riceve jQuery
+			// Converte in jQuery prima di passarlo a ENODEclone
+			var $cloneRoot = ENODEclone( $(rootElement), false, false ); // Passa e riceve jQuery
 			FILO.push($cloneRoot); // Salva l'oggetto jQuery clonato
 		} else {
 			console.error("Cannot take snapshot: root node not found.");
@@ -70,11 +70,11 @@ ssnapshot.undo = function(){
 }
 
 ssnapshot.copy = function(){
-	ssnapshot.clipBoard = enodeclone($(".selected"),false,false);
+	ssnapshot.clipBoard = ENODEclone($(".selected"),false,false);
 }
 ssnapshot.paste = function(){
 	if(ssnapshot.clipBoard.length != 0){
-		var $newCds = enodeclone( ssnapshot.clipBoard,true,false ); //extend, do not removeID
+		var $newCds = ENODEclone( ssnapshot.clipBoard,true,false ); //extend, do not removeID
 		$(".selected").replaceWith( $newCds );
 	}
 }

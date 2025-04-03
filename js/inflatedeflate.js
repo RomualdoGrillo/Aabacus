@@ -1,7 +1,7 @@
 var leafTags = ["cn", "ci", "csymbol"];
 
 
-function enodecreateMathmlString($startNodes,describeDataType, neglectRootSign) {
+function ENODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) {
 	//per poter chiamare sia come funzione che come metodo
 	if ($startNodes == undefined) {
 		$startNodes = $(this);
@@ -35,21 +35,21 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 		$containerForClone.append($thisClone)
 		//deflate todo: completare distinzione tra mml e mml + type
 
-		//estendi tutti i nodi enode
-		$thisClone.parent().find('[data-enode]').each(function(i, node) {
-			$.extend(node, enode)
+		//estendi tutti i nodi ENODE
+		$thisClone.parent().find('[data-ENODE]').each(function(i, node) {
+			$.extend(node, ENODE)
 		})
 		//rimuovi il contenuto importato da altri files
-		$thisClone.parent().find('[data-import]').each(function(i, node){node.enode_getChildren().remove()});
+		$thisClone.parent().find('[data-import]').each(function(i, node){node.ENODE_getChildren().remove()});
 	
 
 		//signsAsClassesSubtree($thisClone,"SignsAsClasses_to_MinusOp")// converti in modo che il segno meno sia una operazione applicata al nodo
-		//sostituisci tutti i nodi enode excluding prototypes
-		$thisClone.parent().find('[data-enode]').not('[data-proto]').not('.saveAsHtml').each(function(i, node) {
+		//sostituisci tutti i nodi ENODE excluding prototypes
+		$thisClone.parent().find('[data-ENODE]').not('[data-proto]').not('.saveAsHtml').each(function(i, node) {
 			if (i == 0) {
-				ReplaceOneenode(node, from_to, neglectRootSign);
+				ReplaceOneENODE(node, from_to, neglectRootSign);
 			} else {
-				ReplaceOneenode(node, from_to, false);
+				ReplaceOneENODE(node, from_to, false);
 				//never neglect sign if not root 
 			}
 		})
@@ -68,7 +68,7 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 		//ottieni l'elenco dei nodi' da sostituire
 		$mmlTagSubset.parent().find('apply,cn,ci,bind,math').each(function(i, node) {
 			//console.log(node);
-			ReplaceOneenode(node, from_to);
+			ReplaceOneENODE(node, from_to);
 		})
 		//signsAsClasses($containerForClone.children(),"MinusOp_to_SignsAsClasses"); // converti root node
 		//signsAsClassesSubtree($containerForClone.children(),"MinusOp_to_SignsAsClasses");	// converti il resto dell'albero'	
@@ -76,7 +76,7 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 	return $containerForClone.children()
 }
 
-function ReplaceOneenode(node, from_to, neglectSign) {
+function ReplaceOneENODE(node, from_to, neglectSign) {
 	//node is HTML node
 	let $node = $(node);
 	var $newNode
@@ -95,25 +95,25 @@ function ReplaceOneenode(node, from_to, neglectSign) {
 		if (!neglectSign) {//signsAsClasses($node,"SignsAsClasses_to_MinusOp") // converti   	
 		}
 		var nodeText = ""
-		if (leafTags.indexOf(originalData.enode.toLowerCase()) !== -1) {
+		if (leafTags.indexOf(originalData.ENODE.toLowerCase()) !== -1) {
 			//if [cn;ci;csymbol] then the content is the text, else some role must be present
-			nodeText = node.enode_getName(true);
-			$newNode = $('<' + originalData.enode.toLowerCase() + '/>');
+			nodeText = node.ENODE_getName(true);
+			$newNode = $('<' + originalData.ENODE.toLowerCase() + '/>');
 			$newNode.text(nodeText)
 		} else {
 			/*
-			var $role= node.enode_getRoles();
-			var $bVarChildren=$role.filter('.bVar_role').children().filter('[data-enode]')// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
-			var $nobBvarchildren=$role.not('.bVar_role').children().filter('[data-enode]')
+			var $role= node.ENODE_getRoles();
+			var $bVarChildren=$role.filter('.bVar_role').children().filter('[data-ENODE]')// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
+			var $nobBvarchildren=$role.not('.bVar_role').children().filter('[data-ENODE]')
 			*/
-			var $bVarChildren = node.enode_getRoles('.bVar_role').children().filter('[data-enode]')
+			var $bVarChildren = node.ENODE_getRoles('.bVar_role').children().filter('[data-ENODE]')
 			// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
-			var $nobBvarchildren = node.enode_getRoles(':not(.bVar_role)').children().filter('[data-enode]')
-			var $htmlDivChildren = node.enode_getRoles(':not(.bVar_role)').children().filter(':not([data-enode])').filter('.saveAsHtml')
+			var $nobBvarchildren = node.ENODE_getRoles(':not(.bVar_role)').children().filter('[data-ENODE]')
+			var $htmlDivChildren = node.ENODE_getRoles(':not(.bVar_role)').children().filter(':not([data-ENODE])').filter('.saveAsHtml')
 			//salvo ciò che è .saveAsHtmlL
 			$newNode = $('<apply></apply>')
 			$newNode.text(nodeText)
-			$newNode.append('<' + originalData.enode + '/>')
+			$newNode.append('<' + originalData.ENODE + '/>')
 			$newNode.append($bVarChildren.wrap('<bvar>').parent());
 			$newNode.append($nobBvarchildren);
 			$newNode.append($htmlDivChildren);
@@ -124,7 +124,7 @@ function ReplaceOneenode(node, from_to, neglectSign) {
 		}
 		// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
 		let newData = originalData
-		delete newData.enode//data-enode is manged above
+		delete newData.ENODE//data-ENODE is manged above
 		writeData($newNode,newData)
 
 		
@@ -138,42 +138,42 @@ function ReplaceOneenode(node, from_to, neglectSign) {
 		.remove()//remove all the children
 		.end()//again go back to selected element
 		.text();
-		var enode;
+		var ENODE;
 		//string
 		if (node.tagName.toLowerCase() === "apply" || node.tagName === "bind") {
-			enode = $node.children().filter(':first')[0].tagName.toLowerCase()
+			ENODE = $node.children().filter(':first')[0].tagName.toLowerCase()
 		} else {
 			////todo!!! devo distinguere e trattare diversamente saveAsHtml 
-			enode = node.tagName.toLowerCase()
+			ENODE = node.tagName.toLowerCase()
 		}
-		if (enode === "math") {
+		if (ENODE === "math") {
 			$newNode = $node.children()
 			//unwrap "math"
 		} else {
 			var $children = $node.children().not(':first')
 			//search for prototype
-			//console.log(enode)
+			//console.log(ENODE)
 			let dataType= $node.attr("type");//for compatibility with older format
 			if(!dataType){dataType=$node.attr("data-type")};
-			var $prototype = prototypeSearch(enode, dataType,undefined,nodeText)
-			if($prototype.length==0){console.log('prototype not found prototypeSearch()');console.log([enode, $node.attr("type"),undefined,nodeText])}
-			$newNode = enodeclone($prototype)
-			enodeextend($newNode)
+			var $prototype = prototypeSearch(ENODE, dataType,undefined,nodeText)
+			if($prototype.length==0){console.log('prototype not found prototypeSearch()');console.log([ENODE, $node.attr("type"),undefined,nodeText])}
+			$newNode = ENODEclone($prototype)
+			ENODEextend($newNode)
 			// extend the new node
-			if (leafTags.indexOf(enode.toLowerCase()) !== -1) {
+			if (leafTags.indexOf(ENODE.toLowerCase()) !== -1) {
 				//todo: eccezione if leafTag with children
 				try {
-					$newNode[0].enode_setName($node.text());
+					$newNode[0].ENODE_setName($node.text());
 				} catch (err) {
-					console.log('error on prototype '+enode+" "+ $node.attr("type"))
+					console.log('error on prototype '+ENODE+" "+ $node.attr("type"))
 				}
 				//signsAsClasses($newNode,"SignsInNames_to_SignsAsClasses"); //convert to_signs_as_classes 
 			} else {
 				//append children in roles
-				var $tgtRoles = $newNode[0].enode_getRoles();
+				var $tgtRoles = $newNode[0].ENODE_getRoles();
 				if($tgtRoles.length==0){
-					$newNode[0].enode_addRole();
-					$tgtRoles = $newNode[0].enode_getRoles();
+					$newNode[0].ENODE_addRole();
+					$tgtRoles = $newNode[0].ENODE_getRoles();
 				}
 				var $bVarRole = $tgtRoles.filter('.bVar_role');
 				var $noBVarRole = $tgtRoles.not('.bVar_role');
@@ -201,7 +201,7 @@ function ReplaceOneenode(node, from_to, neglectSign) {
 			}
 		}
 		newData=originalData;
-		//data.enode=xxx is already cloned from prototype
+		//data.ENODE=xxx is already cloned from prototype
 		if (newData.tag !== undefined) {
 			if(originalData.tagimg){
 				$newNode.css('background-image',wrapUnwrapUrlString(originalData.tagimg))	
@@ -220,7 +220,7 @@ function ReplaceOneenode(node, from_to, neglectSign) {
 
 function $parserForMixedMMLHTML(toBeParsed){
 	// $(string) gives strange results when div or img are present
-	//$parserForMixedMMLHTML('<math xmlns="http://www.w3.org/1998/Math/MathML"><apply data-type="num"><plus></plus><cn data-type="num">2</cn><div data-enode="times" data-type="num" class="enode saveAsHtml" draggable="false" style="background-color: red;"><div class="ul_role" data-type="num"><cn data-type="num">6</cn><cn data-type="num">2</cn></div></div><apply data-type="num"><minus></minus><cn data-type="num">1</cn></apply></apply></math>')
+	//$parserForMixedMMLHTML('<math xmlns="http://www.w3.org/1998/Math/MathML"><apply data-type="num"><plus></plus><cn data-type="num">2</cn><div data-ENODE="times" data-type="num" class="ENODE saveAsHtml" draggable="false" style="background-color: red;"><div class="ul_role" data-type="num"><cn data-type="num">6</cn><cn data-type="num">2</cn></div></div><apply data-type="num"><minus></minus><cn data-type="num">1</cn></apply></apply></math>')
 	let string
 	if (toBeParsed instanceof jQuery){string=toBeParsed[0].outerHTML}
 	else{string = toBeParsed};

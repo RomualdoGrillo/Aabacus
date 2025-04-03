@@ -75,21 +75,21 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
  * Injects an MML string into a target element, handling various cases such as wrapping the content and preserving existing data attributes.
  *
  * @param {string} MMLstring - The MML string to be injected.
- * @param {jQuery} $targetRoleOrenode - The target element to inject the MML string into.
+ * @param {jQuery} $targetRoleOrENODE - The target element to inject the MML string into.
  * @param {boolean} containerRequirements - A flag indicating whether the content should not be wrapped.
  * @param {boolean} toBeImported - A flag indicating whether the content is being imported.
  * @returns {void}
  */
-function inject(MMLstring, $targetRoleOrenode, containerRequirements, toBeImported)
+function inject(MMLstring, $targetRoleOrENODE, containerRequirements, toBeImported)
 {
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
 	ExtendAndInitializeTree($convertedTree);
 	// if ( target accept booleans) al momento l'unico target è #canvasrole, in futuro si dovrà distinguere
-	if($targetRoleOrenode.is('[data-enode]')){
+	if($targetRoleOrENODE.is('[data-ENODE]')){
 		
 		//get all data attributes
-		let originalImportData = $targetRoleOrenode.data().import;
-		let originalImportAndVis = $targetRoleOrenode.data().and;
+		let originalImportData = $targetRoleOrENODE.data().import;
+		let originalImportAndVis = $targetRoleOrENODE.data().and;
 		if(originalImportData){
 			if($convertedTree.length>1){
 				// Needs "and" container if multiple items? 
@@ -98,23 +98,23 @@ function inject(MMLstring, $targetRoleOrenode, containerRequirements, toBeImport
 			$convertedTree.attr('data-import',originalImportData);
 			$convertedTree.attr('data-and',originalImportAndVis);
 		}
-		let importStatus= $targetRoleOrenode.attr('importStatus');
+		let importStatus= $targetRoleOrENODE.attr('importStatus');
 		if(importStatus){
 			$convertedTree.attr('importStatus',importStatus)
 		}
-		$targetRoleOrenode.replaceWith($convertedTree);
+		$targetRoleOrENODE.replaceWith($convertedTree);
 	}
 	else{
-		$targetRoleOrenode.append($convertedTree);
+		$targetRoleOrENODE.append($convertedTree);
 		if(containerRequirements='bool'){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
 			$convertedTree.each(function() {
-				wrapWithDefIfNeededreturnTarget($targetRoleOrenode,$(this))
+				wrapWithDefIfNeededreturnTarget($targetRoleOrENODE,$(this))
 			});
 		}
 	}
 	
 	
-	//var $refreshStartPoint = enodeparent($convertedTree);
+	//var $refreshStartPoint = ENODEparent($convertedTree);
 	//if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
 	ssnapshot.take(); 
 }
@@ -146,13 +146,13 @@ function importAll($startNode){
 
 function AlltoMMLSstring(){
 	//palette
-	let paletteString = enodecreateMathmlString($('#palette').children(':not(.fundamental)'),true);
+	let paletteString = ENODEcreateMathmlString($('#palette').children(':not(.fundamental)'),true);
 	//canvas
-	let canvasString = enodecreateMathmlString($('#canvasAnd')[0].enode_getChildren(),true);
+	let canvasString = ENODEcreateMathmlString($('#canvasAnd')[0].ENODE_getChildren(),true);
 	//events
-	let eventsString = enodecreateMathmlString($('#events').children(),true);
+	let eventsString = ENODEcreateMathmlString($('#events').children(),true);
 	//result
-	let resultString = enodecreateMathmlString($('#result').children(),true);
+	let resultString = ENODEcreateMathmlString($('#result').children(),true);
 	//save settings
 	let MMLSString =
 	'<section data-section="palette">' + paletteString + '</section>'+
