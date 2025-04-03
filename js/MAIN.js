@@ -12,11 +12,11 @@ ssnapshot()
 //***********************
 //all elements that can be dragged around are initiated by making their container Sortable
 let sortablesSelectorString = '.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_role'
-let sortablesExcluded = '[data-atom=minus]>*,[data-atom=m_inverse]>*,[data-atom=not]>*'
+let sortablesExcluded = '[data-ENODE=minus]>*,[data-ENODE=m_inverse]>*,[data-ENODE=not]>*'
 //glued
-MNODEextend($('body'), true);
+ENODEextend($('body'), true);
 //************ Preload  ************
-//preload will extend new atoms 
+//preload will extend new ENODEs 
 let preloadPath = window.location.href.split('preloadPath=')[1]
 if (!preloadPath) {
 	preloadPath = './Data/Preload/PRELOAD.mmls'
@@ -27,7 +27,7 @@ preloadAll(preloadPath);//ATTENTION contains asinchronous functions
 ssnapshot.take();
 document.addEventListener("click", clickHandler);
 document.addEventListener("dblclick", dblclickHandler);
-//document.querySelectorAll('[data-atom]').forEach(function(i,e){ MNODErefreshAsymmEq($(e))})
+
 //***********************************************************
 $(document).on('mousedown', MakeSortableAndInjectMouseDown);
 $(document).on('touchstart', MakeSortableAndInjectMouseDown);
@@ -47,8 +47,8 @@ $(document).on('keydown', function (e) {
 	//ctrl+a 
 	else if (e.ctrlKey && (keyPressed === 'a')) {
 		$('#canvasRole *').removeClass('selected');
-		$('#canvasRole>[data-atom]').addClass('selected');
-		// select all: all the atoms in canvasRole
+		$('#canvasRole>[data-ENODE]').addClass('selected');
+		// select all: all the ENODEs in canvasRole
 	}//ctrl+c
 	else if (e.ctrlKey && (keyPressed === 'c')) {
 		ssnapshot.copy();
@@ -69,7 +69,7 @@ $(document).on('keydown', function (e) {
 		console.log("control + x")
 	}//auto create function definition
 	else if (e.ctrlKey && (keyPressed === 'b')) { //baptize
-		MNODECreateDefinition($('.selected')[0])
+		ENODECreateDefinition($('.selected')[0])
 		console.log("control + b")
 	}//canc or del  code of "cancel" = 46 code of "del" = 8
 	else if (e.which === 46 || e.which === 8) {
@@ -92,7 +92,7 @@ $(document).on('keydown', function (e) {
 		else {
 			let $toBeSaved = $('.selected');
 			$('.selected').removeClass('selected');
-			let contentString = MNODEcreateMathmlString($toBeSaved, true);
+			let contentString = ENODEcreateMathmlString($toBeSaved, true);
 			stringToBeSaved = '<math xmlns="http://www.w3.org/1998/Math/MathML">' + contentString + '</math>';
 			fileExtension = '.mml';
 		}
@@ -143,13 +143,12 @@ $('#fileToLoad').change(function (e) {
 
 //***********************************************************
 
-// Function moved to Atom.js and added to atom object
 
 function clickHandler(event) {
 	//*************** Lock unlock ********
 	if ($(event.target).parent().is(function() { return isDefinition(this); }) && $(event.target).is('.firstMember')) {
-		let $atom = $(event.target).parent();
-		if ($atom.is('#canvas')) {
+		let $ENODE = $(event.target).parent();
+		if ($ENODE.is('#canvas')) {
 			// canvas fa eccezione perchè determina anche lo stato delle sezioni result e events
 			if (!GLBsettings.lockCanvas) {
 				GLBsettings.lockCanvas = true;
@@ -159,64 +158,64 @@ function clickHandler(event) {
 				$('#canvas,#result,#events').addClass('unlocked');
 			}
 		} else {
-			$atom.toggleClass('unlocked');
+			$ENODE.toggleClass('unlocked');
 		}
-		MNODErefreshAsymmEq($atom);
+		ENODERefreshAsymmEq($ENODE);
 		ssnapshot.take();
 	}
 
 }
-function selectionManager($clickedMNODE, ctrl, shift, deselectAll) {
+function selectionManager($clickedENODE, ctrl, shift, deselectAll) {
 	if (deselectAll) {
 		//clear selected unselected
-		$('[data-atom]').removeClass('selected').removeClass('unselected');
+		$('[data-ENODE]').removeClass('selected').removeClass('unselected');
 	}
 	//***selection of declared "yellow" tool
-	else if (($clickedMNODE.attr('data-atom') == 'forAll' || $clickedMNODE.attr('data-atom') == 'eq' || $clickedMNODE.attr('data-tag'))
-		&& $clickedMNODE.attr('data-tag')
+	else if (($clickedENODE.attr('data-ENODE') == 'forAll' || $clickedENODE.attr('data-ENODE') == 'eq' || $clickedENODE.attr('data-tag'))
+		&& $clickedENODE.attr('data-tag')
 		&& GLBsettings.tool == "declare") {
 		//solo se è effettivamente una proprietà e non un container
-		if ($clickedMNODE.hasClass('selectedTool')) {
-			$clickedMNODE.removeClass('selectedTool')
+		if ($clickedENODE.hasClass('selectedTool')) {
+			$clickedENODE.removeClass('selectedTool')
 		}
 		else {
-			$('[data-atom]').removeClass('selectedTool')
-			$clickedMNODE.addClass('selectedTool');
-			console.log('Selected tool: ' + $clickedMNODE.attr('data-tag'))
+			$('[data-ENODE]').removeClass('selectedTool')
+			$clickedENODE.addClass('selectedTool');
+			console.log('Selected tool: ' + $clickedENODE.attr('data-tag'))
 		}
 	}
 	else if (ctrl) {
-		//click +ctrl on .MNODE   ---multi select---
-		if ($clickedMNODE.hasClass('selected')) {
-			$clickedMNODE.find('[data-atom]').removeClass('selected').removeClass('unselected');
-		} else if ($clickedMNODE.closest('.selected').length != 0) {//if an ancestor is selected already, ignore click
+		//click +ctrl on .ENODE   ---multi select---
+		if ($clickedENODE.hasClass('selected')) {
+			$clickedENODE.find('[data-ENODE]').removeClass('selected').removeClass('unselected');
+		} else if ($clickedENODE.closest('.selected').length != 0) {//if an ancestor is selected already, ignore click
 		} else {
-			$clickedMNODE.addClass('selected');
+			$clickedENODE.addClass('selected');
 		}
 	} else if (shift) {
-		//click +shift on [data-atom]   ---unselect---
-		if ($clickedMNODE.hasClass('selected')) {
-			$clickedMNODE.removeClass('selected');
-			$clickedMNODE.find('[data-atom]').removeClass('selected').removeClass('unselected');
-		} else if ($clickedMNODE.hasClass('unselected')) {
-			$clickedMNODE.removeClass('unselected');
-			$clickedMNODE.find('[data-atom]').removeClass('selected').removeClass('unselected');
-		} else if (($clickedMNODE.closest('.selected').length != 0) && ($clickedMNODE.closest('.unselected').length == 0)) {
+		//click +shift on [data-ENODE]   ---unselect---
+		if ($clickedENODE.hasClass('selected')) {
+			$clickedENODE.removeClass('selected');
+			$clickedENODE.find('[data-ENODE]').removeClass('selected').removeClass('unselected');
+		} else if ($clickedENODE.hasClass('unselected')) {
+			$clickedENODE.removeClass('unselected');
+			$clickedENODE.find('[data-ENODE]').removeClass('selected').removeClass('unselected');
+		} else if (($clickedENODE.closest('.selected').length != 0) && ($clickedENODE.closest('.unselected').length == 0)) {
 			//se è selected, a meno che non sia unselected		
 
-			$clickedMNODE.addClass('unselected');
-			$clickedMNODE.find('[data-atom]').removeClass('selected').removeClass('unselected');
+			$clickedENODE.addClass('unselected');
+			$clickedENODE.find('[data-ENODE]').removeClass('selected').removeClass('unselected');
 		}
 	} else {
-		//click on [data-atom]   ---select---
+		//click on [data-ENODE]   ---select---
 
-		if ($clickedMNODE.hasClass('selected')) {
-			$('[data-atom]').removeClass('selected').removeClass('unselected');
+		if ($clickedENODE.hasClass('selected')) {
+			$('[data-ENODE]').removeClass('selected').removeClass('unselected');
 			//clear selected unselected
 		} else {
-			$('[data-atom]').removeClass('selected').removeClass('unselected');
+			$('[data-ENODE]').removeClass('selected').removeClass('unselected');
 			//clear selected unselected
-			$clickedMNODE.addClass('selected');
+			$clickedENODE.addClass('selected');
 		}
 	}
 }
@@ -230,16 +229,16 @@ function selectionManager($clickedMNODE, ctrl, shift, deselectAll) {
 
 
 function dblclickHandler(event) {
-	let target = MNODENselectable(event.target);
-	let $atomDblclicked = $(target)
-	let atomClass = $atomDblclicked.attr('data-atom');
-	let closed = MNODEclosedDef($atomDblclicked)
+	let target = ENODEselectable(event.target);
+	let $ENODEDblclicked = $(target)
+	let ENODEClass = $ENODEDblclicked.attr('data-ENODE');
+	let closed = ENODEclosedDef($ENODEDblclicked)
 	console.log('dblclick');
 	//closed
 	//******** forThis prompt ***********
 	let $toBeSpecified
-	if (closed && atomClass === 'ci') {
-		$toBeSpecified = parameterInHeader($atomDblclicked, $identifierSpanForAll($atomDblclicked))
+	if (closed && ENODEClass === 'ci') {
+		$toBeSpecified = parameterInHeader($ENODEDblclicked, $identifierSpanForAll($ENODEDblclicked))
 	}
 	if ($toBeSpecified && $toBeSpecified.length != 0) {
 		var newVal = prompt('Specify a value')
@@ -251,8 +250,8 @@ function dblclickHandler(event) {
 			}
 			else {
 				var type = $toBeSpecified.attr('data-type')
-				$newNode = MNODEclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
-				$newNode[0].MNODE_setName(newVal);
+				$newNode = ENODEclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
+				$newNode[0].ENODE_setName(newVal);
 				$newNode.attr('data-type', type)
 			}
 			forThisPar_focus_nofocus($newNode, $toBeSpecified);
@@ -262,9 +261,9 @@ function dblclickHandler(event) {
 	}
 	//******** remove "exclusiveFocus" ***********
 	/*
-	else if (closed && atomClass === 'forAll') {
-		if ($atomDblclicked.hasClass('exclusiveFocus')) {
-			$atomDblclicked.removeClass('exclusiveFocus')
+	else if (closed && ENODEClass === 'forAll') {
+		if ($ENODEDblclicked.hasClass('exclusiveFocus')) {
+			$ENODEDblclicked.removeClass('exclusiveFocus')
 			// togli exclusiveFocus
 			exclusiveFocus = ""
 		}
@@ -272,62 +271,60 @@ function dblclickHandler(event) {
 	*/
 	/********closed still not handled **********/
 	/*
-	else if (closed && atomClass === 'cn') {
-		let n = Number( MNODENumericCdsAsText($atomDblclicked) );
+	else if (closed && ENODEClass === 'cn') {
+		let n = Number( ENODENumericCdsAsText($ENODEDblclicked) );
 		if(Number.isInteger(n) && n>0){
-			let $plus =wrapWithOperation($atomDblclicked,'plus');
+			let $plus =wrapWithOperation($ENODEDblclicked,'plus');
 			$plus.attr('data-vis','resizable');
-			$atomDblclicked.remove()
+			$ENODEDblclicked.remove()
 			//crea il numero 1
 			var One = {type:"cn", val:1, sign:1, exp:1}
 			for(i=0;i<n;i++){
-				//clona atom 1
-				$plus[0].MNODE_getRoles().append(ValToAtoms(One))
+				//clona ENODE 1
+				$plus[0].ENODE_getRoles().append(ValToENODEs(One))
 			}	
 		}
 	}
-	else if ($atomDblclicked.is('[data-vis=resizable]')){
-			let $role=$atomDblclicked[0].MNODE_getRoles().eq(0);
-			let firstChild = $role.find('>[data-atom]')[0]
+	else if ($ENODEDblclicked.is('[data-vis=resizable]')){
+			let $role=$ENODEDblclicked[0].ENODE_getRoles().eq(0);
+			let firstChild = $role.find('>[data-ENODE]')[0]
 			let fcWidth = firstChild.offsetWidth
 			//var fcstyle = element.currentStyle || window.getComputedStyle(firstChild);
 			var fcstyle = window.getComputedStyle(firstChild);
 			let fcMargins = parseFloat(fcstyle.marginLeft) + parseFloat(fcstyle.marginRight)
 			let n_columns = Math.floor( $role[0].offsetWidth/(fcWidth+fcMargins) )
-			let n_children = $atomDblclicked[0].MNODE_getChildren().length
+			let n_children = $ENODEDblclicked[0].ENODE_getChildren().length
 			if(n_children % n_columns == 0){
 				let n_rows = n_children / n_columns;
 				console.log('decoposed!!!')
-				wrapIfNeeded($atomDblclicked,'times')
-				let $factor_r = ValToAtoms({type:"cn", val:n_rows, sign:1, exp:1})
-				let $factor_c = ValToAtoms({type:"cn", val:n_columns, sign:1, exp:1})
+				wrapIfNeeded($ENODEDblclicked,'times')
+				let $factor_r = ValToENODEs({type:"cn", val:n_rows, sign:1, exp:1})
+				let $factor_c = ValToENODEs({type:"cn", val:n_columns, sign:1, exp:1})
 				let $factors = $factor_r.add($factor_c); 
-				$atomDblclicked.replaceWith($factors);
+				$ENODEDblclicked.replaceWith($factors);
 				$role.css('width', '');
 				$role.css('height', '');
 								
 			}
 			else{
 				//sum in one numeber
-				let $composed = ValToAtoms({type:"cn", val:n_children, sign:1, exp:1})
-				$atomDblclicked.replaceWith($composed)
+				let $composed = ValToENODEs({type:"cn", val:n_children, sign:1, exp:1})
+				$ENODEDblclicked.replaceWith($composed)
 			}
 	}//closed or opened
 	*/
 	//******** expand collapse ***********
-	//else if (atomClass != 'ci' && atomClass != 'cn' && atomClass != 'plus') {
-	else if (atomClass == 'forAll' || atomClass == 'and') {
-		if ($atomDblclicked.is('[data-vis=collapsed]')) { $atomDblclicked.attr('data-vis', '') }
-		else { $atomDblclicked.attr('data-vis', 'collapsed') }
+	//else if (ENODEClass != 'ci' && ENODEClass != 'cn' && ENODEClass != 'plus') {
+	else if (ENODEClass == 'forAll' || ENODEClass == 'and') {
+		if ($ENODEDblclicked.is('[data-vis=collapsed]')) { $ENODEDblclicked.attr('data-vis', '') }
+		else { $ENODEDblclicked.attr('data-vis', 'collapsed') }
 	}//opened
 	//******** dblclick on ci ***********
-	else if (!closed && (atomClass == 'ci' || atomClass == 'cn')) {
-		MNODErenamePrompt($atomDblclicked);
+	else if (!closed && (ENODEClass == 'ci' || ENODEClass == 'cn')) {
+		ENODErenamePrompt($ENODEDblclicked);
 	}
 
 }
-
-// Function moved to Atom.js and added to atom object as MNODErefreshAsymmEq
 
 function keyToCharacter(key) {
 	if (key === 37) {
@@ -350,9 +347,9 @@ function refreshAndReplace(PActx) {
 
 	if (PActx.replacedAlready == true) {
 		// sostituzione già effettuano internamente alla proprietà
-		$toBeRefreshed = MNODEparent(PActx.$transform)
+		$toBeRefreshed = ENODEparent(PActx.$transform)
 	} else {
-		$toBeRefreshed = MNODEparent(PActx.$operand)
+		$toBeRefreshed = ENODEparent(PActx.$operand)
 		PActx.$transform.insertBefore(PActx.$operand[0]);
 		PActx.$operand.remove()
 		//********select on exit
@@ -381,14 +378,14 @@ function debugToggle() {
 }
 
 function ExtendAndInitializeTree($startElement) {
-	MNODEapplyFunctToTree($startElement, true, ExtendAndInitialize)
+	ENODEapplyFunctToTree($startElement, true, ExtendAndInitialize)
 }
 
-function ExtendAndInitialize($Atom) {
-	MNODEextend($Atom, true)
+function ExtendAndInitialize($ENODE) {
+	ENODEextend($ENODE, true)
 	//initialize lock icon
-	if ($Atom.is('[data-atom]') && isDefinition($Atom[0])) {
-		MNODErefreshAsymmEq($Atom)
+	if ($ENODE.is('[data-ENODE]') && isDefinition($ENODE[0])) {
+		ENODERefreshAsymmEq($ENODE)
 	}
 }
 
@@ -396,7 +393,7 @@ function ExtendAndInitialize($Atom) {
 
 function cancelSelected() {
 	toBeCancelled = $('.selected').filter(function (index) {
-		return !MNODEclosedDef(this);
+		return !ENODEclosedDef(this);
 	})
 	if (toBeCancelled.length != 0) {
 		toBeCancelled.each(function (i, element) {

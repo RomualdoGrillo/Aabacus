@@ -1,7 +1,7 @@
-function MNODEfactorizeMinus($startNode) {
+function enodefactorizeMinus($startNode) {
 	//translate from (-(a)) to (-1)(a)
 	//**** condizioni necessarie per applicare la funzione *****
-	if ($startNode.attr("data-atom") !== "minus") {
+	if ($startNode.attr("data-enode") !== "minus") {
 		return
 	}
 	//è circondato un meno?
@@ -10,13 +10,13 @@ function MNODEfactorizeMinus($startNode) {
 	//aggiungi un fattore "-1"
 	var prototype = prototypeSearch("ci", "num");
 	var prototypeMinus = prototypeSearch("minus");
-	var $clone = MNODEclone(prototype);
-	var $cloneMinus = MNODEclone(prototypeMinus);
-	$clone.attr('data-atom', 'cn');
-	$clone[0].MNODE_setName("1");
+	var $clone = enodeclone(prototype);
+	var $cloneMinus = enodeclone(prototypeMinus);
+	$clone.attr('data-enode', 'cn');
+	$clone[0].enode_setName("1");
 	$cloneMinus.insertAfter($startNode);
-	$cloneMinus[0].MNODE_getRoles().append($clone);
-	$startNode[0].MNODE_dissolveContainer()
+	$cloneMinus[0].enode_getRoles().append($clone);
+	$startNode[0].enode_dissolveContainer()
 	//remove minus from $startNode  
 	refreshInfix($extOp);
 	RefreshEmptyInfixBraketsGlued($('body'));
@@ -25,61 +25,61 @@ function MNODEfactorizeMinus($startNode) {
 
 function signsAsClassesSubtree($startNode, mode) {
 	//trova tutti i sotto nodi
-	$startNode.find('[data-atom]').each(function(index) {
-		// tutti gli HTML nodes con classe .MNODE
+	$startNode.find('[data-enode]').each(function(index) {
+		// tutti gli HTML nodes con classe .enode
 		signsAsClasses($(this), mode);
 	})
 }
 
-function signsAsClasses($atom, mode /* SignsInNames_to_SignsAsClasses SignsAsClasses_to_SignsInNames SignsAsClasses_to_MinusOp MinusOp_to_SignsAsClasses*/
+function signsAsClasses($enode, mode /* SignsInNames_to_SignsAsClasses SignsAsClasses_to_SignsInNames SignsAsClasses_to_MinusOp MinusOp_to_SignsAsClasses*/
 ) {
 	// <>-a<> to <class="minus">a<>
 	// nota: non possono coesistere segni meno all'interno del nome e "minus" come classi
-	var name = $atom[0].MNODE_getName()
+	var name = $enode[0].enode_getName()
 	if (mode == "SignsInNames_to_SignsAsClasses") {
 		if (name[0] === "/") {
 			name = name.substr(1)
 			//nome privato del segno meno
-			$atom.addClass('inverse')
+			$enode.addClass('inverse')
 		}// attenzione: / va inserito prima del meno
 		else {
-			$atom.removeClass('inverse')
+			$enode.removeClass('inverse')
 		}
 		if (name[0] === "-") {
 			name = name.substr(1)
 			//nome privato del segno meno
-			$atom.addClass('minus')
+			$enode.addClass('minus')
 		}//todo: cosa succede se input = ---2  ?
 		else {
-			$atom.removeClass('minus')
+			$enode.removeClass('minus')
 		}
 
 	} else if (mode == "SignsAsClasses_to_SignsInNames") {
-		if ($atom.hasClass('minus')) {
+		if ($enode.hasClass('minus')) {
 			name = "-" + name;
-			$atom.removeClass('minus');
+			$enode.removeClass('minus');
 		}
-		if ($atom.hasClass('inverse')) {
+		if ($enode.hasClass('inverse')) {
 			name = "/" + name;
-			$atom.removeClass('inverse');
+			$enode.removeClass('inverse');
 		}
 	}
 	else if (mode == "SignsAsClasses_to_MinusOp") {
-		if ($atom.hasClass('minus')) {
-			$atom.removeClass('minus');
-			wrapWithOperation($atom, "minus")
+		if ($enode.hasClass('minus')) {
+			$enode.removeClass('minus');
+			wrapWithOperation($enode, "minus")
 		}
 	} else if (mode == "MinusOp_to_SignsAsClasses") {
-		var $MNODEchildren = $atom[0].MNODE_getRoles().children().filter('[data-atom]')
-		if ($atom.attr('data-atom') === "minus" && $MNODEchildren.length == 1) {
+		var $enodechildren = $enode[0].enode_getRoles().children().filter('[data-enode]')
+		if ($enode.attr('data-enode') === "minus" && $enodechildren.length == 1) {
 			// i minus che hanno un solo children
-			$atom[0].MNODE_dissolveContainer();
-			$MNODEchildren.filter(':first').addClass('minus');
+			$enode[0].enode_dissolveContainer();
+			$enodechildren.filter(':first').addClass('minus');
 		}
 	}
 
-	$atom[0].MNODE_setName(name);
-	$atom.attr("data-atom", (isNaN(name)) ? "ci" : "cn")
+	$enode[0].enode_setName(name);
+	$enode.attr("data-enode", (isNaN(name)) ? "ci" : "cn")
 	// se numero allora classe "cn"
 }
 
@@ -95,14 +95,14 @@ var glueFunctions = ["minus", "m_inverse", "not"];
  */
 function refreshGlued($startNode) {
     // Determina il nodo contenitore da cui iniziare la ricerca
-    const $containerNode = $startNode ? MNODEparent($startNode) : $("#canvasRole");
+    const $containerNode = $startNode ? enodeparent($startNode) : $("#canvasRole");
     
     // Rimuove la classe "glued" da tutti gli elementi precedentemente marcati
     $containerNode.find(".glued").removeClass("glued");
     
-    // Trova tutti gli elementi con attributo data-atom che corrispondono ai criteri
-    const $stickyParents = $containerNode.parent().find("[data-atom]").filter(function(i, element) {
-        const operatorType = element.getAttribute("data-atom");
+    // Trova tutti gli elementi con attributo data-enode che corrispondono ai criteri
+    const $stickyParents = $containerNode.parent().find("[data-enode]").filter(function(i, element) {
+        const operatorType = element.getAttribute("data-enode");
         
         // Verifica se l'operatore è nella lista delle funzioni "glued"
         if (glueFunctions.indexOf(operatorType) !== -1) {
@@ -117,7 +117,7 @@ function refreshGlued($startNode) {
     
     // Applica la classe "glued" ai figli degli elementi trovati
     $stickyParents.each(function() {
-        const $toBeGlued = this.MNODE_getRoles().children().filter('[data-atom]');
+        const $toBeGlued = this.enode_getRoles().children().filter('[data-enode]');
         $toBeGlued.addClass('glued');
     });
 }
