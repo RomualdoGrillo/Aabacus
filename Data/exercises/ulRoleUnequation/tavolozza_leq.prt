@@ -1,6 +1,6 @@
-<div data-ENODE="leq" data-proto="leq" data-type="bool" class="ENODE">
+<div data-enode="leq" data-proto="leq" data-type="bool" class="ENODE">
 	<div class="ol_role firstMember" data-type="num"></div>
 </div>
-<div data-ENODE="lt" data-proto="lt" data-type="bool" class="ENODE">
+<div data-enode="lt" data-proto="lt" data-type="bool" class="ENODE">
 	<div class="ol_role firstMember" data-type="num"></div>
 </div>

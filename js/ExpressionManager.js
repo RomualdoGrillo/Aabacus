@@ -22,12 +22,12 @@ funzione su un qualsiasi elemento html anche se non è un ENODE
 
 /**
  * Restituisce il nodo radice dell'espressione matematica principale.
- * @returns {HTMLElement|null} L'elemento HTML (DOM element) che rappresenta il nodo radice con attributo [data-ENODE],
+ * @returns {HTMLElement|null} L'elemento HTML (DOM element) che rappresenta il nodo radice con attributo [data-enode],
  *                            o null se non trovato.
  */
 function getExpressionRootNode() {
-    // Trova il primo figlio con [data-ENODE] all'interno del contenitore principale
-    return $("#canvas>.secondMember").children("[data-ENODE]")[0];
+    // Trova il primo figlio con [data-enode] all'interno del contenitore principale
+    return $("#canvas>.secondMember").children("[data-enode]")[0];
 }
 
 ENODE = {
@@ -57,7 +57,7 @@ function ENODEparent($startNode) {
 		$startNode = $(this);
 	}
 	//risali passo passo la struttura DOM fino a trovare un elemento ENODE
-	return $startNode.parent().closest("[data-ENODE]");
+	return $startNode.parent().closest("[data-enode]");
 }
 
 function ENODEclosedDef(Node) {
@@ -77,7 +77,7 @@ function ENODEfrozenDef(Node) {
 
 function ENODE_dissolveContainer() {
 	if (this.ENODE_getChildren().length > 0) {
-		var $children = this.ENODE_getRoles().children().filter("[data-ENODE]");
+		var $children = this.ENODE_getRoles().children().filter("[data-enode]");
 		$(this).replaceWith($children);
 	} else {
 		$(this).remove();
@@ -107,7 +107,7 @@ function ENODECreateDefinition(startNode) {
 	newName = prompt("Enter a name for the new definition");
 	if (newName == null) { return }//prompt cancelled
 	if (!newName) { return }//empty name
-	$definendum.attr("data-ENODE", newName);
+	$definendum.attr("data-enode", newName);
 	$definendum.find(".name").append(newName);
 	m1.append($definendum); //aggiungi contenuto al primo membro ed inseriscilo
 	//*********************** definens **********************
@@ -219,7 +219,7 @@ function classA_in_classB(classNameA, classNameB) {
 
 function ENODECreateSpaceForDeduction($hypothesis) {
 	var spaceForDeduction;
-	if (ENODEparent($hypothesis).attr("data-ENODE") === "and") {
+	if (ENODEparent($hypothesis).attr("data-enode") === "and") {
 		//parent external to enclosure is 'and'?
 		spaceForDeduction = $hypothesis.parent();
 	} else {
@@ -263,7 +263,7 @@ function ENODEForThisPar($parameter, $newVal) {
 	// ENODE
 	//$newVal può essere anche un vettore vuoto
 	//in tal caso il parametro doverebbe essere di tipo x___ ma per ora non faccio controlli
-	var $f = $parameter.parent().closest('[data-ENODE="forAll"]'); //
+	var $f = $parameter.parent().closest('[data-enode="forAll"]'); //
 	var $h = GetforAllHeader($f);// get header
 	var $c = GetforAllContentRole($f);
 	var $root = $f; //l'elemento più esterno Root può cambiare
@@ -319,7 +319,7 @@ function ENODE_getNodes(selector) {
 	$(this).addClass("gettingNodes");
 	var $subnodes = $(this)
 		.find("*")
-		.not(".gettingNodes [data-ENODE], .gettingNodes [data-ENODE] *"); //subnodes in this ENODE
+		.not(".gettingNodes [data-enode], .gettingNodes [data-enode] *"); //subnodes in this ENODE
 	var $Nodes = $(this).add($subnodes); // root node + subnodes
 	if (selector != undefined) {
 		// se viene passato un "selector", filtra i Nodes
@@ -357,7 +357,7 @@ function ENODE_getRoles(selector) {
 }
 
 function ENODE_getChildren(selector) {
-	var $children = this.ENODE_getRoles().children("[data-ENODE]");
+	var $children = this.ENODE_getRoles().children("[data-enode]");
 	if (selector != undefined) {
 		// se viene passato un "selector", filtra
 		$children = $children.filter(selector);
@@ -410,7 +410,7 @@ function canDraggedBeDroopedInThisRole($ENODEdragged,$role){
 	else{
 		//New definition and neutral element of conjunction is are properties constituent of the environment, so fundamental the environment can't work without it.
 		// parent is 'And' and dragged is new definition or 'true' 
-		ENODEparent($(this)).attr('data-ENODE')=='and' &&
+		ENODEparent($(this)).attr('data-enode')=='and' &&
 		$ENODEdragged.is("[data-proto=asymmeq]") ||
 		$ENODEdragged[0].ENODE_getName() == "true"
 	}
@@ -428,7 +428,7 @@ function canDraggedBeDroopedInRoleYesWrapNo($ENODEdragged,$role){
 		}
 	}
 	//******target is CLOSED 
-	else if(ENODEparent($role).attr('data-ENODE')=='and' &&
+	else if(ENODEparent($role).attr('data-enode')=='and' &&
 			$ENODEdragged.is("[data-proto=asymmeq]") || $ENODEdragged[0].ENODE_getName() == "true"){
 			// parent is 'And' and dragged is new definition or 'true' 
 			//New definition and neutral element of conjunction are properties constituent of the environment, so fundamental the environment can't work without it.	
@@ -450,7 +450,7 @@ function getNumOfPlaces($role) {
 
 function isTherePlaceForAnother($role) {
 	var numOfPlaces = getNumOfPlaces($role)[1];
-	var numOfChildren = $role.children().filter("[data-ENODE]").length
+	var numOfChildren = $role.children().filter("[data-enode]").length
 	return (numOfPlaces == -1 ||
 		numOfChildren < numOfPlaces)
 }
@@ -513,7 +513,7 @@ var symbols = ["ci", "cn", "csymbol"];
 function prototypeSearch(className, dataType, selector, name) {
 	//alcune classi, ad esempio "ci", possono avere vari datatype
 	//get all prototypes  (futuribile: preindex prototypes)
-	var $prototypes = $("#palette").find("[data-ENODE][data-proto]");
+	var $prototypes = $("#palette").find("[data-enode][data-proto]");
 	//filter for required
 	if (selector) {
 		$prototypes = $prototypes.filter(selector);
@@ -528,7 +528,7 @@ function prototypeSearch(className, dataType, selector, name) {
 
 	$prototypes = $prototypes.filter(function () {
 		return (
-			this.getAttribute("data-ENODE").toLowerCase() == className &&
+			this.getAttribute("data-enode").toLowerCase() == className &&
 			(type == undefined ||
 				this.getAttribute("data-type").toLowerCase() == type)
 		);
@@ -556,7 +556,7 @@ function prototypeSearch(className, dataType, selector, name) {
 	if ($prototypes.length === 0) {
 		//console.warn('ENODE prototype not found:className:' + className + ", dataType:" + dataType);//Warning!!
 		let $prototype = ENODEclone($("[data-proto='']"));
-		$prototype.attr("data-ENODE", className);
+		$prototype.attr("data-enode", className);
 		$prototype.attr("data-type", dataType);
 		// add ENODEtype name as decoration name 
 		//Duplication the prototype is extended outside this function
@@ -582,7 +582,7 @@ function prototypeSearch(className, dataType, selector, name) {
  * @returns {jQuery} The new clone element that wraps the ENODE element.
  */
 function wrapIfNeeded($ENODEelement, op) {
-	if (ENODEparent($ENODEelement).attr("data-ENODE") === op) {
+	if (ENODEparent($ENODEelement).attr("data-enode") === op) {
 		//no need to cteate external op
 		return ENODEparent($ENODEelement);
 	} else {
@@ -696,7 +696,7 @@ function ENODErenamePrompt($ENODE, newName) {
 			$ENODE.removeClass("minus");
 		}
 		$ENODE[0].ENODE_setName(newName);
-		$ENODE.attr("data-ENODE", isNaN(newName) ? "ci" : "cn"); // se numero allora classe "cn"
+		$ENODE.attr("data-enode", isNaN(newName) ? "ci" : "cn"); // se numero allora classe "cn"
 		ssnapshot.take();
 	}
 }
@@ -706,7 +706,7 @@ function createForThis($forall, $placeHolder) {
 	var $clone = ENODEclone($forall);
 	exclusiveFocus = $clone.addClass("exclusiveFocus"); //metti il clone in stato exclusiveFocus
 	//****inserit the new proposition*****
-	if (ENODEparent($forall).attr("data-ENODE") == "and") {
+	if (ENODEparent($forall).attr("data-enode") == "and") {
 		$clone.insertAfter($forall);
 	} else {
 		//enclosure needed
@@ -736,7 +736,7 @@ function ENODEsToVal($currENODE, res) {
 			canBeReplaced: true,
 		};
 	}
-	var op = $currENODE.attr("data-ENODE");
+	var op = $currENODE.attr("data-enode");
 	if (op === "minus" || op === "m_inverse") {
 		//------------------> recursive
 		var newRes = ENODEsToVal($currENODE[0].ENODE_getChildren(), res);
@@ -748,7 +748,7 @@ function ENODEsToVal($currENODE, res) {
 		}
 	} else if (op === "power") {
 		let $exponent = $currENODE[0].ENODE_getChildren(':last');//:first child is exponent\
-		if ($exponent.attr("data-ENODE") == "cn") {
+		if ($exponent.attr("data-enode") == "cn") {
 			//------>
 			let resExp = ENODEsToVal($exponent);
 			//<-----
@@ -775,7 +775,7 @@ function ENODEsToVal($currENODE, res) {
 }
 
 function isAsymbol($ENODE) {
-	var className = $ENODE.attr("data-ENODE");
+	var className = $ENODE.attr("data-enode");
 	return symbols.indexOf(className) != -1; //is it a symbol?(ci,cs,csymbol)
 }
 
@@ -815,7 +815,7 @@ function ValToENODEs(partial) {
 	}
 	$clone = ENODEclone(prototypeSearch(partial.type, "num", undefined, partial.val));
 	$clone[0].ENODE_setName(partial.val);
-	$clone.attr("data-ENODE", partial.type); //uso un generico prototipo num e qui specifico se cn o ci
+	$clone.attr("data-enode", partial.type); //uso un generico prototipo num e qui specifico se cn o ci
 	if ($target !== undefined) {
 		$target.append($clone);
 	} else {
@@ -828,9 +828,9 @@ function ENODEBesideGiven($startENODE) {
 	//Attualmente il contenuto dei role si dispone leftRight e topDown mentre comporre è visto come left e down.
 	//di conseguenza per decidere qual'è l'elemento con cui comporre devo distiguere a seconda dell'orientazione.'
 	if ($toBeComp.css("display") === "inline-block") {
-		return $startENODE.prevAll("[data-ENODE]:first");
+		return $startENODE.prevAll("[data-enode]:first");
 	} else {
-		return $startENODE.nextAll("[data-ENODE]:first");
+		return $startENODE.nextAll("[data-enode]:first");
 	}
 }
 
@@ -843,7 +843,7 @@ function refreshOneBracket($ENODE) {
 }
 
 function refreshOneTimesDisp($ENODE, timesDisposition) {
-	if (!$ENODE.is('[data-ENODE=times]')) { return }//procedi solo se è un ENODE di tipo times
+	if (!$ENODE.is('[data-enode=times]')) { return }//procedi solo se è un ENODE di tipo times
 	if (timesDisposition == "brTimes") {
 		reorderTimes($ENODE)
 	}
@@ -865,7 +865,7 @@ function RefreshEmptyInfixBraketsGlued($startNode, tree, options) {
 	}
 	var $ENODEs; //lista degli ENODEi "da trattare"
 	if (tree != false) {
-		$ENODEs = $startNode.add($startNode.find("[data-ENODE]"));
+		$ENODEs = $startNode.add($startNode.find("[data-enode]"));
 	} else {
 		$ENODEs = $startNode;
 	}
@@ -905,7 +905,7 @@ function ENODEshowMarks($ENODE, showPath) {
 	$ENODE.find(".label").text(mark + "_" + path);
 }
 function showAllMarks(showPath) {
-	$("body [data-ENODE]:visible").each(function (i, element) {
+	$("body [data-enode]:visible").each(function (i, element) {
 		ENODEshowMarks($(element), showPath);
 	});
 }
@@ -946,10 +946,10 @@ function compareExtENODE(
 		return true;
 	} // no deeper tests required
 	else if (
-		$input.attr("data-ENODE") !== $pattern.attr("data-ENODE") /*notSameClass*/
+		$input.attr("data-enode") !== $pattern.attr("data-enode") /*notSameClass*/
 	) {
 		return false;
-	} else if (symbols.indexOf($input.attr("data-ENODE")) != -1 /*is a symbol*/) {
+	} else if (symbols.indexOf($input.attr("data-enode")) != -1 /*is a symbol*/) {
 		res = $input[0].ENODE_getName() === $pattern[0].ENODE_getName();
 	} else {
 		res = true; //no more tests required
@@ -959,14 +959,14 @@ function compareExtENODE(
 
 
 function ENODE_checkIfPointlessSinglENODE() {
-	let op = $(this).attr("data-ENODE");
+	let op = $(this).attr("data-enode");
 	if (!OpIsAssociative(op)) {
 		return false;
 	}
 	if (this.ENODE_getChildren().length <= 1) {
 		return true;
 	}
-	let opP = ENODEparent($(this)).attr("data-ENODE");
+	let opP = ENODEparent($(this)).attr("data-enode");
 	if (opP == op) {
 		return true;
 	}
@@ -985,9 +985,9 @@ function ENODE_overlay(mode) {
 function ENODEselectable(startElement) {
 	//risali passo passo la struttura DOM fino a trovare un elemento ENODE
 	if (ENODEclosedDef(startElement)) {
-		return startElement.closest('[data-ENODE]:not(.unselectable):not(.glued)');
+		return startElement.closest('[data-enode]:not(.unselectable):not(.glued)');
 	} else {
-		return startElement.closest('[data-ENODE]');
+		return startElement.closest('[data-enode]');
 	}
 }
 
@@ -1030,7 +1030,7 @@ function ENODEapplyFunctToTree(
 	if (includeRoot) {
 		$tree = $tree.add($StartENODE);
 	}
-	$tree = $tree.add($StartENODE.find("[data-ENODE]"));
+	$tree = $tree.add($StartENODE.find("[data-enode]"));
 	//$tree.each(funct(parameterA,parameterB))
 	$tree.each(function (i, e) {
 		funct($(e), parameterA, parameterB, parameterC);
@@ -1049,11 +1049,11 @@ function ENODEextend($startNode, applyToSubtreeAlso) {
 	//add methods from object "ENODE"
 	var $toBeExtended;
 	if (!applyToSubtreeAlso) {
-		$toBeExtended = $startNode.filter("[data-ENODE]"); //in ogni caso estendo solo i '[data-ENODE]'
+		$toBeExtended = $startNode.filter("[data-enode]"); //in ogni caso estendo solo i '[data-enode]'
 	} else {
 		$toBeExtended = $startNode
-			.filter("[data-ENODE]")
-			.add($startNode.find("[data-ENODE]"));
+			.filter("[data-enode]")
+			.add($startNode.find("[data-enode]"));
 	}
 
 	$toBeExtended.each(function (index) {
@@ -1076,7 +1076,7 @@ function reorderTimes($startTimes, brRemove) {
 		let childrenArr = $startTimes[0].ENODE_getChildren().toArray()
 		/**metti i reciproci al per ultimi preceduti da br */
 		for (i = 0; childrenArr[i]; i++) {
-			if ($(childrenArr[i]).is('[data-ENODE=m_inverse]')) {
+			if ($(childrenArr[i]).is('[data-enode=m_inverse]')) {
 				//aggiungi br se ancora non esiste
 				if (!brExist) {
 					$('<br>').appendTo($(role))

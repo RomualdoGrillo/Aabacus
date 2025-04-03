@@ -195,7 +195,7 @@ function identifierToENODE(string){
 	}
 	$clone = ENODEclone( prototypeSearch("cn","num") )
 	$clone[0].ENODE_setName(string);
-	$clone.attr('data-ENODE', ENODEType);//uso un generico prototipo num e qui specifico se cn o ci
+	$clone.attr('data-enode', ENODEType);//uso un generico prototipo num e qui specifico se cn o ci
 	return	$clone
 }
 
@@ -219,14 +219,14 @@ function commonParentOfTwo(a, b) {
 function gradeInMonomial($ENODE, varName) {
 	let $factors
 	let totalGrade = 0
-	if ($ENODE.attr('data-ENODE') == 'times') {//multiple factors?
+	if ($ENODE.attr('data-enode') == 'times') {//multiple factors?
 		$factors = $ENODE[0].ENODE_getChildren()
 	}
 	else {
 		$factors = $ENODE
 	}
 	for(let i=0;$factors[i];i++){
-		let type=$factors.eq(i).attr('data-ENODE')
+		let type=$factors.eq(i).attr('data-enode')
 		if(type=="ci"||type=="power"){
 			digested=ENODEsToVal($factors.eq(i));
 			//xyz=$($factors[i]){} //translate to values

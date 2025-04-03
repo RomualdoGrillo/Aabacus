@@ -1,5 +1,5 @@
 <section data-section="palette">
-	<div data-proto="forall" data-ENODE="forAll" class="ENODE" data-type="bool">
+	<div data-proto="forall" data-enode="forAll" class="ENODE" data-type="bool">
 		<div class="row">
 			<div class="forallSymbol">∀</div>
 			<div class="bVar_role forAllHeader" data-type="obj">
@@ -8,7 +8,7 @@
 		<div class="s_role forAllContent" data-type="bool">
 		</div>
 	</div>
-	<div data-ENODE="implies" data-proto="implies" data-type="bool" class="ENODE">
+	<div data-enode="implies" data-proto="implies" data-type="bool" class="ENODE">
 		<div class="s_role firstMember" data-type="bool">
 		</div>
 		<div class="decoration imply">
@@ -16,7 +16,7 @@
 		<div class="s_role secondMember" data-type="bool">
 		</div>
 	</div>
-	<div data-proto="divisible" data-ENODE="divisible" class="ENODE" data-type="bool">
+	<div data-proto="divisible" data-enode="divisible" class="ENODE" data-type="bool">
 
 		<div class="s_role number" data-type="num">
 		</div>
@@ -25,13 +25,13 @@
 		<div class="s_role divisor" data-type="num">
 		</div>
 	</div>
-	<div data-proto="num" data-ENODE="ci" data-type="num" class="ENODE">
+	<div data-proto="num" data-enode="ci" data-type="num" class="ENODE">
 		<div class="name">x</div>
 	</div>
-	<div data-proto="num" data-ENODE="cn" data-type="num" class="ENODE">
+	<div data-proto="num" data-enode="cn" data-type="num" class="ENODE">
 		<div class="name">3</div>
 	</div>
-	<div data-proto="num" data-ENODE="cn" data-type="num" class="ENODE">
+	<div data-proto="num" data-enode="cn" data-type="num" class="ENODE">
 		<div class="name">6</div>
 	</div>
 </section>

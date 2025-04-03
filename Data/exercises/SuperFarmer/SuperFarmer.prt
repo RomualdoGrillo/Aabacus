@@ -1,18 +1,18 @@
 
 		
-			<div data-proto="cow" data-ENODE="ci" data-type="num" class="ENODE" style="min-width: 30px; background-image: url(./images/cow.png);
+			<div data-proto="cow" data-enode="ci" data-type="num" class="ENODE" style="min-width: 30px; background-image: url(./images/cow.png);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">cow</div>
 			</div>
-			<div data-proto="pig" data-ENODE="ci" data-type="num" class="ENODE" style=" background-image: url(./images/pig.png);
+			<div data-proto="pig" data-enode="ci" data-type="num" class="ENODE" style=" background-image: url(./images/pig.png);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">pig</div>
 			</div>
-			<div data-proto="sheep" data-ENODE="ci" data-type="num" class="ENODE" style="min-width: 30px; background-image: url(./images/sheep.png);
+			<div data-proto="sheep" data-enode="ci" data-type="num" class="ENODE" style="min-width: 30px; background-image: url(./images/sheep.png);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">sheep</div>
 			</div>
-			<div data-proto="rabbit" data-ENODE="ci" data-type="num" class="ENODE" style=" background-image: url(./images/rabbit.png);
+			<div data-proto="rabbit" data-enode="ci" data-type="num" class="ENODE" style=" background-image: url(./images/rabbit.png);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">rabbit</div>
 			</div>

@@ -18,12 +18,12 @@ function primeFactorization(num){
 function ENODEgetNumber($ENODE){
   var $elementUnderTest = $ENODE
   var sign = 1
-  while( $elementUnderTest.attr('data-ENODE') === "minus" ){
+  while( $elementUnderTest.attr('data-enode') === "minus" ){
     //passa all'elemento interno
     $elementUnderTest = $elementUnderTest[0].ENODE_getRoles().children(':first');
     sign = sign * -1
   }
-  if( $elementUnderTest.attr('data-ENODE') == "cn"){// se è un simbolo
+  if( $elementUnderTest.attr('data-enode') == "cn"){// se è un simbolo
     var res = sign * Number($elementUnderTest[0].ENODE_getName()) 
   }
   else{
@@ -35,7 +35,7 @@ function ENODEgetNumber($ENODE){
 function ENODENumericCdsAsText($ENODE){
   var $elementUnderTest = $ENODE
   var sign = 1
-  while( $elementUnderTest.attr('data-ENODE') === "minus" ){
+  while( $elementUnderTest.attr('data-enode') === "minus" ){
     //passa all'elemento interno
     $elementUnderTest = $elementUnderTest[0].ENODE_getRoles().children(':first');
     sign = sign * -1

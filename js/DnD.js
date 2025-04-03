@@ -28,7 +28,7 @@ if($ENODETarget.length==0){
 		selectionManager($ENODETarget,event.ctrlKey||event.metaKey,event.shiftKey)//on mac use command key instead of control
 	}
 	//**** highlight Span and Parameters
-	if($ENODETarget.attr('data-ENODE')=='ci'){
+	if($ENODETarget.attr('data-enode')=='ci'){
 		highlightOccurrences($ENODETarget,'mu_connected');
 	}
 	
@@ -42,11 +42,11 @@ if($ENODETarget.length==0){
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt'){
 		//********* autoAdapt ****************
 		if (ENODEclosedDef($(event.target))) {
-			GLBDnD.$originalProperty = $(event.target).closest('[data-ENODE=forAll]');
+			GLBDnD.$originalProperty = $(event.target).closest('[data-enode=forAll]');
 			if(GLBDnD.$originalProperty.length==0){return};
 			let $forallContent=GetforAllContentRole(GLBDnD.$originalProperty).children();
 			let $equation=$($forallContent[0]);
-			if(!$equation.is('[data-ENODE=eq]')){console.log('forall content is not an equation'); return}
+			if(!$equation.is('[data-enode=eq]')){console.log('forall content is not an equation'); return}
 			let $eqRoleMembers=$equation[0].ENODE_getRoles('.firstMember,.secondMember');
 			let $RoleMember = $eqRoleMembers.filter(function(i,e){return e.contains(event.target)})
             if($RoleMember.length==0){return}
@@ -59,7 +59,7 @@ if($ENODETarget.length==0){
             }
             else{console.log('ERROR:member not found in equation')}
 			//look for  attack point
-			$ENODETarget = $RoleMember.children().filter('[data-ENODE]:first');
+			$ENODETarget = $RoleMember.children().filter('[data-enode]:first');
 			let $startPointForValids = searchForMarkedInSubtree($RoleMember,"s",'m',true)//"s" e' la marcatura cercata, "m" vuol dire cerca una marcatura, non un link o post
             if($startPointForValids.length==0){$startPointForValids=$ENODETarget}
 			$ENODETarget.addClass('attackPoint')
@@ -114,7 +114,7 @@ if($ENODETarget.length==0){
 		else if(GLBDnD.toolWhenMousedown=="declare"){
 			//check if specific commutative property is selected
 			let commutativeOf = $('.selectedTool').attr('data-commutative');
-			let op = $ENODETarget[0].ENODEparent().attr('data-ENODE')
+			let op = $ENODETarget[0].ENODEparent().attr('data-enode')
 			sort = (op==commutativeOf);
 		}
 		else{

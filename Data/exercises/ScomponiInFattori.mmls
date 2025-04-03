@@ -13,7 +13,7 @@
 				</and>
 			</apply>
 	</apply>
-	<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
+	<div data-enode="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
 						
 					
 
@@ -33,7 +33,7 @@
 
 
 
-<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+<div data-enode="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 		
 		
 		
@@ -55,7 +55,7 @@
 	<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
 </div>
 </div>
-<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+<div data-enode="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 		
 		
 		
@@ -79,7 +79,7 @@
 </apply>
 </div>
 </div>
-<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+<div data-enode="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 		
 		
 		

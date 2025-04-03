@@ -1,10 +1,10 @@
-<div data-ENODE="hanoi" data-proto="hanoi" data-type="bool" class="ENODE">
+<div data-enode="hanoi" data-proto="hanoi" data-type="bool" class="ENODE">
 				<div class="ol_role firstColumn" data-type="num" style="flex-direction:column; min-height: 100px;"></div>
 				<div class="ol_role secondColumn" data-type="num" style="flex-direction:column"></div>
 				<div class="ol_role thirdColumn" data-type="num" style="flex-direction:column"></div>
 </div>
 			
 		
-<div data-ENODE="cn" data-type="num" class="ENODE">
+<div data-enode="cn" data-type="num" class="ENODE">
 				<div class="name">1</div>
 </div>

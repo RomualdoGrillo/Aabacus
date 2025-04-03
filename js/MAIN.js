@@ -12,7 +12,7 @@ ssnapshot()
 //***********************
 //all elements that can be dragged around are initiated by making their container Sortable
 let sortablesSelectorString = '.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_role'
-let sortablesExcluded = '[data-ENODE=minus]>*,[data-ENODE=m_inverse]>*,[data-ENODE=not]>*'
+let sortablesExcluded = '[data-enode=minus]>*,[data-enode=m_inverse]>*,[data-enode=not]>*'
 //glued
 ENODEextend($('body'), true);
 //************ Preload  ************
@@ -47,7 +47,7 @@ $(document).on('keydown', function (e) {
 	//ctrl+a 
 	else if (e.ctrlKey && (keyPressed === 'a')) {
 		$('#canvasRole *').removeClass('selected');
-		$('#canvasRole>[data-ENODE]').addClass('selected');
+		$('#canvasRole>[data-enode]').addClass('selected');
 		// select all: all the ENODEs in canvasRole
 	}//ctrl+c
 	else if (e.ctrlKey && (keyPressed === 'c')) {
@@ -168,10 +168,10 @@ function clickHandler(event) {
 function selectionManager($clickedENODE, ctrl, shift, deselectAll) {
 	if (deselectAll) {
 		//clear selected unselected
-		$('[data-ENODE]').removeClass('selected').removeClass('unselected');
+		$('[data-enode]').removeClass('selected').removeClass('unselected');
 	}
 	//***selection of declared "yellow" tool
-	else if (($clickedENODE.attr('data-ENODE') == 'forAll' || $clickedENODE.attr('data-ENODE') == 'eq' || $clickedENODE.attr('data-tag'))
+	else if (($clickedENODE.attr('data-enode') == 'forAll' || $clickedENODE.attr('data-enode') == 'eq' || $clickedENODE.attr('data-tag'))
 		&& $clickedENODE.attr('data-tag')
 		&& GLBsettings.tool == "declare") {
 		//solo se è effettivamente una proprietà e non un container
@@ -179,7 +179,7 @@ function selectionManager($clickedENODE, ctrl, shift, deselectAll) {
 			$clickedENODE.removeClass('selectedTool')
 		}
 		else {
-			$('[data-ENODE]').removeClass('selectedTool')
+			$('[data-enode]').removeClass('selectedTool')
 			$clickedENODE.addClass('selectedTool');
 			console.log('Selected tool: ' + $clickedENODE.attr('data-tag'))
 		}
@@ -187,33 +187,33 @@ function selectionManager($clickedENODE, ctrl, shift, deselectAll) {
 	else if (ctrl) {
 		//click +ctrl on .ENODE   ---multi select---
 		if ($clickedENODE.hasClass('selected')) {
-			$clickedENODE.find('[data-ENODE]').removeClass('selected').removeClass('unselected');
+			$clickedENODE.find('[data-enode]').removeClass('selected').removeClass('unselected');
 		} else if ($clickedENODE.closest('.selected').length != 0) {//if an ancestor is selected already, ignore click
 		} else {
 			$clickedENODE.addClass('selected');
 		}
 	} else if (shift) {
-		//click +shift on [data-ENODE]   ---unselect---
+		//click +shift on [data-enode]   ---unselect---
 		if ($clickedENODE.hasClass('selected')) {
 			$clickedENODE.removeClass('selected');
-			$clickedENODE.find('[data-ENODE]').removeClass('selected').removeClass('unselected');
+			$clickedENODE.find('[data-enode]').removeClass('selected').removeClass('unselected');
 		} else if ($clickedENODE.hasClass('unselected')) {
 			$clickedENODE.removeClass('unselected');
-			$clickedENODE.find('[data-ENODE]').removeClass('selected').removeClass('unselected');
+			$clickedENODE.find('[data-enode]').removeClass('selected').removeClass('unselected');
 		} else if (($clickedENODE.closest('.selected').length != 0) && ($clickedENODE.closest('.unselected').length == 0)) {
 			//se è selected, a meno che non sia unselected		
 
 			$clickedENODE.addClass('unselected');
-			$clickedENODE.find('[data-ENODE]').removeClass('selected').removeClass('unselected');
+			$clickedENODE.find('[data-enode]').removeClass('selected').removeClass('unselected');
 		}
 	} else {
-		//click on [data-ENODE]   ---select---
+		//click on [data-enode]   ---select---
 
 		if ($clickedENODE.hasClass('selected')) {
-			$('[data-ENODE]').removeClass('selected').removeClass('unselected');
+			$('[data-enode]').removeClass('selected').removeClass('unselected');
 			//clear selected unselected
 		} else {
-			$('[data-ENODE]').removeClass('selected').removeClass('unselected');
+			$('[data-enode]').removeClass('selected').removeClass('unselected');
 			//clear selected unselected
 			$clickedENODE.addClass('selected');
 		}
@@ -231,7 +231,7 @@ function selectionManager($clickedENODE, ctrl, shift, deselectAll) {
 function dblclickHandler(event) {
 	let target = ENODEselectable(event.target);
 	let $ENODEDblclicked = $(target)
-	let ENODEClass = $ENODEDblclicked.attr('data-ENODE');
+	let ENODEClass = $ENODEDblclicked.attr('data-enode');
 	let closed = ENODEclosedDef($ENODEDblclicked)
 	console.log('dblclick');
 	//closed
@@ -287,7 +287,7 @@ function dblclickHandler(event) {
 	}
 	else if ($ENODEDblclicked.is('[data-vis=resizable]')){
 			let $role=$ENODEDblclicked[0].ENODE_getRoles().eq(0);
-			let firstChild = $role.find('>[data-ENODE]')[0]
+			let firstChild = $role.find('>[data-enode]')[0]
 			let fcWidth = firstChild.offsetWidth
 			//var fcstyle = element.currentStyle || window.getComputedStyle(firstChild);
 			var fcstyle = window.getComputedStyle(firstChild);
@@ -384,7 +384,7 @@ function ExtendAndInitializeTree($startElement) {
 function ExtendAndInitialize($ENODE) {
 	ENODEextend($ENODE, true)
 	//initialize lock icon
-	if ($ENODE.is('[data-ENODE]') && isDefinition($ENODE[0])) {
+	if ($ENODE.is('[data-enode]') && isDefinition($ENODE[0])) {
 		ENODERefreshAsymmEq($ENODE)
 	}
 }

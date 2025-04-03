@@ -7,7 +7,7 @@
 <section data-section="canvas">
 	<ci data-type="bool">Applica la proprietà commutativa spostando gli elementi con drag and drop</ci>
 	<ci data-type="bool">Applica la proprietà associativa della somma selezionando una parentesi e utilizzando i tasti  ← →</ci>
-	<div data-ENODE="and" data-type="bool" class="ENODE brackets saveAsHtml showAsPlaceholder" data-and="horizontal" style="border-width: 0px;" draggable="false">
+	<div data-enode="and" data-type="bool" class="ENODE brackets saveAsHtml showAsPlaceholder" data-and="horizontal" style="border-width: 0px;" draggable="false">
 		
 	
 <div class="ul_role" data-type="bool">

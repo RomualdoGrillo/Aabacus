@@ -36,7 +36,7 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 		//deflate todo: completare distinzione tra mml e mml + type
 
 		//estendi tutti i nodi ENODE
-		$thisClone.parent().find('[data-ENODE]').each(function(i, node) {
+		$thisClone.parent().find('[data-enode]').each(function(i, node) {
 			$.extend(node, ENODE)
 		})
 		//rimuovi il contenuto importato da altri files
@@ -45,7 +45,7 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 
 		//signsAsClassesSubtree($thisClone,"SignsAsClasses_to_MinusOp")// converti in modo che il segno meno sia una operazione applicata al nodo
 		//sostituisci tutti i nodi ENODE excluding prototypes
-		$thisClone.parent().find('[data-ENODE]').not('[data-proto]').not('.saveAsHtml').each(function(i, node) {
+		$thisClone.parent().find('[data-enode]').not('[data-proto]').not('.saveAsHtml').each(function(i, node) {
 			if (i == 0) {
 				ReplaceOneENODE(node, from_to, neglectRootSign);
 			} else {
@@ -103,13 +103,13 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 		} else {
 			/*
 			var $role= node.ENODE_getRoles();
-			var $bVarChildren=$role.filter('.bVar_role').children().filter('[data-ENODE]')// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
-			var $nobBvarchildren=$role.not('.bVar_role').children().filter('[data-ENODE]')
+			var $bVarChildren=$role.filter('.bVar_role').children().filter('[data-enode]')// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
+			var $nobBvarchildren=$role.not('.bVar_role').children().filter('[data-enode]')
 			*/
-			var $bVarChildren = node.ENODE_getRoles('.bVar_role').children().filter('[data-ENODE]')
+			var $bVarChildren = node.ENODE_getRoles('.bVar_role').children().filter('[data-enode]')
 			// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
-			var $nobBvarchildren = node.ENODE_getRoles(':not(.bVar_role)').children().filter('[data-ENODE]')
-			var $htmlDivChildren = node.ENODE_getRoles(':not(.bVar_role)').children().filter(':not([data-ENODE])').filter('.saveAsHtml')
+			var $nobBvarchildren = node.ENODE_getRoles(':not(.bVar_role)').children().filter('[data-enode]')
+			var $htmlDivChildren = node.ENODE_getRoles(':not(.bVar_role)').children().filter(':not([data-enode])').filter('.saveAsHtml')
 			//salvo ciò che è .saveAsHtmlL
 			$newNode = $('<apply></apply>')
 			$newNode.text(nodeText)
@@ -124,7 +124,7 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 		}
 		// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
 		let newData = originalData
-		delete newData.ENODE//data-ENODE is manged above
+		delete newData.ENODE//data-enode is manged above
 		writeData($newNode,newData)
 
 		
@@ -220,7 +220,7 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 
 function $parserForMixedMMLHTML(toBeParsed){
 	// $(string) gives strange results when div or img are present
-	//$parserForMixedMMLHTML('<math xmlns="http://www.w3.org/1998/Math/MathML"><apply data-type="num"><plus></plus><cn data-type="num">2</cn><div data-ENODE="times" data-type="num" class="ENODE saveAsHtml" draggable="false" style="background-color: red;"><div class="ul_role" data-type="num"><cn data-type="num">6</cn><cn data-type="num">2</cn></div></div><apply data-type="num"><minus></minus><cn data-type="num">1</cn></apply></apply></math>')
+	//$parserForMixedMMLHTML('<math xmlns="http://www.w3.org/1998/Math/MathML"><apply data-type="num"><plus></plus><cn data-type="num">2</cn><div data-enode="times" data-type="num" class="ENODE saveAsHtml" draggable="false" style="background-color: red;"><div class="ul_role" data-type="num"><cn data-type="num">6</cn><cn data-type="num">2</cn></div></div><apply data-type="num"><minus></minus><cn data-type="num">1</cn></apply></apply></math>')
 	let string
 	if (toBeParsed instanceof jQuery){string=toBeParsed[0].outerHTML}
 	else{string = toBeParsed};

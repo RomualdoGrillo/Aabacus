@@ -5,7 +5,7 @@ function repeatInstructAndTryOnePMT(field,propName,firstVal,$ENODE1){
     var res 
     for(ii=0;ii<5;ii++){ //limitato per evitare loop infiniti
         if( match<ii){return }//ho fatto un giro a vuoto: senza trovare nulla
-        $ENODEList = $ENODE1.add($ENODE1.find('[data-ENODE]'));
+        $ENODEList = $ENODE1.add($ENODE1.find('[data-enode]'));
         for(j=0; j<$ENODEList.length ;j++){
             res = TryOnePropertyByName(field,propName, $($ENODEList[j]) ,firstVal) //da rivedere cambiati i parametri e sostituire tryProp() con checkProp()
             //tryRes = tryProp(field,propName,mode,$($ENODEList[j]))
@@ -30,12 +30,12 @@ function equalExtENODE($node1,$node2,checkTypeAndName,checkDragTarget){
            return false //titles do not match
        }
     }
-    if( $node1.attr("data-ENODE") !== $node2.attr("data-ENODE") )//notSameClass
+    if( $node1.attr("data-enode") !== $node2.attr("data-enode") )//notSameClass
     { return false}
     else if( checkTypeAndName == false){ return true}// no deeper tests required
     else if( !($node1.attr("data-type") === $node2.attr("data-type"))) //notSameType
     { return false}
-    else if( symbols.indexOf($node1.attr("data-ENODE")) != -1  )//is a symbol
+    else if( symbols.indexOf($node1.attr("data-enode")) != -1  )//is a symbol
     {
        res = $node1[0].ENODE_getName() === $node2[0].ENODE_getName()  
     }
@@ -52,8 +52,8 @@ function equalExtENODE($node1,$node2,checkTypeAndName,checkDragTarget){
 
 
 function parameterInHeader($parameter,$property){
-    if ($property.attr('data-ENODE') !== 'forAll'){ return undefined}
-    var $bvars = GetforAllHeader($property).children('[data-ENODE]');
+    if ($property.attr('data-enode') !== 'forAll'){ return undefined}
+    var $bvars = GetforAllHeader($property).children('[data-enode]');
     var parameterName = $parameter[0].ENODE_getName();
     var i
     for(var i=0; i<$bvars.length ;i++){
@@ -80,8 +80,8 @@ function replaceInForall($parameter,$newVal,$property){
 
 
 function containsBvar($member,$forAll){//contiene bvar?
-    if($forAll.attr('data-ENODE') != 'forAll'){return false}//if there is no outer forall.. no need for further inspection
-    $candidates = $member.add( $member.find('[data-ENODE]') );
+    if($forAll.attr('data-enode') != 'forAll'){return false}//if there is no outer forall.. no need for further inspection
+    $candidates = $member.add( $member.find('[data-enode]') );
     $bvars = $candidates.filter(function(){
         return parameterType( $(this),$forAll ).slice(-1) === "_"
     })
@@ -104,7 +104,7 @@ function reformatForallProp($prop,$transform){
 
 /*
 function searchBvarByName($forall,Name){
-    var $bvars = GetforAllHeader($forall).children('[data-ENODE]');
+    var $bvars = GetforAllHeader($forall).children('[data-enode]');
     var i
     var $match = undefined
     for(var i=0; i<$bvars.length ;i++){
@@ -122,7 +122,7 @@ function searchBvarByName($forall,Name){
 
 function parameterType($ENODE,$prop){
     //is it a symbol?
-    var className = $ENODE.attr('data-ENODE');
+    var className = $ENODE.attr('data-enode');
     if(symbols.indexOf(className) == -1){//not a symbol?(ci,cs,csymbol)
         return "n"
     }
@@ -133,12 +133,12 @@ function parameterType($ENODE,$prop){
     else if(parameterName.slice(-2) === "__" ){return "x__"}//x__
     else if(parameterName.slice(-1) === "_" ){return "x_"}//x_
     //******search if bvar in a forAll
-    //var $forAllParent = $ENODE.closest('[data-ENODE="forAll"]');
-    if($prop == undefined || $prop.attr('data-ENODE') !== "forAll"){
+    //var $forAllParent = $ENODE.closest('[data-enode="forAll"]');
+    if($prop == undefined || $prop.attr('data-enode') !== "forAll"){
             return "x" //se non c'è un forall la variabile è di sicuro "fissa"
     }
     var $forAllParent = $prop;    
-    var $bvars = GetforAllHeader($forAllParent).children('[data-ENODE]');
+    var $bvars = GetforAllHeader($forAllParent).children('[data-enode]');
     var i
     var $match = undefined
     for(var i=0; i<$bvars.length ;i++){
@@ -182,7 +182,7 @@ function ParameterNameToType(name){
 
 function searchForMarked($patternMember,mark){//all'interno di una espressione cerca un elemento marcarto
     //return marked element
-    return $patternMember.find('[data-ENODE]').filter(function(){
+    return $patternMember.find('[data-enode]').filter(function(){
         return ( $(this).attr('title') === mark )
     })
 }
@@ -193,11 +193,11 @@ function levelsToAncestor($marked,$patternMember){
     if($marked.is($patternMember)){
         return 0
     }
-    else if( $marked.parents('[data-ENODE]').filter($patternMember).length == 0 ){// $patternMember deve essere ancestor di $marked 
+    else if( $marked.parents('[data-enode]').filter($patternMember).length == 0 ){// $patternMember deve essere ancestor di $marked 
         return NaN
     }
     else{
-        var $parentLevels = $marked.parentsUntil( $patternMember ,'[data-ENODE]')
+        var $parentLevels = $marked.parentsUntil( $patternMember ,'[data-enode]')
         return $parentLevels.length + 1 // $patternMembercsi trova n livelli più in aòto di $marked  
     }
 }
@@ -211,14 +211,14 @@ function swapMembersClone($origProp,mode){
     var res = {foundTF:false, msg:"", $cloneProp: "",visualization:""}
     
     //********* CLONA prop ************************************************
-    var propCdsClass = $origProp.attr('data-ENODE');
+    var propCdsClass = $origProp.attr('data-enode');
     //createForThis($forall,$placeHolder)//todo: utilizzare stessa funzione rispetto a forThis manuale
     res.$cloneProp = ENODEclone($origProp);
     res.visualization =    wrapUnwrapUrlString( $origProp[0].style.backgroundImage ,'cutFirstDir')
     //if(debugMode){$('#canvasRole').append(res.$cloneProp)}//debug 
     ENODEextend(res.$cloneProp,true)
     //***********marca TUTTI I CLONI clone ************************************************
-    res.$cloneProp.find('[data-ENODE]').addBack().addClass('PMclone')//is a pattern matching clone
+    res.$cloneProp.find('[data-enode]').addBack().addClass('PMclone')//is a pattern matching clone
 
     //***********trova l'equazione ************************************************
     var $equation
@@ -230,8 +230,8 @@ function swapMembersClone($origProp,mode){
     else{
         $equation = res.$cloneProp;
     }
-    if ( $equation.attr('data-ENODE') !== "eq"){// todo: controllare che ci sia una relazione transitiva
-        res.msg= "no equation found in this prop: " + $equation.attr('data-ENODE')
+    if ( $equation.attr('data-enode') !== "eq"){// todo: controllare che ci sia una relazione transitiva
+        res.msg= "no equation found in this prop: " + $equation.attr('data-enode')
         if(debugMode){res.$cloneProp.remove()}//debug 
         return res
     }

@@ -1,7 +1,7 @@
 function ENODEfactorizeMinus($startNode) {
 	//translate from (-(a)) to (-1)(a)
 	//**** condizioni necessarie per applicare la funzione *****
-	if ($startNode.attr("data-ENODE") !== "minus") {
+	if ($startNode.attr("data-enode") !== "minus") {
 		return
 	}
 	//è circondato un meno?
@@ -12,7 +12,7 @@ function ENODEfactorizeMinus($startNode) {
 	var prototypeMinus = prototypeSearch("minus");
 	var $clone = ENODEclone(prototype);
 	var $cloneMinus = ENODEclone(prototypeMinus);
-	$clone.attr('data-ENODE', 'cn');
+	$clone.attr('data-enode', 'cn');
 	$clone[0].ENODE_setName("1");
 	$cloneMinus.insertAfter($startNode);
 	$cloneMinus[0].ENODE_getRoles().append($clone);
@@ -25,7 +25,7 @@ function ENODEfactorizeMinus($startNode) {
 
 function signsAsClassesSubtree($startNode, mode) {
 	//trova tutti i sotto nodi
-	$startNode.find('[data-ENODE]').each(function(index) {
+	$startNode.find('[data-enode]').each(function(index) {
 		// tutti gli HTML nodes con classe .ENODE
 		signsAsClasses($(this), mode);
 	})
@@ -70,8 +70,8 @@ function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsCl
 			wrapWithOperation($ENODE, "minus")
 		}
 	} else if (mode == "MinusOp_to_SignsAsClasses") {
-		var $ENODEchildren = $ENODE[0].ENODE_getRoles().children().filter('[data-ENODE]')
-		if ($ENODE.attr('data-ENODE') === "minus" && $ENODEchildren.length == 1) {
+		var $ENODEchildren = $ENODE[0].ENODE_getRoles().children().filter('[data-enode]')
+		if ($ENODE.attr('data-enode') === "minus" && $ENODEchildren.length == 1) {
 			// i minus che hanno un solo children
 			$ENODE[0].ENODE_dissolveContainer();
 			$ENODEchildren.filter(':first').addClass('minus');
@@ -79,7 +79,7 @@ function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsCl
 	}
 
 	$ENODE[0].ENODE_setName(name);
-	$ENODE.attr("data-ENODE", (isNaN(name)) ? "ci" : "cn")
+	$ENODE.attr("data-enode", (isNaN(name)) ? "ci" : "cn")
 	// se numero allora classe "cn"
 }
 
@@ -100,9 +100,9 @@ function refreshGlued($startNode) {
     // Rimuove la classe "glued" da tutti gli elementi precedentemente marcati
     $containerNode.find(".glued").removeClass("glued");
     
-    // Trova tutti gli elementi con attributo data-ENODE che corrispondono ai criteri
-    const $stickyParents = $containerNode.parent().find("[data-ENODE]").filter(function(i, element) {
-        const operatorType = element.getAttribute("data-ENODE");
+    // Trova tutti gli elementi con attributo data-enode che corrispondono ai criteri
+    const $stickyParents = $containerNode.parent().find("[data-enode]").filter(function(i, element) {
+        const operatorType = element.getAttribute("data-enode");
         
         // Verifica se l'operatore è nella lista delle funzioni "glued"
         if (glueFunctions.indexOf(operatorType) !== -1) {
@@ -117,7 +117,7 @@ function refreshGlued($startNode) {
     
     // Applica la classe "glued" ai figli degli elementi trovati
     $stickyParents.each(function() {
-        const $toBeGlued = this.ENODE_getRoles().children().filter('[data-ENODE]');
+        const $toBeGlued = this.ENODE_getRoles().children().filter('[data-enode]');
         $toBeGlued.addClass('glued');
     });
 }

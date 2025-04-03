@@ -85,7 +85,7 @@ function inject(MMLstring, $targetRoleOrENODE, containerRequirements, toBeImport
 	var $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
 	ExtendAndInitializeTree($convertedTree);
 	// if ( target accept booleans) al momento l'unico target è #canvasrole, in futuro si dovrà distinguere
-	if($targetRoleOrENODE.is('[data-ENODE]')){
+	if($targetRoleOrENODE.is('[data-enode]')){
 		
 		//get all data attributes
 		let originalImportData = $targetRoleOrENODE.data().import;

@@ -1,32 +1,32 @@
 </div>
-	<div data-ENODE="ci" data-type="obj" class="ENODE" title="abitante del pianeta terra" style=" background-image: url(./images/earth.png);
+	<div data-enode="ci" data-type="obj" class="ENODE" title="abitante del pianeta terra" style=" background-image: url(./images/earth.png);
 	background-size: 100% 100%;">
 	<div class="name" style="display:none">t</div>
 </div>
 
 </div>
-	<div data-ENODE="ci" data-type="obj" class="ENODE" title="uomo" style=" background-image: url(./images/man.png);
+	<div data-enode="ci" data-type="obj" class="ENODE" title="uomo" style=" background-image: url(./images/man.png);
 	background-size: 100% 100%;">
 	<div class="name" style="display:none">t</div>
 </div>
 
 </div>
-	<div data-ENODE="ci" data-type="obj" class="ENODE" title="donna" style=" background-image: url(./images/woman.png);
+	<div data-enode="ci" data-type="obj" class="ENODE" title="donna" style=" background-image: url(./images/woman.png);
 	background-size: 100% 100%;">
 	<div class="name" style="display:none">t</div>
 </div>
 
-<div data-proto="plus" data-ENODE="plus" data-type="obj" class="ENODE ">
+<div data-proto="plus" data-enode="plus" data-type="obj" class="ENODE ">
 				<div class="ul_role" data-type="obj"></div>
 			</div>
 
-<div data-ENODE="geq" data-proto="love" title="ama" data-type="bool" class="ENODE">
+<div data-enode="geq" data-proto="love" title="ama" data-type="bool" class="ENODE">
 				<div class="s_role firstMember" data-type="obj" ></div>
 				<div class="decoration">❤</div>
 				<div class="s_role secondMember" data-type="obj" ></div>
 			</div>
 			
-<div data-proto="exists" data-ENODE="exists" class="ENODE" data-type="bool">
+<div data-proto="exists" data-enode="exists" class="ENODE" data-type="bool">
 				<div class="row">
 					<div class="existsSymbol">∃</div>
 					<div class="bVar_role existsHeader" data-type="obj"></div>
@@ -35,7 +35,7 @@
 				<div class="s_role existsContent" data-type="bool" ></div>
 			</div>
 			
-<div data-proto="forall" data-ENODE="forAll" class="ENODE" data-type="bool">
+<div data-proto="forall" data-enode="forAll" class="ENODE" data-type="bool">
 				<div class="row">
 					<div class="forallSymbol">∀</div>
 					<div class="bVar_role forAllHeader" data-type="obj"></div>

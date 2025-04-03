@@ -1,13 +1,13 @@
 function tabelline($toBeComp,firstVal,img){
 	//limit to times
-	var op = $toBeComp.attr('data-ENODE');
+	var op = $toBeComp.attr('data-enode');
 	if(op == "times"){
 		//if a times operation is selected, operate on his children
 		$toBeComp = $toBeComp[0].ENODE_getChildren()
 	}
 	else{
 		var $parent=ENODEparent($toBeComp);
-		op = $parent.attr('data-ENODE');
+		op = $parent.attr('data-enode');
 		if(op !== "times"){
 			return 
 			//return newPActx()
@@ -33,7 +33,7 @@ function tabelline($toBeComp,firstVal,img){
 
 function composePlusOnly($toBeComp,firstVal,img){
 	var $parent=ENODEparent($toBeComp);
-	var op = $parent.attr('data-ENODE');
+	var op = $parent.attr('data-enode');
 	if(op !== "plus"){
 		return 
 		//return newPActx()
@@ -50,7 +50,7 @@ function decomposeTens($toBeDec,undefined,img){
 	//var $toBeDec=$('.selected')
 	//**** la funzione può essere applicata?
 	if($toBeDec.length !== 1){console.log("cant decompose " + $toBeDec.length + " elements"); return}
-	let TBDType = $toBeDec.attr("data-ENODE");
+	let TBDType = $toBeDec.attr("data-enode");
 	if( TBDType != "cn" ){//se l'elemento da scomporre è un numero'
 	console.log("can only decompose a cn not a" + TBDType ); return}
 	//**** applica la funzione
@@ -83,10 +83,10 @@ function $toBeComposedWithSiblings($selected){
 	//Attualmente il contenuto dei role si dispone leftRight e topDown mentre comporre è visto come left e down.
 	//di conseguenza per decidere qual'è l'elemento con cui comporre devo distiguere a seconda dell'orientazione.'
 	if( $selected.parent().css('flex-direction') === "row"){
-		$ENODEBesideSelected = $selected.prevAll('[data-ENODE]:first');
+		$ENODEBesideSelected = $selected.prevAll('[data-enode]:first');
 	}
 	else{
-		$ENODEBesideSelected = $selected.nextAll('[data-ENODE]:first');
+		$ENODEBesideSelected = $selected.nextAll('[data-enode]:first');
 	}
 	$selected = $selected.add($ENODEBesideSelected);
 	//debug colors

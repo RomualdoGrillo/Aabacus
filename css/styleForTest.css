@@ -1,16 +1,16 @@
 
 /*forAll hack: inside a forall all variables names must be 1 char lenght!*/
-[data-ENODE=forAll] .name{
+[data-enode=forAll] .name{
 	font-size:0px;
 	display:block;
 }
-[data-ENODE=forAll] .name::first-letter{
+[data-enode=forAll] .name::first-letter{
 	font-size:16px;
 }
-body.eforall [data-ENODE=forAll]>.row>.forAllHeader{
+body.eforall [data-enode=forAll]>.row>.forAllHeader{
 	display:none;
 }
-body.eforall [data-ENODE=forAll]>.row>.forallSymbol{
+body.eforall [data-enode=forAll]>.row>.forallSymbol{
 	top: -0.7px;
 	left: 8px;
 	height: 6px;
@@ -28,12 +28,12 @@ body.eforall [data-ENODE=forAll]>.row>.forallSymbol{
 
 
 
-[data-ENODE=and][data-and=horizontal]>*{
+[data-enode=and][data-and=horizontal]>*{
 	flex-direction:row!important;
 	border-width:0px!important;
 }
 
-[data-ENODE]:not('[data-vis=collapsed]')>*>.emb{
+[data-enode]:not('[data-vis=collapsed]')>*>.emb{
 	width:40px;
 	/* padding-left:45px!important; */
 	background-repeat: no-repeat;
@@ -55,7 +55,7 @@ body.eforall [data-ENODE=forAll]>.row>.forallSymbol{
 }
 
 
-.ftimes,[data-ENODE="and"] >[class*="_role"]{
+.ftimes,[data-enode="and"] >[class*="_role"]{
 	flex-direction: column;	
 }
 

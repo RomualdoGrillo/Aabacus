@@ -44,8 +44,8 @@ let propertiesDnD = [
 
 
 function ENODEneedsBracket($ENODE) {
-	var ENODEclass = $ENODE.attr('data-ENODE')  //
-	var parentClass = ENODEparent($ENODE).attr('data-ENODE')//
+	var ENODEclass = $ENODE.attr('data-enode')  //
+	var parentClass = ENODEparent($ENODE).attr('data-enode')//
 	// futuribile:
 	//var parentRole = da completare per poter distinguere se in quale "role" è contenuto
 	//la stringa che identifica la posizione dovrebbe diventare <ENODEtype>.<role>
@@ -116,12 +116,12 @@ function revert(event) {//revert a sortablejs onAdd event
 
 function forThisValid(mouseDownNode) {
 	let dataType = mouseDownNode[0].getAttribute('data-type');
-	let $excludedForall = $identifierSpanForAll($(mouseDownNode)).filter('[data-ENODE=forAll]');
-	let forAlls = $('[data-ENODE=forAll]:visible').not($excludedForall).toArray();//querySelectAll does not work with :visible?
+	let $excludedForall = $identifierSpanForAll($(mouseDownNode)).filter('[data-enode=forAll]');
+	let forAlls = $('[data-enode=forAll]:visible').not($excludedForall).toArray();//querySelectAll does not work with :visible?
 	let $parameters = $()
 	let i = 0
 	while (forAlls[i]) {
-		$parameters = $parameters.add(GetforAllHeader($(forAlls[i])).find('[data-ENODE]'));
+		$parameters = $parameters.add(GetforAllHeader($(forAlls[i])).find('[data-enode]'));
 		i++
 	}
 
@@ -132,7 +132,7 @@ function forThisValid(mouseDownNode) {
 function immediateAssValid($mouseDownENODE) {
 	const $parent = ENODEparent($mouseDownENODE);
 	let op;
-	if ($parent !== undefined) { op = $parent.attr("data-ENODE") }
+	if ($parent !== undefined) { op = $parent.attr("data-enode") }
 	let $validTargetRoles = $();
 	if (OpIsAssociative(op)) {
 		let $validTgtENODEs = $ImmediateAssociativeENODE($parent)
@@ -179,17 +179,17 @@ function validForPartDist($mouseDownENODE, ctrlOrMeta) {
 		return []
 	}
 	let $parent = ENODEparent($mouseDownENODE);
-	var $siblings = $parent.siblings('[data-ENODE]');
+	var $siblings = $parent.siblings('[data-enode]');
 	if ($siblings.length == 0) { return $() }//nothing to distribute
 	let opD = undefined;
-	if ($parent !== undefined) { opD = $parent.attr("data-ENODE") }
+	if ($parent !== undefined) { opD = $parent.attr("data-enode") }
 	let op = opIsDistDop("", opD);
-	if (op && ENODEparent($parent).attr("data-ENODE") == op) {
+	if (op && ENODEparent($parent).attr("data-enode") == op) {
 		return ENODEparent(ENODEparent($parent)).find('>.ul_role')
 		//return ENODEparent($parent).find('>.ul_role')
 	}
 	/*
-	if(op && ENODEparent($parent).attr("data-ENODE") === op){//check if parent of parent is the right op
+	if(op && ENODEparent($parent).attr("data-enode") === op){//check if parent of parent is the right op
 		if(ENODEparent(ENODEparent($parent))){
 			return ENODEparent(ENODEparent($parent))
 		}
@@ -209,12 +209,12 @@ function validForDist($mouseDownENODE, ctrlOrMeta, altKey) {//op2 è il tipo di 
 	}
 	var $parent = ENODEparent($mouseDownENODE);
 	let op = undefined;
-	if ($parent !== undefined) { op = $parent.attr("data-ENODE") }
+	if ($parent !== undefined) { op = $parent.attr("data-enode") }
 	let opD = opIsDistDop(op);
 
 	if (opD !== undefined) {
-		//return $mouseDownENODE.siblings().filter("[data-ENODE="+opD+"]")	
-		$validENODEs = $mouseDownENODE.siblings().filter("[data-ENODE=" + opD + "]")
+		//return $mouseDownENODE.siblings().filter("[data-enode="+opD+"]")	
+		$validENODEs = $mouseDownENODE.siblings().filter("[data-enode=" + opD + "]")
 		/*
 		let $validTargets = $()
 		let i=0;
@@ -235,9 +235,9 @@ function ENODEPartDistribute($dragged, target, dropped) {
 	let childrenIndex = ENODEparent($dragged).index()
 	let $parent = ENODEparent($dragged);
 	let opD;
-	if ($parent !== undefined) { opD = $parent.attr("data-ENODE") }
+	if ($parent !== undefined) { opD = $parent.attr("data-enode") }
 	let op = opIsDistDop("", opD);
-	var $siblings = $parent.siblings('[data-ENODE]'); // ottieni la lista degli altri fattori
+	var $siblings = $parent.siblings('[data-enode]'); // ottieni la lista degli altri fattori
 	$extOp = wrapIfNeeded(ENODEparent($parent), opD);//se necessario crea una operazione container
 	let $prototype = prototypeSearch(op);
 	let $clone = ENODEclone($prototype)//create times
@@ -260,7 +260,7 @@ function ENODEdistribute($dragged, target, dropped) {
 	PActx.replacedAlready = true;
 	let $parent = ENODEparent($dragged);
 	let op = undefined;
-	if ($parent !== undefined) { op = $parent.attr("data-ENODE") }
+	if ($parent !== undefined) { op = $parent.attr("data-enode") }
 	let opD = opIsDistDop(op);
 	var $prototype = prototypeSearch(op)// for example search for times proto
 	$(target)[0].ENODE_getChildren().each(function (i, e) {
@@ -289,7 +289,7 @@ function ENODEdistribute($dragged, target, dropped) {
 function validForColl($mouseDownENODE) {
 	var $parent = ENODEparent($mouseDownENODE);
 	var op = undefined
-	if ($parent !== undefined) { op = $parent.attr("data-ENODE") };//look for targets
+	if ($parent !== undefined) { op = $parent.attr("data-enode") };//look for targets
 	var opD = opIsDistDop(op);
 	//$('*').removeClass('ToBeCollected').removeClass('CouldBeCollected');//evidenziore l'imbastitura e rimuoverla in unica funzione
 	//*******test preliminari
@@ -302,7 +302,7 @@ function validForColl($mouseDownENODE) {
 		||
 		$parentParent == undefined
 		||
-		$parentParent.attr('data-ENODE') !== opD
+		$parentParent.attr('data-enode') !== opD
 	) {
 		return $() //empty $ array
 	}
@@ -311,7 +311,7 @@ function validForColl($mouseDownENODE) {
 	for (i = 0; i < $terms.length; i++) {
 		var term = $terms[i]
 		var okForThisTerm = false;
-		if ($(term).attr('data-ENODE') == op) {// se l'addendo è di tipo times controlla ogni fattore
+		if ($(term).attr('data-enode') == op) {// se l'addendo è di tipo times controlla ogni fattore
 			var $factors = term.ENODE_getChildren()
 			for (j = 0; j < $factors.length; j++) {
 				var factor = $factors[j]
@@ -350,7 +350,7 @@ function validForPartColl($mouseDownENODE) {
 	var $plusParent;
 	var opP;
 	var opT;
-	var op = $parent.attr("data-ENODE");
+	var op = $parent.attr("data-enode");
 	var opP = opIsDistDop(op);
 	if (opP) {// dragged is into a "times"
 		$plusParent = ENODEparent($parent);//candidate plus parent will be checked later
@@ -374,16 +374,16 @@ function validForPartColl($mouseDownENODE) {
 		||
 		$plusParent == undefined
 		||
-		$plusParent.attr('data-ENODE') !== opP
+		$plusParent.attr('data-enode') !== opP
 	) {
 		return $() //empty $ array
 	}
 	//***** test su ciascun termine
-	var $siblings = $parent.siblings('[data-ENODE]')
+	var $siblings = $parent.siblings('[data-enode]')
 	for (i = 0; i < $siblings.length; i++) {
 		var term = $siblings[i]
 		var okForThisTerm = false;
-		if ($(term).attr('data-ENODE') == opT) {// se l'addendo è di tipo times controlla ogni fattore
+		if ($(term).attr('data-enode') == opT) {// se l'addendo è di tipo times controlla ogni fattore
 			var $factors = term.ENODE_getChildren()
 			for (j = 0; j < $factors.length; j++) {
 				var factor = $factors[j]
@@ -407,12 +407,12 @@ function ENODEpartCollect($dragged, $target) {
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
 	let $targetParent = ENODEparent($target);
-	let $siblingsT = $target.siblings('[data-ENODE]')
-	let opt = $targetParent.attr("data-ENODE")
+	let $siblingsT = $target.siblings('[data-enode]')
+	let opt = $targetParent.attr("data-enode")
 
 	let $draggedParent = ENODEparent($dragged);
-	let $siblingsD = $dragged.siblings('[data-ENODE]')
-	let opd = $draggedParent.attr("data-ENODE")
+	let $siblingsD = $dragged.siblings('[data-enode]')
+	let opd = $draggedParent.attr("data-enode")
 
 	let $commonGranParent = ENODEparent($targetParent);
 	$commonGranParent.addClass("Refine_c");
@@ -425,7 +425,7 @@ function ENODEpartCollect($dragged, $target) {
 		var $termT
 		var $termD
 		if ($siblingsT.length == 1) {
-			if ($siblingsT.eq(0).attr("data-ENODE") == opPlus) {//if 'plus' ther's no need to create a new plus container
+			if ($siblingsT.eq(0).attr("data-enode") == opPlus) {//if 'plus' ther's no need to create a new plus container
 				$opPlus = $siblingsT
 				$termT = $siblingsT[0].ENODE_getChildren()
 				$termT.remove();//svuoto il target plus e poi lo riempio ordinatamente
@@ -439,7 +439,7 @@ function ENODEpartCollect($dragged, $target) {
 			$termT = (wrapWithOperation($siblingsT, opt));
 		}
 		if ($siblingsD.length == 1) {
-			if (!$opPlus && $siblingsD.eq(0).attr("data-ENODE") == opPlus) {//if 'plus' ther's no need to create a new plus container
+			if (!$opPlus && $siblingsD.eq(0).attr("data-enode") == opPlus) {//if 'plus' ther's no need to create a new plus container
 				$opPlus = $siblingsD
 				$termD = $siblingsD[0].ENODE_getChildren()
 				$termD.remove();//svuoto il target plus e poi lo riempio ordinatamente
@@ -480,7 +480,7 @@ function ENODEcollect($dragged, $target) {
 	let $parent = ENODEparent($dragged);
 	let $parentParent = ENODEparent($parent);
 	let op = undefined;
-	if ($parent !== undefined) { op = $parent.attr("data-ENODE") }
+	if ($parent !== undefined) { op = $parent.attr("data-enode") }
 	var extOp
 	extOp = wrapIfNeeded($parentParent, op)
 	ENODEparent($dragged).addClass("Refine_c")
@@ -500,14 +500,14 @@ function compose($toBeComp, firstVal, img) {
 	var PActx = newPActx();
 	//**** la funzione può essere applicata?
 	var $parent = ENODEparent($toBeComp);
-	var op = $parent.attr('data-ENODE');
+	var op = $parent.attr('data-enode');
 	if ($toBeComp.length == 0) { PActx.msg = ("nothing selected"); return PActx }
 	//se 1 solo selezionato cerca di comporlo con l'antecedente'
 	if ($toBeComp.length == 1) {
 		//---tenta semplificazioni banali
 		//controlla se si tratta di elemento neutro, in tal caso fallo semplicemente sparire.
 		/*
-		var tBcClass = $toBeComp.attr("data-ENODE"); 
+		var tBcClass = $toBeComp.attr("data-enode"); 
 		if( tBcClass === "cn" || tBcClass === "ci"){
 			var name = $toBeComp[0].ENODE_getName()
 			if( (op === "times" && name === "1")||
@@ -691,7 +691,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 		//scomposizione di un numero in verticale è fattorizzazione : op = times
 		if (direction === "up") {
 			op = "times";
-			if ($toBeDec.attr('data-ENODE') === 'minus') {
+			if ($toBeDec.attr('data-enode') === 'minus') {
 				var $minus = $toBeDec
 				//******crea nuovo ENODEo
 				var minusOne = { type: "cn", val: 1, sign: -1, exp: 1 }
@@ -701,11 +701,11 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 				var $minusParent = ENODEparent($minus);
 				var $minusContent = $minus[0].ENODE_getChildren();
 				$extOp = $minusParent;
-				if ($minusParent.attr('data-ENODE') == 'times') {//aggiungi il -1 all'interno del minus parent
+				if ($minusParent.attr('data-enode') == 'times') {//aggiungi il -1 all'interno del minus parent
 					$minusOne.insertBefore($minus);
 				}
 				else {
-					if ($minusContent.attr('data-ENODE') !== 'times') {//è necessario aggiungere una enclosure di tipo "times"
+					if ($minusContent.attr('data-enode') !== 'times') {//è necessario aggiungere una enclosure di tipo "times"
 						$minusContent = wrapWithOperation($minusContent, 'times')
 					}
 					$minusContent[0].ENODE_getRoles().prepend($minusOne);
@@ -747,7 +747,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 					var prototype = prototypeSearch("cn", "num")
 					primeFactors.forEach(function (e, i) {
 						$clone = ENODEclone(prototype);
-						$clone.attr('data-ENODE', 'cn');
+						$clone.attr('data-enode', 'cn');
 						$clone[0].ENODE_setName(e)
 						$clone.insertAfter($toBeDec);
 						if (i == (primeFactors.length - 1)) {
@@ -823,14 +823,14 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 
 function isEquationMember($mouseDownENODE) {
 	//  
-	if (!($mouseDownENODE.parent().parent().is("[data-ENODE=eq]") && !isDefinition($mouseDownENODE.parent().parent()[0]))) {
+	if (!($mouseDownENODE.parent().parent().is("[data-enode=eq]") && !isDefinition($mouseDownENODE.parent().parent()[0]))) {
 		return []//not from an equation	
 	}
 	return ENODEparent($mouseDownENODE)
 }
 
 function validReplaced($mouseDownENODE) {
-	if (!($mouseDownENODE.parent().parent().is("[data-ENODE=eq]") && !isDefinition($mouseDownENODE.parent().parent()[0]))) {
+	if (!($mouseDownENODE.parent().parent().is("[data-enode=eq]") && !isDefinition($mouseDownENODE.parent().parent()[0]))) {
 		return []//not from an equation	or implies
 	}
 	if (!($mouseDownENODE.parent().hasClass('firstMember') || $mouseDownENODE.parent().hasClass('secondMember'))) {
@@ -840,7 +840,7 @@ function validReplaced($mouseDownENODE) {
 }
 
 function validModusPonens($mouseDownENODE) {
-	if (!$mouseDownENODE.parent().parent().is("[data-ENODE=implies]")) {
+	if (!$mouseDownENODE.parent().parent().is("[data-enode=implies]")) {
 		return []//not from an implies
 	}
 	if (!$mouseDownENODE.parent().hasClass('firstMember')) {
@@ -852,9 +852,9 @@ function validModusPonens($mouseDownENODE) {
 
 function findvalidReplacedOrPremise($mouseDownENODE) {
 	let $equation = ENODEparent($mouseDownENODE)
-	let $excludedMembers = $equation.find('[data-ENODE]');
+	let $excludedMembers = $equation.find('[data-enode]');
 	// cerca nodi uguali a mousedown node
-	let $candidates = $PropositionsAffectedByStartPropositionROLES($equation).find('[data-ENODE]').addBack().filter(':visible').addClass('mu_Downstream1').not($excludedMembers)
+	let $candidates = $PropositionsAffectedByStartPropositionROLES($equation).find('[data-enode]').addBack().filter(':visible').addClass('mu_Downstream1').not($excludedMembers)
 	let $occurrences = $findOccurrences($mouseDownENODE, undefined, $candidates)//ricerca limitata ad elementi visibili
 	let $valids = $occurrences
 	$valids.each(function () {
@@ -874,7 +874,7 @@ function ENODELinkReplace($link, $replaced) {
 function ENODEModusPonens($premiseInProperty, $premise){
 	var PActx = newPActx();
 	PActx.replacedAlready = true;
-	if(!ENODEparent($premise).is('[data-ENODE=and]')){
+	if(!ENODEparent($premise).is('[data-enode=and]')){
 		//wrap with AND
 	}
 	//create clone
@@ -919,10 +919,10 @@ function validAddRedundant($mouseDownENODE, ctrlOrMeta) {
 
 function validCandidatesForPatternDrop($mouseDownENODE, $originalProperty) {
 	//exclude the $originalProperty
-	let $excludedENODES = $originalProperty.find('[data-ENODE]').addBack();
-	//let $excludedENODES= $mouseDownENODE.closest('[data-ENODE=forAll]').find('[data-ENODE]').addBack();
-	//let $jurisdictionRoles = $calculateJurisdictionRoles($originalProperty).addClass('mu_Downstream1').filter('[data-ENODE]:visible')
-	//let $candidates = $jurisdictionRoles.find('[data-ENODE]:visible')
+	let $excludedENODES = $originalProperty.find('[data-enode]').addBack();
+	//let $excludedENODES= $mouseDownENODE.closest('[data-enode=forAll]').find('[data-enode]').addBack();
+	//let $jurisdictionRoles = $calculateJurisdictionRoles($originalProperty).addClass('mu_Downstream1').filter('[data-enode]:visible')
+	//let $candidates = $jurisdictionRoles.find('[data-enode]:visible')
 	let $candidates = $PropositionsAffectedByStartPropositionROLES($originalProperty).filter(':visible').addClass('mu_Downstream1');
 	let $valids = $candidates.not($excludedENODES).filter(function (index) {
 		//*****valid?***********
@@ -940,11 +940,11 @@ function validCandidatesForPatternDrop($mouseDownENODE, $originalProperty) {
 function validhanoiMove($mouseDownENODE) {
 	//dragged must be top element in hanoi rod
 	let $parentRod = ENODEparent($mouseDownENODE)
-	if (!($parentRod.is("[data-ENODE=hanoirod]") && $mouseDownENODE.is(':first-child'))) {
+	if (!($parentRod.is("[data-enode=hanoirod]") && $mouseDownENODE.is(':first-child'))) {
 		return []
 	}
 	//parent parent must be hanoi
-	if (!ENODEparent($parentRod).is("[data-ENODE=hanoi]")) {
+	if (!ENODEparent($parentRod).is("[data-enode=hanoi]")) {
 		return []
 	}
 	//check if the las element of each road is smaller than dragged
@@ -975,7 +975,7 @@ function removeRedundant($dragged, $target) {
 	var PActx = newPActx();
 	var $parent = ENODEparent($target)
 	PActx.replacedAlready = true;
-	if ($parent.attr("data-ENODE") == "and") {
+	if ($parent.attr("data-enode") == "and") {
 		$target.remove();//if contained in an and simply remove the redundant term		
 		$parent.addClass("Refine_c");
 	}
@@ -993,7 +993,7 @@ function removeRedundant($dragged, $target) {
 function addRedundant($dragged, $target, $dropped) {
 	let PActx = newPActx();
 	$($dropped).removeClass('toBeCloned');//in case class 'toBeCloned' is present rempve it
-	if ($target.attr('data-ENODE')) {//if target is an ENODE, create an AND around it
+	if ($target.attr('data-enode')) {//if target is an ENODE, create an AND around it
 		let $extOp = wrapWithOperation($target, 'and')
 		$target = $extOp[0].ENODE_getRoles()
 		PActx.msg = "created and, added Redundant or deduction"
@@ -1011,7 +1011,7 @@ function evaluateComparison($exp) {
 	var PActx = newPActx();
 	var comparisons = ["eq", "gt", "lt", "geq", "leq"];//todo: gestire geq e leq
 	PActx.$operand = $exp;
-	var ENODEClass = $exp.attr('data-ENODE');
+	var ENODEClass = $exp.attr('data-enode');
 	if (comparisons.indexOf(ENODEClass) != -1) {
 		var $firstMember = $exp[0].ENODE_getRoles('.firstMember').children();
 		var firstMember = ENODEsToVal($firstMember);
@@ -1038,7 +1038,7 @@ function evaluateComparison($exp) {
 			var stringResult
 			if (result) { stringResult = "true" } else { stringResult = "false" }
 			var $clone = ENODEclone(prototype);
-			// $clone.attr('data-ENODE','cn');
+			// $clone.attr('data-enode','cn');
 			$clone[0].ENODE_setName(stringResult)
 			$clone.insertAfter($exp);
 			$clone.addClass('selected');// il risultato rimane selezionato
@@ -1074,5 +1074,5 @@ function forThisPar_focus_nofocus($specificValue, $parameter) {
 function clearTragets() {
 	clearTarget(["toBeCloned"]);//debug 
 	document.querySelectorAll(sortablesSelectorString).forEach(function (el) { el.setAttribute('target', '') });
-	document.querySelectorAll('[data-ENODE]').forEach(function (el) { el.setAttribute('target', '') });
+	document.querySelectorAll('[data-enode]').forEach(function (el) { el.setAttribute('target', '') });
 }

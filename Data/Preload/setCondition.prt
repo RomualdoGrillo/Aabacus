@@ -1,5 +1,5 @@
 
-			<div data-proto="set" data-ENODE="set" data-type="set" class="ENODE">
+			<div data-proto="set" data-enode="set" data-type="set" class="ENODE">
 				{
 				
 				<div class="ul_role" data-type="obj">
@@ -9,7 +9,7 @@
 			
 			
 			</div>
-			<div data-proto="setcondition" data-ENODE="set" data-type="set" class="ENODE">
+			<div data-proto="setcondition" data-enode="set" data-type="set" class="ENODE">
 				{
 				<div class="s_role bvar" data-type="obj"></div>
 				|
