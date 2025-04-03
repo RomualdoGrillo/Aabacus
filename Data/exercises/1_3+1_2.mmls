@@ -13,15 +13,15 @@
 			</and>
 		</apply>
 	</apply>
-	<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
+	<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
 		<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;">
-			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+			<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 				<div class="ul_role" data-type="bool">
 					<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
 					<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
 				</div>
 			</div>
-			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+			<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 				<div class="ul_role" data-type="bool">
 					<apply data-tagimg="./images/properties/decompose.svg" data-vis="collapsed" data-tag="calcola" data-type="bool">
 						<and>
@@ -32,7 +32,7 @@
 					</apply>
 				</div>
 			</div>
-			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+			<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 				<div class="ul_role" data-type="bool">
 					<apply title="Proprietà distributiva: Trascina i fattori per raccoglierli o distribuirli" data-tagimg="./images/properties/distributive.svg" data-vis="collapsed" data-tag="Proprieta'Distributiva" data-type="bool">
 						<and>

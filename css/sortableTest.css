@@ -29,10 +29,10 @@ body[tool=autoAdapt] .sortable-ghost{
 .sortable-ghost.showAsPlaceholder[data-type=num]{
 	background-color:var(--num-bgcolor);
 }
-.sortable-ghost.showAsPlaceholder[data-type=bool][data-atom]{
+.sortable-ghost.showAsPlaceholder[data-type=bool][data-ENODE]{
 	background-color:var(--bool-bgcolor);
 }
-[data-atom=or]>.ul_role>.sortable-ghost.showAsPlaceholder{
+[data-ENODE=or]>.ul_role>.sortable-ghost.showAsPlaceholder{
 	visibility:hidden;
 }
 

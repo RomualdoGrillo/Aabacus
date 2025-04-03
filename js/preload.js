@@ -28,22 +28,22 @@ function injectAll(response,rootUrl){
 	}
 	if(all.foundation_mml && all.foundation_mml.string){//string data
 		$('#canvas').addClass('unlocked');
-		MNODErefreshAsymmEq($('#canvas'));
+		ENODERefreshAsymmEq($('#canvas'));
 		inject(all.content_mml.string, $("#canvasRole"),true);
 		}
 	else if(all.foundation_mml){//url
 		$('#canvas').addClass('unlocked');
-		MNODErefreshAsymmEq($('#canvas'));
+		ENODERefreshAsymmEq($('#canvas'));
 		loadAjaxAndInject(buildPath(rootUrl,all.foundation_mml),$("#canvasRole"));
 	}
 	if(all.content_mml && all.content_mml.string){//string data
 		$('#canvas').addClass('unlocked');
-		MNODErefreshAsymmEq($('#canvas'));
+		ENODERefreshAsymmEq($('#canvas'));
 		inject(all.content_mml.string, $("#canvasRole"),true);
 		}
 	else if(all.content_mml){//url
 		$('#canvas').addClass('unlocked');
-		MNODErefreshAsymmEq($('#canvas'));
+		ENODERefreshAsymmEq($('#canvas'));
 		loadAjaxAndInject(buildPath(rootUrl,all.content_mml),$("#canvasRole"));
 	}
 	if(all.result_mml && all.result_mml.string){//string data
@@ -105,7 +105,7 @@ function injectAllMMLS(response,rootUrl){
 	let $canvasContent =  $sections.filter('[data-section=canvas]').children();
 	if($canvasContent.length!=0){
 		//$('#canvas').addClass('unlocked');
-		MNODErefreshAsymmEq($('#canvas'));
+		ENODERefreshAsymmEq($('#canvas'));
 		inject($canvasContent,$('#canvasRole'),'boolean');
 	}
 	//**** result
@@ -170,7 +170,7 @@ function GLBsettingsToInterface() {
 	if(GLBsettings.lockCanvas != undefined){
 		if(GLBsettings.lockCanvas){$('#canvas').removeClass('unlocked')}
 		else{$('#canvas').addClass('unlocked')}
-		MNODErefreshAsymmEq($('#canvas'));
+		ENODERefreshAsymmEq($('#canvas'));
 	}
 	let tool = GLBsettings.tool
 	if(tool==undefined){tool=''}

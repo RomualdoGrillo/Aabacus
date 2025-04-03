@@ -20,7 +20,7 @@
 			<and>
 			</and>
 		</apply>
-		<div data-atom="and" data-type="bool" class="atom saveAsHtml brackets" data-vis="" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
+		<div data-ENODE="and" data-type="bool" class="ENODE saveAsHtml brackets" data-vis="" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
 		<div class="ul_role" data-type="bool">
 			<apply data-type="bool">
 				<eq>

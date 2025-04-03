@@ -7,47 +7,47 @@ let GLBDnD = { toolWhenMousedown: "" }
 
 function MakeSortableAndInjectMouseDown(event) {
 	let $validTgT=$();
-	/******** from target to enode target *************/
-	let $enodeTarget
+	/******** from target to ENODE target *************/
+	let $ENODETarget
 	if( !$(event.target).is('#canvas *,#palette *')){
 		return //nothing to drag
 	}
 	//get the first draggable parent
-	$enodeTarget = enodeNselectable($(event.target));
-if($enodeTarget.length==0){
+	$ENODETarget = ENODEselectable($(event.target));
+if($ENODETarget.length==0){
 		return//no unlocked parent to drag
 	}
 	
 	/********cleanup*******/
-	cleanupDnD() //cleanup must happen after $enodeTarget is determined!!! Othrwise you may remove the element clicked on
+	cleanupDnD() //cleanup must happen after $ENODETarget is determined!!! Othrwise you may remove the element clicked on
 	//***selection manager "grey" highlight
-	if($enodeTarget.hasClass('unselectable')){
+	if($ENODETarget.hasClass('unselectable')){
 		selectionManager("","","",true)//deselectAll
 	}
 	else{
-		selectionManager($enodeTarget,event.ctrlKey||event.metaKey,event.shiftKey)//on mac use command key instead of control
+		selectionManager($ENODETarget,event.ctrlKey||event.metaKey,event.shiftKey)//on mac use command key instead of control
 	}
 	//**** highlight Span and Parameters
-	if($enodeTarget.attr('data-enode')=='ci'){
-		highlightOccurrences($enodeTarget,'mu_connected');
+	if($ENODETarget.attr('data-ENODE')=='ci'){
+		highlightOccurrences($ENODETarget,'mu_connected');
 	}
 	
 	//**** highlight DOWNSTREAM 
 	// add class mu_Downstream1
-	if($enodeTarget.attr('data-type')=='bool'){
-		$calculateJurisdictionUpstream($enodeTarget.parent()).addClass('mu_span');
+	if($ENODETarget.attr('data-type')=='bool'){
+		$calculateJurisdictionUpstream($ENODETarget.parent()).addClass('mu_span');
 	}
 	
 	GLBDnD.toolWhenMousedown = GLBsettings.tool;
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt'){
 		//********* autoAdapt ****************
-		if (enodeclosedDef($(event.target))) {
-			GLBDnD.$originalProperty = $(event.target).closest('[data-enode=forAll]');
+		if (ENODEclosedDef($(event.target))) {
+			GLBDnD.$originalProperty = $(event.target).closest('[data-ENODE=forAll]');
 			if(GLBDnD.$originalProperty.length==0){return};
 			let $forallContent=GetforAllContentRole(GLBDnD.$originalProperty).children();
 			let $equation=$($forallContent[0]);
-			if(!$equation.is('[data-enode=eq]')){console.log('forall content is not an equation'); return}
-			let $eqRoleMembers=$equation[0].enode_getRoles('.firstMember,.secondMember');
+			if(!$equation.is('[data-ENODE=eq]')){console.log('forall content is not an equation'); return}
+			let $eqRoleMembers=$equation[0].ENODE_getRoles('.firstMember,.secondMember');
 			let $RoleMember = $eqRoleMembers.filter(function(i,e){return e.contains(event.target)})
             if($RoleMember.length==0){return}
             //decide if ltr or rtl
@@ -59,26 +59,26 @@ if($enodeTarget.length==0){
             }
             else{console.log('ERROR:member not found in equation')}
 			//look for  attack point
-			$enodeTarget = $RoleMember.children().filter('[data-enode]:first');
+			$ENODETarget = $RoleMember.children().filter('[data-ENODE]:first');
 			let $startPointForValids = searchForMarkedInSubtree($RoleMember,"s",'m',true)//"s" e' la marcatura cercata, "m" vuol dire cerca una marcatura, non un link o post
-            if($startPointForValids.length==0){$startPointForValids=$enodeTarget}
-			$enodeTarget.addClass('attackPoint')
+            if($startPointForValids.length==0){$startPointForValids=$ENODETarget}
+			$ENODETarget.addClass('attackPoint')
 			$validTgT = validCandidatesForPatternDrop($startPointForValids,GLBDnD.$originalProperty);
 			//order is important!!!!
 			//WORKS but I don't know why: apparently if I sort with criteriion Son->parent does not work, if I sort Parent->son than reverse it works
-			//makeTargetsSortableRolesOrenodes($validTgT.toArray().sort(CriterionSonParent), 'dragPatternMatch');//not working
-			makeTargetsSortableRolesOrenodes($validTgT.toArray().sort(CriterionParentSon).reverse(), 'dragPatternMatch');//working		
+			//makeTargetsSortableRolesOrENODEs($validTgT.toArray().sort(CriterionSonParent), 'dragPatternMatch');//not working
+			makeTargetsSortableRolesOrENODEs($validTgT.toArray().sort(CriterionParentSon).reverse(), 'dragPatternMatch');//working		
 		}
 		else {
 			//no forall property
 		}
 	}
-	else if (GLBDnD.toolWhenMousedown == 'copy' || !enodeclosedDef($(event.target)) || $enodeTarget.is('#palette *')) {
+	else if (GLBDnD.toolWhenMousedown == 'copy' || !ENODEclosedDef($(event.target)) || $ENODETarget.is('#palette *')) {
 		//*********from opened****************
 		
 		//make targets sortable
-		let $validTgTOpen = validTargetsFromOpened($enodeTarget);//i $validTgTOpen non vengono evidenziati con exclusive focus
-		if ($enodeTarget.is('#palette *')) {
+		let $validTgTOpen = validTargetsFromOpened($ENODETarget);//i $validTgTOpen non vengono evidenziati con exclusive focus
+		if ($ENODETarget.is('#palette *')) {
 			//add canvas as target
 			$validTgTOpen = $validTgTOpen.add('#canvasRole');//will be wrapped!!//
 		}
@@ -89,20 +89,20 @@ if($enodeTarget.length==0){
 	}
 	else {
 		//********  determine validTargets for propeties listed in propertiesDnD[i] ***************
-		if (!$enodeTarget.length || !$enodeTarget[0].parentElement) { return }//precondition
+		if (!$ENODETarget.length || !$ENODETarget[0].parentElement) { return }//precondition
 		let i = 0
 		let propInCanvasEnabled = getDnDpropEnabled()
 		while (propInCanvasEnabled[i]) {
-			let targets = propInCanvasEnabled[i].findTgt($enodeTarget,(event.ctrlKey || event.metaKey),event.altKey);
-			makeTargetsSortableRolesOrenodes(targets, propInCanvasEnabled[i].name, propInCanvasEnabled[i].icon)
+			let targets = propInCanvasEnabled[i].findTgt($ENODETarget,(event.ctrlKey || event.metaKey),event.altKey);
+			makeTargetsSortableRolesOrENODEs(targets, propInCanvasEnabled[i].name, propInCanvasEnabled[i].icon)
 			$validTgT = $validTgT.add($(targets))
 			i++
 		}
 	}
-	if ($enodeTarget && $enodeTarget.length && $enodeTarget[0].parentElement){
-	//is there a valid target?(sometimes the $enodeTarget is undefined sometime it is not but there is no [0] element)
+	if ($ENODETarget && $ENODETarget.length && $ENODETarget[0].parentElement){
+	//is there a valid target?(sometimes the $ENODETarget is undefined sometime it is not but there is no [0] element)
 		if($validTgT.length!=0){
-			let $draggedAndTargets = $enodeTarget.add($validTgT); 
+			let $draggedAndTargets = $ENODETarget.add($validTgT); 
 			$commParent = $(commonParent( $draggedAndTargets.toArray() ));	
 			$commParent.addClass('mu_targetsCommonParent')
 		}
@@ -114,14 +114,14 @@ if($enodeTarget.length==0){
 		else if(GLBDnD.toolWhenMousedown=="declare"){
 			//check if specific commutative property is selected
 			let commutativeOf = $('.selectedTool').attr('data-commutative');
-			let op = $enodeTarget[0].enodeparent().attr('data-enode')
+			let op = $ENODETarget[0].ENODEparent().attr('data-ENODE')
 			sort = (op==commutativeOf);
 		}
 		else{
-			sort = $enodeTarget[0].parentElement.matches('.ul_role') || !enodeclosedDef($enodeTarget);
+			sort = $ENODETarget[0].parentElement.matches('.ul_role') || !ENODEclosedDef($ENODETarget);
 		}
-		$enodeTarget[0].parentElement.setAttribute('from', 'froenode')
-		let fromSortable = makeSortableMouseDown([$enodeTarget[0].parentElement], sort)[0]
+		$ENODETarget[0].parentElement.setAttribute('from', 'froENODE')
+		let fromSortable = makeSortableMouseDown([$ENODETarget[0].parentElement], sort)[0]
 		//inject start event
 		fromSortable._onTapStart(event);
 	}
@@ -147,10 +147,10 @@ function startHandlerMouseDown(event) {
 }
 function onMove(event) {
 	$('.mu_DropTarget').removeClass('mu_DropTarget');
-	enodeparent($(event.to)).addClass('mu_DropTarget');
+	ENODEparent($(event.to)).addClass('mu_DropTarget');
 }
 function onSort(event) {
-	RefreshEmptyInfixBraketsGlued(enodeparent($(event.target)))
+	RefreshEmptyInfixBraketsGlued(ENODEparent($(event.target)))
 }
 function onUpdate(event) {
 	console.log('*onUpdate');
@@ -159,17 +159,17 @@ function onUpdate(event) {
 }
 
 function onAdd(event) {
-	//replacing sortablejs defaul clone with myClone (removed id, extends enode etc..)
+	//replacing sortablejs defaul clone with myClone (removed id, extends ENODE etc..)
 	//item stays in place myclone dropped in new place
 	event.item.classList.remove('showAsPlaceholder');
 	let myClone
 	//if moving, id and tags must remain!
 	if($(event.item).hasClass('toBeCloned')){
-		myClone = enodeclone($(event.item))[0]//remove id and tag
+		myClone = ENODEclone($(event.item))[0]//remove id and tag
 		event.item.classList.remove('toBeCloned');
 	}
 	else{
-		myClone = enodeclone($(event.item),true,false)[0]//do not remove id and tag
+		myClone = ENODEclone($(event.item),true,false)[0]//do not remove id and tag
 	}
 	event.item.replaceWith(myClone)
 	event.clone.replaceWith(event.item)//questo è l'elemento che rimane nella posizione di partenza
@@ -194,7 +194,7 @@ function onAdd(event) {
 		let target
 		let adHocTgt = event.to.classList.contains('tgt')
 		if (adHocTgt) {
-			//---->real target is enode so dropped in ad hoc tgt role
+			//---->real target is ENODE so dropped in ad hoc tgt role
 			target = event.to.parentElement;
 		} else {
 			//---->target is a role (no need for ad hoc tgt)
@@ -206,7 +206,7 @@ function onAdd(event) {
 		if (targetProperty == 'dragPatternMatch') {
 			
 			
-			let PActx = InstructAndTryOnePMT(GLBDnD.$originalProperty, enodeparent($(event.to)), GLBDnD.direction)
+			let PActx = InstructAndTryOnePMT(GLBDnD.$originalProperty, ENODEparent($(event.to)), GLBDnD.direction)
 			PActx.msg = GLBDnD.$originalProperty.closest('[data-tag]').attr('data-tag')
 			PActxConclude(PActx)
 		}
@@ -238,7 +238,7 @@ function onAdd(event) {
 	clickSound.play();
 }
 
-function makeTargetsSortableRolesOrenodes(targetsArray, propertyName, icon) {
+function makeTargetsSortableRolesOrENODEs(targetsArray, propertyName, icon) {
 	let j = 0;
 	while (targetsArray[j]) {
 		targetsArray[j].setAttribute('target', propertyName);
@@ -251,7 +251,7 @@ function makeTargetsSortableRolesOrenodes(targetsArray, propertyName, icon) {
 			}
 			targetsArray[j].append(notAtgt);
 		} else {
-			//target is not a role: for example in replacement it is an enode
+			//target is not a role: for example in replacement it is an ENODE
 			let tgt = $('<div class="tgt"></div>')[0]
 			if(icon){
 					$(tgt).css('background-image',wrapUnwrapUrlString(icon));

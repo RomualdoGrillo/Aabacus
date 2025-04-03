@@ -13,15 +13,15 @@
 			</and>
 		</apply>
 	</apply>
-<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
+<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
 		<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;">
-			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+			<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 				<div class="ul_role" data-type="bool">
 					<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
 					<ci title="Proprietà commutativa: sposta i fattori per riordinarli" data-vis="collapsed" data-variableorient="true" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
 				</div>
 			</div>
-			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+			<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 				<div class="ul_role" data-type="bool">
 					<apply title="Proprietà associativa della somma: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-vis="collapsed" data-tag="AssociativaSomma" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
 						<forall>
@@ -85,14 +85,14 @@
 					</apply>
 				</div>
 			</div>
-			<div data-atom="and" data-type="bool" class="atom saveAsHtml brackets" data-and="horizontal" style="border-width: 0px;" draggable="false">
+			<div data-ENODE="and" data-type="bool" class="ENODE saveAsHtml brackets" data-and="horizontal" style="border-width: 0px;" draggable="false">
 				<div class="ul_role" data-type="bool">
 					<ci title="Somma: seleziona i numeri da sommare e premi Invio" data-tagimg="./images/properties/compose.svg" data-tag="composePlusOnly" data-type="bool">built in</ci>
 					<ci title="Scomponi in unità decine ecc..: seleziona il numero e premi Invio" data-tagimg="./images/properties/tensunits.svg" data-tag="decomposeTens" data-type="bool">built in</ci>
 					<ci title="Tabelline: moltiplica interi minori di 9 eventualmente seguiti da soli zeri es. 3 30 300.." data-tagimg="./images/properties/tabelline.svg" data-tag="tabelline" data-type="bool">built in</ci>
 				</div>
 			</div>
-			<div data-atom="and" data-type="bool" class="atom brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
+			<div data-ENODE="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 				<div class="ul_role" data-type="bool">
 					<apply title="Proprietà distributiva destra: seleziona la moltiplicazione e premi Invio, maiusc+Invio per raccogliere
 					" data-type="bool" data-vis="collapsed" data-tag="distributiva" data-tagimg="./images/properties/distributive.svg">

@@ -1,25 +1,25 @@
 <section data-section="palette">
-	<div data-atom="hanoirod" data-proto="hanoirod" data-type="bool" class="atom" draggable="false" style="">
+	<div data-ENODE="hanoirod" data-proto="hanoirod" data-type="bool" class="ENODE" draggable="false" style="">
 		<div class="ol_role" data-type="obj" style="flex-direction:column; min-width: 58px; min-height: 120px; justify-content: end; background-color: white; background-image: url(./images/Hanoirod.svg); background-size: 100% 100%">
 		</div>
 	</div>
-	<div data-atom="hanoi" data-proto="hanoi" data-type="bool" class="atom" draggable="false" style="">
+	<div data-ENODE="hanoi" data-proto="hanoi" data-type="bool" class="ENODE" draggable="false" style="">
 		<div class="ol_role" data-type="bool" style="min-width: 50px; min-height: 100px; justify-content: end; background-color: white">
 		</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(59, 111, 230); min-width: 20px; border-color:grey" draggable="false">
+	<div data-ENODE="cn" data-proto="cn" data-type="obj" class="ENODE" style="background-color: rgb(59, 111, 230); min-width: 20px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">1</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(106, 174, 82); min-width: 28px; border-color:grey" draggable="false">
+	<div data-ENODE="cn" data-proto="cn" data-type="obj" class="ENODE" style="background-color: rgb(106, 174, 82); min-width: 28px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">2</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(255, 199, 0); min-width: 36px; border-color:grey" draggable="false">
+	<div data-ENODE="cn" data-proto="cn" data-type="obj" class="ENODE" style="background-color: rgb(255, 199, 0); min-width: 36px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">3</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: rgb(241, 128, 16); min-width: 44px; border-color:grey" draggable="false">
+	<div data-ENODE="cn" data-proto="cn" data-type="obj" class="ENODE" style="background-color: rgb(241, 128, 16); min-width: 44px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">4</div>
 	</div>
-	<div data-atom="cn" data-proto="cn" data-type="obj" class="atom" style="background-color: red; min-width: 52px; border-color:grey" draggable="false">
+	<div data-ENODE="cn" data-proto="cn" data-type="obj" class="ENODE" style="background-color: red; min-width: 52px; border-color:grey" draggable="false">
 					<div class="name" style="display:none">5</div>
 	</div>
 </section>

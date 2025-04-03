@@ -1,6 +1,6 @@
 <section data-section="palette">
 	<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/palette.prt">import palette</ci>
-	<!--<div data-proto="plus" data-atom="plus" data-type="num" class="atom ">
+	<!--<div data-proto="plus" data-ENODE="plus" data-type="num" class="ENODE ">
 				<div class="ol_role" data-type="num"></div>
 	</div>-->
 </section>
