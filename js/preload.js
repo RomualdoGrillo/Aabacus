@@ -211,7 +211,7 @@ function GLBsettingsToInterface() {
 		/*
 		//reorder terms and add or remove <br>
 		let onlyRemoveBr = varDisposition!='brTimes'
-		let arr= $('#canvasRole [data-atom=times]').toArray()
+		let arr= $('#canvasRole [data-exprNode=times]').toArray()
 		let i = 0;
 		for(i=0;arr[i];i++){
 			reorderTimes($(arr[i]),onlyRemoveBr)

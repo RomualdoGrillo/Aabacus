@@ -4,7 +4,7 @@
 
 
 
-function keyboardEvToFC($atom, keyPressed,event){
+function keyboardEvToFC($exprNode, keyPressed,event){
 	//if event is undefined, this is an internal call: use the property disregarding selectedTool
 	var PActx 
 	if(event && GLBsettings.tool=="declare" ){
@@ -13,7 +13,7 @@ function keyboardEvToFC($atom, keyPressed,event){
 		if( event.shiftKey){ direction = "rtl"}
 		
 		if(keyPressed==='\r' && actionString){
-			PActx = TryOnePropertyByName(actionString, $atom ,direction);
+			PActx = TryOnePropertyByName(actionString, $exprNode ,direction);
 			if( PActx && PActx.matchedTF ){//proprietà applicata con successo
 				PActx.msg = actionString +" "+ firstValString
 			}
@@ -32,7 +32,7 @@ function keyboardEvToFC($atom, keyPressed,event){
 			}
 			catch(err) {}
 			
-			PActx = TryOnePropertyByName(actionString, $atom ,firstValString);
+			PActx = TryOnePropertyByName(actionString, $exprNode ,firstValString);
 			if( PActx && PActx.error){$($actions[i]).addClass('error').attr('error',PActx.msg)}
 			else if( PActx && PActx.matchedTF ){//proprietà applicata con successo
 				PActx.msg = actionString +" "+ firstValString
@@ -53,7 +53,7 @@ function keyboardEvToFC($atom, keyPressed,event){
 function getDnDpropEnabled(dataTag){
 	//get the list of hardwired DnD properties and return just the enabled ones
 	//example: an element must be in canvas with data-tag="associativeDnD".  
-	let $propInCanvas = $('#canvasRole [data-atom=ci][data-tag]') 
+	let $propInCanvas = $('#canvasRole [data-exprNode=ci][data-tag]') 
 	if (GLBsettings.tool=='declare'){$propInCanvas = $propInCanvas.filter('.selectedTool,.selectedTool *')}
 	if(dataTag){$propInCanvas = $propInCanvas.filter('[data-tag=' + dataTag + ']')}
 	let propInCanvasEnabled = $propInCanvas.toArray()
@@ -83,7 +83,7 @@ function getDnDpropEnabled(dataTag){
 
 function searchEventHandler(event){// trova la definizione della proprietà
    var res
-   var $found = $('#events').find('[data-atom="eventtoaction"]').filter(function(index){
+   var $found = $('#events').find('[data-exprNode="eventtoaction"]').filter(function(index){
         var $role = this.exprNode_getRoles('.event');
         if($role.length !== 1){
             console.warn('Role not found' + field);
@@ -113,7 +113,7 @@ function searchEventHandler(event){// trova la definizione della proprietà
 function searchForProperty(field,value,returnedField){
 	// trova la definizione della proprietà
 	if( value == undefined){ return undefined}
-	let candidates = Array.from( canvas.querySelectorAll('[data-atom=deftrue]') );
+	let candidates = Array.from( canvas.querySelectorAll('[data-exprNode=deftrue]') );
 	let i=0;
 	while(candidates[i]){
 		let $role = candidates[i].exprNode_getRoles().filter('.' + field)
@@ -136,13 +136,13 @@ function RepeatedRefine_c($transform,key,selector){
 	var semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
 	let $transformParentRole = $transform.parent()//se il transform viene sostituito, continua a cercare a partire da l suo parent
 	while(semplificEffettuata == true && i<20){//limito il numero di tentativi per evitare loop infiniti
-		var $toBesemplified = $transformParentRole.find('[data-atom]')
+		var $toBesemplified = $transformParentRole.find('[data-exprNode]')
 		if(selector){
 			$toBesemplified = $toBesemplified.filter(selector)
 		}
 		var j= ($toBesemplified.length - 1)
     	semplificEffettuata = false;
-    	while( j>=0){//prova a semplificare il j-esimo atomo, parti dal fondo
+    	while( j>=0){//prova a semplificare il j-esimo exprNodeo, parti dal fondo
     		var refinementPActx = keyboardEvToFC($($toBesemplified[j]),key);
 			if(refinementPActx && refinementPActx.matchedTF){//semplificazione applicata con successo
 				refreshAndReplace(refinementPActx);

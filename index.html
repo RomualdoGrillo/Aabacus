@@ -34,49 +34,49 @@
 			<div id="paletteRow" class="row ide" vis="dynamic">
 				<input type="checkbox" class="fixButton" onclick="this.parentElement.classList.toggle('fixed')">
 				<div id="palette" class="ol_role">
-					<div data-atom="eq" data-proto="asymmeq" data-viseq="asymmetric" class="unlocked atom fundamental" data-type="bool">
+					<div data-enode="eq" data-proto="asymmeq" data-viseq="asymmetric" class="unlocked enode fundamental" data-type="bool">
 						<div class="s_role firstMember ui-icon ui-icon-unlocked" ></div>
 						<div class="decoration">:=</div>
 						<div class="s_role secondMember" data-type="obj" ></div>
 					</div>
-					<div data-atom="deftrue" data-proto="deftrue" class="atom fundamental hide" data-type="bool">
+					<div data-enode="deftrue" data-proto="deftrue" class="enode fundamental hide" data-type="bool">
 						<div class="s_role name" data-type="obj" ></div>
 						<div class="decoration">≡</div>
 						<div class="s_role prop" data-type="obj" ></div>
 						<div class="s_role shortCutLtr" data-type="obj" ></div>
 						<div class="s_role shortCutRtl" data-type="obj" ></div>
 					</div>
-					<div data-atom="eventtoaction" data-proto="eventtoaction" data-type="bool" class="atom fundamental hide">
+					<div data-enode="eventtoaction" data-proto="eventtoaction" data-type="bool" class="enode fundamental hide">
 						events
 						<div class="s_role event" data-type="obj" ></div>
 						actions
 						<div class="ol_role actions" data-type="obj" ></div>
 					</div>
-					<div data-atom="ci" data-proto="ci" data-type="" class="atom fundamental hide">
+					<div data-enode="ci" data-proto="ci" data-type="" class="enode fundamental hide">
 						<div class="name"></div>
 					</div>
-					<div data-proto="and" data-atom="and" data-type="bool" class="atom fundamental">
+					<div data-proto="and" data-enode="and" data-type="bool" class="enode fundamental">
 						<div class="ul_role" data-type="bool"></div>
 					</div>
-					<div data-atom="ci" data-proto="function" data-type="function" class="atom fundamental hide">
+					<div data-enode="ci" data-proto="function" data-type="function" class="enode fundamental hide">
 						<div class="name"></div>
 					</div>
-					<div data-atom="callfunction" data-proto="callfunction" data-type="obj" class="atom fundamental hide">
+					<div data-enode="callfunction" data-proto="callfunction" data-type="obj" class="enode fundamental hide">
 						call
 						<div class="s_role function" data-type="bool" ></div>
 						values
 						<div class="ol_role values" data-type="obj" ></div>
 					</div>
-					<div data-atom="" data-proto="" data-type="" class="atom fundamental hide">
+					<div data-enode="" data-proto="" data-type="" class="enode fundamental hide">
 						<div class="name"></div>
 					</div>
 				</div>
 			</div>
-			<div id="canvas" data-atom="eq" data-viseq="asymmetric" class="atom undraggable unselectable unlocked" data-type="bool">
+			<div id="canvas" data-enode="eq" data-viseq="asymmetric" class="enode undraggable unselectable unlocked" data-type="bool">
 				<div class="s_role firstMember ui-icon" ></div>
 				<div class="decoration">=</div>
 				<div class="s_role secondMember unsortable" data-type="obj" >
-					<div id="canvasAnd" class="atom undraggable unselectable " data-atom="and" data-type="bool">
+					<div id="canvasAnd" class="enode undraggable unselectable " data-enode="and" data-type="bool">
 						<div id="canvasRole" class="ul_role " data-type="bool">
 						<!-- ************inizio contenuto************* aggiungi qui classe "debug" -->
 						</div>
@@ -116,7 +116,7 @@
 							<input type="checkbox" id="cb_showNumerator1" title="reciprocal of x as 1/x">1 / ....
 						</div>
 						<div class="checkbox">
-							<input type="checkbox" id="cb_fixBorders" title="alwais show atoms borders">
+							<input type="checkbox" id="cb_fixBorders" title="alwais show enodes borders">
 							fix borders
 						</div>
 						<div class="checkbox">
@@ -170,7 +170,7 @@
 			<script type="text/javascript" src="js/calculateSpan.js"></script>
 			<script type="text/javascript" src="js/MAIN.js"></script>
 			<!--
-<script type="text/javascript" src="js/Atom.min.js"></script>
+<script type="text/javascript" src="js/Enode.min.js"></script>
 <script type="text/javascript" src="js/HardWiredProperties.min.js"></script>
 <script type="text/javascript" src="js/MAIN.min.js"></script>
 -->

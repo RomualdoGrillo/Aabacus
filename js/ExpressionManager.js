@@ -3,62 +3,62 @@
 //todo: cercare,tutti i punti in cui il codice  al di fuori di questo file e sostituire la manipolazione diretta di elementi html che costituiscono l'espressione matematica con chiamate a questo file 
 
 /*
-Nota: non sempre � comodo usare exprNodeobject.exprNodemethod()
-Il risultato di un select $('selector'), � un oggetto jQuery contenente n altri oggetti. Quindi non si pu� chiamare $('selector').exprNodemethod
+Nota: non sempre � comodo usare enodeobject.enodemethod()
+Il risultato di un select $('selector'), � un oggetto jQuery contenente n altri oggetti. Quindi non si pu� chiamare $('selector').enodemethod
 Si pu� chiamare in uno dei modi seguenti:  
-1)  $('selector')[0].exprNodemethod
-	$('selector').each(function(index) {this.exprNodemethod})
-2) oppure chiamare la funzione corrispondente al metodo, per come � costruito atom exprNodemethod(exprNodeobject)
+1)  $('selector')[0].enodemethod
+	$('selector').each(function(index) {this.enodemethod})
+2) oppure chiamare la funzione corrispondente al metodo, per come � costruito enode enodemethod(enodeobject)
 */
 
 /*
 Nota:
-exprNodenomefunzione possono essere usati sia come metodi che come funzioni
-exprNode_nomemetodo possono essere chiamati solo come metodi
-ad esempio exprNodeparent può essere invocato come metodo di un exprNode oppure come
-funzione su un qualsiasi elemento html anche se non è un exprNode 
+enodenomefunzione possono essere usati sia come metodi che come funzioni
+enode_nomemetodo possono essere chiamati solo come metodi
+ad esempio enodeparent può essere invocato come metodo di un enode oppure come
+funzione su un qualsiasi elemento html anche se non è un enode 
 */
 /* ---- Expression Global Utilities ---- */
 
 /**
  * Restituisce il nodo radice dell'espressione matematica principale.
- * @returns {HTMLElement|null} L'elemento HTML (DOM element) che rappresenta il nodo radice con attributo [data-atom],
+ * @returns {HTMLElement|null} L'elemento HTML (DOM element) che rappresenta il nodo radice con attributo [data-enode],
  *                            o null se non trovato.
  */
 function getExpressionRootNode() {
-    // Trova il primo figlio con [data-atom] all'interno del contenitore principale
-    return $("#canvas>.secondMember").children("[data-atom]")[0];
+    // Trova il primo figlio con [data-enode] all'interno del contenitore principale
+    return $("#canvas>.secondMember").children("[data-enode]")[0];
 }
 
-exprNode = {
-	exprNodeparent: exprNodeparent,
-	exprNodecreateMathmlString: exprNodecreateMathmlString,
-	exprNodeclosedDef: exprNodeclosedDef,
+enode = {
+	enodeparent: enodeparent,
+	enodecreateMathmlString: enodecreateMathmlString,
+	enodeclosedDef: enodeclosedDef,
 	isDefinition: isDefinition,
-	exprNodeCreateDefinition: exprNodeCreateDefinition,
-	exprNode_replaceWith: exprNode_replaceWith,
-	exprNode_getNodes: exprNode_getNodes,
-	exprNode_getRoles: exprNode_getRoles,
-	exprNode_getChildren: exprNode_getChildren,
-	exprNode_getName: exprNode_getName,
-	exprNode_setName: exprNode_setName,
-	exprNode_addRole: exprNode_addRole,
-	exprNode_checkIfPointlessSingleNode: exprNode_checkIfPointlessSingleNode,
-	exprNode_dissolveContainer: exprNode_dissolveContainer,
-	exprNode_overlay: exprNode_overlay,
+	enodeCreateDefinition: enodeCreateDefinition,
+	enode_replaceWith: enode_replaceWith,
+	enode_getNodes: enode_getNodes,
+	enode_getRoles: enode_getRoles,
+	enode_getChildren: enode_getChildren,
+	enode_getName: enode_getName,
+	enode_setName: enode_setName,
+	enode_addRole: enode_addRole,
+	enode_checkIfPointlessSingleNode: enode_checkIfPointlessSingleNode,
+	enode_dissolveContainer: enode_dissolveContainer,
+	enode_overlay: enode_overlay,
 };
-/* ---- exprNode Methods/Functions ---- */
+/* ---- enode Methods/Functions ---- */
 
-function exprNodeparent($startNode) {
+function enodeparent($startNode) {
 	//per poter chiamare sia come funzione che come metodo
 	if ($startNode == undefined) {
 		$startNode = $(this);
 	}
-	//risali passo passo la struttura DOM fino a trovare un elemento exprNode
-	return $startNode.parent().closest("[data-atom]");
+	//risali passo passo la struttura DOM fino a trovare un elemento enode
+	return $startNode.parent().closest("[data-enode]");
 }
 
-function exprNodeclosedDef(Node) {
+function enodeclosedDef(Node) {
 	//stabilisci se l'elemento "Node" e' aperto e si puo modificare liberamente
 	return $(Node).closest(".unlocked").length == 0;
 }
@@ -68,14 +68,14 @@ function isDefinition(Node) {
 	return $(Node).is('[data-viseq="asymmetric"]');
 }
 
-function exprNodefrozenDef(Node) {
+function enodefrozenDef(Node) {
 	//!! to be refined
 	return $(Node).closest("[data-tag]");
 }
 
-function exprNode_dissolveContainer() {
-	if (this.exprNode_getChildren().length > 0) {
-		var $children = this.exprNode_getRoles().children().filter("[data-atom]");
+function enode_dissolveContainer() {
+	if (this.enode_getChildren().length > 0) {
+		var $children = this.enode_getRoles().children().filter("[data-enode]");
 		$(this).replaceWith($children);
 	} else {
 		$(this).remove();
@@ -83,14 +83,14 @@ function exprNode_dissolveContainer() {
 	return $children;
 }
 
-//per creazione automatica def: $(".selected")[0].exprNodeCreateDefinition()
-//return exprNodeEqual(this,$mouseDownAtom[0])
-function exprNodeCreateDefinition(startNode) {
+//per creazione automatica def: $(".selected")[0].enodeCreateDefinition()
+//return enodeEqual(this,$mouseDownenode[0])
+function enodeCreateDefinition(startNode) {
 	if (startNode == undefined) {
 		startNode = this;
 	}
 	var outType = $(startNode).attr("data-type");
-	var $newDef = exprNodeclone(
+	var $newDef = enodeclone(
 		// prototypeSearch('eq','bool','[data-viseq=asymmetric]');
 		prototypeSearch("eq", "bool",)
 	); //crea una nuova definizine
@@ -99,17 +99,17 @@ function exprNodeCreateDefinition(startNode) {
 	//rimane da fare todo!!: separare con , 
 	//alternativa)in altermnativa si potrebbe una lista ordinata, ma si dovrebbe introdurre un modo
 	//per specificare separatamente il datatype di ogni elemento della lista (cluster)
-	var $definendum = exprNodeclone(prototypeSearch(""));//search for generic prototype
+	var $definendum = enodeclone(prototypeSearch(""));//search for generic prototype
 	$definendum.attr("data-type", outType);
 	m1 = $newDef.find(".firstMember"); //trova primo membro
 	newName = prompt("Enter a name for the new definition");
 	if (newName == null) { return }//prompt cancelled
 	if (!newName) { return }//empty name
-	$definendum.attr("data-atom", newName);
+	$definendum.attr("data-enode", newName);
 	$definendum.find(".name").append(newName);
 	m1.append($definendum); //aggiungi contenuto al primo membro ed inseriscilo
 	//*********************** definens **********************
-	$definens = exprNodeclone($(startNode));
+	$definens = enodeclone($(startNode));
 	//$definens.find("#MyOverlay").remove()//togli l'overlay colorato dal clone
 	m2 = $newDef.find(".secondMember"); //trova secondo membro todo
 	m2.append($definens); //aggiungi contenuto al secondo membro
@@ -117,8 +117,8 @@ function exprNodeCreateDefinition(startNode) {
 	$("#canvasRole").append($newDef);
 	if ($parList.length > 0) {
 		let paramDefNames = ["x", "y", "z", "t", "k", "p", "q", "a", "b", "c", "d", "e", "f", "g", "h", "i", "l", "m", "n", "o", "q", "r", "s", "u", "v", "z",];
-		$newforAll = exprNodeclone(prototypeSearch("forall")); //clona for each
-		exprNodeextend($newforAll);
+		$newforAll = enodeclone(prototypeSearch("forall")); //clona for each
+		enodeextend($newforAll);
 		$newDef.replaceWith($newforAll); //todo:scegliere dove deve essere visibile la nuova definizione
 		GetforAllContentRole($newforAll).append($newDef);
 		//***create arguments container in definendum, that's a way to show brackets
@@ -130,14 +130,14 @@ function exprNodeCreateDefinition(startNode) {
 		$parList.each(function (i, val) {
 			var node = this;
 			var thisType = $(node).attr("data-type");
-			var $newNode = exprNodeclone(prototypeSearch("ci")).attr(
+			var $newNode = enodeclone(prototypeSearch("ci")).attr(
 				"data-type",
 				thisType
 			); //data() e' un casino
-			$newNode[0].exprNode_setName(paramDefNames[i]);
+			$newNode[0].enode_setName(paramDefNames[i]);
 			$(this).replaceWith($newNode);
-			var $Clone1 = exprNodeclone($newNode); //clone da inserire in definendum
-			var $Clone2 = exprNodeclone($newNode); //clone da inserire in forAll header
+			var $Clone1 = enodeclone($newNode); //clone da inserire in definendum
+			var $Clone2 = enodeclone($newNode); //clone da inserire in forAll header
 			var $newRole = $('<div class="s_role" ></div>');
 			$newRole.attr("data-type", thisType);
 			//prepend comma
@@ -155,13 +155,13 @@ function exprNodeCreateDefinition(startNode) {
 	return startNode;
 }
 
-function exprNodeReplace($replaced, $replacer) {
-	var $clone = exprNodeclone($replacer);
-	exprNodeextend($clone); //mi serve subito che sia esteso, gli eventi sono attivati in seguito
+function enodeReplace($replaced, $replacer) {
+	var $clone = enodeclone($replacer);
+	enodeextend($clone); //mi serve subito che sia esteso, gli eventi sono attivati in seguito
 	//sostituisci
-	var mark = exprNodeSmarkUnmark($replaced);
+	var mark = enodeSmarkUnmark($replaced);
 	if (mark !== undefined) {
-		exprNodeSmarkUnmark($clone, mark); //$replaced---->$replacer sostituisci ma conserva il titolo se presente
+		enodeSmarkUnmark($clone, mark); //$replaced---->$replacer sostituisci ma conserva il titolo se presente
 	}
 	$replaced.replaceWith($clone);
 	$clone.css({ display: "" });
@@ -170,16 +170,16 @@ function exprNodeReplace($replaced, $replacer) {
 
 
 
-function exprNodeReplaceLink($replaced, $link) {
+function enodeReplaceLink($replaced, $link) {
 	//get the other member of the link, futuribile: uguaglianza tra molti membri, necessario sistema per scegliere tra membri
 	var $replacer;
 	if ($link.parent().hasClass("firstMember")) {
-		$replacer = exprNodeclone(
-			exprNodeparent($link)[0].exprNode_getRoles(".secondMember").children()
+		$replacer = enodeclone(
+			enodeparent($link)[0].enode_getRoles(".secondMember").children()
 		);
 	} else if ($link.parent().hasClass("secondMember")) {
-		$replacer = exprNodeclone(
-			exprNodeparent($link)[0].exprNode_getRoles(".firstMember").children()
+		$replacer = enodeclone(
+			enodeparent($link)[0].enode_getRoles(".firstMember").children()
 		);
 	} else {
 		console.log("dragged ne primo ne secondo membro");
@@ -202,27 +202,27 @@ function exprNodeReplaceLink($replaced, $link) {
 //no! cos� lo aggiungo alla funzione jQuery()  $.extend(addToJQ)
 //metodo da aggiungere a HTMLElement
 
-function typeOk($exprNodedragged, $role) {
+function typeOk($enodedragged, $role) {
 	return classA_in_classB(
-		$exprNodedragged.attr("data-type"),
+		$enodedragged.attr("data-type"),
 		$role.attr("data-type")
 	);
 }
 
-//if($exprNodedragged.attr(data-type))verifica datatype e numero di elementi accettati
+//if($enodedragged.attr(data-type))verifica datatype e numero di elementi accettati
 function classA_in_classB(classNameA, classNameB) {
 	// futuribile: stabilire se una classe ne estende un'altra anche con ereditariet� multipla
 	return classNameB === "obj" || classNameA === classNameB;
 }
 
-function exprNodeCreateSpaceForDeduction($hypothesis) {
+function enodeCreateSpaceForDeduction($hypothesis) {
 	var spaceForDeduction;
-	if (exprNodeparent($hypothesis).attr("data-atom") === "and") {
+	if (enodeparent($hypothesis).attr("data-enode") === "and") {
 		//parent external to enclosure is 'and'?
 		spaceForDeduction = $hypothesis.parent();
 	} else {
 		// create an 'and'
-		var newAnd = exprNodeclone(prototypeSearch("and"));
+		var newAnd = enodeclone(prototypeSearch("and"));
 		$hypothesis.parent().append(newAnd);
 		spaceForDeduction = newAnd.find('>[class*="_role"]');
 		spaceForDeduction.append($hypothesis); //
@@ -232,61 +232,61 @@ function exprNodeCreateSpaceForDeduction($hypothesis) {
 
 
 
-function exprNodeReplaceAll(
+function enodeReplaceAll(
 	$startNode,
-	replaced /*HTMLnode atom */,
-	replacer /*HTMLnode atom */
+	replaced /*HTMLnode enode */,
+	replacer /*HTMLnode enode */
 ) {
 	var $replaced = $(replaced);
 	var $replacer = $(replacer);
 	$startNode = $($startNode); //se per caso passo uno start node non $
 	var $occurrences = $findOccurrences($replaced, $startNode)
 	var result = $.each($occurrences, function (i, o) {
-		exprNodeReplace($(o), $replacer);
+		enodeReplace($(o), $replacer);
 	});
 	return +$occurrences.length + " replaced";
 }
 
 function GetforAllContentRole($forAll) {
-	return $forAll[0].exprNode_getRoles(".forAllContent");
+	return $forAll[0].enode_getRoles(".forAllContent");
 }
 function GetforAllHeader($forAll) {
-	return $forAll[0].exprNode_getRoles(".forAllHeader");
+	return $forAll[0].enode_getRoles(".forAllHeader");
 }
 
-function exprNodeForThis_Par_newVal($newVal, $parameter) {
-	return exprNodeForThisPar($parameter, $newVal);
+function enodeForThis_Par_newVal($newVal, $parameter) {
+	return enodeForThisPar($parameter, $newVal);
 }
-function exprNodeForThisPar($parameter, $newVal) {
-	// atom
+function enodeForThisPar($parameter, $newVal) {
+	// enode
 	//$newVal può essere anche un vettore vuoto
 	//in tal caso il parametro doverebbe essere di tipo x___ ma per ora non faccio controlli
-	var $f = $parameter.parent().closest('[data-atom="forAll"]'); //
+	var $f = $parameter.parent().closest('[data-enode="forAll"]'); //
 	var $h = GetforAllHeader($f);// get header
 	var $c = GetforAllContentRole($f);
 	var $root = $f; //l'elemento più esterno Root può cambiare
 	//************stabilisci se c'è conflitto con i nomi delle Bvar******
 	//il nome della variabile specificata nel forThis è per caso già presente tra i parametri del forall?
 	if ($newVal.length != 0) {
-		var newValName = $newVal[0].exprNode_getName();
+		var newValName = $newVal[0].enode_getName();
 		var $toBeRenamed = $h.children().filter(function () {
-			return this.exprNode_getName() == newValName;
+			return this.enode_getName() == newValName;
 		});
 		$toBeRenamed.each(function () {
 			formatForall($f, $(this));
 		});
 	}
-	//var mark = $parameter[0].exprNode_getName()
-	//exprNodeSmarkUnmark($newVal,mark)//se sostituisci il paramtro di nome xxx sarai marcato xxx
+	//var mark = $parameter[0].enode_getName()
+	//enodeSmarkUnmark($newVal,mark)//se sostituisci il paramtro di nome xxx sarai marcato xxx
 	//sostituisci
-	exprNodeReplaceAll($c, $parameter, $newVal);
+	enodeReplaceAll($c, $parameter, $newVal);
 	$parameter.remove();
 	//se non ci sono più parametri, "dissolvi" il forAll esterno e metti al suo posto il contenuto
 	if ($h.children().length == 0) {
 		var $content = $c.children();
 		//metti il sostituto nella stessa posizione del sostituito
 		if ($f.css("position") == "absolute") {
-			exprNodeappendInABSPosition($content, $f, "superposed");
+			enodeappendInABSPosition($content, $f, "superposed");
 		} else {
 			$content.insertBefore($f);
 		}
@@ -298,26 +298,26 @@ function exprNodeForThisPar($parameter, $newVal) {
 }
 
 function formatForall($forall, $toBeRenamed) {
-	var oldName = $toBeRenamed[0].exprNode_getName();
+	var oldName = $toBeRenamed[0].enode_getName();
 	var newName = "(" + oldName + ")";
 	//cerca le occorrenze e marca ciascuna occorrenza
 	var $occurrences = $findOccurrences($toBeRenamed, $forall);
 	$occurrences.each(function () {
-		this.exprNode_setName(newName);
+		this.enode_setName(newName);
 	});
 }
 
-function exprNode_replaceWith(replacer) {
-	//replacer must be atom
-	$(this.exprNode_getEnclIfPresent()).replaceWith(exprNode_getEnclIfPresent(replacer));
+function enode_replaceWith(replacer) {
+	//replacer must be enode
+	$(this.enode_getEnclIfPresent()).replaceWith(enode_getEnclIfPresent(replacer));
 	return this; // return replaced
 }
 
-function exprNode_getNodes(selector) {
+function enode_getNodes(selector) {
 	$(this).addClass("gettingNodes");
 	var $subnodes = $(this)
 		.find("*")
-		.not(".gettingNodes [data-atom], .gettingNodes [data-atom] *"); //subnodes in this atom
+		.not(".gettingNodes [data-enode], .gettingNodes [data-enode] *"); //subnodes in this enode
 	var $Nodes = $(this).add($subnodes); // root node + subnodes
 	if (selector != undefined) {
 		// se viene passato un "selector", filtra i Nodes
@@ -327,8 +327,8 @@ function exprNode_getNodes(selector) {
 	return $Nodes;
 }
 
-function exprNode_getRoles(selector) {
-	var $roles = this.exprNode_getNodes(selector).filter('[class*="_role"]');
+function enode_getRoles(selector) {
+	var $roles = this.enode_getNodes(selector).filter('[class*="_role"]');
 	$roles.sort(function (a, b) {
 		if ($(a).hasClass("bVar_role") && !$(b).hasClass("bVar_role")) {
 			// bVar_role always before other roles
@@ -354,8 +354,8 @@ function exprNode_getRoles(selector) {
 	return $roles;
 }
 
-function exprNode_getChildren(selector) {
-	var $children = this.exprNode_getRoles().children("[data-atom]");
+function enode_getChildren(selector) {
+	var $children = this.enode_getRoles().children("[data-enode]");
 	if (selector != undefined) {
 		// se viene passato un "selector", filtra
 		$children = $children.filter(selector);
@@ -363,7 +363,7 @@ function exprNode_getChildren(selector) {
 	return $children;
 }
 
-function exprNode_getName(considerSuffix) {
+function enode_getName(considerSuffix) {
 	var nameWithSuffix = $(this).find(">.name").text();
 	if (considerSuffix) {
 		return nameWithSuffix;
@@ -372,11 +372,11 @@ function exprNode_getName(considerSuffix) {
 	}
 }
 
-function exprNode_setName(newName) {
+function enode_setName(newName) {
 	$(this).find(">.name").text(newName);
 }
 
-function exprNode_addRole(dataType, roleClass, content) {
+function enode_addRole(dataType, roleClass, content) {
 	var $newNode;
 	if (content == undefined) { content = '' }//default content = ''
 	if (roleClass == undefined) { roleClass = 'ol_role' }//default ol_role ok for function calls
@@ -387,20 +387,20 @@ function exprNode_addRole(dataType, roleClass, content) {
 	return $newNode;
 } //da usare quando si crea una nuova funzione o definizione
 
-function validTargetsFromOpened($exprNodedragged) {
+function validTargetsFromOpened($enodedragged) {
 
 	var valids = $('#canvasRole, #canvasRole [class*="_role"]:visible').filter(function(i,e){
-		return canDraggedBeDroopedInRoleYesWrapNo($exprNodedragged,$(this))!='no'})
+		return canDraggedBeDroopedInRoleYesWrapNo($enodedragged,$(this))!='no'})
 
-	return valids.not($exprNodedragged.parent());
+	return valids.not($enodedragged.parent());
 }
 
 /*
-function canDraggedBeDroopedInThisRole($exprNodedragged,$role){
+function canDraggedBeDroopedInThisRole($enodedragged,$role){
 	//datatype is compatible
-	if(!typeOk($exprNodedragged, $role)){return false}
+	if(!typeOk($enodedragged, $role)){return false}
 	//******target is OPENED 
-	if(!exprNodeclosedDef($role[0])){  
+	if(!enodeclosedDef($role[0])){  
 		//is there place for another?
 		return isTherePlaceForAnother($role)
 	}
@@ -408,17 +408,17 @@ function canDraggedBeDroopedInThisRole($exprNodedragged,$role){
 	else{
 		//New definition and neutral element of conjunction is are properties constituent of the environment, so fundamental the environment can't work without it.
 		// parent is 'And' and dragged is new definition or 'true' 
-		exprNodeparent($(this)).attr('data-atom')=='and' &&
-		$exprNodedragged.is("[data-proto=asymmeq]") ||
-		$exprNodedragged[0].exprNode_getName() == "true"
+		enodeparent($(this)).attr('data-enode')=='and' &&
+		$enodedragged.is("[data-proto=asymmeq]") ||
+		$enodedragged[0].enode_getName() == "true"
 	}
 }
 */
 
-function canDraggedBeDroopedInRoleYesWrapNo($exprNodedragged,$role){
+function canDraggedBeDroopedInRoleYesWrapNo($enodedragged,$role){
 	//******target is OPENED and there is space for another
-	if(!exprNodeclosedDef($role[0]) && isTherePlaceForAnother($role) ){  
-		if( typeOk($exprNodedragged, $role)){//datatype is compatible
+	if(!enodeclosedDef($role[0]) && isTherePlaceForAnother($role) ){  
+		if( typeOk($enodedragged, $role)){//datatype is compatible
 			return 'yes'
 		}
 		else{
@@ -426,8 +426,8 @@ function canDraggedBeDroopedInRoleYesWrapNo($exprNodedragged,$role){
 		}
 	}
 	//******target is CLOSED 
-	else if(exprNodeparent($role).attr('data-atom')=='and' &&
-			$exprNodedragged.is("[data-proto=asymmeq]") || $exprNodedragged[0].exprNode_getName() == "true"){
+	else if(enodeparent($role).attr('data-enode')=='and' &&
+			$enodedragged.is("[data-proto=asymmeq]") || $enodedragged[0].enode_getName() == "true"){
 			// parent is 'And' and dragged is new definition or 'true' 
 			//New definition and neutral element of conjunction are properties constituent of the environment, so fundamental the environment can't work without it.	
 		return 'yes'
@@ -448,7 +448,7 @@ function getNumOfPlaces($role) {
 
 function isTherePlaceForAnother($role) {
 	var numOfPlaces = getNumOfPlaces($role)[1];
-	var numOfChildren = $role.children().filter("[data-atom]").length
+	var numOfChildren = $role.children().filter("[data-enode]").length
 	return (numOfPlaces == -1 ||
 		numOfChildren < numOfPlaces)
 }
@@ -488,7 +488,7 @@ function overflowExsists(node) {
 	);
 }
 
-function exprNodeclone($node, Extend, removeID) {//default: Extend and RemoveID
+function enodeclone($node, Extend, removeID) {//default: Extend and RemoveID
 	$clone = $node.clone(); //clona
 	$toBeCleaned = $clone.add($clone.find("*")); //clean discendence too
 	if (Extend !== false) {
@@ -511,7 +511,7 @@ var symbols = ["ci", "cn", "csymbol"];
 function prototypeSearch(className, dataType, selector, name) {
 	//alcune classi, ad esempio "ci", possono avere vari datatype
 	//get all prototypes  (futuribile: preindex prototypes)
-	var $prototypes = $("#palette").find("[data-atom][data-proto]");
+	var $prototypes = $("#palette").find("[data-enode][data-proto]");
 	//filter for required
 	if (selector) {
 		$prototypes = $prototypes.filter(selector);
@@ -526,7 +526,7 @@ function prototypeSearch(className, dataType, selector, name) {
 
 	$prototypes = $prototypes.filter(function () {
 		return (
-			this.getAttribute("data-atom").toLowerCase() == className &&
+			this.getAttribute("data-enode").toLowerCase() == className &&
 			(type == undefined ||
 				this.getAttribute("data-type").toLowerCase() == type)
 		);
@@ -534,7 +534,7 @@ function prototypeSearch(className, dataType, selector, name) {
 	if ($prototypes.length > 1 && (className === "cn" || className === "ci")) {
 		//if many candidates refine research
 		let $specificProto = $prototypes.filter(function () {
-			return this.exprNode_getName() == name;
+			return this.enode_getName() == name;
 		});
 		if ($specificProto.length != 0) {
 			return $specificProto.eq(0);
@@ -552,15 +552,15 @@ function prototypeSearch(className, dataType, selector, name) {
 	}
 	//if not found adapt generic prototype
 	if ($prototypes.length === 0) {
-		//console.warn('exprNode prototype not found:className:' + className + ", dataType:" + dataType);//Warning!!
-		let $prototype = exprNodeclone($("[data-proto='']"));
-		$prototype.attr("data-atom", className);
+		//console.warn('enode prototype not found:className:' + className + ", dataType:" + dataType);//Warning!!
+		let $prototype = enodeclone($("[data-proto='']"));
+		$prototype.attr("data-enode", className);
 		$prototype.attr("data-type", dataType);
-		// add atomtype name as decoration name 
+		// add enodetype name as decoration name 
 		//Duplication the prototype is extended outside this function
 		//I nee to extend in order to use _setName
-		exprNodeextend($prototype);
-		$prototype[0].exprNode_setName(className)
+		enodeextend($prototype);
+		$prototype[0].enode_setName(className)
 		//addTypeDecorations($prototype);
 		return $prototype;
 	}
@@ -568,40 +568,40 @@ function prototypeSearch(className, dataType, selector, name) {
 }
 
 /**
- * wraps the given exprNode element with an operation.
+ * wraps the given enode element with an operation.
  *
- * If the parent of the exprNode element already has the specified operation, this function
+ * If the parent of the enode element already has the specified operation, this function
  * simply returns the parent element. Otherwise, it creates a new clone of the prototype
- * for the operation, inserts it before the exprNode element, and moves the exprNode element
+ * for the operation, inserts it before the enode element, and moves the enode element
  * to be a child of the new clone.
  *
- * @param {jQuery} $exprNodeelement - The exprNode element to wrap with the operation.
- * @param {string} op - The operation to wrap the exprNode element with.
- * @returns {jQuery} The new clone element that wraps the exprNode element.
+ * @param {jQuery} $enodeelement - The enode element to wrap with the operation.
+ * @param {string} op - The operation to wrap the enode element with.
+ * @returns {jQuery} The new clone element that wraps the enode element.
  */
-function wrapIfNeeded($exprNodeelement, op) {
-	if (exprNodeparent($exprNodeelement).attr("data-atom") === op) {
+function wrapIfNeeded($enodeelement, op) {
+	if (enodeparent($enodeelement).attr("data-enode") === op) {
 		//no need to cteate external op
-		return exprNodeparent($exprNodeelement);
+		return enodeparent($enodeelement);
 	} else {
-		return wrapWithOperation($exprNodeelement, op);
+		return wrapWithOperation($enodeelement, op);
 	}
 }
-function wrapWithOperation($exprNodeelement, op) {
-	//create external operation to $exprNodeelement, $exprNodeelement is 1 element or a list of adjacent elements
+function wrapWithOperation($enodeelement, op) {
+	//create external operation to $enodeelement, $enodeelement is 1 element or a list of adjacent elements
 	var $prototype = prototypeSearch(op);
-	var $clone = exprNodeclone($prototype);
-	//exprNodeparent($exprNodeelement).replaceWith($clone);//replace provoca la distruzione degli eventi nel replaced
-	$clone.insertBefore($exprNodeelement.eq(0));
-	$exprNodeelement.appendTo($clone[0].exprNode_getRoles());
+	var $clone = enodeclone($prototype);
+	//enodeparent($enodeelement).replaceWith($clone);//replace provoca la distruzione degli eventi nel replaced
+	$clone.insertBefore($enodeelement.eq(0));
+	$enodeelement.appendTo($clone[0].enode_getRoles());
 	return $clone;
 }
 
 function wrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
 	
-	//if(  $targetNode.is('#canvasRole') && (exprNodeclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
+	//if(  $targetNode.is('#canvasRole') && (enodeclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
 	if(  canDraggedBeDroopedInRoleYesWrapNo($toBeInserted,$targetNode)=='needsWrap' ) {
-		var $newDef = exprNodeclone(prototypeSearch('eq','bool','[data-viseq=asymmetric]'));
+		var $newDef = enodeclone(prototypeSearch('eq','bool','[data-viseq=asymmetric]'));
 		if(unlocked){$newDef.addClass("unlocked")}
 		else{$newDef.removeClass("unlocked")}
 		$newDef.insertBefore($toBeInserted.eq(0));
@@ -632,9 +632,9 @@ function checkCn($s) {
 function checkSiblings($s) {
 	//controlla che siano numeri e siano siblings
 	var allSiblingsOk = true;
-	var $parent = exprNodeparent($($s[0])); //to check if nodes are siblings
+	var $parent = enodeparent($($s[0])); //to check if nodes are siblings
 	for (var i = 0, len = $s.length; i < len; i++) {
-		if (!exprNodeparent($($s[i])).is($parent)) {
+		if (!enodeparent($($s[i])).is($parent)) {
 			allSiblingsOk = false;
 			break;
 		}
@@ -642,10 +642,10 @@ function checkSiblings($s) {
 	return allSiblingsOk;
 }
 
-function addTypeDecorations($atom) {
+function addTypeDecorations($enode) {
 	//get the "type" of the prototype and complete it with decoration
-	var dataType = $atom.attr("data-type");
-	var b = $atom;
+	var dataType = $enode.attr("data-type");
+	var b = $enode;
 	if (dataType === "num" && b.find(".leftDecoration").length == 0) {
 		//is decoration present already?
 		b.append($('<div class="leftDecoration"></div>'));
@@ -654,18 +654,18 @@ function addTypeDecorations($atom) {
 		(dataType === "num" || dataType === "bool") &&
 		b.find(".topDecoration").length == 0
 	) {
-		var b = $atom;
+		var b = $enode;
 		b.append($('<div class="topDecoration"></div>'));
 	}
 }
 
-function exprNoderenamePrompt($atom, newName) {
+function enoderenamePrompt($enode, newName) {
 	//
-	var oldName = $atom[0].exprNode_getName();
-	if ($atom.hasClass("minus")) {
+	var oldName = $enode[0].enode_getName();
+	if ($enode.hasClass("minus")) {
 		oldName = "-" + oldName;
 	}
-	if ($atom.hasClass("inverse")) {
+	if ($enode.hasClass("inverse")) {
 		oldName = "/" + oldName;
 	}
 	var newName = prompt(
@@ -675,46 +675,46 @@ function exprNoderenamePrompt($atom, newName) {
 	if (newName != null) {
 		if (newName[0] === "/") {
 			newName = newName.substr(1); //nome privato del segno meno
-			$atom.addClass("inverse");
+			$enode.addClass("inverse");
 		} // attenzione: / va inserito prime del meno
 		else {
-			$atom.removeClass("inverse");
+			$enode.removeClass("inverse");
 		}
 		if (newName[0] === "-") {
 			newName = newName.substr(1); //nome privato del segno meno
-			$atom.addClass("minus");
+			$enode.addClass("minus");
 		} //todo: cosa succede se input = ---2  ?
 		else {
-			$atom.removeClass("minus");
+			$enode.removeClass("minus");
 		}
-		$atom[0].exprNode_setName(newName);
-		$atom.attr("data-atom", isNaN(newName) ? "ci" : "cn"); // se numero allora classe "cn"
+		$enode[0].enode_setName(newName);
+		$enode.attr("data-enode", isNaN(newName) ? "ci" : "cn"); // se numero allora classe "cn"
 		ssnapshot.take();
 	}
 }
 
 function createForThis($forall, $placeHolder) {
 	//Modus Ponens deduce a special case from a forall
-	var $clone = exprNodeclone($forall);
+	var $clone = enodeclone($forall);
 	exclusiveFocus = $clone.addClass("exclusiveFocus"); //metti il clone in stato exclusiveFocus
 	//****inserit the new proposition*****
-	if (exprNodeparent($forall).attr("data-atom") == "and") {
+	if (enodeparent($forall).attr("data-enode") == "and") {
 		$clone.insertAfter($forall);
 	} else {
 		//enclosure needed
-		exprNodeCreateSpaceForDeduction($forall).append($clone);
+		enodeCreateSpaceForDeduction($forall).append($clone);
 	}
 	return $clone;
 }
 
-//start to peel Onion($currAtom)
-function AtomsToVal($currAtom, res) {
+//start to peel Onion($currenode)
+function enodesToVal($currenode, res) {
 	//espressioni tipo (-(/(-(a)))) funzione ricorsiva
 	//res = {type:"NotAnumber", val:1, sign:1, exp:1, computedVal:NaN, canBeReplaced:true}
 	//debug colors
 	if (debugMode) {
 		$("*").removeClass("input");
-		exprNodenodesAddClass($currAtom, "input"); //add colors
+		enodenodesAddClass($currenode, "input"); //add colors
 	}
 
 	//se non vengono passati segni precedenti essi sono inizializzati a 1
@@ -728,10 +728,10 @@ function AtomsToVal($currAtom, res) {
 			canBeReplaced: true,
 		};
 	}
-	var op = $currAtom.attr("data-atom");
+	var op = $currenode.attr("data-enode");
 	if (op === "minus" || op === "m_inverse") {
 		//------------------> recursive
-		var newRes = AtomsToVal($currAtom[0].exprNode_getChildren(), res);
+		var newRes = enodesToVal($currenode[0].enode_getChildren(), res);
 		//<------------------
 		if (op === "minus") {
 			res.sign = newRes.sign * -1;
@@ -739,15 +739,15 @@ function AtomsToVal($currAtom, res) {
 			res.exp = newRes.exp * -1;
 		}
 	} else if (op === "power") {
-		let $exponent = $currAtom[0].exprNode_getChildren(':last');//:first child is exponent\
-		if ($exponent.attr("data-atom") == "cn") {
+		let $exponent = $currenode[0].enode_getChildren(':last');//:first child is exponent\
+		if ($exponent.attr("data-enode") == "cn") {
 			//------>
-			let resExp = AtomsToVal($exponent);
+			let resExp = enodesToVal($exponent);
 			//<-----
 			res.exp = res.exp * resExp.val;
-			let $base = $currAtom[0].exprNode_getChildren(':first');//:first child is base
+			let $base = $currenode[0].enode_getChildren(':first');//:first child is base
 			//------>
-			res.val = AtomsToVal($base).val;
+			res.val = enodesToVal($base).val;
 			//<-----
 		}
 		else {
@@ -757,7 +757,7 @@ function AtomsToVal($currAtom, res) {
 	} else if (op === "cn" || op === "ci") {
 		//todo: per ora gestisce solo cn e ci
 		res.type = op;
-		res.val = $currAtom[0].exprNode_getName();
+		res.val = $currenode[0].enode_getName();
 	} else {
 		res.val = NaN;
 		res.canBeReplaced = false;
@@ -766,81 +766,81 @@ function AtomsToVal($currAtom, res) {
 	return res;
 }
 
-function isAsymbol($atom) {
-	var className = $atom.attr("data-atom");
+function isAsymbol($enode) {
+	var className = $enode.attr("data-enode");
 	return symbols.indexOf(className) != -1; //is it a symbol?(ci,cs,csymbol)
 }
 
-function ValToAtoms(partial) {
-	var $newAtom;
+function ValToenodes(partial) {
+	var $newenode;
 	var $clone;
 	var $target;
 	if (partial.sign === -1) {
 		//segno meno?
-		$clone = exprNodeclone(prototypeSearch("minus"));
-		$newAtom = $clone;
-		$target = $clone[0].exprNode_getRoles();
+		$clone = enodeclone(prototypeSearch("minus"));
+		$newenode = $clone;
+		$target = $clone[0].enode_getRoles();
 	}
 	if (partial.exp === -1) {
 		//inverso?
-		$clone = exprNodeclone(prototypeSearch("m_inverse"));
+		$clone = enodeclone(prototypeSearch("m_inverse"));
 		if ($target !== undefined) {
 			$target.append($clone);
 		} else {
-			$newAtom = $clone;
+			$newenode = $clone;
 		}
-		$target = $clone[0].exprNode_getRoles();
+		$target = $clone[0].enode_getRoles();
 	}
 	else if (partial.exp != 1) {
 		//power
-		$clone = exprNodeclone(prototypeSearch("power"));
+		$clone = enodeclone(prototypeSearch("power"));
 		if ($target !== undefined) {
 			$target.append($clone);
 		} else {
-			$newAtom = $clone;
+			$newenode = $clone;
 		}
-		let $exponent = exprNodeclone(prototypeSearch("cn", "num"));
-		$exponent[0].exprNode_setName(partial.exp);
-		$clone[0].exprNode_getRoles('.exponent').append($exponent);
-		$target = $clone[0].exprNode_getRoles('.base');
+		let $exponent = enodeclone(prototypeSearch("cn", "num"));
+		$exponent[0].enode_setName(partial.exp);
+		$clone[0].enode_getRoles('.exponent').append($exponent);
+		$target = $clone[0].enode_getRoles('.base');
 
 	}
-	$clone = exprNodeclone(prototypeSearch(partial.type, "num", undefined, partial.val));
-	$clone[0].exprNode_setName(partial.val);
-	$clone.attr("data-atom", partial.type); //uso un generico prototipo num e qui specifico se cn o ci
+	$clone = enodeclone(prototypeSearch(partial.type, "num", undefined, partial.val));
+	$clone[0].enode_setName(partial.val);
+	$clone.attr("data-enode", partial.type); //uso un generico prototipo num e qui specifico se cn o ci
 	if ($target !== undefined) {
 		$target.append($clone);
 	} else {
-		$newAtom = $clone;
+		$newenode = $clone;
 	}
-	return $newAtom;
+	return $newenode;
 }
 
-function AtomBesideGiven($startAtom) {
+function enodeBesideGiven($startenode) {
 	//Attualmente il contenuto dei role si dispone leftRight e topDown mentre comporre è visto come left e down.
 	//di conseguenza per decidere qual'è l'elemento con cui comporre devo distiguere a seconda dell'orientazione.'
 	if ($toBeComp.css("display") === "inline-block") {
-		return $startAtom.prevAll("[data-atom]:first");
+		return $startenode.prevAll("[data-enode]:first");
 	} else {
-		return $startAtom.nextAll("[data-atom]:first");
+		return $startenode.nextAll("[data-enode]:first");
 	}
 }
 
-function refreshOneBracket($exprNode) {
-	if (exprNodeneedsBracket($exprNode)) {
-		$exprNode.addClass("brackets");
+function refreshOneBracket($enode) {
+	if (enodeneedsBracket($enode)) {
+		$enode.addClass("brackets");
 	} else {
-		$exprNode.removeClass("brackets");
+		$enode.removeClass("brackets");
 	}
 }
 
-function refreshOneTimesDisp($exprNode, timesDisposition) {
-	if (!$exprNode.is('[data-atom=times]')) { return }//procedi solo se è un atom di tipo times
+function refreshOneTimesDisp($enode, timesDisposition) {
+	if (!$enode.is('[data-enode=times]')) { return }//procedi solo se è un enode di tipo times
 	if (timesDisposition == "brTimes") {
-		reorderTimes($exprNode)
+		reorderTimes($enode)
 	}
 	else {
-		reorderTimes($exprNode, true)//remove br, do not reorder
+		reorderTimes($enode, true)//remove br, do not reorder
 	}
 }
 
@@ -855,13 +855,13 @@ function RefreshEmptyInfixBraketsGlued($startNode, tree, options) {
 	if ($startNode == undefined || $startNode.length == 0) {
 		$startNode = $("#result,#canvasAnd,#palette")
 	}
-	var $Atoms; //lista degli atomi "da trattare"
+	var $enodes; //lista degli enodei "da trattare"
 	if (tree != false) {
-		$Atoms = $startNode.add($startNode.find("[data-atom]"));
+		$enodes = $startNode.add($startNode.find("[data-enode]"));
 	} else {
-		$Atoms = $startNode;
+		$enodes = $startNode;
 	}
-	$Atoms.each(function (i, element) {
+	$enodes.each(function (i, element) {
 		if (options == undefined || options.indexOf("e") != -1) {
 			refreshOneEmpty($(element));
 		}
@@ -880,25 +880,25 @@ function RefreshEmptyInfixBraketsGlued($startNode, tree, options) {
 	}
 }
 
-function exprNodeshowMarks($atom, showPath) {
+function enodeshowMarks($enode, showPath) {
 	//se showPath=true allora mostra anche il path
 	var labelString;
-	var mark = $atom.attr("title");
+	var mark = $enode.attr("title");
 	if (mark == undefined) {
 		mark = "";
 	}
-	var path = $atom.attr("data-path");
+	var path = $enode.attr("data-path");
 	if (!showPath || path == undefined) {
 		path = "";
 	} //se non è da visualizzare, oppure è indefinito
-	if ($atom.find(".label").length == 0) {
-		$atom.append('<div class="label"></div>');
+	if ($enode.find(".label").length == 0) {
+		$enode.append('<div class="label"></div>');
 	}
-	$atom.find(".label").text(mark + "_" + path);
+	$enode.find(".label").text(mark + "_" + path);
 }
 function showAllMarks(showPath) {
-	$("body [data-atom]:visible").each(function (i, element) {
-		exprNodeshowMarks($(element), showPath);
+	$("body [data-enode]:visible").each(function (i, element) {
+		enodeshowMarks($(element), showPath);
 	});
 }
 
@@ -906,22 +906,22 @@ function hideAllMarks() {
 	$(".label").remove();
 }
 
-function exprNodeEqual(node1, node2, checkType, neglectRootSign) {
+function enodeEqual(node1, node2, checkType, neglectRootSign) {
 	//node1/2 HTMLnode. Flat to simil mathml e paragona
 	if (node1 == undefined || node2 == undefined) {
 		return false;
 	}
 	return (
-		node1.exprNodecreateMathmlString(undefined, checkType, neglectRootSign) ===
-		node2.exprNodecreateMathmlString(undefined, checkType, neglectRootSign)
+		node1.enodecreateMathmlString(undefined, checkType, neglectRootSign) ===
+		node2.enodecreateMathmlString(undefined, checkType, neglectRootSign)
 	);
 	//return adaptMatch(undefined,$(node1),$(node2),$(node2))//sostituita comparazione "grezza" con comparazione ricorsiva
 }
 
-function compareExtexprNode(
+function compareExtenode(
 	$input,
 	$pattern,
-	checkAtomTypeAndName /*defaul=true*/,
+	checkenodeTypeAndName /*defaul=true*/,
 	checkMarks
 ) {
 	var res;
@@ -934,15 +934,15 @@ function compareExtexprNode(
 		!($input.attr("data-type") === $pattern.attr("data-type")) /*notSameType*/
 	) {
 		return false;
-	} else if (checkAtomTypeAndName == false) {
+	} else if (checkenodeTypeAndName == false) {
 		return true;
 	} // no deeper tests required
 	else if (
-		$input.attr("data-atom") !== $pattern.attr("data-atom") /*notSameClass*/
+		$input.attr("data-enode") !== $pattern.attr("data-enode") /*notSameClass*/
 	) {
 		return false;
-	} else if (symbols.indexOf($input.attr("data-atom")) != -1 /*is a symbol*/) {
-		res = $input[0].exprNode_getName() === $pattern[0].exprNode_getName();
+	} else if (symbols.indexOf($input.attr("data-enode")) != -1 /*is a symbol*/) {
+		res = $input[0].enode_getName() === $pattern[0].enode_getName();
 	} else {
 		res = true; //no more tests required
 	}
@@ -950,22 +950,22 @@ function compareExtexprNode(
 }
 
 
-function exprNode_checkIfPointlessSingleNode() {
-	let op = $(this).attr("data-atom");
+function enode_checkIfPointlessSingleNode() {
+	let op = $(this).attr("data-enode");
 	if (!OpIsAssociative(op)) {
 		return false;
 	}
-	if (this.exprNode_getChildren().length <= 1) {
+	if (this.enode_getChildren().length <= 1) {
 		return true;
 	}
-	let opP = exprNodeparent($(this)).attr("data-atom");
+	let opP = enodeparent($(this)).attr("data-enode");
 	if (opP == op) {
 		return true;
 	}
 }
 
-function exprNode_overlay(mode) {
-	// aggiunge/rimuove un overlay ad un exprNode
+function enode_overlay(mode) {
+	// aggiunge/rimuove un overlay ad un enode
 	if (mode == undefined) {
 		$(this).append('<div id="overlay">');
 	} else {
@@ -973,33 +973,33 @@ function exprNode_overlay(mode) {
 	}
 }
 
-function exprNodenodesAddClass($atom, newClass, mode /* true = remove*/) {
+function enodenodesAddClass($enode, newClass, mode /* true = remove*/) {
 	if (!mode) {
-		$atom.each(function () {
-			this.exprNode_getNodes().addClass(newClass);
+		$enode.each(function () {
+			this.enode_getNodes().addClass(newClass);
 		});
 	} else {
-		$atom.each(function () {
-			this.exprNode_getNodes().removeClass(newClass);
+		$enode.each(function () {
+			this.enode_getNodes().removeClass(newClass);
 		});
 	}
 }
 
-// exprNodeapplyFunctToTree($('.selected'),true,ALDOtest,'a','b','c')
-function exprNodeapplyFunctToTree(
-	$StartAtom,
+// enodeapplyFunctToTree($('.selected'),true,ALDOtest,'a','b','c')
+function enodeapplyFunctToTree(
+	$Startenode,
 	includeRoot,
 	funct,
 	parameterA,
 	parameterB,
 	parameterC
 ) {
-	//given Funct($Atom), it is applied to the discendants of $startNode
+	//given Funct($enode), it is applied to the discendants of $startNode
 	let $tree = $();
 	if (includeRoot) {
-		$tree = $tree.add($StartAtom);
+		$tree = $tree.add($Startenode);
 	}
-	$tree = $tree.add($StartAtom.find("[data-atom]"));
+	$tree = $tree.add($Startenode.find("[data-enode]"));
 	//$tree.each(funct(parameterA,parameterB))
 	$tree.each(function (i, e) {
 		funct($(e), parameterA, parameterB, parameterC);
@@ -1007,45 +1007,45 @@ function exprNodeapplyFunctToTree(
 }
 
 /*
-function exprNodefrozenDef(Node){
+function enodefrozenDef(Node){
 	//!! to be refined 
 	return $(Node).closest('[data-tag]')
 }
 */
 
-/************** exprNode UTILITIES  not API ***********************/
-function exprNodeextend($startNode, applyToSubtreeAlso) {
-	//add methods from object "exprNode"
+/************** enode UTILITIES  not API ***********************/
+function enodeextend($startNode, applyToSubtreeAlso) {
+	//add methods from object "enode"
 	var $toBeExtended;
 	if (!applyToSubtreeAlso) {
-		$toBeExtended = $startNode.filter("[data-atom]"); //in ogni caso estendo solo i '[data-atom]'
+		$toBeExtended = $startNode.filter("[data-enode]"); //in ogni caso estendo solo i '[data-enode]'
 	} else {
 		$toBeExtended = $startNode
-			.filter("[data-atom]")
-			.add($startNode.find("[data-atom]"));
+			.filter("[data-enode]")
+			.add($startNode.find("[data-enode]"));
 	}
 
 	$toBeExtended.each(function (index) {
-		// tutti gli HTML nodes con classe .exprNode
-		$.extend(this, exprNode); //pare non si possa fare altrimenti non riesco a estendere $(this)
+		// tutti gli HTML nodes con classe .enode
+		$.extend(this, enode); //pare non si possa fare altrimenti non riesco a estendere $(this)
 	});
 }
 
 function reorderTimes($startTimes, brRemove) {
-	//select a times atom
+	//select a times enode
 	//reorderTimes($('.selected'))  
 	//reorderTimes($('.selected'),true)  te remove br
 	try {
 
-		let role = $startTimes[0].exprNode_getRoles()[0];
+		let role = $startTimes[0].enode_getRoles()[0];
 		$(role).find('br').remove();
 		if (brRemove) { return }
 		let brExist = false;
 		let numeratorFound = false;
-		let childrenArr = $startTimes[0].exprNode_getChildren().toArray()
+		let childrenArr = $startTimes[0].enode_getChildren().toArray()
 		/**metti i reciproci al per ultimi preceduti da br */
 		for (i = 0; childrenArr[i]; i++) {
-			if ($(childrenArr[i]).is('[data-atom=m_inverse]')) {
+			if ($(childrenArr[i]).is('[data-enode=m_inverse]')) {
 				//aggiungi br se ancora non esiste
 				if (!brExist) {
 					$('<br>').appendTo($(role))

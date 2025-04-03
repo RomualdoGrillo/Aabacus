@@ -3,12 +3,12 @@ funzione accantonata perchè:
 meglio marcare quando è necessario che marcare a strascico.
 non so se funziona l'esclusione dei discendenti del selected.
 function markOriginalPositionInSubtree($root){
-	var $allAtoms = $root.find('[data-atom]')
-	var $marked = $allAtoms.filter(function(){
+	var $allexprNodes = $root.find('[data-exprNode]')
+	var $marked = $allexprNodes.filter(function(){
 		var mark = exprNodeSmarkUnmark($(this),undefined,"m")
 		return ( mark.indexOf("d")!==-1 || mark.indexOf("s")!==-1 )//  mark-link-cleanup){//se marcato “dragged” o selected non memorizzare path iniziale.
 	})
-	var $remaining = $allAtoms.not($marked.find(['data-atom']))//escludi quelli mrcati e la loro discendenza 
+	var $remaining = $allexprNodes.not($marked.find(['data-exprNode']))//escludi quelli mrcati e la loro discendenza 
 	$remaining.each(function(){
 			var path = exprNodepath($(this),$root);
 			$(this).attr('data-path',path)		
@@ -39,7 +39,7 @@ function overwriteFromHeader($forAll) {
 function searchForMarkedInSubtree($root, mark, attrName,usePermanentMark) {
     //cerca gli elementi che presentano tutte le marcature specificate in "mark"
     //se mark="*" return all marked
-    var $rootAndSubnodes = $root.add($root.find('[data-atom]'))
+    var $rootAndSubnodes = $root.add($root.find('[data-exprNode]'))
     var $marked = $rootAndSubnodes.filter(function() {
         //search for marked elements
         var thisMark = exprNodeSmarkUnmark($(this),undefined,attrName,usePermanentMark);//undefined vuol dire leggi perchè non ci sono val da scrivere
@@ -107,7 +107,7 @@ function removeDuplicatesFromString(string){
 }
 
 function exprNodepath($exprNode,$spanRoot,$matchedPattern){
-	//crea una stringa che descrive la posizione dell'atomo:
+	//crea una stringa che descrive la posizione dell'exprNodeo:
 	//la posizione orizzontale (che numero di figlio sei ) viene dall'input, le marcature dal pattern!! 
 	//esempio "eq0 > plus1 > ME"
 	var path="ME";
@@ -121,7 +121,7 @@ function exprNodepath($exprNode,$spanRoot,$matchedPattern){
 		{
 		$currexprNodeparent = exprNodeparent($currexprNode);
 		$currPATTparent = exprNodeparent($currPATT);
-		if( $currexprNodeparent.attr('data-atom')=="eq" ){
+		if( $currexprNodeparent.attr('data-exprNode')=="eq" ){
 			if( $currexprNode.parent().hasClass("firstMember")){nthchild=0}
 			else{nthchild=1}
 		}
@@ -135,10 +135,10 @@ function exprNodepath($exprNode,$spanRoot,$matchedPattern){
 	return path
 }
 
-function exprNodegetOrder($atom,description){
-	// Cerca se $atom ha nel suo path l'identificativo "description" 
+function exprNodegetOrder($exprNode,description){
+	// Cerca se $exprNode ha nel suo path l'identificativo "description" 
 	// e restituisce il corrispondente numero d'ordine 
-	var path = $atom.attr('data-path');
+	var path = $exprNode.attr('data-path');
 	if(path==undefined){
 		return -2 //non esiste path, significa che non è stato sostituito
 	}
@@ -158,8 +158,8 @@ function exprNodegetOrder($atom,description){
 	}
 }
 
-function exprNodedeepGetOrder($atom,description){
-	var $subtree = $atom.find('[data-atom]').addBack()//subttree+root
+function exprNodedeepGetOrder($exprNode,description){
+	var $subtree = $exprNode.find('[data-exprNode]').addBack()//subttree+root
 	var i=0;
 	var results=[]
 	var currRes
@@ -175,7 +175,7 @@ function orderUL($property){
 	//cerca di ristabilire un ordine il più simile possibile a quello originale memorizzato nei "path"
 	//Esempio in cui non applicare questo riordino:    a+b = b+a 
 	//gli eq vanno per ora gestiti separatamente
-	var $eqList = 	$property.find('[data-atom="eq"]').addBack('[data-atom="eq"]');//sottoalbero + root
+	var $eqList = 	$property.find('[data-exprNode="eq"]').addBack('[data-exprNode="eq"]');//sottoalbero + root
 	$eqList.each(function(i,e){
 		var $firstMember = e.exprNode_getRoles('.firstMember').children()
 		var $secondMember = e.exprNode_getRoles('.secondMember').children()
@@ -190,7 +190,7 @@ function orderUL($property){
 	});
 	//trovi ul e mettile in ordine
 	$property.find('.ul_role').each(function(i,e){
-		var $list = $(e.children).filter('[data-atom]');
+		var $list = $(e.children).filter('[data-exprNode]');
 		$list.sort( function(a,b){ return  newexprNodecompareOrder($(a),$(b))  });
 		$list.each(function( index, element ){ $(e).append(element)})	
 	});	
@@ -215,18 +215,18 @@ function newexprNodecompareOrder($sibling1,$sibling2){
 	}
 }
 
-function exprNodedescForPath($atom){
-	var mark = exprNodeSmarkUnmark($atom,undefined,"l");//undefined means "nothing to write" => read 
+function exprNodedescForPath($exprNode){
+	var mark = exprNodeSmarkUnmark($exprNode,undefined,"l");//undefined means "nothing to write" => read 
 	if( mark!=undefined && mark!="" ){
 		return mark 
 	}
 	else{
-		return $atom.attr('data-atom')
+		return $exprNode.attr('data-exprNode')
 	}
 }
    
-function moveOrClearMarksInTree($startAtom,clear){//copy marks from persistent "data-mark" to volatile mark 
-	$subtree = $startAtom.add( $startAtom.find('[data-atom]') )
+function moveOrClearMarksInTree($startexprNode,clear){//copy marks from persistent "data-mark" to volatile mark 
+	$subtree = $startexprNode.add( $startexprNode.find('[data-exprNode]') )
 	$subtree.each(function(index) {
 		if(clear){//clearVolatile
 			$(this).removeAttr('mark')
@@ -239,18 +239,18 @@ function moveOrClearMarksInTree($startAtom,clear){//copy marks from persistent "
 	})
 }
 
-function exprNodeSmarkUnmark($Atom,value,attrName,usePermanentMark){
-//la funzione scrive o legge marcature atomi in modo permanente: le marcature passano nel file mml. 
+function exprNodeSmarkUnmark($exprNode,value,attrName,usePermanentMark){
+//la funzione scrive o legge marcature exprNodei in modo permanente: le marcature passano nel file mml. 
 //attrname può assumere i valori m,l,p corrispondenti al formato della stringa mark-link-post
 //mark: marcature che devono apparire anche nell'input perchè ci sia un match
 //Attenzione: le marcature sono intese come singoli caratteri
 //ad esempio "s" per selected o "d" per dragged.
 //Un marcatura "sp" va intesa come marcato "s" e marcato "p"
-//link:per associare atomi in pattern e transform
+//link:per associare exprNodei in pattern e transform
 //post: c=semplifica n=nonRiordinare
 	let markAttName ='mark'
 	if(usePermanentMark)(markAttName='title')
-	var mark = $Atom.attr(markAttName);
+	var mark = $exprNode.attr(markAttName);
 	if ( mark == undefined ){mark=""}
 	var markArray = mark.split("-")
 	//********************mode: READ*************************
@@ -271,9 +271,9 @@ function exprNodeSmarkUnmark($Atom,value,attrName,usePermanentMark){
 		}
 	}
 	//********************mode: WRITE**************************
-	// exprNodeSmarkUnmark($atom,"","all"); cancella tutte le marcature
+	// exprNodeSmarkUnmark($exprNode,"","all"); cancella tutte le marcature
 	if( attrName=="all" ){//scrivi tutto in una volta
-		$Atom.attr(markAttName,value);
+		$exprNode.attr(markAttName,value);
 		return value
 	}
 	else if( attrName=="p"){
@@ -300,32 +300,32 @@ function exprNodeSmarkUnmark($Atom,value,attrName,usePermanentMark){
 		}
 		i++
 	}
-	if(str){$Atom.attr(markAttName,str);}
-	else{$Atom.removeAttr(markAttName)}
+	if(str){$exprNode.attr(markAttName,str);}
+	else{$exprNode.removeAttr(markAttName)}
 	return str
 }
 
 
 
 
-function exprNodeappendInABSPosition($atom,$refexprNode,relativePosition){
-//posiziona in modo assoluto $atom vicino a un exprNode di riferimento $refexprNode
+function exprNodeappendInABSPosition($exprNode,$refexprNode,relativePosition){
+//posiziona in modo assoluto $exprNode vicino a un exprNode di riferimento $refexprNode
 //Se si tratta di forall piazzare il pattern circondato dal suo forall.
-	$('#divOverlay').append($atom);
-    $atom.css('position', 'absolute');
+	$('#divOverlay').append($exprNode);
+    $exprNode.css('position', 'absolute');
 	if($refexprNode.is('#canvasAnd')){
 		//put it on the right
-		$atom.css('right', 200);
-    	$atom.css('top', 100);	
+		$exprNode.css('right', 200);
+    	$exprNode.css('top', 100);	
 	}
     else if(relativePosition=="beside"){
 	//Se è il clone di un clone fallo comparire sovrapposto al "clonato" solo spostato di qualche pixel.
-		$atom.css('left', $refexprNode.offset().left + $refexprNode.width() + 12);
-    	$atom.css('top', $refexprNode.offset().top - 75);
+		$exprNode.css('left', $refexprNode.offset().left + $refexprNode.width() + 12);
+    	$exprNode.css('top', $refexprNode.offset().top - 75);
     }
     else{//superposed
-    	$atom.css('left', $refexprNode.offset().left + 4);
-    	$atom.css('top', $refexprNode.offset().top + 4);	
+    	$exprNode.css('left', $refexprNode.offset().left + 4);
+    	$exprNode.css('top', $refexprNode.offset().top + 4);	
     }
 } 
 
@@ -347,7 +347,7 @@ function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
 	else {
 		let PActx
 		let propCustomInternal
-		if($origProp.attr('data-atom')=="ci") {//internal property?
+		if($origProp.attr('data-exprNode')=="ci") {//internal property?
 		//******************* Hard Wired property**************
 			let img = $origProp.attr('data-tagimg');
 			propCustomInternal = 'int'
@@ -422,7 +422,7 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
     //var $equation
     var $pattParameters = []
     var $inputParameters = [$par1,$par2]
-    if( PActx.$cloneProp.attr('data-atom') === "forAll" ){//l'equazione è circondata da un forall
+    if( PActx.$cloneProp.attr('data-exprNode') === "forAll" ){//l'equazione è circondata da un forall
         $pattParameters = GetforAllHeader(PActx.$cloneProp).children();
         PActx.$equation = GetforAllContentRole(PActx.$cloneProp).children();
         PActx.$pattern = PActx.$equation[0].exprNode_getRoles('.firstMember').children()   
@@ -454,7 +454,7 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
         var $refPattParFirstOcc;
         if(mark != undefined){//il parametro in input di riferimento è marcato?
             //cerca una espressione altrettanto marcata
-            $refPattParFirstOcc = PActx.$pattern.find('[data-atom]').filter(function(){
+            $refPattParFirstOcc = PActx.$pattern.find('[data-exprNode]').filter(function(){
                 return exprNodeSmarkUnmark($(this)) == mark  }).filter(':first');
         }
         else{
@@ -476,7 +476,7 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
                 PActx.$operand = $refInputPar;
             } 
             else{
-                PActx.$operand = $($refInputPar.parents('[data-atom]')[patternDepth -1])//risali nell'input, 1 depht vuol dire primo [0] parent   
+                PActx.$operand = $($refInputPar.parents('[data-exprNode]')[patternDepth -1])//risali nell'input, 1 depht vuol dire primo [0] parent   
             }
         }
         
@@ -495,7 +495,7 @@ function PMcleanAndPost(PActx){
 	if( PActx && PActx.$operand && PActx.$operand.parent().find('.selected').length != 0){
 		let $markedAsSelected = searchForMarkedInSubtree(PActx.$transform,"s",'p')//??? "p"
 		if($markedAsSelected.length != 0){//solo se torvi elementi marcati imponi nuova marcatura
-			PActx.$transform.find('[data-atom]').addBack().each(function(){
+			PActx.$transform.find('[data-exprNode]').addBack().each(function(){
     		$(this).removeClass('selected')
     		})
 			$markedAsSelected.addClass('selected');
@@ -503,7 +503,7 @@ function PMcleanAndPost(PActx){
 	}
 	//************Post cleanup***********
 	if(PActx.$transform){
-	    PActx.$transform.find('[data-atom]').addBack().each(function(){
+	    PActx.$transform.find('[data-exprNode]').addBack().each(function(){
 	    	let postMarks = exprNodeSmarkUnmark($(this),undefined,"p");
 	    	if(postMarks.indexOf('c') != -1){// is "c" one of the post markings?
 				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
@@ -555,10 +555,10 @@ function orderMatch(PActx,order,replaceInPatternOnly,strictOrder){
     //************Riordina******************************************************************
     if(order){
     	orderUL(PActx.$transform)//futuribile: riordinare solo ciò che verrà poi utilizzato, cioè il transform
-		PActx.$transform.find('[data-atom]').each(function(){
+		PActx.$transform.find('[data-exprNode]').each(function(){
 				$(this).removeAttr('data-path');
 		})
-		PActx.$operand.find('[data-atom]').each(function(){
+		PActx.$operand.find('[data-exprNode]').each(function(){
 				$(this).removeAttr('data-path');
 		})
 		

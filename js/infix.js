@@ -3,28 +3,28 @@ function refreshInfix($startNode,rootAndSubTree){//todo:obsoleta, sostituita con
 	//if($startNode.length != 0){
 		refreshOneInfix($startNode)
 		if(rootAndSubTree){
-			$startNode.find('[data-atom]').each(function(i,element){refreshOneInfix($(element))})
+			$startNode.find('[data-enode]').each(function(i,element){refreshOneInfix($(element))})
 		}
 	//}
 
 }
 
-function refreshOneInfix($exprNodenode){
-	if($exprNodenode[0].exprNode_getRoles === undefined){return}// invalid parameter
-	var $role=$exprNodenode[0].exprNode_getRoles();
-	var $exprNodechildren = $role.children().filter('[data-atom]');
+function refreshOneInfix($enodenode){
+	if($enodenode[0].enode_getRoles === undefined){return}// invalid parameter
+	var $role=$enodenode[0].enode_getRoles();
+	var $enodechildren = $role.children().filter('[data-enode]');
 	var $InfixChildren = $role.children().filter('.infix:not(.proto)');
 	var $infixProto = $role.find('>.infix.proto');
 	//procedura "cambia solo il necessario"
-	//per ogni elemento "infix: se non sei preceduto e seguito da atom remove!
+	//per ogni elemento "infix: se non sei preceduto e seguito da enode remove!
 	$InfixChildren.each(function(i,e){
-		if( !($(e).prev().is('[data-atom]') && $(e).next().is('[data-atom]'))  ){
+		if( !($(e).prev().is('[data-enode]') && $(e).next().is('[data-enode]'))  ){
 			//console.log(i);
 			$(e).remove();
 		}
 	})
-	//per ogni elemento atom tranne il primo: se non sei preceduto da infix, aggiungine uno
-	$exprNodechildren.each(function(i,e){
+	//per ogni elemento enode tranne il primo: se non sei preceduto da infix, aggiungine uno
+	$enodechildren.each(function(i,e){
 		if(i>0){
 			if(!$(e).prev().is('.infix:not(.proto)')){
 				//console.log(i);
@@ -36,10 +36,10 @@ function refreshOneInfix($exprNodenode){
 }
 
 
-function refreshOneEmpty($exprNode){
-	if($exprNode[0].exprNode_getRoles==undefined){return};
-	$exprNode[0].exprNode_getRoles().each(function(i,e){
-		let childrenNum = $(e).children().filter('[data-atom],.dummyrole').length
+function refreshOneEmpty($enode){
+	if($enode[0].enode_getRoles==undefined){return};
+	$enode[0].enode_getRoles().each(function(i,e){
+		let childrenNum = $(e).children().filter('[data-enode],.dummyrole').length
 		let minPlaces=getNumOfPlaces($(this))[0]
 		if(minPlaces>1){//manage dummies to ensure minimum places
 			let deltaDummies = minPlaces- childrenNum
@@ -65,7 +65,7 @@ function refreshOneEmpty($exprNode){
 /*
 function refreshEmpty($startNode){
 	$startNode.find('[class*="_role"]:not(.dummyrole)').each(function(i,e){
-	    let childrenNum = $(e).children().filter('[data-atom],.dummyrole').length
+	    let childrenNum = $(e).children().filter('[data-enode],.dummyrole').length
 		let minPlaces=getNumOfPlaces($(this))[0]
 		if(minPlaces!=0){//manage dummies to ensure minimum places
 			let deltaDummies = minPlaces- childrenNum

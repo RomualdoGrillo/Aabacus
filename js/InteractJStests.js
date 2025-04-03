@@ -2,7 +2,7 @@ function innteractMakeDroppable(selector){
 	// enable draggables to be dropped into this
 	interact(selector).dropzone({
 	  // only accept elements matching this CSS selector
-	  //accept: '[data-atom]',
+	  //accept: '[data-enode]',
 	  // Require a 75% element overlap for a drop to be possible
 	  overlap: 0.75,
 

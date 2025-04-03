@@ -1,13 +1,13 @@
 function tabelline($toBeComp,firstVal,img){
 	//limit to times
-	var op = $toBeComp.attr('data-atom');
+	var op = $toBeComp.attr('data-enode');
 	if(op == "times"){
 		//if a times operation is selected, operate on his children
-		$toBeComp = $toBeComp[0].exprNode_getChildren()
+		$toBeComp = $toBeComp[0].enode_getChildren()
 	}
 	else{
-		var $parent=exprNodeparent($toBeComp);
-		op = $parent.attr('data-atom');
+		var $parent=enodeparent($toBeComp);
+		op = $parent.attr('data-enode');
 		if(op !== "times"){
 			return 
 			//return newPActx()
@@ -20,7 +20,7 @@ function tabelline($toBeComp,firstVal,img){
 		//limit to simple numbers 4 , 90, 300 no nambers with multiple non zero digits
 		let i=0;
 		while($toBeComp[i]){
-			let value = AtomsToVal( $($toBeComp[i])).val
+			let value = enodesToVal( $($toBeComp[i])).val
 			if(  separateTensHundreds(value).length != 1 ){return}
 		i++}
 	return compose($toBeComp,firstVal,img);	
@@ -32,8 +32,8 @@ function tabelline($toBeComp,firstVal,img){
 
 
 function composePlusOnly($toBeComp,firstVal,img){
-	var $parent=exprNodeparent($toBeComp);
-	var op = $parent.attr('data-atom');
+	var $parent=enodeparent($toBeComp);
+	var op = $parent.attr('data-enode');
 	if(op !== "plus"){
 		return 
 		//return newPActx()
@@ -50,20 +50,20 @@ function decomposeTens($toBeDec,undefined,img){
 	//var $toBeDec=$('.selected')
 	//**** la funzione può essere applicata?
 	if($toBeDec.length !== 1){console.log("cant decompose " + $toBeDec.length + " elements"); return}
-	let TBDType = $toBeDec.attr("data-atom");
+	let TBDType = $toBeDec.attr("data-enode");
 	if( TBDType != "cn" ){//se l'elemento da scomporre è un numero'
 	console.log("can only decompose a cn not a" + TBDType ); return}
 	//**** applica la funzione
-	var toBeDec = AtomsToVal($toBeDec)
+	var toBeDec = enodesToVal($toBeDec)
 	//var primeFactors = primeFactorization(number);
 	let terms = separateTensHundreds(toBeDec.val);	
 	if(terms.length >1){
 		$extOp = wrapIfNeeded($toBeDec,'plus');//se necessario crea una operazione container
 		var prototype=prototypeSearch("cn","num")
 		terms.forEach(function(e,i){
-			$clone = exprNodeclone(prototype);
-			$clone.attr('data-atom','cn');
-			$clone[0].exprNode_setName(e)
+			$clone = enodeclone(prototype);
+			$clone.attr('data-exper','cn');
+			$clone[0].enode_setName(e)
 			$clone.insertAfter($toBeDec);
 			if(i == (terms.length -1)){
 				$clone.addClass('selected');// l'ultimo fattore rimane selezionato
@@ -79,19 +79,19 @@ function decomposeTens($toBeDec,undefined,img){
 }
 
 function $toBeComposedWithSiblings($selected){
-	var $AtomBesideSelected
+	var $enodeBesideSelected
 	//Attualmente il contenuto dei role si dispone leftRight e topDown mentre comporre è visto come left e down.
 	//di conseguenza per decidere qual'è l'elemento con cui comporre devo distiguere a seconda dell'orientazione.'
 	if( $selected.parent().css('flex-direction') === "row"){
-		$AtomBesideSelected = $selected.prevAll('[data-atom]:first');
+		$enodeBesideSelected = $selected.prevAll('[data-enode]:first');
 	}
 	else{
-		$AtomBesideSelected = $selected.nextAll('[data-atom]:first');
+		$enodeBesideSelected = $selected.nextAll('[data-enode]:first');
 	}
-	$selected = $selected.add($AtomBesideSelected);
+	$selected = $selected.add($enodeBesideSelected);
 	//debug colors
 	$('*').removeClass("toBeComposed");
 	//Debug add colors
-	exprNodenodesAddClass($selected,"toBeComposed");
+	enodenodesAddClass($selected,"toBeComposed");
 	return 	$selected
 }

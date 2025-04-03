@@ -15,16 +15,16 @@ function primeFactorization(num){
   return (x === num) ? result : primeFactorization(num/x, result) ;
 }
 /*
-function exprNodegetNumber($exprNode){
-  var $elementUnderTest = $exprNode
+function enodegetNumber($enode){
+  var $elementUnderTest = $enode
   var sign = 1
-  while( $elementUnderTest.attr('data-atom') === "minus" ){
+  while( $elementUnderTest.attr('data-enode') === "minus" ){
     //passa all'elemento interno
-    $elementUnderTest = $elementUnderTest[0].exprNode_getRoles().children(':first');
+    $elementUnderTest = $elementUnderTest[0].enode_getRoles().children(':first');
     sign = sign * -1
   }
-  if( $elementUnderTest.attr('data-atom') == "cn"){// se è un simbolo
-    var res = sign * Number($elementUnderTest[0].exprNode_getName()) 
+  if( $elementUnderTest.attr('data-enode') == "cn"){// se è un simbolo
+    var res = sign * Number($elementUnderTest[0].enode_getName()) 
   }
   else{
     res="NaN"
@@ -32,15 +32,15 @@ function exprNodegetNumber($exprNode){
   return res
 }
 */
-function exprNodeNumericCdsAsText($exprNode){
-  var $elementUnderTest = $exprNode
+function enodeNumericCdsAsText($enode){
+  var $elementUnderTest = $enode
   var sign = 1
-  while( $elementUnderTest.attr('data-atom') === "minus" ){
+  while( $elementUnderTest.attr('data-enode') === "minus" ){
     //passa all'elemento interno
-    $elementUnderTest = $elementUnderTest[0].exprNode_getRoles().children(':first');
+    $elementUnderTest = $elementUnderTest[0].enode_getRoles().children(':first');
     sign = sign * -1
   }
-  var res = $elementUnderTest[0].exprNode_getName();
+  var res = $elementUnderTest[0].enode_getName();
   if( sign == -1 ){//se necessario aggiungi segno meno
     res = "-" + res
   }
