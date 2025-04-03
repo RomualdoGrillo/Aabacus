@@ -3,8 +3,8 @@
 //1)carica qualcosa
 //2)incolla in console
 //match contro stessa espressione
-exprNodes=$('#canvasRole').find('[data-exprNode]');
-forallRepalceSubtree($(exprNodes[0]),$(exprNodes[0]));
+ENODEs=$('#canvasRole').find('[data-enode]');
+forallRepalceSubtree($(ENODEs[0]),$(ENODEs[0]));
 */
 
 
