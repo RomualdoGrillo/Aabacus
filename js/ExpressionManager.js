@@ -593,7 +593,7 @@ function wrapIfNeeded($ENODEelement, op) {
 function wrapWithOperation($ENODEelement, op){
 	//create external operation to $ENODEelement, $ENODEelement is 1 element or a list of adjacent elements
 	var $prototype;
-	var roleSelector = "" //the wrapping operation may have more roles a selector may be needed  
+	var roleSelector = undefined //the wrapping operation may have more roles a selector may be needed  
 	if (op=="def"){
 		$prototype = prototypeSearch("eq","bool","[data-viseq=asymmetric]");//special case for definition
 		roleSelector = ".secondMember"; //the expression must be insertend in the definendum witch is the second member
@@ -604,7 +604,7 @@ function wrapWithOperation($ENODEelement, op){
 	var $clone = ENODEclone($prototype);
 	//ENODEparent($ENODEelement).replaceWith($clone);//replace provoca la distruzione degli eventi nel replaced
 	$clone.insertBefore($ENODEelement.eq(0));
-	$ENODEelement.appendTo($clone[0].ENODE_getRoles().eq(roleSelector));
+	$ENODEelement.appendTo($clone[0].ENODE_getRoles(roleSelector));
 	return $clone;
 }
 
