@@ -95,10 +95,10 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 		if (!neglectSign) {//signsAsClasses($node,"SignsAsClasses_to_MinusOp") // converti   	
 		}
 		var nodeText = ""
-		if (leafTags.indexOf(originalData.ENODE.toLowerCase()) !== -1) {
+		if (leafTags.indexOf(originalData.enode.toLowerCase()) !== -1) {
 			//if [cn;ci;csymbol] then the content is the text, else some role must be present
 			nodeText = node.ENODE_getName(true);
-			$newNode = $('<' + originalData.ENODE.toLowerCase() + '/>');
+			$newNode = $('<' + originalData.enode.toLowerCase() + '/>');
 			$newNode.text(nodeText)
 		} else {
 			/*
@@ -113,7 +113,7 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 			//salvo ciò che è .saveAsHtmlL
 			$newNode = $('<apply></apply>')
 			$newNode.text(nodeText)
-			$newNode.append('<' + originalData.ENODE + '/>')
+			$newNode.append('<' + originalData.enode + '/>')
 			$newNode.append($bVarChildren.wrap('<bvar>').parent());
 			$newNode.append($nobBvarchildren);
 			$newNode.append($htmlDivChildren);
