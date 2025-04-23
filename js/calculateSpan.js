@@ -275,8 +275,8 @@ function $findOccurrences($wanted, $span, $candidates) {
 	//todo: questa ricerca non distingue le variabili interne "Bvar".
 	// Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
 	let $occurrences = $candidates.filter(function () {
-		//return ENODEEqual($ENODE_param[0],this)
-		return compareExtENODE($wanted, $(this), true, false);
+		return ENODEEqual($wanted[0],this)
+		//return compareExtENODE($wanted, $(this), true, false);
 	});
 	return $occurrences
 }
