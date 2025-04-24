@@ -28,7 +28,7 @@ function overwriteFromHeader($forAll) {
     $parameterList.each(function() {
         var name = this.ENODE_getName(true);
         if(name.indexOf("_")==-1){name=name+"_"}//se compaiono in hader sono comunque dei parametri variabili
-        var $occurrences = $findOccurrences($(this),$forAll);
+        var $occurrences = $findOccurrences($(this),$forAll,undefined,true);
 		$occurrences.each(function(){
 			this.ENODE_setName(name)
 		})

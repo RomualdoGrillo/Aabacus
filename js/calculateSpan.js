@@ -262,10 +262,10 @@ function highlightOccurrences($identifier, addClass) {
 	})*/
 }
 
-
-function $findOccurrences($wanted, $span, $candidates) {
-	// example use:
-	// $findOccurrences($identifier,$identifierSpanForAll($identifier))
+// example use:
+// $findOccurrences($identifier,$forAll,undefined,true)
+	
+function $findOccurrences($wanted, $span, $candidates,asParameter) {
 	if (!$candidates) {
 		if (!$span) {
 			$span = $identifierSpanForAll($wanted);
@@ -275,8 +275,8 @@ function $findOccurrences($wanted, $span, $candidates) {
 	//todo: questa ricerca non distingue le variabili interne "Bvar".
 	// Ad esempio     x+1= integrale( x^2 in dx)   x compare sia a destra che a sinistra ma non è la stessa variabile
 	let $occurrences = $candidates.filter(function () {
-		return ENODEEqual($wanted[0],this)
-		//return compareExtENODE($wanted, $(this), true, false);
+		if(asParameter){return compareExtENODE($wanted, $(this), true, false);}
+		else{return ENODEEqual($wanted[0],this)}
 	});
 	return $occurrences
 }
