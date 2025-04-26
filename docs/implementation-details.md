@@ -69,6 +69,28 @@ Each ENODE in the DOM is implemented as a `<div>` element with specific attribut
          </div>
      </div>
      ```
+     ```html
+     <div data-enode="forAll" data-type="bool">
+         <div class="ol_role" data-type="num">
+             <!-- Nested ENODEs go here -->
+         </div>
+     </div>
+     ```
+   - **ENODEs that Contain more Role divs that serve as containers for nested ENODEs
+   
+    ```html
+    <div data-enode="forAll" data-type="bool">
+     <div class="row">
+       <div class="forallSymbol">∀</div>
+       <div class="bVar_role forAllHeader" data-type="obj">
+          <!-- Nested ENODEs go here -->
+       </div>
+     </div>
+     <div class="s_role forAllContent" data-type="bool">
+         <!-- Nested ENODEs go here -->
+     </div>
+    </div>
+    ```
 
 4. **Role Types**: Containers for child nodes
    - `s_role`: Single role, can contain only one child
