@@ -4,15 +4,14 @@ This document describes the fundamental concepts of Aabacus. These core concepts
 
 ## Introduction
 
-Aabacus is an application designed to visualize and manipulate mathematical expressions. It provides a structured environment where users can build, edit, and transform mathematical expressions through a series of interactions.
+Aabacus is an application designed to visualize and manipulate mathematical expressions. It provides a structured environment where users can build, edit, and transform mathematical expressions through a series of interactions. Aabacus is mainly intended as an educational tool.
 
 ## Expression Model
 
 ### What is an Expression?
 
-In Aabacus, an "Expression" is a logical-mathematical structure represented as a tree. Each node of the tree corresponds to a mathematical function or operation. This tree structure allows for the representation of complex mathematical expressions in a way that preserves their logical structure.
-
-An expression is built by connecting nodes together, where the output of one node serves as the input to another node. This creates a hierarchical structure that represents the mathematical relationships between different parts of the expression.
+Aabacus provides a set of fundamental functions, function can be composed connecting the output of one function to one of the inputs of another. Composing functions produces a tree structure that is called "Expression".
+This creates a hierarchical structure that represents the mathematical relationships between different parts of the expression. The expression has a tree structure where nodes are functions, those nodes are called ENODEs that stand for ExpressionNodes.
 
 ### Expression Nodes (ENODEs)
 
@@ -20,7 +19,7 @@ The fundamental building blocks of expressions in Aabacus are called "ENODEs" (E
 
 ENODEs are characterized by one output and zero, one, or more inputs. The output and inputs of an ENODE have specific data types (such as number, boolean, etc.) that determine what kinds of connections are valid.
 
-Identifiers (variables) and constants are special types of ENODEs that have no inputs - they only have outputs.
+Identifiers (variables) and constants are special types of ENODEs that have no inputs.
 
 #### ENODE Types
 
@@ -53,7 +52,7 @@ The mathematical expression `a + b = 2` can be represented as a tree structure w
 
 This tree structure precisely captures the mathematical meaning of the expression.
 
-## Expression Manipulation Paradigms
+## Expression Manipulation
 
 Aabacus supports two fundamental modes of expression manipulation:
 
@@ -72,20 +71,15 @@ During editing, Aabacus enforces type compatibility to ensure that only valid op
 
 When an expression is in "Locked" state, users can only apply mathematical properties to transform the expression. This mode ensures that the mathematical meaning of the expression is preserved while allowing its form to be changed.
 
-Applying properties has the effect of replacing parts of the expression with other expressions that are equivalent to the original. This allows users to transform expressions while maintaining their mathematical validity.
-
+Applying properties has the effect of replacing parts of the expression with other expressions that are equivalent to the original. 
 There are different ways to apply properties:
 
 1. Select an expression and then apply a property. The pattern matching system identifies if the selected expression matches the pattern required by the property, and if so, applies the transformation.
 
 2. Drag terms to apply commutative, associative, distributive properties, or to replace a term in an equation system.
 
-Common mathematical properties that can be applied include:
 
-- Commutative properties (e.g., a + b = b + a)
-- Associative properties (e.g., (a + b) + c = a + (b + c))
-- Distributive properties (e.g., a × (b + c) = a × b + a × c)
-- Identity properties (e.g., a + 0 = a, a × 1 = a)
-- Inverse properties (e.g., a + (-a) = 0, a × (1/a) = 1)
-
-By switching between these two modes, users can both construct expressions and explore their mathematical properties in a structured and educational way.
+The tipical use of Aabacus is the following:
+1)The user creates a new expression or loads it from a file.
+2)The expression is locked
+3)In locked state the user can only apply properties every other action is prevented.
