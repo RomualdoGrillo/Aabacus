@@ -52,6 +52,22 @@ The mathematical expression `a + b = 2` can be represented as a tree structure w
 
 This tree structure precisely captures the mathematical meaning of the expression.
 
+## One only omnicomprensive Expression
+
+Using Logical and Mathematical function it is possible to construct a very articulated systems of logic Mathematical propositions.
+You can both write properties and expressions in a big omicomprensive expression.
+As an example let's start from the system of two equations:
+
+⎧ y=x-1
+⎨ 
+⎩ x*y=6
+
+In Aabacus a = b is simply interpreted as "you can replace a with b  or replace b with a" and you will obtain an expression that'equivalent to the original.
+
+What are equivalent expressions?
+An expression is a composed function. Two expressions are considered equivalent if they produce the same outputs when given the same inputs. In mathematical terms, this means that although two expressions may look different in their structure or representation, they are functionally identical if they yield the same results for all possible input values.
+
+
 ## Expression Manipulation
 
 Aabacus supports two fundamental modes of expression manipulation:
@@ -69,7 +85,23 @@ During editing, Aabacus enforces type compatibility to ensure that only valid op
 
 ### 2. Property Application Mode
 
-When an expression is in "Locked" state, users can only apply mathematical properties to transform the expression. This mode ensures that the mathematical meaning of the expression is preserved while allowing its form to be changed.
+Quando una espressione viene "bloccata" ogni operazione di editing diventa impossibile. L'espressione non può cambiare se non coerentemente con le equazioni che nell'espressione sono scritte.
+Tornando all'esempio 
+
+⎧ y=x-1
+⎨ 
+⎩ x*y=6
+
+l'unica trasformazione possibile è sostituire y con  x-1. Non posso applicare altre proprietà che non sono scritte nell'espressione.
+Ovviamente per svolgere problemi di algebra è necessario inserire almeno le porietà fondamentali nell'espressione 
+Per esempio inserire nel sistema si deve inserire la proprietà distributiva:
+
+⎧ ∀ a, b, c ∈ ℝ :   a(b + c) = ab + ac
+|
+⎨ y=x-1
+| 
+⎩ x*y=6
+
 
 Applying properties has the effect of replacing parts of the expression with other expressions that are equivalent to the original. 
 There are different ways to apply properties:
