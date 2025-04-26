@@ -64,7 +64,7 @@ Each ENODE in the DOM is implemented as a `<div>` element with specific attribut
    - **ENODEs representing functions**: Contain one or more "Role" divs that serve as containers for nested ENODEs
      ```html
      <div data-enode="plus" data-type="num">
-         <div class="ol_role">
+         <div class="ol_role" data-type="num">
              <!-- Nested ENODEs go here -->
          </div>
      </div>

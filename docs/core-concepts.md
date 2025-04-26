@@ -114,4 +114,4 @@ There are different ways to apply properties:
 The tipical use of Aabacus is the following:
 1)The user creates a new expression or loads it from a file.
 2)The expression is locked
-3)In locked state the user can only apply properties every other action is prevented.
+3)In locked state the user applies properties to prove Theorems, to deduce logical consequences, to simplify expressionscan etc..
