@@ -98,6 +98,21 @@ Each ENODE in the DOM is implemented as a `<div>` element with specific attribut
    - `ul_role`: Unordered list role, can contain multiple children the order is not relevant and can be changed without affecting the function result 
    - `bVar_role`: Bound variable role, used in quantifiers
 
+### Root Expression Structure
+
+The central expression of the application always has a root ENODE of type "and" with id="CanvasAnd". This root ENODE serves as the foundation of the entire expression system:
+
+- It cannot be edited or dragged by the user
+- It functions as a fixed base upon which users can build their expressions
+- All user-created expressions are constructed as children of this immutable root element
+
+```html
+<div data-enode="and" data-type="bool" id="CanvasAnd">
+    <div class="ul_role">
+        <!-- User expressions are built here -->
+    </div>
+</div>
+```
 
 ## User Interface Implementation
 
