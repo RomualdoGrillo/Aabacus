@@ -1,130 +1,91 @@
 # Aabacus Core Concepts
 
+This document describes the fundamental concepts of Aabacus. These core concepts define what Aabacus is and how it works at a conceptual level. For technical implementation details, please see the [implementation details](implementation-details.md) document.
+
 ## Introduction
 
-Aabacus is a web application designed to visualize and manipulate mathematical expressions through a series of gestures like drag-and-drop and keyboard commands.
+Aabacus is an application designed to visualize and manipulate mathematical expressions. It provides a structured environment where users can build, edit, and transform mathematical expressions through a series of interactions.
 
-## Expression Structure
+## Expression Model
 
 ### What is an Expression?
 
-In Aabacus, an "Expression" is a logical-mathematical structure represented as a tree. Each node in this tree corresponds to a mathematical function. The structure follows the MathMLContent standard, which is a markup language for describing mathematical notation.
+In Aabacus, an "Expression" is a logical-mathematical structure represented as a tree. Each node of the tree corresponds to a mathematical function or operation. This tree structure allows for the representation of complex mathematical expressions in a way that preserves their logical structure.
+
+An expression is built by connecting nodes together, where the output of one node serves as the input to another node. This creates a hierarchical structure that represents the mathematical relationships between different parts of the expression.
 
 ### Expression Nodes (ENODEs)
 
 The fundamental building blocks of expressions in Aabacus are called "ENODEs" (Expression Nodes). Each ENODE represents a specific mathematical function or operation.
 
+ENODEs are characterized by one output and zero, one, or more inputs. The output and inputs of an ENODE have specific data types (such as number, boolean, etc.) that determine what kinds of connections are valid.
+
+Identifiers (variables) and constants are special types of ENODEs that have no inputs - they only have outputs.
+
 #### ENODE Types
 
-There are dozens of ENODE types, each representing different mathematical operations. Some common types include:
+There are dozens of ENODE types, each representing different mathematical operations. The following table describes some of the most common ENODE types:
 
-- **plus**: Represents addition operations
-- **times**: Represents multiplication operations
-- **and**: Represents logical conjunction
-- **eq**: Represents equations or definitions
-- **cn**: Represents numbers (constants)
+| ENODE Type | Description                  | Output Data Type | Input Data Types   | Example     |
+|------------|------------------------------|------------------|-------------------|-------------|
+| `plus`     | Addition operation           | num              | num, num, ...     | a + b + c   |
+| `times`    | Multiplication operation     | num              | num, num, ...     | a × b × c   |
+| `exp`      | Power operation              | num              | num, num          | a^b         |
+| `or`       | Logical disjunction          | bool             | bool, bool, ...   | a ∨ b       |
+| `not`      | Logical negation             | bool             | bool              | ¬a          |
+| `and`      | Logical conjunction          | bool             | bool, bool, ...   | a ∧ b       |
+| `eq`       | Equation or definition       | bool             | obj, obj          | a = b       |
+| `cn`       | Number constant              | num              | none              | 5           |
+| `ci`       | Identifier/variable          | varies           | none              | x           |
 
-#### ENODE Structure
+When building an expression, Aabacus enforces data type compatibility between the outputs and inputs of connected ENODEs. This ensures that only mathematically valid expressions can be constructed.
 
-Gli ENODE sono caratterizzati da una uscita ed una o più entrate, tranne gli identificatori che non hanno alcuna entrata. Ogni ingresso o entrata ha un datatype che può essere: num, bool, obj, ecc.
+Note that the data type 'obj' means any data type is accepted as input, which is useful for operations like equality that can compare different types of mathematical objects.
 
-Ogni ENODE ha:
+### Expression Example
 
-1. **Attributes**: Properties that define the node's behavior and appearance
-   - `data-enode`: The type of the node (e.g., "plus", "times", "ci")
-   - `data-type`: The data type of the node (e.g., "num", "bool")
-   - `data-proto`: Reference to the prototype used to create the node
+The mathematical expression `a + b = 2` can be represented as a tree structure where:
 
-2. **Roles**: Containers for child nodes
-   - `s_role`: Single role, can contain only one child
-   - `ol_role`: Ordered list role, can contain multiple children in a specific order
-   - `ul_role`: Unordered list role, can contain multiple children in any order
-   - `bVar_role`: Bound variable role, used in quantifiers
+- The root node is an `eq` ENODE (representing equality)
+- The left child of the root is a `plus` ENODE (representing addition)
+- The children of the `plus` ENODE are two `ci` ENODEs (representing the variables a and b)
+- The right child of the root is a `cn` ENODE (representing the constant 2)
 
-3. **Methods**: Functions that operate on the node
-   - `ENODE_getName()`: Gets the name of the node
-   - `ENODE_setName()`: Sets the name of the node
-   - `ENODE_getChildren()`: Gets the children of the node
-   - `ENODE_getRoles()`: Gets the roles of the node
-   - `ENODE_dissolveContainer()`: Removes the node and promotes its children
+This tree structure precisely captures the mathematical meaning of the expression.
 
-## MathMLContent Implementation
+## Expression Manipulation Paradigms
 
-Aabacus implements the MathMLContent standard for representing mathematical expressions. MathMLContent is a markup language designed to encode the structure and content of mathematical notation.
+Aabacus supports two fundamental modes of expression manipulation:
 
-### Mapping Between MathML and ENODEs
+### 1. Editing Mode
 
-Each ENODE type in Aabacus corresponds to a specific element in MathMLContent:
+When an expression is in "Unlocked" state, it can be freely edited. This includes:
 
-- `plus` → `<apply><plus/> ... </apply>`
-- `times` → `<apply><times/> ... </apply>`
-- `eq` → `<apply><eq/> ... </apply>`
-- `ci` → `<ci> ... </ci>`
-- `cn` → `<cn> ... </cn>`
+- Adding new ENODEs to build or extend the expression
+- Removing ENODEs from the expression
+- Moving subexpressions around
+- Copying and pasting parts of expressions
 
-### Example
+During editing, Aabacus enforces type compatibility to ensure that only valid operations are performed. This helps users build mathematically correct expressions.
 
-A simple expression like `a + b` would be represented in MathMLContent as:
+### 2. Property Application Mode
 
-```xml
-<apply>
-  <plus/>
-  <ci>a</ci>
-  <ci>b</ci>
-</apply>
-```
+When an expression is in "Locked" state, users can only apply mathematical properties to transform the expression. This mode ensures that the mathematical meaning of the expression is preserved while allowing its form to be changed.
 
-In Aabacus, this would be represented as a tree with a `plus` ENODE as the root, and two `ci` ENODEs as children.
+Applying properties has the effect of replacing parts of the expression with other expressions that are equivalent to the original. This allows users to transform expressions while maintaining their mathematical validity.
 
-## Expression Manipulation
+There are different ways to apply properties:
 
-Aabacus can perform two kind of actions on the Expression:
-1) Editing
-2) Applying properties
+1. Select an expression and then apply a property. The pattern matching system identifies if the selected expression matches the pattern required by the property, and if so, applies the transformation.
 
-### Editing
-When the expression is in Unlocked state, it can be edited by adding new ENODES from the palette, loading new expressions from a file, moving subexpressions via drag-and-drop or with keyboard commands. 
-- Ctrl+C/Ctrl+V: Copy and paste expressions
-- Shift+L: Load expressions
-- Shift+S: Save expressions
+2. Drag terms to apply commutative, associative, distributive properties, or to replace a term in an equation system.
 
-Aabacus enforces type compatibility to ensure that only valid operations are performed.
+Common mathematical properties that can be applied include:
 
-### Applying properties
-When the expression is in Locked state, users can only apply mathematical properties.
-Applicare proprietà ha l'effetto di sostituire parti dell'espressione con altre espressioni equivalenti all'originale, di conseguenza nello stato locked si può cambiare la forma ma non la sosatanza dell'espressione.
-Esistono diversi modi di applicare proprietà:
-1) Select an expression and then apply a property (using keyboard shortcuts or selecting from available properties). The pattern matching system identifies if the selected expression matches the pattern required by the property, and if so, applies the transformation.
-2) Drag terms to apply commutative, associative, distributive properties or to replace a term in a equation system
+- Commutative properties (e.g., a + b = b + a)
+- Associative properties (e.g., (a + b) + c = a + (b + c))
+- Distributive properties (e.g., a × (b + c) = a × b + a × c)
+- Identity properties (e.g., a + 0 = a, a × 1 = a)
+- Inverse properties (e.g., a + (-a) = 0, a × (1/a) = 1)
 
-
-### Keyboard Commands
-
-Various keyboard shortcuts allow for quick manipulation of expressions:
-
-- Arrow keys: Decompose expressions or combine with adjacent elements
-- Ctrl+Z: Undo operations
-## Visual Representation
-
-The visual representation of expressions in Aabacus is handled through HTML and CSS. Each ENODE is represented as a DOM element with specific classes and attributes that determine its appearance.
-
-### Visualization Settings
-
-Users can customize the visualization of expressions through various settings:
-
-- Show/hide brackets
-- Vertical or horizontal display of multiplications
-- Display of reciprocals as 1/x
-- Color schemes
-
-## Expression Storage and Exchange
-
-Expressions in Aabacus can be saved and loaded in different formats:
-
-- `.mml`: MathML format for storing individual expressions
-- `.mmls`: A custom format for storing multiple expressions and their relationships
-
-Saving and loading expressions allows users to:
-- Save their work for later continuation
-- Share expressions with other users
-- Build libraries of common expressions and properties
+By switching between these two modes, users can both construct expressions and explore their mathematical properties in a structured and educational way.
