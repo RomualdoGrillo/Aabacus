@@ -78,10 +78,18 @@ Each ENODE in the DOM is implemented as a `<div>` element with specific attribut
      ```
    - **ENODEs with multiple role containers**: Some ENODEs contain multiple role divs
    
-     ```html
-     <div data-enode="forAll" data-type="bool">
-         <div class="row">
-             <div class="forallSymbol">∀</div>
+    ```html
+    <div data-enode="power" data-type="num">
+			<div class="s_role base" data-type="num">
+				<div class="power_decoration"></div>
+			</div>
+			<div class="s_role exponent" data-type="num"></div>
+		</div>
+    ```
+    ```html
+    <div data-enode="forAll" data-type="bool">
+      <div class="row">
+        <div class="forallSymbol">∀</div>
              <div class="bVar_role forAllHeader" data-type="obj">
                  <!-- Nested ENODEs go here -->
              </div>
@@ -142,7 +150,11 @@ The visual representation of expressions in the current implementation is handle
 
 ### Visualization Settings
 
+
+
 The current implementation allows users to customize the visualization of expressions through various settings:
+
+
 
 - **Show/hide brackets**: Toggle the display of brackets around expressions
 - **Vertical or horizontal display of multiplications**: Choose how multiplication operations are displayed
