@@ -4,7 +4,7 @@
 				<div class="s_role secondMember" data-type="obj" ></div>
 			</div>
 			<div class="title hide" title="deftrue">
-				<div data-enode="deftrue" data-proto="deftrue" class="ENODE" data-type="bool">
+				<div data-enode="deftrue" data-proto="deftrue"  data-type="bool">
 					<div class="s_role name" data-type="obj" ></div>
 					<div class="decoration">≡</div>
 					<div class="s_role prop" data-type="obj" ></div>
@@ -12,21 +12,21 @@
 					<div class="s_role shortCutRtl" data-type="obj" ></div>
 				</div>
 			</div>
-			<div data-enode="eq" data-proto="eq" data-type="bool" class="ENODE">
+			<div data-enode="eq" data-proto="eq" data-type="bool" >
 				<div class="s_role firstMember" data-type="obj" ></div>
 				<div class="decoration">=</div>
 				<div class="s_role secondMember" data-type="obj" ></div>
 			</div>
-			<div data-proto="point" data-enode="ci" data-type="point" class="ENODE ">
+			<div data-proto="point" data-enode="ci" data-type="point" >
 				<div class="name">A</div>
 			</div>
 			<div class="title hide">
-				<div data-enode="midPoint" data-proto="midPoint" data-type="point" class="ENODE">
+				<div data-enode="midPoint" data-proto="midPoint" data-type="point" >
 					<div class="s_role firstMember" data-type="point" ></div>
 					<div class="decoration midPoint"></div>
 					<div class="s_role secondMember" data-type="point" ></div>
 				</div>
-				<div data-enode="perpByPoint" data-proto="perpByPoint" data-type="line" class="ENODE">
+				<div data-enode="perpByPoint" data-proto="perpByPoint" data-type="line" >
 					<div class="functName perpByPoint">PerpendicularLine(</div>
 					<div class="s_role firstMember" data-type="line" ></div>
 					<div class="decoration perpByPoint"></div>
@@ -34,47 +34,47 @@
 					<div class="s_role secondMember" data-type="point" ></div>
 					<div class="functName perpByPoint">)</div>
 				</div>
-				<div data-enode="segment" data-proto="segment" data-type="line" class="ENODE">
+				<div data-enode="segment" data-proto="segment" data-type="line" >
 					<div class="s_role firstMember" data-type="point" ></div>
 					<div class="decoration segment"></div>
 					<div class="s_role secondMember" data-type="point" ></div>
 				</div>
-				<div data-enode="identical" data-proto="identical" data-type="bool" class="ENODE">
+				<div data-enode="identical" data-proto="identical" data-type="bool" >
 					<div class="s_role firstMember" data-type="obj" ></div>
 					<div class="decoration">≡</div>
 					<div class="s_role secondMember" data-type="obj" ></div>
 				</div>
 			</div>
-			<div data-proto="num" data-enode="ci" data-type="num" class="ENODE ">
+			<div data-proto="num" data-enode="ci" data-type="num" >
 				<div class="name">x</div>
 			</div>
-			<div data-enode="cn" data-type="num" class="ENODE">
+			<div data-enode="cn" data-type="num" >
 				<div class="name">1</div>
 			</div>
 			<!--
-			<div data-enode="cn" data-type="num" class="ENODE" style=" background-image: url(./images/EgyptNumber3.svg);
+			<div data-enode="cn" data-type="num"  style=" background-image: url(./images/EgyptNumber3.svg);
 			background-size: 100% 100%;">
 					<div class="name" style="display:none">3</div>
 			</div>
 			-->
 			<div class="title" title="plus">
-				<div data-proto="plus" data-enode="plus" data-type="num" class="ENODE ">
+				<div data-proto="plus" data-enode="plus" data-type="num" >
 					<div class="ul_role" data-type="num"></div>
 				</div>
 			</div>
 			<div class="title" title="times">
-				<div data-proto="times" data-enode="times" data-type="num" class="ENODE">
+				<div data-proto="times" data-enode="times" data-type="num" >
 					<div class="ul_role" data-type="num"></div>
 				</div>
 			</div>
 			<div class="title" title="-x">
-				<div data-proto="minus" data-enode="minus" data-type="num" class="ENODE">
+				<div data-proto="minus" data-enode="minus" data-type="num" >
 					<div class="s_role" data-type="num"></div>
 					<div class="minusDecoration"></div>
 				</div>
 			</div>
 			<div class="title" title="1/x">
-				<div data-proto="m_inverse" data-enode="m_inverse" data-type="num" class="ENODE">
+				<div data-proto="m_inverse" data-enode="m_inverse" data-type="num" >
 					<div class="numerator1">1</div>
 					<div class="s_role" data-type="num">
 						<div class="m_inverseDecoration"></div>
@@ -89,50 +89,50 @@
 				</div>
 			</div>
 			<div class="title" title="power">
-				<div data-proto="power" data-enode="power" class="ENODE" data-type="num">
+				<div data-proto="power" data-enode="power"  data-type="num">
 					<div class="s_role base" data-type="num" >
 						<div class="power_decoration"></div>
 					</div>
 					<div class="s_role exponent" data-type="num"></div>
 				</div>
 			</div>
-				<div data-enode="gt" data-proto="gt" data-type="bool" class="ENODE">
+				<div data-enode="gt" data-proto="gt" data-type="bool" >
 					<div class="s_role firstMember" data-type="num" ></div>
 					<div class="decoration">></div>
 					<div class="s_role secondMember" data-type="num" ></div>
 				</div>
 			<div class="title" title="greater than">
-				<div data-enode="geq" data-proto="geq" data-type="bool" class="ENODE">
+				<div data-enode="geq" data-proto="geq" data-type="bool" >
 					<div class="s_role firstMember" data-type="num" ></div>
 					<div class="decoration">&#x2265;</div>
 					<div class="s_role secondMember" data-type="num" ></div>
 				</div>
 			</div>
-			<div data-enode="ci" data-proto="bool" data-type="bool" class="ENODE">
+			<div data-enode="ci" data-proto="bool" data-type="bool" >
 				<div class="name">true</div>
 			</div>
 			<div class="title" title="or">
-				<div data-proto="or" data-enode="or" data-type="bool" class="ENODE">
+				<div data-proto="or" data-enode="or" data-type="bool" >
 					<div class="ul_role" data-type="bool"></div>
 				</div>
 			</div>
-			<div data-proto="and" data-enode="and" data-type="bool" class="ENODE">
+			<div data-proto="and" data-enode="and" data-type="bool" >
 				<div class="ul_role" data-type="bool"></div>
 			</div>
 			<div class="title" title="not">
-				<div data-proto="not" data-enode="not" data-type="bool" class="ENODE">
+				<div data-proto="not" data-enode="not" data-type="bool" >
 					<div class="s_role" data-type="bool"></div>
 					<div class="notDecoration"></div>
 				</div>
 			</div>
-			<div data-proto="forall" data-enode="forAll" class="ENODE" data-type="bool">
+			<div data-proto="forall" data-enode="forAll"  data-type="bool">
 				<div class="row">
 					<div class="forallSymbol">∀</div>
 					<div class="bVar_role forAllHeader" data-type="obj"></div>
 				</div>
 				<div class="s_role forAllContent" data-type="bool" ></div>
 			</div>
-			<div data-proto="ifthenelse" data-enode="ifthenelse" class="ENODE" data-type="bool">
+			<div data-proto="ifthenelse" data-enode="ifthenelse"  data-type="bool">
 				<div class="column">
 					<div class="s_role if" data-type="bool"></div>
 					<div class="decoration imply"></div>
@@ -143,7 +143,7 @@
 					<div class="s_role else" data-type="bool"></div>
 				</div>
 			</div>
-			<div data-proto="exists" data-enode="exists" class="ENODE" data-type="bool">
+			<div data-proto="exists" data-enode="exists"  data-type="bool">
 				<div class="row">
 					<div class="existsSymbol">∃</div>
 					<div class="bVar_role existsHeader" data-type="obj"></div>
@@ -151,24 +151,24 @@
 				</div>
 				<div class="s_role existsContent" data-type="bool" ></div>
 			</div>
-			<div data-proto="root" data-enode="root" data-type="obj" class="ENODE">
+			<div data-proto="root" data-enode="root" data-type="obj" >
 				<!-- inserito anche l'esponente, vedi specifiche mathml -->
 				<div class="s_role degree" data-type="num"></div>
 				<div class="root_decoration">√</div>
 				<div class="s_role radicand" data-type="num"></div>
 			</div>
 			
-			<div data-proto="abs" data-enode="abs" data-type="num" class="ENODE">
+			<div data-proto="abs" data-enode="abs" data-type="num" >
 				|<div class="s_role" data-type="num"></div>
 				|
 			
 			</div>
-			<div data-proto="suchThat" data-enode="suchThat" data-type="obj" class="ENODE">
+			<div data-proto="suchThat" data-enode="suchThat" data-type="obj" >
 				<div class="s_role" data-type="obj"></div>
 				:
 			
 			</div>
-			<div data-proto="literal" data-enode="literal" data-type="obj" class="ENODE">
+			<div data-proto="literal" data-enode="literal" data-type="obj" >
 				"<div class="s_role" data-type="obj"></div>
 				"
 			
@@ -178,12 +178,12 @@
 				<div class="decoration">:=</div>
 				<div class="s_role secondMember" data-type="obj" ></div>
 			</div>
-			<div data-enode="implies" data-proto="implies" data-type="bool" class="ENODE">
+			<div data-enode="implies" data-proto="implies" data-type="bool" >
 				<div class="s_role firstMember" data-type="bool" ></div>
 				<div class="decoration imply"></div>
 				<div class="s_role secondMember" data-type="bool" ></div>
 			</div>
-			<div data-proto="set" data-enode="set" data-type="set" class="ENODE">
+			<div data-proto="set" data-enode="set" data-type="set" >
 				{
 				
 				<div class="ul_role" data-type="obj">
@@ -193,7 +193,7 @@
 			
 			
 			</div>
-			<div data-proto="setdef" data-enode="set" data-type="set" class="ENODE">
+			<div data-proto="setdef" data-enode="set" data-type="set" >
 				{
 				<div class="s_role bvar" data-type="obj"></div>
 				|
@@ -201,7 +201,7 @@
 				}
 			</div>
 
-			<div data-proto="list" data-enode="list" data-type="list" class="ENODE">
+			<div data-proto="list" data-enode="list" data-type="list" >
 				(
 				
 				<div class="ol_role" data-type="obj">
@@ -211,32 +211,32 @@
 			
 			
 			</div>
-			<div data-enode="" data-proto="" data-type="" class="ENODE">
+			<div data-enode="" data-proto="" data-type="" >
 				<div class="name"></div>
 			</div>
-			<div data-enode="in" data-proto="in" data-type="bool" class="ENODE">
+			<div data-enode="in" data-proto="in" data-type="bool" >
 				<div class="s_role" data-type="obj" ></div>
 				<div class="decoration">ϵ</div>
 				<div class="s_role" data-type="set" ></div>
 			</div>
-			<div data-enode="applyProp" data-proto="applyProp" data-type="obj" class="ENODE">
+			<div data-enode="applyProp" data-proto="applyProp" data-type="obj" >
 				prop
 						<div class="s_role property" data-type="bool" ></div>
 				mode
 						<div class="ol_role mode" data-type="obj" ></div>
 			</div>
-			<div data-enode="callFunction" data-proto="callfunction" data-type="obj" class="ENODE">
+			<div data-enode="callFunction" data-proto="callfunction" data-type="obj" >
 				call
 						<div class="s_role function" data-type="bool" ></div>
 				values
 						<div class="ol_role values" data-type="obj" ></div>
 			</div>
-			<div data-enode="eventtoaction" data-proto="eventtoaction" data-type="bool" class="ENODE">
+			<div data-enode="eventtoaction" data-proto="eventtoaction" data-type="bool" >
 				events
 						<div class="s_role event" data-type="obj" ></div>
 				actions
 						<div class="ol_role actions" data-type="obj" ></div>
 			</div>
-			<div data-enode="ci" data-proto="ci" data-type="" class="ENODE">
+			<div data-enode="ci" data-proto="ci" data-type="" >
 				<div class="name"></div>
 			</div>

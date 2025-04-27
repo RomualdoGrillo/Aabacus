@@ -1,4 +1,4 @@
-<div data-proto="top" data-enode="top" data-type="obj" class="ENODE">
+<div data-proto="top" data-enode="top" data-type="obj" >
 	<div class="s_role base" data-type="num"></div>
 	<div class="s_role exponent" data-type="num" style="bottom:10px;"></div>
 	<div class="decoration">√</div>

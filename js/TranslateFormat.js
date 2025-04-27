@@ -26,7 +26,7 @@ function ENODEfactorizeMinus($startNode) {
 function signsAsClassesSubtree($startNode, mode) {
 	//trova tutti i sotto nodi
 	$startNode.find('[data-enode]').each(function(index) {
-		// tutti gli HTML nodes con classe .ENODE
+		// tutti gli HTML nodes con attributo data-enode
 		signsAsClasses($(this), mode);
 	})
 }

@@ -1057,7 +1057,7 @@ function ENODEextend($startNode, applyToSubtreeAlso) {
 	}
 
 	$toBeExtended.each(function (index) {
-		// tutti gli HTML nodes con classe .ENODE
+		// tutti gli HTML nodes con attributo data-enode
 		$.extend(this, ENODE); //pare non si possa fare altrimenti non riesco a estendere $(this)
 	});
 }
