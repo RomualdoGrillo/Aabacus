@@ -85,16 +85,17 @@ During editing, Aabacus enforces type compatibility to ensure that only valid op
 
 ### 2. Property Application Mode
 
-Quando una espressione viene "bloccata" ogni operazione di editing diventa impossibile. L'espressione non può cambiare se non coerentemente con le equazioni che nell'espressione sono scritte.
-Tornando all'esempio 
+When an expression is "Locked", all editing operations become impossible. The expression can only be transformed according to the equations written within it.
+
+Returning to our example:
 
 ⎧ y=x-1
 ⎨ 
 ⎩ x*y=6
 
-l'unica trasformazione possibile è sostituire y con  x-1. Non posso applicare altre proprietà che non sono scritte nell'espressione.
-Ovviamente per svolgere problemi di algebra è necessario inserire almeno le porietà fondamentali nell'espressione 
-Per esempio inserire nel sistema si deve inserire la proprietà distributiva:
+The only possible transformation is to substitute y with x-1. No other properties can be applied unless they are explicitly written in the expression.
+
+To solve algebraic problems, it's necessary to include fundamental properties in the expression. For example, to work with the system above, you might need to include the distributive property:
 
 ⎧ ∀ a, b, c ∈ ℝ :   a(b + c) = ab + ac
 |
@@ -102,16 +103,18 @@ Per esempio inserire nel sistema si deve inserire la proprietà distributiva:
 | 
 ⎩ x*y=6
 
-
-Applying properties has the effect of replacing parts of the expression with other expressions that are equivalent to the original. 
-There are different ways to apply properties:
+Applying properties has the effect of replacing parts of the expression with other expressions that are equivalent to the original. There are different ways to apply properties:
 
 1. Select an expression and then apply a property. The pattern matching system identifies if the selected expression matches the pattern required by the property, and if so, applies the transformation.
 
 2. Drag terms to apply commutative, associative, distributive properties, or to replace a term in an equation system.
 
+The typical use of Aabacus follows this workflow:
 
-The tipical use of Aabacus is the following:
-1)The user creates a new expression or loads it from a file.
-2)The expression is locked
-3)In locked state the user applies properties to prove Theorems, to deduce logical consequences, to simplify expressionscan etc..
+1. The user creates a new expression or loads it from a file
+2. The expression is locked
+3. In the locked state, the user applies properties to:
+   - Prove theorems
+   - Deduce logical consequences
+   - Simplify expressions
+   - Solve equations or systems
