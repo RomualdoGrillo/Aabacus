@@ -518,7 +518,7 @@
 	  display: none
   }
   
-  .unlocked, .unlocked [data-enode]{
+  .unlocked[data-enode], .unlocked [data-enode]{
 	border-style: dashed;
   }
   
@@ -948,7 +948,6 @@
   
   .mu_DropTarget{
 	  border-color: rgb(98 100 255)!important;
-	  /*border-style:dashed;*/
 	 }
   body[tool=autoAdapt] .mu_DropTarget{
 	border-color: blueviolet!important;
