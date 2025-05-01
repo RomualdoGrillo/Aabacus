@@ -108,10 +108,12 @@ function refreshGlued($startNode) {
         if (glueFunctions.indexOf(operatorType) !== -1) {
             return true;
         } 
-        // Verifica se è un'equazione asimmetrica
-        else if (operatorType === 'eq' && isDefinition(element)) {
+        // Verifica se è una definizione
+        /*
+		else if (operatorType === 'eq' && isDefinition(element)) {
             return true;
         }
+		*/
         return false;
     });
     
