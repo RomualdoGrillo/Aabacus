@@ -240,13 +240,13 @@ function moveOrClearMarksInTree($startENODE,clear){//copy marks from persistent 
 }
 
 function ENODESmarkUnmark($ENODE,value,attrName,usePermanentMark){
-//la funzione scrive o legge marcature ENODEi in modo permanente: le marcature passano nel file mml. 
+//la funzione scrive o legge marcature ENODEs in modo permanente: le marcature passano nel file mml. 
 //attrname può assumere i valori m,l,p corrispondenti al formato della stringa mark-link-post
 //mark: marcature che devono apparire anche nell'input perchè ci sia un match
 //Attenzione: le marcature sono intese come singoli caratteri
 //ad esempio "s" per selected o "d" per dragged.
 //Un marcatura "sp" va intesa come marcato "s" e marcato "p"
-//link:per associare ENODEi in pattern e transform
+//link:per associare ENODEs in pattern e transform
 //post: c=semplifica n=nonRiordinare
 	let markAttName ='mark'
 	if(usePermanentMark)(markAttName='title')

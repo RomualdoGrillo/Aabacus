@@ -863,7 +863,7 @@ function RefreshEmptyInfixBraketsGlued($startNode, tree, options) {
 	if ($startNode == undefined || $startNode.length == 0) {
 		$startNode = $("#result,#canvasAnd,#palette")
 	}
-	var $ENODEs; //lista degli ENODEi "da trattare"
+	var $ENODEs; //lista degli ENODEs "da trattare"
 	if (tree != false) {
 		$ENODEs = $startNode.add($startNode.find("[data-enode]"));
 	} else {
