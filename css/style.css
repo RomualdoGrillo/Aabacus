@@ -115,29 +115,20 @@
   }
   
   /*[data-enode="eq"][data-viseq=asymmetric] sono le definizioni, in quel tipo di ENODEs
-  il bordo del primo membro sporge dal background venendo a "fondersi" con il bordo esterno verde
-  per una questione estetica
-  
-  [data-enode="eq"][data-viseq=asymmetric] *{
-	  border-color:white;
-  }
+  il primo membro contiene:
+  1) se la definizione è chiusa un puntino o altro simbolo che rappresenta il definendum
+  2) se la definizione è aperta un lucchetto aperto 
+  comunque il primo membro sporge dal background e il suo bordo si deve raccordare con quello del backgriund quindi deve avere lo stesso spessore e colore.
   */
   
-  [data-enode][data-viseq=asymmetric],[data-enode="eq"][data-viseq=asymmetric]>.firstMember {
+  [data-enode="eq"][data-viseq=asymmetric]>.firstMember {
+    border: inherit;
+  }
+
+
+  [data-enode][data-viseq=asymmetric] {
 	  border: 1px solid #DAD9D9;
   }
-  /*
-  .greyBorders [data-enode][data-viseq=asymmetric],[data-enode="eq"][data-viseq=asymmetric]>.firstMember,.ide {
-	  border: 1px solid #aaa;/* necessario un selector specifico almeno quanto quello usato sopra
-  }
-  
-  .greyBorders [data-enode] {
-	  border-color: #aaa;
-  }
-  
-  .greyBorders [class*="_role"].empty {background-color:  #e6e6e6;}
-  [data-enode][data-viseq=asymmetric]>.firstMember {background-color:  #ffffff;}/*lo sfondo del lucchetto ha sempre sfondo bianco*/
-  
   
   .rolescontainer{
 	  display:flex;
@@ -152,12 +143,6 @@
   [data-enode='cn'],[data-enode='ci']{
 	  padding: 1px; 
   }
-  
-  /*[class*="_role"]{
-	  padding: 0px;
-	  margin:0px;
-  }*/
-  
   
   [data-enode],[class*="_role"]  {
   flex-shrink:0;
@@ -400,7 +385,6 @@
   }
   
   [data-viseq=asymmetric]  {
-	  /* border-top-left-radius: 8px; */
 	  margin-bottom: 5px;
   }
   
@@ -413,6 +397,13 @@
 	  min-width: 8px;
 	  min-height:8px;
 	  padding: 0px;
+  }
+
+  /*trucco per far sembrare il sigillo parte del contorno esterno*/
+  [data-enode=eq][data-viseq=asymmetric]>.firstMember{
+	  /* border-top: white; */
+	  border-bottom: white;
+	  border-right: #ffffff;
   }
   
   
@@ -463,7 +454,7 @@
   /*box-shadow: 0px 0.5px 2px 0.5px rgb(125, 125, 125);*/
    /*box-shadow: 0px 0.5px 3px 0px rgb(9, 132, 9);*/;
 	 }
-  .coloredBorders [data-viseq=asymmetric]>.s_role.firstMember {
+  .coloredBorders [data-viseq=asymmetric]>.s_role {
 	  border-color: green;
   }
   .coloredBorders [data-type="point"],.coloredBorders [data-type="line"] {
@@ -527,16 +518,11 @@
 	  display: none
   }
   
-  .unlocked, .unlocked [data-enode],.unlocked[data-viseq=asymmetric]>.firstMember, .unlocked [data-viseq=asymmetric]>.firstMember{
+  .unlocked, .unlocked [data-enode]{
 	border-style: dashed;
   }
   
-  /*trucco per far sembrare il sigillo parte del contorno esterno*/
-  [data-enode=eq][data-viseq=asymmetric]>.firstMember{
-	  /* border-top: white; */
-	  border-bottom: white;
-	  border-right: #ffffff;
-  }
+  
   
   .debug [target=opened], .debug  [target=openedDnD]{
 	  background-color: pink!important;
