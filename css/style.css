@@ -212,7 +212,7 @@
   
   
   
-  /*************specifici per tipo di ENODEO ***************/
+  /*************specifici per tipo di ENODE ***************/
   
   [data-enode="power"],[data-enode="root"]{
 	  display: inline-grid!important;/* grid works but breaka the num/den disposition*/
