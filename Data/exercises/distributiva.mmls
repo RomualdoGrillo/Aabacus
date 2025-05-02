@@ -18,7 +18,7 @@
 			</and>
 	</apply>
 	<ci data-type="bool">Seleziona la proprietà distributiva e poi applicala:</ci>
-	<ci data-type="bool"> Distribuisci il fattore 2 portandolo dentro alla parentesi". Raccogli il fattore x, trascinando un "x" sopra all'altra.</ci>
+	<ci data-type="bool"> Distribuisci il fattore 2 portandolo dentro alla parentesi". Raccogli il fattore x, trascinando una "x" sopra all'altra.</ci>
 	<apply data-type="num">
 			<times>
 			</times>
