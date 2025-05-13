@@ -76,7 +76,7 @@ Aabacus supports two fundamental modes of expression manipulation:
 
 When an expression is in "Unlocked" state, it can be freely edited. This includes:
 
-- Adding new ENODEs to build or extend the expression
+- Adding new ENODEs to the expression
 - Removing ENODEs from the expression
 - Moving subexpressions around
 - Copying and pasting parts of expressions
@@ -118,3 +118,6 @@ The typical use of Aabacus follows this workflow:
    - Deduce logical consequences
    - Simplify expressions
    - Solve equations or systems
+
+
+
