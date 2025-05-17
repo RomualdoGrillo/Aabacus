@@ -17,7 +17,11 @@
 
 
 				<div class="ul_role" data-type="bool">
-					<apply title="Proprietà associativa della somma: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-vis="collapsed" data-tag="plusAssociate" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
+					<apply title=
+"Proprietà associativa della somma (generalizzata):
+- Rimuovi una parentesi selezionandola e premendo 'invio'
+- Aggiungi una parentesi selezionando più addendi consecutivi tenendo premuto ⇧ o ⌘, poi premi '⇧ + invio'"
+					data-vis="collapsed" data-tag="plusAssociate" data-tagimg="./images/properties/AssocGen.svg" data-type="bool">
 						<forall>
 						</forall>
 						<bvar>
@@ -47,7 +51,11 @@
 							</apply>
 						</apply>
 					</apply>
-					<apply title="Proprietà associativa della moltiplicazione: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi" data-variableorient="true" data-tagimg="./images/properties/AssocGen.svg" data-vis="collapsed" data-tag="AssociativaMoltiplicazione" data-type="bool">
+					<apply title=
+"Proprietà associativa della moltiplicazione (generalizzata):
+- Rimuovi una parentesi selezionandola e premendo 'invio'
+- Aggiungi una parentesi selezionando più fattori consecutivi tenendo premuto ⇧ o ⌘, poi premi '⇧ + invio'"
+					data-variableorient="true" data-tagimg="./images/properties/AssocGen.svg" data-vis="collapsed" data-tag="AssociativaMoltiplicazione" data-type="bool">
 						<forall>
 						</forall>
 						<bvar>
@@ -85,7 +93,7 @@
 
 
 				<div class="ul_role" data-type="bool">
-					<apply title="Proprietà dell'opposto: Seleziona due elementi opposti circondati da una parentesi (a -a) e premi 'Invio' per trasformarli in uno 0. Seleziona uno 0 e premi 'Maiusc + Invio' per creare una coppia (a -a)" data-vis="collapsed" data-tag="NumeroOpposto" data-tagimg="./images/properties/antimatter.svg" data-type="bool">
+					<apply title="Proprietà dell'opposto:&#10;1. Seleziona due elementi opposti circondati da una parentesi (a -a) e premi 'Invio' per trasformarli in uno 0&#10;2. Seleziona uno 0 e premi '⇧ + Invio' per creare una coppia (a -a)" data-vis="collapsed" data-tag="NumeroOpposto" data-tagimg="./images/properties/antimatter.svg" data-type="bool">
 						<forall>
 						</forall>
 						<bvar>
@@ -107,7 +115,7 @@
 							<cn data-type="num">0</cn>
 						</apply>
 					</apply>
-					<apply title="Proprietà del reciproco: Seleziona due elementi reciproci circondati da una parentesi (a * 1/a) e premi 'Invio' per trasformarli in un 1. Seleziona un 1 e premi 'Maiusc + Invio' per creare una coppia (a * 1/a)" data-variableorient="true" data-tagimg="./images/properties/antimatter.svg" data-vis="collapsed" data-tag="NumeroReciproco" data-type="bool">
+					<apply title="Proprietà del reciproco:&#10;1. Seleziona due elementi reciproci circondati da una parentesi (a * 1/a) e premi 'Invio' per trasformarli in un 1&#10;2. Seleziona un 1 e premi '⇧ + Invio' per creare una coppia (a * 1/a)" data-variableorient="true" data-tagimg="./images/properties/antimatter.svg" data-vis="collapsed" data-tag="NumeroReciproco" data-type="bool">
 						<forall>
 						</forall>
 						<bvar>
@@ -137,7 +145,7 @@
 
 
 				<div class="ul_role" data-type="bool">
-					<apply title="Elemento neutro della somma: seleziona una coppia (a + 0) e premi Invio per eliminare lo 0. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '+0'" data-tagimg="./images/properties/zero.svg" data-vis="collapsed" data-tag="NeutroDellaSomma" data-type="bool">
+					<apply title="Elemento neutro della somma:&#10;1. Seleziona una coppia (a + 0) e premi Invio per eliminare lo 0&#10;2. Seleziona un elemento 'a' e premi '⇧ + Invio' per aggiungere '+0'" data-tagimg="./images/properties/zero.svg" data-vis="collapsed" data-tag="NeutroDellaSomma" data-type="bool">
 						<forall>
 						</forall>
 						<bvar>
@@ -155,7 +163,7 @@
 							<ci data-type="num">a</ci>
 						</apply>
 					</apply>
-					<apply title="Elemento neutro del prodotto: seleziona una coppia (a * 1) e premi 'Invio' per eliminare l' uno. Seleziona un elemento 'a' e premi 'Maiusc + Invio' per aggiungere '* 1'" data-tagimg="./images/properties/one.svg" data-vis="collapsed" data-tag="NeutroDellaMoltiplicazione" data-type="bool">
+					<apply title="Elemento neutro del prodotto:&#10;1. Seleziona una coppia (a * 1) e premi 'Invio' per eliminare l' uno&#10;2. Seleziona un elemento 'a' e premi '⇧ + Invio' per aggiungere '* 1'" data-tagimg="./images/properties/one.svg" data-vis="collapsed" data-tag="NeutroDellaMoltiplicazione" data-type="bool">
 						<forall>
 						</forall>
 						<bvar>
