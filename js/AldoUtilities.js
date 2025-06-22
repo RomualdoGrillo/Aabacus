@@ -62,18 +62,6 @@ function wrapUnwrapUrlString(string, unwrap) {
 	}
 }
 
-/*
-var count = 0
-function serialNumber(mode){
-    if(mode ==="init"){
-        count = -1 //in questo modo alla prima richiesta il SN sarà 0     
-    }
-    else{
-        count++
-    }
-    return count
-}
-*/
 
 function lookForResultAndCelebrate(movesCounter,movesMinNumber) {
 	let $expressions = $('#canvasRole>*');
