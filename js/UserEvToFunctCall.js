@@ -136,7 +136,7 @@ function RepeatedRefine_c($transform,key,selector){
 	let semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
 	let $transformParentRole = $transform.parent()//se il transform viene sostituito, continua a cercare a partire da l suo parent
 	while(semplificEffettuata == true && i<20){//limito il numero di tentativi per evitare loop infiniti
-		const $toBesemplified = $transformParentRole.find('[data-enode]')
+		let $toBesemplified = $transformParentRole.find('[data-enode]')
 		if(selector){
 			$toBesemplified = $toBesemplified.filter(selector)
 		}
