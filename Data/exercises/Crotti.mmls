@@ -13,7 +13,7 @@
 			</and>
 		</apply>
 	</apply>
-<div data-enode="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
+	<div data-enode="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" draggable="false" style="border-width: 1px; border-color: lightgrey !important;">
 		<div class="ul_role" data-type="bool" style="border-width: 0px;display: grid;">
 			<div data-enode="and" data-type="bool" class="ENODE brackets showAsPlaceholder saveAsHtml" data-and="horizontal" style="border-width: 0px;" draggable="false">
 				<div class="ul_role" data-type="bool">
@@ -143,11 +143,16 @@
 			</div>
 		</div>
 	</div>
-	<apply data-type="num">
-		<times>
-		</times>
-		<cn data-type="num">178</cn>
-		<cn data-type="num">36</cn>
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<apply data-type="num">
+			<times>
+			</times>
+			<cn data-type="num">178</cn>
+			<cn data-type="num">36</cn>
+		</apply>
 	</apply>
 </section>
 
@@ -440,7 +445,12 @@
 	</apply>
 </section>
 <section data-section="result">
-	<cn data-type="num">6408</cn>
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<cn data-type="num">6408</cn>
+	</apply>
 </section>
 <section data-section="settings">
     {
