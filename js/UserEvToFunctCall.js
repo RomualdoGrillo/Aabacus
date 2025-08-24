@@ -15,7 +15,7 @@ function keyboardEvToFC($ENODE, keyPressed,event){
 		if(keyPressed==='\r' && actionString){
 			PActx = TryOnePropertyByName(actionString, $ENODE ,direction);
 			if( PActx && PActx.matchedTF ){//proprietà applicata con successo
-				PActx.msg = actionString +" "+ firstValString
+				PActx.msg = actionString + " "
 			}
 		}
 	}
