@@ -6,10 +6,10 @@
 
 function keyboardEvToFC($ENODE, keyPressed,event){
 	//if event is undefined, this is an internal call: use the property disregarding selectedTool
-	var PActx 
+	let PActx 
 	if(event && GLBsettings.tool=="declare" ){
-		var actionString = $('.selectedTool').attr('data-tag');
-		var direction = "ltr"
+		const actionString = $('.selectedTool').attr('data-tag');
+		let direction = "ltr"
 		if( event.shiftKey){ direction = "rtl"}
 		
 		if(keyPressed==='\r' && actionString){
@@ -21,11 +21,11 @@ function keyboardEvToFC($ENODE, keyPressed,event){
 	}
 	else{
 
-		var $actions = searchEventHandler(keyPressed);
+		const $actions = searchEventHandler(keyPressed);
 		//prova in ordine ogni azione
-		for(var i=0;i<$actions.length;i++){
-			var actionString
-			var firstValString
+		for(let i=0;i<$actions.length;i++){
+			let actionString
+			let firstValString
 			try {
 				actionString = $actions[i].ENODE_getRoles('.function').children()[0].ENODE_getName();
 				firstValString = $actions[i].ENODE_getRoles('.values').children()[0].ENODE_getName();	
@@ -82,15 +82,15 @@ function getDnDpropEnabled(dataTag){
 }
 
 function searchEventHandler(event){// trova la definizione della proprietà
-   var res
-   var $found = $('#events').find('[data-enode="eventtoaction"]').filter(function(index){
-        var $role = this.ENODE_getRoles('.event');
+   let res
+   const $found = $('#events').find('[data-enode="eventtoaction"]').filter(function(index){
+        const $role = this.ENODE_getRoles('.event');
         if($role.length !== 1){
             console.warn('Role not found' + field);
             res = $()
             return res
         }
-        var ENODE = $role.children()[0]
+        const ENODE = $role.children()[0]
         if( ENODE !== undefined){
             return ENODE.ENODE_getName().toLowerCase() === event.toLowerCase()//case insensitive
         }
@@ -132,18 +132,18 @@ function searchForProperty(field,value,returnedField){
 
 
 function RepeatedRefine_c($transform,key,selector){
-	var i=0
-	var semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
+	let i=0
+	let semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
 	let $transformParentRole = $transform.parent()//se il transform viene sostituito, continua a cercare a partire da l suo parent
 	while(semplificEffettuata == true && i<20){//limito il numero di tentativi per evitare loop infiniti
-		var $toBesemplified = $transformParentRole.find('[data-enode]')
+		const $toBesemplified = $transformParentRole.find('[data-enode]')
 		if(selector){
 			$toBesemplified = $toBesemplified.filter(selector)
 		}
-		var j= ($toBesemplified.length - 1)
+		let j= ($toBesemplified.length - 1)
     	semplificEffettuata = false;
     	while( j>=0){//prova a semplificare il j-esimo ENODEo, parti dal fondo
-    		var refinementPActx = keyboardEvToFC($($toBesemplified[j]),key);
+    		const refinementPActx = keyboardEvToFC($($toBesemplified[j]),key);
 			if(refinementPActx && refinementPActx.matchedTF){//semplificazione applicata con successo
 				refreshAndReplace(refinementPActx);
 				semplificEffettuata = true;

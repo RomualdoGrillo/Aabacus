@@ -2,9 +2,9 @@
 
 function saveTextAsFile(textToWrite,fileNameToSaveAs)
 {
-	var textFileAsBlob = new Blob([  formatXml(textToWrite) ], {type:'text/plain'});
+	const textFileAsBlob = new Blob([  formatXml(textToWrite) ], {type:'text/plain'});
 	
-	var downloadLink = document.createElement("a");
+	const downloadLink = document.createElement("a");
 	downloadLink.download = fileNameToSaveAs;
 	downloadLink.innerHTML = "Download File";
 	if (window.webkitURL != null)
@@ -33,11 +33,11 @@ function destroyClickedElement(event)
 
 function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 {
-	var fileToLoad = document.getElementById("fileToLoad").files[0];
-	var fileReader = new FileReader();
+	const fileToLoad = document.getElementById("fileToLoad").files[0];
+	const fileReader = new FileReader();
 	fileReader.onload = function(fileLoadedEvent) 
 	{
-		var textFromFileLoaded = fileLoadedEvent.target.result;
+		const textFromFileLoaded = fileLoadedEvent.target.result;
 		if(fileSuffix === "mml"){
 			let $loaded = $parserForMixedMMLHTML(textFromFileLoaded);
 
@@ -82,7 +82,7 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
  */
 function inject(MMLstring, $targetRoleOrENODE, containerRequirements, toBeImported)
 {
-	var $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
+	let $convertedTree = createConvertedTree(MMLstring,"mml_aab",undefined,toBeImported);
 	ExtendAndInitializeTree($convertedTree);
 	// if ( target accept booleans) al momento l'unico target è #canvasrole, in futuro si dovrà distinguere
 	if($targetRoleOrENODE.is('[data-enode]')){

@@ -53,12 +53,12 @@ function equalExtENODE($node1,$node2,checkTypeAndName,checkDragTarget){
 
 function parameterInHeader($parameter,$property){
     if ($property.attr('data-enode') !== 'forAll'){ return undefined}
-    var $bvars = GetforAllHeader($property).children('[data-enode]');
-    var parameterName = $parameter[0].ENODE_getName();
-    var i
-    for(var i=0; i<$bvars.length ;i++){
-        var bvaTag = $bvars[i].ENODE_getName(true)
-        var bvarName = $bvars[i].ENODE_getName();//ottieni il nome privato degli underscore __
+    const $bvars = GetforAllHeader($property).children('[data-enode]');
+    const parameterName = $parameter[0].ENODE_getName();
+    let i
+    for(let i=0; i<$bvars.length ;i++){
+        const bvaTag = $bvars[i].ENODE_getName(true)
+        const bvarName = $bvars[i].ENODE_getName();//ottieni il nome privato degli underscore __
         if(parameterName === bvarName){
             return $($bvars[i]) 
         }
@@ -67,7 +67,7 @@ function parameterInHeader($parameter,$property){
 
 function replaceInForall($parameter,$newVal,$property){
     //individua il parametro dall'header' se presente
-    var $parHeader = parameterInHeader($parameter,$property);
+    const $parHeader = parameterInHeader($parameter,$property);
     if( $parHeader != undefined){
         return ENODEForThisPar($parHeader,$newVal);//restituisce la proprietà eventualmente modificata
     }
@@ -92,9 +92,9 @@ function containsBvar($member,$forAll){//contiene bvar?
 
 function reformatForallProp($prop,$transform){
     //sposta il forall che contiene tutto in modo che circondi solo il "$transform" 
-	var $forallContRole = GetforAllContentRole($prop);
-	var $newProp = $forallContRole.children();
-	var $tranformParent = $transform.parent();
+	const $forallContRole = GetforAllContentRole($prop);
+	const $newProp = $forallContRole.children();
+	const $tranformParent = $transform.parent();
 	$newProp.insertAfter($prop);//inserisci provvisoriamente dopo il forall
 	$forallContRole.append($transform);
 	$tranformParent.append($prop)
@@ -122,11 +122,11 @@ function searchBvarByName($forall,Name){
 
 function parameterType($ENODE,$prop){
     //is it a symbol?
-    var className = $ENODE.attr('data-enode');
+    const className = $ENODE.attr('data-enode');
     if(symbols.indexOf(className) == -1){//not a symbol?(ci,cs,csymbol)
         return "n"
     }
-    var parameterName = $ENODE[0].ENODE_getName(true);
+    const parameterName = $ENODE[0].ENODE_getName(true);
     //****** compatibilità con notazione "Mathematica"
     //search if name's tail is _ __ ___
     if(parameterName.slice(-3) === "___" ){return "x___"}//x___
@@ -137,13 +137,13 @@ function parameterType($ENODE,$prop){
     if($prop == undefined || $prop.attr('data-enode') !== "forAll"){
             return "x" //se non c'è un forall la variabile è di sicuro "fissa"
     }
-    var $forAllParent = $prop;    
-    var $bvars = GetforAllHeader($forAllParent).children('[data-enode]');
-    var i
-    var $match = undefined
-    for(var i=0; i<$bvars.length ;i++){
-        var bvaTag = $bvars[i].ENODE_getName(true)
-        var bvarName = $bvars[i].ENODE_getName();//ottieni il nome privato degli underscore __
+    const $forAllParent = $prop;    
+    const $bvars = GetforAllHeader($forAllParent).children('[data-enode]');
+    let i
+    let $match = undefined
+    for(let i=0; i<$bvars.length ;i++){
+        const bvaTag = $bvars[i].ENODE_getName(true)
+        const bvarName = $bvars[i].ENODE_getName();//ottieni il nome privato degli underscore __
         if(parameterName === bvarName){
             $match = $($bvars[i]); 
             break
@@ -197,21 +197,22 @@ function levelsToAncestor($marked,$patternMember){
         return NaN
     }
     else{
-        var $parentLevels = $marked.parentsUntil( $patternMember ,'[data-enode]')
+        const $parentLevels = $marked.parentsUntil( $patternMember ,'[data-enode]')
         return $parentLevels.length + 1 // $patternMembercsi trova n livelli più in aòto di $marked  
     }
 }
 
 
 function findPMPropByName(propName){
-	return	$prop = $('[data-tag=' + propName + ']') 
+	const $prop = $('[data-tag=' + propName + ']');
+	return $prop;
 }
 
 function swapMembersClone($origProp,mode){
-    var res = {foundTF:false, msg:"", $cloneProp: "",visualization:""}
+    const res = {foundTF:false, msg:"", $cloneProp: "",visualization:""}
     
     //********* CLONA prop ************************************************
-    var propCdsClass = $origProp.attr('data-enode');
+    const propCdsClass = $origProp.attr('data-enode');
     //createForThis($forall,$placeHolder)//todo: utilizzare stessa funzione rispetto a forThis manuale
     res.$cloneProp = ENODEclone($origProp);
     res.visualization =    wrapUnwrapUrlString( $origProp[0].style.backgroundImage ,'cutFirstDir')
@@ -221,7 +222,7 @@ function swapMembersClone($origProp,mode){
     res.$cloneProp.find('[data-enode]').addBack().addClass('PMclone')//is a pattern matching clone
 
     //***********trova l'equazione ************************************************
-    var $equation
+    let $equation
     if( propCdsClass === "forAll" ){
         res.$cloneProp.addClass('waiting'); //metti il clone in stato waiting
         res.$cloneProp.removeAttr('data-vis');
@@ -243,10 +244,10 @@ function swapMembersClone($origProp,mode){
     //*********** determina primo e secondo membro************
     // a seconda di "mode" costruisci la giusta equazione.
     if(mode === "rtl"){
-        var $firstMember = $equation[0].ENODE_getRoles('.firstMember');
-        var $secondMember = $equation[0].ENODE_getRoles('.secondMember');
-        var $firstMemberContent = $firstMember.children().remove();
-        var $secondMemberContent = $secondMember.children().remove();
+        const $firstMember = $equation[0].ENODE_getRoles('.firstMember');
+        const $secondMember = $equation[0].ENODE_getRoles('.secondMember');
+        const $firstMemberContent = $firstMember.children().remove();
+        const $secondMemberContent = $secondMember.children().remove();
         $firstMember.append($secondMemberContent);
         $secondMember.append($firstMemberContent);
     }

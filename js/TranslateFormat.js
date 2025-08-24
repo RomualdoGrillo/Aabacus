@@ -8,10 +8,10 @@ function ENODEfactorizeMinus($startNode) {
 	$extOp = wrapIfNeeded($startNode, "times");
 	//se necessario crea una operazione container
 	//aggiungi un fattore "-1"
-	var prototype = prototypeSearch("ci", "num");
-	var prototypeMinus = prototypeSearch("minus");
-	var $clone = ENODEclone(prototype);
-	var $cloneMinus = ENODEclone(prototypeMinus);
+	const prototype = prototypeSearch("ci", "num");
+	const prototypeMinus = prototypeSearch("minus");
+	const $clone = ENODEclone(prototype);
+	const $cloneMinus = ENODEclone(prototypeMinus);
 	$clone.attr('data-enode', 'cn');
 	$clone[0].ENODE_setName("1");
 	$cloneMinus.insertAfter($startNode);
@@ -35,7 +35,7 @@ function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsCl
 ) {
 	// <>-a<> to <class="minus">a<>
 	// nota: non possono coesistere segni meno all'interno del nome e "minus" come classi
-	var name = $ENODE[0].ENODE_getName()
+	let name = $ENODE[0].ENODE_getName()
 	if (mode == "SignsInNames_to_SignsAsClasses") {
 		if (name[0] === "/") {
 			name = name.substr(1)
@@ -70,7 +70,7 @@ function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsCl
 			wrapWithOperation($ENODE, "minus")
 		}
 	} else if (mode == "MinusOp_to_SignsAsClasses") {
-		var $ENODEchildren = $ENODE[0].ENODE_getRoles().children().filter('[data-enode]')
+		const $ENODEchildren = $ENODE[0].ENODE_getRoles().children().filter('[data-enode]')
 		if ($ENODE.attr('data-enode') === "minus" && $ENODEchildren.length == 1) {
 			// i minus che hanno un solo children
 			$ENODE[0].ENODE_dissolveContainer();
@@ -87,7 +87,7 @@ function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsCl
  * Array di funzioni che richiedono l'effetto "glued" sui loro elementi figli
  * Include operatori come minus, m_inverse, not
  */
-var glueFunctions = ["minus", "m_inverse", "not"];
+const glueFunctions = ["minus", "m_inverse", "not"];
 
 /**
  * Aggiorna gli elementi che devono essere "incollati" (glued) nel DOM

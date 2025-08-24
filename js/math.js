@@ -1,7 +1,7 @@
 function primeFactorization(num){
-  var root = Math.sqrt(num),  
-  result = arguments[1] || [],  //get unnamed paremeter from recursive calls
-  x = 2; 
+  const root = Math.sqrt(num);
+  const result = arguments[1] || [];  //get unnamed paremeter from recursive calls
+  let x = 2;
   
   if(num % x){//if not divisible by 2 
    x = 3;//assign first odd
@@ -33,14 +33,14 @@ function ENODEgetNumber($ENODE){
 }
 */
 function ENODENumericCdsAsText($ENODE){
-  var $elementUnderTest = $ENODE
-  var sign = 1
+  let $elementUnderTest = $ENODE
+  let sign = 1
   while( $elementUnderTest.attr('data-enode') === "minus" ){
     //passa all'elemento interno
     $elementUnderTest = $elementUnderTest[0].ENODE_getRoles().children(':first');
     sign = sign * -1
   }
-  var res = $elementUnderTest[0].ENODE_getName();
+  let res = $elementUnderTest[0].ENODE_getName();
   if( sign == -1 ){//se necessario aggiungi segno meno
     res = "-" + res
   }
@@ -50,8 +50,8 @@ function ENODENumericCdsAsText($ENODE){
 function separateTensHundreds(n) {
   if (n == 0) return [0];
   // n = Math.floor(n); // needed for decimal numbers
-  var arr = [];
-  var p = 10;
+  const arr = [];
+  let p = 10;
 
   while (n != 0 && arr.length < 1 ) {// limit result to 1 terms + remainder
     let currentSlice = n % p;
@@ -66,4 +66,3 @@ function separateTensHundreds(n) {
   }
   return arr;
 }
-

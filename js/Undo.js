@@ -12,10 +12,10 @@ function ssnapshot() {
 }
 
 ssnapshot.take = function(){
-		var rootElement = getExpressionRootNode(); // Ottiene HTMLElement
+		const rootElement = getExpressionRootNode(); // Ottiene HTMLElement
 		if (rootElement) {
 			// Converte in jQuery prima di passarlo a ENODEclone
-			var $cloneRoot = ENODEclone( $(rootElement), false, false ); // Passa e riceve jQuery
+			const $cloneRoot = ENODEclone( $(rootElement), false, false ); // Passa e riceve jQuery
 			FILO.push($cloneRoot); // Salva l'oggetto jQuery clonato
 		} else {
 			console.error("Cannot take snapshot: root node not found.");
@@ -33,11 +33,11 @@ ssnapshot.take = function(){
 }
 
 ssnapshot.undo = function(){
-		var toBeRestored = null; // Inizializza per restituire null se l'undo fallisce
-		var currentRootElement = getExpressionRootNode(); // Ottiene HTMLElement
+		let toBeRestored = null; // Inizializza per restituire null se l'undo fallisce
+		const currentRootElement = getExpressionRootNode(); // Ottiene HTMLElement
 
 		if (currentRootElement && FILO.length > 0) { // Controlla elemento e stack
-			var $currentRoot = $(currentRootElement); // Converte in jQuery
+			const $currentRoot = $(currentRootElement); // Converte in jQuery
 
 			// Clona l'oggetto jQuery salvato in cima allo stack
 			$toBeRestored = FILO[FILO.length - 1].clone(); // Clona jQuery. Questa è la variabile da restituire.
@@ -74,7 +74,7 @@ ssnapshot.copy = function(){
 }
 ssnapshot.paste = function(){
 	if(ssnapshot.clipBoard.length != 0){
-		var $newCds = ENODEclone( ssnapshot.clipBoard,true,false ); //extend, do not removeID
+		const $newCds = ENODEclone( ssnapshot.clipBoard,true,false ); //extend, do not removeID
 		$(".selected").replaceWith( $newCds );
 	}
 }

@@ -14,8 +14,8 @@ function innteractMakeDroppable(selector){
 		console.log('interactive drooop!!!!!!!!!!!!!!!!!!!')
 	  },
 	  ondragenter: function (event) {
-		var draggableElement = event.relatedTarget
-		var dropzoneElement = event.target
+		const draggableElement = event.relatedTarget
+		const dropzoneElement = event.target
 		console.log('interactive enter drooop!!!!!!!!!!!!!!!!!!!')
 
 		// feedback the possibility of a drop

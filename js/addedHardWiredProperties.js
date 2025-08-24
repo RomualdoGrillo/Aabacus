@@ -1,12 +1,12 @@
 function tabelline($toBeComp,firstVal,img){
 	//limit to times
-	var op = $toBeComp.attr('data-enode');
+	let op = $toBeComp.attr('data-enode');
 	if(op == "times"){
 		//if a times operation is selected, operate on his children
 		$toBeComp = $toBeComp[0].ENODE_getChildren()
 	}
 	else{
-		var $parent=ENODEparent($toBeComp);
+		const $parent=ENODEparent($toBeComp);
 		op = $parent.attr('data-enode');
 		if(op !== "times"){
 			return 
@@ -32,8 +32,8 @@ function tabelline($toBeComp,firstVal,img){
 
 
 function composePlusOnly($toBeComp,firstVal,img){
-	var $parent=ENODEparent($toBeComp);
-	var op = $parent.attr('data-enode');
+	const $parent=ENODEparent($toBeComp);
+	const op = $parent.attr('data-enode');
 	if(op !== "plus"){
 		return 
 		//return newPActx()
@@ -43,10 +43,10 @@ function composePlusOnly($toBeComp,firstVal,img){
 
  
 function decomposeTens($toBeDec,undefined,img){
-	var PActx = newPActx();
+	const PActx = newPActx();
 	PActx.$operand = $toBeDec;
-	var op = ""
-	var $extOp = ""
+	let op = ""
+	let $extOp = ""
 	//var $toBeDec=$('.selected')
 	//**** la funzione può essere applicata?
 	if($toBeDec.length !== 1){console.log("cant decompose " + $toBeDec.length + " elements"); return}
@@ -54,12 +54,12 @@ function decomposeTens($toBeDec,undefined,img){
 	if( TBDType != "cn" ){//se l'elemento da scomporre è un numero'
 	console.log("can only decompose a cn not a" + TBDType ); return}
 	//**** applica la funzione
-	var toBeDec = ENODEsToVal($toBeDec)
+	const toBeDec = ENODEsToVal($toBeDec)
 	//var primeFactors = primeFactorization(number);
 	let terms = separateTensHundreds(toBeDec.val);	
 	if(terms.length >1){
 		$extOp = wrapIfNeeded($toBeDec,'plus');//se necessario crea una operazione container
-		var prototype=prototypeSearch("cn","num")
+		const prototype=prototypeSearch("cn","num")
 		terms.forEach(function(e,i){
 			$clone = ENODEclone(prototype);
 			$clone.attr('data-exper','cn');
@@ -79,7 +79,7 @@ function decomposeTens($toBeDec,undefined,img){
 }
 
 function $toBeComposedWithSiblings($selected){
-	var $ENODEBesideSelected
+	let $ENODEBesideSelected
 	//Attualmente il contenuto dei role si dispone leftRight e topDown mentre comporre è visto come left e down.
 	//di conseguenza per decidere qual'è l'elemento con cui comporre devo distiguere a seconda dell'orientazione.'
 	if( $selected.parent().css('flex-direction') === "row"){

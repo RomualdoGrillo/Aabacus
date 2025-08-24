@@ -43,7 +43,7 @@ function elaboraRisposta(fileType, response){
 	alert(fileType);
 	switch(fileType) {
 	case "xml":
-	  var stringa = XMLToString(response)  // converte il file XML in una stringa di testo
+	  const stringa = XMLToString(response)  // converte il file XML in una stringa di testo
 	  $("#textAjax").text(stringa);       // carica il testo nel div <id="contenuto">
 	  break;
 	case "html":
@@ -64,7 +64,7 @@ function XMLToString(oXML)
 	{
 		//code for IE
 		if (window.ActiveXObject) {
-			var oString = oXML.xml; return oString;
+			const oString = oXML.xml; return oString;
 		} 
 		// code for Chrome, Safari, Firefox, Opera, etc.
 			else {

@@ -36,7 +36,7 @@ $(document).on('touchend', MouseUpCleanup);//not tested
 
 
 $(document).on('keydown', function (e) {
-	var keyPressed = keyToCharacter(e.which).toLowerCase();
+	const keyPressed = keyToCharacter(e.which).toLowerCase();
 	console.log('key pressed:' + keyPressed + ' code: ' + e.which)
 
 	if (e.which == 16 || e.which == 17) { }//console.log("filter ctrl and Maiusc if alone")
@@ -97,7 +97,7 @@ $(document).on('keydown', function (e) {
 			fileExtension = '.mml';
 		}
 		; if (stringToBeSaved) {
-			var fileName = prompt('Save as... Attenzione: Il file verrà salvato nella cartella "Download" !! non è possibile salvare in altre cartelle', 'noname')
+			const fileName = prompt('Save as... Attenzione: Il file verrà salvato nella cartella "Download" !! non è possibile salvare in altre cartelle', 'noname')
 			if (fileName !== null) {
 				saveTextAsFile(stringToBeSaved, fileName + fileExtension);
 			}
@@ -111,8 +111,8 @@ $(document).on('keydown', function (e) {
 		//}
 	} else if ($('.selected').length != 0) {
 		//****************applica proprietà***********
-		var $selected = $('.selected')
-		var PActx = newPActx();
+		const $selected = $('.selected')
+		let PActx = newPActx();
 
 		PActx = keyboardEvToFC($selected, keyPressed, e);
 
@@ -132,10 +132,10 @@ $('#fileToLoad').change(function (e) {
 	//console.log(e);
 	//passa di qui dopo che l'utente ha selezionato un nuovo file, non se l'utente preme annulla
 	//console.log('fileTOLoad change');
-	var fileToLoad = jQuery('#fileToLoad')[0].files[0];
-	var $target = $('#canvasRole');
-	var fileName = fileToLoad.name;
-	var fileSuffix = fileName.split(".")[fileName.split(".").length - 1]
+	const fileToLoad = jQuery('#fileToLoad')[0].files[0];
+	const $target = $('#canvasRole');
+	const fileName = fileToLoad.name;
+	const fileSuffix = fileName.split(".")[fileName.split(".").length - 1]
 	loadFileConvert(fileToLoad, $($target[0]), fileSuffix);
 	//forse la chiamata sopra è asincrona? ssnapshot scatta prima dell'effettivo caricamento
 	this.value = "";//cancella il vecchio path altrimenti se carico due volte lo stesso file non si accorge del cambiamento
@@ -241,15 +241,15 @@ function dblclickHandler(event) {
 		$toBeSpecified = parameterInHeader($ENODEDblclicked, $identifierSpanForAll($ENODEDblclicked))
 	}
 	if ($toBeSpecified && $toBeSpecified.length != 0) {
-		var newVal = prompt('Specify a value')
+		const newVal = prompt('Specify a value')
 		if (newVal != null) {
-			var $newNode
+			let $newNode
 			let $operation = dummyParser(newVal)
 			if ($operation) {//dummy parser to parse x>0 etc...
 				$newNode = $operation;
 			}
 			else {
-				var type = $toBeSpecified.attr('data-type')
+				const type = $toBeSpecified.attr('data-type')
 				$newNode = ENODEclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
 				$newNode[0].ENODE_setName(newVal);
 				$newNode.attr('data-type', type)
@@ -278,7 +278,7 @@ function dblclickHandler(event) {
 			$plus.attr('data-vis','resizable');
 			$ENODEDblclicked.remove()
 			//crea il numero 1
-			var One = {type:"cn", val:1, sign:1, exp:1}
+			const One = {type:"cn", val:1, sign:1, exp:1}
 			for(i=0;i<n;i++){
 				//clona ENODE 1
 				$plus[0].ENODE_getRoles().append(ValToENODEs(One))
@@ -290,7 +290,7 @@ function dblclickHandler(event) {
 			let firstChild = $role.find('>[data-enode]')[0]
 			let fcWidth = firstChild.offsetWidth
 			//var fcstyle = element.currentStyle || window.getComputedStyle(firstChild);
-			var fcstyle = window.getComputedStyle(firstChild);
+			const fcstyle = window.getComputedStyle(firstChild);
 			let fcMargins = parseFloat(fcstyle.marginLeft) + parseFloat(fcstyle.marginRight)
 			let n_columns = Math.floor( $role[0].offsetWidth/(fcWidth+fcMargins) )
 			let n_children = $ENODEDblclicked[0].ENODE_getChildren().length
@@ -343,7 +343,7 @@ function keyToCharacter(key) {
 function refreshAndReplace(PActx) {
 	console.log("Applied property: " + PActx.msg)
 	//**** determina l'operazione più esterna su cui fare il refresh
-	var $toBeRefreshed
+	let $toBeRefreshed
 
 	if (PActx.replacedAlready == true) {
 		// sostituzione già effettuano internamente alla proprietà
@@ -406,7 +406,7 @@ function cancelSelected() {
 
 function swapElements(obj1, obj2) {
 	// create marker element and insert it where obj1 is
-	var temp = document.createElement("div");
+	const temp = document.createElement("div");
 	obj1.parentNode.insertBefore(temp, obj1);
 
 	// move obj1 to right before obj2
