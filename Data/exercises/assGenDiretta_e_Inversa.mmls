@@ -1,24 +1,28 @@
 <section data-section="palette">
 	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
-			<and>
-			</and>
+		<and>
+		</and>
 	</apply>
 </section>
 <section data-section="canvas">
 	<apply data-hide="true" data-type="bool">
+		<and>
+		</and>
+		<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
 			<and>
 			</and>
-			<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
-				<and>
-				</and>
-			</apply>
+		</apply>
 	</apply>
 	<ci data-type="bool">Applica la proprietà associativa generalizzata della somma: rimuovi una parentesi selezionandola e premendo 'invio',  seleziona più elementi e premi 'maiusc + invio' per circondarli con una parentesi</ci>
 	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-type="bool">
-			<and>
-			</and>
+		<and>
+		</and>
 	</apply>
-	<apply data-type="num">
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<apply data-type="num">
 			<plus>
 			</plus>
 			<apply data-type="num">
@@ -35,16 +39,21 @@
 				<cn data-type="num">1</cn>
 				<cn data-type="num">1</cn>
 			</apply>
+		</apply>
 	</apply>
 </section>
 <section data-section="events">
 	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
-			<and>
-			</and>
+		<and>
+		</and>
 	</apply>
 </section>
 <section data-section="result">
-	<apply data-type="num">
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<apply data-type="num">
 			<plus>
 			</plus>
 			<apply data-type="num">
@@ -65,6 +74,7 @@
 				<cn data-type="num">1</cn>
 				<cn data-type="num">1</cn>
 			</apply>
+		</apply>
 	</apply>
 </section>
 

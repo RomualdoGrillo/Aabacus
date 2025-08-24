@@ -1,97 +1,98 @@
 <section data-section="palette">
 	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
-			<and>
-			</and>
+		<and>
+		</and>
 	</apply>
 </section>
 <section data-section="canvas">
 	<ci data-type="bool">Applica la proprietà commutativa spostando gli elementi con drag and drop</ci>
 	<ci data-type="bool">Applica la proprietà associativa della somma selezionando una parentesi e utilizzando i tasti  ← →</ci>
 	<div data-enode="and" data-type="bool" class="ENODE brackets saveAsHtml showAsPlaceholder" data-and="horizontal" style="border-width: 0px;" draggable="false">
-		
-	
-<div class="ul_role" data-type="bool">
-			
-			
-			
-		
-
-
-<apply data-tag="CommutativaSomma" data-tagimg="./images/properties/commutative.svg" data-vis="collapsed" data-type="bool">
-	<forall>
-	</forall>
-	<bvar>
-			<ci data-type="num">a</ci>
-	</bvar>
-	<bvar>
-			<ci data-type="num">b</ci>
-	</bvar>
-	<apply data-type="bool">
-			<eq>
-			</eq>
-			<apply title="s--" data-type="num">
-				<plus>
-				</plus>
-				<ci data-type="num">a</ci>
-				<ci data-type="num">b</ci>
+		<div class="ul_role" data-type="bool">
+			<apply data-tag="CommutativaSomma" data-tagimg="./images/properties/commutative.svg" data-vis="collapsed" data-type="bool">
+				<forall>
+				</forall>
+				<bvar>
+					<ci data-type="num">a</ci>
+				</bvar>
+				<bvar>
+					<ci data-type="num">b</ci>
+				</bvar>
+				<apply data-type="bool">
+					<eq>
+					</eq>
+					<apply title="s--" data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">a</ci>
+						<ci data-type="num">b</ci>
+					</apply>
+					<apply title="s--" data-type="num">
+						<plus>
+						</plus>
+						<ci data-type="num">b</ci>
+						<ci data-type="num">a</ci>
+					</apply>
+				</apply>
 			</apply>
-			<apply title="s--" data-type="num">
-				<plus>
-				</plus>
-				<ci data-type="num">b</ci>
-				<ci data-type="num">a</ci>
+			<apply data-import="./Data/BINARYFOUNDATION.mml" data-tag="AssociativaSomma" data-tagimg="./images/properties/associate.svg" data-vis="collapsed" data-type="bool">
+				<forall>
+				</forall>
 			</apply>
-	</apply>
-</apply>
-<apply data-import="./Data/BINARYFOUNDATION.mml" data-tag="AssociativaSomma" data-tagimg="./images/properties/associate.svg" data-vis="collapsed" data-type="bool">
-		<forall>
-		</forall>
-</apply>
-</div>
-</div>
-<apply data-type="num">
-		<plus>
-		</plus>
+		</div>
+	</div>
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
 		<apply data-type="num">
 			<plus>
 			</plus>
-			<ci data-type="num">a</ci>
 			<apply data-type="num">
 				<plus>
 				</plus>
-				<ci data-type="num">b</ci>
-				<ci data-type="num">c</ci>
+				<ci data-type="num">a</ci>
+				<apply data-type="num">
+					<plus>
+					</plus>
+					<ci data-type="num">b</ci>
+					<ci data-type="num">c</ci>
+				</apply>
 			</apply>
+			<ci data-type="num">e</ci>
 		</apply>
-		<ci data-type="num">e</ci>
-</apply>
+	</apply>
 </section>
 <section data-section="events">
 	<apply data-type="bool">
-			<eventtoaction>
-			</eventtoaction>
-			<ci data-type="bool">→</ci>
-			<apply data-type="obj">
-				<callfunction>
-				</callfunction>
-				<ci data-type="bool">AssociativaSomma</ci>
-				<ci data-type="bool">ltr</ci>
-			</apply>
+		<eventtoaction>
+		</eventtoaction>
+		<ci data-type="bool">→</ci>
+		<apply data-type="obj">
+			<callfunction>
+			</callfunction>
+			<ci data-type="bool">AssociativaSomma</ci>
+			<ci data-type="bool">ltr</ci>
+		</apply>
 	</apply>
 	<apply data-type="bool">
-			<eventtoaction>
-			</eventtoaction>
-			<ci title="d" data-type="bool">←</ci>
-			<apply data-type="obj">
-				<callfunction>
-				</callfunction>
-				<ci data-type="bool">AssociativaSomma</ci>
-				<ci data-type="bool">rtl</ci>
-			</apply>
+		<eventtoaction>
+		</eventtoaction>
+		<ci title="d" data-type="bool">←</ci>
+		<apply data-type="obj">
+			<callfunction>
+			</callfunction>
+			<ci data-type="bool">AssociativaSomma</ci>
+			<ci data-type="bool">rtl</ci>
+		</apply>
 	</apply>
 </section>
 <section data-section="result">
-	<apply data-type="num">
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<apply data-type="num">
 			<plus>
 			</plus>
 			<apply data-type="num">
@@ -106,6 +107,7 @@
 				<ci data-type="num">e</ci>
 			</apply>
 			<ci data-type="num">c</ci>
+		</apply>
 	</apply>
 </section>
 
