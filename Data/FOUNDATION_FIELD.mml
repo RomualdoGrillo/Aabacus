@@ -145,7 +145,7 @@
 
 
 				<div class="ul_role" data-type="bool">
-					<apply title="Elemento neutro della somma:&#10;1. Seleziona una coppia (a + 0) e premi Invio per eliminare lo 0&#10;2. Seleziona un elemento 'a' e premi '⇧ + Invio' per aggiungere '+0'" data-tagimg="./images/properties/zero.svg" data-vis="collapsed" data-tag="NeutroDellaSomma" data-type="bool">
+					<apply title="Elemento neutro della somma:&#10;1. Seleziona una somma (a + 0) e premi Invio per eliminare lo 0&#10;2. Seleziona un elemento 'a' e premi '⇧ + Invio' per aggiungere '+0'" data-tagimg="./images/properties/zero.svg" data-vis="collapsed" data-tag="NeutroDellaSomma" data-type="bool">
 						<forall>
 						</forall>
 						<bvar>
@@ -163,7 +163,7 @@
 							<ci data-type="num">a</ci>
 						</apply>
 					</apply>
-					<apply title="Elemento neutro del prodotto:&#10;1. Seleziona una coppia (a * 1) e premi 'Invio' per eliminare l' uno&#10;2. Seleziona un elemento 'a' e premi '⇧ + Invio' per aggiungere '* 1'" data-tagimg="./images/properties/one.svg" data-vis="collapsed" data-tag="NeutroDellaMoltiplicazione" data-type="bool">
+					<apply title="Elemento neutro del prodotto:&#10;1. Seleziona una moltiplicazione (a * 1) e premi 'Invio' per eliminare l' uno&#10;2. Seleziona un elemento 'a' e premi '⇧ + Invio' per aggiungere '* 1'" data-tagimg="./images/properties/one.svg" data-vis="collapsed" data-tag="NeutroDellaMoltiplicazione" data-type="bool">
 						<forall>
 						</forall>
 						<bvar>
