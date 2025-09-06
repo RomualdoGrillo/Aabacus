@@ -3,7 +3,7 @@
   --primary-color: #4a90e2;
   --secondary-color: #50b83c;
   --text-color: #333333;
-  --border-color: #e0e0e0;
+  --border-color:  #dad9d9;
 
   /* Theme colors */
   --num-color: #eb8f00;
@@ -18,7 +18,6 @@
   --div-smallradius: 10px;
 
   /* Spacing */
-  --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
 
@@ -52,7 +51,7 @@
 
 .rolescontainer {
   display: flex;
-  margin-left: var(--spacing-xs);
+  margin-left: 3px;
   padding: var(--spacing-sm);
   border: 1px solid transparent;
   border-radius: var(--radius-md);
@@ -95,10 +94,7 @@ div {
   /* align-items:center; */
 }
 
-[data-enode] {
-  background-color: white;
-  border: 1px solid #dad9d9;
-}
+
 #canvas div,
 #palette div,
 #result div,
@@ -129,14 +125,10 @@ div {
 }
 
 [data-enode][data-viseq="asymmetric"] {
-  border: 1px solid #dad9d9;
+  border: 1px solid var(--border-color);
 }
 
-.rolescontainer {
-  display: flex;
-  margin-left: 3px;
-  border: 1px solid transparent;
-}
+
 
 [data-enode],
 .rolescontainer {
@@ -1006,10 +998,3 @@ body[tool="autoAdapt"] .mu_DropTarget {
   background-color: grey !important;
   /*visibility:hidden;*/
 }
-/*.tgt*::after{
-	  content: "ooo";
-	  position: absolute;
-	  pointer-events: none;
-	  top:50%;
-	  z-index:2000
-  }*/
