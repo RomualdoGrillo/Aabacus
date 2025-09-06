@@ -2,27 +2,27 @@
   /* Colors */
   --primary-color: #4a90e2;
   --secondary-color: #50b83c;
-  --warning-color: #f5a623;
-  --error-color: #d0021b;
   --text-color: #333333;
   --border-color: #e0e0e0;
 
   /* Theme colors */
   --num-color: #eb8f00;
-  --num-bgcolor: #fff3e0;
+  --num-bgcolor: #fcd598;
   --bool-color: rgb(69 149 69);
-  --bool-bgcolor: #e8f5e9;
-  --default-bgcolor: #f5f5f5;
+  --bool-bgcolor: #bfeab2;
+  --default-bgcolor: #e2d9d6;
   --selected-bgcolor: #aaa;
+
+  /* Layout */
+  --div-radius: 16px;
+  --div-smallradius: 10px;
 
   /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
-  --spacing-lg: 24px;
 
   /* Border radius */
-  --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
 
@@ -33,16 +33,6 @@
   /* Shadows */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-:root {
-  --div-radius: 16px;
-  --div-smallradius: 10px;
-  --num-color: #eb8f00;
-  --default-bgcolor: #e2d9d6;
-  --num-bgcolor: #fcd598;
-  --bool-color: rgb(69 149 69);
-  --bool-bgcolor: #bfeab2;
 }
 
 
@@ -69,13 +59,6 @@
   transition: background-color var(--transition-normal);
 }
 
-.selected[data-enode],
-.selected[data-enode] [data-enode],
-.selected[data-enode]::after {
-  background-color: var(--primary-color);
-  color: white;
-  border-color: var(--primary-color) !important;
-}
 
 #canvasRole {
   background-color: white;
@@ -529,6 +512,7 @@ body:not(.fitch):not([tool="declare"])
 .selected[data-enode] [data-enode],
 .selected[data-enode]::after {
   background-color: var(--selected-bgcolor);
+  color: white;
   border-color: Grey !important;
 }
 
