@@ -6,33 +6,47 @@
   --error-color: #d0021b;
   --text-color: #333333;
   --border-color: #e0e0e0;
-  
+
   /* Theme colors */
   --num-color: #eb8f00;
   --num-bgcolor: #fff3e0;
   --bool-color: rgb(69 149 69);
   --bool-bgcolor: #e8f5e9;
   --default-bgcolor: #f5f5f5;
-  
+  --selected-bgcolor: #aaa;
+
   /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
-  
+
   /* Border radius */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
-  
+
   /* Transitions */
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
-  
+
   /* Shadows */
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+:root {
+  --div-radius: 16px;
+  --div-smallradius: 10px;
+  --num-color: #eb8f00;
+  --default-bgcolor: #e2d9d6;
+  --num-bgcolor: #fcd598;
+  --bool-color: rgb(69 149 69);
+  --bool-bgcolor: #bfeab2;
+}
+
+
+
 
 [data-enode] {
   background-color: white;
@@ -55,7 +69,7 @@
   transition: background-color var(--transition-normal);
 }
 
-.selected[data-enode], 
+.selected[data-enode],
 .selected[data-enode] [data-enode],
 .selected[data-enode]::after {
   background-color: var(--primary-color);
@@ -77,895 +91,938 @@
 }
 
 @keyframes celebrate {
-  0% { transform: scale(0.8); opacity: 0; }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Rest of the code remains the same */
 
-:root {
-	--div-radius: 16px;
-	--div-smallradius: 10px;
-	--num-color: #eb8f00;
-	--default-bgcolor:#e2d9d6;
-	--num-bgcolor: #fcd598;
-	--bool-color:  	rgb(69 149 69);
-	--bool-bgcolor: #bfeab2;
-  }
-  
-  div{
-	  display: flex;
-	  /* align-items:center; */
-  }
-  
-  [data-enode] {
-	  background-color: white;
-	  border: 1px solid #DAD9D9;
-  }
-  #canvas div,#palette div,#result div, #palette{
-	  align-items:center;
-  }
-  #canvasAnd,#canvas > .secondMember{
-	  align-items:normal!important;
-  }
-  
-  [title^="s"],[data-mark^="s"],[mark^="s"] {/*highlight elements marked with s*/
-	  border-color: blueviolet!important;
-  }
-  
-  /*[data-enode="eq"][data-viseq=asymmetric] sono le definizioni, in quel tipo di ENODEs
+
+div {
+  display: flex;
+  /* align-items:center; */
+}
+
+[data-enode] {
+  background-color: white;
+  border: 1px solid #dad9d9;
+}
+#canvas div,
+#palette div,
+#result div,
+#palette {
+  align-items: center;
+}
+#canvasAnd,
+#canvas > .secondMember {
+  align-items: normal !important;
+}
+
+[title^="s"],
+[data-mark^="s"],
+[mark^="s"] {
+  /*highlight elements marked with s*/
+  border-color: blueviolet !important;
+}
+
+/*[data-enode="eq"][data-viseq=asymmetric] sono le definizioni, in quel tipo di ENODEs
   il primo membro contiene:
   1) se la definizione è chiusa un puntino o altro simbolo che rappresenta il definendum
   2) se la definizione è aperta un lucchetto aperto 
   comunque il primo membro sporge dal background e il suo bordo si deve raccordare con quello del backgriund quindi deve avere lo stesso spessore e colore.
   */
-  
-  [data-enode="eq"][data-viseq=asymmetric]>.firstMember {
-    border: inherit;
-  }
 
+[data-enode="eq"][data-viseq="asymmetric"] > .firstMember {
+  border: inherit;
+}
 
-  [data-enode][data-viseq=asymmetric] {
-	  border: 1px solid #DAD9D9;
-  }
-  
-  .rolescontainer{
-	  display:flex;
-	  margin-left:3px;
-	  border: 1px solid transparent;
-  }
-  
-  
-  [data-enode], .rolescontainer {
-	  padding: 3px;
-  }
-  [data-enode='cn'],[data-enode='ci']{
-	  padding: 1px; 
-  }
-  
-  [data-enode],[class*="_role"]  {
-  flex-shrink:0;
-	  }
-  #canvas *{
-	  flex-shrink:1;
-  }
-  [data-enode], [class*="_role"], #overlay, .dummyrole,.rolescontainer {
-	  position:relative;
-	  /*border: 1px black solid; just for debug*/
-	  border-radius: var(--div-radius);
-	  font-family: arial;
-	  justify-content:center;
-  }
-  #palette{
-	  justify-content: normal;
-  }
-  
-  /*.name {
+[data-enode][data-viseq="asymmetric"] {
+  border: 1px solid #dad9d9;
+}
+
+.rolescontainer {
+  display: flex;
+  margin-left: 3px;
+  border: 1px solid transparent;
+}
+
+[data-enode],
+.rolescontainer {
+  padding: 3px;
+}
+[data-enode="cn"],
+[data-enode="ci"] {
+  padding: 1px;
+}
+
+[data-enode],
+[class*="_role"] {
+  flex-shrink: 0;
+}
+#canvas * {
+  flex-shrink: 1;
+}
+[data-enode],
+[class*="_role"],
+#overlay,
+.dummyrole,
+.rolescontainer {
+  position: relative;
+  /*border: 1px black solid; just for debug*/
+  border-radius: var(--div-radius);
+  font-family: arial;
+  justify-content: center;
+}
+#palette {
+  justify-content: normal;
+}
+
+/*.name {
 	  padding:0;
   }
   */
-  .row {
-	  flex-direction:row
-  }
-  .column{
-	  flex-direction:column;
-  }
-  
-  .expandedAsTree [data-enode]{
-	  top: 20px;
-	 }
-  
-  [data-enode="minus"] , [data-enode="m_inverse"] , [data-enode="not"] {
-	  padding: 0;
-  }
-  .unlocked [data-enode="minus"],.unlocked [data-enode="m_inverse"],.unlocked [data-enode="not"] {/* se unlocked scavalca il padding=0 impostato sopra*/
-	padding: 3px;
-  }
-  
-  
-  [data-enode]:not(.minus)>.leftDecoration {
-	  display:none;
-  }
-  [data-enode]:not(.inverse)>.topDecoration {
-	  display:none;
-  }
-  
-  
-  [class*="l_role"].empty ,.s_role {
-	  background-color: #ffffff;
-  }
-  
-  
-  [data-enode], [class*="_role"],.dummyrole {
-	  min-height:20px;
-	  min-width:16px;
-	  border-width: 1px;
-  }
-  .exponent [data-enode], .exponent [class*="_role"], .exponent[class*="_role"],
-  .degree [data-enode], .degree [class*="_role"], .degree[class*="_role"]{
-	  font-size:small;
-	  min-height:12px;
-	  min-width:10px;
-	  border-width: 1px;
-  }
-  
-  
-  
-  /*************specifici per tipo di ENODE ***************/
-  
-  [data-enode="power"],[data-enode="root"]{
-	  display: inline-grid!important;/* grid works but breaka the num/den disposition*/
-	  grid-template-columns: minmax(12px, max-content) minmax(8px, max-content);
-	  grid-gap: 0px;
-  }
-  
-  .base{
-	  grid-row-start:2;
-	  grid-column-start:1;
-  }
-  
-  .exponent{
-	  grid-row-start:1;
-	  grid-column-start:2;
-  }
-  .power_decoration{
-	  position: absolute;
-	  top: -7px;
-	  right: -2px;}
-	  .degree{
-		grid-row-start:1;
-		grid-column-start:1;
-	  }
-
-	.radicand{
-		  grid-row-start:2;
-		  grid-column-start:2;
-	  }
-.root_decoration{ 
-	grid-row-start:2;
-		  grid-column-start:1;
+.row {
+  flex-direction: row;
+}
+.column {
+  flex-direction: column;
 }
 
+.expandedAsTree [data-enode] {
+  top: 20px;
+}
 
+[data-enode="minus"],
+[data-enode="m_inverse"],
+[data-enode="not"] {
+  padding: 0;
+}
+.unlocked [data-enode="minus"],
+.unlocked [data-enode="m_inverse"],
+.unlocked [data-enode="not"] {
+  /* se unlocked scavalca il padding=0 impostato sopra*/
+  padding: 3px;
+}
 
-  
-  
-  
-  body:not(.fitch):not([tool=declare]) [data-enode="and"]:not(#canvasAnd):not(#events *):not(.condition *)>.ul_role {
-	  border-style:solid;
-	  border-width: 0 0 0 20px;
-	  border-image:url(../images/GullBraceLeft.svg) 0 47 stretch;
-	  padding-left:0.5em;
-  }
-  
-  [data-enode="and"]>.ul_role>[data-enode]{
-	  margin:2px;
-  }
-  /* le definizioni occupano piu' spazio a causa del sigillo che sporge*/
-  /*[data-enode="and"]>.ul_role>[data-enode][data-viseq=asymmetric]{
+[data-enode]:not(.minus) > .leftDecoration {
+  display: none;
+}
+[data-enode]:not(.inverse) > .topDecoration {
+  display: none;
+}
+
+[class*="l_role"].empty,
+.s_role {
+  background-color: #ffffff;
+}
+
+[data-enode],
+[class*="_role"],
+.dummyrole {
+  min-height: 20px;
+  min-width: 16px;
+  border-width: 1px;
+}
+.exponent [data-enode],
+.exponent [class*="_role"],
+.exponent[class*="_role"],
+.degree [data-enode],
+.degree [class*="_role"],
+.degree[class*="_role"] {
+  font-size: small;
+  min-height: 12px;
+  min-width: 10px;
+  border-width: 1px;
+}
+
+/*************specifici per tipo di ENODE ***************/
+
+[data-enode="power"],
+[data-enode="root"] {
+  display: inline-grid !important; /* grid works but breaka the num/den disposition*/
+  grid-template-columns: minmax(12px, max-content) minmax(8px, max-content);
+  grid-gap: 0px;
+}
+
+.base {
+  grid-row-start: 2;
+  grid-column-start: 1;
+}
+
+.exponent {
+  grid-row-start: 1;
+  grid-column-start: 2;
+}
+.power_decoration {
+  position: absolute;
+  top: -7px;
+  right: -2px;
+}
+.degree {
+  grid-row-start: 1;
+  grid-column-start: 1;
+}
+
+.radicand {
+  grid-row-start: 2;
+  grid-column-start: 2;
+}
+.root_decoration {
+  grid-row-start: 2;
+  grid-column-start: 1;
+}
+
+body:not(.fitch):not([tool="declare"])
+  [data-enode="and"]:not(#canvasAnd):not(#events *):not(.condition *)
+  > .ul_role {
+  border-style: solid;
+  border-width: 0 0 0 20px;
+  border-image: url(../images/GullBraceLeft.svg) 0 47 stretch;
+  padding-left: 0.5em;
+}
+
+[data-enode="and"] > .ul_role > [data-enode] {
+  margin: 2px;
+}
+/* le definizioni occupano piu' spazio a causa del sigillo che sporge*/
+/*[data-enode="and"]>.ul_role>[data-enode][data-viseq=asymmetric]{
 	  margin-top:2px;
   }*/
-  
-  /*questo per ottenere disposizione verticale in times e and*/
-  [timesdisposition=vertTimes] [data-enode="times"] >[class*="_role"] {
-	   flex-direction:column;
-  }
-  
-  [timesdisposition=brTimes] [data-enode=times]>.ul_role{
-	  display:inline;
-	  text-align:center;
-  }
-  [timesdisposition=brTimes] [data-enode=times]>.ul_role>*{
-	  display:inline-flex;
-	  vertical-align: middle;
-  }
-  
-  
-  [data-enode="plus"]>.decoration.left {
-	  width:5px;
-	  height:90%;
-	  padding:0px;
-	  position: absolute;
-	  top: 5%;
-	  left:0px;
-  }
-  
-  .minusDecoration, .leftDecoration {/* lefDecoration serve se rappresento segni "alterando" gli elementi numerici*/
-	  width: 5px;
-	  height: 1.4px;
-	  padding:0px;
-	  background-color: black;
-	  position: absolute;
-	  top: calc(50% - 0.7px);
-	  left:-1px;
-  }
-	 .m_inverseDecoration , .topDecoration /*, .notDecoration */ {
-	  height: 1.5px;
-	  padding:0px;
-	  background-color: black;
-	  position: absolute;
-	  margin-left: auto;
-	  margin-right: auto;
-	  left: 1.2px;
-	  right: 1.2px;
-	  top: 1px;
-	  z-index:1;
-	 }
-	.notDecoration  {/*L shaped not */
-	  border-color: black!important;
-	  border-style: solid;
-	  height: 7px;
-	  padding:0px;
-	  background-color: transparent;
-	  position: absolute;
-	  margin-left: auto;
-	  margin-right: auto;
-	  left: 5.5px;
-	  right: -1px;
-	  top:-1px;
-	  z-index:1;
-	  border-left-width: 0px;
-	  border-top-width:2px;
-	  border-right-width: 2px;
-	  border-bottom-width:0px;
-	  border-radius:2px;
-  }
-  
-  [data-enode="forAll"]{
-	  flex-direction:column;
-  }
-  
-  [data-enode="ifthenelse"]{
-	  align-items:stretch;
-  }
-  
-  
-  
-   
-  [data-enode="divide"]>.decoration {
-	  height: 1.5px;
-	  align-self:stretch;
-	  background-color: black;
-  }
-  [data-enode="not"]>.decoration {
-	  height:2px;
-	  padding:0px;
-	  background-color: black;
-	  position: absolute;
-	  margin-left: auto;
-	  margin-right: auto;
-	  left: 0px;
-	  right: 0px;
-	  top: 1px;
-  }
-  
-  .thirdMember[data-type] {/*aggiunto[data-type] per rendere il selettore piu' specifico*/
-	  display:none;
-  }
-  
-  [data-enode="eq"] {
-	  min-height:12px;
-	  min-width:12px;
-	  /*colori*/
-  }
-  [data-enode="eq"]>.decoration{
-	  padding:1px;
-  }
-	  
-  .defSymbol {
-	  border-radius: var(--div-radius);
-	  background-color: black;
-	  position: absolute;
-	  left: 0px;
-	  width: 5px;
-	  height:5px;
-	  padding: 0px;
-	  bottom: 0px;
-  }
-  
-  [data-viseq=asymmetric]  {
-	  margin-bottom: 5px;
-  }
-  
-  [data-viseq=asymmetric]>.firstMember {
-	  border-radius: 8px;
-	  position: absolute;
-	  left: -9px;
-	  /* bottom: -7px; */
-	  top: -3.5px;
-	  min-width: 8px;
-	  min-height:8px;
-	  padding: 0px;
-  }
 
-  /*trucco per far sembrare il sigillo parte del contorno esterno*/
-  [data-enode=eq][data-viseq=asymmetric]>.firstMember{
-	  /* border-top: white; */
-	  border-bottom: white;
-	  border-right: #ffffff;
-  }
-  
-  
-  [data-viseq=asymmetric]  {
-	padding: 0px;
-  }
-  
-  [data-enode="eq"]:not(#canvas)[data-viseq=asymmetric]:not(.unlocked)>.secondMember>[data-enode]{
-	  border-width:0px;
-  }
-  .unlocked [data-enode="eq"][data-viseq=asymmetric]>.secondMember>[data-enode]{
-	  border-width:1px;
-  }
-  .unlocked [data-enode="eq"][data-viseq=asymmetric],[data-enode="eq"][data-viseq=asymmetric].unlocked {
-	  padding:3px;
-  }
-  
-  
-  [data-viseq=asymmetric] >.decoration {
-	  display: none;
-  }
-  
-  .unlocked>.defSymbol {
-	  background-color: green;
-	  }
-  .locked>.defSymbol {
-	  background-color: black;
-	  }
-  
-  /*--------------coloredBorders--------------- */
-  .coloredBorders [data-type=""][data-enode] {
-	  border-color: rgb(140, 112, 103);
-  }
-  
-  
-	  
-  
-  .coloredBorders [data-type="num"] {
-	  border-color: rgb(255, 155, 0);
-	  /*box-shadow: 0px 0.5px 3px 0px #ff9b00;*/
-  }
-  .coloredBorders [class*="l_role"][data-type="num"].empty ,.coloredBorders [class*="s_role"][data-type="num"] {
-	  background-color: var(--num-bgcolor);
-  }
-  .coloredBorders [data-type="bool"][data-enode] {
-	  border-color: var(--bool-color)
-  
-  /*box-shadow: 0px 0.5px 2px 0.5px rgb(125, 125, 125);*/
-   /*box-shadow: 0px 0.5px 3px 0px rgb(9, 132, 9);*/;
-	 }
-  .coloredBorders [data-viseq=asymmetric]>.s_role {
-	  border-color: green;
-  }
-  .coloredBorders [data-type="point"],.coloredBorders [data-type="line"] {
-	  border-color: rgb(70, 92, 188);
-  }
+/*questo per ottenere disposizione verticale in times e and*/
+[timesdisposition="vertTimes"] [data-enode="times"] > [class*="_role"] {
+  flex-direction: column;
+}
+
+[timesdisposition="brTimes"] [data-enode="times"] > .ul_role {
+  display: inline;
+  text-align: center;
+}
+[timesdisposition="brTimes"] [data-enode="times"] > .ul_role > * {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+[data-enode="plus"] > .decoration.left {
+  width: 5px;
+  height: 90%;
+  padding: 0px;
+  position: absolute;
+  top: 5%;
+  left: 0px;
+}
+
+.minusDecoration,
+.leftDecoration {
+  /* lefDecoration serve se rappresento segni "alterando" gli elementi numerici*/
+  width: 5px;
+  height: 1.4px;
+  padding: 0px;
+  background-color: black;
+  position: absolute;
+  top: calc(50% - 0.7px);
+  left: -1px;
+}
+.m_inverseDecoration , .topDecoration /*, .notDecoration */ {
+  height: 1.5px;
+  padding: 0px;
+  background-color: black;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 1.2px;
+  right: 1.2px;
+  top: 1px;
+  z-index: 1;
+}
+.notDecoration {
+  /*L shaped not */
+  border-color: black !important;
+  border-style: solid;
+  height: 7px;
+  padding: 0px;
+  background-color: transparent;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 5.5px;
+  right: -1px;
+  top: -1px;
+  z-index: 1;
+  border-left-width: 0px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+  border-bottom-width: 0px;
+  border-radius: 2px;
+}
+
+[data-enode="forAll"] {
+  flex-direction: column;
+}
+
+[data-enode="ifthenelse"] {
+  align-items: stretch;
+}
+
+[data-enode="divide"] > .decoration {
+  height: 1.5px;
+  align-self: stretch;
+  background-color: black;
+}
+[data-enode="not"] > .decoration {
+  height: 2px;
+  padding: 0px;
+  background-color: black;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0px;
+  right: 0px;
+  top: 1px;
+}
+
+.thirdMember[data-type] {
+  /*aggiunto[data-type] per rendere il selettore piu' specifico*/
+  display: none;
+}
+
+[data-enode="eq"] {
+  min-height: 12px;
+  min-width: 12px;
+  /*colori*/
+}
+[data-enode="eq"] > .decoration {
+  padding: 1px;
+}
+
+.defSymbol {
+  border-radius: var(--div-radius);
+  background-color: black;
+  position: absolute;
+  left: 0px;
+  width: 5px;
+  height: 5px;
+  padding: 0px;
+  bottom: 0px;
+}
+
+[data-viseq="asymmetric"] {
+  margin-bottom: 5px;
+}
+
+[data-viseq="asymmetric"] > .firstMember {
+  border-radius: 8px;
+  position: absolute;
+  left: -9px;
+  /* bottom: -7px; */
+  top: -3.5px;
+  min-width: 8px;
+  min-height: 8px;
+  padding: 0px;
+}
+
+/*trucco per far sembrare il sigillo parte del contorno esterno*/
+[data-enode="eq"][data-viseq="asymmetric"] > .firstMember {
+  /* border-top: white; */
+  border-bottom: white;
+  border-right: #ffffff;
+}
+
+[data-viseq="asymmetric"] {
+  padding: 0px;
+}
+
+[data-enode="eq"]:not(#canvas)[data-viseq="asymmetric"]:not(.unlocked)
+  > .secondMember
+  > [data-enode] {
+  border-width: 0px;
+}
+.unlocked
+  [data-enode="eq"][data-viseq="asymmetric"]
+  > .secondMember
+  > [data-enode] {
+  border-width: 1px;
+}
+.unlocked [data-enode="eq"][data-viseq="asymmetric"],
+[data-enode="eq"][data-viseq="asymmetric"].unlocked {
+  padding: 3px;
+}
+
+[data-viseq="asymmetric"] > .decoration {
+  display: none;
+}
+
+.unlocked > .defSymbol {
+  background-color: green;
+}
+.locked > .defSymbol {
+  background-color: black;
+}
+
+/*--------------coloredBorders--------------- */
+.coloredBorders [data-type=""][data-enode] {
+  border-color: rgb(140, 112, 103);
+}
+
+.coloredBorders [data-type="num"] {
+  border-color: rgb(255, 155, 0);
+  /*box-shadow: 0px 0.5px 3px 0px #ff9b00;*/
+}
+.coloredBorders [class*="l_role"][data-type="num"].empty,
+.coloredBorders [class*="s_role"][data-type="num"] {
+  background-color: var(--num-bgcolor);
+}
+.coloredBorders [data-type="bool"][data-enode] {
+  border-color: var(--bool-color)
+    /*box-shadow: 0px 0.5px 2px 0.5px rgb(125, 125, 125);*/
+    /*box-shadow: 0px 0.5px 3px 0px rgb(9, 132, 9);*/;
+}
+.coloredBorders [data-viseq="asymmetric"] > .s_role {
+  border-color: green;
+}
+.coloredBorders [data-type="point"],
+.coloredBorders [data-type="line"] {
+  border-color: rgb(70, 92, 188);
+}
 .coloredBorders [class*="l_role"][data-type="point"].empty,
 .coloredBorders [class*="s_role"][data-type="point"],
 [class*="l_role"][data-type="line"].empty,
 .coloredBorders [class*="s_role"][data-type="line"],
-.coloredBorders [class*="l_role"][data-type="point"]>.dummyrole{
-	  background-color: rgb(190, 195, 255);
-  }
-  
-  #canvasRole {background-color: white;justify-content: flex-start;}/* #canvasRole root always white*/
-  
-  .coloredBorders [class*="l_role"][data-type="bool"].empty ,.coloredBorders [class*="s_role"][data-type="bool"] {
-	  background-color: rgb(194, 243, 194);
-  }
-  .coloredBorders [data-type="obj"][data-enode] {
-	  border-color: rgb(148, 136, 148);
-	  /*box-shadow: 0px 0px 3px 1px rgba(175, 175, 175, 0.6);*/
-  }
-  .coloredBorders [class*="l_role"][data-type="obj"].empty ,.coloredBorders [class*="s_role"][data-type="obj"],.coloredBorders [class*="bVar_role"][data-type="obj"] {
-	  background-color: var(--default-bgcolor);
-  }
-
-.mu_connected[data-enode]{
-	  border-color: Grey!important;	
+.coloredBorders [class*="l_role"][data-type="point"] > .dummyrole {
+  background-color: rgb(190, 195, 255);
 }
 
-  /*.selected[data-enode], .selected[data-enode]>.s_role>.glued ,.selected[data-enode]>.s_role>.glued[data-enode]>*{*/
-  .selected[data-enode], .selected[data-enode] [data-enode],.selected[data-enode]::after{
-	  background-color: #aaa;
-	  border-color:Grey!important;
-  }
+#canvasRole {
+  background-color: white;
+  justify-content: flex-start;
+} /* #canvasRole root always white*/
 
-  .unselected[data-enode], .unselected[data-enode] [data-enode]{
-	  background-color:white!important;
-  }
-  .selectedTool[data-enode]::after{
-	/* border-color: blue!important; */
-	background-color: rgb(245, 242, 186)!important;
-	}
-  .debug .selected[data-enode] /*,.selected[data-enode]>.s_role>.glued*/{
-	  border-color: red!important;
-  }
-  .debug .unselected[data-enode]  {
-	  border-color: blue!important;
-	  z-index:1 } 
-  
-  .exclusiveFocus, [data-vis=resizable], .waiting, .mu_targetsCommonParentx, .mu_span {/*grayout what'soutside exclusiveFocus DIV */
-	  z-index:100;
-	  box-shadow: 0 0 0 999px #b8b8b88a;
-	  transition: all, 1s;
-  }
-  .exclusiveFocus2{
-	  z-index:101;
-  }
-  
-  #canvasRole .exclusiveFocus .forallSymbol{
-	  display: none
-  }
-  
-  .unlocked[data-enode], .unlocked [data-enode]{
-	border-style: dashed;
-  }
-  
-  
-  
-  .debug [target=opened], .debug  [target=openedDnD]{
-	  background-color: pink!important;
-  }
-  
-  .debug [target=associative], .debug .target-associativeDnD{
-	  background-color: green!important;
-  }
-  
-  body[tool=copy] *{
-	  cursor: copy;
-  }
-  body[tool=autoAdapt] *{
-	  cursor: url(../images/shirt.png), auto;
-  }
-  body[tool=declare] *{
-	cursor: pointer;
-  }
-  
-  
-  /* source role of the dragging*/ 
-  .debug [from] {
-	  background-color: palevioletred;
-  }
-  
-  body.hidePlus [data-enode="times"]{
-	  border-color:transparent!important;
-	  padding:0px;
-  }
-  .unlocked [data-enode="times"]{
-	  border-color:var(--num-color)!important;
-	  padding:3px;
-  }
-  
-  
-  
-  
-  .infix{ z-index:2}
-  
-  #canvasRole :not(.empty)>.infix.proto{/*#canvasRole  specifico il selector*/
-	  display:none;
-  }
-  .s_role.exponent{margin:-8px;}
-  
-  .infix, .power_decoration{/*workaround: altrimenti .power_decoration risultava misteriosamente sortable*/
-	  pointer-events: none;
-  }
-  
-  [data-enode="implies"] {
-	  flex-direction:column
-  }
-  .leftBar{
-	  display:none;
-  }
-  .decoration.imply {
-	  width:12px;
-	  height:12px;
-	  background-image: url(../images/implyDown.png);
-	  background-size: contain;
-	  background-repeat: no-repeat;
-	  background-position-x: center;
-  }
-  
-  body.fitch [data-enode=implies]{
-	  align-items: flex-start!important;
-	  padding-left:9px!important;
-  }
-  body.fitch .decoration.imply {
-	  position:relative;
-	  background-image: none;
-	  background-color: black;
-	  width: 100;
-	  min-width:20px;
-	  width:100%;
-	  left:-3px;
-	  height: 2.5px;
-	  margin-top: 2px;
-	  margin-bottom: 2px;
-  }
-  body.fitch .leftBar{
-	  display:block;
-	  position:absolute;
-	  background-color: black;
-	  width: 2.5px;
-	  height: 85%;
-	  left:4px;
-  }
-  .decoration.midPoint {
-	  width:20px;
-	  height:20px;
-	  background-image: url(../images/midPoint.svg);
-	  background-size: contain;
-	  background-repeat: no-repeat;
-	  background-position-x: center;
-  }
-  
-  
-  .decoration.perpByPoint {
-	  width:20px;
-	  height:20px;
-	  background-image: url(../images/perpByPoint.png);
-	  background-size: contain;
-	  background-repeat: no-repeat;
-	  background-position-x: center;
-  }
-  [data-enode=eventtoaction]>*{
-	  align-self:baseline;
-  }
-  .functName {
-	  display:none;
-  }
-  .showFuctName .functName {
-	  display:flex;
-  }
-  .showFuctName .decoration.perpByPoint {
-	  display:none;
-  }
-  .decoration.segment {
-	  width:20px;
-	  height:20px;
-	  background-image: url(../images/segment.svg);
-	  background-size: contain;
-	  background-repeat: no-repeat;
-	  background-position-x: center;
-  }
-  
-  .actions {
-	  flex-direction:column
-  }
-  
-  body:not(.fixBorders) #canvasRole [data-enode][data-type=num]:not(:hover){
-  border-color:transparent;
-  }
-  
-  .showPar .brackets:not([data-and=horizontal]):not([data-vis=collapsed]), .showPar .rolescontainer {border-left-color: black!important;border-right-color: black!important;border-left-width: 2px;border-right-width: 2px;border-left-style: solid;border-right-style: solid;}
-	  
-	
-  /*written here to prevale over all other class css rules*/ 
-  
-  
-  /* roles inside glued ENODEs should still work*/
-  /* .glued,.glued>*{
+.coloredBorders [class*="l_role"][data-type="bool"].empty,
+.coloredBorders [class*="s_role"][data-type="bool"] {
+  background-color: rgb(194, 243, 194);
+}
+.coloredBorders [data-type="obj"][data-enode] {
+  border-color: rgb(148, 136, 148);
+  /*box-shadow: 0px 0px 3px 1px rgba(175, 175, 175, 0.6);*/
+}
+.coloredBorders [class*="l_role"][data-type="obj"].empty,
+.coloredBorders [class*="s_role"][data-type="obj"],
+.coloredBorders [class*="bVar_role"][data-type="obj"] {
+  background-color: var(--default-bgcolor);
+}
+
+.mu_connected[data-enode] {
+  border-color: Grey !important;
+}
+
+/*.selected[data-enode], .selected[data-enode]>.s_role>.glued ,.selected[data-enode]>.s_role>.glued[data-enode]>*{*/
+.selected[data-enode],
+.selected[data-enode] [data-enode],
+.selected[data-enode]::after {
+  background-color: var(--selected-bgcolor);
+  border-color: Grey !important;
+}
+
+.unselected[data-enode],
+.unselected[data-enode] [data-enode] {
+  background-color: white !important;
+}
+.selectedTool[data-enode]::after {
+  /* border-color: blue!important; */
+  background-color: rgb(245, 242, 186) !important;
+}
+.debug .selected[data-enode] /*,.selected[data-enode]>.s_role>.glued*/ {
+  border-color: red !important;
+}
+.debug .unselected[data-enode] {
+  border-color: blue !important;
+  z-index: 1;
+}
+
+.exclusiveFocus,
+[data-vis="resizable"],
+.waiting,
+.mu_targetsCommonParentx,
+.mu_span {
+  /*grayout what'soutside exclusiveFocus DIV */
+  z-index: 100;
+  box-shadow: 0 0 0 999px #b8b8b88a;
+  transition: all, 1s;
+}
+.exclusiveFocus2 {
+  z-index: 101;
+}
+
+#canvasRole .exclusiveFocus .forallSymbol {
+  display: none;
+}
+
+.unlocked[data-enode],
+.unlocked [data-enode] {
+  border-style: dashed;
+}
+
+.debug [target="opened"],
+.debug [target="openedDnD"] {
+  background-color: pink !important;
+}
+
+.debug [target="associative"],
+.debug .target-associativeDnD {
+  background-color: green !important;
+}
+
+body[tool="copy"] * {
+  cursor: copy;
+}
+body[tool="autoAdapt"] * {
+  cursor: url(../images/shirt.png), auto;
+}
+body[tool="declare"] * {
+  cursor: pointer;
+}
+
+/* source role of the dragging*/
+.debug [from] {
+  background-color: palevioletred;
+}
+
+body.hidePlus [data-enode="times"] {
+  border-color: transparent !important;
+  padding: 0px;
+}
+.unlocked [data-enode="times"] {
+  border-color: var(--num-color) !important;
+  padding: 3px;
+}
+
+.infix {
+  z-index: 2;
+}
+
+#canvasRole :not(.empty) > .infix.proto {
+  /*#canvasRole  specifico il selector*/
+  display: none;
+}
+.s_role.exponent {
+  margin: -8px;
+}
+
+.infix,
+.power_decoration {
+  /*workaround: altrimenti .power_decoration risultava misteriosamente sortable*/
+  pointer-events: none;
+}
+
+[data-enode="implies"] {
+  flex-direction: column;
+}
+.leftBar {
+  display: none;
+}
+.decoration.imply {
+  width: 12px;
+  height: 12px;
+  background-image: url(../images/implyDown.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: center;
+}
+
+body.fitch [data-enode="implies"] {
+  align-items: flex-start !important;
+  padding-left: 9px !important;
+}
+body.fitch .decoration.imply {
+  position: relative;
+  background-image: none;
+  background-color: black;
+  width: 100;
+  min-width: 20px;
+  width: 100%;
+  left: -3px;
+  height: 2.5px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+body.fitch .leftBar {
+  display: block;
+  position: absolute;
+  background-color: black;
+  width: 2.5px;
+  height: 85%;
+  left: 4px;
+}
+.decoration.midPoint {
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/midPoint.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: center;
+}
+
+.decoration.perpByPoint {
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/perpByPoint.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: center;
+}
+[data-enode="eventtoaction"] > * {
+  align-self: baseline;
+}
+.functName {
+  display: none;
+}
+.showFuctName .functName {
+  display: flex;
+}
+.showFuctName .decoration.perpByPoint {
+  display: none;
+}
+.decoration.segment {
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/segment.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: center;
+}
+
+.actions {
+  flex-direction: column;
+}
+
+body:not(.fixBorders) #canvasRole [data-enode][data-type="num"]:not(:hover) {
+  border-color: transparent;
+}
+
+.showPar .brackets:not([data-and="horizontal"]):not([data-vis="collapsed"]),
+.showPar .rolescontainer {
+  border-left-color: black !important;
+  border-right-color: black !important;
+  border-left-width: 2px;
+  border-right-width: 2px;
+  border-left-style: solid;
+  border-right-style: solid;
+}
+
+/*written here to prevale over all other class css rules*/
+
+/* roles inside glued ENODEs should still work*/
+/* .glued,.glued>*{
 	  pointer-events: none; 
   }*/
-  /* .glued>*>*{
+/* .glued>*>*{
 	  pointer-events: auto; 
   }*/
-  
-  
-  
-  .glued{
-	  border-width: 0px;
-	  border-color:transparent;
-	  /*background-color:red;*/
-  }
-  
-  /*se unlocked prevale sulla regola precedente che fa sparire i contorni ai glued*/
-  .unlocked .glued{
-	   border-width:1px;
-  }
-  /* overwrites glued state .unloked allows all pointer events even if glued  */
-  .unlocked .glued:not(.ol_role):not(.ul_role){
-	  pointer-events: auto;
-	  
-  }
-  
-  .debug .toBeComposed:not([data-enode]){
-	  background-color: #32ABAB;
-  }
-  
-  
-  body.debug .input:not([data-enode]){ 
-	  background-color: violet;
-  }
-  
-  body.debug .inputFocus:not([data-enode]){ 
-	  background-color: red!important;
-  }
-  
-  body.debug .pattern:not([data-enode]){ 
-	  background-color: yellow;
-  }
-  
-  body.debug .patternFocus:not([data-enode]){ 
-	  background-color: yellowgreen;
-  }
-  
-  body.debug .matched:not([data-enode]){ 
-	  background-color: green;
-  }
-  
-  body.debug .operand:not([data-enode]){ 
-	  background-color: lightblue;
-  }
-  
-  
-  [data-enode="literal"] { background-color: lightgray ;}
-  
-  #canvasRole [data-enode="deftrue"][data-vis=collapsed]>*:not(.name){
-	  display:none!important;
-  }
-  #canvasRole [data-enode="deftrue"][data-vis=collapsed]{
-	  border-bottom-right-radius: 0px!important;
-  }
-  #canvasRole [data-vis=collapsed], #canvasRole [data-enode=ci][data-tag]{
-	  align-self: stretch;
-	  min-height: 3px;
-	  background-image: url(../images/three-dots.svg);
-	  background-repeat: no-repeat;
-	  background-position: bottom center;
-	  transition: all, 0.30s;
-  }
 
- #canvasRole [data-tag]{
-	min-height: 25px;
- }
-  
-  
-  #canvasRole [data-enode=or]>.ul_role>*{
-	  align-self:stretch;
-  }
-  .unlocked [data-enode=or]>.ul_role>*{
-	  align-self:auto!important;
-  }
-  
-  
-  
-  #canvasRole [data-enode=or]>.ul_role>[data-vis=collapsed]{
-	  min-width:3px;
-	  background-image: url(../images/three-dots-vert.svg);
-	  background-position: center center;
-  }
-  
-  #canvas *:not([data-enode=or])>*>[data-enode=or]{
-	  margin: 0px!important;
-	  border-color: transparent;
-  }
-  .unlocked [data-enode=or]{
-	  background-color: white!important;
-	  margin: -3px;
-	  border-color:var(--bool-color)!important;
-  }
-  #canvasRole [data-enode=or]>.ul_role>[data-enode]{
-	  margin:-0.5px;
-	  border-radius:0px;
-  }
-  #canvasRole [data-enode=or]>.ul_role{
-	  background-color:var(--bool-bgcolor);
-	  border-radius:var(--div-smallradius);
-  }
-  
-  
-  .unlocked [data-enode=or]>.ul_role>[data-enode]{
-	  margin:0px!important;
-  }
-  
-  
-  #canvasRole [data-enode=or]>.ul_role>[data-enode]:first-of-type{
-	  border-bottom-left-radius: var(--div-smallradius);
-	  border-top-left-radius: var(--div-smallradius);
-  }
-  #canvasRole [data-enode=or]>.ul_role>[data-enode]:last-of-type{/*last child is problematic because invisible pseudo targets are filtered because are div*/
-	  border-bottom-right-radius: var(--div-smallradius);
-	  border-top-right-radius: var(--div-smallradius);
-  }
-  
-  .unlocked [data-enode=or]>.ul_role>[data-enode]{
-	  border-radius:var(--div-smallradius)!important;
-  }
-  
-  #overlay {
-	  position: absolute;
-	  width:100%;
-	  height:100%;
-	  box-sizing: border-box;/*To prevent padding added to the 100% dimensions.*/
-	  background-color: #dd9cff6e;
-	  pointer-events: none;
-  }
-  
-  
-  
-  .toBeUpdated>.infix{
-	  display:none;
-  }
-  
-  [data-vis=resizable]>.ul_role{
-	  border-radius:5px;
-	  resize: horizontal;
-	  overflow:hidden;
-	  border-radius:0px;
-	  height: auto;
-	  min-width: 20px;
-  }
-  [data-vis=resizable]{
-	  position:absolute;
-	  border-radius:var(--div-radius) var(--div-radius)  0px var(--div-radius);
-  }
-  
-  [data-vis=resizable]>.ul_role {
-	  border-radius:5px;
-	  width:80px;
-	  padding-left:4px;
-	  display:inline-block;/* do not know why but it works*/
-  
-  }
-  [data-vis=resizable]>.ul_role>* {
-	  display:inline-flex;/* do not know why but it works*/
-  
-  }
-  /*
+.glued {
+  border-width: 0px;
+  border-color: transparent;
+  /*background-color:red;*/
+}
+
+/*se unlocked prevale sulla regola precedente che fa sparire i contorni ai glued*/
+.unlocked .glued {
+  border-width: 1px;
+}
+/* overwrites glued state .unloked allows all pointer events even if glued  */
+.unlocked .glued:not(.ol_role):not(.ul_role) {
+  pointer-events: auto;
+}
+
+.debug .toBeComposed:not([data-enode]) {
+  background-color: #32abab;
+}
+
+body.debug .input:not([data-enode]) {
+  background-color: violet;
+}
+
+body.debug .inputFocus:not([data-enode]) {
+  background-color: red !important;
+}
+
+body.debug .pattern:not([data-enode]) {
+  background-color: yellow;
+}
+
+body.debug .patternFocus:not([data-enode]) {
+  background-color: yellowgreen;
+}
+
+body.debug .matched:not([data-enode]) {
+  background-color: green;
+}
+
+body.debug .operand:not([data-enode]) {
+  background-color: lightblue;
+}
+
+[data-enode="literal"] {
+  background-color: lightgray;
+}
+
+#canvasRole [data-enode="deftrue"][data-vis="collapsed"] > *:not(.name) {
+  display: none !important;
+}
+#canvasRole [data-enode="deftrue"][data-vis="collapsed"] {
+  border-bottom-right-radius: 0px !important;
+}
+#canvasRole [data-vis="collapsed"],
+#canvasRole [data-enode="ci"][data-tag] {
+  align-self: stretch;
+  min-height: 3px;
+  background-image: url(../images/three-dots.svg);
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  transition: all, 0.3s;
+}
+
+#canvasRole [data-tag] {
+  min-height: 25px;
+}
+
+#canvasRole [data-enode="or"] > .ul_role > * {
+  align-self: stretch;
+}
+.unlocked [data-enode="or"] > .ul_role > * {
+  align-self: auto !important;
+}
+
+#canvasRole [data-enode="or"] > .ul_role > [data-vis="collapsed"] {
+  min-width: 3px;
+  background-image: url(../images/three-dots-vert.svg);
+  background-position: center center;
+}
+
+#canvas *:not([data-enode="or"]) > * > [data-enode="or"] {
+  margin: 0px !important;
+  border-color: transparent;
+}
+.unlocked [data-enode="or"] {
+  background-color: white !important;
+  margin: -3px;
+  border-color: var(--bool-color) !important;
+}
+#canvasRole [data-enode="or"] > .ul_role > [data-enode] {
+  margin: -0.5px;
+  border-radius: 0px;
+}
+#canvasRole [data-enode="or"] > .ul_role {
+  background-color: var(--bool-bgcolor);
+  border-radius: var(--div-smallradius);
+}
+
+.unlocked [data-enode="or"] > .ul_role > [data-enode] {
+  margin: 0px !important;
+}
+
+#canvasRole [data-enode="or"] > .ul_role > [data-enode]:first-of-type {
+  border-bottom-left-radius: var(--div-smallradius);
+  border-top-left-radius: var(--div-smallradius);
+}
+#canvasRole [data-enode="or"] > .ul_role > [data-enode]:last-of-type {
+  /*last child is problematic because invisible pseudo targets are filtered because are div*/
+  border-bottom-right-radius: var(--div-smallradius);
+  border-top-right-radius: var(--div-smallradius);
+}
+
+.unlocked [data-enode="or"] > .ul_role > [data-enode] {
+  border-radius: var(--div-smallradius) !important;
+}
+
+#overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box; /*To prevent padding added to the 100% dimensions.*/
+  background-color: #dd9cff6e;
+  pointer-events: none;
+}
+
+.toBeUpdated > .infix {
+  display: none;
+}
+
+[data-vis="resizable"] > .ul_role {
+  border-radius: 5px;
+  resize: horizontal;
+  overflow: hidden;
+  border-radius: 0px;
+  height: auto;
+  min-width: 20px;
+}
+[data-vis="resizable"] {
+  position: absolute;
+  border-radius: var(--div-radius) var(--div-radius) 0px var(--div-radius);
+}
+
+[data-vis="resizable"] > .ul_role {
+  border-radius: 5px;
+  width: 80px;
+  padding-left: 4px;
+  display: inline-block; /* do not know why but it works*/
+}
+[data-vis="resizable"] > .ul_role > * {
+  display: inline-flex; /* do not know why but it works*/
+}
+/*
   [data-vis=resizable]>.ul_role>[data-enode]{
 	  margin:0!important;
   }
   */
-  
-  .name {
-	  pointer-events: none;
-  }
-  
-  .visualization{
-	  position:absolute;
-	  top: 120%;
-	  background-color:#ffffff;
-	  border-radius:10px;
-	  box-shadow:3px 3px 9px 4px #b8b8b8;
-	  z-index:2;
-  }
-  
-  .visualization>img{
-	  padding:8px;
-	  height:30px;
-  }
 
-.celebration>img{
-	height: 35px;	
+.name {
+  pointer-events: none;
 }
-.celebration{
-	margin-left: 10px;	
-}
-  
-  [data-enode=m_inverse]{
-	  flex-direction:column;
-  }
-  body:not(.showNumerator1) [data-enode=m_inverse]>.numerator1{
-	  display:none;
-  }
-  
-  [data-enode=m_inverse]>.numerator1{
-	top:10px;
-		margin-left:-2px;
-		padding-top:3px;
-		margin-bottom:-3px;
-	}
 
-  .debug [data-enode].taken{
-	  background-color:red;
-  }
-  
-  .debug .mu_Downstream1,.debug .mu_Downstream1 *{
-	/*background-color: #4d68ff!important;*/
+.visualization {
+  position: absolute;
+  top: 120%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 3px 3px 9px 4px #b8b8b8;
+  z-index: 2;
 }
-  body:not(.fixBorders) #canvasRole [data-enode][data-type=num]:not(:hover),
-  body:not(.fixBorders) #result [data-enode][data-type=num]:not(:hover)
-  {border-color:transparent;}
+
+.visualization > img {
+  padding: 8px;
+  height: 30px;
+}
+
+.celebration > img {
+  height: 35px;
+}
+.celebration {
+  margin-left: 10px;
+}
+
+[data-enode="m_inverse"] {
+  flex-direction: column;
+}
+body:not(.showNumerator1) [data-enode="m_inverse"] > .numerator1 {
+  display: none;
+}
+
+[data-enode="m_inverse"] > .numerator1 {
+  top: 10px;
+  margin-left: -2px;
+  padding-top: 3px;
+  margin-bottom: -3px;
+}
+
+.debug [data-enode].taken {
+  background-color: red;
+}
+
+.debug .mu_Downstream1,
+.debug .mu_Downstream1 * {
+  /*background-color: #4d68ff!important;*/
+}
+body:not(.fixBorders) #canvasRole [data-enode][data-type="num"]:not(:hover),
+body:not(.fixBorders) #result [data-enode][data-type="num"]:not(:hover) {
+  border-color: transparent;
+}
+
+#canvasRole [data-enode][data-type="bool"] {
+  border-radius: var(--div-smallradius);
+}
+
+#canvasRole [data-enode="not"] {
+  border-top-right-radius: 1px !important;
+}
+
+[data-enode="conditional"],
+[data-enode="ifthenelse"] {
+  display: grid;
+}
+.row1 {
+  grid-row-start: 1;
+  justify-content: center;
+}
+
+.row2 {
+  grid-row-start: 2;
+  justify-content: center;
+}
+
+body[tool="autoAdapt"] .sortable-drag,
+body[tool="autoAdapt"] .sortable-drag * {
+  opacity: 1; /*opacity affects child elements too*/
+  background-color: transparent !important;
+  color: transparent !important;
+}
+body[tool="autoAdapt"] .sortable-drag [title^="s"] *,
+body[tool="autoAdapt"] .sortable-drag [title^="s"] {
+  /*??? [title] does not work you need [title^="s"]*/
+  color: black !important;
+}
+body[tool=autoAdapt] .sortable-drag.attackPoint /*[title^="s"]*/ {
+  border-color: blue !important;
+}
+
+/***********   tgt DUMMY element   *********/
+/* .tgt DIVs are dynamically added to act as sortable targets
   
-  #canvasRole [data-enode][data-type=bool]{
-	  border-radius:var(--div-smallradius);
-  }
-  
-  #canvasRole [data-enode=not]{
-	  border-top-right-radius:1px!important;
-  }
-  
-  [data-enode=conditional], [data-enode=ifthenelse]{
-	  display:grid;
-  }
-  .row1{
-	  grid-row-start:1;
-	  justify-content:center;
-  }
-  
-  .row2{
-	  grid-row-start:2;
-	  justify-content:center;
-  }
-  
-  body[tool=autoAdapt] .sortable-drag, body[tool=autoAdapt] .sortable-drag *{
-	  opacity: 1;/*opacity affects child elements too*/
-	  background-color:transparent!important;
-	  color:transparent!important;
-  }
-  body[tool=autoAdapt] .sortable-drag [title^="s"] *,body[tool=autoAdapt] .sortable-drag [title^="s"]{/*??? [title] does not work you need [title^="s"]*/
-	  color:black!important;
-  }
-  body[tool=autoAdapt] .sortable-drag.attackPoint /*[title^="s"]*/{
-	  border-color:blue!important;
-  }
-	  
-  /***********   tgt DUMMY element   *********/
-  /* .tgt DIVs are dynamically added to act as sortable targets
-  
-  /*[data-enode][target]::after, */ .tgt, .notAtgt {
-	pointer-events:none;  
-	position:absolute;
-	  z-index: 1;
-	  border-radius: inherit;
-	  width: 100%;
-	  height: 100%;
-	  justify-content: center;
-	  background-size: 20px;
-	  background-repeat: no-repeat;
-	  background-position-x: center;
-	}
-	.notAtgt{/* a div into a role causes problem for disposition of other elements even if position is absolute*/
-		width: 100px;
-		height: 100px;
-	}
- /* all valid targets */
- /*
+  /*[data-enode][target]::after, */
+.tgt,
+.notAtgt {
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+}
+.notAtgt {
+  /* a div into a role causes problem for disposition of other elements even if position is absolute*/
+  width: 100px;
+  height: 100px;
+}
+/* all valid targets */
+/*
  [target]:not([target=""]) {
 	background-color: #eaeaea!important;
 }*/
-  
-  .mu_DropTarget{
-	  border-color: rgb(98 100 255)!important;
-	 }
-  body[tool=autoAdapt] .mu_DropTarget{
-	border-color: blueviolet!important;
+
+.mu_DropTarget {
+  border-color: rgb(98 100 255) !important;
 }
-  
-  .debug .tgt{
-	  /* border:1px solid blueviolet; */
-	  background-color: #ee82ee73;
-	 }
-  
-.mu_Downstream1{
-	/* background-color: #4d68ff!important; */
+body[tool="autoAdapt"] .mu_DropTarget {
+  border-color: blueviolet !important;
 }
-  .tgt>*{/*target is not a pseudo element*/
-	  background-color:grey!important;
-	  /*visibility:hidden;*/
-  }
-  /*.tgt*::after{
+
+.debug .tgt {
+  /* border:1px solid blueviolet; */
+  background-color: #ee82ee73;
+}
+
+.mu_Downstream1 {
+  /* background-color: #4d68ff!important; */
+}
+.tgt > * {
+  /*target is not a pseudo element*/
+  background-color: grey !important;
+  /*visibility:hidden;*/
+}
+/*.tgt*::after{
 	  content: "ooo";
 	  position: absolute;
 	  pointer-events: none;
