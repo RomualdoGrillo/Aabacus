@@ -111,11 +111,13 @@ if($ENODETarget.length==0){
 		if(GLBDnD.toolWhenMousedown=="autoAdapt" || GLBDnD.toolWhenMousedown=="copy" ){//never sort in "autoAdapt" or "copy" mode\
 			sort=false;
 		}
+		//DECLARE MODE:
+		// ex: if the tool has data-tag="commutativa" data-commutative="plus" and dragstart op is plus => sort=true 
 		else if(GLBDnD.toolWhenMousedown=="declare"){
 			//check if specific commutative property is selected
 			let commutativeOf = $('.selectedTool').attr('data-commutative');
 			let op = $ENODETarget[0].ENODEparent().attr('data-enode')
-			sort = (op==commutativeOf);
+			sort = (op==commutativeOf);// op of drag start == specific type of commutative prop
 		}
 		else{
 			sort = $ENODETarget[0].parentElement.matches('.ul_role') || !ENODEclosedDef($ENODETarget);
