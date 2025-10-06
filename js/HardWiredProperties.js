@@ -346,7 +346,7 @@ function validForPartColl($mouseDownENODE) {
 	if ($parent == undefined) {
 		return $() //empty $ array
 	}
-	const $valids = $();
+	let $valids = $();
 	let $plusParent;
 	let opP;
 	let opT;
