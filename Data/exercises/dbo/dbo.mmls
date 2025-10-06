@@ -29,7 +29,7 @@
 
 <section data-section="canvas">
 	<ci data-type="bool">Applica la proprietà associativa della somma selezionando una parentesi e utilizzando i tasti  ← →</ci>
-	<apply data-import="./Data/BINARYFOUNDATION.mml" data-vis="" data-tag="AssociativaSomma" data-type="bool">
+	<apply data-import="./Data/BINARYFOUNDATION.mml" data-vis="" data-tag="AssociativaSomma" data-defaultProp="true" data-type="bool">
 		<forall>
 		</forall>
 	</apply>
