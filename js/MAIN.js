@@ -34,7 +34,6 @@ $(document).on('touchstart', MakeSortableAndInjectMouseDown);
 $(document).on('mouseup', MouseUpCleanup);
 $(document).on('touchend', MouseUpCleanup);//not tested
 
-
 $(document).on('keydown', function (e) {
 	const keyPressed = keyToCharacter(e.which).toLowerCase();
 	console.log('key pressed:' + keyPressed + ' code: ' + e.which)
@@ -165,6 +164,7 @@ function clickHandler(event) {
 	}
 
 }
+
 function selectionManager($clickedENODE, ctrl, shift, deselectAll) {
 	if (deselectAll) {
 		//clear selected unselected
@@ -176,7 +176,8 @@ function selectionManager($clickedENODE, ctrl, shift, deselectAll) {
 		&& GLBsettings.tool == "declare") {
 		//solo se è effettivamente una proprietà e non un container
 		if ($clickedENODE.hasClass('selectedTool')) {
-			$clickedENODE.removeClass('selectedTool')
+			$clickedENODE.removeClass('selectedTool');
+			getDefaultTool().addClass('selectedTool');
 		}
 		else {
 			$('[data-enode]').removeClass('selectedTool')
@@ -184,6 +185,7 @@ function selectionManager($clickedENODE, ctrl, shift, deselectAll) {
 			console.log('Selected tool: ' + $clickedENODE.attr('data-tag'))
 		}
 	}
+	//***selection of declared "yellow" tool
 	else if (ctrl) {
 		//click +ctrl on .ENODE   ---multi select---
 		if ($clickedENODE.hasClass('selected')) {

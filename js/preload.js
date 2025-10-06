@@ -135,7 +135,9 @@ function injectAllMMLS(response,rootUrl){
 			RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 		}
 	}
-	RefreshEmptyInfixBraketsGlued()
+	RefreshEmptyInfixBraketsGlued();
+	getDefaultTool().addClass('selectedTool');
+
 }
 
 function loadAjaxAndInject(myUrl,target,toBeImported) {

@@ -1,0 +1,127 @@
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+		<and>
+		</and>
+	</apply>
+</section>
+<section data-section="canvas">
+
+	<apply title="Proprietà commutativa,associativa,distributiva generale: Trascina i fattori" data-tagimg="./images/properties/StdProp.svg" data-vis="collapsed" data-tag="Proprieta'Distributiva" data-defaultProp="true" data-type="bool">
+		<and>
+		</and>
+		<!--commutative is different from all other prop-->
+		<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="plus" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+		<ci title="Proprietà commutativa: sposta gli addendi per riordinarli" data-tag="commutativa" data-commutative="times" data-tagimg="./images/properties/commutative.svg" data-type="bool">true</ci>
+		<ci data-tag="partCollectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+		<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+		<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
+		<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
+	</apply>
+
+	<apply data-hide="true" data-type="bool">
+		<and>
+		</and>
+		<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
+			<and>
+			</and>
+		</apply>
+	</apply>
+	<ci data-type="bool">Seleziona la proprietà commutativa generalizzata della somma: clicca sull'icona che la raffigura</ci>
+	<ci data-type="bool">Applica la proprietà commutativa generalizzata: trascina gli elementi per rimetterli in ordine</ci>
+	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-type="bool">
+		<and>
+		</and>
+	</apply>
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<apply data-type="num">
+			<plus>
+			</plus>
+			<ci data-type="num">e</ci>
+			<ci data-type="num">c</ci>
+			<ci data-type="num">d</ci>
+			<ci data-type="num">f</ci>
+			<ci data-type="num">a</ci>
+			<ci data-type="num">b</ci>
+		</apply>
+	</apply>
+</section>
+<section data-section="events">
+	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
+		<and>
+		</and>
+	</apply>
+</section>
+<section data-section="result">
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<apply data-type="num">
+			<plus>
+			</plus>
+			<ci data-type="num">a</ci>
+			<ci data-type="num">b</ci>
+			<ci data-type="num">c</ci>
+			<ci data-type="num">d</ci>
+			<ci data-type="num">e</ci>
+			<ci data-type="num">f</ci>
+		</apply>
+	</apply>
+</section>
+
+<section data-section="settings">
+	
+    {
+	"debug":false,
+	"gameMode":true,
+	"gameModeSurpriseRes":false,
+	"lockCanvas":true,
+	"visPalette":"hide",
+	"hideLeftColumn":true,
+	"hideRightColumn":true,
+	"resultHidden":false,
+	"visSettingSelected":1,
+	"tool":"declare",
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+        "timesDisposition":0,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":true
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"tooColored",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":false
+		}
+	]
+}
+</section>

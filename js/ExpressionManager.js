@@ -1098,3 +1098,7 @@ function reorderTimes($startTimes, brRemove) {
 	}
 
 }
+
+function getDefaultTool(){
+	return $('[data-defaultProp]');
+}
