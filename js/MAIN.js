@@ -30,9 +30,17 @@ document.addEventListener("dblclick", dblclickHandler);
 
 //***********************************************************
 $(document).on('mousedown', MakeSortableAndInjectMouseDown);
-$(document).on('touchstart', MakeSortableAndInjectMouseDown);
+$(document).on('touchstart', function(event) {
+	event.preventDefault();
+	event.stopPropagation();
+	MakeSortableAndInjectMouseDown(event);
+});
 $(document).on('mouseup', MouseUpCleanup);
-$(document).on('touchend', MouseUpCleanup);//not tested
+$(document).on('touchend', function(event) {
+	event.preventDefault();
+	event.stopPropagation();
+	MouseUpCleanup(event);
+});
 
 $(document).on('keydown', function (e) {
 	const keyPressed = keyToCharacter(e.which).toLowerCase();
