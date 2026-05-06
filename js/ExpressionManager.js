@@ -1100,5 +1100,9 @@ function reorderTimes($startTimes, brRemove) {
 }
 
 function getDefaultTool(){
-	return $('[data-defaultProp]');
+	let $defaultTool = $('[data-defaultprop]').first();
+	if($defaultTool.length==0){//se non si trova un elemnto esplicitamente marcato come default
+		$defaultTool = $('[data-tag]').first()//utilizza il primo dei tool;
+	}
+	return $defaultTool;
 }
