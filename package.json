@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "serve": "npx --yes serve -l 5500 app",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "minify": "terser -c -m -o js/newPatternMatching.min.js -- js/newPatternMatching.js && terser -c -m -o js/MAIN.min.js -- js/MAIN.js && terser -c -m -o js/ExpressionManager.min.js -- js/ExpressionManager.js && terser -c -m -o js/HardWiredProperties.min.js -- js/HardWiredProperties.js",
+    "minify": "terser -c -m -o app/js/newPatternMatching.min.js -- app/js/newPatternMatching.js && terser -c -m -o app/js/MAIN.min.js -- app/js/MAIN.js && terser -c -m -o app/js/ExpressionManager.min.js -- app/js/ExpressionManager.js && terser -c -m -o app/js/HardWiredProperties.min.js -- app/js/HardWiredProperties.js",
     "say-hello": "echo 'Hello Ald!'"
   },
   "repository": {
