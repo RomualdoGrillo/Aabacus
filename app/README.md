@@ -7,7 +7,7 @@ Codice prodotto: IDE matematico interattivo (HTML, CSS, JS, contenuti `.mml` / `
 Dalla root del repository:
 
 ```bash
-npm run serve
+npx --yes serve -l 5500 app
 ```
 
 Apri [http://127.0.0.1:5500/](http://127.0.0.1:5500/)
@@ -20,4 +20,4 @@ Esempio con esercizio precaricato:
 http://127.0.0.1:5500/?preloadPath=./Data/exercises/dbo/dbo.mmls
 ```
 
-Avvio consigliato: **Terminal → Run Task → Serve Aabacus**, oppure `npm run serve`.
+Avvio alternativo: **Terminal → Run Task → Serve Aabacus**.

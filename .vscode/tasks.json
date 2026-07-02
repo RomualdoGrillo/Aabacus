@@ -3,8 +3,8 @@
     "tasks": [
         {
             "label": "Serve Aabacus",
-            "type": "npm",
-            "script": "serve",
+            "type": "shell",
+            "command": "npx --yes serve -l 5500 app",
             "problemMatcher": [],
             "isBackground": true,
             "presentation": {
