@@ -1,0 +1,88 @@
+<section data-section="palette">
+	<ci data-type="bool" data-and="horizontal" data-import="./Data/Preload/palette.prt">import palette</ci>
+</section>
+
+<section data-section="events">
+	<apply type="bool">
+		<eventtoaction>
+		</eventtoaction>
+		<ci type="bool">→</ci>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">AssociativaSomma</ci>
+			<ci type="bool">ltr</ci>
+		</apply>
+	</apply>
+	<apply type="bool">
+		<eventtoaction>
+		</eventtoaction>
+		<ci title="d" type="bool">←</ci>
+		<apply type="obj">
+			<callfunction>
+			</callfunction>
+			<ci type="bool">AssociativaSomma</ci>
+			<ci type="bool">rtl</ci>
+		</apply>
+	</apply>
+</section>
+
+<section data-section="canvas">
+	<ci data-type="bool">Applica la proprietà associativa della somma selezionando una parentesi e utilizzando i tasti  ← →</ci>
+	<apply data-import="./Data/BINARYFOUNDATION.mml" data-vis="" data-tag="AssociativaSomma" data-defaultProp="true" data-type="bool">
+		<forall>
+		</forall>
+	</apply>
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+	<apply data-type="num">
+		<plus>
+		</plus>
+		<ci data-type="num">a</ci>
+		<apply data-type="num">
+			<plus>
+			</plus>
+			<apply data-type="num">
+				<plus>
+				</plus>
+				<ci data-type="num">b</ci>
+				<ci data-type="num">c</ci>
+			</apply>
+			<ci data-type="num">d</ci>
+		</apply>
+	</apply>
+	</apply>
+
+</section>
+
+<section data-section="result">
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<apply type="num">
+			<plus>
+			</plus>
+			<apply type="num">
+				<plus>
+				</plus>
+				<apply type="num">
+					<plus>
+					</plus>
+					<ci type="num">a</ci>
+					<ci type="num">b</ci>
+				</apply>
+				<ci type="num">c</ci>
+			</apply>
+			<ci type="num">d</ci>
+		</apply>
+	</apply>
+</section>
+
+<section data-section="settings">
+	{
+   "import_json_settings":"./Data/exercises/dbo/dbo.set"
+    }
+</section>

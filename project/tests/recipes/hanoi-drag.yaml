@@ -1,0 +1,52 @@
+name: hanoi-drag
+description: Carica hanoi4.mmls e sposta un disco tra due colonne con eventi DOM reali
+
+setup:
+  url: http://127.0.0.1:5500/?preloadPath=./Data/exercises/hanoi4.mmls
+  server:
+    command: npx --yes serve -l 5500 app
+    cwd: repo-root
+  injectTestHelpers:
+    exercise: hanoi
+
+steps:
+  - action: waitForReady
+    timeoutMs: 15000
+
+  - action: assertExerciseState
+    helper: hanoi
+    expect:
+      hanoiRodCount: 3
+      hanoiDiscCount: 4
+
+  - action: assertState
+    expect:
+      lockCanvas: true
+
+  - action: probeElement
+    target:
+      selector: "#canvasRole [data-enode=hanoi] [data-enode=cn]"
+      offset: { x: 0.5, y: 0.5 }
+    expectHit:
+      enode: cn
+
+  - action: getMoveCoordinates
+    helper: hanoi
+    fromRodIndex: 0
+    toRodIndex: 1
+
+  - action: trustedMouseDrag
+    note: Playwright page.mouse — input OS per drag SortableJS
+    fromRodIndex: 0
+    toRodIndex: 1
+    steps: 25
+
+  - action: assert
+    moved: true
+    afterRod1: "beforeRod1 + 1"
+    afterRod0: "beforeRod0 - 1"
+
+notes: |
+  Helper esercizio: project/tests/helpers/exercises/hanoi.js
+  Core iniettato: project/tests/helpers/browser/core.js (usa ENODEparent, GLBsettings dell'app)
+  Esecuzione: cd project/tests && npm run test:e2e

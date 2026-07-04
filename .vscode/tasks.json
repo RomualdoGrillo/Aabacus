@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Serve Aabacus",
+            "type": "shell",
+            "command": "npx --yes serve -l 5500 app",
+            "problemMatcher": [],
+            "isBackground": true,
+            "presentation": {
+                "reveal": "silent",
+                "panel": "dedicated"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        }
+    ]
+}
