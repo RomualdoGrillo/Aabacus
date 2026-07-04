@@ -127,6 +127,53 @@ if($ENODETarget.length==0){
 	}
 }
 
+let dropTargetHighlightHandler = null;
+
+function getDropTargetAtPoint(clientX, clientY) {
+	let targets = document.querySelectorAll('[target]:not([from])');
+	for (let i = 0; i < targets.length; i++) {
+		let targetEl = targets[i];
+		let hitEl = targetEl.querySelector('.tgt, .notAtgt') || targetEl;
+		let rect = hitEl.getBoundingClientRect();
+		if (clientX >= rect.left && clientX <= rect.right &&
+			clientY >= rect.top && clientY <= rect.bottom) {
+			return targetEl;
+		}
+	}
+	return null;
+}
+
+function updateDropTargetHighlightFromPointer(clientX, clientY) {
+	$('.mu_DropTarget').removeClass('mu_DropTarget');
+	let targetEl = getDropTargetAtPoint(clientX, clientY);
+	if (targetEl) {
+		ENODEparent($(targetEl)).addClass('mu_DropTarget');
+	}
+}
+
+function onPointerMoveDuringDrag(event) {
+	let e = event.touches ? event.touches[0] : event;
+	updateDropTargetHighlightFromPointer(e.clientX, e.clientY);
+}
+
+function startDropTargetHighlightTracking(originalEvent) {
+	stopDropTargetHighlightTracking();
+	dropTargetHighlightHandler = onPointerMoveDuringDrag;
+	document.addEventListener('mousemove', dropTargetHighlightHandler);
+	document.addEventListener('touchmove', dropTargetHighlightHandler, { passive: true });
+	if (originalEvent) {
+		updateDropTargetHighlightFromPointer(originalEvent.clientX, originalEvent.clientY);
+	}
+}
+
+function stopDropTargetHighlightTracking() {
+	if (dropTargetHighlightHandler) {
+		document.removeEventListener('mousemove', dropTargetHighlightHandler);
+		document.removeEventListener('touchmove', dropTargetHighlightHandler);
+		dropTargetHighlightHandler = null;
+	}
+}
+
 function startHandlerMouseDown(event) {
 	//*************** deselect ********
 	if (event.type == 'start') {
@@ -143,11 +190,11 @@ function startHandlerMouseDown(event) {
 		//will be removed in onEndHandler
 
 	}
+	startDropTargetHighlightTracking(event.originalEvent);
 
 }
 function onMove(event) {
-	$('.mu_DropTarget').removeClass('mu_DropTarget');
-	ENODEparent($(event.to)).addClass('mu_DropTarget');
+	// Sortable onMove is tied to swapThreshold; visual feedback uses pointer position instead.
 }
 function onSort(event) {
 	RefreshEmptyInfixBraketsGlued(ENODEparent($(event.target)))
@@ -294,6 +341,7 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 	return sortables
 }
 function MouseUpCleanup(event) {
+	stopDropTargetHighlightTracking();
 	if (!debugMode) {//in debugMode i target sono lasciati visibili
 		hideTargetsOnMouseUp()// targets are hidden, not removed 
 		//cleanupDnD()//if I remove targets and the "onAdd" event fires after Mouseup, the onAdd handler may be in error because of disappeared targets
@@ -308,6 +356,7 @@ function cleanupDnD() {
 	//Sortend is not fired if click without drag
 	//Documentation:
 	//https://docs.google.com/drawings/d/1sASg3RC51sOYWCRIxJjdRI_lL0ZKpATyPaFWfkVxT70/edit
+	stopDropTargetHighlightTracking();
 	removeClassByPrefix(undefined,'mu_') //clear classes in case mouseup failed to fire
 	clearSortableTargets()
 	clearLines()//todo: distinguish between hints and PatternMatching and other lines
