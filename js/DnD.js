@@ -129,12 +129,20 @@ if($ENODETarget.length==0){
 
 let dropTargetHighlightHandler = null;
 
+function getDropTargetHitRect(targetEl) {
+	let hitEl = targetEl.querySelector('.tgt, .notAtgt') || targetEl;
+	let rect = hitEl.getBoundingClientRect();
+	if (rect.width < 2 || rect.height < 2) {
+		rect = targetEl.getBoundingClientRect();
+	}
+	return rect;
+}
+
 function getDropTargetAtPoint(clientX, clientY) {
 	let targets = document.querySelectorAll('[target]:not([from])');
 	for (let i = 0; i < targets.length; i++) {
 		let targetEl = targets[i];
-		let hitEl = targetEl.querySelector('.tgt, .notAtgt') || targetEl;
-		let rect = hitEl.getBoundingClientRect();
+		let rect = getDropTargetHitRect(targetEl);
 		if (clientX >= rect.left && clientX <= rect.right &&
 			clientY >= rect.top && clientY <= rect.bottom) {
 			return targetEl;
@@ -143,11 +151,22 @@ function getDropTargetAtPoint(clientX, clientY) {
 	return null;
 }
 
+function getDropTargetHighlightElement(targetEl) {
+	let sortableSurface = targetEl.querySelector('.tgt, .notAtgt');
+	if (sortableSurface) {
+		return ENODEparent($(sortableSurface));
+	}
+	if (targetEl.matches('[data-enode]')) {
+		return $(targetEl);
+	}
+	return ENODEparent($(targetEl));
+}
+
 function updateDropTargetHighlightFromPointer(clientX, clientY) {
 	$('.mu_DropTarget').removeClass('mu_DropTarget');
 	let targetEl = getDropTargetAtPoint(clientX, clientY);
 	if (targetEl) {
-		ENODEparent($(targetEl)).addClass('mu_DropTarget');
+		getDropTargetHighlightElement(targetEl).addClass('mu_DropTarget');
 	}
 }
 
@@ -161,6 +180,7 @@ function startDropTargetHighlightTracking(originalEvent) {
 	dropTargetHighlightHandler = onPointerMoveDuringDrag;
 	document.addEventListener('mousemove', dropTargetHighlightHandler);
 	document.addEventListener('touchmove', dropTargetHighlightHandler, { passive: true });
+	document.addEventListener('dragover', dropTargetHighlightHandler, { passive: true });
 	if (originalEvent) {
 		updateDropTargetHighlightFromPointer(originalEvent.clientX, originalEvent.clientY);
 	}
@@ -170,6 +190,7 @@ function stopDropTargetHighlightTracking() {
 	if (dropTargetHighlightHandler) {
 		document.removeEventListener('mousemove', dropTargetHighlightHandler);
 		document.removeEventListener('touchmove', dropTargetHighlightHandler);
+		document.removeEventListener('dragover', dropTargetHighlightHandler);
 		dropTargetHighlightHandler = null;
 	}
 }
@@ -319,6 +340,8 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 		if (sortables[i]) {//if a Sortable instance exists for that role THEN enable it
 			sortables[i].option('disabled', false);
 			sortables[i].option('sort', sort);
+			sortables[i].option('emptyInsertThreshold', 30);
+			sortables[i].option('swapThreshold', 0.4);
 		} else {//else create a Sortable
 			sortables[i] = new Sortable(roles[i], {
 				group: {
@@ -333,7 +356,8 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 				onMove:onMove,
 				onEnd:MouseUpCleanup,//on sortend the event MouseUp does not occur! onEnd is fired instead
 				fallbackOnBody: true,
-				swapThreshold: 0.65,
+				emptyInsertThreshold: 30,
+				swapThreshold: 0.4,
 				animation: 150,
 			});
 		}
