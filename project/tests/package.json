@@ -8,6 +8,7 @@
     "test:e2e:watch": "DEMO=1 PAUSE_MS=5000 playwright test --headed --workers=1",
     "test:e2e:ui": "playwright test --ui",
     "test:console:hanoi": "node testViaConsole/open-console-hanoi.js",
+    "test:console:hanoi:solve": "node testViaConsole/solve-hanoi-demo.js",
     "test:console:paste-snippet": "node testViaConsole/print-paste-snippet.js"
   },
   "devDependencies": {

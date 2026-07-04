@@ -34,8 +34,20 @@
 			throw new Error('No disc on source rod');
 		}
 		var targetZone = targetRod.querySelector('.ol_role') || targetRod;
+		var topTargetDisc = targetRod.querySelector('.ol_role [data-enode=cn]:first-child');
+		var dropEl = topTargetDisc || targetZone;
+		topDisc.scrollIntoView({ block: 'center', inline: 'center' });
+		dropEl.scrollIntoView({ block: 'center', inline: 'center' });
 		var fromRect = topDisc.getBoundingClientRect();
-		var toRect = targetZone.getBoundingClientRect();
+		var toRect = dropEl.getBoundingClientRect();
+		var toOffsetY =
+			topTargetDisc != null
+				? options.toOffsetY != null
+					? options.toOffsetY
+					: 0.35
+				: options.toOffsetY != null
+					? options.toOffsetY
+					: 0.85;
 		return {
 			from: {
 				x: fromRect.left + fromRect.width * (options.fromOffsetX != null ? options.fromOffsetX : 0.5),
@@ -43,7 +55,7 @@
 			},
 			to: {
 				x: toRect.left + toRect.width * (options.toOffsetX != null ? options.toOffsetX : 0.5),
-				y: toRect.top + toRect.height * (options.toOffsetY != null ? options.toOffsetY : 0.85)
+				y: toRect.top + toRect.height * toOffsetY
 			}
 		};
 	}
@@ -69,23 +81,41 @@
 		var toRodIndex = options.toRodIndex != null ? options.toRodIndex : 1;
 		var before = getRodDiscCounts();
 		var steps = options.steps != null ? options.steps : 25;
+		var liftY = Math.min(coords.from.y, coords.to.y) - (options.liftPx != null ? options.liftPx : 70);
+		var via = { x: coords.from.x, y: liftY };
+		var via2 = { x: coords.to.x, y: liftY };
+		var leg = Math.max(4, Math.floor(steps / 3));
+		var points = T.interpolatePoints(coords.from, via, leg)
+			.concat(T.interpolatePoints(via, via2, leg).slice(1))
+			.concat(T.interpolatePoints(via2, coords.to, leg).slice(1));
 		await T.simulatePointerPath({
-			points: T.interpolatePoints(coords.from, coords.to, steps),
+			points: points,
 			modifiers: options.modifiers,
 			button: options.button,
 			stepDelayMs: options.stepDelayMs,
 			showCursor: options.showCursor
 		});
-		await new Promise(function (resolve) {
-			setTimeout(resolve, 100);
-		});
-		var after = getRodDiscCounts();
+		var after = before;
+		var moved = false;
+		var deadline = Date.now() + (options.settleMs != null ? options.settleMs : 2000);
+		while (Date.now() < deadline) {
+			await new Promise(function (resolve) {
+				setTimeout(resolve, 80);
+			});
+			after = getRodDiscCounts();
+			moved =
+				after[toRodIndex] === before[toRodIndex] + 1 &&
+				after[fromRodIndex] === before[fromRodIndex] - 1;
+			if (moved) {
+				break;
+			}
+		}
 		return {
 			ok: true,
 			before: before,
 			after: after,
 			coords: coords,
-			moved: after[toRodIndex] === before[toRodIndex] + 1 && after[fromRodIndex] === before[fromRodIndex] - 1
+			moved: moved
 		};
 	}
 

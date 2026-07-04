@@ -74,13 +74,20 @@ await __aabacusTest.simulateDnD({
 });
 ```
 
-### URL personalizzato
+### Risolvere l'intero esercizio (15 mosse)
 
 ```bash
-URL='http://127.0.0.1:5500/?demo=1&preloadPath=./Data/exercises/altro.mmls' npm run test:console:hanoi
+cd project/tests
+npm run test:console:hanoi:solve
 ```
 
----
+Opzioni utili:
+
+```bash
+PAUSE_MS=2000 npm run test:console:hanoi:solve   # pausa più lunga tra le mosse
+KEEP_OPEN=1 npm run test:console:hanoi:solve     # lascia aperto il browser alla fine
+```
+
 
 ## Metodo 2 — Solo browser + incolla in console
 
@@ -123,5 +130,6 @@ Per CI/regression preferire `npm run test:e2e` (Playwright + `page.mouse`).
 | File | Ruolo |
 |------|--------|
 | `open-console-hanoi.js` | Browser headed + iniezione helper |
+| `solve-hanoi-demo.js` | Risolve hanoi4 in 15 mosse con pause e cursore rosso |
 | `print-paste-snippet.js` | Stampa core+hanoi da incollare in console |
 | `README.md` | Queste istruzioni |
