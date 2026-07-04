@@ -17,7 +17,7 @@ Il server serve **solo** la cartella `app/` come root web (non la root del repos
 Esempio con esercizio precaricato:
 
 ```
-http://127.0.0.1:5500/?preloadPath=./Data/exercises/dbo/dbo.mmls
+http://127.0.0.1:5500/?preloadPath=./Data/exercises/hanoi4.mmls
 ```
 
 Avvio alternativo: **Terminal → Run Task → Serve Aabacus**.
