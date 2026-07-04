@@ -924,9 +924,13 @@
   /***********   tgt DUMMY element   *********/
   /* .tgt DIVs are dynamically added to act as sortable targets
   
-  /*[data-enode][target]::after, */ .tgt, .notAtgt {
+  /*[data-enode][target]::after, */   .tgt, .notAtgt {
 	pointer-events:none;  
 	position:absolute;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
 	  z-index: 1;
 	  border-radius: inherit;
 	  width: 100%;

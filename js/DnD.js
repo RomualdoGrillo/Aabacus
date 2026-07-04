@@ -118,7 +118,8 @@ if($ENODETarget.length==0){
 			sort = (op==commutativeOf);
 		}
 		else{
-			sort = $ENODETarget[0].parentElement.matches('.ul_role') || !ENODEclosedDef($ENODETarget);
+			// Property drops move between lists; do not reorder within the source role.
+			sort = false;
 		}
 		$ENODETarget[0].parentElement.setAttribute('from', 'froENODE')
 		let fromSortable = makeSortableMouseDown([$ENODETarget[0].parentElement], sort)[0]
@@ -128,9 +129,11 @@ if($ENODETarget.length==0){
 }
 
 let dropTargetHighlightHandler = null;
+let GLBDnDdropHandled = false;
+let GLBDnDlastPointer = { x: 0, y: 0 };
 
 function getDropTargetHitRect(targetEl) {
-	let hitEl = targetEl.querySelector('.tgt, .notAtgt') || targetEl;
+	let hitEl = targetEl.querySelector('.ol_role, .ul_role, .s_role') || targetEl.querySelector('.tgt, .notAtgt') || targetEl;
 	let rect = hitEl.getBoundingClientRect();
 	if (rect.width < 2 || rect.height < 2) {
 		rect = targetEl.getBoundingClientRect();
@@ -139,16 +142,30 @@ function getDropTargetHitRect(targetEl) {
 }
 
 function getDropTargetAtPoint(clientX, clientY) {
+	let elements = document.elementsFromPoint(clientX, clientY);
+	for (let i = 0; i < elements.length; i++) {
+		let targetEl = elements[i].closest('[target]:not([from])');
+		if (targetEl) {
+			return targetEl;
+		}
+	}
+	// Fallback when elementsFromPoint misses (e.g. some touch/pointer edge cases)
+	let bestTarget = null;
+	let bestArea = Infinity;
 	let targets = document.querySelectorAll('[target]:not([from])');
 	for (let i = 0; i < targets.length; i++) {
 		let targetEl = targets[i];
 		let rect = getDropTargetHitRect(targetEl);
 		if (clientX >= rect.left && clientX <= rect.right &&
 			clientY >= rect.top && clientY <= rect.bottom) {
-			return targetEl;
+			let area = rect.width * rect.height;
+			if (area < bestArea) {
+				bestArea = area;
+				bestTarget = targetEl;
+			}
 		}
 	}
-	return null;
+	return bestTarget;
 }
 
 function getDropTargetHighlightElement(targetEl) {
@@ -162,6 +179,44 @@ function getDropTargetHighlightElement(targetEl) {
 	return ENODEparent($(targetEl));
 }
 
+function getDraggedENODEForManualDrop(event) {
+	if ($(event.item).is('[data-enode=cn]')) {
+		return $(event.item);
+	}
+	let $dragged = $('.sortable-drag[data-enode=cn]').first();
+	if ($dragged.length) {
+		return $dragged;
+	}
+	return $(event.from).find('[data-enode=cn]').first();
+}
+
+function tryManualPropertyDrop(event, targetEl) {
+	let propertyName = targetEl.getAttribute('target');
+	if (!propertyName || propertyName === 'opened' || propertyName === 'dragPatternMatch') {
+		return false;
+	}
+	let property = getDnDpropEnabled().find(function (el) {
+		return el.name == propertyName;
+	});
+	if (!property) {
+		return false;
+	}
+	let $dragged = getDraggedENODEForManualDrop(event);
+	if (!$dragged.length) {
+		return false;
+	}
+	$dragged.removeClass('showAsPlaceholder sortable-drag sortable-chosen sortable-ghost');
+	let PActx = property.apply($dragged, $(targetEl), $dragged);
+	if (PActx) {
+		PActx.visualization = property.icon;
+		PActxConclude(PActx);
+	}
+	$(targetEl).find('.tgt').remove();
+	clickSound.play();
+	cleanupDnD();
+	return true;
+}
+
 function updateDropTargetHighlightFromPointer(clientX, clientY) {
 	$('.mu_DropTarget').removeClass('mu_DropTarget');
 	let targetEl = getDropTargetAtPoint(clientX, clientY);
@@ -172,6 +227,8 @@ function updateDropTargetHighlightFromPointer(clientX, clientY) {
 
 function onPointerMoveDuringDrag(event) {
 	let e = event.touches ? event.touches[0] : event;
+	GLBDnDlastPointer.x = e.clientX;
+	GLBDnDlastPointer.y = e.clientY;
 	updateDropTargetHighlightFromPointer(e.clientX, e.clientY);
 }
 
@@ -182,6 +239,8 @@ function startDropTargetHighlightTracking(originalEvent) {
 	document.addEventListener('touchmove', dropTargetHighlightHandler, { passive: true });
 	document.addEventListener('dragover', dropTargetHighlightHandler, { passive: true });
 	if (originalEvent) {
+		GLBDnDlastPointer.x = originalEvent.clientX;
+		GLBDnDlastPointer.y = originalEvent.clientY;
 		updateDropTargetHighlightFromPointer(originalEvent.clientX, originalEvent.clientY);
 	}
 }
@@ -197,6 +256,7 @@ function stopDropTargetHighlightTracking() {
 
 function startHandlerMouseDown(event) {
 	//*************** deselect ********
+	GLBDnDdropHandled = false;
 	if (event.type == 'start') {
 		//clear selected unselected
 		selectionManager("", "", "", true);
@@ -226,7 +286,20 @@ function onUpdate(event) {
 	lookForResultAndCelebrate(GLBsettings.movesCounter,GLBsettings.movesMinNumber);
 }
 
+function getDropPointerFromEvent(event) {
+	let clientX = GLBDnDlastPointer.x;
+	let clientY = GLBDnDlastPointer.y;
+	if (event && event.originalEvent && event.originalEvent.clientX) {
+		clientX = event.originalEvent.clientX;
+		clientY = event.originalEvent.clientY;
+	}
+	return { clientX: clientX, clientY: clientY };
+}
+
 function onAdd(event) {
+	if (GLBDnDdropHandled) {
+		return;
+	}
 	//replacing sortablejs defaul clone with myClone (removed id, extends ENODE etc..)
 	//item stays in place myclone dropped in new place
 	event.item.classList.remove('showAsPlaceholder');
@@ -256,14 +329,22 @@ function onAdd(event) {
 			$(event.item).remove();
 			// if not cloning, clone was useful to visualize the starting point 	
 		}
+		GLBDnDdropHandled = true;
 	}
 	//*********** apply property
 	else {
 		let target
 		let adHocTgt = event.to.classList.contains('tgt')
+		let pointerTargetEl = null;
 		if (adHocTgt) {
-			//---->real target is ENODE so dropped in ad hoc tgt role
-			target = event.to.parentElement;
+			let ptr = getDropPointerFromEvent(event);
+			pointerTargetEl = getDropTargetAtPoint(ptr.clientX, ptr.clientY);
+			// Sortable may report the wrong .tgt; pointer position is authoritative.
+			if (pointerTargetEl) {
+				target = pointerTargetEl;
+			} else {
+				target = event.to.closest('[target]') || event.to.parentElement;
+			}
 		} else {
 			//---->target is a role (no need for ad hoc tgt)
 			target = event.to
@@ -277,6 +358,7 @@ function onAdd(event) {
 			let PActx = InstructAndTryOnePMT(GLBDnD.$originalProperty, ENODEparent($(event.to)), GLBDnD.direction)
 			PActx.msg = GLBDnD.$originalProperty.closest('[data-tag]').attr('data-tag')
 			PActxConclude(PActx)
+			GLBDnDdropHandled = true;
 		}
 		//*********** apply property in propertiesDnD
 		else {
@@ -285,8 +367,13 @@ function onAdd(event) {
 			});
 			if (property) {
 				let $droppedIn
-				if($(event.to).hasClass('tgt')){ $droppedIn = $(event.to.parentElement)}//skip dummy tgt if present
-				else{$droppedIn = $(event.to)}
+				if (adHocTgt) {
+					$droppedIn = pointerTargetEl ? $(pointerTargetEl) : $(event.to.parentElement);
+					if (pointerTargetEl && event.to.parentElement !== pointerTargetEl) {
+						$(event.to).empty();
+					}
+				}
+				else { $droppedIn = $(event.to) }
 				let PActx = property.apply($(event.item), $droppedIn, $(dropped))
 				PActx.visualization = property.icon //an element must appear on the canvas to enable the property, such element also contains the icon for that property
 				if (adHocTgt) {
@@ -294,6 +381,7 @@ function onAdd(event) {
 				}
 				if (PActx) {
 					PActxConclude(PActx)
+					GLBDnDdropHandled = true;
 				}
 			}
 		}
@@ -354,7 +442,7 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 				onStart: startHandlerMouseDown,
 				onAdd: onAdd,
 				onMove:onMove,
-				onEnd:MouseUpCleanup,//on sortend the event MouseUp does not occur! onEnd is fired instead
+				onEnd:onEndHandler,//on sortend the event MouseUp does not occur! onEnd is fired instead
 				fallbackOnBody: true,
 				emptyInsertThreshold: 30,
 				swapThreshold: 0.4,
@@ -364,6 +452,18 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 	}
 	return sortables
 }
+function onEndHandler(event) {
+	stopDropTargetHighlightTracking();
+	if (!GLBDnDdropHandled) {
+		let ptr = getDropPointerFromEvent(event);
+		let targetEl = getDropTargetAtPoint(ptr.clientX, ptr.clientY);
+		if (targetEl) {
+			GLBDnDdropHandled = tryManualPropertyDrop(event, targetEl);
+		}
+	}
+	MouseUpCleanup(event);
+}
+
 function MouseUpCleanup(event) {
 	stopDropTargetHighlightTracking();
 	if (!debugMode) {//in debugMode i target sono lasciati visibili
