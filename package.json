@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "python3 scripts/dev-server.py",
     "test": "echo \"Error: no test specified\" && exit 1",
     "minify": "terser -c -m -o js/newPatternMatching.min.js -- js/newPatternMatching.js && terser -c -m -o js/MAIN.min.js -- js/MAIN.js && terser -c -m -o js/ExpressionManager.min.js -- js/ExpressionManager.js && terser -c -m -o js/HardWiredProperties.min.js -- js/HardWiredProperties.js",
     "say-hello": "echo 'Hello Ald!'"
