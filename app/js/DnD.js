@@ -130,17 +130,21 @@ if($ENODETarget.length==0){
 	}
 }
 
+/* SortableJS sometimes misses drops on ad-hoc .tgt zones and highlights the wrong
+ * target until pointer exit. Fix: track pointer, resolve [target] under cursor,
+ * and fall back to a manual property apply in onEnd when onAdd did not run. */
 let dropTargetHighlightHandler = null;
 let GLBDnDdropHandled = false;
 let GLBDnDlastPointer = { x: 0, y: 0 };
 
-function getDropTargetHitRect(targetEl) {
-	let hitEl = targetEl.querySelector('.ol_role, .ul_role, .s_role') || targetEl.querySelector('.tgt, .notAtgt') || targetEl;
-	let rect = hitEl.getBoundingClientRect();
-	if (rect.width < 2 || rect.height < 2) {
-		rect = targetEl.getBoundingClientRect();
+function getDropPointerFromEvent(event) {
+	let clientX = GLBDnDlastPointer.x;
+	let clientY = GLBDnDlastPointer.y;
+	if (event && event.originalEvent && event.originalEvent.clientX) {
+		clientX = event.originalEvent.clientX;
+		clientY = event.originalEvent.clientY;
 	}
-	return rect;
+	return { clientX: clientX, clientY: clientY };
 }
 
 function getDropTargetAtPoint(clientX, clientY) {
@@ -151,13 +155,16 @@ function getDropTargetAtPoint(clientX, clientY) {
 			return targetEl;
 		}
 	}
-	// Fallback when elementsFromPoint misses (e.g. some touch/pointer edge cases)
 	let bestTarget = null;
 	let bestArea = Infinity;
 	let targets = document.querySelectorAll('[target]:not([from])');
 	for (let i = 0; i < targets.length; i++) {
 		let targetEl = targets[i];
-		let rect = getDropTargetHitRect(targetEl);
+		let hitEl = targetEl.querySelector('.ol_role, .ul_role, .s_role, .tgt, .notAtgt') || targetEl;
+		let rect = hitEl.getBoundingClientRect();
+		if (rect.width < 2 || rect.height < 2) {
+			rect = targetEl.getBoundingClientRect();
+		}
 		if (clientX >= rect.left && clientX <= rect.right &&
 			clientY >= rect.top && clientY <= rect.bottom) {
 			let area = rect.width * rect.height;
@@ -170,26 +177,31 @@ function getDropTargetAtPoint(clientX, clientY) {
 	return bestTarget;
 }
 
-function getDropTargetHighlightElement(targetEl) {
+function highlightDropTargetAtPoint(clientX, clientY) {
+	$('.mu_DropTarget').removeClass('mu_DropTarget');
+	let targetEl = getDropTargetAtPoint(clientX, clientY);
+	if (!targetEl) {
+		return;
+	}
+	let $highlight = $(targetEl);
 	let sortableSurface = targetEl.querySelector('.tgt, .notAtgt');
 	if (sortableSurface) {
-		return ENODEparent($(sortableSurface));
+		$highlight = ENODEparent($(sortableSurface));
+	} else if (!targetEl.matches('[data-enode]')) {
+		$highlight = ENODEparent($(targetEl));
 	}
-	if (targetEl.matches('[data-enode]')) {
-		return $(targetEl);
-	}
-	return ENODEparent($(targetEl));
+	$highlight.addClass('mu_DropTarget');
 }
 
-function getDraggedENODEForManualDrop(event) {
-	if ($(event.item).is('[data-enode=cn]')) {
+function getDraggedElementForManualDrop(event) {
+	if ($(event.item).is('[data-enode]')) {
 		return $(event.item);
 	}
-	let $dragged = $('.sortable-drag[data-enode=cn]').first();
+	let $dragged = $('.sortable-drag[data-enode]').first();
 	if ($dragged.length) {
 		return $dragged;
 	}
-	return $(event.from).find('[data-enode=cn]').first();
+	return $(event.from).find('[data-enode]').first();
 }
 
 function tryManualPropertyDrop(event, targetEl) {
@@ -203,7 +215,7 @@ function tryManualPropertyDrop(event, targetEl) {
 	if (!property) {
 		return false;
 	}
-	let $dragged = getDraggedENODEForManualDrop(event);
+	let $dragged = getDraggedElementForManualDrop(event);
 	if (!$dragged.length) {
 		return false;
 	}
@@ -213,25 +225,27 @@ function tryManualPropertyDrop(event, targetEl) {
 		PActx.visualization = property.icon;
 		PActxConclude(PActx);
 	}
-	$(targetEl).find('.tgt').remove();
 	clickSound.play();
 	cleanupDnD();
 	return true;
 }
 
-function updateDropTargetHighlightFromPointer(clientX, clientY) {
-	$('.mu_DropTarget').removeClass('mu_DropTarget');
-	let targetEl = getDropTargetAtPoint(clientX, clientY);
-	if (targetEl) {
-		getDropTargetHighlightElement(targetEl).addClass('mu_DropTarget');
+function resolveAdHocPropertyTarget(event) {
+	let ptr = getDropPointerFromEvent(event);
+	let pointerTargetEl = getDropTargetAtPoint(ptr.clientX, ptr.clientY);
+	let target = pointerTargetEl || event.to.closest('[target]') || event.to.parentElement;
+	let $droppedIn = pointerTargetEl ? $(pointerTargetEl) : $(event.to.parentElement);
+	if (pointerTargetEl && event.to.parentElement !== pointerTargetEl) {
+		$(event.to).empty();
 	}
+	return { target: target, $droppedIn: $droppedIn };
 }
 
 function onPointerMoveDuringDrag(event) {
 	let e = event.touches ? event.touches[0] : event;
 	GLBDnDlastPointer.x = e.clientX;
 	GLBDnDlastPointer.y = e.clientY;
-	updateDropTargetHighlightFromPointer(e.clientX, e.clientY);
+	highlightDropTargetAtPoint(e.clientX, e.clientY);
 }
 
 function startDropTargetHighlightTracking(originalEvent) {
@@ -243,7 +257,7 @@ function startDropTargetHighlightTracking(originalEvent) {
 	if (originalEvent) {
 		GLBDnDlastPointer.x = originalEvent.clientX;
 		GLBDnDlastPointer.y = originalEvent.clientY;
-		updateDropTargetHighlightFromPointer(originalEvent.clientX, originalEvent.clientY);
+		highlightDropTargetAtPoint(originalEvent.clientX, originalEvent.clientY);
 	}
 }
 
@@ -288,16 +302,6 @@ function onUpdate(event) {
 	lookForResultAndCelebrate(GLBsettings.movesCounter,GLBsettings.movesMinNumber);
 }
 
-function getDropPointerFromEvent(event) {
-	let clientX = GLBDnDlastPointer.x;
-	let clientY = GLBDnDlastPointer.y;
-	if (event && event.originalEvent && event.originalEvent.clientX) {
-		clientX = event.originalEvent.clientX;
-		clientY = event.originalEvent.clientY;
-	}
-	return { clientX: clientX, clientY: clientY };
-}
-
 function onAdd(event) {
 	if (GLBDnDdropHandled) {
 		return;
@@ -337,16 +341,9 @@ function onAdd(event) {
 	else {
 		let target
 		let adHocTgt = event.to.classList.contains('tgt')
-		let pointerTargetEl = null;
+		let resolved = adHocTgt ? resolveAdHocPropertyTarget(event) : null;
 		if (adHocTgt) {
-			let ptr = getDropPointerFromEvent(event);
-			pointerTargetEl = getDropTargetAtPoint(ptr.clientX, ptr.clientY);
-			// Sortable may report the wrong .tgt; pointer position is authoritative.
-			if (pointerTargetEl) {
-				target = pointerTargetEl;
-			} else {
-				target = event.to.closest('[target]') || event.to.parentElement;
-			}
+			target = resolved.target;
 		} else {
 			//---->target is a role (no need for ad hoc tgt)
 			target = event.to
@@ -368,14 +365,7 @@ function onAdd(event) {
 				return el.name == targetProperty
 			});
 			if (property) {
-				let $droppedIn
-				if (adHocTgt) {
-					$droppedIn = pointerTargetEl ? $(pointerTargetEl) : $(event.to.parentElement);
-					if (pointerTargetEl && event.to.parentElement !== pointerTargetEl) {
-						$(event.to).empty();
-					}
-				}
-				else { $droppedIn = $(event.to) }
+				let $droppedIn = adHocTgt ? resolved.$droppedIn : $(event.to)
 				let PActx = property.apply($(event.item), $droppedIn, $(dropped))
 				PActx.visualization = property.icon //an element must appear on the canvas to enable the property, such element also contains the icon for that property
 				if (adHocTgt) {
