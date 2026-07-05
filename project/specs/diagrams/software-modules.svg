@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Aabacus - schema moduli software (allineato a app/js/ e app/index.html)
+
+  Mappatura diagramma -> codice:
+  - Tool/settings     -> MAIN.js, preload.js (GLBsettings)
+  - DnD               -> DnD.js (SortableJS)
+  - Advanced gestures -> MAIN.js (touch, parziale)
+  - Keyboard          -> MAIN.js -> UserEvToFunctCall.js
+  - index.html        -> app/index.html + app/css/
+  - MAIN.js           -> app/js/MAIN.js
+  - ENODE API         -> ExpressionManager.js, inflatedeflate.js, infix.js
+  - DnD module        -> DnD.js
+  - Events/keyboard   -> UserEvToFunctCall.js
+  - Hard wired props  -> HardWiredProperties.js, addedHardWiredProperties.js
+  - Pattern matching  -> PatternMatchingTrasform.js, PMTutilities.js
+  - Load/Save         -> SaveLoad.js, preload.js
+  - Undo              -> Undo.js
+  - Math engine       -> math.js
+
+  Moduli satellite (non nel diagramma): SVGlines.js, calculateSpan.js,
+  AldoUtilities.js, sound.js, formatXML.js, TranslateFormat.js, Ajax.js
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 960 680"
+     width="960" height="680"
+     font-family="Arial, Helvetica, sans-serif"
+     font-size="13">
+
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+    <style>
+      .box-user   { fill: #fce5cd; stroke: #333; stroke-width: 1.5; }
+      .box-logic  { fill: #cfe2f3; stroke: #333; stroke-width: 1.5; }
+      .box-ui     { fill: #fff;    stroke: #333; stroke-width: 2;   }
+      .label      { fill: #111; text-anchor: middle; dominant-baseline: middle; }
+      .label-left { fill: #111; text-anchor: start;   dominant-baseline: middle; }
+      .file-ref   { fill: #444; text-anchor: middle; dominant-baseline: middle; font-size: 10px; }
+      .file-left  { fill: #444; text-anchor: start;   dominant-baseline: middle; font-size: 10px; }
+      .conn       { stroke: #333; stroke-width: 1.5; fill: none; }
+      .arrow-bi   { stroke: #333; stroke-width: 2; fill: none;
+                    marker-start: url(#arrowhead); marker-end: url(#arrowhead); }
+      .note       { fill: #666; font-size: 10px; }
+    </style>
+  </defs>
+
+  <!-- Utente -->
+  <g id="user">
+    <circle cx="55" cy="168" r="14" fill="none" stroke="#333" stroke-width="1.5"/>
+    <circle cx="55" cy="168" r="5" fill="#ffd966"/>
+    <line x1="55" y1="182" x2="55" y2="228" class="conn"/>
+    <line x1="55" y1="198" x2="30" y2="218" class="conn"/>
+    <line x1="55" y1="198" x2="80" y2="218" class="conn"/>
+    <line x1="55" y1="228" x2="35" y2="258" class="conn"/>
+    <line x1="55" y1="228" x2="75" y2="258" class="conn"/>
+  </g>
+
+  <!-- Interazione utente -->
+  <g id="user-interaction">
+    <rect class="box-user" x="110" y="60" width="210" height="46" rx="2"/>
+    <text class="label" x="215" y="76">Tool selection, settings...</text>
+    <text class="file-ref" x="215" y="94">MAIN.js · preload.js</text>
+
+    <rect class="box-user" x="110" y="122" width="210" height="58" rx="2"/>
+    <line x1="110" y1="151" x2="320" y2="151" class="conn"/>
+    <text class="label" x="215" y="137">DnD</text>
+    <text class="file-ref" x="215" y="153">DnD.js</text>
+    <text class="label" x="215" y="169">Advanced gestures</text>
+    <text class="file-ref" x="215" y="182" font-size="9">MAIN.js (touch, parziale)</text>
+
+    <rect class="box-user" x="110" y="196" width="210" height="46" rx="2"/>
+    <text class="label" x="215" y="212">input via keyboard</text>
+    <text class="file-ref" x="215" y="230">MAIN.js · UserEvToFunctCall.js</text>
+
+    <line x1="70" y1="168" x2="110" y2="83"  class="conn"/>
+    <line x1="70" y1="200" x2="110" y2="151" class="conn"/>
+    <line x1="70" y1="228" x2="110" y2="219" class="conn"/>
+  </g>
+
+  <line x1="320" y1="151" x2="355" y2="151" class="arrow-bi"/>
+
+  <!-- index.html -->
+  <g id="index-html">
+    <rect class="box-ui" x="360" y="30" width="380" height="170" rx="10"/>
+    <text class="label-left" x="375" y="52" font-weight="bold">index.html</text>
+    <text class="file-left" x="375" y="68">app/index.html · app/css/</text>
+
+    <rect x="400" y="82" width="300" height="100" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+    <text x="430" y="137" font-size="18" fill="#111">Y =</text>
+    <rect x="470" y="119" width="36" height="36" rx="3" fill="#fff" stroke="#333"/>
+    <text x="488" y="139" font-size="16" text-anchor="middle" fill="#111">x</text>
+    <text x="520" y="137" font-size="18" fill="#111">+</text>
+    <rect x="545" y="119" width="36" height="36" rx="3" fill="#fff" stroke="#333"/>
+    <text x="563" y="139" font-size="16" text-anchor="middle" fill="#111">1</text>
+  </g>
+
+  <line x1="550" y1="200" x2="550" y2="248" class="arrow-bi"/>
+
+  <!-- MAIN.js + ENODE API -->
+  <g id="core-logic">
+    <rect class="box-logic" x="430" y="250" width="240" height="40" rx="2"/>
+    <text class="label" x="550" y="264" font-weight="bold">MAIN.js</text>
+    <text class="file-ref" x="550" y="280">bootstrap, eventi, scorciatoie</text>
+
+    <rect class="box-logic" x="450" y="305" width="200" height="265" rx="2"/>
+    <text class="label" x="550" y="330" font-weight="bold" font-size="15">ENODE API</text>
+    <text class="file-ref" x="550" y="348">ExpressionManager.js</text>
+    <text class="file-ref" x="550" y="362">inflatedeflate.js · infix.js</text>
+  </g>
+
+  <!-- Moduli collegati a ENODE API -->
+  <g id="enode-modules">
+    <!-- riga 1: DnD -->
+    <rect class="box-logic" x="680" y="305" width="210" height="40" rx="2"/>
+    <text class="label" x="785" y="319">DnD</text>
+    <text class="file-ref" x="785" y="335">DnD.js</text>
+
+    <!-- riga 2: UserEvToFunctCall -->
+    <rect class="box-logic" x="680" y="355" width="210" height="40" rx="2"/>
+    <text class="label" x="785" y="369">Events / keyboard</text>
+    <text class="file-ref" x="785" y="385">UserEvToFunctCall.js</text>
+
+    <!-- riga 3: Hard wired properties -->
+    <rect class="box-logic" x="680" y="405" width="210" height="40" rx="2"/>
+    <text class="label" x="785" y="419">Hard wired properties</text>
+    <text class="file-ref" x="785" y="435">HardWiredProperties.js + added...</text>
+
+    <!-- riga 4: Pattern Matching -->
+    <rect class="box-logic" x="680" y="455" width="210" height="40" rx="2"/>
+    <text class="label" x="785" y="469">Pattern Matching Engine</text>
+    <text class="file-ref" x="785" y="485">PatternMatchingTrasform.js</text>
+
+    <!-- riga 5: Load/Save -->
+    <rect class="box-logic" x="680" y="505" width="210" height="40" rx="2"/>
+    <text class="label" x="785" y="519">Load / Save</text>
+    <text class="file-ref" x="785" y="535">SaveLoad.js · preload.js</text>
+
+    <!-- riga 6: Undo -->
+    <rect class="box-logic" x="680" y="555" width="210" height="40" rx="2"/>
+    <text class="label" x="785" y="569">Undo</text>
+    <text class="file-ref" x="785" y="585">Undo.js</text>
+
+    <!-- collegamenti ENODE -> moduli -->
+    <line x1="650" y1="325" x2="680" y2="325" class="conn"/>
+    <line x1="650" y1="375" x2="680" y2="375" class="conn"/>
+    <line x1="650" y1="425" x2="680" y2="425" class="conn"/>
+    <line x1="650" y1="475" x2="680" y2="475" class="conn"/>
+    <line x1="650" y1="525" x2="680" y2="525" class="conn"/>
+    <line x1="650" y1="575" x2="680" y2="575" class="conn"/>
+    <line x1="890" y1="425" x2="900" y2="425" class="conn"/>
+  </g>
+
+  <!-- Math engine -->
+  <g id="math-engine">
+    <rect class="box-logic" x="900" y="405" width="52" height="40" rx="2"/>
+    <circle cx="918" cy="418" r="7" fill="none" stroke="#4a86c8" stroke-width="1.8"/>
+    <circle cx="918" cy="418" r="2" fill="#4a86c8"/>
+    <line x1="918" y1="411" x2="918" y2="425" stroke="#4a86c8" stroke-width="1.8"/>
+    <line x1="911" y1="418" x2="925" y2="418" stroke="#4a86c8" stroke-width="1.8"/>
+    <circle cx="942" cy="428" r="4.5" fill="none" stroke="#4a86c8" stroke-width="1.5"/>
+    <circle cx="942" cy="428" r="1.5" fill="#4a86c8"/>
+    <text class="label-left" x="900" y="458" font-size="11">Math engine</text>
+    <text class="file-left" x="900" y="472" font-size="10">math.js</text>
+  </g>
+
+  <!-- Nota moduli satellite -->
+  <text class="note" x="110" y="660">
+    Altri moduli: SVGlines.js, calculateSpan.js, AldoUtilities.js, sound.js, formatXML.js, TranslateFormat.js
+  </text>
+
+</svg>
