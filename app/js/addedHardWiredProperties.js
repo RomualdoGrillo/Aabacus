@@ -59,17 +59,14 @@ function decomposeTens($toBeDec,undefined,img){
 	let terms = separateTensHundreds(toBeDec.val);	
 	if(terms.length >1){
 		$extOp = wrapIfNeeded($toBeDec,'plus');//se necessario crea una operazione container
-		const prototype=prototypeSearch("cn","num")
 		terms.forEach(function(e,i){
-			$clone = ENODEclone(prototype);
-			$clone.attr('data-exper','cn');
-			$clone[0].ENODE_setName(e)
-			$clone.insertAfter($toBeDec);
+			$clone = identifierToENODE(e);
+			ENODEinsertAfter($clone, $toBeDec);
 			if(i == (terms.length -1)){
 				$clone.addClass('selected');// l'ultimo fattore rimane selezionato
 			}
 		})
-		$toBeDec.remove();
+		ENODEremove($toBeDec);
 		PActx.matchedTF = true;
 		PActx.replacedAlready = true;
 		PActx.visualization = img;

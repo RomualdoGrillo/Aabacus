@@ -153,39 +153,7 @@ function redrawHull($resizable,hull){
 }
 
 
-function dummyParser(string){
-	let op 
-	let splitted
-	let splittedgeq = string.split('>=')
-	let splittedgt = string.split('>')
-	let splittedeq = string.split('=')
-	if(splittedgeq.length==2){splitted=splittedgeq; op='geq'}
-	else if(splittedgt.length==2){splitted=splittedgt; op='gt'}
-	else if(splittedeq.length==2){splitted=splittedeq; op='eq'}
-	if(op){
-		let $operation = ENODEclone( prototypeSearch(op) )
-		let first = identifierToENODE(splitted[0]);
-		let second = identifierToENODE(splitted[1]);
-		$operation[0].ENODE_getRoles('.firstMember').append(first)
-		$operation[0].ENODE_getRoles('.secondMember').append(second)
-		return $operation
-	}
-}
-
-function identifierToENODE(string){
-	let num = parseInt(string)
-	let ENODEType 
-	if(isNaN(parseInt(string))){
-		ENODEType = 'ci'
-	}
-	else{
-		ENODEType = 'cn'
-	}
-	$clone = ENODEclone( prototypeSearch("cn","num") )
-	$clone[0].ENODE_setName(string);
-	$clone.attr('data-enode', ENODEType);//uso un generico prototipo num e qui specifico se cn o ci
-	return	$clone
-}
+//dummyParser e identifierToENODE sono state spostate in ExpressionManager.js
 
 //arr=[a,y,x]
 function commonParent(elArray){

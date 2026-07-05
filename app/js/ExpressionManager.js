@@ -30,6 +30,60 @@ function getExpressionRootNode() {
     return $("#canvas>.secondMember").children("[data-enode]")[0];
 }
 
+/* ---- Primitive di manipolazione strutturale ----
+Ogni modifica strutturale all'espressione (inserimento, rimozione, sostituzione, spostamento di ENODE)
+effettuata al di fuori di questo file deve passare da queste funzioni.
+Accettano indifferentemente oggetti jQuery o elementi HTML. */
+
+function ENODEremove(ENODEs) {
+	//rimuove uno o più nodi dall'espressione
+	$(ENODEs).remove();
+}
+
+function ENODEinsertBefore(ENODEs, refNode) {
+	//inserisce uno o più nodi prima del nodo di riferimento
+	return $(ENODEs).insertBefore(refNode);
+}
+
+function ENODEinsertAfter(ENODEs, refNode) {
+	//inserisce uno o più nodi dopo il nodo di riferimento
+	return $(ENODEs).insertAfter(refNode);
+}
+
+function ENODEappend(container, content) {
+	//aggiunge contenuto in coda a un role/contenitore dell'espressione
+	return $(container).append(content);
+}
+
+function ENODEprepend(container, content) {
+	//aggiunge contenuto in testa a un role/contenitore dell'espressione
+	return $(container).prepend(content);
+}
+
+function ENODEreplaceNode(replaced, replacer) {
+	//sostituzione diretta senza clonazione (cfr. ENODEReplace che clona ed estende)
+	return $(replaced).replaceWith(replacer);
+}
+
+function ENODEswapEqMembers($equation) {
+	//scambia il contenuto di primo e secondo membro di una equazione
+	const $firstMember = $equation[0].ENODE_getRoles('.firstMember');
+	const $secondMember = $equation[0].ENODE_getRoles('.secondMember');
+	const $firstMemberContent = $firstMember.children().remove();
+	const $secondMemberContent = $secondMember.children().remove();
+	$firstMember.append($secondMemberContent);
+	$secondMember.append($firstMemberContent);
+	return $equation;
+}
+
+function ENODEcreateSymbol(name, dataType) {
+	//crea un nuovo simbolo (ci o cn a seconda del nome) con l'eventuale data-type indicato
+	const $newNode = ENODEclone(prototypeSearch((isNaN(name)) ? "ci" : "cn"));
+	$newNode[0].ENODE_setName(name);
+	if (dataType != undefined) { $newNode.attr('data-type', dataType); }
+	return $newNode;
+}
+
 ENODE = {
 	ENODEparent: ENODEparent,
 	ENODEcreateMathmlString: ENODEcreateMathmlString,
@@ -1105,4 +1159,597 @@ function getDefaultTool(){
 		$defaultTool = $('[data-tag]').first()//utilizza il primo dei tool;
 	}
 	return $defaultTool;
+}
+
+/************** Estensione e inizializzazione degli alberi ENODE (da MAIN.js) ***********************/
+
+function ExtendAndInitializeTree($startElement) {
+	ENODEapplyFunctToTree($startElement, true, ExtendAndInitialize)
+}
+
+function ExtendAndInitialize($ENODE) {
+	ENODEextend($ENODE, true)
+	//initialize lock icon
+	if ($ENODE.is('[data-enode]') && isDefinition($ENODE[0])) {
+		ENODERefreshAsymmEq($ENODE)
+	}
+}
+
+/************** Creazione di ENODE a partire da stringhe (da AldoUtilities.js) ***********************/
+
+function dummyParser(string){
+	let op 
+	let splitted
+	let splittedgeq = string.split('>=')
+	let splittedgt = string.split('>')
+	let splittedeq = string.split('=')
+	if(splittedgeq.length==2){splitted=splittedgeq; op='geq'}
+	else if(splittedgt.length==2){splitted=splittedgt; op='gt'}
+	else if(splittedeq.length==2){splitted=splittedeq; op='eq'}
+	if(op){
+		let $operation = ENODEclone( prototypeSearch(op) )
+		let first = identifierToENODE(splitted[0]);
+		let second = identifierToENODE(splitted[1]);
+		$operation[0].ENODE_getRoles('.firstMember').append(first)
+		$operation[0].ENODE_getRoles('.secondMember').append(second)
+		return $operation
+	}
+}
+
+function identifierToENODE(string){
+	let num = parseInt(string)
+	let ENODEType 
+	if(isNaN(parseInt(string))){
+		ENODEType = 'ci'
+	}
+	else{
+		ENODEType = 'cn'
+	}
+	$clone = ENODEclone( prototypeSearch("cn","num") )
+	$clone[0].ENODE_setName(string);
+	$clone.attr('data-enode', ENODEType);//uso un generico prototipo num e qui specifico se cn o ci
+	return	$clone
+}
+
+/************** Marcature degli ENODE e posizionamento assoluto (da PMTutilities.js) ***********************/
+
+function moveOrClearMarksInTree($startENODE,clear){//copy marks from persistent "data-mark" to volatile mark 
+	$subtree = $startENODE.add( $startENODE.find('[data-enode]') )
+	$subtree.each(function(index) {
+		if(clear){//clearVolatile
+			$(this).removeAttr('mark')
+		}
+		else{//moveFromPersistentToVolatile 
+			var value = $(this).attr('title');
+			$(this).attr('mark',value);
+			$(this).removeAttr('title')
+		}
+	})
+}
+
+function ENODESmarkUnmark($ENODE,value,attrName,usePermanentMark){
+//la funzione scrive o legge marcature ENODEs in modo permanente: le marcature passano nel file mml. 
+//attrname può assumere i valori m,l,p corrispondenti al formato della stringa mark-link-post
+//mark: marcature che devono apparire anche nell'input perchè ci sia un match
+//Attenzione: le marcature sono intese come singoli caratteri
+//ad esempio "s" per selected o "d" per dragged.
+//Un marcatura "sp" va intesa come marcato "s" e marcato "p"
+//link:per associare ENODEs in pattern e transform
+//post: c=semplifica n=nonRiordinare
+	let markAttName ='mark'
+	if(usePermanentMark)(markAttName='title')
+	var mark = $ENODE.attr(markAttName);
+	if ( mark == undefined ){mark=""}
+	var markArray = mark.split("-")
+	//********************mode: READ*************************
+	if(value == undefined){
+		if(attrName=="all"){
+			return mark 
+		}
+		else if(attrName=="p"){
+			if(markArray[2]){ return markArray[2]}
+			else{return""}
+		}
+		else if(attrName=="l"){
+			if(markArray[1]){ return markArray[1]}
+			else{return""}
+		}
+		else{
+			return markArray[0] //non e' mai undefined
+		}
+	}
+	//********************mode: WRITE**************************
+	// ENODESmarkUnmark($ENODE,"","all"); cancella tutte le marcature
+	if( attrName=="all" ){//scrivi tutto in una volta
+		$ENODE.attr(markAttName,value);
+		return value
+	}
+	else if( attrName=="p"){
+		markArray[2] = value
+	}
+	else if( attrName=="l"){
+		markArray[1] = value
+	}
+	else if( attrName=="undefined" ||attrName=="m"){//per mantenere compatibilita con vechie chiamate
+		markArray[0] = value
+	}
+	else{
+		markArray = [value]
+	}
+	var str=""
+	str=markArray[0]
+	i=1
+	while( i< markArray.length ){
+		if(markArray[i]){
+			str= str + "-" + markArray[i]
+		}
+		else{
+			str= str + "-"
+		}
+		i++
+	}
+	if(str){$ENODE.attr(markAttName,str);}
+	else{$ENODE.removeAttr(markAttName)}
+	return str
+}
+
+function ENODEappendInABSPosition($ENODE,$refENODE,relativePosition){
+//posiziona in modo assoluto $ENODE vicino a un ENODE di riferimento $refENODE
+//Se si tratta di forall piazzare il pattern circondato dal suo forall.
+	$('#divOverlay').append($ENODE);
+    $ENODE.css('position', 'absolute');
+	if($refENODE.is('#canvasAnd')){
+		//put it on the right
+		$ENODE.css('right', 200);
+    	$ENODE.css('top', 100);	
+	}
+    else if(relativePosition=="beside"){
+	//Se è il clone di un clone fallo comparire sovrapposto al "clonato" solo spostato di qualche pixel.
+		$ENODE.css('left', $refENODE.offset().left + $refENODE.width() + 12);
+    	$ENODE.css('top', $refENODE.offset().top - 75);
+    }
+    else{//superposed
+    	$ENODE.css('left', $refENODE.offset().left + 4);
+    	$ENODE.css('top', $refENODE.offset().top + 4);	
+    }
+} 
+
+/************** Refresh infix e ruoli vuoti (da infix.js) ***********************/
+
+function refreshInfix($startNode,rootAndSubTree){//todo:obsoleta, sostituita con generalrefresh()
+	//if($startNode.length != 0){
+		refreshOneInfix($startNode)
+		if(rootAndSubTree){
+			$startNode.find('[data-enode]').each(function(i,element){refreshOneInfix($(element))})
+		}
+	//}
+
+}
+
+function refreshOneInfix($ENODEnode){
+	if($ENODEnode[0].ENODE_getRoles === undefined){return}// invalid parameter
+	var $role=$ENODEnode[0].ENODE_getRoles();
+	var $ENODEchildren = $role.children().filter('[data-enode]');
+	var $InfixChildren = $role.children().filter('.infix:not(.proto)');
+	var $infixProto = $role.find('>.infix.proto');
+	//procedura "cambia solo il necessario"
+	//per ogni elemento "infix: se non sei preceduto e seguito da ENODE remove!
+	$InfixChildren.each(function(i,e){
+		if( !($(e).prev().is('[data-enode]') && $(e).next().is('[data-enode]'))  ){
+			//console.log(i);
+			$(e).remove();
+		}
+	})
+	//per ogni elemento ENODE tranne il primo: se non sei preceduto da infix, aggiungine uno
+	$ENODEchildren.each(function(i,e){
+		if(i>0){
+			if(!$(e).prev().is('.infix:not(.proto)')){
+				//console.log(i);
+				//$('<div class="infix">*</div>').insertBefore($(e))
+				$infixProto.clone().removeClass('proto').insertBefore($(e))
+			}
+		}
+	})
+}
+
+
+function refreshOneEmpty($ENODE){
+	if($ENODE[0].ENODE_getRoles==undefined){return};
+	$ENODE[0].ENODE_getRoles().each(function(i,e){
+		let childrenNum = $(e).children().filter('[data-enode],.dummyrole').length
+		let minPlaces=getNumOfPlaces($(this))[0]
+		if(minPlaces>1){//manage dummies to ensure minimum places
+			let deltaDummies = minPlaces- childrenNum
+			if(deltaDummies>0){
+			//add dummies
+				for (var i = 0; i<deltaDummies; i++){
+					$(this).append($('<div class="dummyrole"></div>'))
+				}
+			}
+			else if(deltaDummies<0){
+				//remove dummies
+				for (var i = 0; i<-deltaDummies; i++){
+					$(this).find('.dummyrole:first').remove()
+				}
+			}
+		}
+		else{//manage "empty" class
+			if( minPlaces==0 && childrenNum == 0 ){$(e).addClass('empty')}
+	    	else{ $(e).removeClass('empty')}
+		}
+	})
+}
+
+/************** Gestione dei segni e degli elementi "glued" (da TranslateFormat.js) ***********************/
+
+function ENODEfactorizeMinus($startNode) {
+	//translate from (-(a)) to (-1)(a)
+	//**** condizioni necessarie per applicare la funzione *****
+	if ($startNode.attr("data-enode") !== "minus") {
+		return
+	}
+	//è circondato un meno?
+	$extOp = wrapIfNeeded($startNode, "times");
+	//se necessario crea una operazione container
+	//aggiungi un fattore "-1"
+	const prototype = prototypeSearch("ci", "num");
+	const prototypeMinus = prototypeSearch("minus");
+	const $clone = ENODEclone(prototype);
+	const $cloneMinus = ENODEclone(prototypeMinus);
+	$clone.attr('data-enode', 'cn');
+	$clone[0].ENODE_setName("1");
+	$cloneMinus.insertAfter($startNode);
+	$cloneMinus[0].ENODE_getRoles().append($clone);
+	$startNode[0].ENODE_dissolveContainer()
+	//remove minus from $startNode  
+	refreshInfix($extOp);
+	RefreshEmptyInfixBraketsGlued($('body'));
+	ssnapshot.take();
+}
+
+function signsAsClassesSubtree($startNode, mode) {
+	//trova tutti i sotto nodi
+	$startNode.find('[data-enode]').each(function(index) {
+		// tutti gli HTML nodes con attributo data-enode
+		signsAsClasses($(this), mode);
+	})
+}
+
+function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsClasses_to_SignsInNames SignsAsClasses_to_MinusOp MinusOp_to_SignsAsClasses*/
+) {
+	// <>-a<> to <class="minus">a<>
+	// nota: non possono coesistere segni meno all'interno del nome e "minus" come classi
+	let name = $ENODE[0].ENODE_getName()
+	if (mode == "SignsInNames_to_SignsAsClasses") {
+		if (name[0] === "/") {
+			name = name.substr(1)
+			//nome privato del segno meno
+			$ENODE.addClass('inverse')
+		}// attenzione: / va inserito prima del meno
+		else {
+			$ENODE.removeClass('inverse')
+		}
+		if (name[0] === "-") {
+			name = name.substr(1)
+			//nome privato del segno meno
+			$ENODE.addClass('minus')
+		}//todo: cosa succede se input = ---2  ?
+		else {
+			$ENODE.removeClass('minus')
+		}
+
+	} else if (mode == "SignsAsClasses_to_SignsInNames") {
+		if ($ENODE.hasClass('minus')) {
+			name = "-" + name;
+			$ENODE.removeClass('minus');
+		}
+		if ($ENODE.hasClass('inverse')) {
+			name = "/" + name;
+			$ENODE.removeClass('inverse');
+		}
+	}
+	else if (mode == "SignsAsClasses_to_MinusOp") {
+		if ($ENODE.hasClass('minus')) {
+			$ENODE.removeClass('minus');
+			wrapWithOperation($ENODE, "minus")
+		}
+	} else if (mode == "MinusOp_to_SignsAsClasses") {
+		const $ENODEchildren = $ENODE[0].ENODE_getRoles().children().filter('[data-enode]')
+		if ($ENODE.attr('data-enode') === "minus" && $ENODEchildren.length == 1) {
+			// i minus che hanno un solo children
+			$ENODE[0].ENODE_dissolveContainer();
+			$ENODEchildren.filter(':first').addClass('minus');
+		}
+	}
+
+	$ENODE[0].ENODE_setName(name);
+	$ENODE.attr("data-enode", (isNaN(name)) ? "ci" : "cn")
+	// se numero allora classe "cn"
+}
+
+/**
+ * Array di funzioni che richiedono l'effetto "glued" sui loro elementi figli
+ * Include operatori come minus, m_inverse, not
+ */
+const glueFunctions = ["minus", "m_inverse", "not"];
+
+/**
+ * Aggiorna gli elementi che devono essere "incollati" (glued) nel DOM
+ * @param {jQuery|undefined} $startNode - Nodo di partenza opzionale
+ */
+function refreshGlued($startNode) {
+    // Determina il nodo contenitore da cui iniziare la ricerca
+    const $containerNode = $startNode ? ENODEparent($startNode) : $("#canvasRole");
+    
+    // Rimuove la classe "glued" da tutti gli elementi precedentemente marcati
+    $containerNode.find(".glued").removeClass("glued");
+    
+    // Trova tutti gli elementi con attributo data-enode che corrispondono ai criteri
+    const $stickyParents = $containerNode.parent().find("[data-enode]").filter(function(i, element) {
+        const operatorType = element.getAttribute("data-enode");
+        
+        // Verifica se l'operatore è nella lista delle funzioni "glued"
+        if (glueFunctions.indexOf(operatorType) !== -1) {
+            return true;
+        } 
+        // Verifica se è una definizione
+        /*
+		else if (operatorType === 'eq' && isDefinition(element)) {
+            return true;
+        }
+		*/
+        return false;
+    });
+    
+    // Applica la classe "glued" ai figli degli elementi trovati
+    $stickyParents.each(function() {
+        const $toBeGlued = this.ENODE_getRoles().children().filter('[data-enode]');
+        $toBeGlued.addClass('glued');
+    });
+}
+
+/************** Serializzazione/deserializzazione MathML <-> ENODE (da inflatedeflate.js) ***********************/
+
+var leafTags = ["cn", "ci", "csymbol"];
+
+
+function ENODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) {
+	//per poter chiamare sia come funzione che come metodo
+	if ($startNodes == undefined) {
+		$startNodes = $(this);
+	}
+	var from_to
+	if (describeDataType) {
+		from_to = "aab_mmlWithType"
+	} else {
+		from_to = "aab_mml"
+	}
+	var $convertedTree = createConvertedTree($startNodes, from_to, neglectRootSign);
+	let returnString = ""
+	if($convertedTree.length!=0){
+		//returnString = $.trim($convertedTree.parent().html())
+		returnString = formatXml($convertedTree.parent().html())
+	}
+	//return $.trim($convertedTree.parent().html())
+	return returnString
+
+}
+
+function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImported) {
+	var $containerForClone = $('<div></div>')
+	//$('#canvasRole').html("") ;var $containerForClone = $('#canvasRole');// debug
+	//var $thisClone = $($.parseXML(startNode).firstElementChild)
+	let $startNodeOrMML = $(startNodeOrMML)// problema con file misti mml con html vedi Quaderno Aprile Giugno Agosto settembre ottobre 2022
+	//let $startNodeOrMML=$($.parseXML(startNodeOrMML)).children(':first')
+	//try to rebuild the here??
+	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
+		let $thisClone = $startNodeOrMML.clone()
+		$containerForClone.append($thisClone)
+		//deflate todo: completare distinzione tra mml e mml + type
+
+		//estendi tutti i nodi ENODE
+		$thisClone.parent().find('[data-enode]').each(function(i, node) {
+			$.extend(node, ENODE)
+		})
+		//rimuovi il contenuto importato da altri files
+		$thisClone.parent().find('[data-import]').each(function(i, node){node.ENODE_getChildren().remove()});
+	
+
+		//signsAsClassesSubtree($thisClone,"SignsAsClasses_to_MinusOp")// converti in modo che il segno meno sia una operazione applicata al nodo
+		//sostituisci tutti i nodi ENODE excluding prototypes
+		$thisClone.parent().find('[data-enode]').not('[data-proto]').not('.saveAsHtml').each(function(i, node) {
+			if (i == 0) {
+				ReplaceOneENODE(node, from_to, neglectRootSign);
+			} else {
+				ReplaceOneENODE(node, from_to, false);
+				//never neglect sign if not root 
+			}
+		})
+	} else if (from_to === "mml_aab") {
+		//filtra solo le tag da importare
+		let $mmlTagSubset
+		if(toBeImported){
+			$mmlTagSubset = $startNodeOrMML.find('[data-tag=' + toBeImported + ']')
+		}
+		else{//if no item is specified import all
+			$mmlTagSubset = $startNodeOrMML
+			//wrap
+		}
+		$containerForClone.append($mmlTagSubset)
+		//inflate
+		//ottieni l'elenco dei nodi' da sostituire
+		$mmlTagSubset.parent().find('apply,cn,ci,bind,math').each(function(i, node) {
+			//console.log(node);
+			ReplaceOneENODE(node, from_to);
+		})
+		//signsAsClasses($containerForClone.children(),"MinusOp_to_SignsAsClasses"); // converti root node
+		//signsAsClassesSubtree($containerForClone.children(),"MinusOp_to_SignsAsClasses");	// converti il resto dell'albero'	
+	}
+	return $containerForClone.children()
+}
+
+function ReplaceOneENODE(node, from_to, neglectSign) {
+	//node is HTML node
+	let $node = $(node);
+	var $newNode
+	var originalData
+	var title
+	if (from_to === "aab_mml" || from_to === "aab_mmlWithType") {
+		//get all data attributes
+		originalData = $node.data()
+		title = $node.attr('title')
+		
+		if( $node.attr('data-tag') ) {
+			if($node[0].style.backgroundImage){ 
+				originalData.tagimg = wrapUnwrapUrlString( $node[0].style.backgroundImage , true );
+			}
+		}
+		if (!neglectSign) {//signsAsClasses($node,"SignsAsClasses_to_MinusOp") // converti   	
+		}
+		var nodeText = ""
+		if (leafTags.indexOf(originalData.enode.toLowerCase()) !== -1) {
+			//if [cn;ci;csymbol] then the content is the text, else some role must be present
+			nodeText = node.ENODE_getName(true);
+			$newNode = $('<' + originalData.enode.toLowerCase() + '/>');
+			$newNode.text(nodeText)
+		} else {
+			/*
+			var $role= node.ENODE_getRoles();
+			var $bVarChildren=$role.filter('.bVar_role').children().filter('[data-enode]')// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
+			var $nobBvarchildren=$role.not('.bVar_role').children().filter('[data-enode]')
+			*/
+			var $bVarChildren = node.ENODE_getRoles('.bVar_role').children().filter('[data-enode]')
+			// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
+			var $nobBvarchildren = node.ENODE_getRoles(':not(.bVar_role)').children().filter('[data-enode]')
+			var $htmlDivChildren = node.ENODE_getRoles(':not(.bVar_role)').children().filter(':not([data-enode])').filter('.saveAsHtml')
+			//salvo ciò che è .saveAsHtmlL
+			$newNode = $('<apply></apply>')
+			$newNode.text(nodeText)
+			$newNode.append('<' + originalData.enode + '/>')
+			$newNode.append($bVarChildren.wrap('<bvar>').parent());
+			$newNode.append($nobBvarchildren);
+			$newNode.append($htmlDivChildren);
+		}
+		//if(title != undefined){	$newNode.attr('title',title)}//se presente salva anche il titolo
+		if (title) {//se presente e diverso da "" salva anche il titolo
+			$newNode.attr('title', title)
+		}
+		// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
+		let newData = originalData
+		delete newData.ENODE//data-enode is manged above
+		writeData($newNode,newData)
+
+		
+	} else if (from_to === "mml_aab") {
+		//inflate: =first child tag; if tag==csymbol or ci or cn allora considera il contenuto
+		originalData = $node.data();
+		title = $node.attr('title');
+		
+		var nodeText = $node.clone()//clone the element
+		.children()//select all the children
+		.remove()//remove all the children
+		.end()//again go back to selected element
+		.text();
+		var ENODE;
+		//string
+		if (node.tagName.toLowerCase() === "apply" || node.tagName === "bind") {
+			ENODE = $node.children().filter(':first')[0].tagName.toLowerCase()
+		} else {
+			////todo!!! devo distinguere e trattare diversamente saveAsHtml 
+			ENODE = node.tagName.toLowerCase()
+		}
+		if (ENODE === "math") {
+			$newNode = $node.children()
+			//unwrap "math"
+		} else {
+			var $children = $node.children().not(':first')
+			//search for prototype
+			//console.log(ENODE)
+			let dataType= $node.attr("type");//for compatibility with older format
+			if(!dataType){dataType=$node.attr("data-type")};
+			var $prototype = prototypeSearch(ENODE, dataType,undefined,nodeText)
+			if($prototype.length==0){console.log('prototype not found prototypeSearch()');console.log([ENODE, $node.attr("type"),undefined,nodeText])}
+			$newNode = ENODEclone($prototype)
+			ENODEextend($newNode)
+			// extend the new node
+			if (leafTags.indexOf(ENODE.toLowerCase()) !== -1) {
+				//todo: eccezione if leafTag with children
+				try {
+					$newNode[0].ENODE_setName($node.text());
+				} catch (err) {
+					console.log('error on prototype '+ENODE+" "+ $node.attr("type"))
+				}
+				//signsAsClasses($newNode,"SignsInNames_to_SignsAsClasses"); //convert to_signs_as_classes 
+			} else {
+				//append children in roles
+				var $tgtRoles = $newNode[0].ENODE_getRoles();
+				if($tgtRoles.length==0){
+					$newNode[0].ENODE_addRole();
+					$tgtRoles = $newNode[0].ENODE_getRoles();
+				}
+				var $bVarRole = $tgtRoles.filter('.bVar_role');
+				var $noBVarRole = $tgtRoles.not('.bVar_role');
+				$newNode.prepend(nodeText);
+				if ($bVarRole.length > 0) {
+					$children.filter('bvar').each(function(i, e) {
+						$(e).children().appendTo($bVarRole)
+					})
+				}
+				noBVarChildren = $children.not('bvar')
+				// globale per renderlo disponibile in each
+				$noBVarRole.each(function(i, e) {
+					var places = getNumOfPlaces($(e))[1]
+					if (places === -1) {
+						places = undefined
+					}
+					// splice(x,undefined) means splice until the end
+					var toBeAppended = noBVarChildren.not('[processed]').slice(0, places);
+					//splice appears to behave not as expected
+					//noBVarChildren.slice(0,places).attr("processed","")
+					toBeAppended.attr("processed", "")
+					$(e).append(toBeAppended);
+				})
+				noBVarChildren.removeAttr('processed')
+			}
+		}
+		newData=originalData;
+		//data.ENODE=xxx is already cloned from prototype
+		if (newData.tag !== undefined) {
+			if(originalData.tagimg){
+				$newNode.css('background-image',wrapUnwrapUrlString(originalData.tagimg))	
+			}
+		}
+		writeData($newNode,newData)
+		// from MathML 3.0 specifications: The type attribute can be interpreted to provide rendering information.
+		if (title !== undefined) {
+			$newNode.attr('title', title)
+			//
+		}
+	}
+	$node.replaceWith($newNode)
+}
+
+
+function $parserForMixedMMLHTML(toBeParsed){
+	// $(string) gives strange results when div or img are present
+	//$parserForMixedMMLHTML('<math xmlns="http://www.w3.org/1998/Math/MathML"><apply data-type="num"><plus></plus><cn data-type="num">2</cn><div data-enode="times" data-type="num" class="ENODE saveAsHtml" draggable="false" style="background-color: red;"><div class="ul_role" data-type="num"><cn data-type="num">6</cn><cn data-type="num">2</cn></div></div><apply data-type="num"><minus></minus><cn data-type="num">1</cn></apply></apply></math>')
+	let string
+	if (toBeParsed instanceof jQuery){string=toBeParsed[0].outerHTML}
+	else{string = toBeParsed};
+	let stringDix = string.replace(/<div>/g, "<dix>").replace(/<div /g, "<dix ").replace(/div>/g, "dix>");
+	let $workTree = $(stringDix);
+	//$('#canvasRole').append($workTree)// debug
+	//replace one <dix> node with <div> 
+	let len = $workTree.find('dix').length
+	for(i=0;i<len;i++){
+		let $dix = $workTree.find('dix:first');
+		if($dix.length == 0){break}
+		let $children = $dix.children();
+		$children.remove();
+		let outer = $dix[0].outerHTML.replace(/<dix>/g, "<div>").replace(/<dix /g, "<div ").replace(/dix>/g, "div>");;
+		let $outer = $(outer);
+		$dix.replaceWith($outer);
+		$outer.append($children);
+	}
+	return $workTree
 }

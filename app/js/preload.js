@@ -19,7 +19,7 @@ function preloadAll(myUrl) {
 function injectAll(response,rootUrl){
 	//console.log(response);
 	let all = JSON.parse(response);
-	$('#canvasRole').children().remove();
+	ENODEremove($('#canvasRole').children());
 	if(all.palette_html && all.palette_html.string){//string data
 		//inject(all.palette_html.string, $("#palette"))
 		}
@@ -47,19 +47,19 @@ function injectAll(response,rootUrl){
 		loadAjaxAndInject(buildPath(rootUrl,all.content_mml),$("#canvasRole"));
 	}
 	if(all.result_mml && all.result_mml.string){//string data
-		$('#result').children().remove();
+		ENODEremove($('#result').children());
 		inject(all.result_mml.string, $('#result'));
 	}
 	else if(all.result_mml){//url
-		$('#result').children().remove();
+		ENODEremove($('#result').children());
 		loadAjaxAndInject(buildPath(rootUrl,all.result_mml),$('#result'))
 	}
 	if(all.gestToAction_mml && all.gestToAction_mml.string){//string data
-		$('#events').children().remove();
+		ENODEremove($('#events').children());
 		inject(all.gestToAction_mml.string, $('#events'))
 		}
 	else if(all.gestToAction_mml){//url
-		$('#events').children().remove();
+		ENODEremove($('#events').children());
 		loadAjaxAndInject(buildPath(rootUrl,all.gestToAction_mml),$('#events'))
 	}
 	
@@ -83,10 +83,10 @@ function injectAllMMLS(response,rootUrl){
 	//let $MML = $(response)
 	let $MML = $parserForMixedMMLHTML(response)
 	$sections=$MML.filter('section')
-	$('#canvasRole').children().remove();
+	ENODEremove($('#canvasRole').children());
 	//**** palette
 	let $paletteContent = $sections.filter('[data-section=palette]').children();
-	$('#palette').children(':not(.fundamental)').remove();
+	ENODEremove($('#palette').children(':not(.fundamental)'));
 	if($paletteContent.length!=0){
 		inject($paletteContent, $("#palette"));
 		if (!debugMode){importAll($("#palette"))};
@@ -96,7 +96,7 @@ function injectAllMMLS(response,rootUrl){
 	}
 	//**** events
 	let $eventsContent = $sections.filter('[data-section=events]').children();
-	$('#events').children().remove();
+	ENODEremove($('#events').children());
 	if($eventsContent.length!=0){
 		//$('#events').children('').remove();
 		inject($eventsContent, $('#events'));
@@ -111,7 +111,7 @@ function injectAllMMLS(response,rootUrl){
 	//**** result
 	let $resultContent = $sections.filter('[data-section=result]').children();
 	if($resultContent.length!=0){
-		$('#result').children().remove();
+		ENODEremove($('#result').children());
 		inject($resultContent, $('#result'),'boolean');
 	}
 	//************import all**********
