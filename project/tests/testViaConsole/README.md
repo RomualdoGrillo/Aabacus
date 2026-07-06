@@ -8,7 +8,7 @@ Gli script vivono qui; la logica è in `../helpers/browser/core.js` e `../helper
 Dalla **root del repo**:
 
 ```bash
-npx --yes serve -l 5500 app
+npx --yes serve -l tcp://0.0.0.0:5500 app
 ```
 
 URL esercizio Hanoi (drag dischi):

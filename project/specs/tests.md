@@ -23,6 +23,12 @@ I test devono comprendere:
 
 Gli helper di test **non** sono file serviti da `app/` — Playwright li inietta dopo il caricamento dell'app. Riutilizzano jQuery e globali dell'app (`GLBsettings`, `Sortable`, …) senza duplicarne la logica ENODE.
 
+Avvio server (dalla root del repo; accessibile anche da iPad sulla stessa WiFi):
+
+```bash
+npx --yes serve -l tcp://0.0.0.0:5500 app
+```
+
 URL di test (solo preload; `demo=1` mostra il cursore rosso durante simulateMove):
 
 ```

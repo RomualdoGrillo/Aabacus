@@ -20,4 +20,4 @@ npm install
 npm run test:e2e
 ```
 
-Richiede server su porta 5500 (avviato automaticamente da Playwright, oppure `npx --yes serve -l 5500 app` dalla root).
+Richiede server su porta 5500 (avviato automaticamente da Playwright, oppure `npx --yes serve -l tcp://0.0.0.0:5500 app` dalla root).
