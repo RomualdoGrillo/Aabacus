@@ -118,4 +118,43 @@ test.describe('hanoi4.mmls with testHooks', () => {
 		expect(probe.hit.enode).toBe('cn');
 		await pauseForDemo(page);
 	});
+
+	test('dragging a rod does not move rods or discs', async ({ page }) => {
+		await gotoHanoi(page);
+		await waitForHanoiReady(page);
+
+		const before = await page.evaluate(() => {
+			const hanoi = window.__aabacusTestExercises.hanoi;
+			return {
+				discCounts: hanoi.getRodDiscCounts(),
+				rodOrder: hanoi.getRodOrder()
+			};
+		});
+
+		const coords = await page.evaluate(() => {
+			return window.__aabacusTestExercises.hanoi.getRodDragCoordinates({
+				fromRodIndex: 0,
+				toRodIndex: 2
+			});
+		});
+
+		const steps = DEMO ? 30 : 20;
+		await page.mouse.move(coords.from.x, coords.from.y);
+		await page.mouse.down();
+		await page.mouse.move(coords.to.x, coords.to.y, { steps });
+		await page.mouse.up();
+		await page.waitForTimeout(DEMO ? 500 : 100);
+
+		const after = await page.evaluate(() => {
+			const hanoi = window.__aabacusTestExercises.hanoi;
+			return {
+				discCounts: hanoi.getRodDiscCounts(),
+				rodOrder: hanoi.getRodOrder()
+			};
+		});
+
+		expect(after.discCounts).toEqual(before.discCounts);
+		expect(after.rodOrder).toEqual(before.rodOrder);
+		await pauseForDemo(page);
+	});
 });

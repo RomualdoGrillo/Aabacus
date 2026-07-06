@@ -40,6 +40,8 @@ Test manuali in console: `project/tests/testViaConsole/` — `npm run test:conso
 
 Esempio DnD (Torre di Hanoi): `hanoi4.mmls` — helper `window.__aabacusTestExercises.hanoi` (dopo `injectTestHelpers(page, { exercise: 'hanoi' })`).
 
+Nei test Hanoi, i **paletti** (`hanoirod`) non devono spostarsi; solo i **dischi** (`cn`) sono trascinabili. Usare `getRodDragCoordinates()` per simulare un drag sul paletto e verificare che `getRodDiscCounts()` e `getRodOrder()` restino invariati.
+
 ## Stati del canvas: `lockCanvas`
 
 `GLBsettings.lockCanvas` **non** disabilita il drag. Distingue due modalità:

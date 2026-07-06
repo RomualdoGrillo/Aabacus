@@ -144,6 +144,32 @@ The current implementation supports various gesture controls:
 - **Click**: Select expressions
 - **Double-click**: Edit expressions
 
+### Non-draggable elements
+
+Drag initiation uses `ENODEselectable()` in `app/js/ExpressionManager.js`. An ENODE is excluded from drag when it matches any of the following:
+
+| Mechanism | Usage | Effective? |
+| --------- | ----- | ---------- |
+| Class `.undraggable` | Canvas root (`app/index.html`) | Yes, via `ENODEselectable` |
+| Attribute `data-undraggable` | MML / exercise content (e.g. Hanoi rods) | Yes, via `ENODEselectable` |
+| Class `.unselectable` | ENODEs not selectable in locked mode | Partial (locked canvas only) |
+| Class `.glued` | Glued ENODEs | Yes |
+| HTML `draggable="false"` | Palette prototypes | No (SortableJS ignores it) |
+
+For exercise authors, mark fixed structure with `data-undraggable` on the wrapping `<apply>` in the canvas section. Example from `app/Data/exercises/hanoi4.mmls`:
+
+```xml
+<apply data-undraggable data-type="bool">
+    <hanoi></hanoi>
+    <apply data-undraggable data-type="bool">
+        <hanoirod></hanoirod>
+        <cn data-type="obj">1</cn>
+    </apply>
+</apply>
+```
+
+The outer `apply` keeps the Hanoi frame fixed; each rod wrapper keeps rods fixed while discs (`cn`) remain draggable.
+
 ## Visual Representation
 
 The visual representation of expressions in the current implementation is handled through HTML and CSS. Each ENODE is represented as a DOM element with specific classes and attributes that determine its appearance.

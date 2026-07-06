@@ -985,9 +985,9 @@ function ENODE_overlay(mode) {
 function ENODEselectable(startElement) {
 	//risali passo passo la struttura DOM fino a trovare un elemento ENODE
 	if (ENODEclosedDef(startElement)) {
-		return startElement.closest('[data-enode]:not(.unselectable):not(.glued)');
+		return startElement.closest('[data-enode]:not(.unselectable):not(.undraggable):not([data-undraggable]):not(.glued)');
 	} else {
-		return startElement.closest('[data-enode]');
+		return startElement.closest('[data-enode]:not(.undraggable):not([data-undraggable])');
 	}
 }
 

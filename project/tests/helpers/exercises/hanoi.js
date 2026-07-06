@@ -16,6 +16,48 @@
 		});
 	}
 
+	function getRodOrder() {
+		var hanoiRole = document.querySelector('#canvasRole [data-enode=hanoi] > .ol_role');
+		if (!hanoiRole) {
+			return [];
+		}
+		return Array.from(hanoiRole.children).map(function (child, index) {
+			var rod = child.querySelector('[data-enode=hanoirod]');
+			return {
+				domIndex: index,
+				discCount: rod ? rod.querySelectorAll(DISC_SELECTOR).length : -1
+			};
+		});
+	}
+
+	function getRodDragCoordinates(options) {
+		options = options || {};
+		var rods = Array.from(document.querySelectorAll(RODS_SELECTOR));
+		if (rods.length < 2) {
+			throw new Error('Need at least 2 Hanoi rods');
+		}
+		var fromRodIndex = options.fromRodIndex != null ? options.fromRodIndex : 0;
+		var toRodIndex = options.toRodIndex != null ? options.toRodIndex : 1;
+		var sourceRod = rods[fromRodIndex];
+		var targetRod = rods[toRodIndex];
+		var dragEl = sourceRod.querySelector('.ol_role') || sourceRod;
+		var dropEl = targetRod.querySelector('.ol_role') || targetRod;
+		dragEl.scrollIntoView({ block: 'center', inline: 'center' });
+		dropEl.scrollIntoView({ block: 'center', inline: 'center' });
+		var fromRect = dragEl.getBoundingClientRect();
+		var toRect = dropEl.getBoundingClientRect();
+		return {
+			from: {
+				x: fromRect.left + fromRect.width * (options.fromOffsetX != null ? options.fromOffsetX : 0.5),
+				y: fromRect.top + fromRect.height * (options.fromOffsetY != null ? options.fromOffsetY : 0.75)
+			},
+			to: {
+				x: toRect.left + toRect.width * (options.toOffsetX != null ? options.toOffsetX : 0.5),
+				y: toRect.top + toRect.height * (options.toOffsetY != null ? options.toOffsetY : 0.75)
+			}
+		};
+	}
+
 	function getMoveCoordinates(options) {
 		options = options || {};
 		var rods = Array.from(document.querySelectorAll(RODS_SELECTOR));
@@ -122,6 +164,8 @@
 	window.__aabacusTestExercises = window.__aabacusTestExercises || {};
 	window.__aabacusTestExercises.hanoi = {
 		getRodDiscCounts: getRodDiscCounts,
+		getRodOrder: getRodOrder,
+		getRodDragCoordinates: getRodDragCoordinates,
 		getMoveCoordinates: getMoveCoordinates,
 		getExerciseState: getExerciseState,
 		isExerciseReady: isExerciseReady,
