@@ -384,7 +384,19 @@ function debugToggle() {
 	}
 }
 
-//ExtendAndInitializeTree e ExtendAndInitialize sono state spostate in ExpressionManager.js
+function ExtendAndInitializeTree($startElement) {
+	ENODEapplyFunctToTree($startElement, true, ExtendAndInitialize)
+}
+
+function ExtendAndInitialize($ENODE) {
+	ENODEextend($ENODE, true)
+	//initialize lock icon
+	if ($ENODE.is('[data-enode]') && isDefinition($ENODE[0])) {
+		ENODERefreshAsymmEq($ENODE)
+	}
+}
+
+
 
 function cancelSelected() {
 	toBeCancelled = $('.selected').filter(function (index) {

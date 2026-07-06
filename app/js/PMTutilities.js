@@ -225,7 +225,110 @@ function ENODEdescForPath($ENODE){
 	}
 }
    
-//moveOrClearMarksInTree, ENODESmarkUnmark e ENODEappendInABSPosition sono state spostate in ExpressionManager.js
+function moveOrClearMarksInTree($startENODE,clear){//copy marks from persistent "data-mark" to volatile mark 
+	$subtree = $startENODE.add( $startENODE.find('[data-enode]') )
+	$subtree.each(function(index) {
+		if(clear){//clearVolatile
+			$(this).removeAttr('mark')
+		}
+		else{//moveFromPersistentToVolatile 
+			var value = $(this).attr('title');
+			$(this).attr('mark',value);
+			$(this).removeAttr('title')
+		}
+	})
+}
+
+function ENODESmarkUnmark($ENODE,value,attrName,usePermanentMark){
+//la funzione scrive o legge marcature ENODEs in modo permanente: le marcature passano nel file mml. 
+//attrname può assumere i valori m,l,p corrispondenti al formato della stringa mark-link-post
+//mark: marcature che devono apparire anche nell'input perchè ci sia un match
+//Attenzione: le marcature sono intese come singoli caratteri
+//ad esempio "s" per selected o "d" per dragged.
+//Un marcatura "sp" va intesa come marcato "s" e marcato "p"
+//link:per associare ENODEs in pattern e transform
+//post: c=semplifica n=nonRiordinare
+	let markAttName ='mark'
+	if(usePermanentMark)(markAttName='title')
+	var mark = $ENODE.attr(markAttName);
+	if ( mark == undefined ){mark=""}
+	var markArray = mark.split("-")
+	//********************mode: READ*************************
+	if(value == undefined){
+		if(attrName=="all"){
+			return mark 
+		}
+		else if(attrName=="p"){
+			if(markArray[2]){ return markArray[2]}
+			else{return""}
+		}
+		else if(attrName=="l"){
+			if(markArray[1]){ return markArray[1]}
+			else{return""}
+		}
+		else{
+			return markArray[0] //non e' mai undefined
+		}
+	}
+	//********************mode: WRITE**************************
+	// ENODESmarkUnmark($ENODE,"","all"); cancella tutte le marcature
+	if( attrName=="all" ){//scrivi tutto in una volta
+		$ENODE.attr(markAttName,value);
+		return value
+	}
+	else if( attrName=="p"){
+		markArray[2] = value
+	}
+	else if( attrName=="l"){
+		markArray[1] = value
+	}
+	else if( attrName=="undefined" ||attrName=="m"){//per mantenere compatibilita con vechie chiamate
+		markArray[0] = value
+	}
+	else{
+		markArray = [value]
+	}
+	var str=""
+	str=markArray[0]
+	i=1
+	while( i< markArray.length ){
+		if(markArray[i]){
+			str= str + "-" + markArray[i]
+		}
+		else{
+			str= str + "-"
+		}
+		i++
+	}
+	if(str){$ENODE.attr(markAttName,str);}
+	else{$ENODE.removeAttr(markAttName)}
+	return str
+}
+
+
+
+
+function ENODEappendInABSPosition($ENODE,$refENODE,relativePosition){
+//posiziona in modo assoluto $ENODE vicino a un ENODE di riferimento $refENODE
+//Se si tratta di forall piazzare il pattern circondato dal suo forall.
+	$('#divOverlay').append($ENODE);
+    $ENODE.css('position', 'absolute');
+	if($refENODE.is('#canvasAnd')){
+		//put it on the right
+		$ENODE.css('right', 200);
+    	$ENODE.css('top', 100);	
+	}
+    else if(relativePosition=="beside"){
+	//Se è il clone di un clone fallo comparire sovrapposto al "clonato" solo spostato di qualche pixel.
+		$ENODE.css('left', $refENODE.offset().left + $refENODE.width() + 12);
+    	$ENODE.css('top', $refENODE.offset().top - 75);
+    }
+    else{//superposed
+    	$ENODE.css('left', $refENODE.offset().left + 4);
+    	$ENODE.css('top', $refENODE.offset().top + 4);	
+    }
+} 
+
 
 //  TryOnePropertyByName("name",actionString,firstValString)
 function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
