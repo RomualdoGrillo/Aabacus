@@ -42,8 +42,8 @@ ssnapshot.undo = function(){
 			// Clona l'oggetto jQuery salvato in cima allo stack
 			$toBeRestored = FILO[FILO.length - 1].clone(); // Clona jQuery. Questa è la variabile da restituire.
 
-			// Sostituisci usando jQuery
-			$currentRoot.replaceWith($toBeRestored);
+			// Sostituisci tramite ExpressionManager
+			ENODEreplaceNode($currentRoot, $toBeRestored);
 
 			// Estendi e inizializza il *nuovo* nodo radice (jQuery)
 			ExtendAndInitializeTree($toBeRestored); 
@@ -75,6 +75,6 @@ ssnapshot.copy = function(){
 ssnapshot.paste = function(){
 	if(ssnapshot.clipBoard.length != 0){
 		const $newCds = ENODEclone( ssnapshot.clipBoard,true,false ); //extend, do not removeID
-		$(".selected").replaceWith( $newCds );
+		ENODEreplaceNode( $(".selected"), $newCds );
 	}
 }

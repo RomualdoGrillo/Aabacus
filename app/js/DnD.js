@@ -173,8 +173,8 @@ function onAdd(event) {
 	else{
 		myClone = ENODEclone($(event.item),true,false)[0]//do not remove id and tag
 	}
-	event.item.replaceWith(myClone)
-	event.clone.replaceWith(event.item)//questo è l'elemento che rimane nella posizione di partenza
+	ENODEreplaceNode(event.item, myClone)
+	ENODEreplaceNode(event.clone, event.item)//questo è l'elemento che rimane nella posizione di partenza
 	let dropped = myClone
 	//*********** move or clone
 	if (event.to.getAttribute('target') == 'opened') {
@@ -187,7 +187,7 @@ function onAdd(event) {
 		if ($(dropped).hasClass('toBeCloned')) {
 			$(dropped).removeClass('toBeCloned');
 		} else {
-			$(event.item).remove();
+			ENODEremove($(event.item));
 			// if not cloning, clone was useful to visualize the starting point 	
 		}
 	}

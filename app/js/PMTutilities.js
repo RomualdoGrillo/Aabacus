@@ -183,8 +183,8 @@ function orderUL($property){
 			if( newENODEcompareOrder($firstMember,$secondMember)>0 ){
 				//in questi casi inverti primo e secondo membro;
 				//$firstMember.prepend($secondMember);
-				e.ENODE_getRoles('.firstMember').append($secondMember);
-				e.ENODE_getRoles('.secondMember').append($firstMember);		
+				ENODEappend(e.ENODE_getRoles('.firstMember'), $secondMember);
+				ENODEappend(e.ENODE_getRoles('.secondMember'), $firstMember);		
 			} 
 		}
 	});
@@ -192,7 +192,7 @@ function orderUL($property){
 	$property.find('.ul_role').each(function(i,e){
 		var $list = $(e.children).filter('[data-enode]');
 		$list.sort( function(a,b){ return  newENODEcompareOrder($(a),$(b))  });
-		$list.each(function( index, element ){ $(e).append(element)})	
+		$list.each(function( index, element ){ ENODEappend($(e), element)})	
 	});	
 }
 
@@ -404,7 +404,7 @@ function InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry){//instruct pra
 	}
 	ENODESmarkUnmark($par1,"");
 	PActx.visualization =  	cloningRes.visualization
-	if(debugMode){PActx.$cloneProp.remove()
+	if(debugMode){ENODEremove(PActx.$cloneProp)
 		hideAllMarks()
 	}//debugMode
 	return PActx

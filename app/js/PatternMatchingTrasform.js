@@ -95,9 +95,9 @@ function reformatForallProp($prop,$transform){
 	const $forallContRole = GetforAllContentRole($prop);
 	const $newProp = $forallContRole.children();
 	const $tranformParent = $transform.parent();
-	$newProp.insertAfter($prop);//inserisci provvisoriamente dopo il forall
-	$forallContRole.append($transform);
-	$tranformParent.append($prop)
+	ENODEinsertAfter($newProp, $prop);//inserisci provvisoriamente dopo il forall
+	ENODEappend($forallContRole, $transform);
+	ENODEappend($tranformParent, $prop)
     return  $newProp
 }
 
@@ -233,7 +233,7 @@ function swapMembersClone($origProp,mode){
     }
     if ( $equation.attr('data-enode') !== "eq"){// todo: controllare che ci sia una relazione transitiva
         res.msg= "no equation found in this prop: " + $equation.attr('data-enode')
-        if(debugMode){res.$cloneProp.remove()}//debug 
+        if(debugMode){ENODEremove(res.$cloneProp)}//debug 
         return res
     }
     else{// proprietà correttamente trovata
@@ -244,12 +244,7 @@ function swapMembersClone($origProp,mode){
     //*********** determina primo e secondo membro************
     // a seconda di "mode" costruisci la giusta equazione.
     if(mode === "rtl"){
-        const $firstMember = $equation[0].ENODE_getRoles('.firstMember');
-        const $secondMember = $equation[0].ENODE_getRoles('.secondMember');
-        const $firstMemberContent = $firstMember.children().remove();
-        const $secondMemberContent = $secondMember.children().remove();
-        $firstMember.append($secondMemberContent);
-        $secondMember.append($firstMemberContent);
+        ENODEswapEqMembers($equation);
     }
     else{ }// if(mode === "ltr") l'equazione è già pronta'
     //else{//futuribile: ricava n-esimo ed m-esimo membro di eq a=b=n=m };

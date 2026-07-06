@@ -259,10 +259,7 @@ function dblclickHandler(event) {
 				$newNode = $operation;
 			}
 			else {
-				const type = $toBeSpecified.attr('data-type')
-				$newNode = ENODEclone(prototypeSearch((isNaN(newVal)) ? "ci" : "cn"))
-				$newNode[0].ENODE_setName(newVal);
-				$newNode.attr('data-type', type)
+				$newNode = ENODEcreateSymbol(newVal, $toBeSpecified.attr('data-type'))
 			}
 			forThisPar_focus_nofocus($newNode, $toBeSpecified);
 			RefreshEmptyInfixBraketsGlued();
@@ -360,8 +357,8 @@ function refreshAndReplace(PActx) {
 		$toBeRefreshed = ENODEparent(PActx.$transform)
 	} else {
 		$toBeRefreshed = ENODEparent(PActx.$operand)
-		PActx.$transform.insertBefore(PActx.$operand[0]);
-		PActx.$operand.remove()
+		ENODEinsertBefore(PActx.$transform, PActx.$operand[0]);
+		ENODEremove(PActx.$operand)
 		//********select on exit
 		//$('*').removeClass('selected')
 		//$(PActx.$transform[0]).addClass('selected')	
@@ -407,7 +404,7 @@ function cancelSelected() {
 	})
 	if (toBeCancelled.length != 0) {
 		toBeCancelled.each(function (i, element) {
-			$(element).remove()
+			ENODEremove($(element))
 		});
 		RefreshEmptyInfixBraketsGlued();
 		ssnapshot.take();
