@@ -30,6 +30,60 @@ function getExpressionRootNode() {
     return $("#canvas>.secondMember").children("[data-enode]")[0];
 }
 
+/* ---- Primitive di manipolazione strutturale ----
+Ogni modifica strutturale all'espressione (inserimento, rimozione, sostituzione, spostamento di ENODE)
+effettuata al di fuori di questo file deve passare da queste funzioni.
+Accettano indifferentemente oggetti jQuery o elementi HTML. */
+
+function ENODEremove(ENODEs) {
+	//rimuove uno o più nodi dall'espressione
+	$(ENODEs).remove();
+}
+
+function ENODEinsertBefore(ENODEs, refNode) {
+	//inserisce uno o più nodi prima del nodo di riferimento
+	return $(ENODEs).insertBefore(refNode);
+}
+
+function ENODEinsertAfter(ENODEs, refNode) {
+	//inserisce uno o più nodi dopo il nodo di riferimento
+	return $(ENODEs).insertAfter(refNode);
+}
+
+function ENODEappend(container, content) {
+	//aggiunge contenuto in coda a un role/contenitore dell'espressione
+	return $(container).append(content);
+}
+
+function ENODEprepend(container, content) {
+	//aggiunge contenuto in testa a un role/contenitore dell'espressione
+	return $(container).prepend(content);
+}
+
+function ENODEreplaceNode(replaced, replacer) {
+	//sostituzione diretta senza clonazione (cfr. ENODEReplace che clona ed estende)
+	return $(replaced).replaceWith(replacer);
+}
+
+function ENODEswapEqMembers($equation) {
+	//scambia il contenuto di primo e secondo membro di una equazione
+	const $firstMember = $equation[0].ENODE_getRoles('.firstMember');
+	const $secondMember = $equation[0].ENODE_getRoles('.secondMember');
+	const $firstMemberContent = $firstMember.children().remove();
+	const $secondMemberContent = $secondMember.children().remove();
+	$firstMember.append($secondMemberContent);
+	$secondMember.append($firstMemberContent);
+	return $equation;
+}
+
+function ENODEcreateSymbol(name, dataType) {
+	//crea un nuovo simbolo (ci o cn a seconda del nome) con l'eventuale data-type indicato
+	const $newNode = ENODEclone(prototypeSearch((isNaN(name)) ? "ci" : "cn"));
+	$newNode[0].ENODE_setName(name);
+	if (dataType != undefined) { $newNode.attr('data-type', dataType); }
+	return $newNode;
+}
+
 ENODE = {
 	ENODEparent: ENODEparent,
 	ENODEcreateMathmlString: ENODEcreateMathmlString,

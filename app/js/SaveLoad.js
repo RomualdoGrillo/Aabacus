@@ -55,7 +55,7 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 		}
 		else if(fileSuffix === "prt"){
 			if(confirm('replace existing list of prototypes?')){
-				$('#palette').children(':not(.fundamental)').remove();
+				ENODEremove($('#palette').children(':not(.fundamental)'));
 			}
 			inject(textFromFileLoaded,$('#palette'))
 		}
@@ -102,10 +102,10 @@ function inject(MMLstring, $targetRoleOrENODE, containerRequirements, toBeImport
 		if(importStatus){
 			$convertedTree.attr('importStatus',importStatus)
 		}
-		$targetRoleOrENODE.replaceWith($convertedTree);
+		ENODEreplaceNode($targetRoleOrENODE, $convertedTree);
 	}
 	else{
-		$targetRoleOrENODE.append($convertedTree);
+		ENODEappend($targetRoleOrENODE, $convertedTree);
 		if(containerRequirements='bool'){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
 			$convertedTree.each(function() {
 				wrapWithDefIfNeededreturnTarget($targetRoleOrENODE,$(this))
