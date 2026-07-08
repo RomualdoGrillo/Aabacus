@@ -113,7 +113,7 @@ function searchEventHandler(event){// trova la definizione della proprietà
 function searchForProperty(field,value,returnedField){
 	// trova la definizione della proprietà
 	if( value == undefined){ return undefined}
-	let candidates = Array.from( canvas.querySelectorAll('[data-enode=deftrue]') );
+	let candidates = Array.from( canvasRole.querySelectorAll('[data-enode=deftrue]') );
 	let i=0;
 	while(candidates[i]){
 		let $role = candidates[i].ENODE_getRoles().filter('.' + field)

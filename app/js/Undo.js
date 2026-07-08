@@ -1,4 +1,5 @@
 //snapshot manager
+let FILO;
 
 function ssnapshot() {
 	// Attenzione	prima di invocare qualsiasi metodo, chiamare ssnapshot per creare oggetto
@@ -18,7 +19,7 @@ ssnapshot.take = function(){
 }
 
 ssnapshot.undo = function(){
-		let toBeRestored = null; // Inizializza per restituire null se l'undo fallisce
+		let $toBeRestored = null; // Inizializza per restituire null se l'undo fallisce
 		const currentRootElement = getExpressionRootNode(); // Ottiene HTMLElement
 
 		if (currentRootElement && FILO.length > 0) { // Controlla elemento e stack

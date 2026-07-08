@@ -21,7 +21,7 @@ function $immediateJurisdictionRolesNEW($role) {
 	}
 	//-sameLevel: implies firstMember to secondMember
 	if ((startENODE_op == 'implies') && $role.hasClass('firstMember')) {
-		$secondMember = $startENODE[0].ENODE_getRoles('.secondMember');
+		let $secondMember = $startENODE[0].ENODE_getRoles('.secondMember');
 		$immediateDiscendence = $immediateDiscendence.add($secondMember);
 	}
 	//-downstream: all boolean roles
@@ -72,7 +72,7 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 	})
 	//downstream implies firstMember
 	if ((startNode_op == 'implies') && $role.hasClass('firstMember')) {
-		$secondMember = $startENODE[0].ENODE_getRoles('.secondMember');
+		let $secondMember = $startENODE[0].ENODE_getRoles('.secondMember');
 		$stepStoneORtarget = $stepStoneORtarget.add($secondMember);
 	}
 	return $stepStoneORtarget
@@ -292,7 +292,7 @@ function $PropositionsAffectedByStartPropositionROLES($startProposition) {
 	//test: $PropositionsAffectedByStartPropositionROLES($('.selected')).each(function(){ENODEparent($(this)).addClass('selected')});
 	let $roles = $RolesAffectedByStartPropositionROLES($startProposition)
 	//from roles to targets:
-	return $targets = $roles.map(function () {
+	return $roles.map(function () {
 		return $(this).children('[data-enode]').not('[data-enode=and]').toArray()
 	})
 }
@@ -326,7 +326,7 @@ function $calculateTargetsAddRedundantROLES($startProposition) {
 	//from roles to targets:
 	// two types of boolean roles exist:1) those with TRUE as neutral elements 2) OTHERS
 	// OR belongs to the second group!!!
-	return $targets = $roles.map(function () {
+	return $roles.map(function () {
 		let op = ENODEparent($(this)).attr("data-enode");
 		if (op == 'or') {
 			//---OR roles are replaced with contained ENODEs if they are not ANDs.

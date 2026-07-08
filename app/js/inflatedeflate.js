@@ -183,7 +183,7 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 						$(e).children().appendTo($bVarRole)
 					})
 				}
-				noBVarChildren = $children.not('bvar')
+				let noBVarChildren = $children.not('bvar')
 				// globale per renderlo disponibile in each
 				$noBVarRole.each(function(i, e) {
 					var places = getNumOfPlaces($(e))[1]
@@ -229,7 +229,7 @@ function $parserForMixedMMLHTML(toBeParsed){
 	//$('#canvasRole').append($workTree)// debug
 	//replace one <dix> node with <div> 
 	let len = $workTree.find('dix').length
-	for(i=0;i<len;i++){
+	for(let i=0;i<len;i++){
 		let $dix = $workTree.find('dix:first');
 		if($dix.length == 0){break}
 		let $children = $dix.children();

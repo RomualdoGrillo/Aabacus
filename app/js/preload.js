@@ -82,7 +82,7 @@ function injectAll(response,rootUrl){
 function injectAllMMLS(response,rootUrl){
 	//let $MML = $(response)
 	let $MML = $parserForMixedMMLHTML(response)
-	$sections=$MML.filter('section')
+	let $sections=$MML.filter('section')
 	ENODEremove($('#canvasRole').children());
 	//**** palette
 	let $paletteContent = $sections.filter('[data-section=palette]').children();

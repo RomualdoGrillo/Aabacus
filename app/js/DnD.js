@@ -103,7 +103,7 @@ if($ENODETarget.length==0){
 	//is there a valid target?(sometimes the $ENODETarget is undefined sometime it is not but there is no [0] element)
 		if($validTgT.length!=0){
 			let $draggedAndTargets = $ENODETarget.add($validTgT); 
-			$commParent = $(commonParent( $draggedAndTargets.toArray() ));	
+			let $commParent = $(commonParent( $draggedAndTargets.toArray() ));	
 			$commParent.addClass('mu_targetsCommonParent')
 		}
 		//make source sortable

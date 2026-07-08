@@ -297,12 +297,12 @@ function validForColl($mouseDownENODE) {
 	}
 	//***** test su ciascun termine
 	const $terms = $parentParent[0].ENODE_getChildren() // ottieni la lista degli addendi
-	for (i = 0; i < $terms.length; i++) {
+	for (let i = 0; i < $terms.length; i++) {
 		const term = $terms[i]
 		let okForThisTerm = false;
 		if ($(term).attr('data-enode') == op) {// se l'addendo è di tipo times controlla ogni fattore
 			const $factors = term.ENODE_getChildren()
-			for (j = 0; j < $factors.length; j++) {
+			for (let j = 0; j < $factors.length; j++) {
 				const factor = $factors[j]
 				//console.log("controllo factor");
 				//console.log(factor);
@@ -369,12 +369,12 @@ function validForPartColl($mouseDownENODE) {
 	}
 	//***** test su ciascun termine
 	const $siblings = $parent.siblings('[data-enode]')
-	for (i = 0; i < $siblings.length; i++) {
+	for (let i = 0; i < $siblings.length; i++) {
 		const term = $siblings[i]
 		let okForThisTerm = false;
 		if ($(term).attr('data-enode') == opT) {// se l'addendo è di tipo times controlla ogni fattore
 			const $factors = term.ENODE_getChildren()
-			for (j = 0; j < $factors.length; j++) {
+			for (let j = 0; j < $factors.length; j++) {
 				const factor = $factors[j]
 				//console.log("controllo factor");
 				//console.log(factor);
@@ -636,7 +636,7 @@ function compose($toBeComp, firstVal, img) {
 	//if( partial.canBeReplaced){ 
 	if (PActx.matchedTF == true) {
 		///****Create Result********
-		$composed = ValToENODEs(partial);
+		let $composed = ValToENODEs(partial);
 		$composed.addClass('selected');//selezione in uscita
 		PActx.$operand = $toBeComp;
 		PActx.msg = "compose";
@@ -734,7 +734,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 				if (primeFactors.length > 1) {// se numero primo non fare nulla
 					$extOp = wrapIfNeeded($toBeDec, op);//se necessario crea una operazione container
 					primeFactors.forEach(function (e, i) {
-						$clone = identifierToENODE(e);
+						let $clone = identifierToENODE(e);
 						ENODEinsertAfter($clone, $toBeDec);
 						if (i == (primeFactors.length - 1)) {
 							$clone.addClass('selected');// l'ultimo fattore rimane selezionato
