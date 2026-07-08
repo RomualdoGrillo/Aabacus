@@ -1,5 +1,4 @@
-//snapshot manager
-let FILO;
+//snapshot manager — FILO dichiarato in state.js
 
 function ssnapshot() {
 	// Attenzione	prima di invocare qualsiasi metodo, chiamare ssnapshot per creare oggetto

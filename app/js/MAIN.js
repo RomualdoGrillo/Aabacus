@@ -1,7 +1,5 @@
 //************************Init*******************************
-let GLBsettings
-let debugMode = false
-//debug,normal
+// GLBsettings, debugMode, preloadPath, tools, FILO: state.js
 let canvasRole = document.getElementById('canvasRole');
 //************ inizializza UNDO  ************
 ssnapshot()
@@ -12,10 +10,6 @@ let sortablesSelectorString = '.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_
 ENODEextend($('body'), true);
 //************ Preload  ************
 //preload will extend new ENODEs 
-let preloadPath = window.location.href.split('preloadPath=')[1]
-if (!preloadPath) {
-	preloadPath = './Data/Preload/PRELOAD.mmls'
-}
 preloadAll(preloadPath);//ATTENTION contains asinchronous functions
 //initialize lock icons??
 //RefreshEmptyInfixBraketsGlued();
@@ -422,7 +416,6 @@ function removeCelebration() {
 	$('.celebration').remove()
 }
 
-const tools = ["", "copy", "autoAdapt", "declare"];
 function changeTool() {
 	let currToolIndex = tools.indexOf(GLBsettings.tool)
 	let newToolIndex = ((currToolIndex + 1) % tools.length)// start over when the list is over
