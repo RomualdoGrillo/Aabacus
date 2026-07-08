@@ -58,9 +58,9 @@ function decomposeTens($toBeDec,undefined,img){
 	//var primeFactors = primeFactorization(number);
 	let terms = separateTensHundreds(toBeDec.val);	
 	if(terms.length >1){
-		$extOp = wrapIfNeeded($toBeDec,'plus');//se necessario crea una operazione container
+		let $extOp = wrapIfNeeded($toBeDec,'plus');//se necessario crea una operazione container
 		terms.forEach(function(e,i){
-			$clone = identifierToENODE(e);
+			let $clone = identifierToENODE(e);
 			ENODEinsertAfter($clone, $toBeDec);
 			if(i == (terms.length -1)){
 				$clone.addClass('selected');// l'ultimo fattore rimane selezionato

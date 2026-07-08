@@ -50,8 +50,8 @@ function wrapUnwrapUrlString(string, unwrap) {
 	//cutFirstDir wrapUnwrapUrlString("url(../Aabacus/images/a.png)",'cutFirstDir')
 	if (unwrap == 'cutFirstDir') {
 		let arr = string.replace('../', '').split('/');
-		part = arr[1]
-		for (i = 2; i < arr.length; i++) {
+		let part = arr[1]
+		for (let i = 2; i < arr.length; i++) {
 			part = part + '/' + arr[i]
 		}
 		return part
@@ -130,7 +130,7 @@ function identifierToENODE(string){
 	else{
 		ENODEType = 'cn'
 	}
-	$clone = ENODEclone( prototypeSearch("cn","num") )
+	let $clone = ENODEclone( prototypeSearch("cn","num") )
 	$clone[0].ENODE_setName(string);
 	$clone.attr('data-enode', ENODEType);//uso un generico prototipo num e qui specifico se cn o ci
 	return	$clone

@@ -75,8 +75,8 @@ function allStringAinStringB(stringA,stringB){
 
 
 function removeDuplicatesFromString(string){
-	res=""
-	i=0
+	let res=""
+	let i=0
 	while(string[i]){
 		if( res.indexOf(string[i])==-1 )
 			{res=res+string[i]}
@@ -205,7 +205,7 @@ function ENODEdescForPath($ENODE){
 }
    
 function moveOrClearMarksInTree($startENODE,clear){//copy marks from persistent "data-mark" to volatile mark 
-	$subtree = $startENODE.add( $startENODE.find('[data-enode]') )
+	let $subtree = $startENODE.add( $startENODE.find('[data-enode]') )
 	$subtree.each(function(index) {
 		if(clear){//clearVolatile
 			$(this).removeAttr('mark')
@@ -269,7 +269,7 @@ function ENODESmarkUnmark($ENODE,value,attrName,usePermanentMark){
 	}
 	var str=""
 	str=markArray[0]
-	i=1
+	let i=1
 	while( i< markArray.length ){
 		if(markArray[i]){
 			str= str + "-" + markArray[i]
@@ -512,7 +512,7 @@ function orderMatch(PActx,order,replaceInPatternOnly,strictOrder){
 	var $span //span è l'ambito sul quale effettuare le sostituzioni
 	if(replaceInPatternOnly){$span=PActx.$pattern}
 	else{$span=PActx.$cloneProp};
-	$pattern = PActx.$pattern
+	let $pattern = PActx.$pattern
 	if (debugMode) {//show input beside pattern
 		ENODEappendInABSPosition($span,PActx.$operand,"beside")
 	}

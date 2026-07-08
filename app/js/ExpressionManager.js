@@ -512,8 +512,8 @@ function attrAcceptToMinMax(acceptString) {
 }
 
 function ENODEclone($node, Extend, removeID) {//default: Extend and RemoveID
-	$clone = $node.clone(); //clona
-	$toBeCleaned = $clone.add($clone.find("*")); //clean discendence too
+	let $clone = $node.clone(); //clona
+	let $toBeCleaned = $clone.add($clone.find("*")); //clean discendence too
 	if (Extend !== false) {
 		ExtendAndInitializeTree($clone);
 	}
@@ -1041,7 +1041,7 @@ function reorderTimes($startTimes, brRemove) {
 		let numeratorFound = false;
 		let childrenArr = $startTimes[0].ENODE_getChildren().toArray()
 		/**metti i reciproci al per ultimi preceduti da br */
-		for (i = 0; childrenArr[i]; i++) {
+		for (let i = 0; childrenArr[i]; i++) {
 			if ($(childrenArr[i]).is('[data-enode=m_inverse]')) {
 				//aggiungi br se ancora non esiste
 				if (!brExist) {

@@ -2,7 +2,7 @@
 let GLBsettings
 let debugMode = false
 //debug,normal
-let canvas = document.getElementById('canvasRole');
+let canvasRole = document.getElementById('canvasRole');
 let exclusiveFocus
 //************ inizializza UNDO  ************
 ssnapshot()
@@ -341,7 +341,7 @@ function ExtendAndInitialize($ENODE) {
 
 
 function cancelSelected() {
-	toBeCancelled = $('.selected').filter(function (index) {
+	let toBeCancelled = $('.selected').filter(function (index) {
 		return !ENODEclosedDef(this);
 	})
 	if (toBeCancelled.length != 0) {
@@ -383,7 +383,7 @@ function PActxVisualize(PActx) {
 		$visualization.insertAfter(PActx.$transform)
 		PActx.$transform.append($visualization);
 	} else {
-		$(canvas).append($visualization)
+		$(canvasRole).append($visualization)
 		$visualization.css('position', 'relative');
 		$visualization.css('top', '0px');
 	}

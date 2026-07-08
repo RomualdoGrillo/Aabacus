@@ -5,7 +5,7 @@ function ENODEfactorizeMinus($startNode) {
 		return
 	}
 	//è circondato un meno?
-	$extOp = wrapIfNeeded($startNode, "times");
+	let $extOp = wrapIfNeeded($startNode, "times");
 	//se necessario crea una operazione container
 	//aggiungi un fattore "-1"
 	const prototype = prototypeSearch("ci", "num");
