@@ -147,7 +147,6 @@ div {
 }
 [data-enode],
 [class*="_role"],
-#overlay,
 .dummyrole,
 .rolescontainer {
   position: relative;
@@ -817,15 +816,6 @@ body.debug .operand:not([data-enode]) {
 
 .unlocked [data-enode="or"] > .ul_role > [data-enode] {
   border-radius: var(--div-smallradius) !important;
-}
-
-#overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box; /*To prevent padding added to the 100% dimensions.*/
-  background-color: #dd9cff6e;
-  pointer-events: none;
 }
 
 .toBeUpdated > .infix {

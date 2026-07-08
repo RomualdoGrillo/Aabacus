@@ -218,6 +218,32 @@ function moveOrClearMarksInTree($startENODE,clear){//copy marks from persistent 
 	})
 }
 
+//********debug: visualizzazione delle marcature come etichette sugli ENODE********
+function ENODEshowMarks($ENODE, showPath) {
+	//se showPath=true allora mostra anche il path
+	let mark = $ENODE.attr("title");
+	if (mark == undefined) {
+		mark = "";
+	}
+	let path = $ENODE.attr("data-path");
+	if (!showPath || path == undefined) {
+		path = "";
+	} //se non è da visualizzare, oppure è indefinito
+	if ($ENODE.find(".label").length == 0) {
+		$ENODE.append('<div class="label"></div>');
+	}
+	$ENODE.find(".label").text(mark + "_" + path);
+}
+function showAllMarks(showPath) {
+	$("body [data-enode]:visible").each(function (i, element) {
+		ENODEshowMarks($(element), showPath);
+	});
+}
+
+function hideAllMarks() {
+	$(".label").remove();
+}
+
 function ENODESmarkUnmark($ENODE,value,attrName,usePermanentMark){
 //la funzione scrive o legge marcature ENODEs in modo permanente: le marcature passano nel file mml. 
 //attrname può assumere i valori m,l,p corrispondenti al formato della stringa mark-link-post

@@ -3,7 +3,6 @@ let GLBsettings
 let debugMode = false
 //debug,normal
 let canvasRole = document.getElementById('canvasRole');
-let exclusiveFocus
 //************ inizializza UNDO  ************
 ssnapshot()
 //inizializza snapshot manager che gestisce UNDO
@@ -72,7 +71,10 @@ $(document).on('keydown', function (e) {
 		console.log("control + x")
 	}//auto create function definition
 	else if (e.ctrlKey && (keyPressed === 'b')) { //baptize
-		ENODECreateDefinition($('.selected')[0])
+		const defName = prompt("Enter a name for the new definition");
+		if (defName) {
+			ENODECreateDefinition($('.selected')[0], defName)
+		}
 		console.log("control + b")
 	}//canc or del  code of "cancel" = 46 code of "del" = 8
 	else if (e.which === 46 || e.which === 8) {
@@ -273,6 +275,18 @@ function dblclickHandler(event) {
 		ENODErenamePrompt($ENODEDblclicked);
 	}
 
+}
+
+function ENODErenamePrompt($ENODE) {
+	//chiede il nuovo nome all'utente, poi delega la rinomina al nucleo espressioni
+	const newName = prompt(
+		'Enter a new name, / for inverse, /- for opposite and inverse do not use "-" or "/" in names es: x-xxx ',
+		ENODEgetNameWithSign($ENODE)
+	);
+	if (newName != null) {
+		ENODErename($ENODE, newName);
+		ssnapshot.take();
+	}
 }
 
 function keyToCharacter(key) {

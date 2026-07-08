@@ -1,4 +1,4 @@
-var leafTags = ["cn", "ci", "csymbol"];
+//i tag foglia sono definiti nella costante "symbols" (ExpressionManager.js)
 
 
 function ENODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) {
@@ -95,7 +95,7 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 		if (!neglectSign) {//signsAsClasses($node,"SignsAsClasses_to_MinusOp") // converti   	
 		}
 		var nodeText = ""
-		if (leafTags.indexOf(originalData.enode.toLowerCase()) !== -1) {
+		if (symbols.indexOf(originalData.enode.toLowerCase()) !== -1) {
 			//if [cn;ci;csymbol] then the content is the text, else some role must be present
 			nodeText = node.ENODE_getName(true);
 			$newNode = $('<' + originalData.enode.toLowerCase() + '/>');
@@ -160,7 +160,7 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 			$newNode = ENODEclone($prototype)
 			ENODEextend($newNode)
 			// extend the new node
-			if (leafTags.indexOf(ENODE.toLowerCase()) !== -1) {
+			if (symbols.indexOf(ENODE.toLowerCase()) !== -1) {
 				//todo: eccezione if leafTag with children
 				try {
 					$newNode[0].ENODE_setName($node.text());

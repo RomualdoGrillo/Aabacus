@@ -100,7 +100,6 @@ ENODE = {
 	ENODE_addRole: ENODE_addRole,
 	ENODE_checkIfPointlessSingleNode: ENODE_checkIfPointlessSingleNode,
 	ENODE_dissolveContainer: ENODE_dissolveContainer,
-	ENODE_overlay: ENODE_overlay,
 };
 /* ---- ENODE Methods/Functions ---- */
 
@@ -138,12 +137,13 @@ function ENODE_dissolveContainer() {
 	return $children;
 }
 
-//per creazione automatica def: $(".selected")[0].ENODECreateDefinition()
+//per creazione automatica def: $(".selected")[0].ENODECreateDefinition("nome")
 //return ENODEEqual(this,$mouseDownENODE[0])
-function ENODECreateDefinition(startNode) {
+function ENODECreateDefinition(startNode, newName) {
 	if (startNode == undefined) {
 		startNode = this;
 	}
+	if (!newName) { return }//no name given
 	const outType = $(startNode).attr("data-type");
 	const $newDef = ENODEclone(
 		// prototypeSearch('eq','bool','[data-viseq=asymmetric]');
@@ -157,15 +157,11 @@ function ENODECreateDefinition(startNode) {
 	const $definendum = ENODEclone(prototypeSearch(""));//search for generic prototype
 	$definendum.attr("data-type", outType);
 	const m1 = $newDef.find(".firstMember"); //trova primo membro
-	const newName = prompt("Enter a name for the new definition");
-	if (newName == null) { return }//prompt cancelled
-	if (!newName) { return }//empty name
 	$definendum.attr("data-enode", newName);
 	$definendum.find(".name").append(newName);
 	m1.append($definendum); //aggiungi contenuto al primo membro ed inseriscilo
 	//*********************** definens **********************
 	const $definens = ENODEclone($(startNode));
-	//$definens.find("#MyOverlay").remove()//togli l'overlay colorato dal clone
 	const m2 = $newDef.find(".secondMember"); //trova secondo membro todo
 	m2.append($definens); //aggiungi contenuto al secondo membro
 	const $parList = $definens.find(".unselected");
@@ -650,44 +646,42 @@ function checkSiblings($s) {
 	return allSiblingsOk;
 }
 
-function ENODErenamePrompt($ENODE) {
-	//
-	let oldName = $ENODE[0].ENODE_getName();
+function ENODEgetNameWithSign($ENODE) {
+	//nome del simbolo con gli eventuali prefissi "-" (opposto) e "/" (inverso)
+	let name = $ENODE[0].ENODE_getName();
 	if ($ENODE.hasClass("minus")) {
-		oldName = "-" + oldName;
+		name = "-" + name;
 	}
 	if ($ENODE.hasClass("inverse")) {
-		oldName = "/" + oldName;
+		name = "/" + name;
 	}
-	let newName = prompt(
-		'Enter a new name, / for inverse, /- for opposite and inverse do not use "-" or "/" in names es: x-xxx ',
-		oldName
-	);
-	if (newName != null) {
-		if (newName[0] === "/") {
-			newName = newName.substr(1); //nome privato del segno meno
-			$ENODE.addClass("inverse");
-		} // attenzione: / va inserito prime del meno
-		else {
-			$ENODE.removeClass("inverse");
-		}
-		if (newName[0] === "-") {
-			newName = newName.substr(1); //nome privato del segno meno
-			$ENODE.addClass("minus");
-		} //todo: cosa succede se input = ---2  ?
-		else {
-			$ENODE.removeClass("minus");
-		}
-		$ENODE[0].ENODE_setName(newName);
-		$ENODE.attr("data-enode", isNaN(newName) ? "ci" : "cn"); // se numero allora classe "cn"
-		ssnapshot.take();
+	return name;
+}
+
+function ENODErename($ENODE, newName) {
+	//rinomina un simbolo interpretando i prefissi "/" (inverso) e "-" (opposto)
+	if (newName[0] === "/") {
+		newName = newName.substr(1); //nome privato del segno meno
+		$ENODE.addClass("inverse");
+	} // attenzione: / va inserito prime del meno
+	else {
+		$ENODE.removeClass("inverse");
 	}
+	if (newName[0] === "-") {
+		newName = newName.substr(1); //nome privato del segno meno
+		$ENODE.addClass("minus");
+	} //todo: cosa succede se input = ---2  ?
+	else {
+		$ENODE.removeClass("minus");
+	}
+	$ENODE[0].ENODE_setName(newName);
+	$ENODE.attr("data-enode", isNaN(newName) ? "ci" : "cn"); // se numero allora classe "cn"
 }
 
 function createForThis($forall, $placeHolder) {
 	//Modus Ponens deduce a special case from a forall
 	const $clone = ENODEclone($forall);
-	exclusiveFocus = $clone.addClass("exclusiveFocus"); //metti il clone in stato exclusiveFocus
+	$clone.addClass("exclusiveFocus"); //metti il clone in stato exclusiveFocus
 	//****inserit the new proposition*****
 	if (ENODEparent($forall).attr("data-enode") == "and") {
 		$clone.insertAfter($forall);
@@ -861,32 +855,6 @@ function RefreshEmptyInfixBraketsGlued($startNode, tree, options) {
 	}
 }
 
-function ENODEshowMarks($ENODE, showPath) {
-	//se showPath=true allora mostra anche il path
-	let labelString;
-	let mark = $ENODE.attr("title");
-	if (mark == undefined) {
-		mark = "";
-	}
-	let path = $ENODE.attr("data-path");
-	if (!showPath || path == undefined) {
-		path = "";
-	} //se non è da visualizzare, oppure è indefinito
-	if ($ENODE.find(".label").length == 0) {
-		$ENODE.append('<div class="label"></div>');
-	}
-	$ENODE.find(".label").text(mark + "_" + path);
-}
-function showAllMarks(showPath) {
-	$("body [data-enode]:visible").each(function (i, element) {
-		ENODEshowMarks($(element), showPath);
-	});
-}
-
-function hideAllMarks() {
-	$(".label").remove();
-}
-
 function ENODEEqual(node1, node2, checkType, neglectRootSign) {
 	//node1/2 HTMLnode. Flat to simil mathml e paragona
 	if (node1 == undefined || node2 == undefined) {
@@ -944,16 +912,6 @@ function ENODE_checkIfPointlessSingleNode() {
 		return true;
 	}
 }
-
-function ENODE_overlay(mode) {
-	// aggiunge/rimuove un overlay ad un ENODE
-	if (mode == undefined) {
-		$(this).append('<div id="overlay">');
-	} else {
-		$("#overlay").remove();
-	}
-}
-
 
 function ENODEselectable(startElement) {
 	//risali passo passo la struttura DOM fino a trovare un elemento ENODE
