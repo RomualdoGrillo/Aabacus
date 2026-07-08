@@ -148,27 +148,35 @@
 			<script type="text/javascript" src="Resources/sortablejs/Sortable.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.6.4/math.js"></script>
-			<script type="text/javascript" src="js/sound.js"></script>
-			<script type="text/javascript" src="js/inflatedeflate.js"></script>
-			<script type="text/javascript" src="js/UserEvToFunctCall.js"></script>
-			<script type="text/javascript" src="js/Undo.js"></script>
-			<script type="text/javascript" src="js/SaveLoad.js"></script>
-			<script type="text/javascript" src="js/infix.js"></script>
-			<script type="text/javascript" src="js/math.js"></script>
-			<script type="text/javascript" src="js/PMTutilities.js"></script>
-			<script type="text/javascript" src="js/TranslateFormat.js"></script>
+			<!-- Passo 7 (software-modules.md §5): strati core → rendering → properties → persistence → interaction.
+			     Vietato introdurre dipendenze verso il basso (es. core che richiama MAIN o settings). -->
+			<!-- 1. core — nucleo espressioni -->
 			<script type="text/javascript" src="js/formatXML.js"></script>
-			<script type="text/javascript" src="js/preload.js"></script>
-			<script type="text/javascript" src="js/settings.js"></script>
-			<script type="text/javascript" src="js/SVGlines.js"></script>
-			<script type="text/javascript" src="js/DnD.js"></script>
-			<script type="text/javascript" src="js/dom-utils.js"></script>
-			<script type="text/javascript" src="js/game.js"></script>
-			<script type="text/javascript" src="js/PatternMatchingTrasform.js"></script>
+			<script type="text/javascript" src="js/math.js"></script>
+			<script type="text/javascript" src="js/inflatedeflate.js"></script>
+			<!-- inflatedeflate prima di ExpressionManager: definisce ENODEcreateMathmlString usata nell'oggetto ENODE -->
 			<script type="text/javascript" src="js/ExpressionManager.js"></script>
+			<script type="text/javascript" src="js/calculateSpan.js"></script>
+			<!-- 2. rendering — refresh visivo -->
+			<script type="text/javascript" src="js/infix.js"></script>
+			<script type="text/javascript" src="js/TranslateFormat.js"></script>
+			<script type="text/javascript" src="js/SVGlines.js"></script>
+			<!-- 3. properties — motori di trasformazione -->
+			<script type="text/javascript" src="js/PMTutilities.js"></script>
+			<script type="text/javascript" src="js/PatternMatchingTrasform.js"></script>
 			<script type="text/javascript" src="js/HardWiredProperties.js"></script>
 			<script type="text/javascript" src="js/addedHardWiredProperties.js"></script>
-			<script type="text/javascript" src="js/calculateSpan.js"></script>
+			<!-- 4. persistence — caricamento e salvataggio -->
+			<script type="text/javascript" src="js/SaveLoad.js"></script>
+			<script type="text/javascript" src="js/preload.js"></script>
+			<!-- 5. interaction — input utente e orchestrazione (MAIN.js ultimo) -->
+			<script type="text/javascript" src="js/dom-utils.js"></script>
+			<script type="text/javascript" src="js/sound.js"></script>
+			<script type="text/javascript" src="js/Undo.js"></script>
+			<script type="text/javascript" src="js/UserEvToFunctCall.js"></script>
+			<script type="text/javascript" src="js/game.js"></script>
+			<script type="text/javascript" src="js/DnD.js"></script>
+			<script type="text/javascript" src="js/settings.js"></script>
 			<script type="text/javascript" src="js/MAIN.js"></script>
 	</body>
 </html>
