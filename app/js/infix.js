@@ -1,14 +1,4 @@
 
-function refreshInfix($startNode,rootAndSubTree){//todo:obsoleta, sostituita con generalrefresh()
-	//if($startNode.length != 0){
-		refreshOneInfix($startNode)
-		if(rootAndSubTree){
-			$startNode.find('[data-enode]').each(function(i,element){refreshOneInfix($(element))})
-		}
-	//}
-
-}
-
 function refreshOneInfix($ENODEnode){
 	if($ENODEnode[0].ENODE_getRoles === undefined){return}// invalid parameter
 	var $role=$ENODEnode[0].ENODE_getRoles();
@@ -62,29 +52,3 @@ function refreshOneEmpty($ENODE){
 		}
 	})
 }
-/*
-function refreshEmpty($startNode){
-	$startNode.find('[class*="_role"]:not(.dummyrole)').each(function(i,e){
-	    let childrenNum = $(e).children().filter('[data-enode],.dummyrole').length
-		let minPlaces=getNumOfPlaces($(this))[0]
-		if(minPlaces!=0){//manage dummies to ensure minimum places
-			let deltaDummies = minPlaces- childrenNum
-			if(deltaDummies>0){
-			//add dummies
-				for (var i = 0; i<deltaDummies; i++){
-					$(this).append($('<div class="dummyrole"></div>'))
-				}
-			}
-			else if(deltaDummies<0){
-				//remove dummies
-				for (var i = 0; i<-deltaDummies; i++){
-					$(this).find('.dummyrole:first').remove()
-				}
-			}
-		}
-		else{//manage "empty" class
-			if( childrenNum === 0 ){$(e).addClass('empty')}
-	    	else{ $(e).removeClass('empty')}
-		}
-	})
-}*/

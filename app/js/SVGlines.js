@@ -23,31 +23,6 @@ function lineAB($from,$to,addClass)//aggiungi una linea che collega i due elemen
 	return lc
 }
 
-function drawCallOut(label,pointTo){// label will be sorrounded by a border pointing to pointTo
-	//var rect = document.getElementById("myElement").getBoundingClientRect();
-	var rect = label.getBoundingClientRect();
-	x=40;
-	y=30;
-	Px=45;//
-	Py=35; 
-	r=4;
-	p2=document.getElementById('p2');
-	p2.setAttribute('d','M '+ (x-2*r) +','+ y +'\n'+
-	'l '+ (-x+2*r) +','+ 0 +'\n'+
-	'q '+ (-r) +','+ 0 +','+ (-r) +','+ (-r) +'\n'+
-	'l '+ 0 +','+ (-y+2*r) +'\n'+
-	'q '+ 0 +','+ (-r) +','+ (r) +','+ (-r) +'\n'+
-	'l '+ (x-2*r) +','+ 0 +'\n'+
-	'q '+ (r) +','+ 0 +','+ (r) +','+ (r)+'\n'+
-	'l '+ 0 +','+ (y-3*r) +'\n'+
-	'L '+ Px +','+ Py +'\n'+
-	'Z ');
-}
-
-function updateMarkerColor($line){
-	
-}
-
 function clearLines()
 {
 	return $("#svgContainer *").remove()	

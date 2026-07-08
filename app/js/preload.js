@@ -244,13 +244,6 @@ function GLBsettingsToInterface() {
 	
 }
 
-/*
-$('input[type=radio][name=color]').change(function() {
-console.log(this.value);
-$('body').removeClass('whiteBorders greyBorders coloredBorders');//ripulisci valori precedenti
-$('body').addClass(this.value)//aggiungi la nuova classe
-});
-*/
 function updateBodyClass(myClass,bool){
 	if(bool){
 			$('body').addClass(myClass);	

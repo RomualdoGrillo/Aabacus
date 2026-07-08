@@ -103,17 +103,6 @@ function OpIsAssociative(op/* string ex: plus times*/) {
 }
 
 
-function revert(event) {//revert a sortablejs onAdd event
-	let nextChildren = event.from.children[event.oldIndex]
-	if (nextChildren) {
-		ENODEinsertBefore(event.item, nextChildren);
-	}
-	else {
-		ENODEappend(event.from, event.item)
-	}
-	ENODEremove(event.clone);
-}
-
 function forThisValid(mouseDownNode) {
 	let dataType = mouseDownNode[0].getAttribute('data-type');
 	let $excludedForall = $identifierSpanForAll($(mouseDownNode)).filter('[data-enode=forAll]');
@@ -818,14 +807,6 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 }
 
 
-function isEquationMember($mouseDownENODE) {
-	//  
-	if (!($mouseDownENODE.parent().parent().is("[data-enode=eq]") && !isDefinition($mouseDownENODE.parent().parent()[0]))) {
-		return []//not from an equation	
-	}
-	return ENODEparent($mouseDownENODE)
-}
-
 function validReplaced($mouseDownENODE) {
 	if (!($mouseDownENODE.parent().parent().is("[data-enode=eq]") && !isDefinition($mouseDownENODE.parent().parent()[0]))) {
 		return []//not from an equation	or implies
@@ -1066,10 +1047,4 @@ function forThisPar_focus_nofocus($specificValue, $parameter) {
 	PActx.replacedAlready = true;
 	PActx.msg = "forThis"
 	return PActx
-}
-
-function clearTragets() {
-	clearTarget(["toBeCloned"]);//debug 
-	document.querySelectorAll(sortablesSelectorString).forEach(function (el) { el.setAttribute('target', '') });
-	document.querySelectorAll('[data-enode]').forEach(function (el) { el.setAttribute('target', '') });
 }

@@ -101,57 +101,6 @@ function getCol(matrix, col) {
 	}
 	return column;
 }
-/*
-var width = 960,
-    height = 500;
-
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-var hull = svg.append("path")
-    .attr("class", "hull");
-
-$('svg').css('position','absolute')
-arr = getPositionsOfChildren($('[data-vis=resizable]'))
-hull.datum(d3.geom.hull(arr)).attr("d", function(d) { return "M" + d.join("L") + "Z"; })
-*/
-function getOffset( el ) {
-    var _x = 0;
-    var _y = 0;
-    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
-        _x += el.offsetLeft - el.scrollLeft;
-        _y += el.offsetTop - el.scrollTop;
-        el = el.offsetParent;
-    }
-    return [_x,_y]
-}
-function getPositionsOfChildren($parentENODE){
-	let arr =[]
-	arr = $parentENODE[0].ENODE_getChildren().toArray()
-	for(i=0;arr[i];i++){
-		arr[i]=getOffset(arr[i])
-	}
-	return arr
-}
-function createHullTo(){
-	var width = 960;
-    var height = 500;
-	var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-	var hull = svg.append("path")
-    .attr("class", "hull");
-    svg.attr('id','svgHull');
-	$('#svgHull').css('position','absolute');
-	return hull
-}
-function redrawHull($resizable,hull){
-	var arr = getPositionsOfChildren($resizable)
-	if(arr.length>2){
-		hull.datum(d3.geom.hull(arr)).attr("d", function(d) { return "M" + d.join("L") + "Z"; });
-	}
-}
-
 
 function dummyParser(string){
 	let op 
@@ -203,51 +152,6 @@ function commonParentOfTwo(a, b) {
     }
 }
 
-
-function gradeInMonomial($ENODE, varName) {
-	let $factors
-	let totalGrade = 0
-	if ($ENODE.attr('data-enode') == 'times') {//multiple factors?
-		$factors = $ENODE[0].ENODE_getChildren()
-	}
-	else {
-		$factors = $ENODE
-	}
-	for(let i=0;$factors[i];i++){
-		let type=$factors.eq(i).attr('data-enode')
-		if(type=="ci"||type=="power"){
-			digested=ENODEsToVal($factors.eq(i));
-			//xyz=$($factors[i]){} //translate to values
-			if(varName==undefined || digested.val==varName){//add the exponent
-				totalGrade= totalGrade + digested.exp;
-			}
-		} 
-		 
-	}
-	return totalGrade
-}
-
-function sortByGrade(array,varName) {
-    return array.sort(function (a,b) {
-        return gradeInMonomial($(a),varName)-gradeInMonomial($(b),varName);
-    });
-}
-
-function updateContainerView($ENODE,view,par){
-	if(view=='grid'){
-		//set parent
-		$ENODE[0].ENODE_getRoles().css('display','grid').css('grid-auto-flow','column').css('justify-items','center') //(data-view,"viewAsGrid");
-		//set children
-		let $children = $ENODE[0].ENODE_getChildren()
-		//childrenArr = sortByGrade(childrenArr);
-		for(i=0;$children[i];i++){
-			console.log(i)
-			let column_index=gradeInMonomial($children.eq(i),par)+1;
-			$children.eq(i).css('grid-column', column_index);//column index starts from 1
-		}
-		//set column for each children
-	}
-}
 
 //write a data object into attributes of an html element
 function writeData($node,dataObject){

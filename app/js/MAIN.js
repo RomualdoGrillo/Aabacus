@@ -4,16 +4,12 @@ let debugMode = false
 //debug,normal
 let canvas = document.getElementById('canvasRole');
 let exclusiveFocus
-let sorting = false;
-//usato solo per gestire gli eventi di dragover
 //************ inizializza UNDO  ************
 ssnapshot()
 //inizializza snapshot manager che gestisce UNDO
 //***********************
 //all elements that can be dragged around are initiated by making their container Sortable
 let sortablesSelectorString = '.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_role'
-let sortablesExcluded = '[data-enode=minus]>*,[data-enode=m_inverse]>*,[data-enode=not]>*'
-//glued
 ENODEextend($('body'), true);
 //************ Preload  ************
 //preload will extend new ENODEs 
@@ -266,60 +262,6 @@ function dblclickHandler(event) {
 			ssnapshot.take();
 		}
 	}
-	//******** remove "exclusiveFocus" ***********
-	/*
-	else if (closed && ENODEClass === 'forAll') {
-		if ($ENODEDblclicked.hasClass('exclusiveFocus')) {
-			$ENODEDblclicked.removeClass('exclusiveFocus')
-			// togli exclusiveFocus
-			exclusiveFocus = ""
-		}
-	}
-	*/
-	/********closed still not handled **********/
-	/*
-	else if (closed && ENODEClass === 'cn') {
-		let n = Number( ENODENumericCdsAsText($ENODEDblclicked) );
-		if(Number.isInteger(n) && n>0){
-			let $plus =wrapWithOperation($ENODEDblclicked,'plus');
-			$plus.attr('data-vis','resizable');
-			$ENODEDblclicked.remove()
-			//crea il numero 1
-			const One = {type:"cn", val:1, sign:1, exp:1}
-			for(i=0;i<n;i++){
-				//clona ENODE 1
-				$plus[0].ENODE_getRoles().append(ValToENODEs(One))
-			}	
-		}
-	}
-	else if ($ENODEDblclicked.is('[data-vis=resizable]')){
-			let $role=$ENODEDblclicked[0].ENODE_getRoles().eq(0);
-			let firstChild = $role.find('>[data-enode]')[0]
-			let fcWidth = firstChild.offsetWidth
-			//var fcstyle = element.currentStyle || window.getComputedStyle(firstChild);
-			const fcstyle = window.getComputedStyle(firstChild);
-			let fcMargins = parseFloat(fcstyle.marginLeft) + parseFloat(fcstyle.marginRight)
-			let n_columns = Math.floor( $role[0].offsetWidth/(fcWidth+fcMargins) )
-			let n_children = $ENODEDblclicked[0].ENODE_getChildren().length
-			if(n_children % n_columns == 0){
-				let n_rows = n_children / n_columns;
-				console.log('decoposed!!!')
-				wrapIfNeeded($ENODEDblclicked,'times')
-				let $factor_r = ValToENODEs({type:"cn", val:n_rows, sign:1, exp:1})
-				let $factor_c = ValToENODEs({type:"cn", val:n_columns, sign:1, exp:1})
-				let $factors = $factor_r.add($factor_c); 
-				$ENODEDblclicked.replaceWith($factors);
-				$role.css('width', '');
-				$role.css('height', '');
-								
-			}
-			else{
-				//sum in one numeber
-				let $composed = ValToENODEs({type:"cn", val:n_children, sign:1, exp:1})
-				$ENODEDblclicked.replaceWith($composed)
-			}
-	}//closed or opened
-	*/
 	//******** expand collapse ***********
 	//else if (ENODEClass != 'ci' && ENODEClass != 'cn' && ENODEClass != 'plus') {
 	else if (ENODEClass == 'forAll' || ENODEClass == 'and') {
@@ -409,21 +351,6 @@ function cancelSelected() {
 		RefreshEmptyInfixBraketsGlued();
 		ssnapshot.take();
 	}
-}
-
-function swapElements(obj1, obj2) {
-	// create marker element and insert it where obj1 is
-	const temp = document.createElement("div");
-	obj1.parentNode.insertBefore(temp, obj1);
-
-	// move obj1 to right before obj2
-	obj2.parentNode.insertBefore(obj1, obj2);
-
-	// move obj2 to right before where obj1 used to be
-	temp.parentNode.insertBefore(obj2, temp);
-
-	// remove temporary marker node
-	temp.parentNode.removeChild(temp);
 }
 
 function PActxConclude(PActx) {
