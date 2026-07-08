@@ -998,19 +998,19 @@ function evaluateComparison($exp) {
 		if (!isNaN(firstMember.computedVal) && !isNaN(secondMember.computedVal)) {
 			const prototype = prototypeSearch("ci", "bool")
 			let result
-			if (ENODEClass = "eq") {
+			if (ENODEClass === "eq") {
 				result = firstMember.computedVal == secondMember.computedVal;
 			}
-			else if (ENODEClass = "gt") {
+			else if (ENODEClass === "gt") {
 				result = firstMember.computedVal > secondMember.computedVal;
 			}
-			else if (ENODEClass = "geq") {
+			else if (ENODEClass === "geq") {
 				result = firstMember.computedVal >= secondMember.computedVal;
 			}
-			else if (ENODEClass = "lt") {
+			else if (ENODEClass === "lt") {
 				result = firstMember.computedVal < secondMember.computedVal;
 			}
-			else if (ENODEClass = "leq") {
+			else if (ENODEClass === "leq") {
 				result = firstMember.computedVal <= secondMember.computedVal;
 			}
 			let stringResult

@@ -86,7 +86,7 @@ function searchEventHandler(event){// trova la definizione della proprietà
    const $found = $('#events').find('[data-enode="eventtoaction"]').filter(function(index){
         const $role = this.ENODE_getRoles('.event');
         if($role.length !== 1){
-            console.warn('Role not found' + field);
+            console.warn('Role not found for event: ' + event);
             res = $()
             return res
         }

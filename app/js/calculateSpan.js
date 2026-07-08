@@ -309,8 +309,7 @@ function $RolesAffectedByStartPropositionROLES($startProposition) {
 		$startRole = $startProposition.parent()
 	}
 	else if (propParentOp == 'implies' && $startProposition.hasClass('firstMember')) {
-		if ((startENODE_op == 'implies') && $role)
-			$startRole = $propositionParent[0].ENODE_getRoles('.secondMember');
+		$startRole = $propositionParent[0].ENODE_getRoles('.secondMember');
 	}
 	if ($startRole) {
 		//propagate all Roles excluding start Node //note: apply to yourself?
