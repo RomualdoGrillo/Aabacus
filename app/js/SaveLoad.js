@@ -106,7 +106,7 @@ function inject(MMLstring, $targetRoleOrENODE, containerRequirements, toBeImport
 	}
 	else{
 		ENODEappend($targetRoleOrENODE, $convertedTree);
-		if(containerRequirements='bool'){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
+		if(containerRequirements === 'boolean' || containerRequirements === true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
 			$convertedTree.each(function() {
 				wrapWithDefIfNeededreturnTarget($targetRoleOrENODE,$(this))
 			});
