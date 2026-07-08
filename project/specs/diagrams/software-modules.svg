@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- !!!GOV level:2architecture requiredApprovalFrom:Romualdo -->
 <!--
   Aabacus - schema moduli software (allineato a app/js/ e app/index.html)
 
@@ -61,7 +62,7 @@
   <g id="user-interaction">
     <rect class="box-user" x="110" y="60" width="210" height="46" rx="2"/>
     <text class="label" x="215" y="76">Tool selection, settings...</text>
-    <text class="file-ref" x="215" y="94">MAIN.js ∑ preload.js</text>
+    <text class="file-ref" x="215" y="94">MAIN.js ù preload.js</text>
 
     <rect class="box-user" x="110" y="122" width="210" height="58" rx="2"/>
     <line x1="110" y1="151" x2="320" y2="151" class="conn"/>
@@ -72,7 +73,7 @@
 
     <rect class="box-user" x="110" y="196" width="210" height="46" rx="2"/>
     <text class="label" x="215" y="212">input via keyboard</text>
-    <text class="file-ref" x="215" y="230">MAIN.js ∑ UserEvToFunctCall.js</text>
+    <text class="file-ref" x="215" y="230">MAIN.js ù UserEvToFunctCall.js</text>
 
     <line x1="70" y1="168" x2="110" y2="83"  class="conn"/>
     <line x1="70" y1="200" x2="110" y2="151" class="conn"/>
@@ -85,7 +86,7 @@
   <g id="index-html">
     <rect class="box-ui" x="360" y="30" width="380" height="170" rx="10"/>
     <text class="label-left" x="375" y="52" font-weight="bold">index.html</text>
-    <text class="file-left" x="375" y="68">app/index.html ∑ app/css/</text>
+    <text class="file-left" x="375" y="68">app/index.html ù app/css/</text>
 
     <rect x="400" y="82" width="300" height="100" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
     <text x="430" y="137" font-size="18" fill="#111">Y =</text>
@@ -107,7 +108,7 @@
     <rect class="box-logic" x="450" y="305" width="200" height="265" rx="2"/>
     <text class="label" x="550" y="330" font-weight="bold" font-size="15">ENODE API</text>
     <text class="file-ref" x="550" y="348">ExpressionManager.js</text>
-    <text class="file-ref" x="550" y="362">inflatedeflate.js ∑ infix.js</text>
+    <text class="file-ref" x="550" y="362">inflatedeflate.js ù infix.js</text>
   </g>
 
   <!-- Moduli collegati a ENODE API -->
@@ -135,7 +136,7 @@
     <!-- riga 5: Load/Save -->
     <rect class="box-logic" x="680" y="505" width="210" height="40" rx="2"/>
     <text class="label" x="785" y="519">Load / Save</text>
-    <text class="file-ref" x="785" y="535">SaveLoad.js ∑ preload.js</text>
+    <text class="file-ref" x="785" y="535">SaveLoad.js ù preload.js</text>
 
     <!-- riga 6: Undo -->
     <rect class="box-logic" x="680" y="555" width="210" height="40" rx="2"/>
