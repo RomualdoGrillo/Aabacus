@@ -18,8 +18,7 @@ function ENODEfactorizeMinus($startNode) {
 	$cloneMinus[0].ENODE_getRoles().append($clone);
 	$startNode[0].ENODE_dissolveContainer()
 	//remove minus from $startNode  
-	refreshInfix($extOp);
-	RefreshEmptyInfixBraketsGlued($('body'));
+	RefreshEmptyInfixBraketsGlued($('body'));//rinfresca anche gli infix di $extOp
 	ssnapshot.take();
 }
 

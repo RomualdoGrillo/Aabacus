@@ -1,56 +1,3 @@
-/*
-function repeatInstructAndTryOnePMT(field,propName,firstVal,$ENODE1){
-    var $ENODEList 
-    var match = 0;
-    var res 
-    for(ii=0;ii<5;ii++){ //limitato per evitare loop infiniti
-        if( match<ii){return }//ho fatto un giro a vuoto: senza trovare nulla
-        $ENODEList = $ENODE1.add($ENODE1.find('[data-enode]'));
-        for(j=0; j<$ENODEList.length ;j++){
-            res = TryOnePropertyByName(field,propName, $($ENODEList[j]) ,firstVal) //da rivedere cambiati i parametri e sostituire tryProp() con checkProp()
-            //tryRes = tryProp(field,propName,mode,$($ENODEList[j]))
-            
-            if( tryRes.matchedTF === true ){
-                match++;
-                console.log("matched " + match + " times");//debug
-                break
-            }
-        }
-    }
-    console.log("matched " + match + " times")
-}
-
-*/
-
-/*
-function equalExtENODE($node1,$node2,checkTypeAndName,checkDragTarget){
-    var res
-    if(checkDragTarget){// precondition equal titles
-       if( !titleRequirement($node1,$node2) ){
-           return false //titles do not match
-       }
-    }
-    if( $node1.attr("data-enode") !== $node2.attr("data-enode") )//notSameClass
-    { return false}
-    else if( checkTypeAndName == false){ return true}// no deeper tests required
-    else if( !($node1.attr("data-type") === $node2.attr("data-type"))) //notSameType
-    { return false}
-    else if( symbols.indexOf($node1.attr("data-enode")) != -1  )//is a symbol
-    {
-       res = $node1[0].ENODE_getName() === $node2[0].ENODE_getName()  
-    }
-    else{
-        res = true//no more tests required
-    }  
-    ENODEnodesAddClass($node1,!res);//debug 
-    ENODEnodesAddClass($node2,!res);//debug
-    return res
-}
-*/
-
-
-
-
 function parameterInHeader($parameter,$property){
     if ($property.attr('data-enode') !== 'forAll'){ return undefined}
     const $bvars = GetforAllHeader($property).children('[data-enode]');
@@ -100,24 +47,6 @@ function reformatForallProp($prop,$transform){
 	ENODEappend($tranformParent, $prop)
     return  $newProp
 }
-
-
-/*
-function searchBvarByName($forall,Name){
-    var $bvars = GetforAllHeader($forall).children('[data-enode]');
-    var i
-    var $match = undefined
-    for(var i=0; i<$bvars.length ;i++){
-        var bvarName__ = $bvars[i].ENODE_getName(true)
-        var bvarName = $bvars[i].ENODE_getName();//ottieni il nome privato degli underscore __
-        if(Name === bvarName){
-            $match = $($bvars[i]); 
-            break
-        }
-    }
-    return $match
-}
-*/
 
 
 function parameterType($ENODE,$prop){
@@ -179,14 +108,6 @@ function ParameterNameToType(name){
     }
     else return "x"
 }
-
-function searchForMarked($patternMember,mark){//all'interno di una espressione cerca un elemento marcarto
-    //return marked element
-    return $patternMember.find('[data-enode]').filter(function(){
-        return ( $(this).attr('title') === mark )
-    })
-}
-
 
 function levelsToAncestor($marked,$patternMember){
     //ancestors fino a $prop

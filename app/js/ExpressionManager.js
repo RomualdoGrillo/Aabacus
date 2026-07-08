@@ -92,7 +92,6 @@ ENODE = {
 	ENODECreateDefinition: ENODECreateDefinition,
 	ENODEselectable: ENODEselectable,
 	ENODERefreshAsymmEq: ENODERefreshAsymmEq,
-	ENODE_replaceWith: ENODE_replaceWith,
 	ENODE_getNodes: ENODE_getNodes,
 	ENODE_getRoles: ENODE_getRoles,
 	ENODE_getChildren: ENODE_getChildren,
@@ -363,12 +362,6 @@ function formatForall($forall, $toBeRenamed) {
 	});
 }
 
-function ENODE_replaceWith(replacer) {
-	//replacer must be ENODE
-	$(this.ENODE_getEnclIfPresent()).replaceWith(ENODE_getEnclIfPresent(replacer));
-	return this; // return replaced
-}
-
 function ENODE_getNodes(selector) {
 	$(this).addClass("gettingNodes");
 	const $subnodes = $(this)
@@ -451,26 +444,6 @@ function validTargetsFromOpened($ENODEdragged) {
 	return valids.not($ENODEdragged.parent());
 }
 
-/*
-function canDraggedBeDroopedInThisRole($ENODEdragged,$role){
-	//datatype is compatible
-	if(!typeOk($ENODEdragged, $role)){return false}
-	//******target is OPENED 
-	if(!ENODEclosedDef($role[0])){  
-		//is there place for another?
-		return isTherePlaceForAnother($role)
-	}
-	//******target is CLOSED 
-	else{
-		//New definition and neutral element of conjunction is are properties constituent of the environment, so fundamental the environment can't work without it.
-		// parent is 'And' and dragged is new definition or 'true' 
-		ENODEparent($(this)).attr('data-enode')=='and' &&
-		$ENODEdragged.is("[data-proto=asymmeq]") ||
-		$ENODEdragged[0].ENODE_getName() == "true"
-	}
-}
-*/
-
 function canDraggedBeDroopedInRoleYesWrapNo($ENODEdragged,$role){
 	//******target is OPENED and there is space for another
 	if(!ENODEclosedDef($role[0]) && isTherePlaceForAnother($role) ){  
@@ -538,12 +511,6 @@ function attrAcceptToMinMax(acceptString) {
 	return [min, max]
 }
 
-function overflowExsists(node) {
-	return (
-		node.offsetHeight < node.scrollHeight || node.offsetWidth < node.scrollWidth
-	);
-}
-
 function ENODEclone($node, Extend, removeID) {//default: Extend and RemoveID
 	$clone = $node.clone(); //clona
 	$toBeCleaned = $clone.add($clone.find("*")); //clean discendence too
@@ -596,13 +563,6 @@ function prototypeSearch(className, dataType, selector, name) {
 			return $specificProto.eq(0);
 		} //found specific proto
 		else {
-			/*
-				  let $genericPrototype = $prototypes.filter("#" + className.toLowerCase() + "Prototype" + dataTypeString);
-				  if($genericPrototype.length!=0){
-					  return $genericPrototype.eq(0);//found generic proto
-				  }
-				  else{ return $prototypes.eq(0);}//csn't refine return the firs with the right tag
-				  */
 			return $prototypes.eq(0);
 		}
 	}
@@ -617,7 +577,6 @@ function prototypeSearch(className, dataType, selector, name) {
 		//I nee to extend in order to use _setName
 		ENODEextend($prototype);
 		$prototype[0].ENODE_setName(className)
-		//addTypeDecorations($prototype);
 		return $prototype;
 	}
 	return $prototypes.last(); //in case you find more prototypes
@@ -678,19 +637,6 @@ function wrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
 }
 
 
-function checkCn($s) {
-	//controlla che siano numeri e siano siblings
-	let allCnOk = true;
-	for (let i = 0, len = $s.length; i < len; i++) {
-		//console.log(s[i]);
-		if (isNaN($($s[i]).text())) {
-			allCnOk = false;
-			break;
-		}
-	}
-	return allCnOk;
-}
-
 function checkSiblings($s) {
 	//controlla che siano numeri e siano siblings
 	let allSiblingsOk = true;
@@ -702,23 +648,6 @@ function checkSiblings($s) {
 		}
 	}
 	return allSiblingsOk;
-}
-
-function addTypeDecorations($ENODE) {
-	//get the "type" of the prototype and complete it with decoration
-	const dataType = $ENODE.attr("data-type");
-	let b = $ENODE;
-	if (dataType === "num" && b.find(".leftDecoration").length == 0) {
-		//is decoration present already?
-		b.append($('<div class="leftDecoration"></div>'));
-	}
-	if (
-		(dataType === "num" || dataType === "bool") &&
-		b.find(".topDecoration").length == 0
-	) {
-		const b = $ENODE;
-		b.append($('<div class="topDecoration"></div>'));
-	}
 }
 
 function ENODErenamePrompt($ENODE) {
@@ -876,16 +805,6 @@ function ValToENODEs(partial) {
 		$newENODE = $clone;
 	}
 	return $newENODE;
-}
-
-function ENODEBesideGiven($startENODE) {
-	//Attualmente il contenuto dei role si dispone leftRight e topDown mentre comporre è visto come left e down.
-	//di conseguenza per decidere qual'è l'elemento con cui comporre devo distiguere a seconda dell'orientazione.'
-	if ($toBeComp.css("display") === "inline-block") {
-		return $startENODE.prevAll("[data-enode]:first");
-	} else {
-		return $startENODE.nextAll("[data-enode]:first");
-	}
 }
 
 function refreshOneBracket($ENODE) {
@@ -1090,13 +1009,6 @@ function ENODEapplyFunctToTree(
 		funct($(e), parameterA, parameterB, parameterC);
 	});
 }
-
-/*
-function ENODEfrozenDef(Node){
-	//!! to be refined 
-	return $(Node).closest('[data-tag]')
-}
-*/
 
 /************** ENODE UTILITIES  not API ***********************/
 function ENODEextend($startNode, applyToSubtreeAlso) {

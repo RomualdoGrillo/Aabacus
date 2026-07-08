@@ -14,24 +14,6 @@ function primeFactorization(num){
   //if num isn't prime factor make recursive call
   return (x === num) ? result : primeFactorization(num/x, result) ;
 }
-/*
-function ENODEgetNumber($ENODE){
-  var $elementUnderTest = $ENODE
-  var sign = 1
-  while( $elementUnderTest.attr('data-enode') === "minus" ){
-    //passa all'elemento interno
-    $elementUnderTest = $elementUnderTest[0].ENODE_getRoles().children(':first');
-    sign = sign * -1
-  }
-  if( $elementUnderTest.attr('data-enode') == "cn"){// se è un simbolo
-    var res = sign * Number($elementUnderTest[0].ENODE_getName()) 
-  }
-  else{
-    res="NaN"
-  }
-  return res
-}
-*/
 function ENODENumericCdsAsText($ENODE){
   let $elementUnderTest = $ENODE
   let sign = 1

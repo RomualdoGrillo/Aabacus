@@ -1,24 +1,3 @@
-/*
-funzione accantonata perchè:
-meglio marcare quando è necessario che marcare a strascico.
-non so se funziona l'esclusione dei discendenti del selected.
-function markOriginalPositionInSubtree($root){
-	var $allENODEs = $root.find('[data-enode]')
-	var $marked = $allENODEs.filter(function(){
-		var mark = ENODESmarkUnmark($(this),undefined,"m")
-		return ( mark.indexOf("d")!==-1 || mark.indexOf("s")!==-1 )//  mark-link-cleanup){//se marcato “dragged” o selected non memorizzare path iniziale.
-	})
-	var $remaining = $allENODEs.not($marked.find(['data-enode']))//escludi quelli mrcati e la loro discendenza 
-	$remaining.each(function(){
-			var path = ENODEpath($(this),$root);
-			$(this).attr('data-path',path)		
-	})
-}
-*/
-
-
-
-
 function overwriteFromHeader($forAll) {
     //Dall’header di un forall sovrascrivi il suffisso "__" nel corpo del forall.
     //Attenzione!!, anche le marcature verranno sovrascritte nella sostituzione???
@@ -542,12 +521,6 @@ function orderMatch(PActx,order,replaceInPatternOnly,strictOrder){
 			$pattern.addClass('expandedAsTree');
 			showAllMarks()
 	}
-    //************Marca il path iniziale, in modo da poter riordinare alla fine*************
-    //marcatura "a strascico"
-    /*if(order){
-    	markOriginalPositionInSubtree(PActx.$operand)
-    }
-    */
     //*********** chiama il PatternMatch ricorsivo dandogli le liste iniziali
     //----------------------------------------------->
     
@@ -697,8 +670,6 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
         	break}
         	//se noMatch su questo pattern, allora è inutile continuare col successivo
     }
-    //Debug remove colors
-    if(debugMode){};//PActxViewer
     if(currPattMatch){
         //i pattern sono tutti soddisfatti, controlla che non avanzino input
         if ($Input.filter(':not(".taken")').length != 0) {
@@ -713,15 +684,4 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
     }
     $Input.removeClass('taken');
     return PActx
-}
-
-function PActxViewer(PActx,$currInput,$currPattern){
-	//***************ripulisci tutte le precedenti evidenziazioni*********
-   	//$('*').removeClass("inputFocus");
-	//$('*').removeClass("patternFocus");
-   	$('*').removeClass("input");
-	$('*').removeClass("pattern");
-	//*****************
-	$currInput.addClass("input");
-	$currPattern.addClass("pattern");
 }
