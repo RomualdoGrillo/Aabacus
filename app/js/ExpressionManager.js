@@ -84,6 +84,40 @@ function ENODEcreateSymbol(name, dataType) {
 	return $newNode;
 }
 
+function identifierToENODE(string){
+	let ENODEType 
+	if(isNaN(parseInt(string))){
+		ENODEType = 'ci'
+	}
+	else{
+		ENODEType = 'cn'
+	}
+	let $clone = ENODEclone( prototypeSearch("cn","num") )
+	$clone[0].ENODE_setName(string);
+	$clone.attr('data-enode', ENODEType);//uso un generico prototipo num e qui specifico se cn o ci
+	return	$clone
+}
+
+function dummyParser(string){
+	//parser minimale per stringhe tipo "x=1", "x>0", "x>=2"
+	let op 
+	let splitted
+	let splittedgeq = string.split('>=')
+	let splittedgt = string.split('>')
+	let splittedeq = string.split('=')
+	if(splittedgeq.length==2){splitted=splittedgeq; op='geq'}
+	else if(splittedgt.length==2){splitted=splittedgt; op='gt'}
+	else if(splittedeq.length==2){splitted=splittedeq; op='eq'}
+	if(op){
+		let $operation = ENODEclone( prototypeSearch(op) )
+		let first = identifierToENODE(splitted[0]);
+		let second = identifierToENODE(splitted[1]);
+		$operation[0].ENODE_getRoles('.firstMember').append(first)
+		$operation[0].ENODE_getRoles('.secondMember').append(second)
+		return $operation
+	}
+}
+
 ENODE = {
 	ENODEparent: ENODEparent,
 	ENODEcreateMathmlString: ENODEcreateMathmlString,
@@ -799,6 +833,40 @@ function ValToENODEs(partial) {
 		$newENODE = $clone;
 	}
 	return $newENODE;
+}
+
+function ENODEneedsBracket($ENODE) {
+	const ENODEclass = $ENODE.attr('data-enode')  //
+	const parentClass = ENODEparent($ENODE).attr('data-enode')//
+	// futuribile:
+	//var parentRole = da completare per poter distinguere se in quale "role" è contenuto
+	//la stringa che identifica la posizione dovrebbe diventare <ENODEtype>.<role>
+
+
+	//in each row: first element needs bracket if contained in itself or one of the elements in his row
+	const MatrixBaracketNeeded = [
+		["plus", "times", "power"],// first container
+		["times", "power"],
+		["minus"],
+		["m_inverse"],
+		["and"],
+		["or"]
+	];
+	//check PEMDAS order of operations 
+	const ENODEclassIndex = getCol(MatrixBaracketNeeded, 0).indexOf(ENODEclass)
+	if (ENODEclassIndex != -1) {
+		const row = MatrixBaracketNeeded[ENODEclassIndex];
+		if (row.indexOf(parentClass) != -1) {// found in matrix
+			return true
+		}
+	}
+	//check if plus timess etc.. have one or zero children
+	let needMoreThanOneChild = ["plus", "times", "power"]
+	if (needMoreThanOneChild.indexOf(ENODEclass) != -1 &&
+		$ENODE[0].ENODE_getChildren().length < 2) {
+		return true //highlight 0 or one child
+	}
+	return false // bracket not needed
 }
 
 function refreshOneBracket($ENODE) {

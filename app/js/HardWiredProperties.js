@@ -1,20 +1,4 @@
-function newPActx() {
-	//msg: in caso data di matchedTF=true contiene il nome della proprietà applicata
-	//in caso contrario dovrebbe contenere il motivo del noMatch.
-	//$transform deve contenere il più grande elemento trasformato
-	return {
-		matchedTF: false,
-		msg: "", visualization: "",
-		$cloneProp: undefined,
-		$pattern: undefined,
-		$operand: undefined,
-		$transform: undefined,//must be the the biggest element changed, his parent will be considered when upadating infix ecc..
-		$equation: undefined,
-		replacedAlready: false,
-		lineList: $(),
-		error: false
-	}
-}
+//newPActx è definita in PMTutilities.js: punto comune per proprietà hard-wired e pattern-based
 
 class PropertyDnD {
 	constructor(name, findTgt, apply, icon) {
@@ -40,42 +24,6 @@ let propertiesDnD = [
 	new PropertyDnD('hanoiMoveDnD', validhanoiMove, hanoiMove, "")
 ]
 
-
-
-
-function ENODEneedsBracket($ENODE) {
-	const ENODEclass = $ENODE.attr('data-enode')  //
-	const parentClass = ENODEparent($ENODE).attr('data-enode')//
-	// futuribile:
-	//var parentRole = da completare per poter distinguere se in quale "role" è contenuto
-	//la stringa che identifica la posizione dovrebbe diventare <ENODEtype>.<role>
-
-
-	//in each row: first element needs bracket if contained in itself or one of the elements in his row
-	const MatrixBaracketNeeded = [
-		["plus", "times", "power"],// first container
-		["times", "power"],
-		["minus"],
-		["m_inverse"],
-		["and"],
-		["or"]
-	];
-	//check PEMDAS order of operations 
-	const ENODEclassIndex = getCol(MatrixBaracketNeeded, 0).indexOf(ENODEclass)
-	if (ENODEclassIndex != -1) {
-		const row = MatrixBaracketNeeded[ENODEclassIndex];
-		if (row.indexOf(parentClass) != -1) {// found in matrix
-			return true
-		}
-	}
-	//check if plus timess etc.. have one or zero children
-	let needMoreThanOneChild = ["plus", "times", "power"]
-	if (needMoreThanOneChild.indexOf(ENODEclass) != -1 &&
-		$ENODE[0].ENODE_getChildren().length < 2) {
-		return true //highlight 0 or one child
-	}
-	return false // bracket not needed
-}
 
 
 
