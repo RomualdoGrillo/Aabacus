@@ -1,3 +1,5 @@
+!!!GOV level:1objective requiredApprovalFrom:Romualdo
+
 # Aabacus Core Concepts
 
 This document describes the fundamental concepts of Aabacus. These core concepts define what Aabacus is and how it works at a conceptual level. For technical implementation details, please see the [implementation details](implementation-details.md) document.

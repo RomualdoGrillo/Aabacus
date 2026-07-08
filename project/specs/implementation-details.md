@@ -1,3 +1,5 @@
+!!!GOV level:2architecture requiredApprovalFrom:Romualdo
+
 # Aabacus Implementation Details
 
 This document describes the current technical implementation of Aabacus. While the [core concepts](core-concepts.md) of Aabacus define its fundamental nature, the implementation details described here may evolve over time.

@@ -1,0 +1,8 @@
+---
+description: Rispetta le dichiarazioni GOV nei file del progetto
+alwaysApply: true
+---
+
+Prima di modificare un file, leggi le prime righe e cerca `!!!GOV`.
+Rispetta rigorosamente ogni dichiarazione GOV (level, requiredApprovalFrom, ecc.).
+Se `requiredApprovalFrom:Romualdo`, fermati e chiedi approvazione esplicita prima di modificare.
