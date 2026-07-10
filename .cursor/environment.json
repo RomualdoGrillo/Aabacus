@@ -1,0 +1,13 @@
+{
+  // Opzionale: dopo il Save sulla dashboard Cloud Agents, incolla qui lo snapshot ID
+  // (es. "snapshot-20260212-00000000-0000-0000-0000-000000000000").
+  // Senza snapshot, Cursor usa l'immagine base e riesegue install a ogni avvio.
+  "install": "cd project/tests && npm ci && npx playwright install --with-deps chromium",
+  "terminals": [
+    {
+      "name": "aabacus-app",
+      "command": "npx --yes serve -l tcp://0.0.0.0:5500 app",
+      "description": "Static server for Aabacus app (port 5500). Playwright e2e tests use the same URL."
+    }
+  ]
+}
