@@ -50,8 +50,8 @@ flowchart LR
     CORE[core-specialist<br/>nucleo ENODE]
   end
 
-  subgraph qualita [Qualità — prossimo]
-    T[Tester L4<br/>project/tests/]
+  subgraph qualita [Qualità — attivo]
+    T[Gabba — Tester L4<br/>project/tests/]
   end
 
   R -->|obiettivi, GOV, review PR| AR
@@ -98,7 +98,7 @@ sequenceDiagram
 1. **Un capo per sessione refactor** (L2): evita due Architecture Expert sullo stesso passo del piano.
 2. **Specialist nel perimetro**: css-specialist **modifica liberamente** `app/css/` e **legge** JS/HTML per accoppiamenti; core-specialist non tocca CSS salvo coordinamento.
 3. **Cross-cutting** (rename classi ↔ JS, refactor architetturale): css-specialist **propone** in tabella *Proposte cross-file*; implementa fix minimali solo se strettamente necessari per il task CSS corrente; refactor-lead coordina il resto.
-4. **Tester (L4)** — quando attivo: gate Playwright dopo modifiche a canvas, DnD o nucleo ENODE.
+4. **Gabba (Tester L4)** — gate smoke + Playwright; in evoluzione regression visiva per step CSS ad alto rischio.
 
 ---
 
@@ -118,7 +118,7 @@ Su AISandbox aprire sempre la **cartella locale** del clone; altrimenti Cursor o
 | Ruolo | Agente previsto | Quando |
 |-------|-----------------|--------|
 | Architecture Expert | `refactor-lead.md` | prossimo passo orchestrazione |
-| Tester | `e2e-tester.md` | quando si formalizza il gate test |
+| ~~Tester~~ | **Gabba** (`gabba.md`) | **attivo** — gate + espansione suite |
 | Altri Specialist | rendering, properties, interaction, … | solo se necessario |
 
 ---

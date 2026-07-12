@@ -23,7 +23,7 @@
 | Stili, token, layout visivo, inventario CSS legacy | `css-specialist` |
 | Proposte cross-file dal css-specialist (tabella a fine task) | refactor-lead valuta → core / interaction / merge PR |
 | Nucleo ENODE, MathML, logica albero | `core-specialist` |
-| Regressioni Playwright | Tester L4 (*quando attivo*) |
+| Gate test (smoke, Playwright, visual) | **Gabba** (Tester L4) |
 
 ## Escalation
 
