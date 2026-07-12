@@ -7,6 +7,8 @@
     "test:e2e:demo": "DEMO=1 PAUSE_MS=8000 playwright test e2e/hanoi-drag.spec.js --headed --workers=1 -g \"trusted mouse\"",
     "test:e2e:watch": "DEMO=1 PAUSE_MS=5000 playwright test --headed --workers=1",
     "test:e2e:ui": "playwright test --ui",
+    "test:visual": "playwright test e2e/css-visual-regression.spec.js",
+    "test:visual:update": "playwright test e2e/css-visual-regression.spec.js --update-snapshots",
     "test:console:hanoi": "node testViaConsole/open-console-hanoi.js",
     "test:console:hanoi:solve": "node testViaConsole/solve-hanoi-demo.js",
     "test:console:paste-snippet": "node testViaConsole/print-paste-snippet.js"
