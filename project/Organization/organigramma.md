@@ -1,0 +1,133 @@
+# Organigramma agenti Aabacus
+
+Romualdo coordina il team AI attraverso ruoli a livelli (`AGENTS.md`). Gli agenti Cursor in `.cursor/agents/` implementano i ruoli Specialist attualmente attivi.
+
+---
+
+## 1. Piramide dei livelli
+
+```mermaid
+flowchart TB
+  M["L1 — Master<br/>(Romualdo)"]
+  A["L2 — Architecture Expert<br/>refactor-lead"]
+  S["L3 — Specialist<br/>css-specialist, core-specialist"]
+  T["L4 — Tester<br/>(da attivare)"]
+  C["Consultant-PriorArt<br/>(opzionale)"]
+
+  M --> A
+  A --> S
+  S --> T
+  A --> C
+  M --> C
+```
+
+| Livello | Chi | Modifica codice? | Approvazione Romualdo |
+|---------|-----|------------------|------------------------|
+| L1 | Romualdo (Master) | specs livello 1 | — |
+| L2 | Architecture Expert | sì, multi-modulo | **sempre** prima di refactor trasversali |
+| L3 | Specialist | sì, perimetro ristretto | no, se resta nel confine |
+| L4 | Tester | solo `project/tests/` | no |
+| — | Consultant-PriorArt | no (solo docs) | no |
+
+---
+
+## 2. Organigramma operativo
+
+Solo i ruoli rilevanti **oggi**. Altri Specialist si aggiungeranno quando servirà.
+
+```mermaid
+flowchart LR
+  subgraph umano [Umano]
+    R[Romualdo — Master L1]
+  end
+
+  subgraph orchestrazione [Orchestrazione]
+    AR[Architecture Expert<br/>refactor-lead]
+  end
+
+  subgraph specialisti [Specialist L3 — attivi]
+    CSS[css-specialist<br/>app/css/]
+    CORE[core-specialist<br/>nucleo ENODE]
+  end
+
+  subgraph qualita [Qualità — prossimo]
+    T[Tester L4<br/>project/tests/]
+  end
+
+  R -->|obiettivi, GOV, review PR| AR
+  AR -->|delega stile| CSS
+  AR -->|delega nucleo espressioni| CORE
+  AR -->|dopo modifiche| T
+  CSS --- Git[(git · specs · PR)]
+  CORE --- Git
+  AR --- Git
+```
+
+---
+
+## 3. Come collaborano (non c’è chat tra agenti paralleli)
+
+Gli agenti **non** si parlano in tempo reale. Il coordinamento avviene così:
+
+| Meccanismo | Uso |
+|------------|-----|
+| **Repo Git** | codice, branch, PR, review |
+| **`project/specs/`** | contratto architetturale e regole |
+| **`AGENTS.md` + `Organization/roles/`** | ruoli e perimetri |
+| **`.cursor/rules/gov.mdc`** | GOV (`!!!GOV` nei file) |
+| **Delega subagent** | nella **stessa sessione**, il genitore invoca un agente figlio (es. refactor-lead → css-specialist) |
+| **Handoff locale ↔ cloud** | stessa conversazione, ambiente diverso (opzionale) |
+
+```mermaid
+sequenceDiagram
+  participant R as Romualdo
+  participant AR as refactor-lead L2
+  participant S as Specialist L3
+  participant G as git / specs
+
+  R->>AR: obiettivo + approvazione piano
+  AR->>G: legge software-modules.md, GOV
+  AR->>S: delega (css-specialist o core-specialist)
+  S->>G: commit su branch
+  AR->>R: PR per review
+  R->>G: merge
+```
+
+### Regole pratiche
+
+1. **Un capo per sessione refactor** (L2): evita due Architecture Expert sullo stesso passo del piano.
+2. **Specialist nel perimetro**: css-specialist non tocca JS; core-specialist non tocca CSS salvo coordinamento.
+3. **Cross-cutting** (classi CSS usate da JS, rename simboli globali): il Specialist **segnala** al refactor-lead, non agisce da solo.
+4. **Tester (L4)** — quando attivo: gate Playwright dopo modifiche a canvas, DnD o nucleo ENODE.
+
+---
+
+## 4. Profili Mac
+
+| Profilo | Uso tipico | Ambiente agenti |
+|---------|------------|-----------------|
+| **romualdogrillo** | Master, review, visione, MCP GDrive sensibile | locale (+ cloud per task lunghi) |
+| **AISandbox** | Specialist, refactor, test | **locale** (repo clonato e cartella aperta) |
+
+Su AISandbox aprire sempre la **cartella locale** del clone; altrimenti Cursor offre solo Cloud.
+
+---
+
+## 5. Roadmap agenti (non ancora creati)
+
+| Ruolo | Agente previsto | Quando |
+|-------|-----------------|--------|
+| Architecture Expert | `refactor-lead.md` | prossimo passo orchestrazione |
+| Tester | `e2e-tester.md` | quando si formalizza il gate test |
+| Altri Specialist | rendering, properties, interaction, … | solo se necessario |
+
+---
+
+## 6. Diagrammi stampabili
+
+PDF generati da `diagrams/*.mmd`:
+
+- [`diagrams/organigramma-operativo.pdf`](diagrams/organigramma-operativo.pdf)
+- [`diagrams/organigramma-livelli.pdf`](diagrams/organigramma-livelli.pdf)
+
+Rigenerazione: `bash project/Organization/scripts/render-diagrams.sh`

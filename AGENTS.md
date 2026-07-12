@@ -15,4 +15,4 @@ Senza ruolo assegnato: solo lettura e proposte, nessuna modifica al codice.
 | **Consultant-PriorArt** | —       | Software simili, didattica, letteratura                    | Solo documenti in `project/specs/`                                        | Non implementa; propone e documenta |
 
 
-Definizioni estese (se presenti): `project/Organization/roles/`
+Definizioni estese: [`project/Organization/`](project/Organization/) (organigramma, schede ruolo, agenti attivi).

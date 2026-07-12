@@ -7,7 +7,7 @@ Materiale di supporto allo sviluppo (non fa parte del deploy dell'app).
 | `specs/` | Documentazione tecnica e concetti |
 | `specs/diagrams/` | Diagrammi architetturali (SVG editabili) |
 | `dev/` | Script di sviluppo (es. ChromeLauncher) |
-| `Organization/` | Schede ruolo agenti (`roles/`), organigramma (vedi `AGENTS.md`) |
+| `Organization/` | Organigramma agenti, schede ruolo (`roles/`), diagrammi PDF |
 | `tests/` | Test automatizzati (e2e, helper) |
 | `tests/recipes/` | Ricette browser per il ruolo **Tester** (L4) |
 | `release/` | Packaging e release (futuro) |
