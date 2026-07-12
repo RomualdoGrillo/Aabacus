@@ -18,7 +18,7 @@ I test devono comprendere:
 | Iniettore Playwright | `project/tests/helpers/injectTest.js` | Carica core + esercizio in `page.evaluate` |
 | Test manuali console | `project/tests/testViaConsole/` | Istruzioni + script per DnD via DevTools |
 | Test E2E | `project/tests/e2e/` | Playwright: orchestra test, legge pass/fail |
-| Ricette | `project/tests/recipes/` | Step leggibili per agente GABBA |
+| Ricette | `project/tests/recipes/` | Step leggibili per il ruolo **Tester** (L4, `AGENTS.md`) |
 | Spec | `project/specs/tests.md` | Regole e obiettivi |
 
 Gli helper di test **non** sono file serviti da `app/` — Playwright li inietta dopo il caricamento dell'app. Riutilizzano jQuery e globali dell'app (`GLBsettings`, `Sortable`, …) senza duplicarne la logica ENODE.

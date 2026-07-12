@@ -63,7 +63,7 @@ In `app/index.html` i CSS applicativi seguono jQuery UI, poi IDE → SVG → sty
 2. **Token `:root`** — preferisci variabili CSS esistenti (`--primary-color`, `--num-color`, `--div-radius`, …) prima di introdurre colori/spacing hard-coded.
 3. **Coerenza ENODE** — mantieni convenzioni visive per tipi (`cn`, operatori, `forAll`, equazioni asimmetriche).
 4. **Touch e accessibilità** — target tap adeguati, contrasto leggibile; Aabacus punta anche a tablet (vedi `implementation-details.md`).
-5. **Test** — dopo modifiche rilevanti al canvas o al DnD, chiedi delega al Tester (Playwright / ricette GABBA) o segnala all'utente di verificare con `?demo=1` e preload Hanoi se appropriato.
+5. **Test** — dopo modifiche rilevanti al canvas o al DnD, chiedi delega al ruolo **Tester** (Playwright, ricette in `project/tests/recipes/`) o segnala all'utente di verificare con `?demo=1` e preload Hanoi se appropriato.
 
 ## Output atteso
 
