@@ -1,0 +1,25 @@
+flowchart LR
+  subgraph umano [Umano]
+    R["Romualdo — Master L1"]
+  end
+
+  subgraph orchestrazione [Orchestrazione]
+    AR["Architecture Expert — refactor-lead"]
+  end
+
+  subgraph specialisti [Specialist L3 — attivi]
+    CSS["css-specialist — app/css/"]
+    CORE["core-specialist — nucleo ENODE"]
+  end
+
+  subgraph qualita [Qualità — prossimo]
+    T["Tester L4 — project/tests/"]
+  end
+
+  R -->|"obiettivi, GOV, review PR"| AR
+  AR -->|"delega stile"| CSS
+  AR -->|"delega nucleo espressioni"| CORE
+  AR -->|"dopo modifiche"| T
+  CSS --- Git[("git · specs · PR")]
+  CORE --- Git
+  AR --- Git
