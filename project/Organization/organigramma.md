@@ -46,7 +46,7 @@ flowchart LR
   end
 
   subgraph specialisti [Specialist L3 — attivi]
-    CSS[css-specialist<br/>app/css/]
+    CSS[css-specialist<br/>app/css/ + proposte cross-file]
     CORE[core-specialist<br/>nucleo ENODE]
   end
 
@@ -96,8 +96,8 @@ sequenceDiagram
 ### Regole pratiche
 
 1. **Un capo per sessione refactor** (L2): evita due Architecture Expert sullo stesso passo del piano.
-2. **Specialist nel perimetro**: css-specialist non tocca JS; core-specialist non tocca CSS salvo coordinamento.
-3. **Cross-cutting** (classi CSS usate da JS, rename simboli globali): il Specialist **segnala** al refactor-lead, non agisce da solo.
+2. **Specialist nel perimetro**: css-specialist **modifica liberamente** `app/css/` e **legge** JS/HTML per accoppiamenti; core-specialist non tocca CSS salvo coordinamento.
+3. **Cross-cutting** (rename classi ↔ JS, refactor architetturale): css-specialist **propone** in tabella *Proposte cross-file*; implementa fix minimali solo se strettamente necessari per il task CSS corrente; refactor-lead coordina il resto.
 4. **Tester (L4)** — quando attivo: gate Playwright dopo modifiche a canvas, DnD o nucleo ENODE.
 
 ---
