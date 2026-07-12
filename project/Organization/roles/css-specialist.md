@@ -79,7 +79,18 @@ Non rinominare né rimuovere senza coordinamento (refactor-lead o core-specialis
 1. **Inventario** — mappa file, duplicati, `!important`, dipendenze da JS
 2. **Token** — consolidare `:root` prima di estetica fine
 3. **Un file o sezione per step** — evitare rewrite monolitico di `style.css` (~990 righe)
-4. **Test** — dopo canvas/DnD/selezione: delega a Tester L4 o segnala verifica manuale
+4. **Test** — dopo ogni step (sempre rischio ≥ medio): **delega subagent** `/gabba` in **foreground** nella **stessa sessione**; attendi tabella PASS/FAIL prima dello step successivo. **Non** chiedere a Romualdo di incollare risultati tra chat parallele.
+
+### Delega test a Gabba (template)
+
+```text
+/gabba Gate L4 sullo step appena completato.
+Branch/commit: […]
+File CSS toccati: […]
+Rischio: medio|alto
+Esegui smoke + playwright; visual se baseline esiste.
+Restituisci tabella PASS/FAIL (formato tester.md).
+```
 
 ## Coordinamento
 

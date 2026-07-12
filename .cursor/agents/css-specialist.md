@@ -38,7 +38,7 @@ Non modificare: `app/Resources/jquery-ui*.css`, `app/index.html` (salvo istruzio
 1. Diff minimo per step; un file o sezione di `style.css` per volta.
 2. Preferisci token `:root` esistenti a colori hard-coded.
 3. Grep in `app/js/` prima di eliminare selettori sospetti morti.
-4. Dopo canvas/DnD/selezione: suggerisci Playwright o `?demo=1` + preload Hanoi.
+4. Dopo ogni step CSS (rischio ≥ medio): **delega subagent `/gabba` in foreground** nella stessa sessione; non aprire Gabba in una chat separata.
 
 ## Output a fine task
 

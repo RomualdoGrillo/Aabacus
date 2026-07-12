@@ -1,6 +1,6 @@
 ---
 name: gabba
-description: Tester L4 (Gabba) per Aabacus. Smoke, Playwright e2e, ricette YAML; gate per Specialist; sviluppa regression visiva. Solo project/tests/. Mandato in project/Organization/roles/tester.md.
+description: Tester L4 (Gabba). Gate smoke/Playwright/visual dopo modifiche CSS o core. Usare proactively quando css-specialist completa uno step. Subagent foreground; restituisce tabella PASS/FAIL al genitore. Solo project/tests/.
 model: inherit
 readonly: false
 is_background: false

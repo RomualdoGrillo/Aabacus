@@ -26,8 +26,9 @@ Prima si definisce il **ruolo**; poi si “assume” un agente scrivendo (o aggi
 |--------|-------|---------|-------|
 | `css-specialist` | Specialist CSS | L3 | attivo |
 | `core-specialist` | Specialist nucleo espressioni | L3 | attivo |
+| `gabba` | Tester L4 | L4 | attivo — **subagent**, non chat parallela |
 
-Altri Specialist (rendering, properties, interaction, …) e il Tester verranno aggiunti quando servirà.
+Altri Specialist (rendering, properties, interaction, …) si aggiungono quando servirà.
 
 ## Diagrammi: come conservarli
 

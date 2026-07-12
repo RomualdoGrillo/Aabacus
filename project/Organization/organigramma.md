@@ -65,18 +65,28 @@ flowchart LR
 
 ---
 
-## 3. Come collaborano (non c’è chat tra agenti paralleli)
+## 3. Come collaborano — due modelli (scegliere quello giusto)
 
-Gli agenti **non** si parlano in tempo reale. Il coordinamento avviene così:
+### ❌ Modello sbagliato: due Cloud Agent separati
+
+Aprire **css-specialist** in una tab e **Gabba** in un’altra → Romualdo deve **copiare ogni risposta** a mano. Non scala; Romualdo diventa collo di bottiglia sui test.
+
+### ✅ Modello giusto: subagent nella **stessa sessione**
+
+Un solo agente **genitore** (es. css-specialist) **delega** a Gabba; Gabba lavora in contesto isolato e **restituisce il risultato al genitore** nella stessa chat. Romualdo non incolla nulla.
 
 | Meccanismo | Uso |
 |------------|-----|
+| **Subagent** (`.cursor/agents/gabba.md`) | css-specialist invoca `/gabba` o “delega a Gabba” → gate test automatico |
 | **Repo Git** | codice, branch, PR, review |
 | **`project/specs/`** | contratto architetturale e regole |
 | **`AGENTS.md` + `Organization/roles/`** | ruoli e perimetri |
-| **`.cursor/rules/gov.mdc`** | GOV (`!!!GOV` nei file) |
-| **Delega subagent** | nella **stessa sessione**, il genitore invoca un agente figlio (es. refactor-lead → css-specialist) |
+| **CI su PR** (futuro) | smoke/playwright su ogni push senza umano in loop |
 | **Handoff locale ↔ cloud** | stessa conversazione, ambiente diverso (opzionale) |
+
+Gabba **è già definito** in `.cursor/agents/gabba.md` — non serve un secondo Cloud Agent creato da zero; serve **invocarlo come subagent** dal genitore.
+
+**Requisiti Cursor** (vedi [Subagents](https://cursor.com/docs/subagents)): modello **non Auto** se il tool Task non è disponibile; subagent in **foreground** per attendere PASS/FAIL prima dello step successivo.
 
 ```mermaid
 sequenceDiagram
