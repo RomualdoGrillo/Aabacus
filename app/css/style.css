@@ -159,10 +159,6 @@ div {
   justify-content: normal;
 }
 
-/*.name {
-	  padding:0;
-  }
-  */
 .row {
   flex-direction: row;
 }
@@ -266,10 +262,6 @@ body:not(.fitch):not([tool="declare"])
 [data-enode="and"] > .ul_role > [data-enode] {
   margin: 2px;
 }
-/* le definizioni occupano piu' spazio a causa del sigillo che sporge*/
-/*[data-enode="and"]>.ul_role>[data-enode][data-viseq=asymmetric]{
-	  margin-top:2px;
-  }*/
 
 /*questo per ottenere disposizione verticale in times e and*/
 [timesdisposition="vertTimes"] [data-enode="times"] > [class*="_role"] {
@@ -497,7 +489,6 @@ body:not(.fitch):not([tool="declare"])
   border-color: Grey !important;
 }
 
-/*.selected[data-enode], .selected[data-enode]>.s_role>.glued ,.selected[data-enode]>.s_role>.glued[data-enode]>*{*/
 .selected[data-enode],
 .selected[data-enode] [data-enode],
 .selected[data-enode]::after {
@@ -694,14 +685,6 @@ body:not(.fixBorders) #canvasRole [data-enode][data-type="num"]:not(:hover) {
 
 /*written here to prevale over all other class css rules*/
 
-/* roles inside glued ENODEs should still work*/
-/* .glued,.glued>*{
-	  pointer-events: none; 
-  }*/
-/* .glued>*>*{
-	  pointer-events: auto; 
-  }*/
-
 .glued {
   border-width: 0px;
   border-color: transparent;
@@ -844,12 +827,6 @@ body.debug .operand:not([data-enode]) {
 [data-vis="resizable"] > .ul_role > * {
   display: inline-flex; /* do not know why but it works*/
 }
-/*
-  [data-vis=resizable]>.ul_role>[data-enode]{
-	  margin:0!important;
-  }
-  */
-
 .name {
   pointer-events: none;
 }
@@ -893,10 +870,6 @@ body:not(.showNumerator1) [data-enode="m_inverse"] > .numerator1 {
   background-color: red;
 }
 
-.debug .mu_Downstream1,
-.debug .mu_Downstream1 * {
-  /*background-color: #4d68ff!important;*/
-}
 body:not(.fixBorders) #canvasRole [data-enode][data-type="num"]:not(:hover),
 body:not(.fixBorders) #result [data-enode][data-type="num"]:not(:hover) {
   border-color: transparent;
@@ -940,9 +913,7 @@ body[tool=autoAdapt] .sortable-drag.attackPoint /*[title^="s"]*/ {
 }
 
 /***********   tgt DUMMY element   *********/
-/* .tgt DIVs are dynamically added to act as sortable targets
-  
-  /*[data-enode][target]::after, */
+/* .tgt DIVs are dynamically added to act as sortable targets */
 .tgt,
 .notAtgt {
   pointer-events: none;
@@ -961,12 +932,6 @@ body[tool=autoAdapt] .sortable-drag.attackPoint /*[title^="s"]*/ {
   width: 100px;
   height: 100px;
 }
-/* all valid targets */
-/*
- [target]:not([target=""]) {
-	background-color: #eaeaea!important;
-}*/
-
 .mu_DropTarget {
   border-color: rgb(98 100 255) !important;
 }
@@ -979,9 +944,6 @@ body[tool="autoAdapt"] .mu_DropTarget {
   background-color: #ee82ee73;
 }
 
-.mu_Downstream1 {
-  /* background-color: #4d68ff!important; */
-}
 .tgt > * {
   /*target is not a pseudo element*/
   background-color: grey !important;

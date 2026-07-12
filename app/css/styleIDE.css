@@ -100,10 +100,6 @@ button>.ui-icon {
   display: inline-block;
 }
 
-#paletteRow {
-  /* overflow-x: hidden; */
-}
-
 #visSetup {
   flex-direction: column;
 }

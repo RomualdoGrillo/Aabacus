@@ -5,16 +5,6 @@ In this way infix and tag can exist at the same time
 */
 
 /***********   Infix Notation   *********/
-/*
-[data-enode=segment]>.ul_role>[data-enode]::before{
-	background-image: url(../images/segment.svg);
-	min-width: 22px;
-	min-width: 22px;
-}
-[data-enode=segment]>.ul_role>[data-enode]:not(:first-of-type){
-	margin-left: 11px; 
-}
-*/
 .inheritInfix{
 	background-size:0;
 }
@@ -105,36 +95,6 @@ body[timesdisposition=brTimes] br + [data-enode]::before{
 
 
 
-/*
-using ::before and ::after for prefix and postfix notation does not offer advantages
-disadvantage: mixfix notation needs a different approach
-disadvantage: building new prototypes is less intuitive
-
-
-[data-enode="and"]:not(#canvasAnd):not(.sortable-ghost)::before{
-	content:"";
-	position: absolute;
-	left: 2px;
-	background-image: url(../images/GullBraceLeft.svg);
-	background-color:red;
-	width:17px;
-	height:90%;
-	background-size: contain;
-	background-repeat: no-repeat;
-}
-[data-enode="deftrue"]::before{
-	content:attr(data-decoration);
-	position: absolute;
-	left: -200px;
-	background-image: url(../images/GullBraceLeft.svg);
-	background-color:red;
-	width:17px;
-	height:90%;
-	background-size: contain;
-	background-repeat: no-repeat;
-}
-*/
-
 /***********   Tags   ***********/
 
 [data-tag]:not([data-vis=collapsed]):not([data-enode=ci])::after{
@@ -144,8 +104,6 @@ disadvantage: building new prototypes is less intuitive
 	box-shadow: 2px 3px 5px 0px grey;
 }
 
-/*[data-tag]::after{
-	content:attr(data-tag);*/
 [data-tag]::after/*,[title]:not([title=""]):hover::after*/{
 	content:
 	attr(data-tag)/*attr(title)*/;

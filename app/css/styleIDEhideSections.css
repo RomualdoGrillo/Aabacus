@@ -113,10 +113,6 @@ body:not(.debug) #paletteRow[vis="hide"] *,
 		justify-content: center;
 		min-height: 20px;
 }
-#events,#settings{
-	/* flex-grow:1; */
-}
-
 .fixButton{
 	position:absolute;
 	right: 0px;

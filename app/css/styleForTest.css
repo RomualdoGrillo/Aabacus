@@ -98,28 +98,5 @@ body.eforall [data-enode=forAll]>.row>.forallSymbol{
     opacity: 0;
   }
 }
-/*#canvasRole *:not(.selected) {
- 	    -webkit-filter: grayscale(25%);
-       -moz-filter: grayscale(25%);
-         -o-filter: grayscale(25%);
-        -ms-filter: grayscale(25%);
-            filter: grayscale(25%);
-     
-}*/
 
-
-/* notazione "antico egitto" egypt
-.m_inverseDecoration{
-	height: 10px;
-	padding:0px;
-	background-color: #645ca000;
-	position: absolute;
-	margin-left: auto;
-	margin-right: auto;
-	left: 0;
-	right: 0;
-	background-image:url(../images/FractEgyptian.svg);
-	background-repeat: no-repeat;
-}
-*/
 
