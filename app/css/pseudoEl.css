@@ -41,9 +41,6 @@ In this way infix and tag can exist at the same time
 {
 	margin-left: 11px;/*space for infix symbol*/
 }
-[data-enode=plus][data-vis=resizable]>[class*="role"]>[data-enode]/*:not(.sortable-drag)*/{
-	margin: 4px;
-}
 body.hidePlus [data-enode=plus]>[class*="role"]>[data-enode]::before{
 	color:transparent;	
 }
@@ -51,7 +48,7 @@ body[timesdisposition=brTimes] br + [data-enode]::before{
 	background-color:transparent!important;	
 }
 
-[data-enode=plus]>[class*="role"]>[data-enode]:not(:first-of-type):not([data-vis=resizable])::before,
+[data-enode=plus]>[class*="role"]>[data-enode]:not(:first-of-type)::before,
 [data-enode=leq]>.ol_role>[data-enode]:not(:first-of-type)::before,
 [data-enode=lt]>.ol_role>[data-enode]:not(:first-of-type)::before
 /*,[data-enode=segment]>.ul_role>[data-enode]:not(:first-of-type)::before*/{
