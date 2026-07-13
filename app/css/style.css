@@ -60,6 +60,7 @@
 
 
 #canvasRole {
+  /* #canvasRole root always white */
   background-color: white;
   justify-content: flex-start;
   padding: var(--spacing-md);
@@ -68,7 +69,7 @@
 }
 
 .celebration {
-  margin-left: var(--spacing-md);
+  margin-left: 10px;
   animation: celebrate 0.5s ease-in-out;
 }
 
@@ -466,11 +467,6 @@ body:not(.fitch):not([tool="declare"])
   background-color: rgb(190, 195, 255);
 }
 
-#canvasRole {
-  background-color: white;
-  justify-content: flex-start;
-} /* #canvasRole root always white*/
-
 .coloredBorders [class*="l_role"][data-type="bool"].empty,
 .coloredBorders [class*="s_role"][data-type="bool"] {
   background-color: rgb(194, 243, 194);
@@ -665,10 +661,6 @@ body.fitch .leftBar {
   flex-direction: column;
 }
 
-body:not(.fixBorders) #canvasRole [data-enode][data-type="num"]:not(:hover) {
-  border-color: transparent;
-}
-
 .showPar .brackets:not([data-and="horizontal"]):not([data-vis="collapsed"]),
 .showPar .rolescontainer {
   border-left-color: black !important;
@@ -802,23 +794,18 @@ body.debug .operand:not([data-enode]) {
 }
 
 [data-vis="resizable"] > .ul_role {
-  border-radius: 5px;
   resize: horizontal;
   overflow: hidden;
-  border-radius: 0px;
   height: auto;
   min-width: 20px;
+  width: 80px;
+  padding-left: 4px;
+  display: inline-block; /* do not know why but it works*/
+  border-radius: 5px;
 }
 [data-vis="resizable"] {
   position: absolute;
   border-radius: var(--div-radius) var(--div-radius) 0px var(--div-radius);
-}
-
-[data-vis="resizable"] > .ul_role {
-  border-radius: 5px;
-  width: 80px;
-  padding-left: 4px;
-  display: inline-block; /* do not know why but it works*/
 }
 [data-vis="resizable"] > .ul_role > * {
   display: inline-flex; /* do not know why but it works*/
@@ -843,9 +830,6 @@ body.debug .operand:not([data-enode]) {
 
 .celebration > img {
   height: 35px;
-}
-.celebration {
-  margin-left: 10px;
 }
 
 [data-enode="m_inverse"] {
