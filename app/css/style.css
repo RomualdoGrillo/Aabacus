@@ -510,7 +510,6 @@ body:not(.fitch):not([tool="declare"])
 }
 
 .exclusiveFocus,
-[data-vis="resizable"],
 .waiting,
 .mu_targetsCommonParentx,
 .mu_span {
@@ -793,6 +792,7 @@ body.debug .operand:not([data-enode]) {
   display: none;
 }
 
+<<<<<<< HEAD
 [data-vis="resizable"] > .ul_role {
   resize: horizontal;
   overflow: hidden;
@@ -810,6 +810,8 @@ body.debug .operand:not([data-enode]) {
 [data-vis="resizable"] > .ul_role > * {
   display: inline-flex; /* do not know why but it works*/
 }
+=======
+>>>>>>> 56016febd51e81ef1920ef716c3022e1726ba518
 .name {
   pointer-events: none;
 }
