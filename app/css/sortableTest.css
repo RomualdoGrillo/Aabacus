@@ -11,10 +11,6 @@
 	display:none;
 }
 
-.fraction>.ul_role>.protox{
-	display:block!important;
-	height:20px
-}
 body[tool=autoAdapt] .sortable-ghost{
 	display: none;
 }

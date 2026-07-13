@@ -523,10 +523,6 @@ body:not(.fitch):not([tool="declare"])
   box-shadow: 0 0 0 999px #b8b8b88a;
   transition: all, 1s;
 }
-.exclusiveFocus2 {
-  z-index: 101;
-}
-
 #canvasRole .exclusiveFocus .forallSymbol {
   display: none;
 }
