@@ -62,3 +62,104 @@ test.describe('CSS visual regression', () => {
 		});
 	}
 });
+
+/**
+ * Copertura "vista ampia": presidia i selettori che le baseline `#canvasRole`
+ * NON esercitano perché stanno fuori dall'area di rendering.
+ *
+ * Perché `#centralColumn` e non l'intera pagina: `#centralColumn` contiene
+ * palette + `#canvas`/`#canvasRole` + `#result`, mentre le colonne laterali
+ * (`#leftColumn`/`#rightColumn`) — che sfumano via `:not(:hover)` e sarebbero
+ * fonte di flakiness — ne sono FUORI (sono sibling). Così otteniamo una vista
+ * più ampia di `#canvasRole` (in particolare include `#result`) restando
+ * deterministici, senza iniettare CSS di stabilizzazione.
+ *
+ * `#result` è nascosto se `body` non ha `.gameMode` (styleIDEhideSections.css).
+ * `threetimestwo.mmls` ha `"gameMode":true` nei settings e una sezione `result`
+ * con nodi `num`: l'app applica `.gameMode` al body in fase di load e popola
+ * `#result` — meccanismo reale, nessuna API inventata.
+ */
+const SHOT = { animations: 'disabled', maxDiffPixelRatio: 0.01 };
+const GAMEMODE_EXERCISE = './Data/exercises/threetimestwo.mmls';
+
+async function loadAndWait(page, preloadPath) {
+	await page.goto('/?preloadPath=' + preloadPath);
+	await injectTestHelpers(page);
+	try {
+		await page.evaluate(() => window.__aabacusTest.waitForReady());
+	} catch (err) {
+		throw new Error(
+			'Preload "' + preloadPath + '" non pronto: #canvasRole senza [data-enode]. ' +
+				'Causa: ' + (err && err.message ? err.message : String(err))
+		);
+	}
+}
+
+test.describe('CSS visual regression — wide view', () => {
+	// A) Vista ampia con #result: copre `num:not(:hover)` esteso a #result e lo
+	//    stile di #result, insieme a canvas/palette, in un solo scatto stabile.
+	test('centralView-threetimestwo', async ({ page }) => {
+		await loadAndWait(page, GAMEMODE_EXERCISE);
+
+		// Attende l'attivazione reale di gameMode (#result visibile) e il popolamento.
+		try {
+			await page.waitForFunction(
+				() => {
+					const inGameMode = document.body.classList.contains('gameMode');
+					const result = document.querySelector('#result');
+					return inGameMode && result && result.querySelector('[data-enode]');
+				},
+				null,
+				{ timeout: 10000 }
+			);
+		} catch (err) {
+			throw new Error(
+				'centralView: #result non attivabile in modo deterministico ' +
+					'(atteso body.gameMode + #result con [data-enode]). ' +
+					'Causa: ' + (err && err.message ? err.message : String(err))
+			);
+		}
+
+		await page.waitForTimeout(300);
+		await expect(page.locator('#centralColumn')).toHaveScreenshot('wide-centralView-threetimestwo.png', SHOT);
+	});
+
+	// C) .celebration: reward appeso a #result al completamento. Non risolviamo
+	//    l'esercizio (il solve completo è costoso/fragile): invochiamo la funzione
+	//    app REALE `VisualizeCelebration` (stessa usata dal branch di reward in
+	//    game.js), che appende `.celebration` a #result esattamente come in
+	//    produzione. Deterministico e stabile; esercita la regola CSS `.celebration`.
+	test('celebration-threetimestwo', async ({ page }) => {
+		await loadAndWait(page, GAMEMODE_EXERCISE);
+		await page.waitForFunction(() => document.body.classList.contains('gameMode'), null, {
+			timeout: 10000
+		});
+
+		await page.evaluate(() => {
+			if (typeof VisualizeCelebration !== 'function') {
+				throw new Error('VisualizeCelebration non disponibile come globale app');
+			}
+			VisualizeCelebration('images/goal.svg');
+		});
+
+		// Attende il caricamento effettivo dell'immagine di reward.
+		try {
+			await page.waitForFunction(
+				() => {
+					const img = document.querySelector('.celebration > img');
+					return img && img.complete && img.naturalWidth > 0;
+				},
+				null,
+				{ timeout: 10000 }
+			);
+		} catch (err) {
+			throw new Error(
+				'celebration: immagine reward non caricata (.celebration > img). ' +
+					'Causa: ' + (err && err.message ? err.message : String(err))
+			);
+		}
+
+		await page.waitForTimeout(300);
+		await expect(page.locator('#result')).toHaveScreenshot('wide-celebration-threetimestwo.png', SHOT);
+	});
+});
