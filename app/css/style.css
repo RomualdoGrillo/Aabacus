@@ -792,26 +792,6 @@ body.debug .operand:not([data-enode]) {
   display: none;
 }
 
-<<<<<<< HEAD
-[data-vis="resizable"] > .ul_role {
-  resize: horizontal;
-  overflow: hidden;
-  height: auto;
-  min-width: 20px;
-  width: 80px;
-  padding-left: 4px;
-  display: inline-block; /* do not know why but it works*/
-  border-radius: 5px;
-}
-[data-vis="resizable"] {
-  position: absolute;
-  border-radius: var(--div-radius) var(--div-radius) 0px var(--div-radius);
-}
-[data-vis="resizable"] > .ul_role > * {
-  display: inline-flex; /* do not know why but it works*/
-}
-=======
->>>>>>> 56016febd51e81ef1920ef716c3022e1726ba518
 .name {
   pointer-events: none;
 }
