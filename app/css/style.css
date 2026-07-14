@@ -13,15 +13,12 @@
   --default-bgcolor: #e2d9d6;
   --selected-bgcolor: #aaa;
 
-  /* Layout */
-  --div-radius: 16px;
-  --div-smallradius: 10px;
-
   /* Spacing */
   --spacing-sm: 8px;
   --spacing-md: 16px;
 
   /* Border radius */
+  --radius-sm: 10px;
   --radius-md: 12px;
   --radius-lg: 16px;
 
@@ -152,7 +149,7 @@ div {
 .rolescontainer {
   position: relative;
   /*border: 1px black solid; just for debug*/
-  border-radius: var(--div-radius);
+  border-radius: var(--radius-lg);
   font-family: arial;
   justify-content: center;
 }
@@ -371,7 +368,7 @@ body:not(.fitch):not([tool="declare"])
 }
 
 .defSymbol {
-  border-radius: var(--div-radius);
+  border-radius: var(--radius-lg);
   background-color: black;
   position: absolute;
   left: 0px;
@@ -767,7 +764,7 @@ body.debug .operand:not([data-enode]) {
 }
 #canvasRole [data-enode="or"] > .ul_role {
   background-color: var(--bool-bgcolor);
-  border-radius: var(--div-smallradius);
+  border-radius: var(--radius-sm);
 }
 
 .unlocked [data-enode="or"] > .ul_role > [data-enode] {
@@ -775,17 +772,17 @@ body.debug .operand:not([data-enode]) {
 }
 
 #canvasRole [data-enode="or"] > .ul_role > [data-enode]:first-of-type {
-  border-bottom-left-radius: var(--div-smallradius);
-  border-top-left-radius: var(--div-smallradius);
+  border-bottom-left-radius: var(--radius-sm);
+  border-top-left-radius: var(--radius-sm);
 }
 #canvasRole [data-enode="or"] > .ul_role > [data-enode]:last-of-type {
   /*last child is problematic because invisible pseudo targets are filtered because are div*/
-  border-bottom-right-radius: var(--div-smallradius);
-  border-top-right-radius: var(--div-smallradius);
+  border-bottom-right-radius: var(--radius-sm);
+  border-top-right-radius: var(--radius-sm);
 }
 
 .unlocked [data-enode="or"] > .ul_role > [data-enode] {
-  border-radius: var(--div-smallradius) !important;
+  border-radius: var(--radius-sm) !important;
 }
 
 .toBeUpdated > .infix {
@@ -838,7 +835,7 @@ body:not(.fixBorders) #result [data-enode][data-type="num"]:not(:hover) {
 }
 
 #canvasRole [data-enode][data-type="bool"] {
-  border-radius: var(--div-smallradius);
+  border-radius: var(--radius-sm);
 }
 
 #canvasRole [data-enode="not"] {
