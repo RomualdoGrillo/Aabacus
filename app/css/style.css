@@ -877,6 +877,10 @@ body[tool=autoAdapt] .sortable-drag.attackPoint /*[title^="s"]*/ {
 .notAtgt {
   pointer-events: none;
   position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
   border-radius: inherit;
   width: 100%;
@@ -893,9 +897,12 @@ body[tool=autoAdapt] .sortable-drag.attackPoint /*[title^="s"]*/ {
 }
 .mu_DropTarget {
   border-color: rgb(98 100 255) !important;
+  outline: 2px solid rgb(98, 100, 255);
+  outline-offset: 1px;
 }
 body[tool="autoAdapt"] .mu_DropTarget {
   border-color: blueviolet !important;
+  outline-color: blueviolet;
 }
 
 .debug .tgt {
