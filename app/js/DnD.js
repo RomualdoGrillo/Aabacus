@@ -33,7 +33,6 @@ if($ENODETarget.length==0){
 	}
 	
 	//**** highlight DOWNSTREAM 
-	// add class mu_Downstream1
 	if($ENODETarget.attr('data-type')=='bool'){
 		$calculateJurisdictionUpstream($ENODETarget.parent()).addClass('mu_span');
 	}
