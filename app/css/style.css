@@ -46,6 +46,21 @@
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* ============================================================
+   MAPPA DEL FILE (ordine di lettura; i blocchi non sono ancora
+   tutti contigui — il resort fisico dei blocchi e' rimandato):
+     1. Token di design (:root)                     [sopra]
+     2. Elementi base, canvas, layout, ruoli
+     3. Rendering per tipo di ENODE + decorazioni
+     4. Schema colori per tipo (coloredBorders / Rainbow)
+     5. Stati: selezione, mu_*, unlocked, tool, debug
+     6. Rendering speciali e stati residui (infix, OR,
+        geometria, fitch, tag, debug, drag)
+     7. Target del drag & drop (.tgt)
+   ============================================================ */
+
+/* ===== 2. ELEMENTI BASE, CANVAS, LAYOUT, RUOLI ============= */
+
 
 
 
@@ -226,7 +241,8 @@ div {
   border-width: 1px;
 }
 
-/*************specifici per tipo di ENODE ***************/
+/* ===== 3. RENDERING PER TIPO DI ENODE + DECORAZIONI ======= */
+/* (power, root, times, and, plus, minus, eq, asymmetric, ...) */
 
 [data-enode="power"],
 [data-enode="root"] {
@@ -446,7 +462,7 @@ body:not(.fitch):not([tool="declare"])
   background-color: black;
 }
 
-/*--------------coloredBorders--------------- */
+/* ===== 4. SCHEMA COLORI PER TIPO (coloredBorders/Rainbow) == */
 .coloredBorders [data-type=""][data-enode] {
   border-color: var(--type-empty);
 }
@@ -488,6 +504,8 @@ body:not(.fitch):not([tool="declare"])
 .coloredBorders [class*="bVar_role"][data-type="obj"] {
   background-color: var(--type-obj-bg);
 }
+
+/* ===== 5. STATI: selezione, mu_*, unlocked, tool, debug === */
 
 .mu_connected[data-enode] {
   border-color: Grey !important;
@@ -559,6 +577,9 @@ body[tool="declare"] * {
 .debug [from] {
   background-color: palevioletred;
 }
+
+/* ===== 6. RENDERING SPECIALI E STATI RESIDUI ============== */
+/* (infix, OR, geometria, fitch, tag/deftrue, debug, drag) */
 
 body.hidePlus [data-enode="times"] {
   border-color: transparent !important;
@@ -882,7 +903,7 @@ body[tool=autoAdapt] .sortable-drag.attackPoint /*[title^="s"]*/ {
   border-color: blue !important;
 }
 
-/***********   tgt DUMMY element   *********/
+/* ===== 7. TARGET DRAG & DROP (.tgt) ====================== */
 /* .tgt DIVs are dynamically added to act as sortable targets */
 .tgt,
 .notAtgt {
