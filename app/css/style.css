@@ -507,6 +507,12 @@ body:not(.fitch):not([tool="declare"])
 
 /* ===== 5. STATI: selezione, mu_*, unlocked, tool, debug === */
 
+/* Classi con prefisso mu_ : evidenziazioni TRANSITORIE aggiunte dal JS
+   durante l'interazione col mouse (mousedown / drag) e ripulite tutte al
+   mouseup (DnD.js -> removeClassByPrefix('mu_')). Non persistono nel DOM. */
+
+/* mu_connected: al click su un identificatore (ci) evidenzia le altre
+   occorrenze della stessa variabile. */
 .mu_connected[data-enode] {
   border-color: Grey !important;
 }
@@ -535,6 +541,8 @@ body:not(.fitch):not([tool="declare"])
   z-index: 1;
 }
 
+/* mu_span: durante il drag evidenzia lo "span" / giurisdizione dell'elemento
+   oscurando (grayout) tutto cio' che gli sta intorno. */
 .exclusiveFocus,
 .waiting,
 .mu_span {
@@ -922,6 +930,8 @@ body[tool=autoAdapt] .sortable-drag.attackPoint /*[title^="s"]*/ {
   width: 100px;
   height: 100px;
 }
+/* mu_DropTarget: evidenzia il contenitore su cui si sta per rilasciare
+   l'elemento trascinato (aggiornato a ogni spostamento del drag). */
 .mu_DropTarget {
   border-color: rgb(98 100 255) !important;
 }
