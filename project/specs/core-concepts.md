@@ -8,36 +8,35 @@ This document describes the fundamental concepts of Aabacus. These core concepts
 
 Aabacus is an application designed to visualize and manipulate mathematical expressions. It provides a structured environment where users can build, edit, and transform mathematical expressions through a series of interactions. Aabacus is mainly intended as an educational tool.
 
-## Expression Model
+## ExpressionNodes and ExpressionTree
 
-### What is an Expression?
-
-Aabacus provides a set of fundamental functions, function can be composed connecting the output of one function to one of the inputs of another. Composing functions produces a tree structure that is called "Expression".
-This creates a hierarchical structure that represents the mathematical relationships between different parts of the expression. The expression has a tree structure where nodes are functions, those nodes are called ENODEs that stand for ExpressionNodes.
+Aabacus è incentrata attorno a una struttura dati ad albero chiamata ExpressionTree.
 
 ### Expression Nodes (ENODEs)
 
-The fundamental building blocks of expressions in Aabacus are called "ENODEs" (Expression Nodes). Each ENODE represents a specific mathematical function or operation.
+The fundamental building blocks of the ExpressionsTree in Aabacus are called "ENODEs" (Expression Nodes). Each ENODE represents a specific mathematical function or operation.
 
 ENODEs are characterized by one output and zero, one, or more inputs. The output and inputs of an ENODE have specific data types (such as number, boolean, etc.) that determine what kinds of connections are valid.
 
-Identifiers (variables) and constants are special types of ENODEs that have no inputs.
+ENODES with zero inputs represent "functions" with no input: Identifiers (variables) and constants.
 
 #### ENODE Types
 
-There are dozens of ENODE types, each representing different mathematical operations. The following table describes some of the most common ENODE types:
+The following table describes some of the most common ENODE types:
 
-| ENODE Type | Description                  | Output Data Type | Input Data Types   | Example     |
-|------------|------------------------------|------------------|-------------------|-------------|
-| `plus`     | Addition operation           | num              | num, num, ...     | a + b + c   |
-| `times`    | Multiplication operation     | num              | num, num, ...     | a × b × c   |
-| `exp`      | Power operation              | num              | num, num          | a^b         |
-| `or`       | Logical disjunction          | bool             | bool, bool, ...   | a ∨ b       |
-| `not`      | Logical negation             | bool             | bool              | ¬a          |
-| `and`      | Logical conjunction          | bool             | bool, bool, ...   | a ∧ b       |
-| `eq`       | Equation or definition       | bool             | obj, obj          | a = b       |
-| `cn`       | Number constant              | num              | none              | 5           |
-| `ci`       | Identifier/variable          | varies           | none              | x           |
+
+| ENODE Type | Description              | Output Data Type | Input Data Types | Example   |
+| ---------- | ------------------------ | ---------------- | ---------------- | --------- |
+| `plus`     | Addition operation       | num              | num, num, ...    | a + b + c |
+| `times`    | Multiplication operation | num              | num, num, ...    | a × b × c |
+| `exp`      | Power operation          | num              | num, num         | a^b       |
+| `or`       | Logical disjunction      | bool             | bool, bool, ...  | a ∨ b     |
+| `not`      | Logical negation         | bool             | bool             | ¬a        |
+| `and`      | Logical conjunction      | bool             | bool, bool, ...  | a ∧ b     |
+| `eq`       | Equation or definition   | bool             | obj, obj         | a = b     |
+| `cn`       | Number constant          | num              | none             | 5         |
+| `ci`       | Identifier/variable      | varies           | none             | x         |
+
 
 When building an expression, Aabacus enforces data type compatibility between the outputs and inputs of connected ENODEs. This ensures that only mathematically valid expressions can be constructed.
 
@@ -68,7 +67,6 @@ In Aabacus a = b is simply interpreted as "you can replace a with b  or replace 
 
 What are equivalent expressions?
 An expression is a composed function. Two expressions are considered equivalent if they produce the same outputs when given the same inputs. In mathematical terms, this means that although two expressions may look different in their structure or representation, they are functionally identical if they yield the same results for all possible input values.
-
 
 ## Expression Manipulation
 
@@ -108,7 +106,6 @@ To solve algebraic problems, it's necessary to include fundamental properties in
 Applying properties has the effect of replacing parts of the expression with other expressions that are equivalent to the original. There are different ways to apply properties:
 
 1. Select an expression and then apply a property. The pattern matching system identifies if the selected expression matches the pattern required by the property, and if so, applies the transformation.
-
 2. Drag terms to apply commutative, associative, distributive properties, or to replace a term in an equation system.
 
 The typical use of Aabacus follows this workflow:
@@ -116,10 +113,8 @@ The typical use of Aabacus follows this workflow:
 1. The user creates a new expression or loads it from a file
 2. The expression is locked
 3. In the locked state, the user applies properties to:
-   - Prove theorems
-   - Deduce logical consequences
-   - Simplify expressions
-   - Solve equations or systems
-
-
+  - Prove theorems
+  - Deduce logical consequences
+  - Simplify expressions
+  - Solve equations or systems
 
