@@ -10,15 +10,15 @@ Aabacus is an application designed to visualize and manipulate mathematical expr
 
 ## ExpressionNodes and ExpressionTree
 
-Aabacus è incentrata attorno a una struttura dati ad albero chiamata ExpressionTree.
+Aabacus is built around a tree structure called **The ExpressionTree**.
 
 ### Expression Nodes (ENODEs)
 
-The fundamental building blocks of the ExpressionsTree in Aabacus are called "ENODEs" (Expression Nodes). Each ENODE represents a specific mathematical function or operation.
+The fundamental building blocks of The ExpressionTree are called **ENODEs** (Expression Nodes). Each ENODE represents a function.
 
 ENODEs are characterized by one output and zero, one, or more inputs. The output and inputs of an ENODE have specific data types (such as number, boolean, etc.) that determine what kinds of connections are valid.
 
-ENODES with zero inputs represent "functions" with no input: Identifiers (variables) and constants.
+Leaf ENODEs have no inputs: constants and identifiers are leaf nodes.
 
 #### ENODE Types
 
@@ -38,35 +38,34 @@ The following table describes some of the most common ENODE types:
 | `ci`       | Identifier/variable      | varies           | none             | x         |
 
 
-When building an expression, Aabacus enforces data type compatibility between the outputs and inputs of connected ENODEs. This ensures that only mathematically valid expressions can be constructed.
+When building The ExpressionTree, Aabacus enforces data type compatibility between the outputs and inputs of connected ENODEs.   
+Note that the data type `obj` means any data type is accepted as input, which is useful for operations like equality that can compare multiple tipes of objects.
 
-Note that the data type 'obj' means any data type is accepted as input, which is useful for operations like equality that can compare different types of mathematical objects.
+### Minimal ExpressionTree example
 
-### Expression Example
-
-The mathematical expression `a + b = 2` can be represented as a tree structure where:
+The equation `a + b = 2` can be represented as The ExpressionTree where:
 
 - The root node is an `eq` ENODE (representing equality)
 - The left child of the root is a `plus` ENODE (representing addition)
 - The children of the `plus` ENODE are two `ci` ENODEs (representing the variables a and b)
 - The right child of the root is a `cn` ENODE (representing the constant 2)
 
-This tree structure precisely captures the mathematical meaning of the expression.
+This tree structure precisely captures the mathematical meaning of The ExpressionTree.
 
-## One only omnicomprensive Expression
+## One omnicomprehensive ExpressionTree
 
-Using Logical and Mathematical function it is possible to construct a very articulated systems of logic Mathematical propositions.
-You can both write properties and expressions in a big omicomprensive expression.
+Both content and properties are encoded in The ExpressionTree.
+Using logical and mathematical functions it is possible to construct a very articulated system of logical and mathematical propositions.
 As an example let's start from the system of two equations:
 
 ⎧ y=x-1
 ⎨ 
 ⎩ x*y=6
 
-In Aabacus a = b is simply interpreted as "you can replace a with b  or replace b with a" and you will obtain an expression that'equivalent to the original.
+In Aabacus, `a = b` is simply interpreted as "you can replace a with b or replace b with a", and you will obtain a form of The ExpressionTree that is equivalent to the original.
 
-What are equivalent expressions?
-An expression is a composed function. Two expressions are considered equivalent if they produce the same outputs when given the same inputs. In mathematical terms, this means that although two expressions may look different in their structure or representation, they are functionally identical if they yield the same results for all possible input values.
+What are equivalent forms of The ExpressionTree?
+The ExpressionTree is a composed function. Two forms of The ExpressionTree are considered equivalent if they produce the same outputs when given the same inputs. In mathematical terms, this means that although two forms may look different in their structure or representation, they are functionally identical if they yield the same results for all possible input values.
 
 ## Expression Manipulation
 
@@ -108,7 +107,7 @@ Applying properties has the effect of replacing parts of the expression with oth
 1. Select an expression and then apply a property. The pattern matching system identifies if the selected expression matches the pattern required by the property, and if so, applies the transformation.
 2. Drag terms to apply commutative, associative, distributive properties, or to replace a term in an equation system.
 
-The typical use of Aabacus follows this workflow:
+##The typical use of Aabacus follows this workflow:
 
 1. The user creates a new expression or loads it from a file
 2. The expression is locked
