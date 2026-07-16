@@ -780,7 +780,7 @@ function findvalidReplacedOrPremise($mouseDownENODE) {
 	let $equation = ENODEparent($mouseDownENODE)
 	let $excludedMembers = $equation.find('[data-enode]');
 	// cerca nodi uguali a mousedown node
-	let $candidates = $PropositionsAffectedByStartPropositionROLES($equation).find('[data-enode]').addBack().filter(':visible').addClass('mu_Downstream1').not($excludedMembers)
+	let $candidates = $PropositionsAffectedByStartPropositionROLES($equation).find('[data-enode]').addBack().filter(':visible').addClass('mu_Downstream').not($excludedMembers)
 	let $occurrences = $findOccurrences($mouseDownENODE, undefined, $candidates)//ricerca limitata ad elementi visibili
 	let $valids = $occurrences
 	$valids.each(function () {
@@ -822,7 +822,7 @@ function validRedundant($mouseDownENODE, ctrlOrMeta, altKey) {
 	if (!$mouseDownENODE.is("[data-type=bool]")) {
 		return []//not a boolean expression	
 	}
-	let $candidates = $PropositionsAffectedByStartPropositionROLES($mouseDownENODE).filter(':visible').addClass('mu_Downstream1')
+	let $candidates = $PropositionsAffectedByStartPropositionROLES($mouseDownENODE).filter(':visible').addClass('mu_Downstream')
 	let $valids = $candidates.not($mouseDownENODE).filter(function () {//escludi mousedownnode stesso dai possibili risultati
 		return ENODEEqual(this, $mouseDownENODE[0], false, true)
 	})
@@ -838,7 +838,7 @@ function validAddRedundant($mouseDownENODE, ctrlOrMeta) {
 	if (!$mouseDownENODE.is("[data-type=bool]")) {
 		return []//not a boolean expression	
 	}
-	let $targets = $calculateTargetsAddRedundantROLES($mouseDownENODE).filter(':visible').addClass('mu_Downstream1')
+	let $targets = $calculateTargetsAddRedundantROLES($mouseDownENODE).filter(':visible').addClass('mu_Downstream')
 	return $targets
 }
 
@@ -847,9 +847,9 @@ function validCandidatesForPatternDrop($mouseDownENODE, $originalProperty) {
 	//exclude the $originalProperty
 	let $excludedENODES = $originalProperty.find('[data-enode]').addBack();
 	//let $excludedENODES= $mouseDownENODE.closest('[data-enode=forAll]').find('[data-enode]').addBack();
-	//let $jurisdictionRoles = $calculateJurisdictionRoles($originalProperty).addClass('mu_Downstream1').filter('[data-enode]:visible')
+	//let $jurisdictionRoles = $calculateJurisdictionRoles($originalProperty).addClass('mu_Downstream').filter('[data-enode]:visible')
 	//let $candidates = $jurisdictionRoles.find('[data-enode]:visible')
-	let $candidates = $PropositionsAffectedByStartPropositionROLES($originalProperty).filter(':visible').addClass('mu_Downstream1');
+	let $candidates = $PropositionsAffectedByStartPropositionROLES($originalProperty).filter(':visible').addClass('mu_Downstream');
 	let $valids = $candidates.not($excludedENODES).filter(function (index) {
 		//*****valid?***********
 		const result = (

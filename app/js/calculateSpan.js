@@ -283,7 +283,7 @@ function $findOccurrences($wanted, $span, $candidates,asParameter) {
 
 
 function $calculateJurisdictionUpstream($startRole) {
-	// .addClass('mu_Downstream1').filter('[data-enode]:visible')
+	// .addClass('mu_Downstream').filter('[data-enode]:visible')
 	return $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRoleUpstream)
 }
 
