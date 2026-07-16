@@ -51,10 +51,10 @@ body[timesdisposition=brTimes] br + [data-enode]::before{
 }
 
 [data-enode=leq]>.ol_role>[data-enode]:not(:first-of-type)::before {
-	content:'\2264'!important;/*https://www.evotech.net/articles/testjsentities.html*/
+	content:'\2264';/*https://www.evotech.net/articles/testjsentities.html*/
 }
 [data-enode=lt]>.ol_role>[data-enode]:not(:first-of-type)::before {
-	content: '<'!important;
+	content: '<';
 }
 
 [data-enode=times]>.ul_role>[data-enode]:not(:first-of-type)::before {
