@@ -13,6 +13,21 @@
   --default-bgcolor: #e2d9d6;
   --selected-bgcolor: #aaa;
 
+  /* Data-type colors (Rainbow scheme): one base color per type.
+     Backgrounds are derived from the base, made much less intense
+     by mixing with white. Tune all backgrounds at once via --type-mix. */
+  --type-empty: rgb(140, 112, 103);
+  --type-num: rgb(255, 155, 0);
+  --type-bool: rgb(69, 149, 69);
+  --type-geom: rgb(70, 92, 188); /* point & line */
+  --type-obj: rgb(148, 136, 148);
+  --type-mix: 25%;
+  --type-empty-bg: color-mix(in srgb, var(--type-empty) var(--type-mix), white);
+  --type-num-bg: color-mix(in srgb, var(--type-num) var(--type-mix), white);
+  --type-bool-bg: color-mix(in srgb, var(--type-bool) var(--type-mix), white);
+  --type-geom-bg: color-mix(in srgb, var(--type-geom) var(--type-mix), white);
+  --type-obj-bg: color-mix(in srgb, var(--type-obj) var(--type-mix), white);
+
   /* Spacing */
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -433,49 +448,45 @@ body:not(.fitch):not([tool="declare"])
 
 /*--------------coloredBorders--------------- */
 .coloredBorders [data-type=""][data-enode] {
-  border-color: rgb(140, 112, 103);
+  border-color: var(--type-empty);
 }
 
 .coloredBorders [data-type="num"] {
-  border-color: rgb(255, 155, 0);
-  /*box-shadow: 0px 0.5px 3px 0px #ff9b00;*/
+  border-color: var(--type-num);
 }
 .coloredBorders [class*="l_role"][data-type="num"].empty,
 .coloredBorders [class*="s_role"][data-type="num"] {
-  background-color: var(--num-bgcolor);
+  background-color: var(--type-num-bg);
 }
 .coloredBorders [data-type="bool"][data-enode] {
-  border-color: var(--bool-color)
-    /*box-shadow: 0px 0.5px 2px 0.5px rgb(125, 125, 125);*/
-    /*box-shadow: 0px 0.5px 3px 0px rgb(9, 132, 9);*/;
+  border-color: var(--type-bool);
 }
 .coloredBorders [data-viseq="asymmetric"] > .s_role {
   border-color: green;
 }
 .coloredBorders [data-type="point"],
 .coloredBorders [data-type="line"] {
-  border-color: rgb(70, 92, 188);
+  border-color: var(--type-geom);
 }
 .coloredBorders [class*="l_role"][data-type="point"].empty,
 .coloredBorders [class*="s_role"][data-type="point"],
 [class*="l_role"][data-type="line"].empty,
 .coloredBorders [class*="s_role"][data-type="line"],
 .coloredBorders [class*="l_role"][data-type="point"] > .dummyrole {
-  background-color: rgb(190, 195, 255);
+  background-color: var(--type-geom-bg);
 }
 
 .coloredBorders [class*="l_role"][data-type="bool"].empty,
 .coloredBorders [class*="s_role"][data-type="bool"] {
-  background-color: rgb(194, 243, 194);
+  background-color: var(--type-bool-bg);
 }
 .coloredBorders [data-type="obj"][data-enode] {
-  border-color: rgb(148, 136, 148);
-  /*box-shadow: 0px 0px 3px 1px rgba(175, 175, 175, 0.6);*/
+  border-color: var(--type-obj);
 }
 .coloredBorders [class*="l_role"][data-type="obj"].empty,
 .coloredBorders [class*="s_role"][data-type="obj"],
 .coloredBorders [class*="bVar_role"][data-type="obj"] {
-  background-color: var(--default-bgcolor);
+  background-color: var(--type-obj-bg);
 }
 
 .mu_connected[data-enode] {

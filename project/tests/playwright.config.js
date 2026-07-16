@@ -8,17 +8,19 @@ module.exports = defineConfig({
 	testDir: './e2e',
 	timeout: 120000,
 	use: {
-		baseURL: 'http://127.0.0.1:5500',
+		// Porta dedicata (5599) per NON riusare il "Live Server" di Cursor su 5500,
+		// che serve una copia obsoleta dell'app e mascherava le modifiche CSS.
+		baseURL: 'http://127.0.0.1:5599',
 		headless: true,
 		launchOptions: {
 			slowMo
 		}
 	},
 	webServer: {
-		command: 'npx --yes serve -l 5500 app',
+		command: 'npx --yes serve -l 5599 app',
 		cwd: repoRoot,
-		url: 'http://127.0.0.1:5500',
-		reuseExistingServer: true,
+		url: 'http://127.0.0.1:5599',
+		reuseExistingServer: false,
 		timeout: 120000
 	}
 });

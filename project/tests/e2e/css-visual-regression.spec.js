@@ -163,3 +163,50 @@ test.describe('CSS visual regression — wide view', () => {
 		await expect(page.locator('#result')).toHaveScreenshot('wide-celebration-threetimestwo.png', SHOT);
 	});
 });
+
+/**
+ * Copertura schema colori "Rainbow" (`body.coloredBorders`): colori per data-type
+ * (num/bool/point/line/obj). Serve come baseline "PRIMA" del refactor colori-per-tipo.
+ *
+ * Attivazione deterministica: dopo waitForReady forziamo `body.coloredBorders`
+ * via page.evaluate. settings.js applica normalmente una sola delle classi
+ * whiteBorders/greyBorders/coloredBorders in base a `visSettingSelected`; gli
+ * esercizi scelti hanno `visSettingSelected:1` (=> greyBorders), quindi di default
+ * NON sono in coloredBorders. Prima di forzare la classe registriamo lo stato di
+ * default (diagnostico) così da sapere se le baseline `canvas-*` mostrano già i
+ * colori-per-tipo.
+ */
+const COLORED_BORDERS_EXERCISES = [
+	{ name: 'prop_comm_gen', path: './Data/exercises/prop_comm_gen.mmls' },
+	{ name: 'CommutativaAssociativaBinarie', path: './Data/exercises/CommutativaAssociativaBinarie.mmls' }
+];
+
+test.describe('CSS visual regression — coloredBorders', () => {
+	for (const exercise of COLORED_BORDERS_EXERCISES) {
+		test('coloredBorders-' + exercise.name, async ({ page }) => {
+			await loadAndWait(page, exercise.path);
+
+			// Diagnostico: lo schema colori è già attivo di default per questo esercizio?
+			const defaultColorClasses = await page.evaluate(() => {
+				const b = document.body.classList;
+				return {
+					coloredBorders: b.contains('coloredBorders'),
+					greyBorders: b.contains('greyBorders'),
+					whiteBorders: b.contains('whiteBorders')
+				};
+			});
+			// eslint-disable-next-line no-console
+			console.log(
+				'[coloredBorders-default] ' + exercise.name + ': ' + JSON.stringify(defaultColorClasses)
+			);
+
+			await page.evaluate(() => document.body.classList.add('coloredBorders'));
+			await page.waitForTimeout(300);
+
+			await expect(page.locator('#canvasRole')).toHaveScreenshot(
+				'coloredBorders-' + exercise.name + '.png',
+				{ animations: 'disabled', maxDiffPixels: 0, threshold: 0 }
+			);
+		});
+	}
+});
