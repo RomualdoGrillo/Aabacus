@@ -537,7 +537,6 @@ body:not(.fitch):not([tool="declare"])
 
 .exclusiveFocus,
 .waiting,
-.mu_targetsCommonParentx,
 .mu_span {
   /*grayout what'soutside exclusiveFocus DIV */
   z-index: 100;
