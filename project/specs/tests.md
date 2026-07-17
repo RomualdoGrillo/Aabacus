@@ -42,16 +42,16 @@ Esempio DnD (Torre di Hanoi): `hanoi4.mmls` — helper `window.__aabacusTestExer
 
 Nei test Hanoi, i **paletti** (`hanoirod`) non devono spostarsi; solo i **dischi** (`cn`) sono trascinabili. Usare `getRodDragCoordinates()` per simulare un drag sul paletto e verificare che `getRodDiscCounts()` e `getRodOrder()` restino invariati.
 
-## Stati del canvas: `lockCanvas`
+## Stati del canvas: `tiedCanvas`
 
-`GLBsettings.lockCanvas` **non** disabilita il drag. Distingue due modalità:
+`GLBsettings.tiedCanvas` **non** disabilita il drag. Distingue due modalità:
 
 | Stato | Classe DOM | Comportamento |
 |-------|------------|---------------|
-| **locked** (`lockCanvas: true`) | `#canvas` senza `unlocked` | Espressione fissata; si applicano **proprietà matematiche** (commutativa, associativa, …) |
-| **unlocked** (`lockCanvas: false`) | `#canvas.unlocked` | Spostamento **libero** degli ENODE per costruire espressioni |
+| **tied** (`tiedCanvas: true`) | `#canvas` senza `untied` | Definizioni vincolanti; si applicano **proprietà matematiche** (commutativa, associativa, …) |
+| **untied** (`tiedCanvas: false`) | `#canvas.untied` | Spostamento **libero** degli ENODE per costruire espressioni |
 
-Nei test **non** forzare `lockCanvas = false` se l'esercizio è pensato per modalità locked (es. `hanoi4.mmls` con proprietà DnD).
+Nei test **non** forzare `tiedCanvas = false` se l'esercizio è pensato per modalità tied (es. `hanoi4.mmls` con proprietà DnD).
 
 
 1. **Regression test:** solo eventi DOM reali via coordinate viewport (`clientX` / `clientY`).

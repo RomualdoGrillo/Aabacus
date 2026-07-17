@@ -154,7 +154,7 @@ Drag initiation uses `ENODEselectable()` in `app/js/ExpressionManager.js`. An EN
 | --------- | ----- | ---------- |
 | Class `.undraggable` | Canvas root (`app/index.html`) | Yes, via `ENODEselectable` |
 | Attribute `data-undraggable` | MML / exercise content (e.g. Hanoi rods) | Yes, via `ENODEselectable` |
-| Class `.unselectable` | ENODEs not selectable in locked mode | Partial (locked canvas only) |
+| Class `.unselectable` | ENODEs not selectable in tied mode | Partial (tied canvas only) |
 | Class `.glued` | Glued ENODEs | Yes |
 | HTML `draggable="false"` | Palette prototypes | No (SortableJS ignores it) |
 

@@ -21,7 +21,7 @@ steps:
 
   - action: assertState
     expect:
-      lockCanvas: true
+      tiedCanvas: true
 
   - action: probeElement
     target:

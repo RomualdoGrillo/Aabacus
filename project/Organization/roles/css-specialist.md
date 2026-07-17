@@ -67,7 +67,7 @@ Non rinominare né rimuovere senza coordinamento (refactor-lead o core-specialis
 | Segnale | Uso in JS / DOM |
 |---------|-----------------|
 | `.selected`, `.unselected`, `.selectedTool` | Selezione ENODE e tool |
-| `.unlocked` | Canvas locked / unlocked |
+| `.untied` | Canvas/definition untied (free construction); absence = tied |
 | `.minus`, `.minusDecoration` | Segno negativo |
 | `.mu_*` | Span, drop target, pattern matching visivo |
 | `.glued`, `.empty`, `.proto` | Infix e prototipi |

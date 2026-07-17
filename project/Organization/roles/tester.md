@@ -57,7 +57,7 @@ Gabba deve saper **eseguire, interpretare e non rompere** la suite attuale.
 - Regression = **eventi DOM reali** via coordinate viewport
 - Drag = sequenza completa (non salto A→B)
 - **Vietato** chiamare API interne (`MakeSortableAndInjectMouseDown`, SortableJS diretto) nei test di regressione
-- `lockCanvas: true` ≠ drag disabilitato (Hanoi è locked + DnD proprietà)
+- `tiedCanvas: true` ≠ drag disabilitato (Hanoi è tied + DnD proprietà)
 
 **Output atteso:** report PASS/FAIL con log; se FAIL, diagnosi (probe, screenshot opzionale, quale assert).
 

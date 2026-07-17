@@ -55,7 +55,7 @@
 	"debug":false,
 	"gameMode":true,
 	"gameModeSurpriseRes":true,
-	"lockCanvas":true,
+	"tiedCanvas":true,
 	"visPalette":"hide",
 	"hideLeftColumn":true,
 	"hideRightColumn":true,

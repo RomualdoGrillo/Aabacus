@@ -360,11 +360,11 @@
 		var palette = document.querySelector('#palette');
 		return {
 			ready: !!(canvas && canvas.querySelector('[data-enode]')),
-			lockCanvas:
+			tiedCanvas:
 				typeof GLBsettings !== 'undefined' && GLBsettings
-					? !!GLBsettings.lockCanvas
+					? !!GLBsettings.tiedCanvas
 					: null,
-			canvasUnlocked: !!(document.querySelector('#canvas') && document.querySelector('#canvas').classList.contains('unlocked')),
+			canvasUntied: !!(document.querySelector('#canvas') && document.querySelector('#canvas').classList.contains('untied')),
 			tool:
 				typeof GLBsettings !== 'undefined' && GLBsettings
 					? GLBsettings.tool

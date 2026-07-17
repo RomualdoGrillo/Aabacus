@@ -62,7 +62,7 @@ test.describe('hanoi4.mmls with testHooks', () => {
 		expect(state.hanoiDiscCount).toBe(4);
 
 		const appState = await page.evaluate(() => window.__aabacusTest.getState());
-		expect(appState.lockCanvas).toBe(true);
+		expect(appState.tiedCanvas).toBe(true);
 		await pauseForDemo(page);
 	});
 

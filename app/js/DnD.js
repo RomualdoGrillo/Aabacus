@@ -15,7 +15,7 @@ function MakeSortableAndInjectMouseDown(event) {
 	//get the first draggable parent
 	$ENODETarget = ENODEselectable($(event.target));
 if($ENODETarget.length==0){
-		return//no unlocked parent to drag
+		return//no untied parent to drag
 	}
 	
 	/********cleanup*******/
@@ -40,7 +40,7 @@ if($ENODETarget.length==0){
 	GLBDnD.toolWhenMousedown = GLBsettings.tool;
 	if (GLBDnD.toolWhenMousedown == 'autoAdapt'){
 		//********* autoAdapt ****************
-		if (ENODEclosedDef($(event.target))) {
+		if (ENODEtiedDef($(event.target))) {
 			GLBDnD.$originalProperty = $(event.target).closest('[data-enode=forAll]');
 			if(GLBDnD.$originalProperty.length==0){return};
 			let $forallContent=GetforAllContentRole(GLBDnD.$originalProperty).children();
@@ -72,7 +72,7 @@ if($ENODETarget.length==0){
 			//no forall property
 		}
 	}
-	else if (GLBDnD.toolWhenMousedown == 'copy' || !ENODEclosedDef($(event.target)) || $ENODETarget.is('#palette *')) {
+	else if (GLBDnD.toolWhenMousedown == 'copy' || !ENODEtiedDef($(event.target)) || $ENODETarget.is('#palette *')) {
 		//*********from opened****************
 		
 		//make targets sortable
@@ -119,7 +119,7 @@ if($ENODETarget.length==0){
 			sort = (op==commutativeOf);// op of drag start == specific type of commutative prop
 		}
 		else{
-			sort = $ENODETarget[0].parentElement.matches('.ul_role') || !ENODEclosedDef($ENODETarget);
+			sort = $ENODETarget[0].parentElement.matches('.ul_role') || !ENODEtiedDef($ENODETarget);
 		}
 		$ENODETarget[0].parentElement.setAttribute('from', 'froENODE')
 		let fromSortable = makeSortableMouseDown([$ENODETarget[0].parentElement], sort)[0]

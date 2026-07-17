@@ -69,22 +69,28 @@ The ExpressionTree is a composed function. Two forms of The ExpressionTree are c
 
 ## Expression Manipulation
 
-Aabacus supports two fundamental modes of expression manipulation:
+Aabacus distinguishes three states for (parts of) The ExpressionTree:
 
-### 1. Editing Mode
+| State | Meaning |
+|-------|---------|
+| **untied** | Free construction: ENODEs can be added, removed, moved, copied (still subject to data-type checks). |
+| **tied** | Definitions are binding: free structural editing is not allowed; the tree may still be transformed by applying properties that live in The ExpressionTree. |
+| **frozen** | No transformation of any kind is allowed on that part. |
 
-When an expression is in "Unlocked" state, it can be freely edited. This includes:
+### 1. Untied (editing / construction)
 
-- Adding new ENODEs to the expression
-- Removing ENODEs from the expression
+When a definition or the canvas is **untied**, it can be freely edited. This includes:
+
+- Adding new ENODEs
+- Removing ENODEs
 - Moving subexpressions around
-- Copying and pasting parts of expressions
+- Copying and pasting parts of The ExpressionTree
 
-During editing, Aabacus enforces type compatibility to ensure that only valid operations are performed. This helps users build mathematically correct expressions.
+Type compatibility still prevents datatype mismatches.
 
-### 2. Property Application Mode
+### 2. Tied (property application)
 
-When an expression is "Locked", all editing operations become impossible. The expression can only be transformed according to the equations written within it.
+When a definition is made **tied**, it becomes binding: you no longer rearrange it freely, but you can still transform The ExpressionTree according to the equations and properties written within it.
 
 Returning to our example:
 
@@ -92,9 +98,9 @@ Returning to our example:
 ⎨ 
 ⎩ x*y=6
 
-The only possible transformation is to substitute y with x-1. No other properties can be applied unless they are explicitly written in the expression.
+The only possible transformation is to substitute y with x-1. No other properties can be applied unless they are explicitly written in The ExpressionTree.
 
-To solve algebraic problems, it's necessary to include fundamental properties in the expression. For example, to work with the system above, you might need to include the distributive property:
+To solve algebraic problems, fundamental properties must be included in The ExpressionTree. For example, to work with the system above, you might need the distributive property:
 
 ⎧ ∀ a, b, c ∈ ℝ :   a(b + c) = ab + ac
 |
@@ -102,16 +108,16 @@ To solve algebraic problems, it's necessary to include fundamental properties in
 | 
 ⎩ x*y=6
 
-Applying properties has the effect of replacing parts of the expression with other expressions that are equivalent to the original. There are different ways to apply properties:
+Applying properties replaces parts of The ExpressionTree with equivalent forms. Common ways to apply properties:
 
-1. Select an expression and then apply a property. The pattern matching system identifies if the selected expression matches the pattern required by the property, and if so, applies the transformation.
+1. Select a subexpression and then apply a property. Pattern matching checks whether it matches the property pattern and, if so, applies the transformation.
 2. Drag terms to apply commutative, associative, distributive properties, or to replace a term in an equation system.
 
-##The typical use of Aabacus follows this workflow:
+### Typical workflow
 
-1. The user creates a new expression or loads it from a file
-2. The expression is locked
-3. In the locked state, the user applies properties to:
+1. The user creates The ExpressionTree or loads it from a file (often **untied** while building definitions).
+2. Definitions are made **tied** (binding).
+3. In the tied state, the user applies properties to:
   - Prove theorems
   - Deduce logical consequences
   - Simplify expressions

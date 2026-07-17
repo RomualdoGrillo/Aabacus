@@ -31,7 +31,7 @@ Non modificare: `app/Resources/jquery-ui*.css`, `app/index.html` (salvo istruzio
 
 ## Classi critiche (non rinominare/rimuovere senza refactor-lead)
 
-`.selected`, `.selectedTool`, `.unlocked`, `.minus`, `.minusDecoration`, `.mu_*`, `.glued`, `.empty`, `.proto`, `[data-enode]`, `[data-type]`, `[data-viseq]`, `body[tool]`.
+`.selected`, `.selectedTool`, `.untied`, `.minus`, `.minusDecoration`, `.mu_*`, `.glued`, `.empty`, `.proto`, `[data-enode]`, `[data-type]`, `[data-viseq]`, `body[tool]`.
 
 ## Principi
 

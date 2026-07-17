@@ -2,7 +2,7 @@
 	"debug":false,
 	"gameMode":false,
 	"gameModeSurpriseRes":false,
-	"lockCanvas":false,
+	"tiedCanvas":false,
 	"resultHidden":true,
 	"resultString":"tesi",
 	"visSettingSelected":3,

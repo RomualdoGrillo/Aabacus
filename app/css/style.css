@@ -53,7 +53,7 @@
      2. Elementi base, canvas, layout, ruoli
      3. Rendering per tipo di ENODE + decorazioni
      4. Schema colori per tipo (coloredBorders / Rainbow)
-     5. Stati: selezione, mu_*, unlocked, tool, debug
+     5. Stati: selezione, mu_*, untied, tool, debug
      6. Rendering speciali e stati residui (infix, OR,
         geometria, fitch, tag, debug, drag)
      7. Target del drag & drop (.tgt)
@@ -203,10 +203,10 @@ div {
 [data-enode="not"] {
   padding: 0;
 }
-.unlocked [data-enode="minus"],
-.unlocked [data-enode="m_inverse"],
-.unlocked [data-enode="not"] {
-  /* se unlocked scavalca il padding=0 impostato sopra*/
+.untied [data-enode="minus"],
+.untied [data-enode="m_inverse"],
+.untied [data-enode="not"] {
+  /* se untied scavalca il padding=0 impostato sopra*/
   padding: 3px;
 }
 
@@ -435,19 +435,19 @@ body:not(.fitch):not([tool="declare"])
   padding: 0px;
 }
 
-[data-enode="eq"]:not(#canvas)[data-viseq="asymmetric"]:not(.unlocked)
+[data-enode="eq"]:not(#canvas)[data-viseq="asymmetric"]:not(.untied)
   > .secondMember
   > [data-enode] {
   border-width: 0px;
 }
-.unlocked
+.untied
   [data-enode="eq"][data-viseq="asymmetric"]
   > .secondMember
   > [data-enode] {
   border-width: 1px;
 }
-.unlocked [data-enode="eq"][data-viseq="asymmetric"],
-[data-enode="eq"][data-viseq="asymmetric"].unlocked {
+.untied [data-enode="eq"][data-viseq="asymmetric"],
+[data-enode="eq"][data-viseq="asymmetric"].untied {
   padding: 3px;
 }
 
@@ -455,10 +455,10 @@ body:not(.fitch):not([tool="declare"])
   display: none;
 }
 
-.unlocked > .defSymbol {
+.untied > .defSymbol {
   background-color: green;
 }
-.locked > .defSymbol {
+[data-viseq="asymmetric"]:not(.untied) > .defSymbol {
   background-color: black;
 }
 
@@ -505,7 +505,7 @@ body:not(.fitch):not([tool="declare"])
   background-color: var(--type-obj-bg);
 }
 
-/* ===== 5. STATI: selezione, mu_*, unlocked, tool, debug === */
+/* ===== 5. STATI: selezione, mu_*, untied, tool, debug === */
 
 /* Classi con prefisso mu_ : evidenziazioni TRANSITORIE aggiunte dal JS
    durante l'interazione col mouse (mousedown / drag) e ripulite tutte al
@@ -555,8 +555,8 @@ body:not(.fitch):not([tool="declare"])
   display: none;
 }
 
-.unlocked[data-enode],
-.unlocked [data-enode] {
+.untied[data-enode],
+.untied [data-enode] {
   border-style: dashed;
 }
 
@@ -592,7 +592,7 @@ body.hidePlus [data-enode="times"] {
   border-color: transparent !important;
   padding: 0px;
 }
-.unlocked [data-enode="times"] {
+.untied [data-enode="times"] {
   border-color: var(--num-color) !important;
   padding: 3px;
 }
@@ -714,12 +714,12 @@ body.fitch .leftBar {
   /*background-color:red;*/
 }
 
-/*se unlocked prevale sulla regola precedente che fa sparire i contorni ai glued*/
-.unlocked .glued {
+/*se untied prevale sulla regola precedente che fa sparire i contorni ai glued*/
+.untied .glued {
   border-width: 1px;
 }
 /* overwrites glued state .unloked allows all pointer events even if glued  */
-.unlocked .glued:not(.ol_role):not(.ul_role) {
+.untied .glued:not(.ol_role):not(.ul_role) {
   pointer-events: auto;
 }
 
@@ -778,7 +778,7 @@ body.debug .operand:not([data-enode]) {
 #canvasRole [data-enode="or"] > .ul_role > * {
   align-self: stretch;
 }
-.unlocked [data-enode="or"] > .ul_role > * {
+.untied [data-enode="or"] > .ul_role > * {
   align-self: auto !important;
 }
 
@@ -792,7 +792,7 @@ body.debug .operand:not([data-enode]) {
   margin: 0px !important;
   border-color: transparent;
 }
-.unlocked [data-enode="or"] {
+.untied [data-enode="or"] {
   background-color: white !important;
   margin: -3px;
   border-color: var(--bool-color) !important;
@@ -806,7 +806,7 @@ body.debug .operand:not([data-enode]) {
   border-radius: var(--radius-sm);
 }
 
-.unlocked [data-enode="or"] > .ul_role > [data-enode] {
+.untied [data-enode="or"] > .ul_role > [data-enode] {
   margin: 0px !important;
 }
 
@@ -820,7 +820,7 @@ body.debug .operand:not([data-enode]) {
   border-top-right-radius: var(--radius-sm);
 }
 
-.unlocked [data-enode="or"] > .ul_role > [data-enode] {
+.untied [data-enode="or"] > .ul_role > [data-enode] {
   border-radius: var(--radius-sm) !important;
 }
 

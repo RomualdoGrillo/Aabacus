@@ -6,9 +6,9 @@ let dd_colors = $('#select_colors')[0]
 let $dd_visSelection = $('#visSettingSelected');
 function GLBsettingsToInterface() {
 	
-	if(GLBsettings.lockCanvas != undefined){
-		if(GLBsettings.lockCanvas){$('#canvas').removeClass('unlocked')}
-		else{$('#canvas').addClass('unlocked')}
+	if(GLBsettings.tiedCanvas != undefined){
+		if(GLBsettings.tiedCanvas){$('#canvas').removeClass('untied')}
+		else{$('#canvas').addClass('untied')}
 		ENODERefreshAsymmEq($('#canvas'));
 	}
 	let tool = GLBsettings.tool

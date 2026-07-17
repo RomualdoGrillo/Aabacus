@@ -121,7 +121,8 @@ function dummyParser(string){
 ENODE = {
 	ENODEparent: ENODEparent,
 	ENODEcreateMathmlString: ENODEcreateMathmlString,
-	ENODEclosedDef: ENODEclosedDef,
+	ENODEtiedDef: ENODEtiedDef,
+	ENODEclosedDef: ENODEtiedDef, // legacy alias
 	isDefinition: isDefinition,
 	ENODECreateDefinition: ENODECreateDefinition,
 	ENODEselectable: ENODEselectable,
@@ -146,9 +147,13 @@ function ENODEparent($startNode) {
 	return $startNode.parent().closest("[data-enode]");
 }
 
+function ENODEtiedDef(Node) {
+	// true se Node è tied: nessun antenato untied
+	return $(Node).closest(".untied").length == 0;
+}
+/** @deprecated use ENODEtiedDef */
 function ENODEclosedDef(Node) {
-	//stabilisci se l'elemento "Node" e' aperto e si puo modificare liberamente
-	return $(Node).closest(".unlocked").length == 0;
+	return ENODEtiedDef(Node);
 }
 
 function isDefinition(Node) {
@@ -476,7 +481,7 @@ function validTargetsFromOpened($ENODEdragged) {
 
 function canDraggedBeDroopedInRoleYesWrapNo($ENODEdragged,$role){
 	//******target is OPENED and there is space for another
-	if(!ENODEclosedDef($role[0]) && isTherePlaceForAnother($role) ){  
+	if(!ENODEtiedDef($role[0]) && isTherePlaceForAnother($role) ){  
 		if( typeOk($ENODEdragged, $role)){//datatype is compatible
 			return 'yes'
 		}
@@ -651,13 +656,13 @@ function wrapWithOperation($ENODEelement, op){
 	return $clone;
 }
 
-function wrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,unlocked){
+function wrapWithDefIfNeededreturnTarget($targetNode,$toBeInserted,untied){
 	
-	//if(  $targetNode.is('#canvasRole') && (ENODEclosedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
+	//if(  $targetNode.is('#canvasRole') && (ENODEtiedDef( $targetNode )  || $toBeInserted.attr("data-type") !== "bool") ){
 	if(  canDraggedBeDroopedInRoleYesWrapNo($toBeInserted,$targetNode)=='needsWrap' ) {
 		const $newDef = wrapWithOperation($toBeInserted, "def");
-		if(unlocked){$newDef.addClass("unlocked")}
-		else{$newDef.removeClass("unlocked")}
+		if(untied){$newDef.addClass("untied")}
+		else{$newDef.removeClass("untied")}
 		ExtendAndInitialize($newDef);// il contenuto è già stato esteso
 		return $newDef.find(".secondMember");
 	}
@@ -983,7 +988,7 @@ function ENODE_checkIfPointlessSingleNode() {
 
 function ENODEselectable(startElement) {
 	//risali passo passo la struttura DOM fino a trovare un elemento ENODE
-	if (ENODEclosedDef(startElement)) {
+	if (ENODEtiedDef(startElement)) {
 		return startElement.closest('[data-enode]:not(.unselectable):not(.undraggable):not([data-undraggable]):not(.glued)');
 	} else {
 		return startElement.closest('[data-enode]:not(.undraggable):not([data-undraggable])');
@@ -991,10 +996,10 @@ function ENODEselectable(startElement) {
 }
 
 function ENODERefreshAsymmEq($ENODE) {
-	// adegua l'icona del lucchetto allo stato unlocked/non unlocked
+	// adegua l'icona allo stato untied/tied (glifo legacy: lucchetto aperto / bullet)
 	const $firstMember = $ENODE.find('>.firstMember')
 	$firstMember.addClass("ui-icon");
-	if ($ENODE.hasClass('unlocked')) {
+	if ($ENODE.hasClass('untied')) {
 		$firstMember.addClass("ui-icon-unlocked");
 		$firstMember.removeClass("ui-icon-bullet");
 	} else {

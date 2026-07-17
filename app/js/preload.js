@@ -27,22 +27,22 @@ function injectAll(response,rootUrl){
 		loadAjaxAndInject(buildPath(rootUrl,all.palette_html),$("#palette"))
 	}
 	if(all.foundation_mml && all.foundation_mml.string){//string data
-		$('#canvas').addClass('unlocked');
+		$('#canvas').addClass('untied');
 		ENODERefreshAsymmEq($('#canvas'));
 		inject(all.content_mml.string, $("#canvasRole"),true);
 		}
 	else if(all.foundation_mml){//url
-		$('#canvas').addClass('unlocked');
+		$('#canvas').addClass('untied');
 		ENODERefreshAsymmEq($('#canvas'));
 		loadAjaxAndInject(buildPath(rootUrl,all.foundation_mml),$("#canvasRole"));
 	}
 	if(all.content_mml && all.content_mml.string){//string data
-		$('#canvas').addClass('unlocked');
+		$('#canvas').addClass('untied');
 		ENODERefreshAsymmEq($('#canvas'));
 		inject(all.content_mml.string, $("#canvasRole"),true);
 		}
 	else if(all.content_mml){//url
-		$('#canvas').addClass('unlocked');
+		$('#canvas').addClass('untied');
 		ENODERefreshAsymmEq($('#canvas'));
 		loadAjaxAndInject(buildPath(rootUrl,all.content_mml),$("#canvasRole"));
 	}
@@ -104,7 +104,7 @@ function injectAllMMLS(response,rootUrl){
 	//**** content
 	let $canvasContent =  $sections.filter('[data-section=canvas]').children();
 	if($canvasContent.length!=0){
-		//$('#canvas').addClass('unlocked');
+		//$('#canvas').addClass('untied');
 		ENODERefreshAsymmEq($('#canvas'));
 		inject($canvasContent,$('#canvasRole'),'boolean');
 	}

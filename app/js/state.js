@@ -4,12 +4,13 @@
 //
 // GLBsettings — configurazione esercizio/sessione
 //   Scrittura: preload.js (caricamento .mmls / .json), settings.js (pannello
-//     destro), MAIN.js (lockCanvas al click sul lucchetto, movesCounter in
-//     PActxConclude, tool in changeTool).
+//     destro), MAIN.js (tiedCanvas al click sull'angolo definizione,
+//     movesCounter in PActxConclude, tool in changeTool).
 //   Lettura:  settings.js, MAIN.js, DnD.js, UserEvToFunctCall.js, game.js.
-//   Campi principali: tool, lockCanvas, gameMode, gameModeSurpriseRes,
+//   Campi principali: tool, tiedCanvas, gameMode, gameModeSurpriseRes,
 //     visSettings, visSettingSelected, visPalette, hideLeftColumn,
 //     hideRightColumn, resultString, movesCounter, movesMinNumber.
+//   tiedCanvas true  = canvas tied (vincolato); false = untied (costruzione).
 //
 // debugMode — modalità debug (marcature visibili, palette nascosta, skip import)
 //   Scrittura: MAIN.js (debugToggle, Shift+D).
@@ -31,7 +32,7 @@
 // ssnapshot — manager undo/copy/paste (funzione factory + metodi take/undo/
 //   copy/paste definiti in Undo.js; clipBoard è proprietà di ssnapshot)
 //   Scrittura: Undo.js; invocazione: MAIN.js, SaveLoad.js, TranslateFormat.js.
-//   Lettura:  MAIN.js (scorciatoie tastiera, PActxConclude, rename, lock).
+//   Lettura:  MAIN.js (scorciatoie tastiera, PActxConclude, rename, tie).
 
 let GLBsettings;
 let debugMode = false;

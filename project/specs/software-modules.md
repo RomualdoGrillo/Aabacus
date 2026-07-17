@@ -9,7 +9,7 @@ Documenti correlati: [core-concepts.md](core-concepts.md) (concetti fondamentali
 ## 1. Architettura attuale in sintesi
 
 - **Nessun sistema di moduli**: tutti i file sono caricati con `<script>` in `app/index.html`; ogni funzione e variabile top-level è globale. L'ordine di caricamento in `index.html` è di fatto il grafo delle dipendenze (i riferimenti incrociati si risolvono a tempo di chiamata, quindi le dipendenze circolari "funzionano" purché nessuno chiami nulla prima che tutti gli script siano caricati).
-- **Il DOM è il modello dati**: l'espressione è un albero di `div[data-enode]` (ENODE) dentro `#canvasRole`. Non esiste un modello separato dalla vista: attributi (`data-enode`, `data-type`, `title`/`mark`, `data-import`) e classi CSS (`minus`, `unlocked`, `selected`, `mu_*`) codificano sia semantica sia stato UI.
+- **Il DOM è il modello dati**: l'espressione è un albero di `div[data-enode]` (ENODE) dentro `#canvasRole`. Non esiste un modello separato dalla vista: attributi (`data-enode`, `data-type`, `title`/`mark`, `data-import`) e classi CSS (`minus`, `untied`, `selected`, `mu_*`) codificano sia semantica sia stato UI.
 - **Estensione dei nodi DOM**: `ENODEextend` fa `$.extend(node, ENODE)` su ogni elemento `[data-enode]`, aggiungendo metodi (`ENODE_getChildren`, `ENODE_getName`, ...) direttamente ai nodi DOM.
 - **Due motori di trasformazione**: proprietà *hard-wired* (funzioni JS imperative, dispatch per nome via `window[data-tag]`) e proprietà *pattern-based* (dichiarate come `forAll`+`eq` nell'espressione stessa, applicate dal pattern matcher). Entrambe convergono nell'oggetto `PActx` e in `PActxConclude`.
 - **Interazione**: selezione e drag & drop su mousedown (SortableJS creato pigramente a ogni drag), tastiera mappata su proprietà tramite la sezione `#events`.
@@ -76,7 +76,7 @@ Problemi noti: `evaluateComparison` usa `=` invece di `==` nei confronti su `ENO
 | File | righe | Responsabilità |
 |---|---|---|
 | `MAIN.js` | ~505 | Bootstrap e hub eventi: stato globale (`GLBsettings`, `debugMode`, `preloadPath`), listener document-level (click, dblclick, mousedown/up, touch, keydown), selezione (`selectionManager`), scorciatoie (undo/copy/paste/save/load/tab-tool), pipeline post-proprietà (`PActxConclude`, `refreshAndReplace`), celebrazione |
-| `DnD.js` | ~355 | Motore drag & drop su SortableJS: al mousedown individua il nodo trascinabile e i target validi (riordino su unlocked, proprietà DnD, autoAdapt, copy), crea/riattiva pigramente i Sortable, gestisce il drop (`onAdd`: move/clone/proprietà), pulizia (`cleanupDnD`) |
+| `DnD.js` | ~355 | Motore drag & drop su SortableJS: al mousedown individua il nodo trascinabile e i target validi (riordino su untied, proprietà DnD, autoAdapt, copy), crea/riattiva pigramente i Sortable, gestisce il drop (`onAdd`: move/clone/proprietà), pulizia (`cleanupDnD`) |
 | `UserEvToFunctCall.js` | ~160 | Traduzione input → proprietà: mappa tasti sulle azioni in `#events` (`keyboardEvToFC`), filtro proprietà DnD abilitate (`getDnDpropEnabled`), refine iterativo (`RepeatedRefine_c`) |
 | `Undo.js` | ~80 | Undo a snapshot: stack `FILO` di cloni dell'albero radice, `ssnapshot.take/undo/copy/paste`. Nota: lo snapshot è preso *dopo* ogni azione |
 | `sound.js` | ~10 | 5 oggetti Audio precaricati (2 usati: `clickSound`, `victorySound`) |
@@ -106,7 +106,7 @@ Bug noti: in `inject` la condizione `if(containerRequirements='bool')` è un **a
 
 | Stato | Definito in | Usato da | Note |
 |---|---|---|---|
-| `GLBsettings` | `MAIN.js` (dichiarato), `preload.js` (popolato) | MAIN, DnD, UserEvToFunctCall, preload | Config esercizio: tool, lockCanvas, gameMode, movesCounter, visSettings... |
+| `GLBsettings` | `MAIN.js` (dichiarato), `preload.js` (popolato) | MAIN, DnD, UserEvToFunctCall, preload | Config esercizio: tool, tiedCanvas, gameMode, movesCounter, visSettings... |
 | `GLBDnD` | `DnD.js` | solo DnD | Bus ad-hoc per il ciclo di vita del drag (workaround SortableJS) |
 | `debugMode` | `MAIN.js` | quasi tutti | Attiva marcature visibili, salta importAll, ecc. |
 | `canvas` | `MAIN.js` | UserEvToFunctCall | **Nome fuorviante**: punta a `#canvasRole`, non a `#canvas` |
@@ -114,7 +114,7 @@ Bug noti: in `inject` la condizione `if(containerRequirements='bool')` è un **a
 | `ENODE` | `ExpressionManager.js` | inflatedeflate (metodi sui nodi) | Oggetto di metodi copiato sui nodi DOM da `ENODEextend` |
 | `propertiesDnD` | `HardWiredProperties.js` | DnD, UserEvToFunctCall | Registro proprietà trascinabili |
 | `preloadPath`, `tools`, `sortablesSelectorString` | `MAIN.js` | preload, AldoUtilities, DnD | |
-| `body[tool]`, classi `.selected`/`.unlocked`/`.selectedTool`/`mu_*`, attributi `target`/`from`/`mark`/`data-path` | vari | vari | Il DOM usato come contenitore di stato applicativo |
+| `body[tool]`, classi `.selected`/`.untied`/`.selectedTool`/`mu_*`, attributi `target`/`from`/`mark`/`data-path` | vari | vari | Il DOM usato come contenitore di stato applicativo |
 
 Globali **implicite** (assegnate senza `let`/`var`, inquinano `window`): `$clone` (AldoUtilities/EM), `$commParent` (DnD), `toBeCancelled` (MAIN), `$toBeRestored` (Undo), `$sections` (preload), `noBVarChildren`, `i` (inflatedeflate), `$pattern`, `$subtree`, `res` (PMTutilities), `$extOp` (TranslateFormat), `$secondMember`, `$targets` (calculateSpan), `$composed` (HardWiredProperties).
 

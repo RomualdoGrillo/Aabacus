@@ -45,7 +45,7 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 		}
 		else if(fileSuffix === "mmls"){
 			if(confirm('This will discart the existing canvas and replace it with the new one. Are you sure?')){
-				$('#canvas').addClass('unlocked');
+				$('#canvas').addClass('untied');
 				injectAllMMLS(textFromFileLoaded);
 			}
 		}
@@ -106,14 +106,12 @@ function inject(MMLstring, $targetRoleOrENODE, containerRequirements, toBeImport
 	}
 	else{
 		ENODEappend($targetRoleOrENODE, $convertedTree);
-		if(containerRequirements === 'boolean' || containerRequirements === true){//la classe :unlock messa via jquery sembra sia aggiornata dopo la chiamata asincrona
+		if(containerRequirements === 'boolean' || containerRequirements === true){//lo stato untied/tied via jquery sembra sia aggiornato dopo la chiamata asincrona
 			$convertedTree.each(function() {
 				wrapWithDefIfNeededreturnTarget($targetRoleOrENODE,$(this))
 			});
 		}
 	}
-	
-	
 	//var $refreshStartPoint = ENODEparent($convertedTree);
 	//if( $refreshStartPoint.length==0){ $refreshStartPoint=$convertedTree }
 	ssnapshot.take(); 

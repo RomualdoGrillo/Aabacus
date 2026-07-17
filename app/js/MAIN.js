@@ -144,20 +144,20 @@ $('#fileToLoad').change(function (e) {
 
 
 function clickHandler(event) {
-	//*************** Lock unlock ********
+	//*************** Tie / untie ********
 	if ($(event.target).parent().is(function() { return isDefinition(this); }) && $(event.target).is('.firstMember')) {
 		let $ENODE = $(event.target).parent();
 		if ($ENODE.is('#canvas')) {
 			// canvas fa eccezione perchè determina anche lo stato delle sezioni result e events
-			if (!GLBsettings.lockCanvas) {
-				GLBsettings.lockCanvas = true;
-				$('#canvas,#result,#events').removeClass('unlocked');
+			if (!GLBsettings.tiedCanvas) {
+				GLBsettings.tiedCanvas = true;
+				$('#canvas,#result,#events').removeClass('untied');
 			} else {
-				GLBsettings.lockCanvas = false;
-				$('#canvas,#result,#events').addClass('unlocked');
+				GLBsettings.tiedCanvas = false;
+				$('#canvas,#result,#events').addClass('untied');
 			}
 		} else {
-			$ENODE.toggleClass('unlocked');
+			$ENODE.toggleClass('untied');
 		}
 		ENODERefreshAsymmEq($ENODE);
 		ssnapshot.take();
@@ -234,7 +234,7 @@ function dblclickHandler(event) {
 	let target = ENODEselectable(event.target);
 	let $ENODEDblclicked = $(target)
 	let ENODEClass = $ENODEDblclicked.attr('data-enode');
-	let closed = ENODEclosedDef($ENODEDblclicked)
+	let closed = ENODEtiedDef($ENODEDblclicked)
 	console.log('dblclick');
 	//closed
 	//******** forThis prompt ***********
@@ -350,7 +350,7 @@ function ExtendAndInitialize($ENODE) {
 
 function cancelSelected() {
 	let toBeCancelled = $('.selected').filter(function (index) {
-		return !ENODEclosedDef(this);
+		return !ENODEtiedDef(this);
 	})
 	if (toBeCancelled.length != 0) {
 		toBeCancelled.each(function (i, element) {
