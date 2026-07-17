@@ -297,31 +297,6 @@ function keyToCharacter(key) {
 	}
 }
 
-function refreshAndReplace(PActx) {
-	console.log("Applied property: " + PActx.msg)
-	//**** determina l'operazione più esterna su cui fare il refresh
-	let $toBeRefreshed
-
-	if (PActx.replacedAlready == true) {
-		// sostituzione già effettuano internamente alla proprietà
-		$toBeRefreshed = ENODEparent(PActx.$transform)
-	} else {
-		$toBeRefreshed = ENODEparent(PActx.$operand)
-		ENODEinsertBefore(PActx.$transform, PActx.$operand[0]);
-		ENODEremove(PActx.$operand)
-		//********select on exit
-		//$('*').removeClass('selected')
-		//$(PActx.$transform[0]).addClass('selected')	
-	}
-	//********Refresh***************
-
-	if ($toBeRefreshed !== undefined && $toBeRefreshed.length != 0) {
-
-		RefreshEmptyInfixBraketsGlued();
-	}
-	return PActx
-}
-
 function debugToggle() {
 	debugMode = !debugMode
 	//toggle debugMode
@@ -367,7 +342,7 @@ function PActxConclude(PActx) {
 		if (debugMode) { console.log('CONCLUDE') }
 		refreshAndReplace(PActx);
 		if (PActx.$transform) {
-			RepeatedRefine_c(PActx.$transform, 'c', '.Refine_c');//Apply "c" to every Node in the branch marked with '.Refine_c'
+			refineAfterProperty(PActx.$transform);//semplifica i nodi marcati con markNeedsRefine / Refine_c
 		}
 		RefreshEmptyInfixBraketsGlued($('body'), true);
 		ssnapshot.take();

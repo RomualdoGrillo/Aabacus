@@ -17,34 +17,6 @@ function newPActx() {
 	}
 }
 
-function RepeatedRefine_c($transform,key,selector){
-	//post-applicazione: riapplica la proprietà "key" (es. semplificazione "c")
-	//a ogni ENODE del ramo trasformato finché non ci sono più semplificazioni
-	let i=0
-	let semplificEffettuata = true; //la prima passata avviene come se la precedente avesse avuto successo.
-	let $transformParentRole = $transform.parent()//se il transform viene sostituito, continua a cercare a partire da l suo parent
-	while(semplificEffettuata == true && i<20){//limito il numero di tentativi per evitare loop infiniti
-		let $toBesemplified = $transformParentRole.find('[data-enode]')
-		if(selector){
-			$toBesemplified = $toBesemplified.filter(selector)
-		}
-		let j= ($toBesemplified.length - 1)
-    	semplificEffettuata = false;
-    	while( j>=0){//prova a semplificare il j-esimo ENODEo, parti dal fondo
-    		const refinementPActx = keyboardEvToFC($($toBesemplified[j]),key);
-			if(refinementPActx && refinementPActx.matchedTF){//semplificazione applicata con successo
-				refreshAndReplace(refinementPActx);
-				semplificEffettuata = true;
-				break
-    		}
-    		j--
-    	}
-    	i++
-    		
-	}
-	
-}
-
 function overwriteFromHeader($forAll) {
     //Dall’header di un forall sovrascrivi il suffisso "__" nel corpo del forall.
     //Attenzione!!, anche le marcature verranno sovrascritte nella sostituzione???
@@ -559,7 +531,7 @@ function PMcleanAndPost(PActx){
 	    	let postMarks = ENODESmarkUnmark($(this),undefined,"p");
 	    	if(postMarks.indexOf('c') != -1){// is "c" one of the post markings?
 				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
-	    		$(this).addClass('Refine_c');
+	    		markNeedsRefine(this);
 	    	}
 	    	//************remove all PM marks***********
     		$(this).removeClass('taken');
