@@ -210,3 +210,70 @@ test.describe('CSS visual regression — coloredBorders', () => {
 		});
 	}
 });
+
+/**
+ * Stati INTERATTIVI — rete di sicurezza per i prossimi refactor CSS
+ * (riduzione !important estesa, riordino fisico dei blocchi in style.css).
+ * Baseline catturate dal CSS attuale (stato "buono" di riferimento).
+ *
+ * Metodo di attivazione per stato (documentato):
+ *  - untied: la classe reale è `.untied` (NON `.unlocked`, che non esiste nei CSS).
+ *    Il lucchetto in MAIN.js aggiunge `untied` a `#canvas,#result,#events`.
+ *    Qui replichiamo esattamente quelle classi via page.evaluate (meccanismo reale).
+ *  - showPar: settings.js fa updateBodyClass('showPar', visSetting.brackets).
+ *    Forziamo `body.showPar` (fallback valido: esercita le regole `.showPar ...`).
+ *  - fitch: `body.fitch` NON è impostata da alcun JS dell'app. Carichiamo il vero
+ *    esercizio Logics/fitch.mmls (contiene `implies`/`not`) e forziamo `body.fitch`.
+ *  - infix plus/times: coperti da threetimestwo (times dot + plus '+') con tolleranza
+ *    stretta per sensibilità sui pseudo-elementi ::before. leq/lt NON sono renderizzati
+ *    da alcun .mmls (esistono solo nei prototipi palette .prt, nascosti) -> non copribili.
+ */
+test.describe('CSS visual regression — interactive states', () => {
+	// 1) untied (bordi dashed, or/times/glued/eq sbloccati)
+	test('untied-CommutativaAssociativaBinarie', async ({ page }) => {
+		await loadAndWait(page, './Data/exercises/CommutativaAssociativaBinarie.mmls');
+		await page.evaluate(() => {
+			// Stesse classi che MAIN.js applica al toggle del lucchetto.
+			document.querySelectorAll('#canvas, #result, #events').forEach((el) =>
+				el.classList.add('untied')
+			);
+		});
+		await page.waitForTimeout(300);
+		await expect(page.locator('#canvasRole')).toHaveScreenshot(
+			'state-untied-CommutativaAssociativaBinarie.png',
+			SHOT
+		);
+	});
+
+	// 2) showPar (parentesi: bordi laterali neri su .brackets / .rolescontainer)
+	test('showPar-threeplustwo', async ({ page }) => {
+		await loadAndWait(page, './Data/exercises/threeplustwo.mmls');
+		await page.evaluate(() => document.body.classList.add('showPar'));
+		await page.waitForTimeout(300);
+		await expect(page.locator('#canvasRole')).toHaveScreenshot(
+			'state-showPar-threeplustwo.png',
+			SHOT
+		);
+	});
+
+	// 3) fitch (body.fitch: barre/decorazioni della deduzione naturale su implies)
+	test('fitch', async ({ page }) => {
+		await loadAndWait(page, './Data/Logics/fitch.mmls');
+		const hadFitch = await page.evaluate(() => document.body.classList.contains('fitch'));
+		// eslint-disable-next-line no-console
+		console.log('[fitch-default] body.fitch attivo di default? ' + hadFitch);
+		await page.evaluate(() => document.body.classList.add('fitch'));
+		await page.waitForTimeout(300);
+		await expect(page.locator('#canvasRole')).toHaveScreenshot('state-fitch.png', SHOT);
+	});
+
+	// 4) infix plus/times (pseudoEl.css ::before): tolleranza stretta per i simboli.
+	test('infix-plustimes-threetimestwo', async ({ page }) => {
+		await loadAndWait(page, './Data/exercises/threetimestwo.mmls');
+		await page.waitForTimeout(300);
+		await expect(page.locator('#canvasRole')).toHaveScreenshot(
+			'state-infix-plustimes-threetimestwo.png',
+			{ animations: 'disabled', maxDiffPixels: 0, threshold: 0 }
+		);
+	});
+});
