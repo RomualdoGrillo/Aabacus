@@ -4,7 +4,7 @@ Workflow: per rendere veloce lo sviluppo è necessario che l'AI possa eseguire t
 
 I test devono comprendere:
 
-- keyboard
+- keyboard (scorciatoie incluse: es. **Shift+L** apre il file chooser e carica un `.mmls` — `e2e/shift-l-load.spec.js`)
 - Mouse: Drag and Drop, click, ecc.
 - touch: pinch/unpinch e direzione del movimento verticale/orizzontale; tracciare una curva attorno a uno o più elementi HTML (futuribile)
 
