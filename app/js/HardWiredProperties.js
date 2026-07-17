@@ -10,20 +10,21 @@ class PropertyDnD {
 }
 
 let propertiesDnD = [
-	// PRIORITY: first enabled property that claims a target wins.
-	// DnD.js skips already-claimed targets for subsequent properties in this list.
-	new PropertyDnD('associativeDnD', immediateAssValid, ENODEassociate, ""),
-	new PropertyDnD('associativeGenDnD', associativeGenValid, ENODEassociate, ""),
-	new PropertyDnD('distributiveDnD', validForDist, ENODEdistribute, ""),
-	new PropertyDnD('partDistributDnD', validForPartDist, ENODEPartDistribute, ""),
-	new PropertyDnD('collectDnD', validForColl, ENODEcollect, ""),
-	new PropertyDnD('partCollectDnD', validForPartColl, ENODEpartCollect, ""),
-	new PropertyDnD('replaceDnD', validReplaced, ENODELinkReplace, ""),
-	new PropertyDnD('modusPonensDnD', validModusPonens, ENODEModusPonens, ""),
-	new PropertyDnD('forThisDnD', forThisValid, forThisPar_focus_nofocus, ""),
-	new PropertyDnD('removeRedundantDnD', validRedundant, removeRedundant, ""),
+	// PRIORITY (first-wins): earlier entry claims a target; DnD.js excludes it for later entries.
+	// List order is the reverse of the old last-wins order, so relative priorities are unchanged.
+	// associativeGenDnD sits above associativeDnD (as when it was inserted after it under last-wins).
+	new PropertyDnD('hanoiMoveDnD', validhanoiMove, hanoiMove, ""),
 	new PropertyDnD('addRedundantDnD', validAddRedundant, addRedundant, ""),
-	new PropertyDnD('hanoiMoveDnD', validhanoiMove, hanoiMove, "")
+	new PropertyDnD('removeRedundantDnD', validRedundant, removeRedundant, ""),
+	new PropertyDnD('forThisDnD', forThisValid, forThisPar_focus_nofocus, ""),
+	new PropertyDnD('modusPonensDnD', validModusPonens, ENODEModusPonens, ""),
+	new PropertyDnD('replaceDnD', validReplaced, ENODELinkReplace, ""),
+	new PropertyDnD('partCollectDnD', validForPartColl, ENODEpartCollect, ""),
+	new PropertyDnD('collectDnD', validForColl, ENODEcollect, ""),
+	new PropertyDnD('partDistributDnD', validForPartDist, ENODEPartDistribute, ""),
+	new PropertyDnD('distributiveDnD', validForDist, ENODEdistribute, ""),
+	new PropertyDnD('associativeGenDnD', associativeGenValid, ENODEassociate, ""),
+	new PropertyDnD('associativeDnD', immediateAssValid, ENODEassociate, "")
 ]
 
 

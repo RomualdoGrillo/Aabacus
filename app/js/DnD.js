@@ -87,9 +87,10 @@ if($ENODETarget.length==0){
 		makeSortableMouseDown($validTgTOpen.toArray(), true);
 	}
 	else {
-		//********  determine validTargets for propeties listed in propertiesDnD[i] ***************
-		// Priority: first enabled HW that claims a target wins; later properties skip those nodes
-		// (findTgt may receive $claimedTargets as 4th arg to avoid re-exploring them).
+		//********  determine validTargets for properties listed in propertiesDnD[i] ***************
+		// First-wins: skip targets already claimed (replaces old last-wins setAttribute overwrite).
+		// findTgt may receive $claimedTargets as 4th arg. List order in HardWiredProperties is
+		// reversed vs the old last-wins list so relative HW priorities stay the same.
 		if (!$ENODETarget.length || !$ENODETarget[0].parentElement) { return }//precondition
 		let i = 0
 		let propInCanvasEnabled = getDnDpropEnabled()
