@@ -88,13 +88,25 @@ if($ENODETarget.length==0){
 	}
 	else {
 		//********  determine validTargets for propeties listed in propertiesDnD[i] ***************
+		// Priority: first enabled HW that claims a target wins; later properties skip those nodes
+		// (findTgt may receive $claimedTargets as 4th arg to avoid re-exploring them).
 		if (!$ENODETarget.length || !$ENODETarget[0].parentElement) { return }//precondition
 		let i = 0
 		let propInCanvasEnabled = getDnDpropEnabled()
+		let $claimedTargets = $()
 		while (propInCanvasEnabled[i]) {
-			let targets = propInCanvasEnabled[i].findTgt($ENODETarget,(event.ctrlKey || event.metaKey),event.altKey);
-			makeTargetsSortableRolesOrENODEs(targets, propInCanvasEnabled[i].name, propInCanvasEnabled[i].icon)
-			$validTgT = $validTgT.add($(targets))
+			let $found = $(propInCanvasEnabled[i].findTgt(
+				$ENODETarget,
+				(event.ctrlKey || event.metaKey),
+				event.altKey,
+				$claimedTargets
+			))
+			let $targets = $found.not($claimedTargets)
+			if ($targets.length) {
+				makeTargetsSortableRolesOrENODEs($targets.toArray(), propInCanvasEnabled[i].name, propInCanvasEnabled[i].icon)
+				$validTgT = $validTgT.add($targets)
+				$claimedTargets = $claimedTargets.add($targets)
+			}
 			i++
 		}
 	}

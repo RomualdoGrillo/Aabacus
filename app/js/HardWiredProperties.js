@@ -10,8 +10,10 @@ class PropertyDnD {
 }
 
 let propertiesDnD = [
-	//PRIORITY: last property overwrites previous targets
+	// PRIORITY: first enabled property that claims a target wins.
+	// DnD.js skips already-claimed targets for subsequent properties in this list.
 	new PropertyDnD('associativeDnD', immediateAssValid, ENODEassociate, ""),
+	new PropertyDnD('associativeGenDnD', associativeGenValid, ENODEassociate, ""),
 	new PropertyDnD('distributiveDnD', validForDist, ENODEdistribute, ""),
 	new PropertyDnD('partDistributDnD', validForPartDist, ENODEPartDistribute, ""),
 	new PropertyDnD('collectDnD', validForColl, ENODEcollect, ""),
@@ -66,20 +68,38 @@ function forThisValid(mouseDownNode) {
 	return $valids
 }
 
-function immediateAssValid($mouseDownENODE) {
+/**
+ * Target roles for associative DnD (same-op cluster).
+ * @param {jQuery} $mouseDownENODE - dragged ENODE
+ * @param {boolean} recursive - false: only immediate parent/child same-op (associativeDnD);
+ *   true: whole same-op cluster via tree explorer (associativeGenDnD)
+ * @param {jQuery} [$alreadyClaimed] - roles already claimed by earlier HW properties; skipped
+ */
+function associativeValid($mouseDownENODE, recursive, $alreadyClaimed) {
 	const $parent = ENODEparent($mouseDownENODE);
 	let op;
 	if ($parent !== undefined) { op = $parent.attr("data-enode") }
 	let $validTargetRoles = $();
 	if (OpIsAssociative(op)) {
-		let $validTgtENODEs = $ImmediateAssociativeENODE($parent)
-		// to get every associative target (not just immediate):
-		//let $validTgtENODEs = $RecursiveTreeExplorerCriterium($parent,$ImmediateAssociativeENODE)
+		let $validTgtENODEs = recursive
+			? $RecursiveTreeExplorerCriterium($parent, $ImmediateAssociativeENODE)
+			: $ImmediateAssociativeENODE($parent)
 		$validTgtENODEs.each(function (i, e) {
 			$validTargetRoles = $validTargetRoles.add(e.ENODE_getRoles());
 		});
+		if ($alreadyClaimed && $alreadyClaimed.length) {
+			$validTargetRoles = $validTargetRoles.not($alreadyClaimed)
+		}
 	}
 	return $validTargetRoles
+}
+
+function immediateAssValid($mouseDownENODE, ctrlOrMeta, altKey, $alreadyClaimed) {
+	return associativeValid($mouseDownENODE, false, $alreadyClaimed)
+}
+
+function associativeGenValid($mouseDownENODE, ctrlOrMeta, altKey, $alreadyClaimed) {
+	return associativeValid($mouseDownENODE, true, $alreadyClaimed)
 }
 
 function ENODEassociate(dragged, target, dropped) {

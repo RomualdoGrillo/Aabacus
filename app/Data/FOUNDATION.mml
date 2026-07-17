@@ -13,6 +13,7 @@
 					<and>
 					</and>
 					<ci data-tag="associativeDnD" data-tagimg="./images/properties/associate.svg" data-type="bool">true</ci>
+					<ci data-tag="associativeGenDnD" data-tagimg="./images/properties/associate.svg" data-type="bool">true</ci>
 					<ci data-tag="distributiveDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
 					<ci data-tag="partDistributDnD" data-tagimg="./images/properties/distributive.svg" data-type="bool">true</ci>
 					<ci data-tag="collectDnD" data-tagimg="./images/properties/collect.svg" data-type="bool">true</ci>
