@@ -10,18 +10,21 @@ class PropertyDnD {
 }
 
 let propertiesDnD = [
-	//PRIORITY: last property overwrites previous targets
-	new PropertyDnD('associativeDnD', immediateAssValid, ENODEassociate, ""),
-	new PropertyDnD('distributiveDnD', validForDist, ENODEdistribute, ""),
-	new PropertyDnD('partDistributDnD', validForPartDist, ENODEPartDistribute, ""),
-	new PropertyDnD('collectDnD', validForColl, ENODEcollect, ""),
-	new PropertyDnD('partCollectDnD', validForPartColl, ENODEpartCollect, ""),
-	new PropertyDnD('replaceDnD', validReplaced, ENODELinkReplace, ""),
-	new PropertyDnD('modusPonensDnD', validModusPonens, ENODEModusPonens, ""),
-	new PropertyDnD('forThisDnD', forThisValid, forThisPar_focus_nofocus, ""),
-	new PropertyDnD('removeRedundantDnD', validRedundant, removeRedundant, ""),
+	// PRIORITY (first-wins): earlier entry claims a target; DnD.js excludes it for later entries.
+	// List order is the reverse of the old last-wins order, so relative priorities are unchanged.
+	// associativeGenDnD sits above associativeDnD (as when it was inserted after it under last-wins).
+	new PropertyDnD('hanoiMoveDnD', validhanoiMove, hanoiMove, ""),
 	new PropertyDnD('addRedundantDnD', validAddRedundant, addRedundant, ""),
-	new PropertyDnD('hanoiMoveDnD', validhanoiMove, hanoiMove, "")
+	new PropertyDnD('removeRedundantDnD', validRedundant, removeRedundant, ""),
+	new PropertyDnD('forThisDnD', forThisValid, forThisPar_focus_nofocus, ""),
+	new PropertyDnD('modusPonensDnD', validModusPonens, ENODEModusPonens, ""),
+	new PropertyDnD('replaceDnD', validReplaced, ENODELinkReplace, ""),
+	new PropertyDnD('partCollectDnD', validForPartColl, ENODEpartCollect, ""),
+	new PropertyDnD('collectDnD', validForColl, ENODEcollect, ""),
+	new PropertyDnD('partDistributDnD', validForPartDist, ENODEPartDistribute, ""),
+	new PropertyDnD('distributiveDnD', validForDist, ENODEdistribute, ""),
+	new PropertyDnD('associativeGenDnD', associativeGenValid, ENODEassociate, ""),
+	new PropertyDnD('associativeDnD', immediateAssValid, ENODEassociate, "")
 ]
 
 
@@ -66,20 +69,38 @@ function forThisValid(mouseDownNode) {
 	return $valids
 }
 
-function immediateAssValid($mouseDownENODE) {
+/**
+ * Target roles for associative DnD (same-op cluster).
+ * @param {jQuery} $mouseDownENODE - dragged ENODE
+ * @param {boolean} recursive - false: only immediate parent/child same-op (associativeDnD);
+ *   true: whole same-op cluster via tree explorer (associativeGenDnD)
+ * @param {jQuery} [$alreadyClaimed] - roles already claimed by earlier HW properties; skipped
+ */
+function associativeValid($mouseDownENODE, recursive, $alreadyClaimed) {
 	const $parent = ENODEparent($mouseDownENODE);
 	let op;
 	if ($parent !== undefined) { op = $parent.attr("data-enode") }
 	let $validTargetRoles = $();
 	if (OpIsAssociative(op)) {
-		let $validTgtENODEs = $ImmediateAssociativeENODE($parent)
-		// to get every associative target (not just immediate):
-		//let $validTgtENODEs = $RecursiveTreeExplorerCriterium($parent,$ImmediateAssociativeENODE)
+		let $validTgtENODEs = recursive
+			? $RecursiveTreeExplorerCriterium($parent, $ImmediateAssociativeENODE)
+			: $ImmediateAssociativeENODE($parent)
 		$validTgtENODEs.each(function (i, e) {
 			$validTargetRoles = $validTargetRoles.add(e.ENODE_getRoles());
 		});
+		if ($alreadyClaimed && $alreadyClaimed.length) {
+			$validTargetRoles = $validTargetRoles.not($alreadyClaimed)
+		}
 	}
 	return $validTargetRoles
+}
+
+function immediateAssValid($mouseDownENODE, ctrlOrMeta, altKey, $alreadyClaimed) {
+	return associativeValid($mouseDownENODE, false, $alreadyClaimed)
+}
+
+function associativeGenValid($mouseDownENODE, ctrlOrMeta, altKey, $alreadyClaimed) {
+	return associativeValid($mouseDownENODE, true, $alreadyClaimed)
 }
 
 function ENODEassociate(dragged, target, dropped) {

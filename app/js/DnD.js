@@ -87,14 +87,27 @@ if($ENODETarget.length==0){
 		makeSortableMouseDown($validTgTOpen.toArray(), true);
 	}
 	else {
-		//********  determine validTargets for propeties listed in propertiesDnD[i] ***************
+		//********  determine validTargets for properties listed in propertiesDnD[i] ***************
+		// First-wins: skip targets already claimed (replaces old last-wins setAttribute overwrite).
+		// findTgt may receive $claimedTargets as 4th arg. List order in HardWiredProperties is
+		// reversed vs the old last-wins list so relative HW priorities stay the same.
 		if (!$ENODETarget.length || !$ENODETarget[0].parentElement) { return }//precondition
 		let i = 0
 		let propInCanvasEnabled = getDnDpropEnabled()
+		let $claimedTargets = $()
 		while (propInCanvasEnabled[i]) {
-			let targets = propInCanvasEnabled[i].findTgt($ENODETarget,(event.ctrlKey || event.metaKey),event.altKey);
-			makeTargetsSortableRolesOrENODEs(targets, propInCanvasEnabled[i].name, propInCanvasEnabled[i].icon)
-			$validTgT = $validTgT.add($(targets))
+			let $found = $(propInCanvasEnabled[i].findTgt(
+				$ENODETarget,
+				(event.ctrlKey || event.metaKey),
+				event.altKey,
+				$claimedTargets
+			))
+			let $targets = $found.not($claimedTargets)
+			if ($targets.length) {
+				makeTargetsSortableRolesOrENODEs($targets.toArray(), propInCanvasEnabled[i].name, propInCanvasEnabled[i].icon)
+				$validTgT = $validTgT.add($targets)
+				$claimedTargets = $claimedTargets.add($targets)
+			}
 			i++
 		}
 	}

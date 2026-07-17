@@ -84,9 +84,9 @@ function $ImmediateAssociativeENODE($starAssociativeOperation) {
 	let $result = $();
 	//upstream if it's same operation
 	let $parent = ENODEparent($starAssociativeOperation)
-	if ($parent.attr("data-enode") === op) {
+	if ($parent.length && $parent.attr("data-enode") === op) {
 		$result = $result.add($parent);
-	} ENODEparent($starAssociativeOperation).filter('[data-enode=' + op + ']');
+	}
 	//downstream same operation
 	let ENODEchildren = $starAssociativeOperation[0].ENODE_getChildren();
 	ENODEchildren.each(function (i, e) {

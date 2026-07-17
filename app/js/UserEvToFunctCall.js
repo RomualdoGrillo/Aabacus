@@ -58,7 +58,7 @@ function getDnDpropEnabled(dataTag){
 	if(dataTag){$propInCanvas = $propInCanvas.filter('[data-tag=' + dataTag + ']')}
 	let propInCanvasEnabled = $propInCanvas.toArray()
 	let namelist = propInCanvasEnabled.map(function(e){return e.getAttribute('data-tag')})
-	// same name "associativeDnD" must be in  propertiesDnD
+	// same name (e.g. "associativeDnD", "associativeGenDnD") must be in propertiesDnD
 	//Adding a new DnD internal property:
 	//add an element to the array, add a ci to the canvas with data-tag...
 	let propertiesKnokedOut = propertiesDnD.map(function(e){
