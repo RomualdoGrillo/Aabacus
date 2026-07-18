@@ -88,7 +88,7 @@ When a definition or the canvas is **untied**, it can be freely edited. This inc
 - Adding new ENODEs
 - Removing ENODEs
 - Moving subexpressions around
-- Copying and pasting parts of The ExpressionTree
+- Copying and pasting subexpressions
 
 Type compatibility still prevents datatype mismatches.
 
