@@ -337,7 +337,7 @@ function clearSortableTargets() {
 	$('*').removeClass('toBeCollected').removeClass('couldBeCollected');
 	$('*').removeClass('dropTarget');
 	$('*').removeClass('TargetsCommonParent');
-	$('*').removeClass('refine_c'); 
+	$('*').removeClass(REFINE_MARKER_CLASS); 
 	let tgts = document.querySelectorAll('.tgt,.notAtgt');
 	let i = 0;
 	while (tgts[i]) {

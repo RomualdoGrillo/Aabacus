@@ -206,7 +206,7 @@ function ENODEPartDistribute($dragged, target, dropped) {
 	});
 	const previous = $clone[0].ENODE_getRoles().children().eq(childrenIndex - 1);
 	ENODEinsertAfter($dragged, previous);
-	$parent.addClass("Refine_c");
+	markNeedsRefine($parent);
 	ENODEremove(dropped);
 	PActx.$transform = $parent;
 	PActx.matchedTF = true
@@ -222,7 +222,7 @@ function ENODEdistribute($dragged, target, dropped) {
 	let opD = opIsDistDop(op);
 	const $prototype = prototypeSearch(op)// for example search for times proto
 	$(target)[0].ENODE_getChildren().each(function (i, e) {
-		e.classList.add("Refine_c");
+		markNeedsRefine(e);
 		const $clone = ENODEclone($prototype)//create times
 		const $cloneDragged = ENODEclone($dragged)// clone dragged
 		ENODEinsertBefore($clone, $(this));
@@ -236,8 +236,8 @@ function ENODEdistribute($dragged, target, dropped) {
 		//$cloneDragged.css({display:""})
 	})
 	const $draggedParent = $dragged[0].ENODEparent();
-	$draggedParent.addClass("Refine_c");//mark external operation as remove if pointless
-	$(target).addClass("Refine_c");//mark target operation as remove if pointless
+	markNeedsRefine($draggedParent);//mark external operation as remove if pointless
+	markNeedsRefine(target);//mark target operation as remove if pointless
 	ENODEremove($dragged);
 	PActx.$transform = $parent;
 	PActx.matchedTF = true
@@ -373,7 +373,7 @@ function ENODEpartCollect($dragged, $target) {
 	let opd = $draggedParent.attr("data-enode")
 
 	let $commonGranParent = ENODEparent($targetParent);
-	$commonGranParent.addClass("Refine_c");
+	markNeedsRefine($commonGranParent);
 
 
 	if (opt == opd && opIsDistDop(opt)) {//both have same distributable op
@@ -441,13 +441,13 @@ function ENODEcollect($dragged, $target) {
 	if ($parent !== undefined) { op = $parent.attr("data-enode") }
 	let extOp
 	extOp = wrapIfNeeded($parentParent, op)
-	ENODEparent($dragged).addClass("Refine_c")
-	ENODEparent($(".CouldBeCollected")).addClass("Refine_c")
+	markNeedsRefine(ENODEparent($dragged))
+	markNeedsRefine(ENODEparent($(".CouldBeCollected")))
 	//$dragged.insertBefore($parentParent);
 	ENODEremove($dragged);
 	//$(".CouldBeCollected").remove()
 	ENODEremove($parentParent.find(".CouldBeCollected"))
-	$parentParent.addClass("Refine_c");
+	markNeedsRefine($parentParent);
 	PActx.$transform = extOp;
 	PActx.matchedTF = true
 	return PActx
@@ -615,7 +615,7 @@ function compose($toBeComp, firstVal, img) {
 		ENODEinsertBefore($composed, PActx.$operand[0]);
 		ENODEremove(PActx.$operand)
 		//ExtendAndInitializeTree($composed);
-		$parent.addClass('Refine_c');
+		markNeedsRefine($parent);
 		PActx.$transform = $parent;
 		PActx.visualization = img
 	}
@@ -670,7 +670,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 				}
 				//******Rimuovi il MINUS
 				ENODEinsertAfter($minusContent, $minus);
-				$minusContent.addClass("Refine_c");//if the content was a "times" it may by dissolved if the parent is also times
+				markNeedsRefine($minusContent);//if the content was a "times" it may by dissolved if the parent is also times
 				ENODEremove($minus);
 
 				//var $roleContainingFactors = $minusContent[0].ENODE_getRoles();
@@ -924,7 +924,7 @@ function removeRedundant($dragged, $target) {
 	PActx.replacedAlready = true;
 	if ($parent.attr("data-enode") == "and") {
 		ENODEremove($target);//if contained in an and simply remove the redundant term		
-		$parent.addClass("Refine_c");
+		markNeedsRefine($parent);
 	}
 	else {
 		const $clone = ENODEclone(prototypeSearch("ci", "bool"))

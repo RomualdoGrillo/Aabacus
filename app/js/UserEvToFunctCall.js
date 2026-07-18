@@ -131,4 +131,4 @@ function searchForProperty(field,value,returnedField){
 
 
 
-//RepeatedRefine_c è definita in PMTutilities.js (post-applicazione delle proprietà)
+//refineAfterProperty / markNeedsRefine: app/js/refine.js (post-applicazione delle proprietà)
