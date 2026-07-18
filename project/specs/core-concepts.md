@@ -50,8 +50,6 @@ The equation `a + b = 2` can be represented as The ExpressionTree where:
 - The children of the `plus` ENODE are two `ci` ENODEs (representing the variables a and b)
 - The right child of the root is a `cn` ENODE (representing the constant 2)
 
-This tree structure precisely captures the mathematical meaning of The ExpressionTree.
-
 ## One omnicomprehensive ExpressionTree
 
 Both content and properties are encoded in The ExpressionTree.
@@ -122,7 +120,7 @@ Alcune proprietà sono attualmente difficili da esprimere solo in termini di equ
 ##Applying properties
 
 You can apply one single property to a suitable subexpression or you can apply a list of properties with one only Macro command. **Le macro rendono più comodo e veloce da ottenere un risultato, ma non cambiano l'insieme dei risultati ottenibili: l'utente può ottenere lo stesso risultato anche senza usare le macro applicando una per una le proprietà.
-Nella pratica le macro si possono applicare con varie user actions:
+Nella pratica le proprietà, singole e macro, si possono applicare con varie user actions:
 1. Select a subexpression and then apply a property by pressing a key. Pattern matching checks whether it matches the property pattern and, if so, applies the transformation.
 2. Drag terms to apply commutative, associative, distributive properties, or to replace a term in an equation system.
 3.etc..
