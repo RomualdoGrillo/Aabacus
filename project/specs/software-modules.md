@@ -62,10 +62,11 @@ Punti d'attenzione nel nucleo:
 | `PatternMatchingTrasform.js` | ~250 | Lato "transform" del PM: lookup proprietà (`findPMPropByName`), clone e swap dei membri (`swapMembersClone`), tipizzazione parametri (`parameterType`, suffissi `_`/`__`/`___`), sostituzione nei `forAll` (`replaceInForall`), riformattazione se restano variabili libere (`reformatForallProp`) |
 | `HardWiredProperties.js` | ~1075 | Framework delle proprietà cablate: `newPActx`, registro DnD (`PropertyDnD`/`propertiesDnD`), validatori (`validFor*`), implementazioni (associate, distribute, collect, compose, decompose, replace/link, modus ponens, redundant, Hanoi, forThis, evaluateComparison), euristica parentesi (`ENODEneedsBracket`) |
 | `addedHardWiredProperties.js` | ~95 | Specializzazioni didattiche: `tabelline`, `composePlusOnly`, `decomposeTens`, helper `$toBeComposedWithSiblings` (chiamato da `compose` nel file principale: dipendenza inversa rispetto all'ordine di caricamento, funziona solo perché risolta a runtime) |
+| `refine.js` | ~95 | Post-applicazione proprietà: `markNeedsRefine`, `refreshAndReplace`, `trySimplifyNode`, `refineAfterProperty`. Ricetta semplificazione ancora via evento `#events` `"c"` (`tryEventActionsOnNode`) |
 
 Concetti trasversali:
 
-- **`PActx`** (creato da `newPActx` in `HardWiredProperties.js`): contesto di applicazione di una proprietà. Campi principali: `matchedTF`, `msg`, `$pattern`, `$operand`, `$transform`, `$equation`, `$cloneProp`, `replacedAlready`, `visualization`. Le proprietà hard-wired di solito mutano il DOM da sole e impostano `replacedAlready=true`; le PM lasciano la sostituzione a `refreshAndReplace`.
+- **`PActx`** (creato da `newPActx` in `PMTutilities.js`): contesto di applicazione di una proprietà. Campi principali: `matchedTF`, `msg`, `$pattern`, `$operand`, `$transform`, `$equation`, `$cloneProp`, `replacedAlready`, `visualization`. Le proprietà hard-wired di solito mutano il DOM da sole e impostano `replacedAlready=true`; le PM lasciano la sostituzione a `refreshAndReplace` in `refine.js`.
 - **Dispatch per nome**: `TryOnePropertyByName(nome, ...)` cerca `$('[data-tag=nome]')`; se l'elemento è `ci` chiama `window[nome](...)` (il nome della funzione JS deve coincidere con `data-tag`), altrimenti avvia il PM. È l'accoppiamento più fragile del sistema.
 - **Marcature**: stringa `mark-link-post` in `title` (persistente, salvata in MML) o `mark` (volatile). `m` = vincoli di match (es. `s` selected, `d` dragged), `l` = etichette per i path di riordino, `p` = post-azioni (`c` = auto-refine, `n` = non riordinare).
 
@@ -75,9 +76,9 @@ Problemi noti: `evaluateComparison` usa `=` invece di `==` nei confronti su `ENO
 
 | File | righe | Responsabilità |
 |---|---|---|
-| `MAIN.js` | ~505 | Bootstrap e hub eventi: stato globale (`GLBsettings`, `debugMode`, `preloadPath`), listener document-level (click, dblclick, mousedown/up, touch, keydown), selezione (`selectionManager`), scorciatoie (undo/copy/paste/save/load/tab-tool), pipeline post-proprietà (`PActxConclude`, `refreshAndReplace`), celebrazione |
+| `MAIN.js` | ~505 | Bootstrap e hub eventi: stato globale (`GLBsettings`, `debugMode`, `preloadPath`), listener document-level (click, dblclick, mousedown/up, touch, keydown), selezione (`selectionManager`), scorciatoie (undo/copy/paste/save/load/tab-tool), orchestrazione post-proprietà (`PActxConclude` → `refine.js`), celebrazione |
 | `DnD.js` | ~355 | Motore drag & drop su SortableJS: al mousedown individua il nodo trascinabile e i target validi (riordino su untied, proprietà DnD, autoAdapt, copy), crea/riattiva pigramente i Sortable, gestisce il drop (`onAdd`: move/clone/proprietà), pulizia (`cleanupDnD`) |
-| `UserEvToFunctCall.js` | ~160 | Traduzione input → proprietà: mappa tasti sulle azioni in `#events` (`keyboardEvToFC`), filtro proprietà DnD abilitate (`getDnDpropEnabled`), refine iterativo (`RepeatedRefine_c`) |
+| `UserEvToFunctCall.js` | ~160 | Traduzione input → proprietà: mappa tasti sulle azioni in `#events` (`tryEventActionsOnNode`, `keyboardEvToFC`), filtro proprietà DnD abilitate (`getDnDpropEnabled`) |
 | `Undo.js` | ~80 | Undo a snapshot: stack `FILO` di cloni dell'albero radice, `ssnapshot.take/undo/copy/paste`. Nota: lo snapshot è preso *dopo* ogni azione |
 | `sound.js` | ~10 | 5 oggetti Audio precaricati (2 usati: `clickSound`, `victorySound`) |
 | `AldoUtilities.js` | ~290 | Cassetto di utilità eterogenee: pulizia classi, path/URL, confronto col risultato e celebrazione (`lookForResultAndCelebrate`, `compareWithResult`), parser semplice (`dummyParser`, `identifierToENODE`), antenato comune, grado dei monomi, comparatori per Sortable |
@@ -191,7 +192,7 @@ Passi ordinati, ciascuno piccolo, testabile con la suite e2e + `smoke-expression
 ### Passo 5 — Ricollocamento delle funzioni fuori posto
 - `ENODEneedsBracket` → rendering (vicino a `refreshOneBracket`).
 - `newPActx` → un nuovo `properties/PActx.js` (o in cima a `PMTutilities.js`), così `HardWiredProperties` e `PMTutilities` dipendono da un punto comune.
-- `RepeatedRefine_c` → strato properties (è post-applicazione, non traduzione di eventi).
+- ~~`RepeatedRefine_c` → strato properties~~ fatto: `app/js/refine.js` (`refineAfterProperty`, `markNeedsRefine`).
 - Smontare `AldoUtilities.js`: `dummyParser`/`identifierToENODE` → core; `lookForResultAndCelebrate`/`compareWithResult` → nuovo modulo game/goal (interaction); utilità DOM generiche (`commonParent`, `removeClassByPrefix`, comparatori) → un `dom-utils.js`; il resto si elimina col passo 1.
 - Estrarre da `preload.js` la parte settings-UI (`GLBsettingsToInterface`, `populateDropdown`, listener `#settings`) in un `settings.js` (interaction); `preload.js` resta solo loader.
 

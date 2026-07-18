@@ -4,6 +4,34 @@
 
 
 
+/**
+ * Prova in ordine le azioni associate a un evento in #events (es. "c" = semplificazioni).
+ * Usata dalla tastiera e dal refine post-proprietà (senza passare da keyboardEvToFC).
+ */
+function tryEventActionsOnNode($ENODE, eventKey) {
+	let PActx
+	const $actions = searchEventHandler(eventKey)
+	for (let i = 0; i < $actions.length; i++) {
+		let actionString
+		let firstValString
+		try {
+			actionString = $actions[i].ENODE_getRoles('.function').children()[0].ENODE_getName()
+			firstValString = $actions[i].ENODE_getRoles('.values').children()[0].ENODE_getName()
+		} catch (err) {}
+
+		PActx = TryOnePropertyByName(actionString, $ENODE, firstValString)
+		if (PActx && PActx.error) { $($actions[i]).addClass('error').attr('error', PActx.msg) }
+		else if (PActx && PActx.matchedTF) {
+			PActx.msg = actionString + " " + firstValString
+			break
+		}
+	}
+	if (PActx == undefined) {
+		PActx = newPActx()
+	}
+	return PActx
+}
+
 function keyboardEvToFC($ENODE, keyPressed,event){
 	//if event is undefined, this is an internal call: use the property disregarding selectedTool
 	let PActx 
@@ -20,27 +48,7 @@ function keyboardEvToFC($ENODE, keyPressed,event){
 		}
 	}
 	else{
-
-		const $actions = searchEventHandler(keyPressed);
-		//prova in ordine ogni azione
-		for(let i=0;i<$actions.length;i++){
-			let actionString
-			let firstValString
-			try {
-				actionString = $actions[i].ENODE_getRoles('.function').children()[0].ENODE_getName();
-				firstValString = $actions[i].ENODE_getRoles('.values').children()[0].ENODE_getName();	
-			}
-			catch(err) {}
-			
-			PActx = TryOnePropertyByName(actionString, $ENODE ,firstValString);
-			if( PActx && PActx.error){$($actions[i]).addClass('error').attr('error',PActx.msg)}
-			else if( PActx && PActx.matchedTF ){//proprietà applicata con successo
-				PActx.msg = actionString +" "+ firstValString
-				break
-			}
-		}
-
-
+		PActx = tryEventActionsOnNode($ENODE, keyPressed)
 	}
 	
 	if(PActx == undefined){
@@ -131,4 +139,4 @@ function searchForProperty(field,value,returnedField){
 
 
 
-//RepeatedRefine_c è definita in PMTutilities.js (post-applicazione delle proprietà)
+//refineAfterProperty / markNeedsRefine: app/js/refine.js (post-applicazione delle proprietà)
