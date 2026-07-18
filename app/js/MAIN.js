@@ -340,10 +340,7 @@ function PActxConclude(PActx) {
 	if (PActx.matchedTF == true) {
 		//********** Post *************
 		if (debugMode) { console.log('CONCLUDE') }
-		refreshAndReplace(PActx);
-		if (PActx.$transform) {
-			refineAfterProperty(PActx.$transform);//percorsi tipizzati (REFINE_KINDS), oggi solo "c"
-		}
+		postApplyAfterProperty(PActx);
 		RefreshEmptyInfixBraketsGlued($('body'), true);
 		ssnapshot.take();
 		if (GLBsettings.movesCounter != undefined) { GLBsettings.movesCounter++ };

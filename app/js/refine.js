@@ -1,13 +1,13 @@
 // Post-applicazione proprietà (Property Application Mode): replace + refine.
 // Strato properties (software-modules.md).
 //
-// Percorsi di refine tipizzati (REFINE_KINDS): oggi solo "c" (ricetta #events "c").
-// Per aggiungerne uno: registrare kind → markerClass + eventKey, poi markNeedsRefine($n, kind).
-// Non riusare la lettera post-mark "n" (già = non riordinare in orderUL).
+// Modello semplice: si marca cosa raffinare (lettere / REFINE_KINDS), non "quanto".
+// Percorsi tipizzati: oggi solo "c" (ricetta #events "c").
+// Per aggiungerne uno: registrare kind → markerClass + eventKey, poi markNeedsRefine($n, kind)
+// (o post-mark PM con la stessa lettera). Non riusare "n" (già = non riordinare in orderUL).
 //
 // Prossimi passi:
 // - ricetta esplicita (lista proprietà) oltre alla sola chiave evento
-// - intensità di post (light / standard / full) su PActx
 
 /**
  * Percorsi di raffinamento disponibili.
@@ -166,6 +166,18 @@ function refineAfterProperty($transform, options) {
 			selector: refineMarkerSelector(kind)
 		})
 	}
+}
+
+/**
+ * Post immediato dopo una proprietà riuscita: replace/refresh, poi refine
+ * sui nodi marcati (REFINE_KINDS). Snapshot/celebrate/visualize restano in PActxConclude.
+ */
+function postApplyAfterProperty(PActx) {
+	refreshAndReplace(PActx)
+	if (PActx.$transform && PActx.$transform.length) {
+		refineAfterProperty(PActx.$transform)
+	}
+	return PActx
 }
 
 /** @deprecated usare refineAfterProperty — alias per compatibilità */
