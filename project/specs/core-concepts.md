@@ -38,7 +38,7 @@ The following table describes some of the most common ENODE types:
 | `ci`       | Identifier/variable      | varies           | none             | x         |
 
 
-When building The ExpressionTree, Aabacus enforces data type compatibility between the outputs and inputs of connected ENODEs.   
+When building The ExpressionTree, Aabacus enforces data type compatibility between the outputs and inputs of connected ENODEs.  
 Note that the data type `obj` means any data type is accepted as input, which is useful for operations like equality that can compare multiple tipes of objects.
 
 ### Minimal ExpressionTree example
@@ -71,11 +71,15 @@ The ExpressionTree is a composed function. Two forms of The ExpressionTree are c
 
 Aabacus distinguishes three states for (parts of) The ExpressionTree:
 
-| State | Meaning |
-|-------|---------|
-| **untied** | Free construction: ENODEs can be added, removed, moved, copied (still subject to data-type checks). |
-| **tied** | Definitions are binding: free structural editing is not allowed; the tree may still be transformed by applying properties that live in The ExpressionTree. |
-| **frozen** | No transformation of any kind is allowed on that part. |
+
+| State      | Meaning                                                                                                                                                    |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **untied** | Free construction: ENODEs can be added, removed, moved, copied (still subject to data-type checks).                                                        |
+| **tied**   | Definitions are binding: free structural editing is not allowed; the tree may still be transformed by applying properties that live in The ExpressionTree. |
+| **frozen** | No transformation of any kind is allowed on that part.                                                                                                     |
+
+
+
 
 ### 1. Untied (editing / construction)
 
@@ -108,10 +112,22 @@ To solve algebraic problems, fundamental properties must be included in The Expr
 | 
 ⎩ x*y=6
 
-Applying properties replaces parts of The ExpressionTree with equivalent forms. Common ways to apply properties:
+##Properties: PM and HardWired
+### PM PROPERTIES
+Le PM vengono applicate attraverso un pattern matching e si presentano come una sottoalbero all'interno dell'ExpressionTree deve contenere un enode di tipo 'eq' proprio come nell'esempio precedente: y=x-1 o un enode 'imply' eventualmente circondati da un enode 'forall'
+### Hard Wired properties
+Alcune proprietà sono attualmente difficili da esprimere solo in termini di equazioni. per questo sono state scritte sotto forma di procedure scritte nel codice sorgente di dell'applicazione. Esse sono applicabili solo se nell'ExpressionTree è presente un apposito elemento che rimanda alla proprietà.
 
-1. Select a subexpression and then apply a property. Pattern matching checks whether it matches the property pattern and, if so, applies the transformation.
+
+##Applying properties
+
+You can apply one single property to a suitable subexpression or you can apply a list of properties with one only Macro command. **Le macro rendono più comodo e veloce da ottenere un risultato, ma non cambiano l'insieme dei risultati ottenibili: l'utente può ottenere lo stesso risultato anche senza usare le macro applicando una per una le proprietà.
+Nella pratica le macro si possono applicare con varie user actions:
+1. Select a subexpression and then apply a property by pressing a key. Pattern matching checks whether it matches the property pattern and, if so, applies the transformation.
 2. Drag terms to apply commutative, associative, distributive properties, or to replace a term in an equation system.
+3.etc..
+
+
 
 ### Typical workflow
 
