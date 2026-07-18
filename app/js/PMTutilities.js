@@ -529,9 +529,13 @@ function PMcleanAndPost(PActx){
 	if(PActx.$transform){
 	    PActx.$transform.find('[data-enode]').addBack().each(function(){
 	    	let postMarks = ENODESmarkUnmark($(this),undefined,"p");
-	    	if(postMarks.indexOf('c') != -1){// is "c" one of the post markings?
-				//transform post mark "--c" in cleanIfPossible to conform to markings used in internal functions
-	    		markNeedsRefine(this);
+	    	// post-mark lettere che coincidono con REFINE_KINDS → marker DOM tipizzati
+	    	const refineKinds = Object.keys(REFINE_KINDS)
+	    	for (let ri = 0; ri < refineKinds.length; ri++) {
+	    		const kind = refineKinds[ri]
+	    		if (postMarks.indexOf(kind) != -1) {
+	    			markNeedsRefine(this, kind);
+	    		}
 	    	}
 	    	//************remove all PM marks***********
     		$(this).removeClass('taken');

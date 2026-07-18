@@ -342,7 +342,7 @@ function PActxConclude(PActx) {
 		if (debugMode) { console.log('CONCLUDE') }
 		refreshAndReplace(PActx);
 		if (PActx.$transform) {
-			refineAfterProperty(PActx.$transform);//semplifica i nodi marcati con markNeedsRefine / Refine_c
+			refineAfterProperty(PActx.$transform);//percorsi tipizzati (REFINE_KINDS), oggi solo "c"
 		}
 		RefreshEmptyInfixBraketsGlued($('body'), true);
 		ssnapshot.take();

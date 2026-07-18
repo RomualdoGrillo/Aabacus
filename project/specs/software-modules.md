@@ -62,13 +62,13 @@ Punti d'attenzione nel nucleo:
 | `PatternMatchingTrasform.js` | ~250 | Lato "transform" del PM: lookup proprietà (`findPMPropByName`), clone e swap dei membri (`swapMembersClone`), tipizzazione parametri (`parameterType`, suffissi `_`/`__`/`___`), sostituzione nei `forAll` (`replaceInForall`), riformattazione se restano variabili libere (`reformatForallProp`) |
 | `HardWiredProperties.js` | ~1075 | Framework delle proprietà cablate: `newPActx`, registro DnD (`PropertyDnD`/`propertiesDnD`), validatori (`validFor*`), implementazioni (associate, distribute, collect, compose, decompose, replace/link, modus ponens, redundant, Hanoi, forThis, evaluateComparison), euristica parentesi (`ENODEneedsBracket`) |
 | `addedHardWiredProperties.js` | ~95 | Specializzazioni didattiche: `tabelline`, `composePlusOnly`, `decomposeTens`, helper `$toBeComposedWithSiblings` (chiamato da `compose` nel file principale: dipendenza inversa rispetto all'ordine di caricamento, funziona solo perché risolta a runtime) |
-| `refine.js` | ~95 | Post-applicazione proprietà: `markNeedsRefine`, `refreshAndReplace`, `trySimplifyNode`, `refineAfterProperty`. Ricetta semplificazione ancora via evento `#events` `"c"` (`tryEventActionsOnNode`) |
+| `refine.js` | ~170 | Post-applicazione: `REFINE_KINDS`, `markNeedsRefine(kind)`, `clearRefineMarkers`, `trySimplifyNode`, `refineAfterProperty` (multi-passata). Oggi solo percorso `"c"` via `#events` |
 
 Concetti trasversali:
 
 - **`PActx`** (creato da `newPActx` in `PMTutilities.js`): contesto di applicazione di una proprietà. Campi principali: `matchedTF`, `msg`, `$pattern`, `$operand`, `$transform`, `$equation`, `$cloneProp`, `replacedAlready`, `visualization`. Le proprietà hard-wired di solito mutano il DOM da sole e impostano `replacedAlready=true`; le PM lasciano la sostituzione a `refreshAndReplace` in `refine.js`.
 - **Dispatch per nome**: `TryOnePropertyByName(nome, ...)` cerca `$('[data-tag=nome]')`; se l'elemento è `ci` chiama `window[nome](...)` (il nome della funzione JS deve coincidere con `data-tag`), altrimenti avvia il PM. È l'accoppiamento più fragile del sistema.
-- **Marcature**: stringa `mark-link-post` in `title` (persistente, salvata in MML) o `mark` (volatile). `m` = vincoli di match (es. `s` selected, `d` dragged), `l` = etichette per i path di riordino, `p` = post-azioni (`c` = auto-refine, `n` = non riordinare).
+- **Marcature**: stringa `mark-link-post` in `title` (persistente, salvata in MML) o `mark` (volatile). `m` = vincoli di match (es. `s` selected, `d` dragged), `l` = etichette per i path di riordino, `p` = post-azioni (`c` = auto-refine via `REFINE_KINDS`, `n` = non riordinare — **non** riusare `n` per un percorso di forma normale).
 
 Problemi noti: `evaluateComparison` usa `=` invece di `==` nei confronti su `ENODEClass` (righe ~1020–1033: valuta sempre il ramo `eq`); `ENODEModusPonens` è incompleto; `revert`, `isEquationMember`, `clearTragets` (typo nel nome) sono definiti e mai chiamati; `tabelline`/`composePlusOnly` ritornano `undefined` invece di un `PActx` fallito nei rami di guardia.
 

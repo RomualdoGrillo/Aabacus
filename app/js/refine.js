@@ -1,30 +1,86 @@
 // Post-applicazione proprietà (Property Application Mode): replace + refine.
 // Strato properties (software-modules.md).
 //
+// Percorsi di refine tipizzati (REFINE_KINDS): oggi solo "c" (ricetta #events "c").
+// Per aggiungerne uno: registrare kind → markerClass + eventKey, poi markNeedsRefine($n, kind).
+// Non riusare la lettera post-mark "n" (già = non riordinare in orderUL).
+//
 // Prossimi passi:
-// - ricetta di semplificazione esplicita (lista proprietà) invece della sola chiave evento "c"
+// - ricetta esplicita (lista proprietà) oltre alla sola chiave evento
 // - intensità di post (light / standard / full) su PActx
 
-/** Classe DOM: nodo candidato al refine dopo una proprietà */
-const REFINE_MARKER_CLASS = 'Refine_c';
-const REFINE_MARKER_SELECTOR = '.' + REFINE_MARKER_CLASS;
-/** Evento in #events (gestToAction) la cui lista azioni è la ricetta di semplificazione automatica */
-const REFINE_EVENT_KEY = 'c';
-
 /**
- * Marca uno o più ENODE come da raffinare dopo PActxConclude.
- * Unifica HW e PM (post-mark "c").
+ * Percorsi di raffinamento disponibili.
+ * markerClass: classe DOM sui nodi da trattare
+ * eventKey: evento in #events la cui lista azioni è la ricetta
  */
-function markNeedsRefine($nodes) {
-	return $($nodes).addClass(REFINE_MARKER_CLASS);
+const REFINE_KINDS = {
+	c: {
+		// dissolve / neutri / associate leggeri — gestToAction evento "c"
+		markerClass: 'Refine_c',
+		eventKey: 'c'
+	}
+};
+
+/** Alias retrocompatibili del percorso "c" */
+const REFINE_MARKER_CLASS = REFINE_KINDS.c.markerClass;
+const REFINE_MARKER_SELECTOR = '.' + REFINE_MARKER_CLASS;
+const REFINE_EVENT_KEY = REFINE_KINDS.c.eventKey;
+
+function refineMarkerClass(kind) {
+	const def = REFINE_KINDS[kind]
+	if (!def) {
+		console.warn('refine: unknown kind "' + kind + '"')
+		return 'Refine_' + kind
+	}
+	return def.markerClass
+}
+
+function refineMarkerSelector(kind) {
+	return '.' + refineMarkerClass(kind)
+}
+
+function refineEventKey(kind) {
+	const def = REFINE_KINDS[kind]
+	if (!def) {
+		console.warn('refine: unknown kind "' + kind + '"')
+		return kind
+	}
+	return def.eventKey
 }
 
 /**
- * Prova le proprietà di semplificazione su un nodo (ricetta evento REFINE_EVENT_KEY / options.key).
+ * Marca uno o più ENODE come da raffinare dopo PActxConclude.
+ * @param {jQuery|Element|string} $nodes
+ * @param {string} [kind='c'] — chiave in REFINE_KINDS
+ */
+function markNeedsRefine($nodes, kind) {
+	if (kind == null) { kind = 'c' }
+	return $($nodes).addClass(refineMarkerClass(kind));
+}
+
+/** Rimuove tutte le classi marker dei percorsi registrati (e opzionalmente da un sottoalbero). */
+function clearRefineMarkers($root) {
+	const $scope = $root && $root.length ? $root.find('[data-enode]').addBack('[data-enode]') : $('*')
+	const kinds = Object.keys(REFINE_KINDS)
+	for (let i = 0; i < kinds.length; i++) {
+		$scope.removeClass(refineMarkerClass(kinds[i]))
+	}
+	return $scope
+}
+
+/**
+ * Prova le proprietà del percorso `kind` (o eventKey esplicito) su un nodo.
  * Non passa da keyboardEvToFC: usa tryEventActionsOnNode.
  */
-function trySimplifyNode($ENODE, eventKey) {
-	return tryEventActionsOnNode($ENODE, eventKey != null ? eventKey : REFINE_EVENT_KEY)
+function trySimplifyNode($ENODE, kindOrEventKey) {
+	let eventKey = REFINE_EVENT_KEY
+	if (kindOrEventKey != null) {
+		eventKey = REFINE_KINDS[kindOrEventKey]
+			? REFINE_KINDS[kindOrEventKey].eventKey
+			: kindOrEventKey
+	}
+	return tryEventActionsOnNode($ENODE, eventKey)
 }
 
 /**
@@ -50,19 +106,12 @@ function refreshAndReplace(PActx) {
 }
 
 /**
- * Raffinamento iterativo sul ramo trasformato: prova trySimplifyNode
- * su ogni nodo marcato finché non ci sono più match (max 20 passate).
- * Non richiama PActxConclude (niente snapshot/celebrate intermedi).
- *
- * @param {jQuery} $transform - più grande elemento trasformato
- * @param {{key?: string, selector?: string}} [options]
+ * Una passata di refine: ripete trySimplifyNode sui nodi che matchano selector
+ * finché non ci sono più match (max 20).
  */
-function refineAfterProperty($transform, options) {
-	if (!$transform || !$transform.length) { return }
-	options = options || {}
-	const key = options.key != null ? options.key : REFINE_EVENT_KEY
-	const selector = options.selector != null ? options.selector : REFINE_MARKER_SELECTOR
-
+function runRefinePass($transform, pass) {
+	const key = pass.key
+	const selector = pass.selector
 	let i = 0
 	let semplificEffettuata = true
 	let $transformParentRole = $transform.parent()
@@ -83,6 +132,39 @@ function refineAfterProperty($transform, options) {
 			j--
 		}
 		i++
+	}
+}
+
+/**
+ * Raffinamento sul ramo trasformato. Di default esegue tutti i percorsi in REFINE_KINDS
+ * (oggi solo "c"). Non richiama PActxConclude (niente snapshot/celebrate intermedi).
+ *
+ * @param {jQuery} $transform
+ * @param {{kinds?: string[], key?: string, selector?: string}} [options]
+ *   - kinds: elenco ordinato di kind da eseguire (default: chiavi di REFINE_KINDS)
+ *   - key + selector: una sola passata legacy (RepeatedRefine_c)
+ */
+function refineAfterProperty($transform, options) {
+	if (!$transform || !$transform.length) { return }
+	options = options || {}
+
+	// Retrocompat: key/selector espliciti → una passata
+	if (options.key != null || options.selector != null) {
+		runRefinePass($transform, {
+			key: options.key != null ? options.key : REFINE_EVENT_KEY,
+			selector: options.selector != null ? options.selector : REFINE_MARKER_SELECTOR
+		})
+		return
+	}
+
+	const kinds = options.kinds || Object.keys(REFINE_KINDS)
+	for (let i = 0; i < kinds.length; i++) {
+		const kind = kinds[i]
+		if (!REFINE_KINDS[kind]) { continue }
+		runRefinePass($transform, {
+			key: refineEventKey(kind),
+			selector: refineMarkerSelector(kind)
+		})
 	}
 }
 
