@@ -39,7 +39,7 @@ The following table describes some of the most common ENODE types:
 
 When building the ExpressionTree, Aabacus enforces data type compatibility between the outputs and inputs of connected ENODEs.  
 Note that the data type `obj` means any data type is accepted as input, which is useful for operations like equality that can compare multiple types of objects.
-The ExpressionTree root element is the definition Enode.
+The ExpressionTree root element is a Enode of 'def' type called 'Canvas'.
  
 ### Minimal ExpressionTree example
 
@@ -110,7 +110,7 @@ Some properties are still hard to express using equations alone. For that reason
 
 ## Applying properties
 
-You can apply a single property to a suitable subexpression, or apply a list of properties with one macro command. **Macros make it faster and more convenient to reach a result, but they do not enlarge the set of obtainable results: the user can reach the same result without macros by applying properties one by one.**
+You can apply a single property to a suitable subexpression, or apply a list of properties with one macro command. Macros make it faster and more convenient to reach a result, but they do not enlarge the set of obtainable results: the user can reach the same result without macros by applying properties one by one. 
 
 In practice, single properties and macros can be triggered by various user actions:
 
