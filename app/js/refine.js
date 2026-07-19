@@ -6,6 +6,9 @@
 // Per aggiungerne uno: registrare kind → markerClass + eventKey, poi markNeedsRefine($n, kind)
 // (o post-mark PM con la stessa lettera). Non riusare "n" (già = non riordinare in orderUL).
 //
+// Cascade refining: una proprietà di refine può a sua volta markNeedsRefine altri nodi;
+// la passata successiva li riprende, fino a esaurimento o a REFINE_MAX_STEPS (anti-loop).
+//
 // Prossimi passi:
 // - ricetta esplicita (lista proprietà) oltre alla sola chiave evento
 
@@ -21,6 +24,9 @@ const REFINE_KINDS = {
 		eventKey: 'c'
 	}
 };
+
+/** Tetto di passi riusciti per cascade refining (un kind / una runRefinePass) */
+const REFINE_MAX_STEPS = 20;
 
 /** Alias retrocompatibili del percorso "c" */
 const REFINE_MARKER_CLASS = REFINE_KINDS.c.markerClass;
@@ -106,37 +112,42 @@ function refreshAndReplace(PActx) {
 }
 
 /**
- * Una passata di refine: ripete trySimplifyNode sui nodi che matchano selector
- * finché non ci sono più match (max 20).
+ * Cascade refining: ripete trySimplifyNode sui nodi che matchano selector
+ * finché non ci sono più match, al più REFINE_MAX_STEPS volte (anti-loop).
  */
 function runRefinePass($transform, pass) {
 	const key = pass.key
 	const selector = pass.selector
-	let i = 0
-	let semplificEffettuata = true
+	let steps = 0
+	let madeProgress = true
 	let $transformParentRole = $transform.parent()
-	while (semplificEffettuata == true && i < 20) {
+	while (madeProgress) {
 		let $toBesemplified = $transformParentRole.find('[data-enode]')
 		if (selector) {
 			$toBesemplified = $toBesemplified.filter(selector)
 		}
-		let j = ($toBesemplified.length - 1)
-		semplificEffettuata = false
-		while (j >= 0) {
+		madeProgress = false
+		for (let j = $toBesemplified.length - 1; j >= 0; j--) {
 			const refinementPActx = trySimplifyNode($($toBesemplified[j]), key)
 			if (refinementPActx && refinementPActx.matchedTF) {
+				if (steps >= REFINE_MAX_STEPS) {
+					console.warn(
+						'cascade refining: raggiunto REFINE_MAX_STEPS (' + REFINE_MAX_STEPS +
+						') con ancora match possibili; key=' + key + ' selector=' + selector
+					)
+					return
+				}
 				refreshAndReplace(refinementPActx)
-				semplificEffettuata = true
+				madeProgress = true
+				steps++
 				break
 			}
-			j--
 		}
-		i++
 	}
 }
 
 /**
- * Raffinamento sul ramo trasformato. Di default esegue tutti i percorsi in REFINE_KINDS
+ * Cascade refining sul ramo trasformato. Di default esegue tutti i percorsi in REFINE_KINDS
  * (oggi solo "c"). Non richiama PActxConclude (niente snapshot/celebrate intermedi).
  *
  * @param {jQuery} $transform
@@ -169,7 +180,7 @@ function refineAfterProperty($transform, options) {
 }
 
 /**
- * Post immediato dopo una proprietà riuscita: replace/refresh, poi refine
+ * Post immediato dopo una proprietà riuscita: replace/refresh, poi cascade refining
  * sui nodi marcati (REFINE_KINDS). Snapshot/celebrate/visualize restano in PActxConclude.
  */
 function postApplyAfterProperty(PActx) {
