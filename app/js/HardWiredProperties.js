@@ -106,16 +106,26 @@ function associativeGenValid($mouseDownENODE, ctrlOrMeta, altKey, $alreadyClaime
 function ENODEassociate(dragged, target, dropped) {
 	//dropped has been inserted already, just remove dragged if not cloning
 	const PActx = newPActx();
+	const $sourceOp = ENODEparent($(dragged));
+	const $destOp = ENODEparent($(target));
 	if ($(dropped).hasClass('toBeCloned')) {
 		$(dropped).removeClass('toBeCloned');
 	}
 	else {
 		ENODEremove($(dragged)); // if not cloning, clone was useful to visualize the starting point 	
 	}
+	// post: ripulisci ops di partenza/arrivo (es. PlusSingleTerm, *Associate in ricetta "c")
+	if ($sourceOp && $sourceOp.length) { markNeedsRefine($sourceOp); }
+	if ($destOp && $destOp.length) { markNeedsRefine($destOp); }
+	let $transform = $destOp;
+	if ($sourceOp && $sourceOp.length && $destOp && $destOp.length) {
+		const common = commonParent([$sourceOp[0], $destOp[0]]);
+		if (common) { $transform = $(common); }
+	}
+	PActx.$transform = $transform;
 	PActx.matchedTF = true;
 	PActx.replacedAlready = true;
 	PActx.msg = "associated";
-	//PActx.$transform = target.parent().parent()//not optimized, should update the older closest common parent
 	return PActx;
 }
 
