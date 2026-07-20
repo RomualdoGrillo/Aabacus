@@ -22,33 +22,30 @@ async function main() {
 
 	const server = spawn(
 		'npx',
-		['--yes', 'serve', '-l', PORT, 'app'],
+		['--yes', 'serve', '-l', 'tcp://127.0.0.1:' + PORT, 'app'],
 		{ cwd: repoRoot, stdio: ['ignore', 'pipe', 'pipe'], shell: true }
 	);
 
-	await new Promise(function (resolve, reject) {
-		const t = setTimeout(function () {
-			reject(new Error('timeout avvio server'));
-		}, 60000);
-		server.stdout.on('data', function (buf) {
-			if (/Accepting connections|http/i.test(String(buf))) {
-				clearTimeout(t);
-				resolve();
-			}
+	const started = Date.now();
+	while (Date.now() - started < 60000) {
+		try {
+			const res = await fetch(BASE + '/');
+			if (res.ok || res.status === 200) break;
+		} catch (e) {
+			/* retry */
+		}
+		await new Promise(function (r) {
+			setTimeout(r, 250);
 		});
-		server.stderr.on('data', function (buf) {
-			const s = String(buf);
-			if (/Accepting connections|http/i.test(s)) {
-				clearTimeout(t);
-				resolve();
-			}
-		});
+	}
+	// ultimo check
+	const probe = await fetch(BASE + '/').catch(function () {
+		return null;
 	});
-
-	// piccolo margine dopo "Accepting"
-	await new Promise(function (r) {
-		setTimeout(r, 400);
-	});
+	if (!probe || !probe.ok) {
+		server.kill('SIGTERM');
+		throw new Error('server non raggiungibile su ' + BASE);
+	}
 
 	const browser = await chromium.launch({ headless: !KEEP_OPEN });
 	const page = await browser.newPage();
@@ -59,9 +56,10 @@ async function main() {
 			return typeof window.$ === 'function' && typeof window.inject === 'function';
 		});
 
-		await page.evaluate(function () {
+		const bust = String(Date.now());
+		await page.evaluate(function (bust) {
 			return new Promise(function (resolve, reject) {
-				$.getScript('js/newPM/load.js')
+				$.getScript('js/newPM/load.js?v=' + bust)
 					.done(function () {
 						var n = 0;
 						var id = setInterval(function () {
@@ -79,11 +77,12 @@ async function main() {
 						reject(new Error('getScript load.js fallito'));
 					});
 			});
-		});
+		}, bust);
 
-		await page.evaluate(function () {
+		// load.js auto-start può aver già caricato i moduli: forza reload moduli se serve
+		await page.evaluate(function (bust) {
 			return new Promise(function (resolve, reject) {
-				$.getScript('js/newPM/demo-fixtures.js')
+				$.getScript('js/newPM/demo-fixtures.js?v=' + bust)
 					.done(function () {
 						resolve(true);
 					})
@@ -91,28 +90,52 @@ async function main() {
 						reject(new Error('getScript demo-fixtures.js fallito'));
 					});
 			});
-		});
+		}, bust);
 
-		const summary = await page.evaluate(async function (scenario) {
-			return await runNewPmDemo(scenario, { play: true, stepMs: 350 });
+		const shotDir = require('path').join(__dirname, '../../../app/js/newPM/_shots');
+		require('fs').mkdirSync(shotDir, { recursive: true });
+
+		const playPromise = page.evaluate(async function (scenario) {
+			return await runNewPmDemo(scenario, { play: true, stepMs: 1100 });
 		}, SCENARIO);
 
-		console.log('\n========== newPM demo ==========');
+		// screenshot durante le fasi chiave
+		await page.waitForTimeout(900);
+		await page.screenshot({
+			path: require('path').join(shotDir, '01-drag.png'),
+			fullPage: true
+		});
+		await page.waitForTimeout(1200);
+		await page.screenshot({
+			path: require('path').join(shotDir, '02-ghost.png'),
+			fullPage: true
+		});
+		await page.waitForTimeout(2200);
+		await page.screenshot({
+			path: require('path').join(shotDir, '03-fit.png'),
+			fullPage: true
+		});
+
+		const summary = await playPromise;
+
+		console.log('\n========== newPM demo (schema fasi) ==========');
 		console.log('scenario:', summary.scenario);
 		console.log('matched:', summary.matched);
 		console.log('msg:', summary.msg || '(ok)');
-		console.log('bindings keys:', Object.keys(summary.bindings || {}));
-		console.log('--- trace ---');
-		(summary.trace || []).forEach(function (step, i) {
+		console.log('bindings:', summary.bindings);
+		console.log('--- fasi visuali ---');
+		(summary.phases || []).forEach(function (step, i) {
 			console.log(
 				String(i + 1).padStart(2, ' ') +
 					') [' +
+					step.phase +
+					' / ' +
 					step.kind +
 					'] ' +
 					step.narrate
 			);
 		});
-		console.log('================================\n');
+		console.log('==============================================\n');
 
 		if (KEEP_OPEN) {
 			console.log('KEEP_OPEN=1 — chiudi il browser per terminare.\n');

@@ -12,9 +12,11 @@
 	'use strict';
 
 	var BASE = 'js/newPM/';
-	var FILES = ['match.js', 'visualize.js', 'api.js'];
+	var FILES = ['match.js', 'phases.js', 'visualize.js', 'api.js'];
 	var loading = null;
 	var loaded = false;
+	// cache-bust per sessioni di sviluppo in console
+	var BUST = String(Date.now());
 
 	function loadCss(href) {
 		if (document.querySelector('link[data-newpm-css]')) {
@@ -66,9 +68,21 @@
 		var base = opts.base || BASE;
 
 		loading = (async function () {
-			await loadCss(base + 'fitting.css');
+			// rimuovi css precedente per permettere refresh in console
+			var oldCss = document.querySelector('link[data-newpm-css]');
+			if (oldCss) oldCss.remove();
+			await loadCss(base + 'fitting.css?v=' + BUST);
 			for (var i = 0; i < FILES.length; i++) {
-				await loadScript(base + FILES[i]);
+				var src = base + FILES[i] + '?v=' + BUST;
+				var old = document.querySelector('script[data-newpm-src="' + src + '"]');
+				if (!old) {
+					// consenti reload: togli marker senza query
+					var plain = document.querySelector(
+						'script[data-newpm-src="' + base + FILES[i] + '"]'
+					);
+					if (plain) plain.remove();
+				}
+				await loadScript(src);
 			}
 			loaded = true;
 			if (typeof console !== 'undefined') {

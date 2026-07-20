@@ -1,10 +1,8 @@
 /**
- * newPM — API console: newPM(pattern, input, options?)
+ * newPM — API console: newPM(draggedPattern, targetInput, options?)
  *
- * Esempi (dopo il load):
- *   newPM(patternENODE, inputENODE)
- *   newPM('#canvasRole [data-enode=plus]', $selection)
- *   await newPM(p, i, { play: true, stepMs: 600 })
+ * Semantica: arg1 = pattern da “trascinare”, arg2 = target su cui rilasciare.
+ * Default: play:true (animazione). Override: { play: false }.
  */
 (function (global) {
 	'use strict';
@@ -37,28 +35,56 @@
 		return $(ref);
 	};
 
+	function describeRef(ref) {
+		if (typeof ref === 'string') return JSON.stringify(ref);
+		if (ref && ref.jquery) return 'jQuery(' + ref.length + ')';
+		if (ref && ref.nodeType) return '<' + (ref.tagName || '?') + '>';
+		return String(ref);
+	}
+
 	/**
-	 * @param {*} pattern
-	 * @param {*} input
+	 * @param {*} dragged — pattern (selettore / ENODE / jQuery)
+	 * @param {*} target — input su cui rilasciare
 	 * @param {{ play?: boolean, stepMs?: number, orderedList?: boolean, clearAtEnd?: boolean }} options
-	 * @returns {Promise<object>|object}
 	 */
-	function newPM(pattern, input, options) {
+	function newPM(dragged, target, options) {
 		options = options || {};
-		if (typeof NewPM.runMatch !== 'function') {
-			throw new Error('newPM: match.js non caricato. Esegui $.getScript("js/newPM/load.js")');
+		if (options.play === undefined) {
+			options.play = true;
 		}
 
-		var result = NewPM.runMatch(pattern, input, {
+		if (typeof NewPM.runMatch !== 'function') {
+			throw new Error('newPM: match.js non caricato');
+		}
+		if (typeof NewPM.buildVisualScript !== 'function') {
+			throw new Error('newPM: phases.js non caricato');
+		}
+
+		var $pattern = NewPM.resolveENODE(dragged);
+		var $input = NewPM.resolveENODE(target);
+		if (!$pattern.length || !$pattern.is('[data-enode]')) {
+			throw new Error(
+				'newPM: pattern non risolto — nessun ENODE per ' + describeRef(dragged)
+			);
+		}
+		if (!$input.length || !$input.is('[data-enode]')) {
+			throw new Error(
+				'newPM: target non risolto — nessun ENODE per ' + describeRef(target)
+			);
+		}
+
+		var result = NewPM.runMatch($pattern, $input, {
 			orderedList: options.orderedList
 		});
+		result.visualSteps = NewPM.buildVisualScript(result);
+		result.trace = result.visualSteps;
 
 		result.play = function (playOpts) {
 			playOpts = playOpts || {};
 			if (typeof NewPM.playTrace !== 'function') {
 				return Promise.reject(new Error('newPM: visualize.js non caricato'));
 			}
-			return NewPM.playTrace(result.trace, {
+			return NewPM.playTrace(result.visualSteps, {
 				stepMs: playOpts.stepMs != null ? playOpts.stepMs : options.stepMs,
 				clearAtEnd:
 					playOpts.clearAtEnd != null ? playOpts.clearAtEnd : options.clearAtEnd
@@ -72,10 +98,18 @@
 				'[newPM]',
 				result.matched ? 'MATCH' : 'NO MATCH',
 				result.msg || '',
-				'| steps:',
-				result.trace.length,
-				'| bindings:',
-				result.bindings
+				'| visual steps:',
+				result.visualSteps.length,
+				'| structureFits:',
+				(result.structureFits || []).length,
+				'| leafBinds:',
+				(result.leafBinds || []).length
+			);
+			console.log(
+				'[newPM] fasi:',
+				result.visualSteps.map(function (s) {
+					return s.phase + ':' + s.kind;
+				})
 			);
 		}
 
@@ -87,7 +121,7 @@
 		return result;
 	}
 
-	newPM.version = '0.1.0-exp';
+	newPM.version = '0.4.0-exp';
 	newPM.NS = NewPM;
 	newPM.last = function () {
 		return NewPM.lastResult;

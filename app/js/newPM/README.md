@@ -1,58 +1,71 @@
 # newPM (sperimentale)
 
 Motore di pattern matching con traccia visualizzabile (“maglione che calza”).
-**Non** è collegato a `index.html` né a `PMTutilities.js`: non cambia il comportamento dell’app finché non lo carichi a mano.
+Caricato da `index.html` (non sostituisce ancora `PMTutilities.js`).
 
-## Caricare da console
+## Avvio rapido
 
-Con Aabacus già aperta (`app/index.html`):
+1. Server: `npx --yes serve -l 5500 app`
+2. Apri la fixture:
 
-```js
-$.getScript('js/newPM/load.js')
-// oppure, se preferisci il controllo esplicito:
-await newPM.load()  // dopo aver iniettato solo load.js senza auto-start
+```
+http://127.0.0.1:5500/?preloadPath=./Data/TestBedExamples/newPM_assoc.mmls
 ```
 
-`load.js` iniettato con `$.getScript` carica da solo CSS + `match.js` + `visualize.js` + `api.js`.
-
-## Invocare
-
-`pattern` e `input` possono essere: nodo DOM, jQuery, oppure selettore CSS che punta a un ENODE.
+3. In DevTools → Console:
 
 ```js
-// solo match + log + oggetto risultato
-const r = newPM(pattern, input)
-r.matched
-r.bindings
-r.trace
+// MATCH + animazione (play:true di default)
+await newPM('[data-tag=newPM-pattern]', '[data-tag=newPM-ok]')
 
-// match + animazione step-by-step
-await newPM(pattern, input, { play: true, stepMs: 600 })
+// FAIL (times)
+await newPM('[data-tag=newPM-pattern]', '[data-tag=newPM-fail-times]')
 
-// ripeti l’ultima animazione
+// FAIL (espressione troppo corta)
+await newPM('[data-tag=newPM-pattern]', '[data-tag=newPM-fail-short]')
+
+// solo match, senza animazione
+await newPM('[data-tag=newPM-pattern]', '[data-tag=newPM-ok]', { play: false })
+```
+
+Semantica: `newPM(selectorOfDragged, selectorOfTarget)` —
+arg1 = pattern, arg2 = input su cui “rilasciare”.
+
+## API
+
+```js
+await newPM(pattern, target)                 // play:true
+await newPM(pattern, target, { play: false })
 await newPM.last().play()
-
-// pulisci overlay
 newPM.clear()
+newPM.version
 ```
 
-### Esempio tipico in canvas
+`pattern` / `target`: selettore CSS, jQuery, o nodo DOM ENODE.
 
-1. Seleziona / individua due ENODE (pattern e input).
-2. In console:
+## Fasi visuali (schema PDF)
+
+1. **dragStart / dragGhost** — contorni plus interno/esterno
+2. **structureFit** — stringimento interno → esterno
+3. **leaves** — bind di `a__`, `b_`, `c__`
+4. **transform** — placeholder
+
+## Fixture
+
+[`Data/TestBedExamples/newPM_assoc.mmls`](../../Data/TestBedExamples/newPM_assoc.mmls)
+
+| data-tag | Ruolo |
+|----------|--------|
+| `newPM-assoc` | proprietà forAll |
+| `newPM-pattern` | membro sinistro (pattern) |
+| `newPM-transform` | membro destro (transform) |
+| `newPM-ok` | input che matcha |
+| `newPM-fail-times` | input times → no match |
+| `newPM-fail-short` | `1+x` → no match |
+
+## Demo staged (opzionale)
 
 ```js
-const $input = $('.selected').closest('[data-enode]') // adatta al tuo stato UI
-const $pattern = $('[data-tag=...] ...')              // membro pattern della proprietà
-await newPM($pattern, $input, { play: true })
+$.getScript('js/newPM/demo-fixtures.js')
+await runNewPmDemo('match')
 ```
-
-## Cosa fa / non fa (v0.1)
-
-| Fa | Non fa ancora |
-|----|----------------|
-| Match strutturale + parametri `_` / `__` / `___` | Replace / transform / refine |
-| Trace narrata + ellisse “che si stringe” | Integrazione tasti / drag dell’app |
-| API `window.newPM` | Sostituzione di `adaptMatch` |
-
-Quando sarà maturo, questo modulo potrà sostituire il PM di produzione; fino ad allora resta opt-in da console.

@@ -1,91 +1,193 @@
-/* newPM — visualizzazione sperimentale "maglione" (non usata dall'app finché non carichi newPM) */
+/* newPM — staging + ghost come nello storyboard PDF */
+
+#newPM-stage {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-areas:
+		"pattern transform"
+		"input input";
+	gap: 18px;
+	margin: 16px;
+	padding: 18px;
+	background: #efebe3;
+	border: 1px solid #cfc3a8;
+	font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+	width: calc(100% - 32px);
+	box-sizing: border-box;
+}
+
+#newPM-panel-pattern {
+	grid-area: pattern;
+}
+#newPM-panel-transform {
+	grid-area: transform;
+}
+#newPM-panel-input {
+	grid-area: input;
+}
+
+#newPM-stage .newPM-panel {
+	min-width: 0;
+	min-height: 110px;
+	padding: 12px 14px 18px;
+	background: #fffdf8;
+	border: 1px solid #c9b896;
+	border-radius: 4px;
+	position: relative;
+	overflow: visible;
+}
+
+#newPM-stage .newPM-panel-title {
+	font-size: 13px;
+	letter-spacing: 0.03em;
+	color: #6a5a40;
+	margin-bottom: 10px;
+}
+
+#newPM-stage .newPM-host {
+	min-height: 56px;
+	padding: 8px 4px;
+}
+
+/* Durante il drag: il pattern “passa” al ghost (come nel PDF) */
+#newPM-stage #newPM-demo-pattern.newPM-hide-leaves {
+	opacity: 0.12;
+	filter: grayscale(0.4);
+}
+
+/* Atom leggermente “a pastiglia” senza stravolgere il layout Aabacus */
+#newPM-stage [data-enode="ci"] > .name,
+#newPM-stage [data-enode="cn"] > .name {
+	display: inline-block;
+	min-width: 1.4em;
+	padding: 0.15em 0.45em;
+	border-radius: 999px;
+	border: 1.5px solid #5b7fd6;
+	background: #fff;
+}
 
 #newPM-narration {
 	position: fixed;
-	left: 12px;
-	right: 12px;
-	bottom: 12px;
-	z-index: 99999;
-	max-width: 720px;
+	left: 16px;
+	right: 16px;
+	bottom: 16px;
+	z-index: 100000;
+	max-width: 840px;
 	margin: 0 auto;
-	padding: 10px 14px;
-	font: 14px/1.35 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+	padding: 12px 16px;
+	font: 15px/1.35 Georgia, "Palatino Linotype", serif;
 	color: #1a1a1a;
-	background: rgba(255, 248, 235, 0.96);
+	background: rgba(255, 248, 235, 0.97);
 	border: 1px solid #c4a574;
-	box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
 	pointer-events: none;
 }
 
-#newPM-narration[data-kind="reject"],
-#newPM-narration[data-kind="fail"] {
-	background: rgba(255, 236, 236, 0.96);
-	border-color: #c47a7a;
+#newPM-phase {
+	position: fixed;
+	top: 12px;
+	right: 12px;
+	z-index: 100000;
+	padding: 6px 10px;
+	font: 12px/1.2 Menlo, monospace;
+	background: rgba(255, 255, 255, 0.92);
+	border: 1px solid #bbb;
+	border-radius: 4px;
+	pointer-events: none;
 }
 
-#newPM-narration[data-kind="bind"],
-#newPM-narration[data-kind="done"] {
-	background: rgba(232, 248, 236, 0.96);
-	border-color: #7ab08a;
-}
-
-.newPM-halo {
+/* ===== Ghost: protagonista visuale (come PDF) ===== */
+#newPM-ghost {
 	position: absolute;
-	z-index: 99998;
+	z-index: 99990;
 	pointer-events: none;
-	border: 2px solid #2a6f7a;
-	border-radius: 50%;
-	box-sizing: border-box;
-	transform: scale(1.35);
-	opacity: 0.85;
 	transition:
-		top 280ms ease,
-		left 280ms ease,
-		width 280ms ease,
-		height 280ms ease,
-		transform 320ms cubic-bezier(0.2, 0.9, 0.2, 1),
+		top 520ms cubic-bezier(0.22, 0.85, 0.28, 1),
+		left 520ms cubic-bezier(0.22, 0.85, 0.28, 1),
+		width 520ms cubic-bezier(0.22, 0.85, 0.28, 1),
+		height 520ms cubic-bezier(0.22, 0.85, 0.28, 1);
+}
+
+.newPM-ghost-capsule {
+	position: absolute;
+	box-sizing: border-box;
+	border-radius: 999px;
+	border: 3px solid #c45193;
+	background: rgba(255, 255, 255, 0.18);
+	box-shadow:
+		0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+		0 4px 14px rgba(120, 40, 90, 0.12);
+	transition:
+		top 450ms cubic-bezier(0.2, 0.85, 0.25, 1),
+		left 450ms cubic-bezier(0.2, 0.85, 0.25, 1),
+		width 450ms cubic-bezier(0.2, 0.85, 0.25, 1),
+		height 450ms cubic-bezier(0.2, 0.85, 0.25, 1),
+		transform 450ms cubic-bezier(0.2, 0.85, 0.25, 1),
 		opacity 200ms ease,
 		border-color 200ms ease;
 }
 
-.newPM-halo.is-fitting {
+.newPM-ghost-capsule.inner {
+	border-color: #7a4ea8;
+}
+
+.newPM-ghost-capsule::before {
+	content: "+";
+	position: absolute;
+	top: -11px;
+	left: 18px;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: #fff;
+	border: 2px solid inherit;
+	border-color: inherit;
+	color: #4a2d55;
+	font: 14px/22px Georgia, serif;
+	text-align: center;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.newPM-ghost-capsule.is-loose {
+	transform: scale(1.06);
+	opacity: 0.72;
+	background: rgba(255, 245, 250, 0.2);
+}
+
+.newPM-ghost-capsule.is-tight {
 	transform: scale(1);
-	border-color: #1f8f4e;
+	opacity: 0.98;
+	background: rgba(255, 255, 255, 0.08);
 }
 
-.newPM-halo.is-reject {
-	border-color: #c0392b;
-	transform: scale(1.2);
-	animation: newPM-shake 280ms ease;
+#newPM-stalk {
+	position: absolute;
+	z-index: 99980;
+	pointer-events: none;
+	overflow: visible;
 }
 
-.newPM-candidate {
-	outline: 2px dashed rgba(42, 111, 122, 0.55);
-	outline-offset: 3px;
-	transition: outline-color 160ms ease, transform 200ms ease;
+.newPM-leaf-fly {
+	position: absolute;
+	z-index: 99995;
+	min-width: 32px;
+	height: 32px;
+	padding: 0 10px;
+	border-radius: 999px;
+	border: 2px solid #5b7fd6;
+	background: #fff;
+	color: #1e2a4a;
+	font: 14px/32px Georgia, serif;
+	text-align: center;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.14);
+	transition:
+		top 400ms cubic-bezier(0.2, 0.9, 0.3, 1),
+		left 400ms cubic-bezier(0.2, 0.9, 0.3, 1),
+		opacity 180ms ease;
+	pointer-events: none;
 }
 
-.newPM-fitted {
-	outline: 2px solid rgba(31, 143, 78, 0.75);
-	outline-offset: 2px;
-	background-color: rgba(31, 143, 78, 0.08);
-}
-
-.newPM-rejected {
-	outline: 2px solid rgba(192, 57, 43, 0.65);
-	outline-offset: 2px;
-	animation: newPM-shake 280ms ease;
-}
-
-@keyframes newPM-shake {
-	0%,
-	100% {
-		transform: translateX(0);
-	}
-	25% {
-		transform: translateX(-3px);
-	}
-	75% {
-		transform: translateX(3px);
-	}
+#newPM-stage .newPM-bound-flash > .name {
+	box-shadow: 0 0 0 3px rgba(91, 127, 214, 0.35);
+	border-radius: 999px;
 }
