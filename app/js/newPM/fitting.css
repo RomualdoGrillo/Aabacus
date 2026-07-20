@@ -1,0 +1,91 @@
+/* newPM — visualizzazione sperimentale "maglione" (non usata dall'app finché non carichi newPM) */
+
+#newPM-narration {
+	position: fixed;
+	left: 12px;
+	right: 12px;
+	bottom: 12px;
+	z-index: 99999;
+	max-width: 720px;
+	margin: 0 auto;
+	padding: 10px 14px;
+	font: 14px/1.35 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+	color: #1a1a1a;
+	background: rgba(255, 248, 235, 0.96);
+	border: 1px solid #c4a574;
+	box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+	pointer-events: none;
+}
+
+#newPM-narration[data-kind="reject"],
+#newPM-narration[data-kind="fail"] {
+	background: rgba(255, 236, 236, 0.96);
+	border-color: #c47a7a;
+}
+
+#newPM-narration[data-kind="bind"],
+#newPM-narration[data-kind="done"] {
+	background: rgba(232, 248, 236, 0.96);
+	border-color: #7ab08a;
+}
+
+.newPM-halo {
+	position: absolute;
+	z-index: 99998;
+	pointer-events: none;
+	border: 2px solid #2a6f7a;
+	border-radius: 50%;
+	box-sizing: border-box;
+	transform: scale(1.35);
+	opacity: 0.85;
+	transition:
+		top 280ms ease,
+		left 280ms ease,
+		width 280ms ease,
+		height 280ms ease,
+		transform 320ms cubic-bezier(0.2, 0.9, 0.2, 1),
+		opacity 200ms ease,
+		border-color 200ms ease;
+}
+
+.newPM-halo.is-fitting {
+	transform: scale(1);
+	border-color: #1f8f4e;
+}
+
+.newPM-halo.is-reject {
+	border-color: #c0392b;
+	transform: scale(1.2);
+	animation: newPM-shake 280ms ease;
+}
+
+.newPM-candidate {
+	outline: 2px dashed rgba(42, 111, 122, 0.55);
+	outline-offset: 3px;
+	transition: outline-color 160ms ease, transform 200ms ease;
+}
+
+.newPM-fitted {
+	outline: 2px solid rgba(31, 143, 78, 0.75);
+	outline-offset: 2px;
+	background-color: rgba(31, 143, 78, 0.08);
+}
+
+.newPM-rejected {
+	outline: 2px solid rgba(192, 57, 43, 0.65);
+	outline-offset: 2px;
+	animation: newPM-shake 280ms ease;
+}
+
+@keyframes newPM-shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(-3px);
+	}
+	75% {
+		transform: translateX(3px);
+	}
+}
