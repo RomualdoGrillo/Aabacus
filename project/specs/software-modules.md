@@ -58,7 +58,8 @@ Punti d'attenzione nel nucleo:
 
 | File | righe | Responsabilità |
 |---|---|---|
-| `PMTutilities.js` | ~725 | Motore del pattern matching: dispatch (`TryOnePropertyByName`), pipeline (`InstructAndTryOnePMT`, `PActxFromAttackPoints`), matcher ricorsivo (`adaptMatch`, `orderMatch`), sistema di marcature (`ENODESmarkUnmark`, formato `mark-link-post`), ordinamento post-match (`orderUL`), pulizia (`PMcleanAndPost`) |
+| `propertyRegistry.js` | ~45 | Registro HW: `registerHardWired` / `getHardWired` / `listHardWiredPropertyNames`. Sostituisce `window[nome]` nel dispatch |
+| `PMTutilities.js` | ~725 | Motore del pattern matching: dispatch (`TryOnePropertyByName` → registro HW o PM), pipeline (`InstructAndTryOnePMT`, `PActxFromAttackPoints`), matcher ricorsivo (`adaptMatch`, `orderMatch`), sistema di marcature (`ENODESmarkUnmark`, formato `mark-link-post`), ordinamento post-match (`orderUL`), pulizia (`PMcleanAndPost`) |
 | `PatternMatchingTrasform.js` | ~250 | Lato "transform" del PM: lookup proprietà (`findPMPropByName`), clone e swap dei membri (`swapMembersClone`), tipizzazione parametri (`parameterType`, suffissi `_`/`__`/`___`), sostituzione nei `forAll` (`replaceInForall`), riformattazione se restano variabili libere (`reformatForallProp`) |
 | `HardWiredProperties.js` | ~1075 | Framework delle proprietà cablate: `newPActx`, registro DnD (`PropertyDnD`/`propertiesDnD`), validatori (`validFor*`), implementazioni (associate, distribute, collect, compose, decompose, replace/link, modus ponens, redundant, Hanoi, forThis, evaluateComparison), euristica parentesi (`ENODEneedsBracket`) |
 | `addedHardWiredProperties.js` | ~95 | Specializzazioni didattiche: `tabelline`, `composePlusOnly`, `decomposeTens`, helper `$toBeComposedWithSiblings` (chiamato da `compose` nel file principale: dipendenza inversa rispetto all'ordine di caricamento, funziona solo perché risolta a runtime) |
@@ -67,7 +68,7 @@ Punti d'attenzione nel nucleo:
 Concetti trasversali:
 
 - **`PActx`** (creato da `newPActx` in `PMTutilities.js`): contesto di applicazione di una proprietà. Campi principali: `matchedTF`, `msg`, `$pattern`, `$operand`, `$transform`, `$equation`, `$cloneProp`, `replacedAlready`, `visualization`. Le HW di solito impostano `replacedAlready=true`; le PM lasciano la sostituzione a `refreshAndReplace` in `refine.js`. `PActxConclude` delega il post a `postApplyAfterProperty` (replace + refine sui nodi marcati via `REFINE_KINDS`).
-- **Dispatch per nome**: `TryOnePropertyByName(nome, ...)` cerca `$('[data-tag=nome]')`; se l'elemento è `ci` chiama `window[nome](...)` (il nome della funzione JS deve coincidere con `data-tag`), altrimenti avvia il PM. È l'accoppiamento più fragile del sistema.
+- **Dispatch per nome**: `TryOnePropertyByName(nome, ...)` cerca `$('[data-tag=nome]')`; se l'elemento è `ci` chiama `getHardWired(nome)` (registro popolato da `HardWiredProperties.js` / `addedHardWiredProperties.js`), altrimenti avvia il PM. Il canvas abilita; il registro implementa.
 - **Marcature**: stringa `mark-link-post` in `title` (persistente, salvata in MML) o `mark` (volatile). `m` = vincoli di match (es. `s` selected, `d` dragged), `l` = etichette per i path di riordino, `p` = post-azioni (`c` = auto-refine via `REFINE_KINDS`, `n` = non riordinare — **non** riusare `n` per un percorso di forma normale).
 
 Problemi noti: `evaluateComparison` usa `=` invece di `==` nei confronti su `ENODEClass` (righe ~1020–1033: valuta sempre il ramo `eq`); `ENODEModusPonens` è incompleto; `revert`, `isEquationMember`, `clearTragets` (typo nel nome) sono definiti e mai chiamati; `tabelline`/`composePlusOnly` ritornano `undefined` invece di un `PActx` fallito nei rami di guardia.

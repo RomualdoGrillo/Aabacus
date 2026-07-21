@@ -92,3 +92,9 @@ function $toBeComposedWithSiblings($selected){
 	ENODEnodesAddClass($selected,"toBeComposed");
 	return 	$selected
 }
+
+registerHardWiredMap({
+	tabelline: tabelline,
+	composePlusOnly: composePlusOnly,
+	decomposeTens: decomposeTens
+})

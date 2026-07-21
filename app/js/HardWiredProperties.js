@@ -1027,3 +1027,12 @@ function forThisPar_focus_nofocus($specificValue, $parameter) {
 	PActx.msg = "forThis"
 	return PActx
 }
+
+// Proprietà HW invocabili da tastiera / #events via TryOnePropertyByName (ci[data-tag]).
+// Il DnD resta su propertiesDnD (stesso file); unificazione futura nello stesso registro.
+registerHardWiredMap({
+	compose: compose,
+	decomposeInAProduct: decomposeInAProduct,
+	decomposeInASum: decomposeInASum,
+	evaluateComparison: evaluateComparison
+})

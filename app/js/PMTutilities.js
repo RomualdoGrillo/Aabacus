@@ -375,7 +375,15 @@ function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
 		//******************* Hard Wired property**************
 			let img = $origProp.attr('data-tagimg');
 			propCustomInternal = 'int'
-			PActx = window[propName]($par1, firstVal, img) //todo: gestire errore 
+			const hwFn = getHardWired(propName)
+			if (typeof hwFn !== 'function') {
+				let PActxForError = newPActx()
+				PActxForError.error = true
+				PActxForError.msg = 'hard-wired not registered: ' + propName
+				console.log(PActxForError.msg)
+				return PActxForError
+			}
+			PActx = hwFn($par1, firstVal, img)
 		}
 		else{
 		//******************* Configurable property written in the canvas**********
