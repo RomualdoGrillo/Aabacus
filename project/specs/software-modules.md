@@ -73,7 +73,7 @@ Concetti trasversali:
 - **Foundation strutturali** (non nel registro apply): commutativa/riordino = Sortable `sort=true` in roles (untied o declare+`data-commutative`); nuova definizione = target `opened` / `wrapWithDefIfNeededreturnTarget` o Ctrl+B `ENODECreateDefinition`.
 - **Marcature**: stringa `mark-link-post` in `title` (persistente, salvata in MML) o `mark` (volatile). `m` = vincoli di match (es. `s` selected, `d` dragged), `l` = etichette per i path di riordino, `p` = post-azioni (`c` = auto-refine via `REFINE_KINDS`, `n` = non riordinare — **non** riusare `n` per un percorso di forma normale).
 
-Problemi noti: `evaluateComparison` usa `=` invece di `==` nei confronti su `ENODEClass` (righe ~1020–1033: valuta sempre il ramo `eq`); `ENODEModusPonens` è incompleto; `revert`, `isEquationMember`, `clearTragets` (typo nel nome) sono definiti e mai chiamati; `tabelline`/`composePlusOnly` ritornano `undefined` invece di un `PActx` fallito nei rami di guardia.
+Problemi noti: `ENODEModusPonens` è incompleto; `revert`, `isEquationMember`, `clearTragets` (typo nel nome) sono definiti e mai chiamati; `tabelline`/`composePlusOnly` ritornano `undefined` invece di un `PActx` fallito nei rami di guardia. (`evaluateComparison`: confronti su `ENODEClass` già corretti con `===`.)
 
 ### 2.3 Interazione utente
 
@@ -131,7 +131,7 @@ Globali **implicite** (assegnate senza `let`/`var`, inquinano `window`): `$clone
    - Logica espressioni fuori dal nucleo: `ENODEneedsBracket` e `newPActx` in `HardWiredProperties.js`; `dummyParser`/`identifierToENODE` e `compareWithResult` in `AldoUtilities.js`; `GLBsettingsToInterface` (UI settings) in `preload.js`; `RepeatedRefine_c` in `UserEvToFunctCall.js`.
    - `AldoUtilities.js` è un cassetto senza coesione (utilità DOM + logica di gioco + parser + geometria d3 morta).
 2. **File e codice morto**: `utilities.js`, `InteractJStests.js`, `Ajax.js`, codice d3 hull, `swapElements`, `sorting`, `sortablesExcluded`, 3 suoni su 5, `revert`, `isEquationMember`, `clearTragets`, `PActxViewer`, `searchForMarked`, stub SVG, grandi blocchi commentati ovunque.
-3. **Bug latenti**: assegnamenti al posto di confronti (`inject`, `evaluateComparison`), funzioni che riferiscono simboli inesistenti (`ENODE_replaceWith`, `ENODEBesideGiven`), `$RolesAffectedByStartPropositionROLES` con variabili non definite in un ramo, `searchEventHandler` che logga una variabile inesistente.
+3. **Bug latenti**: assegnamento al posto di confronto in `inject` (`containerRequirements='bool'`); funzioni che riferiscono simboli inesistenti (`ENODE_replaceWith`, `ENODEBesideGiven`); `$RolesAffectedByStartPropositionROLES` con variabili non definite in un ramo; `searchEventHandler` che logga una variabile inesistente. (`evaluateComparison` con `=` su `ENODEClass`: già corretto.)
 4. **Globali implicite** (elenco in §3): rischio di collisioni silenziose in un ambiente tutto-globale.
 5. **Accoppiamenti fragili**: dispatch HW via registro (migliorato); `addedHardWiredProperties` chiamato da `HardWiredProperties`; `canvas` fuorviante; duplicazioni (`symbols`/`leafTags`, tre rappresentazioni del segno).
 6. **Nessun confine modulo**: impossibile testare unità in isolamento; l'ordine degli script è l'unica documentazione delle dipendenze.
@@ -178,8 +178,8 @@ Passi ordinati, ciascuno piccolo, testabile con la suite e2e + `smoke-expression
 - Verificare prima di ogni rimozione l'assenza di riferimenti anche nei file `Data/*.mml/.mmls` (gli `eventtoaction` chiamano funzioni per nome).
 
 ### Passo 2 — Correzione dei bug latenti
+- ~~`evaluateComparison`: `if (ENODEClass = "eq")` → `===`~~ fatto.
 - `inject`: `containerRequirements='bool'` → `containerRequirements==='bool'` (verificare i chiamanti: oggi il ramo gira sempre, la correzione può cambiare comportamento → testare `.prt` e caricamento result).
-- `evaluateComparison`: `if (ENODEClass = "eq")` → `===` (e rami successivi).
 - `searchEventHandler`: correggere il `console.warn` su variabile inesistente.
 - Rimuovere il ramo morto con variabili non definite in `$RolesAffectedByStartPropositionROLES`.
 
