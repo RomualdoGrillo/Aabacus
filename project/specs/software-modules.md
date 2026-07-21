@@ -73,7 +73,7 @@ Concetti trasversali:
 - **Foundation strutturali** (non nel registro apply): commutativa/riordino = Sortable `sort=true` in roles (untied o declare+`data-commutative`); nuova definizione = target `opened` / `wrapWithDefIfNeededreturnTarget` o Ctrl+B `ENODECreateDefinition`.
 - **Marcature**: stringa `mark-link-post` in `title` (persistente, salvata in MML) o `mark` (volatile). `m` = vincoli di match (es. `s` selected, `d` dragged), `l` = etichette per i path di riordino, `p` = post-azioni (`c` = auto-refine via `REFINE_KINDS`, `n` = non riordinare — **non** riusare `n` per un percorso di forma normale).
 
-Problemi noti: `ENODEModusPonens` è incompleto; `revert`, `isEquationMember`, `clearTragets` (typo nel nome) sono definiti e mai chiamati; `tabelline`/`composePlusOnly` ritornano `undefined` invece di un `PActx` fallito nei rami di guardia. (`evaluateComparison`: confronti su `ENODEClass` già corretti con `===`.)
+Problemi noti: `ENODEModusPonens` è incompleto; `revert`, `isEquationMember`, `clearTragets` (typo nel nome) sono definiti e mai chiamati. (`evaluateComparison`: confronti su `ENODEClass` già corretti con `===`. Guardie `tabelline`/`composePlusOnly`/`decomposeTens`: restituiscono `newPActx()` fallito.)
 
 ### 2.3 Interazione utente
 
