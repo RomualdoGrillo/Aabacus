@@ -142,31 +142,126 @@
 	}
 
 	/**
-	 * Selettori della fixture newPM_assoc.mmls (relativi al forAll:
-	 * non dipendono da quanti ci ci sono prima nel canvas).
-	 * Uso: await newPM(newPM.SEL.attack, newPM.SEL.dropOk)
-	 * Nota: :eq(n) è sintassi jQuery (usata da $() in resolveENODE).
+	 * Catalogo selettori per le fixture TestBedExamples/newPM_*.mmls.
+	 * Relativi al forAll (non dipendono dai ci sopra).
+	 * :eq(n) = sintassi jQuery (usata da $() in resolveENODE).
+	 *
+	 * Uso:
+	 *   await newPM(newPM.SEL.attack, newPM.SEL.dropOk)
+	 *   newPM.use('distrib')  // forza un catalogo
 	 */
-	newPM.SEL = {
-		/** plus interno del pattern (elemento trascinato) */
-		attack:
-			'[data-tag=newPM-assoc] .firstMember [data-enode=plus] [data-enode=plus]',
-		/** root del pattern (primo membro) */
-		pattern: '[data-tag=newPM-assoc] .firstMember > [data-enode=plus]',
-		/** foglia 3 nell’input che matcha (1ª eq dopo la proprietà) */
-		dropOk:
-			'[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(0) [data-enode=plus] [data-enode=plus] [data-enode=cn]',
-		/** root input che matcha */
-		okRoot: '[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(0) [data-enode=plus]',
-		/** prima foglia cn nell’input times (2ª eq) */
-		dropFailTimes:
-			'[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(1) [data-enode=cn]',
-		/** prima foglia cn nell’input corto (3ª eq) */
-		dropFailShort:
-			'[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(2) [data-enode=cn]'
+	var FIXTURE_SELS = {
+		assoc: {
+			tag: 'newPM-assoc',
+			path:
+				'./Data/TestBedExamples/newPM_assoc.mmls',
+			attack:
+				'[data-tag=newPM-assoc] .firstMember [data-enode=plus] [data-enode=plus]',
+			pattern: '[data-tag=newPM-assoc] .firstMember > [data-enode=plus]',
+			dropOk:
+				'[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(0) [data-enode=plus] [data-enode=plus] [data-enode=cn]',
+			okRoot: '[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(0) [data-enode=plus]',
+			dropFailTimes:
+				'[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(1) [data-enode=cn]',
+			dropFailShort:
+				'[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(2) [data-enode=cn]'
+		},
+		distrib: {
+			tag: 'newPM-distrib',
+			path: './Data/TestBedExamples/newPM_distrib.mmls',
+			/** b_ marcato s dentro a_(b_+c_) */
+			attack: '[data-tag=newPM-distrib] .firstMember [title=s]',
+			pattern: '[data-tag=newPM-distrib] .firstMember > [data-enode=times]',
+			/** foglia x in 2*(x+3) */
+			dropOk:
+				'[data-tag=newPM-distrib] ~ [data-enode=eq]:eq(0) [data-enode=plus] [data-enode=ci]',
+			okRoot:
+				'[data-tag=newPM-distrib] ~ [data-enode=eq]:eq(0) [data-enode=times]',
+			dropFailPlus:
+				'[data-tag=newPM-distrib] ~ [data-enode=eq]:eq(1) [data-enode=cn]',
+			dropFailShort:
+				'[data-tag=newPM-distrib] ~ [data-enode=eq]:eq(2) [data-enode=cn]',
+			dropFailTernary:
+				'[data-tag=newPM-distrib] ~ [data-enode=eq]:eq(3) [data-enode=plus] [data-enode=ci]'
+		},
+		power: {
+			tag: 'newPM-power',
+			path: './Data/TestBedExamples/newPM_power.mmls',
+			/** primo n_ marcato s in a_^n_ * b_^n_ */
+			attack: '[data-tag=newPM-power] .firstMember [title=s]',
+			pattern: '[data-tag=newPM-power] .firstMember > [data-enode=times]',
+			/** esponente 2 di x^2 */
+			dropOk:
+				'[data-tag=newPM-power] ~ [data-enode=eq]:eq(0) [data-enode=power]:eq(0) [data-enode=cn]',
+			okRoot: '[data-tag=newPM-power] ~ [data-enode=eq]:eq(0) [data-enode=times]',
+			dropFailExp:
+				'[data-tag=newPM-power] ~ [data-enode=eq]:eq(1) [data-enode=cn]',
+			dropFailPlus:
+				'[data-tag=newPM-power] ~ [data-enode=eq]:eq(2) [data-enode=cn]'
+		}
 	};
 
-	newPM.version = '0.5.3-exp';
+	var forcedFixture = null;
+
+	function detectFixtureName() {
+		if (forcedFixture && FIXTURE_SELS[forcedFixture]) return forcedFixture;
+		var $tagged = $('[data-tag^=newPM-]').first();
+		if ($tagged.length) {
+			var tag = $tagged.attr('data-tag') || '';
+			var name = tag.replace(/^newPM-/, '');
+			if (FIXTURE_SELS[name]) return name;
+		}
+		return 'assoc';
+	}
+
+	function activeSel() {
+		return FIXTURE_SELS[detectFixtureName()];
+	}
+
+	Object.defineProperty(newPM, 'SEL', {
+		configurable: true,
+		enumerable: true,
+		get: function () {
+			return activeSel();
+		}
+	});
+
+	newPM.FIXTURES = FIXTURE_SELS;
+
+	/** Elenco nomi fixture e path preload. */
+	newPM.list = function () {
+		return Object.keys(FIXTURE_SELS).map(function (name) {
+			var f = FIXTURE_SELS[name];
+			return {
+				name: name,
+				tag: f.tag,
+				url: '/?preloadPath=' + f.path
+			};
+		});
+	};
+
+	/**
+	 * Forza il catalogo SEL (utile se più forAll newPM-* sono in pagina).
+	 * newPM.use('distrib') | 'assoc' | 'power' | null (auto)
+	 */
+	newPM.use = function (name) {
+		if (name == null) {
+			forcedFixture = null;
+			return activeSel();
+		}
+		if (!FIXTURE_SELS[name]) {
+			throw new Error(
+				'newPM.use: fixture sconosciuta "' +
+					name +
+					'". Usa: ' +
+					Object.keys(FIXTURE_SELS).join(', ')
+			);
+		}
+		forcedFixture = name;
+		return FIXTURE_SELS[name];
+	};
+
+	newPM.version = '0.6.0-exp';
 	newPM.NS = NewPM;
 	newPM.last = function () {
 		return NewPM.lastResult;

@@ -4,59 +4,67 @@
 newPM(selectorOfDragged, selectorOfTarget)
 ```
 
-Entrambi gli argomenti sono stringhe selettore (jQuery/`$()`).  
-`data-tag` solo sulla proprietà `forAll` (`newPM-assoc`).
+`data-tag` solo sulla proprietà `forAll` (`newPM-*`).
 
 ---
 
-## Test in console
+## Fixture
 
-### 1. Apri la fixture
+| Nome | File | Proprietà |
+|------|------|-----------|
+| `assoc` | `TestBedExamples/newPM_assoc.mmls` | `a__+(b_+c__) = (a__+b_)+c__` |
+| `distrib` | `TestBedExamples/newPM_distrib.mmls` | `a_(b_+c_) = a_*b_ + a_*c_` |
+| `power` | `TestBedExamples/newPM_power.mmls` | `a_^n_ * b_^n_ = (a_*b_)^n_` (come `power_x^2y^2`) |
+
+`newPM.SEL` si auto-seleziona dal `data-tag` presente nel canvas.  
+Forza un catalogo: `newPM.use('distrib')`. Elenco: `newPM.list()`.
+
+---
+
+## Console — associativa
 
 ```
 http://127.0.0.1:5500/?preloadPath=./Data/TestBedExamples/newPM_assoc.mmls
 ```
 
-Ricarica la pagina dopo aggiornamenti a `js/newPM/` (cache).
-
-### 2. Incolla
-
 ```js
-await newPM(newPM.SEL.attack, newPM.SEL.dropOk)
+await newPM(newPM.SEL.attack, newPM.SEL.dropOk)          // MATCH
+await newPM(newPM.SEL.attack, newPM.SEL.dropFailTimes)   // NO MATCH
+await newPM(newPM.SEL.attack, newPM.SEL.dropFailShort)   // NO MATCH
 ```
-
-Altri casi:
-
-```js
-await newPM(newPM.SEL.attack, newPM.SEL.dropFailTimes)  // NO MATCH (times)
-await newPM(newPM.SEL.attack, newPM.SEL.dropFailShort)  // NO MATCH (corto)
-await newPM(newPM.SEL.pattern, newPM.SEL.okRoot)        // MATCH depth 0
-```
-
-Oppure le stringhe esplicite (relative al `forAll`, indipendenti dai `ci` sopra):
-
-```js
-await newPM(
-  '[data-tag=newPM-assoc] .firstMember [data-enode=plus] [data-enode=plus]',
-  '[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(0) [data-enode=plus] [data-enode=plus] [data-enode=cn]'
-)
-```
-
-Senza animazione: terzo argomento `{ play: false }`.
 
 ---
 
-## Selettori (`newPM.SEL`)
+## Console — distributiva
 
-| Chiave | Ruolo |
-|--------|--------|
-| `attack` | plus interno del pattern (dragged) |
-| `dropOk` | foglia `3` nella 1ª eq dopo la proprietà |
-| `dropFailTimes` | cn nella 2ª eq (times) |
-| `dropFailShort` | cn nella 3ª eq (corta) |
-| `pattern` / `okRoot` | root pattern ↔ root input |
+```
+http://127.0.0.1:5500/?preloadPath=./Data/TestBedExamples/newPM_distrib.mmls
+```
 
-`:eq(n)` è sintassi jQuery (non CSS puro).
+```js
+await newPM(newPM.SEL.attack, newPM.SEL.dropOk)            // MATCH  2*(x+3)
+await newPM(newPM.SEL.attack, newPM.SEL.dropFailPlus)      // NO MATCH  2+(x+3)
+await newPM(newPM.SEL.attack, newPM.SEL.dropFailShort)     // NO MATCH  2*x
+await newPM(newPM.SEL.attack, newPM.SEL.dropFailTernary)   // NO MATCH  2*(x+y+3)
+await newPM(newPM.SEL.pattern, newPM.SEL.okRoot)           // MATCH depth 0
+```
+
+---
+
+## Console — potenze (commonExponent)
+
+```
+http://127.0.0.1:5500/?preloadPath=./Data/TestBedExamples/newPM_power.mmls
+```
+
+```js
+await newPM(newPM.SEL.attack, newPM.SEL.dropOk)         // MATCH  x^2*y^2
+await newPM(newPM.SEL.attack, newPM.SEL.dropFailExp)    // NO MATCH  x^2*y^3
+await newPM(newPM.SEL.attack, newPM.SEL.dropFailPlus)   // NO MATCH  x^2+y^2
+await newPM(newPM.SEL.pattern, newPM.SEL.okRoot)        // MATCH depth 0
+```
+
+Senza animazione: terzo argomento `{ play: false }`.
 
 ---
 
@@ -65,7 +73,10 @@ Senza animazione: terzo argomento `{ play: false }`.
 ```js
 await newPM(selectorOfDragged, selectorOfTarget)
 await newPM(selectorOfDragged, selectorOfTarget, { play: false })
-newPM.SEL
+newPM.SEL       // selettori della fixture attiva
+newPM.use('assoc'|'distrib'|'power'|null)
+newPM.list()
+newPM.FIXTURES
 newPM.clear()
 newPM.version
 ```

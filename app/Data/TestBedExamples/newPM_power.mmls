@@ -1,0 +1,132 @@
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+		<and>
+		</and>
+	</apply>
+</section>
+<section data-section="canvas">
+	<ci data-type="bool">await newPM(newPM.SEL.attack, newPM.SEL.dropOk)</ci>
+	<!-- Proprietà commonExponent: a_^n_ * b_^n_ = (a_*b_)^n_
+	     come in Algebra basic/power_x^2y^2.mmls
+	     title="s" sul primo esponente n_ (depth 2 dal times). -->
+	<apply data-tag="newPM-power" data-type="bool">
+		<forall>
+		</forall>
+		<bvar>
+			<ci data-type="num">a_</ci>
+		</bvar>
+		<bvar>
+			<ci data-type="num">b_</ci>
+		</bvar>
+		<bvar>
+			<ci data-type="num">n_</ci>
+		</bvar>
+		<apply data-type="bool">
+			<eq>
+			</eq>
+			<apply data-type="num">
+				<times>
+				</times>
+				<apply data-type="num">
+					<power>
+					</power>
+					<ci data-type="num">a_</ci>
+					<ci title="s" data-type="num">n_</ci>
+				</apply>
+				<apply data-type="num">
+					<power>
+					</power>
+					<ci data-type="num">b_</ci>
+					<ci data-type="num">n_</ci>
+				</apply>
+			</apply>
+			<apply data-type="num">
+				<power>
+				</power>
+				<apply data-type="num">
+					<times>
+					</times>
+					<ci data-type="num">a_</ci>
+					<ci data-type="num">b_</ci>
+				</apply>
+				<ci data-type="num">n_</ci>
+			</apply>
+		</apply>
+	</apply>
+	<!-- Expr 1: MATCH — x^2 * y^2 (stesso esercizio power_x^2y^2) -->
+	<apply data-type="num">
+		<times>
+		</times>
+		<apply data-type="num">
+			<power>
+			</power>
+			<ci data-type="num">x</ci>
+			<cn data-type="num">2</cn>
+		</apply>
+		<apply data-type="num">
+			<power>
+			</power>
+			<ci data-type="num">y</ci>
+			<cn data-type="num">2</cn>
+		</apply>
+	</apply>
+	<!-- Expr 2: FAIL — esponenti diversi -->
+	<apply data-type="num">
+		<times>
+		</times>
+		<apply data-type="num">
+			<power>
+			</power>
+			<ci data-type="num">x</ci>
+			<cn data-type="num">2</cn>
+		</apply>
+		<apply data-type="num">
+			<power>
+			</power>
+			<ci data-type="num">y</ci>
+			<cn data-type="num">3</cn>
+		</apply>
+	</apply>
+	<!-- Expr 3: FAIL — somma al posto del prodotto -->
+	<apply data-type="num">
+		<plus>
+		</plus>
+		<apply data-type="num">
+			<power>
+			</power>
+			<ci data-type="num">x</ci>
+			<cn data-type="num">2</cn>
+		</apply>
+		<apply data-type="num">
+			<power>
+			</power>
+			<ci data-type="num">y</ci>
+			<cn data-type="num">2</cn>
+		</apply>
+	</apply>
+</section>
+<section data-section="events">
+	<apply data-import="./Data/Preload/gestToAction.mml" data-type="bool">
+		<and>
+		</and>
+	</apply>
+</section>
+<section data-section="result">
+	<!-- target dell’esercizio originale: (x*y)^2 -->
+	<apply data-type="num">
+		<power>
+		</power>
+		<apply data-type="num">
+			<times>
+			</times>
+			<ci data-type="num">x</ci>
+			<ci data-type="num">y</ci>
+		</apply>
+		<cn data-type="num">2</cn>
+	</apply>
+</section>
+<section data-section="settings">
+	{
+   "import_json_settings":"./Data/Preload/default.set"
+    }
+</section>
