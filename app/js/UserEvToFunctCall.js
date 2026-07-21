@@ -59,34 +59,28 @@ function keyboardEvToFC($ENODE, keyPressed,event){
 
 
 function getDnDpropEnabled(dataTag){
-	//get the list of hardwired DnD properties and return just the enabled ones
-	//example: an element must be in canvas with data-tag="associativeDnD".  
-	let $propInCanvas = $('#canvasRole [data-enode=ci][data-tag]') 
+	// DnD abilitate: always-on (requiresCanvasCi false) + gated presenti come ci in canvas.
+	let $propInCanvas = $('#canvasRole [data-enode=ci][data-tag]')
 	if (GLBsettings.tool=='declare'){$propInCanvas = $propInCanvas.filter('.selectedTool,.selectedTool *')}
 	if(dataTag){$propInCanvas = $propInCanvas.filter('[data-tag=' + dataTag + ']')}
 	let propInCanvasEnabled = $propInCanvas.toArray()
 	let namelist = propInCanvasEnabled.map(function(e){return e.getAttribute('data-tag')})
-	// same name (e.g. "associativeDnD", "associativeGenDnD") must be in propertiesDnD
-	//Adding a new DnD internal property:
-	//add an element to the array, add a ci to the canvas with data-tag...
-	let propertiesKnokedOut = propertiesDnD.map(function(e){
-		let index = namelist.indexOf(e.name)
-		if(index != -1){
-			//get the icon from the reference element in the canvas
-			e.icon = propInCanvasEnabled[index].getAttribute('data-tagimg')
-			return e
+	let allDnD = listDnDProperties()
+	let enabled = []
+	for (let i = 0; i < allDnD.length; i++) {
+		const d = allDnD[i]
+		if (dataTag && d.name !== dataTag) { continue }
+		const index = namelist.indexOf(d.name)
+		if (!d.requiresCanvasCi || index !== -1) {
+			enabled.push({
+				name: d.name,
+				findTgt: d.findTgt,
+				apply: d.apply,
+				icon: index !== -1 ? propInCanvasEnabled[index].getAttribute('data-tagimg') : undefined
+			})
 		}
-		else if(e.name=="replaceDnD"){
-			e.icon = undefined
-			return e
-		}
-		else{
-			return undefined
-		} 
-	})
-
-	let filtered = propertiesKnokedOut.filter(function(e){ return e!=undefined})
-	return filtered
+	}
+	return enabled
 }
 
 function searchEventHandler(event){// trova la definizione della proprietà

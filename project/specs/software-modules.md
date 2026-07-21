@@ -58,17 +58,19 @@ Punti d'attenzione nel nucleo:
 
 | File | righe | Responsabilità |
 |---|---|---|
-| `propertyRegistry.js` | ~45 | Registro HW: `registerHardWired` / `getHardWired` / `listHardWiredPropertyNames`. Sostituisce `window[nome]` nel dispatch |
+| `propertyRegistry.js` | ~100 | Registro HW unificato: `kind` unary/dnd, `requiresCanvasCi`, `registerHardWired` / `getHardWired` / `listDnDProperties`. Sostituisce `window[nome]` e `propertiesDnD` |
 | `PMTutilities.js` | ~725 | Motore del pattern matching: dispatch (`TryOnePropertyByName` → registro HW o PM), pipeline (`InstructAndTryOnePMT`, `PActxFromAttackPoints`), matcher ricorsivo (`adaptMatch`, `orderMatch`), sistema di marcature (`ENODESmarkUnmark`, formato `mark-link-post`), ordinamento post-match (`orderUL`), pulizia (`PMcleanAndPost`) |
 | `PatternMatchingTrasform.js` | ~250 | Lato "transform" del PM: lookup proprietà (`findPMPropByName`), clone e swap dei membri (`swapMembersClone`), tipizzazione parametri (`parameterType`, suffissi `_`/`__`/`___`), sostituzione nei `forAll` (`replaceInForall`), riformattazione se restano variabili libere (`reformatForallProp`) |
-| `HardWiredProperties.js` | ~1075 | Framework delle proprietà cablate: `newPActx`, registro DnD (`PropertyDnD`/`propertiesDnD`), validatori (`validFor*`), implementazioni (associate, distribute, collect, compose, decompose, replace/link, modus ponens, redundant, Hanoi, forThis, evaluateComparison), euristica parentesi (`ENODEneedsBracket`) |
+| `HardWiredProperties.js` | ~1075 | Implementazioni HW + registrazione unary/DnD nel propertyRegistry; validatori `findTgt`, associate/distribute/collect/compose/decompose/replace/Hanoi/… |
 | `addedHardWiredProperties.js` | ~95 | Specializzazioni didattiche: `tabelline`, `composePlusOnly`, `decomposeTens`, helper `$toBeComposedWithSiblings` (chiamato da `compose` nel file principale: dipendenza inversa rispetto all'ordine di caricamento, funziona solo perché risolta a runtime) |
 | `refine.js` | ~190 | Post-applicazione: `REFINE_KINDS`, `markNeedsRefine(kind)`, `postApplyAfterProperty`, `refineAfterProperty`. Controllato dalle marcature, non da intensità |
 
 Concetti trasversali:
 
 - **`PActx`** (creato da `newPActx` in `PMTutilities.js`): contesto di applicazione di una proprietà. Campi principali: `matchedTF`, `msg`, `$pattern`, `$operand`, `$transform`, `$equation`, `$cloneProp`, `replacedAlready`, `visualization`. Le HW di solito impostano `replacedAlready=true`; le PM lasciano la sostituzione a `refreshAndReplace` in `refine.js`. `PActxConclude` delega il post a `postApplyAfterProperty` (replace + refine sui nodi marcati via `REFINE_KINDS`).
-- **Dispatch per nome**: `TryOnePropertyByName(nome, ...)` cerca `$('[data-tag=nome]')`; se l'elemento è `ci` chiama `getHardWired(nome)` (registro popolato da `HardWiredProperties.js` / `addedHardWiredProperties.js`), altrimenti avvia il PM. Il canvas abilita; il registro implementa.
+- **Registro HW** (`propertyRegistry.js`): descrittori con `kind` (`unary` = tastiera/`#events`; `dnd` = `findTgt`+`apply`) e `requiresCanvasCi` (se `false`, sempre attiva senza `ci` in canvas — es. `replaceDnD`). Il canvas resta gate didattico per le proprietà gated; ordine di registrazione DnD = priorità first-wins.
+- **Dispatch per nome**: `TryOnePropertyByName(nome, ...)` cerca `$('[data-tag=nome]')`; se `ci` chiama `getHardWired(nome)` (solo unary), altrimenti PM.
+- **Foundation strutturali** (non nel registro apply): commutativa/riordino = Sortable `sort=true` in roles (untied o declare+`data-commutative`); nuova definizione = target `opened` / `wrapWithDefIfNeededreturnTarget` o Ctrl+B `ENODECreateDefinition`.
 - **Marcature**: stringa `mark-link-post` in `title` (persistente, salvata in MML) o `mark` (volatile). `m` = vincoli di match (es. `s` selected, `d` dragged), `l` = etichette per i path di riordino, `p` = post-azioni (`c` = auto-refine via `REFINE_KINDS`, `n` = non riordinare — **non** riusare `n` per un percorso di forma normale).
 
 Problemi noti: `evaluateComparison` usa `=` invece di `==` nei confronti su `ENODEClass` (righe ~1020–1033: valuta sempre il ramo `eq`); `ENODEModusPonens` è incompleto; `revert`, `isEquationMember`, `clearTragets` (typo nel nome) sono definiti e mai chiamati; `tabelline`/`composePlusOnly` ritornano `undefined` invece di un `PActx` fallito nei rami di guardia.
@@ -114,7 +116,7 @@ Bug noti: in `inject` la condizione `if(containerRequirements='bool')` è un **a
 | `canvas` | `MAIN.js` | UserEvToFunctCall | **Nome fuorviante**: punta a `#canvasRole`, non a `#canvas` |
 | `ssnapshot` / `FILO` | `Undo.js` | MAIN, EM, TranslateFormat, SaveLoad | `FILO` è una globale implicita creata dentro `ssnapshot()` |
 | `ENODE` | `ExpressionManager.js` | inflatedeflate (metodi sui nodi) | Oggetto di metodi copiato sui nodi DOM da `ENODEextend` |
-| `propertiesDnD` | `HardWiredProperties.js` | DnD, UserEvToFunctCall | Registro proprietà trascinabili |
+| `hwPropertyRegistry` / `listDnDProperties` | `propertyRegistry.js` | PMT, DnD, UserEvToFunctCall | Registro HW unary+DnD |
 | `preloadPath`, `tools`, `sortablesSelectorString` | `MAIN.js` | preload, AldoUtilities, DnD | |
 | `body[tool]`, classi `.selected`/`.untied`/`.selectedTool`/`mu_*`, attributi `target`/`from`/`mark`/`data-path` | vari | vari | Il DOM usato come contenitore di stato applicativo |
 
@@ -131,7 +133,7 @@ Globali **implicite** (assegnate senza `let`/`var`, inquinano `window`): `$clone
 2. **File e codice morto**: `utilities.js`, `InteractJStests.js`, `Ajax.js`, codice d3 hull, `swapElements`, `sorting`, `sortablesExcluded`, 3 suoni su 5, `revert`, `isEquationMember`, `clearTragets`, `PActxViewer`, `searchForMarked`, stub SVG, grandi blocchi commentati ovunque.
 3. **Bug latenti**: assegnamenti al posto di confronti (`inject`, `evaluateComparison`), funzioni che riferiscono simboli inesistenti (`ENODE_replaceWith`, `ENODEBesideGiven`), `$RolesAffectedByStartPropositionROLES` con variabili non definite in un ramo, `searchEventHandler` che logga una variabile inesistente.
 4. **Globali implicite** (elenco in §3): rischio di collisioni silenziose in un ambiente tutto-globale.
-5. **Accoppiamenti fragili**: dispatch `window[data-tag]`; `addedHardWiredProperties` chiamato da `HardWiredProperties`; `canvas` fuorviante; duplicazioni (`symbols`/`leafTags`, tre rappresentazioni del segno).
+5. **Accoppiamenti fragili**: dispatch HW via registro (migliorato); `addedHardWiredProperties` chiamato da `HardWiredProperties`; `canvas` fuorviante; duplicazioni (`symbols`/`leafTags`, tre rappresentazioni del segno).
 6. **Nessun confine modulo**: impossibile testare unità in isolamento; l'ordine degli script è l'unica documentazione delle dipendenze.
 
 ---
@@ -162,7 +164,7 @@ Regole di dipendenza volute:
 - `rendering` legge il core e scrive solo presentazione (classi, `.infix`, SVG).
 - `properties` usa `core` + `rendering`; non registra listener.
 - `interaction` è l'unico strato che registra eventi e tocca `GLBsettings`.
-- Lo stato condiviso residuo (`GLBsettings`, `ssnapshot`, `propertiesDnD`) è dichiarato esplicitamente in un unico punto, non sparso.
+- Lo stato condiviso residuo (`GLBsettings`, `ssnapshot`, registro HW) è dichiarato esplicitamente in un unico punto, non sparso.
 
 ---
 

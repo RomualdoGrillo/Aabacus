@@ -1,36 +1,5 @@
 //newPActx è definita in PMTutilities.js: punto comune per proprietà hard-wired e pattern-based
-
-class PropertyDnD {
-	constructor(name, findTgt, apply, icon) {
-		this.name = name
-		this.findTgt = findTgt//return valid target roles
-		this.apply = apply	// in onEndHandler when an element is dropped on a valid target apply($dropped,$target) 
-		this.icon = icon //handler of event fired when a valid dragged is added to a valid role
-	}
-}
-
-let propertiesDnD = [
-	// PRIORITY (first-wins): earlier entry claims a target; DnD.js excludes it for later entries.
-	// List order is the reverse of the old last-wins order, so relative priorities are unchanged.
-	// associativeGenDnD sits above associativeDnD (as when it was inserted after it under last-wins).
-	new PropertyDnD('hanoiMoveDnD', validhanoiMove, hanoiMove, ""),
-	new PropertyDnD('addRedundantDnD', validAddRedundant, addRedundant, ""),
-	new PropertyDnD('removeRedundantDnD', validRedundant, removeRedundant, ""),
-	new PropertyDnD('forThisDnD', forThisValid, forThisPar_focus_nofocus, ""),
-	new PropertyDnD('modusPonensDnD', validModusPonens, ENODEModusPonens, ""),
-	new PropertyDnD('replaceDnD', validReplaced, ENODELinkReplace, ""),
-	new PropertyDnD('partCollectDnD', validForPartColl, ENODEpartCollect, ""),
-	new PropertyDnD('collectDnD', validForColl, ENODEcollect, ""),
-	new PropertyDnD('partDistributDnD', validForPartDist, ENODEPartDistribute, ""),
-	new PropertyDnD('distributiveDnD', validForDist, ENODEdistribute, ""),
-	new PropertyDnD('associativeGenDnD', associativeGenValid, ENODEassociate, ""),
-	new PropertyDnD('associativeDnD', immediateAssValid, ENODEassociate, "")
-]
-
-
-
-
-
+// Le proprietà DnD si registrano in fondo al file (dopo le implementazioni) via registerHardWired.
 
 function opIsDistDop(op, opD) {// string ex: plus times 
 	//opIsDistDop('times') cerca su chi si distribuicse times
@@ -1028,11 +997,34 @@ function forThisPar_focus_nofocus($specificValue, $parameter) {
 	return PActx
 }
 
-// Proprietà HW invocabili da tastiera / #events via TryOnePropertyByName (ci[data-tag]).
-// Il DnD resta su propertiesDnD (stesso file); unificazione futura nello stesso registro.
+// Proprietà HW unary (tastiera / #events) e DnD.
+// DnD: PRIORITY first-wins = ordine di registrazione (stesso ordine della vecchia propertiesDnD).
 registerHardWiredMap({
 	compose: compose,
 	decomposeInAProduct: decomposeInAProduct,
 	decomposeInASum: decomposeInASum,
 	evaluateComparison: evaluateComparison
+})
+
+;[
+	{ name: 'hanoiMoveDnD', findTgt: validhanoiMove, apply: hanoiMove },
+	{ name: 'addRedundantDnD', findTgt: validAddRedundant, apply: addRedundant },
+	{ name: 'removeRedundantDnD', findTgt: validRedundant, apply: removeRedundant },
+	{ name: 'forThisDnD', findTgt: forThisValid, apply: forThisPar_focus_nofocus },
+	{ name: 'modusPonensDnD', findTgt: validModusPonens, apply: ENODEModusPonens },
+	{ name: 'replaceDnD', findTgt: validReplaced, apply: ENODELinkReplace, requiresCanvasCi: false },
+	{ name: 'partCollectDnD', findTgt: validForPartColl, apply: ENODEpartCollect },
+	{ name: 'collectDnD', findTgt: validForColl, apply: ENODEcollect },
+	{ name: 'partDistributDnD', findTgt: validForPartDist, apply: ENODEPartDistribute },
+	{ name: 'distributiveDnD', findTgt: validForDist, apply: ENODEdistribute },
+	{ name: 'associativeGenDnD', findTgt: associativeGenValid, apply: ENODEassociate },
+	{ name: 'associativeDnD', findTgt: immediateAssValid, apply: ENODEassociate }
+].forEach(function (d) {
+	registerHardWired({
+		name: d.name,
+		kind: 'dnd',
+		findTgt: d.findTgt,
+		apply: d.apply,
+		requiresCanvasCi: d.requiresCanvasCi !== false
+	})
 })

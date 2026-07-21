@@ -87,10 +87,10 @@ if($ENODETarget.length==0){
 		makeSortableMouseDown($validTgTOpen.toArray(), true);
 	}
 	else {
-		//********  determine validTargets for properties listed in propertiesDnD[i] ***************
+		//********  determine validTargets for DnD HW (listDnDProperties / getDnDpropEnabled) ***************
 		// First-wins: skip targets already claimed (replaces old last-wins setAttribute overwrite).
-		// findTgt may receive $claimedTargets as 4th arg. List order in HardWiredProperties is
-		// reversed vs the old last-wins list so relative HW priorities stay the same.
+		// findTgt may receive $claimedTargets as 4th arg. Registration order in HardWiredProperties
+		// is the reverse of the old last-wins list so relative HW priorities stay the same.
 		if (!$ENODETarget.length || !$ENODETarget[0].parentElement) { return }//precondition
 		let i = 0
 		let propInCanvasEnabled = getDnDpropEnabled()
@@ -224,7 +224,7 @@ function onAdd(event) {
 			PActx.msg = GLBDnD.$originalProperty.closest('[data-tag]').attr('data-tag')
 			PActxConclude(PActx)
 		}
-		//*********** apply property in propertiesDnD
+		//*********** apply property HW DnD (registro)
 		else {
 			let property = getDnDpropEnabled().find(function (el) {
 				return el.name == targetProperty
