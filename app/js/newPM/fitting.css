@@ -83,6 +83,55 @@
 	pointer-events: none;
 }
 
+#newPM-narration.is-ok {
+	border-color: #1f9d55;
+	background: rgba(232, 250, 240, 0.97);
+}
+
+#newPM-narration.is-fail {
+	border-color: #c0392b;
+	background: rgba(255, 236, 232, 0.97);
+}
+
+/* Lampo verde / rosso su singoli elementi che matchano o falliscono */
+.newPM-flash-ok {
+	animation: newPM-flash-ok 620ms ease-out;
+	outline: 3px solid rgba(31, 157, 85, 0.85);
+	outline-offset: 2px;
+	border-radius: 6px;
+	box-shadow: 0 0 18px rgba(31, 157, 85, 0.55);
+}
+
+.newPM-flash-fail {
+	animation: newPM-flash-fail 620ms ease-out;
+	outline: 3px solid rgba(192, 57, 43, 0.9);
+	outline-offset: 2px;
+	border-radius: 6px;
+	box-shadow: 0 0 18px rgba(192, 57, 43, 0.5);
+}
+
+@keyframes newPM-flash-ok {
+	0% {
+		background-color: rgba(31, 157, 85, 0.45);
+		filter: brightness(1.4);
+	}
+	100% {
+		background-color: transparent;
+		filter: brightness(1);
+	}
+}
+
+@keyframes newPM-flash-fail {
+	0% {
+		background-color: rgba(192, 57, 43, 0.4);
+		filter: brightness(1.25);
+	}
+	100% {
+		background-color: transparent;
+		filter: brightness(1);
+	}
+}
+
 #newPM-phase {
 	position: fixed;
 	top: 12px;
@@ -131,21 +180,41 @@
 	border-color: #7a4ea8;
 }
 
-.newPM-ghost-capsule::before {
-	content: "+";
+/* Badge = simbolo dell’operazione (identikit), non sempre "+" */
+.newPM-op-badge {
 	position: absolute;
-	top: -11px;
-	left: 18px;
-	width: 22px;
-	height: 22px;
+	top: -12px;
+	left: 16px;
+	min-width: 24px;
+	height: 24px;
+	padding: 0 5px;
 	border-radius: 50%;
 	background: #fff;
 	border: 2px solid inherit;
-	border-color: inherit;
-	color: #4a2d55;
-	font: 14px/22px Georgia, serif;
+	color: #3a2a40;
+	font: 15px/22px Georgia, "Times New Roman", serif;
 	text-align: center;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+	box-sizing: border-box;
+}
+
+.newPM-ghost-capsule[data-op="times"] {
+	border-color: #2f6f8f;
+}
+.newPM-ghost-capsule[data-op="times"] .newPM-op-badge {
+	color: #1d4a63;
+}
+.newPM-ghost-capsule[data-op="power"] {
+	border-color: #b05a1a;
+}
+.newPM-ghost-capsule[data-op="power"] .newPM-op-badge {
+	color: #7a3a0c;
+}
+.newPM-ghost-capsule[data-op="plus"] {
+	border-color: #c45193;
+}
+.newPM-ghost-capsule.inner[data-op="plus"] {
+	border-color: #7a4ea8;
 }
 
 .newPM-ghost-capsule.is-loose {
@@ -158,6 +227,50 @@
 	transform: scale(1);
 	opacity: 0.98;
 	background: rgba(255, 255, 255, 0.08);
+}
+
+.newPM-ghost-capsule.is-ok {
+	border-color: #1f9d55 !important;
+	box-shadow:
+		0 0 0 3px rgba(31, 157, 85, 0.35),
+		0 4px 14px rgba(31, 157, 85, 0.2);
+	animation: newPM-pulse-ok 480ms ease-out;
+}
+
+.newPM-ghost-capsule.is-fail {
+	border-color: #c0392b !important;
+	box-shadow:
+		0 0 0 3px rgba(192, 57, 43, 0.35),
+		0 4px 14px rgba(192, 57, 43, 0.2);
+	animation: newPM-shake-fail 420ms ease-out;
+}
+
+@keyframes newPM-pulse-ok {
+	0% {
+		filter: brightness(1.35);
+	}
+	100% {
+		filter: brightness(1);
+	}
+}
+
+@keyframes newPM-shake-fail {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	20% {
+		transform: translateX(-5px);
+	}
+	40% {
+		transform: translateX(5px);
+	}
+	60% {
+		transform: translateX(-3px);
+	}
+	80% {
+		transform: translateX(3px);
+	}
 }
 
 #newPM-stalk {
@@ -187,7 +300,8 @@
 	pointer-events: none;
 }
 
-#newPM-stage .newPM-bound-flash > .name {
-	box-shadow: 0 0 0 3px rgba(91, 127, 214, 0.35);
+#newPM-stage .newPM-bound-flash > .name,
+.newPM-bound-flash > .name {
+	box-shadow: 0 0 0 3px rgba(31, 157, 85, 0.45);
 	border-radius: 999px;
 }

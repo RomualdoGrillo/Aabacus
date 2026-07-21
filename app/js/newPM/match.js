@@ -350,6 +350,7 @@
 					patternEl: $pattNode[0],
 					inputEl: $inNode[0],
 					depth: depth,
+					op: $pattNode.attr('data-enode') || '',
 					label: enodeLabel($pattNode)
 				});
 				ctx.log({

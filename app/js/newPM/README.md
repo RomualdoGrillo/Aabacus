@@ -64,7 +64,13 @@ await newPM(newPM.SEL.attack, newPM.SEL.dropFailPlus)   // NO MATCH  x^2+y^2
 await newPM(newPM.SEL.pattern, newPM.SEL.okRoot)        // MATCH depth 0
 ```
 
-Senza animazione: terzo argomento `{ play: false }`.
+Senza animazione: `{ play: false }`.  
+Senza suoni: `{ sound: false }`.
+
+### Visualizzazione
+
+- I container ghost mostrano il **simbolo dell’operazione** (`+`, `×`, `^`, …), non sempre `+`.
+- Match: lampo verde + bip acuto; non-match: lampo rosso + bip grave.
 
 ---
 
@@ -73,6 +79,7 @@ Senza animazione: terzo argomento `{ play: false }`.
 ```js
 await newPM(selectorOfDragged, selectorOfTarget)
 await newPM(selectorOfDragged, selectorOfTarget, { play: false })
+await newPM(selectorOfDragged, selectorOfTarget, { sound: false })
 newPM.SEL       // selettori della fixture attiva
 newPM.use('assoc'|'distrib'|'power'|null)
 newPM.list()

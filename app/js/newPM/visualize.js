@@ -1,10 +1,59 @@
 /**
- * newPM — player grafico (ghost a capsule come nello storyboard PDF).
+ * newPM — player grafico (ghost a capsule = identikit del pattern).
  */
 (function (global) {
 	'use strict';
 
 	var NewPM = global.NewPM || (global.NewPM = {});
+
+	var COMPOUND_OPS = {
+		plus: true,
+		times: true,
+		power: true,
+		minus: true,
+		eq: true,
+		and: true,
+		or: true,
+		implies: true,
+		forall: true,
+		divide: true,
+		root: true
+	};
+
+	var OP_GLYPH = {
+		plus: '+',
+		times: '×',
+		power: '^',
+		minus: '−',
+		eq: '=',
+		and: '∧',
+		or: '∨',
+		implies: '⇒',
+		forall: '∀',
+		divide: '÷',
+		root: '√',
+		ci: 'x',
+		cn: 'n'
+	};
+
+	function opGlyph(op) {
+		if (!op) return '?';
+		return OP_GLYPH[op] || String(op).charAt(0);
+	}
+
+	function deepestCompoundOp(rootEl) {
+		if (!rootEl) return null;
+		var $inners = $(rootEl)
+			.find('[data-enode]')
+			.filter(function () {
+				var op = this.getAttribute('data-enode');
+				return !!COMPOUND_OPS[op];
+			});
+		return $inners.length ? $inners.last()[0] : null;
+	}
+
+	NewPM.deepestCompoundOp = deepestCompoundOp;
+	NewPM.opGlyph = opGlyph;
 
 	function ensureNarration() {
 		var el = document.getElementById('newPM-narration');
@@ -29,7 +78,9 @@
 	function clearVisuals() {
 		$('#newPM-ghost, #newPM-stalk, .newPM-leaf-fly').remove();
 		$('#newPM-demo-pattern').removeClass('newPM-hide-leaves');
-		$('#newPM-stage .newPM-bound-flash').removeClass('newPM-bound-flash');
+		$(
+			'.newPM-bound-flash, .newPM-flash-ok, .newPM-flash-fail'
+		).removeClass('newPM-bound-flash newPM-flash-ok newPM-flash-fail');
 		$('#newPM-narration, #newPM-phase').remove();
 	}
 
@@ -53,13 +104,98 @@
 		});
 	}
 
-	function deepestPlus(rootEl) {
-		if (!rootEl) return null;
-		var $inners = $(rootEl).find('[data-enode="plus"]');
-		return $inners.length ? $inners.last()[0] : null;
+	/* ---------- audio (Web Audio, niente file esterni) ---------- */
+	var audioCtx = null;
+
+	function getAudioCtx() {
+		if (audioCtx) return audioCtx;
+		var AC = window.AudioContext || window.webkitAudioContext;
+		if (!AC) return null;
+		audioCtx = new AC();
+		return audioCtx;
 	}
 
-	function createGhostPair() {
+	function playTone(freq, durMs, type, gainPeak) {
+		var ctx = getAudioCtx();
+		if (!ctx) return;
+		if (ctx.state === 'suspended') {
+			try {
+				ctx.resume();
+			} catch (e) {
+				/* ignore */
+			}
+		}
+		var t0 = ctx.currentTime;
+		var osc = ctx.createOscillator();
+		var g = ctx.createGain();
+		osc.type = type || 'sine';
+		osc.frequency.value = freq;
+		g.gain.setValueAtTime(0.0001, t0);
+		g.gain.exponentialRampToValueAtTime(gainPeak || 0.12, t0 + 0.012);
+		g.gain.exponentialRampToValueAtTime(0.0001, t0 + (durMs || 120) / 1000);
+		osc.connect(g);
+		g.connect(ctx.destination);
+		osc.start(t0);
+		osc.stop(t0 + (durMs || 120) / 1000 + 0.02);
+	}
+
+	function playCue(kind, enabled) {
+		if (enabled === false) return;
+		try {
+			if (kind === 'ok') {
+				playTone(740, 70, 'sine', 0.1);
+				setTimeout(function () {
+					playTone(980, 90, 'sine', 0.09);
+				}, 55);
+			} else if (kind === 'fail') {
+				playTone(220, 140, 'triangle', 0.11);
+				setTimeout(function () {
+					playTone(160, 160, 'triangle', 0.09);
+				}, 70);
+			} else if (kind === 'tick') {
+				playTone(520, 40, 'sine', 0.05);
+			}
+		} catch (e) {
+			/* ignore */
+		}
+	}
+
+	/* ---------- flash colore su elementi ---------- */
+	function flashEls(els, outcome) {
+		var cls = outcome === 'fail' ? 'newPM-flash-fail' : 'newPM-flash-ok';
+		(els || []).forEach(function (el) {
+			if (!el) return;
+			$(el).removeClass('newPM-flash-ok newPM-flash-fail').addClass(cls);
+			window.setTimeout(function () {
+				$(el).removeClass(cls);
+			}, 650);
+		});
+	}
+
+	function setCapsuleOutcome(pair, outcome) {
+		if (!pair) return;
+		[pair.outer, pair.inner].forEach(function (cap) {
+			if (!cap) return;
+			cap.classList.remove('is-ok', 'is-fail');
+			if (outcome === 'ok') cap.classList.add('is-ok');
+			if (outcome === 'fail') cap.classList.add('is-fail');
+		});
+	}
+
+	function setCapsuleOp(capsule, op) {
+		if (!capsule) return;
+		capsule.setAttribute('data-op', op || '');
+		var badge = capsule.querySelector('.newPM-op-badge');
+		if (!badge) {
+			badge = document.createElement('span');
+			badge.className = 'newPM-op-badge';
+			capsule.appendChild(badge);
+		}
+		badge.textContent = opGlyph(op);
+		badge.setAttribute('title', op || '');
+	}
+
+	function createGhostPair(outerOp, innerOp) {
 		$('#newPM-ghost').remove();
 		var ghost = document.createElement('div');
 		ghost.id = 'newPM-ghost';
@@ -70,7 +206,23 @@
 		ghost.appendChild(outer);
 		ghost.appendChild(inner);
 		document.body.appendChild(ghost);
-		return { ghost: ghost, outer: outer, inner: inner, gTop: 0, gLeft: 0 };
+		setCapsuleOp(outer, outerOp || 'plus');
+		setCapsuleOp(inner, innerOp || outerOp || 'plus');
+		var hideInner = !innerOp || innerOp === outerOp;
+		if (hideInner) {
+			// se c’è un solo tipo, tieni comunque un’ellisse interna più piccola
+			// ma con lo stesso simbolo (identikit piatto)
+			inner.classList.add('is-same-op');
+		}
+		return {
+			ghost: ghost,
+			outer: outer,
+			inner: inner,
+			outerOp: outerOp,
+			innerOp: innerOp,
+			gTop: 0,
+			gLeft: 0
+		};
 	}
 
 	function layoutGhost(pair, outerRect, innerRect, loose) {
@@ -111,17 +263,28 @@
 		pair.inner.classList.toggle('is-tight', !loose);
 	}
 
-	function placeGhostAtPattern(pair, patternEl) {
+	function placeGhostAtPattern(pair, patternEl, outerOp, innerOp) {
 		var outerR = rectOf(patternEl);
 		if (!outerR) return;
-		var innerEl = deepestPlus(patternEl);
-		var innerR = rectOf(innerEl) || {
+		if (outerOp) setCapsuleOp(pair.outer, outerOp);
+		if (innerOp) setCapsuleOp(pair.inner, innerOp);
+
+		var innerEl = deepestCompoundOp(patternEl);
+		if (innerEl && innerEl !== patternEl) {
+			var innerR = rectOf(innerEl);
+			if (innerR) {
+				layoutGhost(pair, outerR, innerR, true);
+				if (!innerOp) setCapsuleOp(pair.inner, innerEl.getAttribute('data-enode'));
+				return;
+			}
+		}
+		var fallbackInner = {
 			top: outerR.top + outerR.height * 0.22,
 			left: outerR.left + outerR.width * 0.42,
 			width: Math.max(outerR.width * 0.48, 60),
 			height: Math.max(outerR.height * 0.55, 40)
 		};
-		layoutGhost(pair, outerR, innerR, true);
+		layoutGhost(pair, outerR, fallbackInner, true);
 	}
 
 	function moveGhostOverInput(pair, inputEl) {
@@ -133,12 +296,16 @@
 			width: target.width + 28,
 			height: target.height + 20
 		};
-		var innerR = {
-			top: target.top + target.height * 0.12,
-			left: target.left + target.width * 0.36,
-			width: target.width * 0.56,
-			height: target.height * 0.72
-		};
+		var innerEl = deepestCompoundOp(inputEl);
+		var innerR = rectOf(innerEl);
+		if (!innerR || innerEl === inputEl) {
+			innerR = {
+				top: target.top + target.height * 0.12,
+				left: target.left + target.width * 0.36,
+				width: target.width * 0.56,
+				height: target.height * 0.72
+			};
+		}
 		layoutGhost(pair, outerR, innerR, true);
 	}
 
@@ -153,6 +320,7 @@
 			pair.inner.style.left = r.left - pair.gLeft + 'px';
 			pair.inner.style.width = r.width + 'px';
 			pair.inner.style.height = r.height + 'px';
+			pair.inner.classList.add('is-ok');
 		} else {
 			var innerR = pair._innerRect || {
 				top: r.top + r.height * 0.15,
@@ -161,6 +329,7 @@
 				height: r.height * 0.65
 			};
 			layoutGhost(pair, r, innerR, false);
+			pair.outer.classList.add('is-ok');
 		}
 	}
 
@@ -170,7 +339,7 @@
 		var a = rectOf(fromEl);
 		if (!a) return;
 		var x1 = a.cx;
-		var y1 = a.bottom != null ? a.cy : a.cy;
+		var y1 = a.cy;
 		var x2 = pair.gLeft + parseFloat(pair.ghost.style.width) * 0.55;
 		var y2 = pair.gTop + 8;
 		var minX = Math.min(x1, x2) - 30;
@@ -215,16 +384,19 @@
 		document.body.appendChild(svg);
 	}
 
-	function flyLeaf(paramName, inputEls) {
-		var $src = $('#newPM-demo-pattern [data-enode]').filter(function () {
-			try {
-				return this.ENODE_getName(true) === paramName;
-			} catch (e) {
-				return false;
+	function flyLeaf(paramName, inputEls, soundEnabled) {
+		var $src = $('[data-tag^=newPM-] .firstMember [data-enode], #newPM-demo-pattern [data-enode]').filter(
+			function () {
+				try {
+					return this.ENODE_getName(true) === paramName;
+				} catch (e) {
+					return false;
+				}
 			}
-		});
+		);
 		var start =
-			rectOf($src[0]) || rectOf(document.querySelector('#newPM-demo-pattern'));
+			rectOf($src[0]) ||
+			rectOf(document.querySelector('[data-tag^=newPM-] .firstMember'));
 		var targets = inputEls || [];
 		if (!targets.length) return Promise.resolve();
 
@@ -248,6 +420,8 @@
 			f.el.style.left = t.left + 'px';
 			$(f.target).addClass('newPM-bound-flash');
 		});
+		flashEls(targets, 'ok');
+		playCue('ok', soundEnabled);
 
 		return sleep(450).then(function () {
 			flyers.forEach(function (f) {
@@ -259,45 +433,82 @@
 	async function playTrace(visualSteps, options) {
 		options = options || {};
 		var stepMs = options.stepMs != null ? options.stepMs : 1000;
+		var soundEnabled = options.sound !== false;
 		if (options.clear !== false) clearVisuals();
 
 		var narration = ensureNarration();
 		var phaseBadge = ensurePhaseBadge();
 		var pair = null;
 		var transformEl = null;
+		var outerOp = null;
+		var innerOp = null;
+
+		// sblocca audio al primo play (policy browser)
+		if (soundEnabled) getAudioCtx();
 
 		for (var i = 0; i < (visualSteps || []).length; i++) {
 			var step = visualSteps[i];
 			narration.textContent = step.narrate || step.kind;
 			narration.setAttribute('data-phase', step.phase || '');
+			narration.setAttribute('data-outcome', step.outcome || '');
 			phaseBadge.textContent = 'fase: ' + (step.phase || '?');
 			if (step.transformEl) transformEl = step.transformEl;
+			if (step.outerOp) outerOp = step.outerOp;
+			if (step.innerOp) innerOp = step.innerOp;
 
 			if (step.kind === 'dragStart') {
 				$('#newPM-demo-pattern').addClass('newPM-hide-leaves');
-				pair = createGhostPair();
-				placeGhostAtPattern(pair, step.patternEl);
+				pair = createGhostPair(
+					step.outerOp || outerOp,
+					step.innerOp || innerOp
+				);
+				placeGhostAtPattern(
+					pair,
+					step.patternEl,
+					step.outerOp,
+					step.innerOp
+				);
 				drawStalk(transformEl || step.transformEl, pair);
+				playCue('tick', soundEnabled);
 			} else if (step.kind === 'dragGhost') {
 				if (!pair) {
-					pair = createGhostPair();
-					placeGhostAtPattern(pair, step.patternEl);
+					pair = createGhostPair(
+						step.outerOp || outerOp,
+						step.innerOp || innerOp
+					);
+					placeGhostAtPattern(
+						pair,
+						step.patternEl,
+						step.outerOp,
+						step.innerOp
+					);
 				}
 				moveGhostOverInput(pair, step.inputEl);
 				drawStalk(transformEl || step.transformEl, pair);
 			} else if (step.kind === 'tightenInner') {
 				tighten(pair, 'inner', step.inputEl);
+				flashEls([step.inputEl], 'ok');
+				playCue('ok', soundEnabled);
 				drawStalk(transformEl, pair);
 			} else if (step.kind === 'tightenOuter') {
 				tighten(pair, 'outer', step.inputEl);
+				flashEls([step.inputEl], 'ok');
+				setCapsuleOutcome(pair, 'ok');
+				playCue('ok', soundEnabled);
 				drawStalk(transformEl, pair);
 			} else if (step.kind === 'revealLeaves') {
 				$('#newPM-demo-pattern').removeClass('newPM-hide-leaves');
 			} else if (step.kind === 'leafBind') {
-				await flyLeaf(step.paramName, step.inputEls);
-			} else if (step.kind === 'fail' && pair) {
-				pair.outer.style.borderColor = '#c0392b';
-				pair.inner.style.borderColor = '#c0392b';
+				await flyLeaf(step.paramName, step.inputEls, soundEnabled);
+			} else if (step.kind === 'fail') {
+				if (pair) setCapsuleOutcome(pair, 'fail');
+				flashEls([step.inputEl], 'fail');
+				playCue('fail', soundEnabled);
+				narration.classList.add('is-fail');
+			} else if (step.kind === 'transformPending') {
+				setCapsuleOutcome(pair, 'ok');
+				playCue('ok', soundEnabled);
+				narration.classList.add('is-ok');
 			}
 
 			await sleep(stepMs);
