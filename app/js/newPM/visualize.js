@@ -309,6 +309,13 @@
 		layoutGhost(pair, outerR, innerR, true);
 	}
 
+	function hideOpBadge(capsule) {
+		if (!capsule) return;
+		capsule.classList.add('badge-hidden');
+		var badge = capsule.querySelector('.newPM-op-badge');
+		if (badge) badge.setAttribute('aria-hidden', 'true');
+	}
+
 	function tighten(pair, which, inputEl) {
 		var r = rectOf(inputEl);
 		if (!r || !pair) return;
@@ -321,6 +328,8 @@
 			pair.inner.style.width = r.width + 'px';
 			pair.inner.style.height = r.height + 'px';
 			pair.inner.classList.add('is-ok');
+			// match riuscito: il simbolo è ridondante (il target è già un plus/×/…)
+			hideOpBadge(pair.inner);
 		} else {
 			var innerR = pair._innerRect || {
 				top: r.top + r.height * 0.15,
@@ -330,6 +339,7 @@
 			};
 			layoutGhost(pair, r, innerR, false);
 			pair.outer.classList.add('is-ok');
+			hideOpBadge(pair.outer);
 		}
 	}
 

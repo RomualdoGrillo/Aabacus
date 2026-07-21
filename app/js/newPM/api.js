@@ -261,7 +261,7 @@
 		return FIXTURE_SELS[name];
 	};
 
-	newPM.version = '0.6.1-exp';
+	newPM.version = '0.6.2-exp';
 	newPM.NS = NewPM;
 	newPM.last = function () {
 		return NewPM.lastResult;

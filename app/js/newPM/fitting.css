@@ -196,6 +196,18 @@
 	text-align: center;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 	box-sizing: border-box;
+	transition:
+		opacity 280ms ease,
+		transform 280ms ease;
+}
+
+/* Dopo il match il glyph sparisce: il target mostra già il tipo */
+.newPM-ghost-capsule.badge-hidden .newPM-op-badge,
+.newPM-ghost-capsule.is-ok .newPM-op-badge,
+.newPM-ghost-capsule.is-tight .newPM-op-badge {
+	opacity: 0;
+	transform: scale(0.4);
+	pointer-events: none;
 }
 
 .newPM-ghost-capsule[data-op="times"] {
