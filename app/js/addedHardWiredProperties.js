@@ -9,8 +9,7 @@ function tabelline($toBeComp,firstVal,img){
 		const $parent=ENODEparent($toBeComp);
 		op = $parent.attr('data-enode');
 		if(op !== "times"){
-			return 
-			//return newPActx()
+			return newPActx()
 		}
 	}
 	if($toBeComp.length==1){//in case you have 1 only item to be composed try to add a sibling
@@ -21,11 +20,11 @@ function tabelline($toBeComp,firstVal,img){
 		let i=0;
 		while($toBeComp[i]){
 			let value = ENODEsToVal( $($toBeComp[i])).val
-			if(  separateTensHundreds(value).length != 1 ){return}
+			if(  separateTensHundreds(value).length != 1 ){return newPActx()}
 		i++}
 	return compose($toBeComp,firstVal,img);	
 	}
-	
+	return newPActx()
 }
 
 
@@ -35,8 +34,7 @@ function composePlusOnly($toBeComp,firstVal,img){
 	const $parent=ENODEparent($toBeComp);
 	const op = $parent.attr('data-enode');
 	if(op !== "plus"){
-		return 
-		//return newPActx()
+		return newPActx()
 	}
 	return compose($toBeComp,firstVal,img);
 }
@@ -49,10 +47,10 @@ function decomposeTens($toBeDec,undefined,img){
 	let $extOp = ""
 	//var $toBeDec=$('.selected')
 	//**** la funzione può essere applicata?
-	if($toBeDec.length !== 1){console.log("cant decompose " + $toBeDec.length + " elements"); return}
+	if($toBeDec.length !== 1){console.log("cant decompose " + $toBeDec.length + " elements"); return PActx}
 	let TBDType = $toBeDec.attr("data-enode");
 	if( TBDType != "cn" ){//se l'elemento da scomporre è un numero'
-	console.log("can only decompose a cn not a" + TBDType ); return}
+	console.log("can only decompose a cn not a" + TBDType ); return PActx}
 	//**** applica la funzione
 	const toBeDec = ENODEsToVal($toBeDec)
 	//var primeFactors = primeFactorization(number);
