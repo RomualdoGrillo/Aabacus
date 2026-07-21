@@ -45,15 +45,100 @@
 		return String(ref);
 	}
 
+	function disposeClone(result, options) {
+		if (!result || !result.$cloneProp || !result.$cloneProp.length) return;
+		if (options && options.keepClone) return;
+		// se il transform è già sul canvas, non rimuoverlo con la clone
+		var $tf = result.$transform;
+		if (
+			result.applied &&
+			$tf &&
+			$tf.length &&
+			result.$cloneProp.has($tf).length === 0 &&
+			$tf.closest(result.$cloneProp).length === 0
+		) {
+			// transform fuori dalla clone: rimuovi solo il guscio clone se ancora nel DOM
+		}
+		if (typeof NewPM.discardCloneProp === 'function') {
+			NewPM.discardCloneProp(result.$cloneProp);
+		} else if (typeof ENODEremove === 'function') {
+			try {
+				ENODEremove(result.$cloneProp);
+			} catch (e) {
+				result.$cloneProp.remove();
+			}
+		} else {
+			result.$cloneProp.remove();
+		}
+		result.$cloneProp = $();
+	}
+
+	function snapshotInitialTransform($cloneProp) {
+		if (!$cloneProp || !$cloneProp.length || typeof ENODEclone !== 'function') {
+			return $();
+		}
+		var mem =
+			typeof NewPM.rereadCloneMembers === 'function'
+				? NewPM.rereadCloneMembers($cloneProp)
+				: null;
+		if (!mem || !mem.$transform || !mem.$transform.length) return $();
+		var $snap = ENODEclone(mem.$transform, false, false);
+		if (typeof ENODEextend === 'function') ENODEextend($snap, true);
+		$snap.addClass('PMclone newPM-tf-snap');
+		return $snap;
+	}
+
+	/**
+	 * Trapianto finale: transform istanziato al posto dell’operando (come refreshAndReplace).
+	 */
+	NewPM.applyToCanvas = function (result) {
+		if (!result || !result.matched) {
+			throw new Error('newPM.applyToCanvas: serve un match riuscito');
+		}
+		if (result.applied) return result;
+		var $operand = result.$operand;
+		var $transform = result.$transform;
+		if (!$operand || !$operand.length || !$transform || !$transform.length) {
+			throw new Error('newPM.applyToCanvas: operand/transform mancanti');
+		}
+		if (typeof refreshAndReplace === 'function') {
+			refreshAndReplace({
+				$operand: $operand,
+				$transform: $transform,
+				replacedAlready: false,
+				msg: 'newPM'
+			});
+		} else if (typeof ENODEinsertBefore === 'function') {
+			ENODEinsertBefore($transform, $operand[0]);
+			if (typeof ENODEremove === 'function') ENODEremove($operand);
+			else $operand.remove();
+			if (typeof RefreshEmptyInfixBraketsGlued === 'function') {
+				RefreshEmptyInfixBraketsGlued();
+			}
+		} else {
+			throw new Error('newPM.applyToCanvas: refreshAndReplace non disponibile');
+		}
+		result.applied = true;
+		result.$operand = $transform;
+		result.$input = $transform;
+		if (typeof console !== 'undefined' && console.log) {
+			console.log('[newPM] transform applicato sul canvas');
+		}
+		return result;
+	};
+
 	/**
 	 * @param {*} dragged — elemento nel pattern (selettore / ENODE / jQuery)
 	 * @param {*} target — drop target nell’input
-	 * @param {{ play?: boolean, stepMs?: number, orderedList?: boolean, clearAtEnd?: boolean }} options
+	 * @param {{ play?: boolean, stepMs?: number, orderedList?: boolean, clearAtEnd?: boolean, keepClone?: boolean, sound?: boolean, apply?: boolean }} options
 	 */
 	function newPM(dragged, target, options) {
 		options = options || {};
 		if (options.play === undefined) {
 			options.play = true;
+		}
+		if (options.apply === undefined) {
+			options.apply = true;
 		}
 
 		if (typeof NewPM.runMatch !== 'function') {
@@ -83,31 +168,69 @@
 			throw new Error(msg);
 		}
 
+		var $transformInitialSnap = snapshotInitialTransform(resolved.$cloneProp);
+
 		var result = NewPM.runMatch(resolved.$pattern, resolved.$operand, {
-			orderedList: options.orderedList
+			orderedList: options.orderedList,
+			$cloneProp: resolved.$cloneProp
 		});
-		result.$pattern = resolved.$pattern;
-		result.$input = resolved.$operand;
-		result.$transform = resolved.$transform;
+
+		result.$cloneProp = result.$cloneProp || resolved.$cloneProp;
+		result.$property = resolved.$property;
 		result.$operand = resolved.$operand;
+		result.$input = resolved.$operand;
 		result.$dropTarget = resolved.$dropTarget;
 		result.$attackInPattern = resolved.$attackInPattern;
-		result.$property = resolved.$property;
+		result.$transformLive = resolved.$transformLive;
 		result.direction = resolved.direction;
 		result.patternDepth = resolved.patternDepth;
+		result.$transformInitialSnap = $transformInitialSnap;
+		result.applied = false;
+
+		var mem =
+			result.$cloneProp &&
+			result.$cloneProp.length &&
+			typeof NewPM.rereadCloneMembers === 'function'
+				? NewPM.rereadCloneMembers(result.$cloneProp)
+				: null;
+		if (mem && mem.$transform && mem.$transform.length) {
+			result.$transform = mem.$transform;
+			result.$pattern = mem.$pattern.length ? mem.$pattern : resolved.$pattern;
+		} else {
+			result.$transform = resolved.$transform;
+			result.$pattern = resolved.$pattern;
+		}
 
 		result.visualSteps = NewPM.buildVisualScript(result);
 		result.trace = result.visualSteps;
+
+		result.disposeClone = function () {
+			disposeClone(result, { keepClone: false });
+		};
+
+		result.apply = function () {
+			return NewPM.applyToCanvas(result);
+		};
 
 		result.play = function (playOpts) {
 			playOpts = playOpts || {};
 			if (typeof NewPM.playTrace !== 'function') {
 				return Promise.reject(new Error('newPM: visualize.js non caricato'));
 			}
+			var applyFlag =
+				playOpts.apply != null ? playOpts.apply : options.apply;
 			return NewPM.playTrace(result.visualSteps, {
 				stepMs: playOpts.stepMs != null ? playOpts.stepMs : options.stepMs,
 				clearAtEnd:
-					playOpts.clearAtEnd != null ? playOpts.clearAtEnd : options.clearAtEnd
+					playOpts.clearAtEnd != null ? playOpts.clearAtEnd : options.clearAtEnd,
+				sound: playOpts.sound != null ? playOpts.sound : options.sound,
+				result: result,
+				apply: applyFlag
+			}).then(function () {
+				if (!options.keepClone && playOpts.keepClone !== true) {
+					disposeClone(result, options);
+				}
+				return result;
 			});
 		};
 
@@ -131,12 +254,25 @@
 					return s.phase + ':' + s.kind;
 				})
 			);
+			if (result.matched && result.$transform && result.$transform.length) {
+				var tLabel = NewPM.enodeLabel
+					? NewPM.enodeLabel(result.$transform)
+					: result.$transform.attr('data-enode');
+				console.log('[newPM] transform istanziato:', tLabel);
+			}
 		}
 
 		if (options.play) {
 			return result.play().then(function () {
 				return result;
 			});
+		}
+		// senza play: apply immediato se richiesto e match ok
+		if (result.matched && options.apply) {
+			NewPM.applyToCanvas(result);
+		}
+		if (!options.keepClone) {
+			disposeClone(result, options);
 		}
 		return result;
 	}
@@ -261,7 +397,7 @@
 		return FIXTURE_SELS[name];
 	};
 
-	newPM.version = '0.6.2-exp';
+	newPM.version = '0.8.1-exp';
 	newPM.NS = NewPM;
 	newPM.last = function () {
 		return NewPM.lastResult;

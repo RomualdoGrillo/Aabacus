@@ -65,12 +65,21 @@ await newPM(newPM.SEL.pattern, newPM.SEL.okRoot)        // MATCH depth 0
 ```
 
 Senza animazione: `{ play: false }`.  
-Senza suoni: `{ sound: false }`.
+Senza suoni: `{ sound: false }`.  
+Senza trapianto canvas: `{ apply: false }`.  
+Solo match + keep clone: `{ play: false, apply: false, keepClone: true }`.
 
-### Visualizzazione
+### Transform (eager + apply)
 
-- I container ghost mostrano il **simbolo dell’operazione** (`+`, `×`, `^`, …), non sempre `+`.
-- Match: lampo verde + bip acuto; non-match: lampo rosso + bip grave.
+1. A ogni bind: `replaceInForall` sulla clone (anche II membro).  
+2. In animazione: sparisce solo il `forAll` circostante; il **secondo membro** resta al suo posto e si specializza.  
+3. A fine match: il transform sostituisce l’operando sul canvas (`refreshAndReplace`).
+
+### Visualizzazione (storyboard)
+
+- Ghost = identikit operazioni (`+` / `×` / `^`); badge sparisce al match.  
+- Lampi verde/rosso + bip.  
+- Nessuna etichetta “transform”: il II membro resta nella stessa posizione/aspetto.
 
 ---
 

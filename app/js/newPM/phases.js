@@ -1,6 +1,7 @@
 /**
- * newPM — script visuale allineato allo storyboard PDF:
- *   dragStart → dragGhost → structureFit → leaves → transform
+ * newPM — script visuale allineato allo storyboard:
+ *   dragStart (forall sparisce, prop specializzata) → ghost → structureFit
+ *   → leaves (transform si specializza) → transformApply (trapianto canvas)
  */
 (function (global) {
 	'use strict';
@@ -33,6 +34,7 @@
 		var $pattern = matchResult.$pattern;
 		var $input = matchResult.$operand || matchResult.$input;
 		var $transform = matchResult.$transform;
+		var $property = matchResult.$property;
 		var structureFits = (matchResult.structureFits || []).slice();
 		var leafBinds = matchResult.leafBinds || [];
 		var depth = matchResult.patternDepth;
@@ -55,7 +57,6 @@
 				opOf(NewPM.deepestCompoundOp(patternEl))) ||
 			'';
 		if (innerOp === outerOp && structureFits.length < 2) {
-			// un solo livello strutturale: il badge interno ripete solo se c’è un figlio composto diverso
 			var deepEl =
 				NewPM.deepestCompoundOp && NewPM.deepestCompoundOp(patternEl);
 			if (deepEl && deepEl !== patternEl) {
@@ -63,18 +64,17 @@
 			}
 		}
 
+		var $transformLive = matchResult.$transformLive;
 		steps.push({
 			phase: 'dragStart',
 			kind: 'dragStart',
 			narrate:
-				'Identikit del pattern: ' +
-				opWord(outerOp) +
-				(innerOp && innerOp !== outerOp
-					? ' con ' + opWord(innerOp) + ' dentro'
-					: '') +
-				(depth != null ? ' — depth ' + depth : ''),
+				'Il forAll sparisce: resta il secondo membro al suo posto, che si specializza a ogni bind',
 			patternEl: patternEl,
+			propertyEl: $property && $property[0],
+			transformAnchorEl: $transformLive && $transformLive[0],
 			transformEl: $transform && $transform[0],
+			$transformInitialSnap: matchResult.$transformInitialSnap,
 			inputEl: $input && $input[0],
 			attackEl: attackEl,
 			dropEl: dropEl,
@@ -86,10 +86,7 @@
 			phase: 'dragGhost',
 			kind: 'dragGhost',
 			narrate:
-				'Si prova a infilare l’identikit sull’operando' +
-				(dropEl && $input && dropEl !== $input[0]
-					? ' (risalito dal target)'
-					: ''),
+				'Solo i contorni delle operazioni (identikit) si avvicinano all’operando',
 			patternEl: patternEl,
 			transformEl: $transform && $transform[0],
 			inputEl: $input && $input[0],
@@ -104,12 +101,14 @@
 				kind: 'fail',
 				narrate: matchResult.msg || 'Il pattern non calza sull’operando',
 				inputEl: $input && $input[0],
+				propertyEl: $property && $property[0],
 				outcome: 'fail'
 			});
 			steps.push({
 				phase: 'transform',
 				kind: 'fail',
-				narrate: 'Nessun match: non si passa al transform',
+				narrate: 'Nessun match: nessuna sostituzione sull’input',
+				propertyEl: $property && $property[0],
 				outcome: 'fail'
 			});
 			return steps;
@@ -158,7 +157,7 @@
 			phase: 'leaves',
 			kind: 'revealLeaves',
 			narrate:
-				'3) Gli altri elementi del pattern tornano visibili e cercano un loro target',
+				'3) I parametri cercano i loro target; il transform si specializza a ogni bind',
 			leafBinds: leafBinds,
 			patternEl: patternEl
 		});
@@ -177,16 +176,19 @@
 				paramName: leaf.paramName,
 				patternEl: leaf.patternEl,
 				inputEls: leaf.inputEls,
+				transformEl: leaf.transformEl,
+				$transformSnap: leaf.$transformSnap,
 				outcome: 'ok'
 			});
 		}
 
 		steps.push({
 			phase: 'transform',
-			kind: 'transformPending',
+			kind: 'transformApply',
 			narrate:
-				'Match completo: poi seguirà la fase di transform (ancora da definire)',
+				'Transform: l’input viene sostituito con il secondo membro specializzato',
 			transformEl: $transform && $transform[0],
+			inputEl: $input && $input[0],
 			outcome: 'ok'
 		});
 

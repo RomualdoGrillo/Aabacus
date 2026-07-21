@@ -1,7 +1,7 @@
 /**
- * newPM — matching sperimentale con traccia logica + binding annotati.
- * Allineato allo schema "Pattern Matching Visualization":
- *   scheletro (plus) → fit strutturale (interno→esterno) → foglie (a__, b_, …).
+ * newPM — matching sperimentale con traccia + sostituzioni eager sul transform.
+ * A ogni bind di parametro: replaceInForall sulla clone (pattern + II membro),
+ * come adaptMatch / replaceInForall del PM originale.
  * Non modifica PMTutilities.js.
  */
 (function (global) {
@@ -30,7 +30,9 @@
 			if (el && typeof el.ENODE_getName === 'function') {
 				name = el.ENODE_getName(true) || '';
 			}
-		} catch (e) { /* ignore */ }
+		} catch (e) {
+			/* ignore */
+		}
 		return name ? kind + ':' + name : kind;
 	}
 
@@ -70,11 +72,6 @@
 		$nodes.addClass(TAKEN);
 	}
 
-	function unmarkTaken($nodes) {
-		$nodes.removeClass(TAKEN);
-	}
-
-	/** Snapshot di tutti i nodi .taken sotto $root (incluso root). */
 	function snapshotTaken($root) {
 		return $root.filter('.' + TAKEN).add($root.find('.' + TAKEN)).toArray();
 	}
@@ -85,9 +82,172 @@
 		$(previousEls).addClass(TAKEN);
 	}
 
+	function restoreBindings(bindings, snapBindLens) {
+		var keys = Object.keys(bindings);
+		for (var i = 0; i < keys.length; i++) {
+			var k = keys[i];
+			if (snapBindLens[k] == null) {
+				delete bindings[k];
+			} else {
+				bindings[k].length = snapBindLens[k];
+				if (!bindings[k].length) delete bindings[k];
+			}
+		}
+	}
+
+	/** Snapshot distaccato della clone (per backtrack). */
+	function snapshotCloneProp($cloneProp) {
+		if (!$cloneProp || !$cloneProp.length || typeof ENODEclone !== 'function') {
+			return null;
+		}
+		var $snap = ENODEclone($cloneProp, false, false);
+		if (typeof ENODEextend === 'function') {
+			ENODEextend($snap, true);
+		}
+		$snap.find('[data-enode]').addBack().addClass('PMclone');
+		return $snap;
+	}
+
+	function discardCloneProp($prop) {
+		if (!$prop || !$prop.length) return;
+		if (typeof ENODEremove === 'function') {
+			try {
+				ENODEremove($prop);
+				return;
+			} catch (e) {
+				/* fall through */
+			}
+		}
+		$prop.remove();
+	}
+
 	/**
-	 * @returns {{ matched, msg, bindings, structureFits, leafBinds, logicalTrace }}
+	 * Ripristina ctx.$cloneProp da uno snapshot e aggiorna $patternRoot.
 	 */
+	function restoreCloneProp(ctx, $snap) {
+		if (!$snap || !$snap.length) return;
+		if (ctx.$cloneProp && ctx.$cloneProp[0] !== $snap[0]) {
+			discardCloneProp(ctx.$cloneProp);
+		}
+		ctx.$cloneProp = $snap;
+		refreshPatternRoot(ctx);
+	}
+
+	function refreshPatternRoot(ctx) {
+		if (!ctx.$cloneProp || !ctx.$cloneProp.length) {
+			ctx.$patternRoot = $();
+			return;
+		}
+		var mem =
+			typeof NewPM.rereadCloneMembers === 'function'
+				? NewPM.rereadCloneMembers(ctx.$cloneProp)
+				: null;
+		ctx.$patternRoot = mem && mem.$pattern.length ? mem.$pattern : ctx.$cloneProp;
+	}
+
+	function currentTransform(ctx) {
+		if (!ctx.$cloneProp || !ctx.$cloneProp.length) return $();
+		var mem =
+			typeof NewPM.rereadCloneMembers === 'function'
+				? NewPM.rereadCloneMembers(ctx.$cloneProp)
+				: null;
+		return mem && mem.$transform ? mem.$transform : $();
+	}
+
+	/** Snapshot distaccato del transform (per viz progressiva). */
+	function snapshotTransform(ctx) {
+		var $tf = currentTransform(ctx);
+		if (!$tf || !$tf.length || typeof ENODEclone !== 'function') return null;
+		var $snap = ENODEclone($tf, false, false);
+		if (typeof ENODEextend === 'function') ENODEextend($snap, true);
+		$snap.addClass('PMclone newPM-tf-snap');
+		return $snap;
+	}
+
+	function leafBindRecord(ctx, fields) {
+		var $tf = currentTransform(ctx);
+		var rec = fields || {};
+		rec.transformEl = $tf[0] || rec.transformEl;
+		rec.$transformSnap = snapshotTransform(ctx);
+		return rec;
+	}
+
+	/**
+	 * Eager replace come adaptMatch: aggiorna tutta la clone (anche II membro).
+	 * @returns {{ ok:boolean, $pattNode?:jQuery }}
+	 */
+	function eagerReplaceParam(ctx, $pattNode, $resList) {
+		if (!ctx.$cloneProp || !ctx.$cloneProp.length) {
+			return { ok: true, $pattNode: $pattNode };
+		}
+		if (typeof replaceInForall !== 'function') {
+			ctx.log({
+				kind: 'warn',
+				narrate: 'replaceInForall assente: bind solo in memoria'
+			});
+			return { ok: true, $pattNode: $pattNode };
+		}
+		var $updated = replaceInForall($pattNode, $resList, ctx.$cloneProp);
+		if ($updated && $updated.length) {
+			ctx.$cloneProp = $updated;
+		}
+		refreshPatternRoot(ctx);
+		var $tf = currentTransform(ctx);
+		ctx.log({
+			kind: 'replace',
+			depth: ctx.depth,
+			paramName: getName($pattNode),
+			patternEl: $pattNode[0],
+			transformEl: $tf[0],
+			narrate:
+				'Sostituzione eager in pattern+transform: ' +
+				(getName($pattNode) || '?') +
+				' ← ' +
+				$resList
+					.toArray()
+					.map(function (el) {
+						return enodeLabel($(el));
+					})
+					.join(', ')
+		});
+		return { ok: true, $pattNode: $pattNode, $transform: $tf };
+	}
+
+	function pathUnderPatternRoot(ctx, $node) {
+		if (!ctx.$patternRoot || !ctx.$patternRoot.length) return null;
+		if (typeof NewPM.indexPath === 'function') {
+			return NewPM.indexPath(ctx.$patternRoot, $node);
+		}
+		return null;
+	}
+
+	function nodeUnderPatternRoot(ctx, path) {
+		if (!ctx.$patternRoot || !ctx.$patternRoot.length) return $();
+		if (typeof NewPM.nodeAtPath === 'function') {
+			return NewPM.nodeAtPath(ctx.$patternRoot, path);
+		}
+		return $();
+	}
+
+	/**
+	 * Sibling list fresca che contiene il nodo al path (stesso genitore).
+	 */
+	function freshPatternListAt(ctx, pathToNode) {
+		refreshPatternRoot(ctx);
+		if (!pathToNode || !pathToNode.length) {
+			return ctx.$patternRoot;
+		}
+		var parentPath = pathToNode.slice(0, -1);
+		var $parent =
+			parentPath.length === 0
+				? ctx.$patternRoot
+				: nodeUnderPatternRoot(ctx, parentPath);
+		if (!$parent.length || !$parent[0].ENODE_getChildren) {
+			return ctx.$patternRoot;
+		}
+		return $parent[0].ENODE_getChildren();
+	}
+
 	function matchTrees($Input, $Pattern, options) {
 		options = options || {};
 		var orderedList = !!options.orderedList;
@@ -96,6 +256,8 @@
 		var bindings = options.bindings || {};
 		var structureFits = options.structureFits || [];
 		var leafBinds = options.leafBinds || [];
+		var $cloneProp = options.$cloneProp;
+		var $patternRoot = options.$patternRoot;
 
 		function log(step) {
 			logicalTrace.push(step);
@@ -110,15 +272,22 @@
 					: 'Entro nel sottoalbero'
 		});
 
-		var result = matchPatternList($Input, $Pattern, 0, {
+		var ctx = {
 			orderedList: orderedList,
 			depth: depth,
 			logicalTrace: logicalTrace,
 			bindings: bindings,
 			structureFits: structureFits,
 			leafBinds: leafBinds,
+			$cloneProp: $cloneProp,
+			$patternRoot: $patternRoot,
 			log: log
-		});
+		};
+		if ($cloneProp && $cloneProp.length && !$patternRoot) {
+			refreshPatternRoot(ctx);
+		}
+
+		var result = matchPatternList($Input, $Pattern, 0, ctx);
 
 		if (result.matched) {
 			var leftover = untaken($Input);
@@ -152,17 +321,13 @@
 			bindings: bindings,
 			structureFits: structureFits,
 			leafBinds: leafBinds,
-			logicalTrace: logicalTrace
+			logicalTrace: logicalTrace,
+			$cloneProp: ctx.$cloneProp
 		};
 	}
 
-	/**
-	 * Match dei fratelli del pattern a partire da patternIndex.
-	 * Per x__/x___ con fratelli successivi: prova lunghezze crescenti (non-greedy + backtrack).
-	 */
 	function matchPatternList($Input, $Pattern, patternIndex, ctx) {
 		if (patternIndex >= $Pattern.length) {
-			// Importante per il backtrack di a__: il "successo" vale solo se non avanzano input.
 			var left = untaken($Input);
 			if (left.length) {
 				ctx.log({
@@ -211,7 +376,6 @@
 		}
 
 		if (isListParam(parType) && !hasLater) {
-			// ultimo pattern: prendi tutto ciò che calza (greedy)
 			var $grab = $();
 			untaken($Input).each(function () {
 				var $in = $(this);
@@ -247,10 +411,30 @@
 			);
 		}
 
-		// x_ oppure nodo strutturale: prova candidati uno alla volta (con backtrack)
+		// x_ oppure nodo strutturale
+		var pathToPatt = pathUnderPatternRoot(ctx, $pattNode);
+		var $frozenAtEntry =
+			ctx.$cloneProp && ctx.$cloneProp.length
+				? snapshotCloneProp(ctx.$cloneProp)
+				: null;
+
 		var candidates = untaken($Input).toArray();
 		for (var i = 0; i < candidates.length; i++) {
 			var $inNode = $(candidates[i]);
+
+			if ($frozenAtEntry && pathToPatt) {
+				restoreCloneProp(ctx, snapshotCloneProp($frozenAtEntry));
+				// path fissato all’ingresso di questo patternIndex (già post-replace
+				// dei list param precedenti), così gli indici restano coerenti.
+				$pattNode = nodeUnderPatternRoot(ctx, pathToPatt);
+				$Pattern = freshPatternListAt(ctx, pathToPatt);
+				patternIndex =
+					pathToPatt.length > 0
+						? pathToPatt[pathToPatt.length - 1]
+						: patternIndex;
+				pattName = getName($pattNode) || pattName;
+			}
+
 			ctx.log({
 				kind: 'try',
 				depth: depth,
@@ -285,6 +469,7 @@
 				snapBindLens[snapBindKeys[bk]] = ctx.bindings[snapBindKeys[bk]].length;
 			}
 			var snapTaken = snapshotTaken($Input);
+			var $preNestedSnap = snapshotCloneProp(ctx.$cloneProp);
 
 			if (!isParameter) {
 				var $pattArg = $pattNode[0].ENODE_getChildren();
@@ -300,14 +485,19 @@
 						logicalTrace: ctx.logicalTrace,
 						bindings: ctx.bindings,
 						structureFits: ctx.structureFits,
-						leafBinds: ctx.leafBinds
+						leafBinds: ctx.leafBinds,
+						$cloneProp: ctx.$cloneProp,
+						$patternRoot: ctx.$patternRoot
 					});
 					childOk = nested.matched;
+					if (nested.$cloneProp) ctx.$cloneProp = nested.$cloneProp;
+					refreshPatternRoot(ctx);
 					if (!nested.matched) {
 						restoreTaken($Input, snapTaken);
 						ctx.structureFits.length = snapStruct;
 						ctx.leafBinds.length = snapLeaf;
 						restoreBindings(ctx.bindings, snapBindLens);
+						if ($preNestedSnap) restoreCloneProp(ctx, $preNestedSnap);
 					}
 				}
 			}
@@ -328,13 +518,20 @@
 			if (isParameter) {
 				if (!ctx.bindings[pattName]) ctx.bindings[pattName] = [];
 				ctx.bindings[pattName].push($inNode[0]);
-				ctx.leafBinds.push({
-					paramName: pattName,
-					paramType: parType,
-					patternEl: $pattNode[0],
-					inputEls: [$inNode[0]],
-					depth: depth
-				});
+				var $tfBefore = currentTransform(ctx);
+				var $preReplaceSnap = snapshotCloneProp(ctx.$cloneProp);
+				var rep = eagerReplaceParam(ctx, $pattNode, $inNode);
+				var $tfAfter = rep.$transform || currentTransform(ctx);
+				ctx.leafBinds.push(
+					leafBindRecord(ctx, {
+						paramName: pattName,
+						paramType: parType,
+						patternEl: $pattNode[0],
+						inputEls: [$inNode[0]],
+						depth: depth,
+						transformEl: $tfAfter[0] || $tfBefore[0]
+					})
+				);
 				ctx.log({
 					kind: 'bind',
 					depth: depth,
@@ -342,9 +539,23 @@
 					paramName: pattName,
 					patternEl: $pattNode[0],
 					inputEl: $inNode[0],
+					transformEl: $tfAfter[0],
 					narrate:
 						'Si assegna a ' + pattName + ' l’elemento ' + enodeLabel($inNode)
 				});
+				// Come adaptMatch: $Pattern resta la lista catturata; si avanza di 1
+				// (i nodi già sostituiti restano riferimenti staccati; i successivi sono vivi).
+				var rest = matchPatternList($Input, $Pattern, patternIndex + 1, ctx);
+				if (rest.matched) {
+					if ($frozenAtEntry) discardCloneProp($frozenAtEntry);
+					if ($preNestedSnap) discardCloneProp($preNestedSnap);
+					return rest;
+				}
+				restoreTaken($Input, snapTaken);
+				ctx.structureFits.length = snapStruct;
+				ctx.leafBinds.length = snapLeaf;
+				restoreBindings(ctx.bindings, snapBindLens);
+				if ($preReplaceSnap) restoreCloneProp(ctx, $preReplaceSnap);
 			} else {
 				ctx.structureFits.push({
 					patternEl: $pattNode[0],
@@ -361,19 +572,24 @@
 					inputEl: $inNode[0],
 					narrate: enodeLabel($pattNode) + ' si stringe su ' + enodeLabel($inNode)
 				});
+				var restS = matchPatternList($Input, $Pattern, patternIndex + 1, ctx);
+				if (restS.matched) {
+					if ($frozenAtEntry) discardCloneProp($frozenAtEntry);
+					if ($preNestedSnap) discardCloneProp($preNestedSnap);
+					return restS;
+				}
+				restoreTaken($Input, snapTaken);
+				ctx.structureFits.length = snapStruct;
+				ctx.leafBinds.length = snapLeaf;
+				restoreBindings(ctx.bindings, snapBindLens);
+				if ($preNestedSnap) restoreCloneProp(ctx, $preNestedSnap);
 			}
-
-			var rest = matchPatternList($Input, $Pattern, patternIndex + 1, ctx);
-			if (rest.matched) {
-				return rest;
-			}
-
-			restoreTaken($Input, snapTaken);
-			ctx.structureFits.length = snapStruct;
-			ctx.leafBinds.length = snapLeaf;
-			restoreBindings(ctx.bindings, snapBindLens);
 
 			if (ctx.orderedList) break;
+		}
+
+		if ($frozenAtEntry) {
+			restoreCloneProp(ctx, $frozenAtEntry);
 		}
 
 		ctx.log({
@@ -399,6 +615,9 @@
 		parType
 	) {
 		var $pattNode = $($Pattern[patternIndex]);
+		var pathToPatt = pathUnderPatternRoot(ctx, $pattNode);
+		var $frozen = snapshotCloneProp(ctx.$cloneProp);
+
 		var $free = untaken($Input);
 		var eligible = [];
 		$free.each(function () {
@@ -408,7 +627,6 @@
 		});
 
 		var minNeed = parType === 'x___' ? 0 : 1;
-		// non-greedy: da min a max
 		for (var count = minNeed; count <= eligible.length; count++) {
 			var snapStruct = ctx.structureFits.length;
 			var snapLeaf = ctx.leafBinds.length;
@@ -419,6 +637,18 @@
 			}
 			var snapTaken = snapshotTaken($Input);
 
+			if ($frozen) {
+				restoreCloneProp(ctx, snapshotCloneProp($frozen));
+			}
+			var $PatternFresh = freshPatternListAt(ctx, pathToPatt);
+			var idx =
+				pathToPatt && pathToPatt.length
+					? pathToPatt[pathToPatt.length - 1]
+					: patternIndex;
+			$pattNode = $($PatternFresh[idx]);
+			if (!$pattNode.length) $pattNode = nodeUnderPatternRoot(ctx, pathToPatt);
+			pattName = getName($pattNode) || pattName;
+
 			var slice = eligible.slice(0, count);
 			var $grab = $(slice);
 			markTaken($grab);
@@ -426,13 +656,19 @@
 			for (var i = 0; i < slice.length; i++) {
 				ctx.bindings[pattName].push(slice[i]);
 			}
-			ctx.leafBinds.push({
-				paramName: pattName,
-				paramType: parType,
-				patternEl: $pattNode[0],
-				inputEls: slice.slice(),
-				depth: ctx.depth
-			});
+
+			eagerReplaceParam(ctx, $pattNode, $grab);
+			var $tf = currentTransform(ctx);
+			ctx.leafBinds.push(
+				leafBindRecord(ctx, {
+					paramName: pattName,
+					paramType: parType,
+					patternEl: $pattNode[0],
+					inputEls: slice.slice(),
+					depth: ctx.depth,
+					transformEl: $tf[0]
+				})
+			);
 			ctx.log({
 				kind: 'bind',
 				depth: ctx.depth,
@@ -440,23 +676,28 @@
 				paramName: pattName,
 				patternEl: $pattNode[0],
 				inputEl: slice[0],
+				transformEl: $tf[0],
 				narrate:
 					'Prova: ' +
 					pattName +
 					' prende ' +
 					slice.length +
-					' pezzo/i (poi verifico il resto)'
+					' pezzo/i (eager replace + resto)'
 			});
 
-			var rest = matchPatternList($Input, $Pattern, patternIndex + 1, ctx);
+			// sibling list fresca (post-restore); avanza di 1 come adaptMatch
+			var rest = matchPatternList(
+				$Input,
+				$PatternFresh,
+				idx + 1,
+				ctx
+			);
 			if (rest.matched) {
 				ctx.log({
 					kind: 'bind',
 					depth: ctx.depth,
 					role: 'leaf',
 					paramName: pattName,
-					patternEl: $pattNode[0],
-					inputEl: slice[0],
 					narrate:
 						'Confermato: ' +
 						pattName +
@@ -467,6 +708,7 @@
 							})
 							.join(', ')
 				});
+				if ($frozen) discardCloneProp($frozen);
 				return rest;
 			}
 
@@ -475,6 +717,8 @@
 			ctx.leafBinds.length = snapLeaf;
 			restoreBindings(ctx.bindings, snapBindLens);
 		}
+
+		if ($frozen) restoreCloneProp(ctx, $frozen);
 
 		ctx.log({
 			kind: 'fail',
@@ -499,24 +743,33 @@
 		parType,
 		$grab
 	) {
+		var $pattNode = $($Pattern[patternIndex]);
+		var pathToPatt = pathUnderPatternRoot(ctx, $pattNode);
 		markTaken($grab);
 		if (!ctx.bindings[pattName]) ctx.bindings[pattName] = [];
 		var els = $grab.toArray();
 		for (var i = 0; i < els.length; i++) ctx.bindings[pattName].push(els[i]);
-		ctx.leafBinds.push({
-			paramName: pattName,
-			paramType: parType,
-			patternEl: $($Pattern[patternIndex])[0],
-			inputEls: els.slice(),
-			depth: ctx.depth
-		});
+
+		eagerReplaceParam(ctx, $pattNode, $grab);
+		var $tf = currentTransform(ctx);
+		ctx.leafBinds.push(
+			leafBindRecord(ctx, {
+				paramName: pattName,
+				paramType: parType,
+				patternEl: $pattNode[0],
+				inputEls: els.slice(),
+				depth: ctx.depth,
+				transformEl: $tf[0]
+			})
+		);
 		ctx.log({
 			kind: 'bind',
 			depth: ctx.depth,
 			role: 'leaf',
 			paramName: pattName,
-			patternEl: $($Pattern[patternIndex])[0],
+			patternEl: $pattNode[0],
 			inputEl: els[0],
+			transformEl: $tf[0],
 			narrate:
 				'Si assegna a ' +
 				pattName +
@@ -527,10 +780,12 @@
 					})
 					.join(', ')
 		});
+
 		return matchPatternList($Input, $Pattern, patternIndex + 1, ctx);
 	}
 
 	function runMatch(pattern, input, options) {
+		options = options || {};
 		var $pattern = NewPM.resolveENODE(pattern);
 		var $input = NewPM.resolveENODE(input);
 		if (!$pattern.length) {
@@ -540,30 +795,30 @@
 			return emptyFail($pattern, $input, 'input vuoto o non risolto');
 		}
 
+		var $cloneProp = options.$cloneProp;
 		var result = matchTrees($input, $pattern, {
-			orderedList: options && options.orderedList,
+			orderedList: options.orderedList,
 			logicalTrace: [],
 			bindings: {},
 			structureFits: [],
-			leafBinds: []
+			leafBinds: [],
+			$cloneProp: $cloneProp,
+			$patternRoot: $pattern
 		});
 		result.$pattern = $pattern;
 		result.$input = $input;
-		result.trace = result.logicalTrace;
-		return result;
-	}
-
-	function restoreBindings(bindings, snapBindLens) {
-		var keys = Object.keys(bindings);
-		for (var i = 0; i < keys.length; i++) {
-			var k = keys[i];
-			if (snapBindLens[k] == null) {
-				delete bindings[k];
-			} else {
-				bindings[k].length = snapBindLens[k];
-				if (!bindings[k].length) delete bindings[k];
+		if (result.$cloneProp) {
+			var mem =
+				typeof NewPM.rereadCloneMembers === 'function'
+					? NewPM.rereadCloneMembers(result.$cloneProp)
+					: null;
+			if (mem) {
+				result.$pattern = mem.$pattern.length ? mem.$pattern : $pattern;
+				result.$transform = mem.$transform;
 			}
 		}
+		result.trace = result.logicalTrace;
+		return result;
 	}
 
 	function emptyFail($pattern, $input, msg) {
@@ -583,4 +838,8 @@
 	NewPM.matchTrees = matchTrees;
 	NewPM.runMatch = runMatch;
 	NewPM.enodeLabel = enodeLabel;
+	NewPM.discardCloneProp = discardCloneProp;
+	NewPM.currentTransformFromClone = function ($cloneProp) {
+		return currentTransform({ $cloneProp: $cloneProp });
+	};
 })(typeof window !== 'undefined' ? window : globalThis);

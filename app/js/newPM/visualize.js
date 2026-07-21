@@ -76,12 +76,85 @@
 	}
 
 	function clearVisuals() {
-		$('#newPM-ghost, #newPM-stalk, .newPM-leaf-fly').remove();
+		$('#newPM-ghost, #newPM-stalk, .newPM-leaf-fly, #newPM-specialize').remove();
 		$('#newPM-demo-pattern').removeClass('newPM-hide-leaves');
+		$('.newPM-prop-hidden')
+			.removeClass('newPM-prop-hidden')
+			.css({ visibility: '', opacity: '', pointerEvents: '' });
 		$(
 			'.newPM-bound-flash, .newPM-flash-ok, .newPM-flash-fail'
 		).removeClass('newPM-bound-flash newPM-flash-ok newPM-flash-fail');
 		$('#newPM-narration, #newPM-phase').remove();
+	}
+
+	/**
+	 * Nasconde il forAll circostante; il secondo membro (non dragged) resta
+	 * nella stessa posizione/aspetto e si aggiorna con le sostituzioni.
+	 * Nessuna etichetta "transform".
+	 */
+	function beginSpecialize(propertyEl, $initialSnap, transformAnchorEl) {
+		var $prop = propertyEl ? $(propertyEl) : $();
+		var $anchor = transformAnchorEl ? $(transformAnchorEl) : $();
+		if (!$anchor.length && $prop.length) {
+			// fallback: secondo membro dell’eq nel forAll live
+			var $eq =
+				typeof GetforAllContentRole === 'function'
+					? GetforAllContentRole($prop).children('[data-enode=eq]').first()
+					: $prop.find('[data-enode=eq]').first();
+			if ($eq.length && $eq[0].ENODE_getRoles) {
+				$anchor = $eq[0].ENODE_getRoles('.secondMember').children().first();
+			}
+		}
+
+		// misura PRIMA di nascondere il forAll
+		var anchor = rectOf($anchor[0]) || rectOf(propertyEl);
+
+		if ($prop.length) {
+			$prop.addClass('newPM-prop-hidden');
+		}
+
+		$('#newPM-specialize').remove();
+		var host = document.createElement('div');
+		host.id = 'newPM-specialize';
+		host.innerHTML = '<div class="newPM-specialize-body"></div>';
+		document.body.appendChild(host);
+
+		if (anchor) {
+			host.style.top = anchor.top + 'px';
+			host.style.left = anchor.left + 'px';
+			host.style.minWidth = Math.max(anchor.width, 40) + 'px';
+			host.style.minHeight = Math.max(anchor.height, 28) + 'px';
+		} else {
+			host.style.top = '72px';
+			host.style.right = '24px';
+		}
+
+		updateSpecializeSnap($initialSnap);
+		return host;
+	}
+
+	function updateSpecializeSnap($snap) {
+		var body = document.querySelector('#newPM-specialize .newPM-specialize-body');
+		if (!body) return null;
+		$(body).empty();
+		if (!$snap || !$snap.length) return null;
+		var $show =
+			typeof ENODEclone === 'function' ? ENODEclone($snap, false, false) : $snap.clone(true);
+		if (typeof ENODEextend === 'function') ENODEextend($show, true);
+		$show.addClass('newPM-specialize-expr');
+		$(body).append($show);
+		$(body).addClass('newPM-specialize-pulse');
+		window.setTimeout(function () {
+			$(body).removeClass('newPM-specialize-pulse');
+		}, 420);
+		return $show[0];
+	}
+
+	function restoreProperty(propertyEl) {
+		if (!propertyEl) return;
+		$(propertyEl)
+			.removeClass('newPM-prop-hidden')
+			.css({ visibility: '', opacity: '', pointerEvents: '' });
 	}
 
 	function rectOf(el) {
@@ -444,16 +517,19 @@
 		options = options || {};
 		var stepMs = options.stepMs != null ? options.stepMs : 1000;
 		var soundEnabled = options.sound !== false;
+		var result = options.result || null;
+		var doApply = options.apply !== false;
 		if (options.clear !== false) clearVisuals();
 
 		var narration = ensureNarration();
 		var phaseBadge = ensurePhaseBadge();
 		var pair = null;
 		var transformEl = null;
+		var propertyEl = null;
 		var outerOp = null;
 		var innerOp = null;
+		var specializeHost = null;
 
-		// sblocca audio al primo play (policy browser)
 		if (soundEnabled) getAudioCtx();
 
 		for (var i = 0; i < (visualSteps || []).length; i++) {
@@ -463,6 +539,7 @@
 			narration.setAttribute('data-outcome', step.outcome || '');
 			phaseBadge.textContent = 'fase: ' + (step.phase || '?');
 			if (step.transformEl) transformEl = step.transformEl;
+			if (step.propertyEl) propertyEl = step.propertyEl;
 			if (step.outerOp) outerOp = step.outerOp;
 			if (step.innerOp) innerOp = step.innerOp;
 
@@ -472,13 +549,35 @@
 					step.outerOp || outerOp,
 					step.innerOp || innerOp
 				);
+				// posiziona il ghost PRIMA di nascondere il forAll (serve il rect)
+				var $livePattern = $();
+				if (step.propertyEl) {
+					$livePattern = $(step.propertyEl)
+						.find('.firstMember')
+						.children('[data-enode]')
+						.first();
+					if (!$livePattern.length) {
+						$livePattern = $(step.propertyEl)
+							.find('[data-enode=' + (step.outerOp || 'plus') + ']')
+							.first();
+					}
+				}
 				placeGhostAtPattern(
 					pair,
-					step.patternEl,
+					($livePattern[0] || step.patternEl || step.inputEl),
 					step.outerOp,
 					step.innerOp
 				);
-				drawStalk(transformEl || step.transformEl, pair);
+				specializeHost = beginSpecialize(
+					step.propertyEl || propertyEl,
+					step.$transformInitialSnap,
+					step.transformAnchorEl
+				);
+				var shown = document.querySelector(
+					'#newPM-specialize .newPM-specialize-expr'
+				);
+				if (shown) transformEl = shown;
+				drawStalk(transformEl, pair);
 				playCue('tick', soundEnabled);
 			} else if (step.kind === 'dragGhost') {
 				if (!pair) {
@@ -494,7 +593,7 @@
 					);
 				}
 				moveGhostOverInput(pair, step.inputEl);
-				drawStalk(transformEl || step.transformEl, pair);
+				drawStalk(transformEl, pair);
 			} else if (step.kind === 'tightenInner') {
 				tighten(pair, 'inner', step.inputEl);
 				flashEls([step.inputEl], 'ok');
@@ -510,11 +609,39 @@
 				$('#newPM-demo-pattern').removeClass('newPM-hide-leaves');
 			} else if (step.kind === 'leafBind') {
 				await flyLeaf(step.paramName, step.inputEls, soundEnabled);
+				if (step.$transformSnap && step.$transformSnap.length) {
+					transformEl = updateSpecializeSnap(step.$transformSnap) || transformEl;
+				} else if (step.transformEl) {
+					transformEl = step.transformEl;
+				}
+				drawStalk(transformEl, pair);
+				if (transformEl) flashEls([transformEl], 'ok');
 			} else if (step.kind === 'fail') {
 				if (pair) setCapsuleOutcome(pair, 'fail');
 				flashEls([step.inputEl], 'fail');
 				playCue('fail', soundEnabled);
 				narration.classList.add('is-fail');
+				restoreProperty(propertyEl || step.propertyEl);
+				$('#newPM-specialize').remove();
+			} else if (step.kind === 'transformApply') {
+				setCapsuleOutcome(pair, 'ok');
+				playCue('ok', soundEnabled);
+				narration.classList.add('is-ok');
+				if (result && doApply && typeof NewPM.applyToCanvas === 'function') {
+					// breve “volo” verso l’input
+					if (pair && step.inputEl) {
+						moveGhostOverInput(pair, step.inputEl);
+						await sleep(Math.min(stepMs, 400));
+					}
+					NewPM.applyToCanvas(result);
+					$('#newPM-ghost, #newPM-stalk').remove();
+					$('#newPM-specialize').addClass('newPM-specialize-done');
+					await sleep(280);
+					$('#newPM-specialize').remove();
+					// la prop live resta nascosta solo se era un overlay di sessione;
+					// dopo apply la mostriamo di nuovo (la genericità non è cambiata)
+					restoreProperty(propertyEl);
+				}
 			} else if (step.kind === 'transformPending') {
 				setCapsuleOutcome(pair, 'ok');
 				playCue('ok', soundEnabled);
@@ -533,4 +660,6 @@
 
 	NewPM.playTrace = playTrace;
 	NewPM.clearVisuals = clearVisuals;
+	NewPM.beginSpecialize = beginSpecialize;
+	NewPM.updateSpecializeSnap = updateSpecializeSnap;
 })(typeof window !== 'undefined' ? window : globalThis);
