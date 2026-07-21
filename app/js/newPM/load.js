@@ -12,7 +12,7 @@
 	'use strict';
 
 	var BASE = 'js/newPM/';
-	var FILES = ['match.js', 'phases.js', 'visualize.js', 'api.js'];
+	var FILES = ['match.js', 'resolve.js', 'phases.js', 'visualize.js', 'api.js'];
 	var loading = null;
 	var loaded = false;
 	// cache-bust per sessioni di sviluppo in console

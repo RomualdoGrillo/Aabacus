@@ -1,8 +1,11 @@
 /**
- * newPM — API console: newPM(draggedPattern, targetInput, options?)
+ * newPM — API console allineata ad autoAdapt:
+ *   newPM(draggedInPattern, dropTarget, options?)
  *
- * Semantica: arg1 = pattern da “trascinare”, arg2 = target su cui rilasciare.
- * Default: play:true (animazione). Override: { play: false }.
+ * arg1 = elemento nel pattern (attack / pezzo trascinato)
+ * arg2 = target di drop nell’input
+ * L’operando viene ricavato risalendo (mark "s" + levelsToAncestor).
+ * Default: play:true. Override: { play: false }.
  */
 (function (global) {
 	'use strict';
@@ -43,8 +46,8 @@
 	}
 
 	/**
-	 * @param {*} dragged — pattern (selettore / ENODE / jQuery)
-	 * @param {*} target — input su cui rilasciare
+	 * @param {*} dragged — elemento nel pattern (selettore / ENODE / jQuery)
+	 * @param {*} target — drop target nell’input
 	 * @param {{ play?: boolean, stepMs?: number, orderedList?: boolean, clearAtEnd?: boolean }} options
 	 */
 	function newPM(dragged, target, options) {
@@ -56,26 +59,43 @@
 		if (typeof NewPM.runMatch !== 'function') {
 			throw new Error('newPM: match.js non caricato');
 		}
+		if (typeof NewPM.resolveFromDragAndTarget !== 'function') {
+			throw new Error('newPM: resolve.js non caricato');
+		}
 		if (typeof NewPM.buildVisualScript !== 'function') {
 			throw new Error('newPM: phases.js non caricato');
 		}
 
-		var $pattern = NewPM.resolveENODE(dragged);
-		var $input = NewPM.resolveENODE(target);
-		if (!$pattern.length || !$pattern.is('[data-enode]')) {
-			throw new Error(
-				'newPM: pattern non risolto — nessun ENODE per ' + describeRef(dragged)
-			);
-		}
-		if (!$input.length || !$input.is('[data-enode]')) {
-			throw new Error(
-				'newPM: target non risolto — nessun ENODE per ' + describeRef(target)
-			);
+		var resolved;
+		try {
+			resolved = NewPM.resolveFromDragAndTarget(dragged, target);
+		} catch (err) {
+			var msg = err && err.message ? err.message : String(err);
+			if (msg.indexOf('newPM:') !== 0) {
+				msg =
+					'newPM: resolve fallito per ' +
+					describeRef(dragged) +
+					' / ' +
+					describeRef(target) +
+					' — ' +
+					msg;
+			}
+			throw new Error(msg);
 		}
 
-		var result = NewPM.runMatch($pattern, $input, {
+		var result = NewPM.runMatch(resolved.$pattern, resolved.$operand, {
 			orderedList: options.orderedList
 		});
+		result.$pattern = resolved.$pattern;
+		result.$input = resolved.$operand;
+		result.$transform = resolved.$transform;
+		result.$operand = resolved.$operand;
+		result.$dropTarget = resolved.$dropTarget;
+		result.$attackInPattern = resolved.$attackInPattern;
+		result.$property = resolved.$property;
+		result.direction = resolved.direction;
+		result.patternDepth = resolved.patternDepth;
+
 		result.visualSteps = NewPM.buildVisualScript(result);
 		result.trace = result.visualSteps;
 
@@ -98,12 +118,12 @@
 				'[newPM]',
 				result.matched ? 'MATCH' : 'NO MATCH',
 				result.msg || '',
-				'| visual steps:',
-				result.visualSteps.length,
-				'| structureFits:',
-				(result.structureFits || []).length,
-				'| leafBinds:',
-				(result.leafBinds || []).length
+				'| dir:',
+				result.direction,
+				'| depth:',
+				result.patternDepth,
+				'| steps:',
+				result.visualSteps.length
 			);
 			console.log(
 				'[newPM] fasi:',
@@ -121,7 +141,32 @@
 		return result;
 	}
 
-	newPM.version = '0.4.0-exp';
+	/**
+	 * Selettori della fixture newPM_assoc.mmls (relativi al forAll:
+	 * non dipendono da quanti ci ci sono prima nel canvas).
+	 * Uso: await newPM(newPM.SEL.attack, newPM.SEL.dropOk)
+	 * Nota: :eq(n) è sintassi jQuery (usata da $() in resolveENODE).
+	 */
+	newPM.SEL = {
+		/** plus interno del pattern (elemento trascinato) */
+		attack:
+			'[data-tag=newPM-assoc] .firstMember [data-enode=plus] [data-enode=plus]',
+		/** root del pattern (primo membro) */
+		pattern: '[data-tag=newPM-assoc] .firstMember > [data-enode=plus]',
+		/** foglia 3 nell’input che matcha (1ª eq dopo la proprietà) */
+		dropOk:
+			'[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(0) [data-enode=plus] [data-enode=plus] [data-enode=cn]',
+		/** root input che matcha */
+		okRoot: '[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(0) [data-enode=plus]',
+		/** prima foglia cn nell’input times (2ª eq) */
+		dropFailTimes:
+			'[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(1) [data-enode=cn]',
+		/** prima foglia cn nell’input corto (3ª eq) */
+		dropFailShort:
+			'[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(2) [data-enode=cn]'
+	};
+
+	newPM.version = '0.5.3-exp';
 	newPM.NS = NewPM;
 	newPM.last = function () {
 		return NewPM.lastResult;

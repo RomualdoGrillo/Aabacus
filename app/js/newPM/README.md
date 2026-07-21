@@ -1,71 +1,71 @@
 # newPM (sperimentale)
 
-Motore di pattern matching con traccia visualizzabile (“maglione che calza”).
-Caricato da `index.html` (non sostituisce ancora `PMTutilities.js`).
+```js
+newPM(selectorOfDragged, selectorOfTarget)
+```
 
-## Avvio rapido
+Entrambi gli argomenti sono stringhe selettore (jQuery/`$()`).  
+`data-tag` solo sulla proprietà `forAll` (`newPM-assoc`).
 
-1. Server: `npx --yes serve -l 5500 app`
-2. Apri la fixture:
+---
+
+## Test in console
+
+### 1. Apri la fixture
 
 ```
 http://127.0.0.1:5500/?preloadPath=./Data/TestBedExamples/newPM_assoc.mmls
 ```
 
-3. In DevTools → Console:
+Ricarica la pagina dopo aggiornamenti a `js/newPM/` (cache).
+
+### 2. Incolla
 
 ```js
-// MATCH + animazione (play:true di default)
-await newPM('[data-tag=newPM-pattern]', '[data-tag=newPM-ok]')
-
-// FAIL (times)
-await newPM('[data-tag=newPM-pattern]', '[data-tag=newPM-fail-times]')
-
-// FAIL (espressione troppo corta)
-await newPM('[data-tag=newPM-pattern]', '[data-tag=newPM-fail-short]')
-
-// solo match, senza animazione
-await newPM('[data-tag=newPM-pattern]', '[data-tag=newPM-ok]', { play: false })
+await newPM(newPM.SEL.attack, newPM.SEL.dropOk)
 ```
 
-Semantica: `newPM(selectorOfDragged, selectorOfTarget)` —
-arg1 = pattern, arg2 = input su cui “rilasciare”.
+Altri casi:
+
+```js
+await newPM(newPM.SEL.attack, newPM.SEL.dropFailTimes)  // NO MATCH (times)
+await newPM(newPM.SEL.attack, newPM.SEL.dropFailShort)  // NO MATCH (corto)
+await newPM(newPM.SEL.pattern, newPM.SEL.okRoot)        // MATCH depth 0
+```
+
+Oppure le stringhe esplicite (relative al `forAll`, indipendenti dai `ci` sopra):
+
+```js
+await newPM(
+  '[data-tag=newPM-assoc] .firstMember [data-enode=plus] [data-enode=plus]',
+  '[data-tag=newPM-assoc] ~ [data-enode=eq]:eq(0) [data-enode=plus] [data-enode=plus] [data-enode=cn]'
+)
+```
+
+Senza animazione: terzo argomento `{ play: false }`.
+
+---
+
+## Selettori (`newPM.SEL`)
+
+| Chiave | Ruolo |
+|--------|--------|
+| `attack` | plus interno del pattern (dragged) |
+| `dropOk` | foglia `3` nella 1ª eq dopo la proprietà |
+| `dropFailTimes` | cn nella 2ª eq (times) |
+| `dropFailShort` | cn nella 3ª eq (corta) |
+| `pattern` / `okRoot` | root pattern ↔ root input |
+
+`:eq(n)` è sintassi jQuery (non CSS puro).
+
+---
 
 ## API
 
 ```js
-await newPM(pattern, target)                 // play:true
-await newPM(pattern, target, { play: false })
-await newPM.last().play()
+await newPM(selectorOfDragged, selectorOfTarget)
+await newPM(selectorOfDragged, selectorOfTarget, { play: false })
+newPM.SEL
 newPM.clear()
 newPM.version
-```
-
-`pattern` / `target`: selettore CSS, jQuery, o nodo DOM ENODE.
-
-## Fasi visuali (schema PDF)
-
-1. **dragStart / dragGhost** — contorni plus interno/esterno
-2. **structureFit** — stringimento interno → esterno
-3. **leaves** — bind di `a__`, `b_`, `c__`
-4. **transform** — placeholder
-
-## Fixture
-
-[`Data/TestBedExamples/newPM_assoc.mmls`](../../Data/TestBedExamples/newPM_assoc.mmls)
-
-| data-tag | Ruolo |
-|----------|--------|
-| `newPM-assoc` | proprietà forAll |
-| `newPM-pattern` | membro sinistro (pattern) |
-| `newPM-transform` | membro destro (transform) |
-| `newPM-ok` | input che matcha |
-| `newPM-fail-times` | input times → no match |
-| `newPM-fail-short` | `1+x` → no match |
-
-## Demo staged (opzionale)
-
-```js
-$.getScript('js/newPM/demo-fixtures.js')
-await runNewPmDemo('match')
 ```

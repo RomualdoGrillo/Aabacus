@@ -5,8 +5,9 @@
 	</apply>
 </section>
 <section data-section="canvas">
-	<ci data-type="bool">newPM demo — associatività: in console prova await newPM('[data-tag=newPM-pattern]', '[data-tag=newPM-ok]')</ci>
-	<!-- Proprietà: a__ + (b_ + c__) = (a__ + b_) + c__ -->
+	<ci data-type="bool">await newPM(newPM.SEL.attack, newPM.SEL.dropOk)</ci>
+	<!-- Proprietà generale: a__ + (b_ + c__) = (a__ + b_) + c__
+	     title="s" su b_ = attack mark (depth 2). Nessun data-tag su pattern/transform/input. -->
 	<apply data-tag="newPM-assoc" data-type="bool">
 		<forall>
 		</forall>
@@ -22,18 +23,18 @@
 		<apply data-type="bool">
 			<eq>
 			</eq>
-			<apply data-tag="newPM-pattern" data-type="num">
+			<apply data-type="num">
 				<plus>
 				</plus>
 				<ci data-type="num">a__</ci>
 				<apply data-type="num">
 					<plus>
 					</plus>
-					<ci data-type="num">b_</ci>
+					<ci title="s" data-type="num">b_</ci>
 					<ci data-type="num">c__</ci>
 				</apply>
 			</apply>
-			<apply data-tag="newPM-transform" data-type="num">
+			<apply data-type="num">
 				<plus>
 				</plus>
 				<apply data-type="num">
@@ -47,7 +48,7 @@
 		</apply>
 	</apply>
 	<!-- Expr 1: MATCH — 1 + x + (3 + z + t) -->
-	<apply data-tag="newPM-ok" data-type="num">
+	<apply data-type="num">
 		<plus>
 		</plus>
 		<cn data-type="num">1</cn>
@@ -60,8 +61,8 @@
 			<ci data-type="num">t</ci>
 		</apply>
 	</apply>
-	<!-- Expr 2: FAIL — times al posto di plus -->
-	<apply data-tag="newPM-fail-times" data-type="num">
+	<!-- Expr 2: FAIL — times -->
+	<apply data-type="num">
 		<times>
 		</times>
 		<cn data-type="num">1</cn>
@@ -74,8 +75,8 @@
 			<ci data-type="num">t</ci>
 		</apply>
 	</apply>
-	<!-- Expr 3: FAIL — troppo corta, senza plus interno -->
-	<apply data-tag="newPM-fail-short" data-type="num">
+	<!-- Expr 3: FAIL — troppo corta -->
+	<apply data-type="num">
 		<plus>
 		</plus>
 		<cn data-type="num">1</cn>

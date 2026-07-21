@@ -10,43 +10,48 @@
 	function buildVisualScript(matchResult) {
 		var steps = [];
 		var $pattern = matchResult.$pattern;
-		var $input = matchResult.$input;
+		// operando dopo risalita autoAdapt (preferito rispetto al drop grezzo)
+		var $input = matchResult.$operand || matchResult.$input;
 		var $transform = matchResult.$transform;
 		var structureFits = (matchResult.structureFits || []).slice();
 		var leafBinds = matchResult.leafBinds || [];
+		var depth = matchResult.patternDepth;
+		var attackEl =
+			matchResult.$attackInPattern && matchResult.$attackInPattern[0];
+		var dropEl = matchResult.$dropTarget && matchResult.$dropTarget[0];
 
 		structureFits.sort(function (a, b) {
 			return b.depth - a.depth;
 		});
 
-		var outerFit = structureFits.length
-			? structureFits[structureFits.length - 1]
-			: null;
-		var innerFit =
-			structureFits.length > 1 ? structureFits[0] : structureFits[0] || null;
-		// dopo sort desc: [0]=più interno, [last]=più esterno
-		innerFit = structureFits[0] || null;
-		outerFit = structureFits[structureFits.length - 1] || null;
+		var innerFit = structureFits[0] || null;
+		var outerFit = structureFits[structureFits.length - 1] || null;
 
 		steps.push({
 			phase: 'dragStart',
 			kind: 'dragStart',
 			narrate:
-				'L’utente inizia a trascinare un membro dell’equazione (pattern)',
+				'L’utente trascina un elemento nel pattern' +
+				(attackEl ? ' (attack point)' : '') +
+				(depth != null ? ' — depth ' + depth : ''),
 			patternEl: $pattern && $pattern[0],
 			transformEl: $transform && $transform[0],
-			inputEl: $input && $input[0]
+			inputEl: $input && $input[0],
+			attackEl: attackEl,
+			dropEl: dropEl
 		});
 
 		steps.push({
 			phase: 'dragGhost',
 			kind: 'dragGhost',
 			narrate:
-				'Versione semplificata del pattern: solo i contorni del plus interno e di quello esterno',
+				'Versione semplificata del pattern: solo i contorni del plus interno e di quello esterno' +
+				(dropEl && $input && dropEl !== $input[0]
+					? ' (operando risalito dal target)'
+					: ''),
 			patternEl: $pattern && $pattern[0],
 			transformEl: $transform && $transform[0],
 			inputEl: $input && $input[0],
-			// geometria target provvisoria (sopra l’input, ancora “larga”)
 			hoverOnInput: true
 		});
 
@@ -54,7 +59,7 @@
 			steps.push({
 				phase: 'structureFit',
 				kind: 'fail',
-				narrate: matchResult.msg || 'Il pattern non calza sull’input',
+				narrate: matchResult.msg || 'Il pattern non calza sull’operando',
 				inputEl: $input && $input[0]
 			});
 			steps.push({
