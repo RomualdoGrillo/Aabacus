@@ -476,6 +476,30 @@ Regole:
 2. **Vocabolario canonico degli intent** fissato in specifica: `tap`, `lasso`, `dnd`, `slice.h`, `slice.v` (+ estensioni future). La sezione `events` usa questi nomi; nomi sconosciuti → warning in console, mai fallimento silenzioso.
 3. Doppio gating invariato: il gesto mappato passa comunque da `TryOnePropertyByName`, quindi serve anche il `ci` della proprietà nel canvas.
 
+### 7.5 Tabella gesture↔action (Romualdo, 23/07 sera)
+
+Fonte: tabella di Romualdo (immagine agli atti della chat). Formalizza tre concetti: il **target** del gesto tra parentesi (`selected` = selezione corrente, `pinched`/`slashed` = bersaglio individuato dal gesto stesso), gli **alias tastiera** di ogni gesto (parità desktop), le **liste ordinate di azioni** (si prova nell'ordine finché una matcha, come gli eventi da tasto attuali).
+
+| Trigger gesto | Alias tastiera | Target | Azioni (in ordine) | Classe |
+|---------------|----------------|--------|--------------------|--------|
+| — | command+z | — | undo | **sistema** |
+| — | Maiusc+l | — | load | **sistema** |
+| — | Maiusc+s | selected | save | **sistema** |
+| — | p | selected | createParenthesis | didattica |
+| — | c | selected | simplifyParethesis, delEmptyParenthesis | didattica |
+| pinchHor | arrowDown | pinched / selected | composePlus, composeTimes | didattica |
+| pinchVert | arrowLeft | pinched / selected | composePlus, composeTimes | didattica |
+| slashHor | arrowRight (*) | slashed / selected | decomposeInAProduct (*) | didattica |
+| slashVert | arrowUp | slashed / selected | decomposeInASum (*) | didattica |
+
+(*) Assunzioni da confermare con Romualdo: le celle Action delle righe slash erano vuote (riempite con la mappatura già validata slice→decompose); i due alias erano entrambi "arrowUp/arrowup" (assunto refuso: arrowUp per slashVert, arrowRight per slashHor); il pinch ha la stessa try-list in entrambe le direzioni (distinte solo dall'alias tastiera).
+
+Regole di incorporamento nel codice (accortezze di Romualdo):
+
+1. Lo smistamento gesture→action è **centralizzato in un unico modulo unit-testabile**: `intentMap.js` possiede tabella e risoluzione come funzioni pure (niente DOM); `boot2.js` fa solo il cablaggio eventi.
+2. Le righe **sistema** non sono riconfigurabili da `.mmls` (warning al tentativo).
+3. **Disabilitazione al "tied"**: quando il canvas diventa tied si calcola quali proprietà hanno il `ci` nel canvas e si disabilitano le azioni che non avrebbero comunque conseguenze (esposto anche per future affordance UI).
+
 ---
 
 ## Appendice A — Mappa rapida file analizzati
