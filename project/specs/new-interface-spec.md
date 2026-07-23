@@ -459,6 +459,23 @@ Tre pezzi con confini netti, pensati per la sostituibilità dei gesti:
 2. **Coerenza del set:** il set finale dev'essere coerente, intuitivo e piacevole; si valuta sul prototipo con esercizi reali, non su blocchi finti.
 3. **Modularità:** cambiare il set di gesti (o renderlo customizzabile dall'utente) non deve costare riscritture — garantito dall'intent map (§7.2.2).
 
+### 7.4 Gesti configurabili dal file `.mmls` (proposta Romualdo 23/07, approvata)
+
+La sezione `events` del `.mmls` — che oggi associa un tasto a una proprietà o lista di proprietà — estende il proprio vocabolario dai tasti ai **nomi di gesto**: la struttura `eventtoaction` resta identica, cambia solo cosa può comparire come evento (es. `slice.h → decomposeInAProduct`). L'esercizio resta così l'unica fonte di verità didattica: contenuto, palette, obiettivo, semantica dei gesti.
+
+Due classi di gesti, in simmetria con `requiresCanvasCi` del property registry (infrastruttura non configurabile vs didattica configurabile):
+
+| Classe | Gesti | Configurabile da `.mmls`? |
+|--------|-------|---------------------------|
+| **Strutturali** | `tap` → select, `lasso` → selectSiblings, `dnd` → replace / applyPMproperty, undo | **No** — cablati nel core dell'input; tentativi di rimappatura → warning |
+| **Didattici** | `slice.h`, `slice.v`, futuri `pinch.*`, `doubletap`, … | **Sì** — via sezione `events` |
+
+Regole:
+
+1. **Default nel codice, override nell'esercizio**: la intent map di default vive in `intentMap.js`; il `.mmls` può restringere (quali gesti sono attivi) o eccezionalmente rimappare; in assenza di dichiarazioni valgono i default. Protegge la coerenza del set per l'allievo (§7.3.2) ed evita boilerplate per gli autori.
+2. **Vocabolario canonico degli intent** fissato in specifica: `tap`, `lasso`, `dnd`, `slice.h`, `slice.v` (+ estensioni future). La sezione `events` usa questi nomi; nomi sconosciuti → warning in console, mai fallimento silenzioso.
+3. Doppio gating invariato: il gesto mappato passa comunque da `TryOnePropertyByName`, quindi serve anche il `ci` della proprietà nel canvas.
+
 ---
 
 ## Appendice A — Mappa rapida file analizzati
