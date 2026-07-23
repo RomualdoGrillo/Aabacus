@@ -5,6 +5,8 @@
  * Semantica slice:
  *   slice.v (taglio quasi-verticale) → addendi  (decomposeInASum)
  *   slice.h (taglio quasi-orizzontale) → fattori (decomposeInAProduct)
+ *
+ * Gesti strutturali (tap, lasso): cablati; rimappatura via .mmls → warning (futuro).
  */
 (function (global) {
 	'use strict';
@@ -12,8 +14,11 @@
 	const DEFAULT_MAP = {
 		'slice.v': { kind: 'property', name: 'decomposeInASum' },
 		'slice.h': { kind: 'property', name: 'decomposeInAProduct' },
-		'tap': { kind: 'builtin', name: 'toggleSelect' }
+		'tap': { kind: 'builtin', name: 'select' },
+		'lasso': { kind: 'builtin', name: 'selectSiblings' }
 	};
+
+	const STRUCTURAL = { tap: true, lasso: true, dnd: true };
 
 	let intentMap = Object.assign({}, DEFAULT_MAP);
 
@@ -42,4 +47,5 @@
 	global.INPUT2.setIntentMap = setIntentMap;
 	global.INPUT2.lookupIntent = lookupIntent;
 	global.INPUT2.DEFAULT_INTENT_MAP = Object.assign({}, DEFAULT_MAP);
+	global.INPUT2.STRUCTURAL_INTENTS = Object.assign({}, STRUCTURAL);
 })(typeof window !== 'undefined' ? window : globalThis);

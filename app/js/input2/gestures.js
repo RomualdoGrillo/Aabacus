@@ -3,13 +3,14 @@
  * Pointer Events su #centralColumn; FSM esplicita; emette intent via callback.
  *
  * Intent:
- *   { type:'tap', target: Element[data-enode], points:[...] }
+ *   { type:'tap', target: Element[data-enode], metaKey, ctrlKey, shiftKey, points:[...] }
  *   { type:'slice', target: Element[data-enode], axis:'h'|'v', points:[...] }
+ *   { type:'lasso', targets: Element[data-enode][], points:[...] }
  *
- * Slice: tratto che inizia FUORI da ogni [data-enode], attraversa ENODEs
- * (campionamento con document.elementFromPoint); bersaglio = più profondo attraversato.
- * Asse: ±35° su verticale → 'v', su orizzontale → 'h'; altrimenti scarto.
- * Desktop: mouse = un dito (nessun modificatore).
+ * Slice: tratto quasi-retto H/V che inizia FUORI da ogni foglia [data-enode].
+ * Lazo: tratto partito fuori, non classificato come slice, curva quasi chiusa;
+ *       targets = ENODE il cui centro è nel poligono (senza antenati ridondanti).
+ * Desktop: mouse = un dito; meta/ctrl/shift riportati sul tap.
  */
 (function (global) {
 	'use strict';
@@ -18,15 +19,25 @@
 	const MOVE_SLOP_PX = 10;
 	const SLICE_MIN_LEN = 48;
 	const SAMPLE_STEP_PX = 4;
+	const LASSO_MIN_POINTS = 10;
+	const LASSO_MIN_LEN = 80;
+	const LASSO_CLOSE_GAP_PX = 56;
+	const SLICE_MAX_DEVIATION_PX = 28;
 
 	const STATE = {
 		IDLE: 'idle',
 		TRACKING: 'tracking', // partito su un ENODE → candidato tap
-		SLICE: 'slice'        // partito fuori → candidato taglio
+		SLICE: 'slice'        // partito fuori → candidato taglio o lazo
 	};
 
 	function dist(a, b) {
 		return Math.hypot(a.x - b.x, a.y - b.y);
+	}
+
+	function pathLength(points) {
+		let len = 0;
+		for (let i = 1; i < points.length; i++) len += dist(points[i - 1], points[i]);
+		return len;
 	}
 
 	function angleDegFromHorizontal(a, b) {
@@ -48,6 +59,50 @@
 		return p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom;
 	}
 
+	/** Ray-casting point-in-polygon (poligono chiuso implicito). */
+	function pointInPolygon(p, points) {
+		if (!points || points.length < 3) return false;
+		let inside = false;
+		for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+			const xi = points[i].x, yi = points[i].y;
+			const xj = points[j].x, yj = points[j].y;
+			const intersect = ((yi > p.y) !== (yj > p.y))
+				&& (p.x < (xj - xi) * (p.y - yi) / ((yj - yi) || 1e-12) + xi);
+			if (intersect) inside = !inside;
+		}
+		return inside;
+	}
+
+	/** Deviazione massima dei punti dalla corda start→end (0 = rettilineo). */
+	function maxDeviationFromChord(points) {
+		if (!points || points.length < 2) return 0;
+		const a = points[0];
+		const b = points[points.length - 1];
+		const dx = b.x - a.x;
+		const dy = b.y - a.y;
+		const len2 = dx * dx + dy * dy;
+		if (len2 < 1e-6) {
+			let max = 0;
+			for (let i = 1; i < points.length - 1; i++) {
+				max = Math.max(max, dist(a, points[i]));
+			}
+			return max;
+		}
+		let max = 0;
+		for (let i = 1; i < points.length - 1; i++) {
+			const p = points[i];
+			const t = ((p.x - a.x) * dx + (p.y - a.y) * dy) / len2;
+			const proj = { x: a.x + t * dx, y: a.y + t * dy };
+			max = Math.max(max, dist(p, proj));
+		}
+		return max;
+	}
+
+	function isNearlyClosed(points, gapPx) {
+		if (!points || points.length < 3) return false;
+		return dist(points[0], points[points.length - 1]) <= gapPx;
+	}
+
 	function enodeFromPoint(x, y) {
 		const el = document.elementFromPoint(x, y);
 		if (!(el instanceof Element)) return null;
@@ -63,7 +118,6 @@
 		const en = enodeFromPoint(x, y);
 		if (!en) return null;
 		if (isLeafEnode(en)) return en;
-		// se siamo su un contenitore, cerca la foglia più interna sotto il punto
 		const leaves = en.querySelectorAll('[data-enode]');
 		for (let i = 0; i < leaves.length; i++) {
 			const leaf = leaves[i];
@@ -79,7 +133,6 @@
 		if (!b) return a;
 		if (a.contains(b)) return b;
 		if (b.contains(a)) return a;
-		// preferisci il più profondo nel DOM (più antenati)
 		const da = depth(a);
 		const db = depth(b);
 		return db >= da ? b : a;
@@ -150,22 +203,48 @@
 		return false;
 	}
 
-	function createBlade() {
+	/**
+	 * ENODE sotto root con centro nel poligono; elimina antenati se un discendente è già incluso.
+	 * @param {Element} root
+	 * @param {{x:number,y:number}[]} points
+	 * @returns {Element[]}
+	 */
+	function enodesInsidePolygon(root, points) {
+		if (!root || !points || points.length < 3) return [];
+		const all = root.querySelectorAll('[data-enode]');
+		const hit = [];
+		for (let i = 0; i < all.length; i++) {
+			const el = all[i];
+			const r = el.getBoundingClientRect();
+			if (r.width <= 0 || r.height <= 0) continue;
+			const c = { x: (r.left + r.right) / 2, y: (r.top + r.bottom) / 2 };
+			if (pointInPolygon(c, points)) hit.push(el);
+		}
+		// Preferisci i più profondi: scarta chi ha un discendente già in hit
+		return hit.filter(function (el) {
+			for (let j = 0; j < hit.length; j++) {
+				if (hit[j] !== el && el.contains(hit[j])) return false;
+			}
+			return true;
+		});
+	}
+
+	function createOverlayPath(className) {
 		const svg = document.getElementById('svgContainer');
 		if (!svg) return null;
-		let path = svg.querySelector('path.input2-blade');
+		let path = svg.querySelector('path.' + className);
 		if (!path) {
 			path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			path.setAttribute('class', 'input2-blade');
+			path.setAttribute('class', className);
 			svg.appendChild(path);
 		}
 		return path;
 	}
 
-	function setBlade(bladePath, points) {
-		if (!bladePath) return;
+	function setOverlayPath(pathEl, points) {
+		if (!pathEl) return;
 		if (!points || !points.length) {
-			bladePath.setAttribute('d', '');
+			pathEl.setAttribute('d', '');
 			return;
 		}
 		const svg = document.getElementById('svgContainer');
@@ -176,7 +255,7 @@
 			const y = points[i].y - rect.top;
 			d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
 		}
-		bladePath.setAttribute('d', d.trim());
+		pathEl.setAttribute('d', d.trim());
 	}
 
 	/**
@@ -194,13 +273,16 @@
 			throw new Error('bindGestureRecognizer: root e onIntent richiesti');
 		}
 
-		const bladePath = createBlade();
+		const bladePath = createOverlayPath('input2-blade');
+		const lassoPath = createOverlayPath('input2-lasso');
+		const hitRoot = document.getElementById('canvasRole') || root;
 		let state = STATE.IDLE;
 		let primaryId = null;
 		let startPt = null;
 		let startEnode = null;
 		let points = [];
 		let fired = false;
+		let mods = { metaKey: false, ctrlKey: false, shiftKey: false };
 
 		function reset() {
 			state = STATE.IDLE;
@@ -209,7 +291,9 @@
 			startEnode = null;
 			points = [];
 			fired = false;
-			setBlade(bladePath, []);
+			mods = { metaKey: false, ctrlKey: false, shiftKey: false };
+			setOverlayPath(bladePath, []);
+			setOverlayPath(lassoPath, []);
 		}
 
 		function emit(intent) {
@@ -226,8 +310,13 @@
 			startPt = { x: e.clientX, y: e.clientY };
 			points = [{ x: e.clientX, y: e.clientY }];
 			fired = false;
-			// Tap su foglia; slice solo se si parte FUORI da ogni foglia [data-enode]
-			// (i contenitori eq/and/plus non bloccano lo slice — vedi TAB B adattato).
+			mods = {
+				metaKey: !!e.metaKey,
+				ctrlKey: !!e.ctrlKey,
+				shiftKey: !!e.shiftKey
+			};
+			// Tap su foglia; slice/lasso solo se si parte FUORI da ogni foglia [data-enode]
+			// (i contenitori eq/and/plus non bloccano — vedi TAB B adattato).
 			startEnode = leafEnodeFromPoint(e.clientX, e.clientY)
 				|| enodeFromPoint(e.clientX, e.clientY);
 			const startLeaf = leafEnodeFromPoint(e.clientX, e.clientY);
@@ -239,8 +328,66 @@
 			const pt = { x: e.clientX, y: e.clientY };
 			points.push(pt);
 			if (state === STATE.SLICE) {
-				setBlade(bladePath, points);
+				// feedback: lama se ancora plausibile slice, altrimenti lazo
+				const axis = classifyAxisTol(startPt, pt, SLICE_ANGLE_TOL);
+				const straight = maxDeviationFromChord(points) <= SLICE_MAX_DEVIATION_PX;
+				if (axis && straight) {
+					setOverlayPath(lassoPath, []);
+					setOverlayPath(bladePath, points);
+				} else {
+					setOverlayPath(bladePath, []);
+					setOverlayPath(lassoPath, points);
+				}
 			}
+		}
+
+		function tryEmitSlice(startPt, endPt, points) {
+			const axis = classifyAxisTol(startPt, endPt, SLICE_ANGLE_TOL);
+			const len = dist(startPt, endPt);
+			const straight = maxDeviationFromChord(points) <= SLICE_MAX_DEVIATION_PX;
+			if (!(axis && len >= SLICE_MIN_LEN && straight)) return false;
+
+			const crossed = deepestEnodeAlongPath(points);
+			let target = crossed;
+			if (target && !isLeafEnode(target)) {
+				const all = target.querySelectorAll('[data-enode]');
+				let deepest = null;
+				for (let i = 0; i < all.length; i++) {
+					if (!isLeafEnode(all[i])) continue;
+					const r = all[i].getBoundingClientRect();
+					if (segmentCrossesRect(startPt, endPt, r) || pointInRect(endPt, r)) {
+						deepest = deepestEnode(deepest, all[i]);
+					}
+				}
+				if (deepest) target = deepest;
+			}
+			if (!target) return false;
+			const r = target.getBoundingClientRect();
+			const startOut = !pointInRect(startPt, r);
+			const through = oppositeSides(startPt, endPt, r) && segmentCrossesRect(startPt, endPt, r);
+			const into = pointInRect(endPt, r) && segmentCrossesRect(startPt, endPt, r);
+			if (!(startOut && (through || into))) return false;
+			emit({
+				type: 'slice',
+				target: target,
+				axis: axis,
+				points: points.slice()
+			});
+			return true;
+		}
+
+		function tryEmitLasso(points) {
+			const plen = pathLength(points);
+			if (points.length < LASSO_MIN_POINTS || plen < LASSO_MIN_LEN) return false;
+			if (!isNearlyClosed(points, LASSO_CLOSE_GAP_PX)) return false;
+			const targets = enodesInsidePolygon(hitRoot, points);
+			emit({
+				type: 'lasso',
+				targets: targets,
+				target: targets[0] || null,
+				points: points.slice()
+			});
+			return true;
 		}
 
 		function onPointerUp(e) {
@@ -248,9 +395,13 @@
 			const endPt = { x: e.clientX, y: e.clientY };
 			points.push(endPt);
 			const len = dist(startPt, endPt);
+			mods = {
+				metaKey: !!(e.metaKey || mods.metaKey),
+				ctrlKey: !!(e.ctrlKey || mods.ctrlKey),
+				shiftKey: !!(e.shiftKey || mods.shiftKey)
+			};
 
 			if (state === STATE.TRACKING) {
-				// tap: poco movimento, preferisci foglia sotto il punto
 				if (len <= MOVE_SLOP_PX * 2) {
 					const target = leafEnodeFromPoint(startPt.x, startPt.y)
 						|| startEnode
@@ -259,44 +410,19 @@
 						emit({
 							type: 'tap',
 							target: target,
+							metaKey: mods.metaKey,
+							ctrlKey: mods.ctrlKey,
+							shiftKey: mods.shiftKey,
 							points: points.slice()
 						});
 					}
 				}
 			} else if (state === STATE.SLICE) {
-				setBlade(bladePath, []);
-				const axis = classifyAxisTol(startPt, endPt, SLICE_ANGLE_TOL);
-				if (axis && len >= SLICE_MIN_LEN) {
-					// Campiona il percorso: bersaglio = ENODE più profondo attraversato
-					const crossed = deepestEnodeAlongPath(points);
-					// Preferisci la foglia più profonda attraversata (cn tipicamente)
-					let target = crossed;
-					if (target && !isLeafEnode(target)) {
-						const all = target.querySelectorAll('[data-enode]');
-						let deepest = null;
-						for (let i = 0; i < all.length; i++) {
-							if (!isLeafEnode(all[i])) continue;
-							const r = all[i].getBoundingClientRect();
-							if (segmentCrossesRect(startPt, endPt, r) || pointInRect(endPt, r)) {
-								deepest = deepestEnode(deepest, all[i]);
-							}
-						}
-						if (deepest) target = deepest;
-					}
-					if (target) {
-						const r = target.getBoundingClientRect();
-						const startOut = !pointInRect(startPt, r);
-						const through = oppositeSides(startPt, endPt, r) && segmentCrossesRect(startPt, endPt, r);
-						const into = pointInRect(endPt, r) && segmentCrossesRect(startPt, endPt, r);
-						if (startOut && (through || into)) {
-							emit({
-								type: 'slice',
-								target: target,
-								axis: axis,
-								points: points.slice()
-							});
-						}
-					}
+				setOverlayPath(bladePath, []);
+				setOverlayPath(lassoPath, []);
+				// Priorità: slice rettilineo; altrimenti lazo quasi chiuso
+				if (!tryEmitSlice(startPt, endPt, points)) {
+					tryEmitLasso(points);
 				}
 			}
 
@@ -320,12 +446,17 @@
 				root.removeEventListener('pointermove', onPointerMove);
 				root.removeEventListener('pointerup', onPointerUp);
 				root.removeEventListener('pointercancel', onPointerCancel);
-				setBlade(bladePath, []);
+				setOverlayPath(bladePath, []);
+				setOverlayPath(lassoPath, []);
 				reset();
 			},
 			_debug: {
 				classifyAxisTol: classifyAxisTol,
-				deepestEnodeAlongPath: deepestEnodeAlongPath
+				deepestEnodeAlongPath: deepestEnodeAlongPath,
+				pointInPolygon: pointInPolygon,
+				enodesInsidePolygon: enodesInsidePolygon,
+				maxDeviationFromChord: maxDeviationFromChord,
+				isNearlyClosed: isNearlyClosed
 			}
 		};
 	}
@@ -334,7 +465,14 @@
 	global.INPUT2.bindGestureRecognizer = bindGestureRecognizer;
 	global.INPUT2._gestureHelpers = {
 		classifyAxisTol: classifyAxisTol,
+		pointInPolygon: pointInPolygon,
+		enodesInsidePolygon: enodesInsidePolygon,
+		maxDeviationFromChord: maxDeviationFromChord,
+		isNearlyClosed: isNearlyClosed,
+		pathLength: pathLength,
 		SLICE_ANGLE_TOL: SLICE_ANGLE_TOL,
-		SLICE_MIN_LEN: SLICE_MIN_LEN
+		SLICE_MIN_LEN: SLICE_MIN_LEN,
+		SLICE_MAX_DEVIATION_PX: SLICE_MAX_DEVIATION_PX,
+		LASSO_CLOSE_GAP_PX: LASSO_CLOSE_GAP_PX
 	};
 })(typeof window !== 'undefined' ? window : globalThis);
