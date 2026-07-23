@@ -6,13 +6,34 @@
  *   { type:'tap', target: Element[data-enode], points:[...] }
  *   { type:'slice', target: Element[data-enode], axis:'h'|'v', points:[...] }
  *   { type:'pinch', target: Element[data-enode], axis:'h'|'v', points:[...] }
+ *   { type:'lasso', targets: Element[data-enode][], points:[...] }
+ *   { type:'dnd', source: Element, target: Element, points:[...] }
  *
- * Slice: tratto che inizia FUORI da ogni foglia [data-enode], attraversa ENODEs;
- *   bersaglio = più profondo attraversato. Asse ±35°; altrimenti scarto.
- * Pinch: due dita che INIZIANO dentro lo stesso ENODE (il più profondo che
- *   contiene entrambi i punti di partenza) e si AVVICINANO oltre soglia.
- *   Asse = dominante del vettore tra le dita. Allontanamento → nessun intent.
- * Desktop pinch: ALT+mouse = secondo dito speculare (come prototipo gesti-v2 TAB A).
+ * FSM (transizioni):
+ *   IDLE  --down su foglia [data-enode]--> TRACKING   (tap | drag)
+ *   IDLE  --down altrove (anche dentro contenitori non-foglia)--> PATH  (slice|lasso)
+ *   TRACKING --move > slop-------> DRAG
+ *   TRACKING --up ≤ slop---------> tap → IDLE
+ *   TRACKING|PATH --2° dito------> PINCH (se stesso ENODE comune; altrimenti ignora 2°)
+ *   PATH --up--------------------> slice | lasso | ∅ → IDLE
+ *   DRAG --up su altro ENODE-----> dnd → IDLE
+ *   DRAG --up fuori / no move----> ∅ → IDLE
+ *   PINCH --ratio ≤ soglia-------> pinch → IDLE
+ *
+ * Nota start TRACKING vs PATH: il canvas è pieno di contenitori (and/eq) non-foglia;
+ * "fuori dagli ENODE" per slice/lasso (§7.5) si interpreta operativamente come
+ * "fuori da ogni foglia" — altrimenti slice/lasso non potrebbero mai partire.
+ * Il DnD parte quindi da una foglia (cn/ci/…); drag di non-foglia = limite noto.
+ *
+ * Discriminazione PATH (slice vs lasso) — critico §7.3.1 / §7.5:
+ *   - tratto quasi rettilineo (efficienza chord/path alta) che ATTRAVERSA un ENODE → slice
+ *   - percorso con curvatura/ritorno che RACCHIUDE senza attraversare → lasso
+ *   - se entrambi i criteri competono o il gesto è insufficiente → nessun intent
+ *
+ * Slice: attraversa; bersaglio = foglia più profonda attraversata.
+ * Lasso: racchiude; selezione = fratelli nello stesso role (gruppo ≥2 preferito).
+ * DnD: foglia + move oltre soglia; ghost; drop sul più profondo sotto il dito.
+ * Pinch: due dita nello stesso ENODE che si avvicinano. Desktop: ALT+mouse = 2° dito.
  */
 (function (global) {
 	'use strict';
@@ -23,16 +44,31 @@
 	const SAMPLE_STEP_PX = 4;
 	const PINCH_RATIO = 0.78;
 	const MIRROR_ID = -1;
+	/** chord/pathLen ≥ questo → quasi rettilineo (candidato slice). */
+	const STRAIGHT_EFFICIENCY = 0.82;
+	/** chord/pathLen ≤ questo, oppure ritorno vicino all'inizio → curvatura/chiusura (candidato lasso). */
+	const CURVE_EFFICIENCY = 0.70;
+	const LASSO_CLOSE_PX = 56;
+	const LASSO_MIN_PATH = 80;
+	const LASSO_MIN_TARGETS = 1;
 
 	const STATE = {
 		IDLE: 'idle',
-		TRACKING: 'tracking', // un dito su foglia → tap; o attesa secondo dito
-		SLICE: 'slice',
+		TRACKING: 'tracking', // un dito su ENODE → tap o attesa drag/pinch
+		PATH: 'path',         // un dito fuori → candidato slice|lasso
+		DRAG: 'drag',
 		PINCH: 'pinch'
 	};
 
 	function dist(a, b) {
 		return Math.hypot(a.x - b.x, a.y - b.y);
+	}
+
+	function pathLength(points) {
+		let len = 0;
+		if (!points || points.length < 2) return 0;
+		for (let i = 1; i < points.length; i++) len += dist(points[i - 1], points[i]);
+		return len;
 	}
 
 	function angleDegFromHorizontal(a, b) {
@@ -60,10 +96,32 @@
 		return p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom;
 	}
 
-	function enodeFromPoint(x, y) {
+	/** Ray-casting point-in-polygon (poligono chiuso implicitamente). */
+	function pointInPolygon(p, poly) {
+		if (!poly || poly.length < 3) return false;
+		let inside = false;
+		for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+			const xi = poly[i].x;
+			const yi = poly[i].y;
+			const xj = poly[j].x;
+			const yj = poly[j].y;
+			const intersect = ((yi > p.y) !== (yj > p.y)) &&
+				(p.x < (xj - xi) * (p.y - yi) / ((yj - yi) || 1e-12) + xi);
+			if (intersect) inside = !inside;
+		}
+		return inside;
+	}
+
+	function enodeFromPoint(x, y, excludeEl) {
 		const el = document.elementFromPoint(x, y);
 		if (!(el instanceof Element)) return null;
-		return el.closest('[data-enode]');
+		const en = el.closest('[data-enode]');
+		if (!en) return null;
+		if (excludeEl && (en === excludeEl || excludeEl.contains(en) || en.contains(excludeEl))) {
+			// se il hit è il source stesso, prova elementi sotto (ghost ha pointer-events:none)
+			return null;
+		}
+		return en;
 	}
 
 	/** Foglia: [data-enode] senza discendenti [data-enode] (es. cn, ci atomici). */
@@ -192,22 +250,166 @@
 		return false;
 	}
 
-	function createBlade() {
+	function pathCrossesEnode(points, el) {
+		if (!el || !points || points.length < 2) return false;
+		const r = el.getBoundingClientRect();
+		const start = points[0];
+		const end = points[points.length - 1];
+		if (oppositeSides(start, end, r)) return true;
+		for (let i = 1; i < points.length; i++) {
+			if (segmentCrossesRect(points[i - 1], points[i], r)) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Fratelli nello stesso role racchiusi dal poligono.
+	 * Preferisce il gruppo di fratelli (≥2) al livello più alto (profondità minima
+	 * tra i gruppi multipli): così un lazo attorno a due addendi non collassa sul
+	 * solo `plus` padre il cui centro è spesso dentro il percorso.
+	 * Fallback: nodi al livello più alto racchiuso (anche singleton).
+	 */
+	function selectLassoTargets(points) {
+		if (!points || points.length < 3) return [];
+		const root = document.getElementById('canvasRole') ||
+			document.getElementById('centralColumn') ||
+			document.body;
+		const all = root.querySelectorAll('[data-enode]');
+		const enclosed = [];
+		for (let i = 0; i < all.length; i++) {
+			const el = all[i];
+			if (el.closest('#palette, #prototypeContainer, #events')) continue;
+			const r = el.getBoundingClientRect();
+			if (r.width < 1 || r.height < 1) continue;
+			const center = { x: (r.left + r.right) / 2, y: (r.top + r.bottom) / 2 };
+			if (!pointInPolygon(center, points)) continue;
+			// lazo non deve "tagliare" il nodo (altrimenti è territorio slice)
+			if (pathCrossesEnode(points, el) && isLeafEnode(el)) continue;
+			enclosed.push(el);
+		}
+		if (!enclosed.length) return [];
+
+		/** @type {Map<Element, Element[]>} */
+		const byParent = new Map();
+		for (let i = 0; i < enclosed.length; i++) {
+			const el = enclosed[i];
+			const p = el.parentElement;
+			if (!p) continue;
+			if (!byParent.has(p)) byParent.set(p, []);
+			byParent.get(p).push(el);
+		}
+
+		let bestMulti = [];
+		let bestMultiDepth = Infinity;
+		byParent.forEach(function (group) {
+			if (group.length < 2) return;
+			const d = depth(group[0]);
+			if (d < bestMultiDepth || (d === bestMultiDepth && group.length > bestMulti.length)) {
+				bestMultiDepth = d;
+				bestMulti = group;
+			}
+		});
+		if (bestMulti.length >= 2) return bestMulti;
+
+		let minD = Infinity;
+		for (let i = 0; i < enclosed.length; i++) {
+			minD = Math.min(minD, depth(enclosed[i]));
+		}
+		const topLevel = enclosed.filter(function (el) { return depth(el) === minD; });
+		let best = [];
+		const byParentTop = new Map();
+		for (let i = 0; i < topLevel.length; i++) {
+			const el = topLevel[i];
+			const p = el.parentElement;
+			if (!p) continue;
+			if (!byParentTop.has(p)) byParentTop.set(p, []);
+			byParentTop.get(p).push(el);
+		}
+		byParentTop.forEach(function (group) {
+			if (group.length > best.length) best = group;
+		});
+		return best;
+	}
+
+	function resolveSliceTarget(points, startPt, endPt) {
+		let target = deepestLeafAlongPath(points) || deepestEnodeAlongPath(points);
+		if (target && !isLeafEnode(target)) {
+			const all = target.querySelectorAll('[data-enode]');
+			let deepest = null;
+			for (let i = 0; i < all.length; i++) {
+				if (!isLeafEnode(all[i])) continue;
+				const r = all[i].getBoundingClientRect();
+				if (segmentCrossesRect(startPt, endPt, r) || pointInRect(endPt, r) || pointInRect(startPt, r)) {
+					deepest = deepestEnode(deepest, all[i]);
+				}
+			}
+			if (deepest) target = deepest;
+		}
+		if (!target) return null;
+		const r = target.getBoundingClientRect();
+		const startOut = !pointInRect(startPt, r);
+		const through = oppositeSides(startPt, endPt, r) || segmentCrossesRect(startPt, endPt, r);
+		const into = pointInRect(endPt, r) && segmentCrossesRect(startPt, endPt, r);
+		if (startOut && (through || into || segmentCrossesRect(startPt, endPt, r))) {
+			return target;
+		}
+		return null;
+	}
+
+	/**
+	 * Classifica PATH → slice | lasso | null.
+	 * Regola: rettilineo+attraversa → slice; curvatura+racchiude senza attraversare → lasso;
+	 * ambiguo → null.
+	 */
+	function classifyPathIntent(startPt, endPt, points) {
+		const chord = dist(startPt, endPt);
+		const plen = pathLength(points);
+		const efficiency = plen > 1e-6 ? chord / plen : 1;
+		const axis = classifyAxisTol(startPt, endPt, SLICE_ANGLE_TOL);
+		const closes = chord <= LASSO_CLOSE_PX && plen >= LASSO_MIN_PATH;
+		const isStraight = efficiency >= STRAIGHT_EFFICIENCY && !!axis && chord >= SLICE_MIN_LEN;
+		const isCurved = efficiency <= CURVE_EFFICIENCY || closes;
+
+		const sliceTarget = resolveSliceTarget(points, startPt, endPt);
+		const lassoTargets = selectLassoTargets(points);
+		const hasLasso = isCurved && lassoTargets.length >= LASSO_MIN_TARGETS && plen >= LASSO_MIN_PATH;
+		const hasSlice = isStraight && !!sliceTarget;
+
+		if (hasSlice && hasLasso) return null; // ambiguo §7.3.1
+		if (hasSlice) {
+			return {
+				type: 'slice',
+				target: sliceTarget,
+				axis: axis,
+				points: points.slice()
+			};
+		}
+		if (hasLasso) {
+			return {
+				type: 'lasso',
+				targets: lassoTargets.slice(),
+				points: points.slice()
+			};
+		}
+		return null;
+	}
+
+	function createSvgPath(className) {
 		const svg = document.getElementById('svgContainer');
 		if (!svg) return null;
-		let path = svg.querySelector('path.input2-blade');
+		let path = svg.querySelector('path.' + className);
 		if (!path) {
 			path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			path.setAttribute('class', 'input2-blade');
+			path.setAttribute('class', className);
 			svg.appendChild(path);
 		}
 		return path;
 	}
 
-	function setBlade(bladePath, points) {
-		if (!bladePath) return;
+	function setSvgPath(pathEl, points, close) {
+		if (!pathEl) return;
 		if (!points || !points.length) {
-			bladePath.setAttribute('d', '');
+			pathEl.setAttribute('d', '');
 			return;
 		}
 		const svg = document.getElementById('svgContainer');
@@ -218,13 +420,51 @@
 			const y = points[i].y - rect.top;
 			d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
 		}
-		bladePath.setAttribute('d', d.trim());
+		if (close && points.length >= 3) d += 'Z';
+		pathEl.setAttribute('d', d.trim());
+	}
+
+	function createHull() {
+		let hull = document.getElementById('input2LassoHull');
+		if (!hull) {
+			const host = document.getElementById('centralColumn') || document.body;
+			hull = document.createElement('div');
+			hull.id = 'input2LassoHull';
+			hull.className = 'input2-lasso-hull';
+			host.appendChild(hull);
+		}
+		return hull;
+	}
+
+	function updateHull(hull, targets) {
+		if (!hull) return;
+		if (!targets || !targets.length) {
+			hull.classList.remove('visible');
+			return;
+		}
+		const host = hull.parentElement || document.body;
+		const hostRect = host.getBoundingClientRect();
+		let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+		for (let i = 0; i < targets.length; i++) {
+			const r = targets[i].getBoundingClientRect();
+			minX = Math.min(minX, r.left);
+			minY = Math.min(minY, r.top);
+			maxX = Math.max(maxX, r.right);
+			maxY = Math.max(maxY, r.bottom);
+		}
+		const pad = 8;
+		hull.style.left = (minX - hostRect.left - pad) + 'px';
+		hull.style.top = (minY - hostRect.top - pad) + 'px';
+		hull.style.width = (maxX - minX + pad * 2) + 'px';
+		hull.style.height = (maxY - minY + pad * 2) + 'px';
+		hull.classList.add('visible');
 	}
 
 	/**
 	 * @param {Object} opts
 	 * @param {Element|string} [opts.root='#centralColumn']
 	 * @param {function(Object):void} opts.onIntent
+	 * @param {function(Element, Element):boolean} [opts.isValidDnDTarget] — opzionale, per highlight drop
 	 * @returns {{ destroy: function():void }}
 	 */
 	function bindGestureRecognizer(opts) {
@@ -232,11 +472,16 @@
 			? document.querySelector(opts.root)
 			: (opts.root || document.getElementById('centralColumn'));
 		const onIntent = opts.onIntent;
+		const isValidDnDTarget = typeof opts.isValidDnDTarget === 'function'
+			? opts.isValidDnDTarget
+			: null;
 		if (!root || typeof onIntent !== 'function') {
 			throw new Error('bindGestureRecognizer: root e onIntent richiesti');
 		}
 
-		const bladePath = createBlade();
+		const bladePath = createSvgPath('input2-blade');
+		const lassoPath = createSvgPath('input2-lasso');
+		const hull = createHull();
 		let state = STATE.IDLE;
 		/** @type {Map<number, {x:number,y:number,startX:number,startY:number}>} */
 		const pointers = new Map();
@@ -249,6 +494,52 @@
 		let pinchTarget = null;
 		let startDist = 0;
 		let mirrorActive = false;
+		let dragSource = null;
+		let ghostEl = null;
+		let dndOverEl = null;
+
+		function clearDnDHighlight() {
+			if (dndOverEl) {
+				dndOverEl.classList.remove('input2-dnd-target');
+				dndOverEl = null;
+			}
+		}
+
+		function setDnDHighlight(el) {
+			if (dndOverEl === el) return;
+			clearDnDHighlight();
+			if (el) {
+				el.classList.add('input2-dnd-target');
+				dndOverEl = el;
+			}
+		}
+
+		function removeGhost() {
+			if (ghostEl && ghostEl.parentNode) ghostEl.parentNode.removeChild(ghostEl);
+			ghostEl = null;
+		}
+
+		function ensureGhost(source, x, y) {
+			if (!source) return;
+			if (!ghostEl) {
+				ghostEl = source.cloneNode(true);
+				ghostEl.classList.add('input2-dnd-ghost');
+				ghostEl.removeAttribute('id');
+				ghostEl.style.pointerEvents = 'none';
+				document.body.appendChild(ghostEl);
+			}
+			const r = source.getBoundingClientRect();
+			ghostEl.style.width = r.width + 'px';
+			ghostEl.style.height = r.height + 'px';
+			ghostEl.style.left = (x - r.width / 2) + 'px';
+			ghostEl.style.top = (y - r.height / 2) + 'px';
+		}
+
+		function clearPathFeedback() {
+			setSvgPath(bladePath, []);
+			setSvgPath(lassoPath, []);
+			updateHull(hull, []);
+		}
 
 		function reset() {
 			state = STATE.IDLE;
@@ -262,7 +553,10 @@
 			pinchTarget = null;
 			startDist = 0;
 			mirrorActive = false;
-			setBlade(bladePath, []);
+			dragSource = null;
+			removeGhost();
+			clearDnDHighlight();
+			clearPathFeedback();
 		}
 
 		function emit(intent) {
@@ -306,7 +600,9 @@
 			pinchTarget = common;
 			startDist = dist(pair.a, pair.b) || 1;
 			state = STATE.PINCH;
-			setBlade(bladePath, []);
+			clearPathFeedback();
+			removeGhost();
+			clearDnDHighlight();
 			return true;
 		}
 
@@ -325,7 +621,7 @@
 				});
 				secondaryId = MIRROR_ID;
 				mirrorActive = true;
-				if (state === STATE.TRACKING || state === STATE.IDLE) {
+				if (state === STATE.TRACKING || state === STATE.IDLE || state === STATE.PATH) {
 					tryEnterPinch();
 				}
 			} else if (!wantMirror && mirrorActive) {
@@ -333,7 +629,7 @@
 				if (secondaryId === MIRROR_ID) secondaryId = null;
 				mirrorActive = false;
 				if (state === STATE.PINCH && realPointerCount() < 2) {
-					state = startEnode && isLeafEnode(startEnode) ? STATE.TRACKING : STATE.SLICE;
+					state = startEnode ? STATE.TRACKING : STATE.PATH;
 					pinchTarget = null;
 					startDist = 0;
 				}
@@ -369,46 +665,76 @@
 			}
 		}
 
-		function finishSlice(endPt) {
-			setBlade(bladePath, []);
-			const axis = classifyAxisTol(startPt, endPt, SLICE_ANGLE_TOL);
-			const len = dist(startPt, endPt);
-			if (!(axis && len >= SLICE_MIN_LEN)) return;
-			// Preferisci foglia attraversata (cn); fallback al più profondo generico.
-			let target = deepestLeafAlongPath(points) || deepestEnodeAlongPath(points);
-			if (target && !isLeafEnode(target)) {
-				const all = target.querySelectorAll('[data-enode]');
-				let deepest = null;
-				for (let i = 0; i < all.length; i++) {
-					if (!isLeafEnode(all[i])) continue;
-					const r = all[i].getBoundingClientRect();
-					if (segmentCrossesRect(startPt, endPt, r) || pointInRect(endPt, r) || pointInRect(startPt, r)) {
-						deepest = deepestEnode(deepest, all[i]);
-					}
-				}
-				if (deepest) target = deepest;
+		function updatePathFeedback() {
+			if (state !== STATE.PATH || !startPt || points.length < 2) return;
+			const endPt = points[points.length - 1];
+			const chord = dist(startPt, endPt);
+			const plen = pathLength(points);
+			const efficiency = plen > 1e-6 ? chord / plen : 1;
+			const closes = chord <= LASSO_CLOSE_PX && plen >= LASSO_MIN_PATH;
+			const curved = efficiency <= CURVE_EFFICIENCY || closes;
+			if (curved) {
+				setSvgPath(bladePath, []);
+				setSvgPath(lassoPath, points, true);
+				updateHull(hull, selectLassoTargets(points));
+			} else {
+				setSvgPath(lassoPath, []);
+				updateHull(hull, []);
+				setSvgPath(bladePath, points);
 			}
-			if (!target) return;
-			const r = target.getBoundingClientRect();
-			const startOut = !pointInRect(startPt, r);
-			const through = oppositeSides(startPt, endPt, r) || segmentCrossesRect(startPt, endPt, r);
-			const into = pointInRect(endPt, r) && segmentCrossesRect(startPt, endPt, r);
-			// Taglio valido: parte fuori dalla foglia e la attraversa (o vi termina).
-			if (startOut && (through || into || segmentCrossesRect(startPt, endPt, r))) {
-				emit({
-					type: 'slice',
-					target: target,
-					axis: axis,
-					points: points.slice()
-				});
+		}
+
+		function enterDrag(x, y) {
+			state = STATE.DRAG;
+			dragSource = startEnode;
+			clearPathFeedback();
+			ensureGhost(dragSource, x, y);
+		}
+
+		function updateDrag(x, y) {
+			if (!dragSource) return;
+			ensureGhost(dragSource, x, y);
+			const under = enodeFromPoint(x, y);
+			let candidate = under;
+			// escludi source e suoi antenati/discendenti come drop
+			if (candidate && (candidate === dragSource || dragSource.contains(candidate) || candidate.contains(dragSource))) {
+				candidate = null;
 			}
+			if (candidate && isValidDnDTarget) {
+				if (!isValidDnDTarget(dragSource, candidate)) candidate = null;
+			}
+			setDnDHighlight(candidate);
+		}
+
+		function finishPath(endPt) {
+			clearPathFeedback();
+			const intent = classifyPathIntent(startPt, endPt, points);
+			if (intent) emit(intent);
+		}
+
+		function finishDrag(endPt) {
+			removeGhost();
+			clearDnDHighlight();
+			if (!dragSource || !startPt) return;
+			const moved = dist(startPt, endPt);
+			if (moved <= MOVE_SLOP_PX * 2) return;
+			const under = enodeFromPoint(endPt.x, endPt.y);
+			if (!under) return;
+			if (under === dragSource || dragSource.contains(under) || under.contains(dragSource)) return;
+			emit({
+				type: 'dnd',
+				source: dragSource,
+				target: under,
+				points: points.slice()
+			});
 		}
 
 		function onPointerDown(e) {
 			if (e.pointerType === 'mouse' && e.button !== 0) return;
 
-			// secondo dito reale → candidato pinch
+			// secondo dito reale → candidato pinch (non da DRAG)
 			if (primaryId !== null && e.pointerId !== primaryId && !pointers.has(e.pointerId)) {
+				if (state === STATE.DRAG) return;
 				pointers.set(e.pointerId, {
 					x: e.clientX,
 					y: e.clientY,
@@ -417,9 +743,8 @@
 				});
 				secondaryId = e.pointerId;
 				try { root.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
-				if (state === STATE.TRACKING || state === STATE.SLICE) {
+				if (state === STATE.TRACKING || state === STATE.PATH) {
 					if (!tryEnterPinch()) {
-						// dita non nello stesso ENODE: resta sullo stato a un dito del primary
 						pointers.delete(e.pointerId);
 						secondaryId = null;
 					}
@@ -441,12 +766,12 @@
 				startY: e.clientY
 			});
 
-			startEnode = leafEnodeFromPoint(e.clientX, e.clientY)
-				|| enodeFromPoint(e.clientX, e.clientY);
+			// TRACKING solo su foglia: tap/dnd. Altrimenti PATH (slice|lasso),
+			// anche se il punto cade in un contenitore and/eq non-foglia.
 			const startLeaf = leafEnodeFromPoint(e.clientX, e.clientY);
-			state = startLeaf ? STATE.TRACKING : STATE.SLICE;
+			startEnode = startLeaf || enodeFromPoint(e.clientX, e.clientY);
+			state = startLeaf ? STATE.TRACKING : STATE.PATH;
 
-			// ALT già premuto al down → avvia pinch desktop
 			if (e.altKey && e.pointerType === 'mouse' && startLeaf) {
 				ensureAltMirror(e);
 			}
@@ -459,17 +784,24 @@
 				rec.x = e.clientX;
 				rec.y = e.clientY;
 			}
-			if (e.pointerId === primaryId || (mirrorActive && e.pointerId === primaryId)) {
-				const pt = { x: e.clientX, y: e.clientY };
-				points.push(pt);
+			if (e.pointerId === primaryId) {
+				points.push({ x: e.clientX, y: e.clientY });
 			}
 
 			ensureAltMirror(e);
 
 			if (state === STATE.PINCH) {
 				updatePinch();
-			} else if (state === STATE.SLICE && e.pointerId === primaryId) {
-				setBlade(bladePath, points);
+			} else if (state === STATE.TRACKING && e.pointerId === primaryId && startPt) {
+				const moved = dist(startPt, { x: e.clientX, y: e.clientY });
+				if (moved > MOVE_SLOP_PX && startEnode) {
+					enterDrag(e.clientX, e.clientY);
+					updateDrag(e.clientX, e.clientY);
+				}
+			} else if (state === STATE.DRAG && e.pointerId === primaryId) {
+				updateDrag(e.clientX, e.clientY);
+			} else if (state === STATE.PATH && e.pointerId === primaryId) {
+				updatePathFeedback();
 			}
 		}
 
@@ -479,7 +811,6 @@
 			if (e.pointerId === secondaryId) secondaryId = null;
 
 			if (state === STATE.PINCH) {
-				// se non ha già sparato (solo avvicinamento conta), al rilascio non emettere unpinch
 				if (mirrorActive) {
 					pointers.delete(MIRROR_ID);
 					mirrorActive = false;
@@ -512,8 +843,10 @@
 						});
 					}
 				}
-			} else if (state === STATE.SLICE) {
-				finishSlice(endPt);
+			} else if (state === STATE.PATH) {
+				finishPath(endPt);
+			} else if (state === STATE.DRAG) {
+				finishDrag(endPt);
 			}
 
 			try { root.releasePointerCapture(e.pointerId); } catch (_) { /* ignore */ }
@@ -536,15 +869,18 @@
 				root.removeEventListener('pointermove', onPointerMove);
 				root.removeEventListener('pointerup', onPointerUp);
 				root.removeEventListener('pointercancel', onPointerCancel);
-				setBlade(bladePath, []);
 				reset();
 			},
 			_debug: {
 				classifyAxisTol: classifyAxisTol,
 				dominantAxis: dominantAxis,
+				classifyPathIntent: classifyPathIntent,
+				selectLassoTargets: selectLassoTargets,
+				pointInPolygon: pointInPolygon,
 				deepestEnodeAlongPath: deepestEnodeAlongPath,
 				deepestEnodeContainingBoth: deepestEnodeContainingBoth,
-				PINCH_RATIO: PINCH_RATIO
+				PINCH_RATIO: PINCH_RATIO,
+				STATE: STATE
 			}
 		};
 	}
@@ -554,8 +890,13 @@
 	global.INPUT2._gestureHelpers = {
 		classifyAxisTol: classifyAxisTol,
 		dominantAxis: dominantAxis,
+		pointInPolygon: pointInPolygon,
+		selectLassoTargets: selectLassoTargets,
+		classifyPathIntent: classifyPathIntent,
 		SLICE_ANGLE_TOL: SLICE_ANGLE_TOL,
 		SLICE_MIN_LEN: SLICE_MIN_LEN,
-		PINCH_RATIO: PINCH_RATIO
+		PINCH_RATIO: PINCH_RATIO,
+		STRAIGHT_EFFICIENCY: STRAIGHT_EFFICIENCY,
+		CURVE_EFFICIENCY: CURVE_EFFICIENCY
 	};
 })(typeof window !== 'undefined' ? window : globalThis);

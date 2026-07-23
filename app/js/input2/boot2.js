@@ -220,13 +220,17 @@
 
 	function pushIntent(intent) {
 		global.INPUT2.lastIntent = intent;
+		const tag = intent.target && intent.target.getAttribute
+			? intent.target.getAttribute('data-enode')
+			: (intent.source && intent.source.getAttribute
+				? intent.source.getAttribute('data-enode')
+				: null);
 		intentLog.push({
 			t: Date.now(),
 			type: intent.type,
 			axis: intent.axis || null,
-			tag: intent.target && intent.target.getAttribute
-				? intent.target.getAttribute('data-enode')
-				: null
+			tag: tag,
+			nTargets: intent.targets ? intent.targets.length : undefined
 		});
 		if (intentLog.length > INTENT_LOG_MAX) intentLog.shift();
 	}
@@ -234,6 +238,147 @@
 	function toggleSelect(target) {
 		if (!(target instanceof Element)) return;
 		target.classList.toggle('selected');
+	}
+
+	/**
+	 * Builtin selectSiblings: deseleziona tutto, poi addClass('selected') sui
+	 * targets del lazo (fratelli già risolti dal recognizer).
+	 */
+	function selectSiblings(targets) {
+		const list = targets || [];
+		document.querySelectorAll('#canvasRole [data-enode].selected').forEach(function (el) {
+			el.classList.remove('selected');
+		});
+		for (let i = 0; i < list.length; i++) {
+			if (list[i] instanceof Element) list[i].classList.add('selected');
+		}
+	}
+
+	/**
+	 * Proprietà DnD il cui apply presuppone che Sortable abbia già inserito
+	 * `dropped` nel DOM. In input2 NON spostiamo il DOM speculativamente → skip.
+	 * (Documentato: limite rispetto a DnD.js + SortableJS.)
+	 */
+	const DND_SKIP_NEEDS_PREINSERT = {
+		associativeDnD: true,
+		associativeGenDnD: true,
+		partDistributDnD: true,
+		addRedundantDnD: true
+	};
+
+	/**
+	 * Replica getDnDpropEnabled senza dipendere da tool declare: itera
+	 * listDnDProperties rispettando requiresCanvasCi / ci nel canvas.
+	 * @returns {Array<{name:string, findTgt:Function, apply:Function, icon?:string}>}
+	 */
+	function listEnabledDnDProps() {
+		if (typeof listDnDProperties !== 'function') return [];
+		if (typeof getDnDpropEnabled === 'function') {
+			return getDnDpropEnabled().filter(function (d) {
+				return !DND_SKIP_NEEDS_PREINSERT[d.name];
+			});
+		}
+		const $cis = $('#canvasRole [data-enode=ci][data-tag]');
+		const namelist = $cis.toArray().map(function (e) { return e.getAttribute('data-tag'); });
+		const all = listDnDProperties();
+		const out = [];
+		for (let i = 0; i < all.length; i++) {
+			const d = all[i];
+			if (DND_SKIP_NEEDS_PREINSERT[d.name]) continue;
+			const index = namelist.indexOf(d.name);
+			if (!d.requiresCanvasCi || index !== -1) {
+				out.push({
+					name: d.name,
+					findTgt: d.findTgt,
+					apply: d.apply,
+					icon: index !== -1 ? $cis[index].getAttribute('data-tagimg') : undefined
+				});
+			}
+		}
+		return out;
+	}
+
+	/**
+	 * Verifica se (source→target) è una coppia DnD valida (prima proprietà match).
+	 * Usato dal recognizer per highlight sotto il dito.
+	 */
+	function isValidDnDTarget(source, target) {
+		return !!findFirstValidDnD(source, target);
+	}
+
+	/**
+	 * Prima proprietà DnD abilitata la cui findTgt accetta source→target.
+	 * findTgt legacy restituisce la lista di target validi (ruoli o ENODE);
+	 * qui controlliamo se `target` (o un suo antenato role/ENODE) è nella lista.
+	 * @returns {{prop:Object, $dropTarget:JQuery}|null}
+	 */
+	function findFirstValidDnD(source, target) {
+		if (!(source instanceof Element) || !(target instanceof Element)) return null;
+		if (typeof window.jQuery === 'undefined') return null;
+		const $source = $(source);
+		const enabled = listEnabledDnDProps();
+		let $claimed = $();
+		for (let i = 0; i < enabled.length; i++) {
+			const prop = enabled[i];
+			if (typeof prop.findTgt !== 'function') continue;
+			let $found;
+			try {
+				$found = $(prop.findTgt($source, false, false, $claimed));
+			} catch (err) {
+				console.warn('INPUT2 applyDnD: findTgt fallita per', prop.name, err);
+				continue;
+			}
+			if (!$found || !$found.length) continue;
+			// target ENODE o ruolo sotto il punto di rilascio
+			let $hit = $found.filter(function () {
+				return this === target || (this.contains && this.contains(target)) ||
+					(target.contains && target.contains(this));
+			});
+			if (!$hit.length) {
+				// climb: il drop è sull'ENODE più profondo; findTgt può restituire il role padre o l'asta
+				let climb = target;
+				while (climb && climb !== document.body) {
+					const el = climb;
+					$hit = $found.filter(function () { return this === el; });
+					if ($hit.length) break;
+					climb = climb.parentElement;
+				}
+			}
+			if ($hit.length) {
+				return { prop: prop, $dropTarget: $hit.first() };
+			}
+			$claimed = $claimed.add($found);
+		}
+		return null;
+	}
+
+	/**
+	 * Builtin applyDnD: pipeline DnD.js SENZA SortableJS e SENZA spostare il
+	 * DOM prima della validazione. Alla prima findTgt valida → apply → conclude2.
+	 * replaceDnD (requiresCanvasCi:false) resta il fallback sempre disponibile
+	 * (se applicabile alla coppia). Proprietà che presuppongono dropped già
+	 * inserito da Sortable sono saltate (v. DND_SKIP_NEEDS_PREINSERT).
+	 */
+	function applyDnD(source, target) {
+		const hit = findFirstValidDnD(source, target);
+		if (!hit) return false;
+		const prop = hit.prop;
+		const $dropTarget = hit.$dropTarget;
+		let PActx;
+		try {
+			// firma legacy: apply(dragged, target, dropped?) — senza pre-insert
+			// passiamo undefined come dropped; le prop skippate non arrivano qui
+			PActx = prop.apply($(source), $dropTarget, undefined);
+		} catch (err) {
+			console.warn('INPUT2 applyDnD: apply fallita per', prop.name, err);
+			return false;
+		}
+		if (PActx && PActx.matchedTF === true) {
+			if (prop.icon) PActx.visualization = prop.icon;
+			conclude2(PActx);
+			return true;
+		}
+		return false;
 	}
 
 	/** Builtin undo — come scorciatoia sistema (ssnapshot.undo + refresh). */
@@ -345,6 +490,14 @@
 					toggleSelect(intent.target);
 					return;
 				}
+				if (name === 'selectSiblings') {
+					selectSiblings(intent.targets || []);
+					return;
+				}
+				if (name === 'applyDnD') {
+					applyDnD(intent.source, intent.target);
+					return;
+				}
 				runBuiltin(name);
 				return;
 			}
@@ -449,7 +602,8 @@
 		}
 		global.INPUT2._recognizer = global.INPUT2.bindGestureRecognizer({
 			root: '#centralColumn',
-			onIntent: dispatchIntent
+			onIntent: dispatchIntent,
+			isValidDnDTarget: isValidDnDTarget
 		});
 
 		document.addEventListener('keydown', onKeyDown, false);

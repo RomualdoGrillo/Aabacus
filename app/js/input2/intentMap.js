@@ -3,7 +3,7 @@
  *
  * Formato riga (DEFAULT_TABLE):
  *   {
- *     trigger: string|null,       // gesto: 'tap'|'pinchHor'|'pinchVert'|'slashHor'|'slashVert'|null
+ *     trigger: string|null,       // gesto: 'tap'|'lasso'|'dnd'|'pinchHor'|'pinchVert'|'slashHor'|'slashVert'|null
  *     alias: string|null,         // tastiera: 'Mod+z'|'Shift+L'|'Shift+S'|'p'|'c'|'ArrowDown'|…
  *     targetSource: 'selected'|'pinched'|'slashed'|null,
  *     actions: Array<{name:string, val?:string}|string>,  // try-list; stringhe → {name}
@@ -21,7 +21,9 @@
 		undo: true,
 		load: true,
 		save: true,
-		toggleSelect: true
+		toggleSelect: true,
+		selectSiblings: true,
+		applyDnD: true
 	};
 
 	/**
@@ -81,6 +83,20 @@
 			alias: null,
 			targetSource: null,
 			actions: ['toggleSelect'],
+			system: true
+		},
+		{
+			trigger: 'lasso',
+			alias: null,
+			targetSource: null,
+			actions: ['selectSiblings'],
+			system: true
+		},
+		{
+			trigger: 'dnd',
+			alias: null,
+			targetSource: null,
+			actions: ['applyDnD'],
 			system: true
 		},
 		{
@@ -205,6 +221,8 @@
 	function intentToTrigger(intent) {
 		if (!intent || !intent.type) return null;
 		if (intent.type === 'tap') return 'tap';
+		if (intent.type === 'lasso') return 'lasso';
+		if (intent.type === 'dnd') return 'dnd';
 		if (intent.type === 'slice' || intent.type === 'slash') {
 			if (intent.axis === 'h') return 'slashHor';
 			if (intent.axis === 'v') return 'slashVert';

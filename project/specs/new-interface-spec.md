@@ -485,6 +485,9 @@ Fonte: tabella di Romualdo (immagine agli atti della chat) + ricette reali in `g
 | — | command+z | — | undo | **sistema** |
 | — | Maiusc+l | — | load | **sistema** |
 | — | Maiusc+s | selected | save | **sistema** |
+| tap | — | (target del tap) | toggleSelect | **sistema** |
+| lasso | — | targets del lazo | selectSiblings | **sistema** |
+| dnd | — | source→target del drag | applyDnD | **sistema** |
 | — | p | selected | plusAssociate ltr, plusAssociate rtl, timesAssociate ltr, timesAssociate rtl, orAssociate ltr, orAssociate rtl, andAssociate ltr, andAssociate rtl | didattica |
 | — | c | selected | OppositeOfOpposite ltr, InvOfOpposite ltr, evaluateComparison int, PlusSingleTerm ltr, TimesSingleFactor ltr, AndSingleChild ltr, OrSingleChild ltr, defOne ltr, OrNeutral ltr, AndNeutral ltr, andAbsorbingEl ltr, orAbsorbingEl ltr, notFalse ltr, zeroAsEmptyPlus ltr, oneAsEmptyTimes ltr, plusAssociate ltr, timesAssociate ltr, andAssociate ltr, orAssociate ltr | didattica |
 | pinchHor | arrowDown | pinched / selected | compose, AndNeutral ltr, timesAbsorbingEl ltr | didattica |
@@ -493,6 +496,8 @@ Fonte: tabella di Romualdo (immagine agli atti della chat) + ricette reali in `g
 | slashVert | arrowRight (*) | slashed / selected | decomposeInASum, Opposite rtl, defZero rtl, composeXorNotX rtl | didattica |
 
 (*) Alias slash allineati alla convenzione legacy delle frecce (ArrowRight=addendi, ArrowUp=fattori), in attesa di conferma esplicita di Romualdo; azioni con secondo argomento ltr/rtl ora supportate.
+
+**Discriminazione slice / lazo / drag** (recognizer `gestures.js`, §7.3.1): slice e lazo partono entrambi *fuori da ogni foglia* `[data-enode]` (i contenitori `and`/`eq` riempiono il canvas: l'interpretazione operativa di «fuori dagli ENODE» è «fuori dalle foglie»). Un tratto quasi rettilineo che *attraversa* un ENODE → `slice`; un percorso con curvatura/ritorno che *racchiude* senza attraversare → `lasso`; se i due criteri competono o il gesto è insufficiente → nessun intent. Il drag (`dnd`) parte *su una foglia* e supera la soglia di movimento (il tap resta giù+su senza move). Tutti gli intent passano da `dispatchIntent` → `resolveIntent` (tabella sopra); nessun percorso di smistamento parallelo.
 
 Regole di incorporamento nel codice (accortezze di Romualdo):
 

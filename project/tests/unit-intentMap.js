@@ -68,6 +68,24 @@ const table = intentMap.DEFAULT_TABLE;
 		'resolveIntent tap → toggleSelect (system)',
 		tap && tap.trigger === 'tap' && tap.system === true && aName(tap.actions[0]) === 'toggleSelect'
 	);
+
+	const lasso = intentMap.resolveIntent({ type: 'lasso' }, table);
+	assert(
+		'resolveIntent lasso → selectSiblings (system builtin)',
+		lasso && lasso.trigger === 'lasso' && lasso.system === true &&
+			aName(lasso.actions[0]) === 'selectSiblings' &&
+			intentMap.isBuiltinAction('selectSiblings') === true,
+		lasso && lasso.trigger
+	);
+
+	const dnd = intentMap.resolveIntent({ type: 'dnd' }, table);
+	assert(
+		'resolveIntent dnd → applyDnD (system builtin)',
+		dnd && dnd.trigger === 'dnd' && dnd.system === true &&
+			aName(dnd.actions[0]) === 'applyDnD' &&
+			intentMap.isBuiltinAction('applyDnD') === true,
+		dnd && dnd.trigger
+	);
 })();
 
 // ——— 2) alias tastiera ———
@@ -163,11 +181,23 @@ const table = intentMap.DEFAULT_TABLE;
 (function () {
 	const res = intentMap.applyMmlsOverrides(table, {
 		'Mod+z': { actions: ['hacked'] },
-		'pinchHor': { actions: ['compose'] }
+		'pinchHor': { actions: ['compose'] },
+		'lasso': { actions: ['hackedLasso'] },
+		'dnd': { actions: ['hackedDnD'] }
 	});
 	assert(
 		'override system Mod+z → violazione',
 		res.violations.indexOf('Mod+z') >= 0,
+		res.violations.join(',')
+	);
+	assert(
+		'override system lasso → violazione',
+		res.violations.indexOf('lasso') >= 0,
+		res.violations.join(',')
+	);
+	assert(
+		'override system dnd → violazione',
+		res.violations.indexOf('dnd') >= 0,
 		res.violations.join(',')
 	);
 	const undoRow = res.table.find(function (r) { return r.alias === 'Mod+z'; });
@@ -175,6 +205,18 @@ const table = intentMap.DEFAULT_TABLE;
 		'system undo invariato',
 		undoRow && aName(undoRow.actions[0]) === 'undo',
 		undoRow && undoRow.actions.map(actionKey).join(',')
+	);
+	const lassoRow = res.table.find(function (r) { return r.trigger === 'lasso'; });
+	assert(
+		'system lasso invariato (selectSiblings)',
+		lassoRow && aName(lassoRow.actions[0]) === 'selectSiblings',
+		lassoRow && lassoRow.actions.map(actionKey).join(',')
+	);
+	const dndRow = res.table.find(function (r) { return r.trigger === 'dnd'; });
+	assert(
+		'system dnd invariato (applyDnD)',
+		dndRow && aName(dndRow.actions[0]) === 'applyDnD',
+		dndRow && dndRow.actions.map(actionKey).join(',')
 	);
 	const pinchRow = res.table.find(function (r) { return r.trigger === 'pinchHor'; });
 	assert(

@@ -19,6 +19,38 @@
 	opacity: 0.92;
 }
 
+/* Tratto lazo (path SVG in #svgContainer) */
+#svgContainer .input2-lasso {
+	fill: rgba(196, 92, 38, 0.08);
+	stroke: #c45c26;
+	stroke-width: 2.5;
+	stroke-dasharray: 8 6;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	pointer-events: none;
+	opacity: 0.95;
+}
+
+/* Bordo di selezione live durante il lazo */
+#centralColumn {
+	position: relative;
+}
+
+.input2-lasso-hull {
+	position: absolute;
+	pointer-events: none;
+	border: 2px dashed #3d8b6e;
+	background: rgba(61, 139, 110, 0.08);
+	border-radius: 10px;
+	z-index: 5;
+	opacity: 0;
+	transition: opacity 120ms ease-out;
+}
+
+.input2-lasso-hull.visible {
+	opacity: 1;
+}
+
 #canvasRole [data-enode].selected {
 	outline: 2px solid #3d8b6e;
 	outline-offset: 2px;
@@ -28,4 +60,21 @@
 #canvasRole [data-enode].input2-pinch-target {
 	outline: 2px dashed #c45c26;
 	outline-offset: 2px;
+}
+
+/* Ghost DnD: clone semitrasparente che segue il dito */
+.input2-dnd-ghost {
+	position: fixed;
+	z-index: 10000;
+	opacity: 0.55;
+	pointer-events: none !important;
+	margin: 0 !important;
+	box-shadow: 0 4px 12px rgba(26, 35, 50, 0.25);
+	filter: saturate(0.85);
+}
+
+/* Target di drop valido sotto il dito */
+#canvasRole [data-enode].input2-dnd-target {
+	outline: 2px solid #2a6f97;
+	outline-offset: 3px;
 }
