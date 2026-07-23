@@ -17,12 +17,25 @@ function opIsDistDop(op, opD) {// string ex: plus times
 
 
 
+/**
+ * Dice se l'operazione è associativa (plus, times, or, and).
+ * Usata da `ExpressionManager.js` e `calculateSpan.js`.
+ * @param {string} op nome dell'operazione, es. "plus", "times"
+ * @returns {boolean}
+ */
 function OpIsAssociative(op/* string ex: plus times*/) {
 	const associatives = ["plus", "times", "or", "and"]
 	return associatives.indexOf(op) !== -1 //class is in list of associatives?
 }
 
 
+/**
+ * findTgt di `forThisDnD`: cerca tra gli header dei forAll visibili (escluso
+ * il forAll che lega il dragged) i parametri (bvar) con tipo compatibile con
+ * il nodo trascinato (`typeOk`).
+ * @param {JQuery} mouseDownNode nodo trascinato (valore da specificare)
+ * @returns {JQuery} parametri validi come target
+ */
 function forThisValid(mouseDownNode) {
 	let dataType = mouseDownNode[0].getAttribute('data-type');
 	let $excludedForall = $identifierSpanForAll($(mouseDownNode)).filter('[data-enode=forAll]');
@@ -64,14 +77,45 @@ function associativeValid($mouseDownENODE, recursive, $alreadyClaimed) {
 	return $validTargetRoles
 }
 
+/**
+ * findTgt di `associativeDnD`: ruoli della sola coppia parent/figlio con la
+ * stessa operazione associativa (v. `associativeValid` con recursive=false).
+ * @param {JQuery} $mouseDownENODE nodo trascinato
+ * @param {boolean} [ctrlOrMeta] ignorato
+ * @param {boolean} [altKey] ignorato
+ * @param {JQuery} [$alreadyClaimed] ruoli già rivendicati da proprietà HW
+ *   precedenti, esclusi dal risultato
+ * @returns {JQuery} ruoli target validi
+ */
 function immediateAssValid($mouseDownENODE, ctrlOrMeta, altKey, $alreadyClaimed) {
 	return associativeValid($mouseDownENODE, false, $alreadyClaimed)
 }
 
+/**
+ * findTgt di `associativeGenDnD`: ruoli dell'intero cluster di operazioni con
+ * la stessa operazione associativa (v. `associativeValid` con recursive=true).
+ * @param {JQuery} $mouseDownENODE nodo trascinato
+ * @param {boolean} [ctrlOrMeta] ignorato
+ * @param {boolean} [altKey] ignorato
+ * @param {JQuery} [$alreadyClaimed] ruoli già rivendicati da proprietà HW
+ *   precedenti, esclusi dal risultato
+ * @returns {JQuery} ruoli target validi
+ */
 function associativeGenValid($mouseDownENODE, ctrlOrMeta, altKey, $alreadyClaimed) {
 	return associativeValid($mouseDownENODE, true, $alreadyClaimed)
 }
 
+/**
+ * apply di `associativeDnD`/`associativeGenDnD`: il dropped è già stato
+ * inserito da Sortable, quindi rimuove il dragged se non si sta clonando
+ * (classe `toBeCloned`) e marca per il refine le operazioni di partenza e di
+ * arrivo.
+ * @param {JQuery} dragged nodo trascinato originale
+ * @param {JQuery} target nodo/ruolo di destinazione
+ * @param {JQuery} dropped clone già inserito nel punto di drop
+ * @returns {PActx} matchedTF e replacedAlready true; `$transform` = antenato
+ *   comune delle operazioni di partenza e arrivo
+ */
 function ENODEassociate(dragged, target, dropped) {
 	//dropped has been inserted already, just remove dragged if not cloning
 	const PActx = newPActx();
@@ -111,6 +155,15 @@ function getKeyByValue(dictionary, value) {
 
 
 
+/**
+ * findTgt di `partDistributDnD` (distribuzione parziale): valido quando il
+ * parent del dragged (es. un plus con altri fratelli) sta dentro l'operazione
+ * che distribuisce su di lui (es. times); il target è la `ul_role` del
+ * livello ancora superiore.
+ * @param {JQuery} $mouseDownENODE nodo trascinato
+ * @param {boolean} [ctrlOrMeta] se premuto la proprietà è disattivata
+ * @returns {JQuery|Array} ruoli target validi (vuoto se non applicabile)
+ */
 function validForPartDist($mouseDownENODE, ctrlOrMeta) {
 	if (ctrlOrMeta) {
 		return []
@@ -140,6 +193,15 @@ function validForPartDist($mouseDownENODE, ctrlOrMeta) {
 
 
 
+/**
+ * findTgt di `distributiveDnD`: il dragged deve essere argomento di
+ * un'operazione distributiva (times, power, and); i target sono i suoi
+ * siblings del tipo su cui essa distribuisce (opD, es. i plus fratelli).
+ * @param {JQuery} $mouseDownENODE nodo trascinato
+ * @param {boolean} [ctrlOrMeta] se premuto la proprietà è disattivata
+ * @param {boolean} [altKey] se premuto la proprietà è disattivata
+ * @returns {JQuery|Array} ENODE target validi (array vuoto se non applicabile)
+ */
 function validForDist($mouseDownENODE, ctrlOrMeta, altKey) {//op2 è il tipo di operazione sulla quale si distribuisce
 	if (ctrlOrMeta || altKey) {
 		return []
@@ -166,6 +228,17 @@ function validForDist($mouseDownENODE, ctrlOrMeta, altKey) {//op2 è il tipo di 
 	return [] //empty array
 }
 
+/**
+ * apply di `partDistributDnD`: distribuzione parziale: nel punto del drop
+ * crea un clone dell'operazione interna con le copie dei fattori fratelli e
+ * vi reinserisce il dragged nella sua posizione originale; il dropped serve
+ * solo come riferimento di inserimento e viene poi rimosso.
+ * @param {JQuery} $dragged addendo trascinato
+ * @param {JQuery} target ignorato
+ * @param {JQuery} dropped clone inserito da Sortable nella posizione di drop
+ *   (riferimento di inserimento, rimosso alla fine)
+ * @returns {PActx}
+ */
 function ENODEPartDistribute($dragged, target, dropped) {
 	const PActx = newPActx();
 	PActx.replacedAlready = true;
@@ -192,6 +265,15 @@ function ENODEPartDistribute($dragged, target, dropped) {
 	return PActx
 }
 
+/**
+ * apply di `distributiveDnD`: distribuisce il dragged su ogni argomento del
+ * target (es. a·(b+c) → a·b + a·c) clonandolo per ciascun termine, poi
+ * rimuove l'originale e marca per il refine le operazioni coinvolte.
+ * @param {JQuery} $dragged fattore trascinato
+ * @param {JQuery} target operazione (es. plus) sui cui argomenti distribuire
+ * @param {JQuery} [dropped] ignorato
+ * @returns {PActx}
+ */
 function ENODEdistribute($dragged, target, dropped) {
 	const PActx = newPActx();
 	PActx.replacedAlready = true;
@@ -223,6 +305,15 @@ function ENODEdistribute($dragged, target, dropped) {
 	return PActx
 }
 
+/**
+ * findTgt di `collectDnD` (raccoglimento totale): valido se ogni termine
+ * dell'operazione esterna contiene un fattore uguale al dragged (o è esso
+ * stesso uguale); i fattori trovati vengono marcati con la classe
+ * `CouldBeCollected` (usata poi da `ENODEcollect`). Il target è la `ul_role`
+ * dell'ENODE esterno.
+ * @param {JQuery} $mouseDownENODE fattore trascinato
+ * @returns {JQuery} ruolo target (collezione vuota se non applicabile)
+ */
 function validForColl($mouseDownENODE) {
 	const $parent = ENODEparent($mouseDownENODE);
 	let op = undefined
@@ -278,6 +369,14 @@ function validForColl($mouseDownENODE) {
 	return ENODEparent($parentParent).find('>.ul_role')//target is the external ENODE	
 }
 
+/**
+ * findTgt di `partCollectDnD` (raccoglimento parziale): cerca tra i termini
+ * fratelli (rispetto all'operazione distributiva in cui il dragged si trova)
+ * i fattori uguali al dragged, oppure i termini stessi uguali al dragged.
+ * @param {JQuery} $mouseDownENODE fattore/termine trascinato
+ * @returns {JQuery} occorrenze uguali al dragged utilizzabili come target
+ *   (collezione vuota se non applicabile)
+ */
 function validForPartColl($mouseDownENODE) {
 	let $parent = ENODEparent($mouseDownENODE);
 	if ($parent == undefined) {
@@ -340,6 +439,16 @@ function validForPartColl($mouseDownENODE) {
 	return $valids
 }
 
+/**
+ * apply di `partCollectDnD`: raccoglie il fattore comune tra i soli due
+ * termini coinvolti, costruendo (o riusando) il contenitore "plus" con i
+ * restanti fattori dei due termini; l'ordine dei due addendi eredita quello
+ * dei termini di partenza.
+ * @param {JQuery} $dragged fattore trascinato
+ * @param {JQuery} $target fattore uguale nel termine di destinazione
+ * @returns {PActx} fallito (matchedTF=false) se i due parent non hanno la
+ *   stessa operazione distributiva
+ */
 function ENODEpartCollect($dragged, $target) {
 	const PActx = newPActx();
 	PActx.replacedAlready = true;
@@ -409,8 +518,19 @@ function ENODEpartCollect($dragged, $target) {
 		PActx.matchedTF = true
 		return PActx
 	}
+	return PActx//guardia fallita: PActx con matchedTF=false (contratto §3.1)
 }
 
+/**
+ * apply di `collectDnD`: raccoglie il fattore comune: rimuove il dragged e le
+ * occorrenze marcate `CouldBeCollected` (imbastite da `validForColl`),
+ * avvolgendo se necessario l'operazione esterna in un contenitore del tipo
+ * giusto.
+ * @param {JQuery} $dragged fattore trascinato
+ * @param {JQuery} $target ignorato (si affida alla classe `CouldBeCollected`
+ *   già presente nel DOM)
+ * @returns {PActx}
+ */
 function ENODEcollect($dragged, $target) {
 	const PActx = newPActx();
 	PActx.replacedAlready = true;
@@ -755,6 +875,13 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 }
 
 
+/**
+ * findTgt di `replaceDnD`: il dragged deve essere membro di un'equazione (non
+ * di una definizione); i target sono le occorrenze uguali al dragged nelle
+ * proposizioni a valle (v. `findvalidReplacedOrPremise`).
+ * @param {JQuery} $mouseDownENODE membro di equazione trascinato
+ * @returns {JQuery|Array} occorrenze sostituibili (array vuoto se non applicabile)
+ */
 function validReplaced($mouseDownENODE) {
 	if (!($mouseDownENODE.parent().parent().is("[data-enode=eq]") && !isDefinition($mouseDownENODE.parent().parent()[0]))) {
 		return []//not from an equation	or implies
@@ -765,6 +892,13 @@ function validReplaced($mouseDownENODE) {
 	return findvalidReplacedOrPremise($mouseDownENODE)
 }
 
+/**
+ * findTgt di `modusPonensDnD`: il dragged deve essere il primo membro
+ * (premessa) di un `implies`; i target sono le occorrenze uguali al dragged
+ * nelle proposizioni a valle (v. `findvalidReplacedOrPremise`).
+ * @param {JQuery} $mouseDownENODE premessa trascinata
+ * @returns {JQuery|Array} occorrenze della premessa (array vuoto se non applicabile)
+ */
 function validModusPonens($mouseDownENODE) {
 	if (!$mouseDownENODE.parent().parent().is("[data-enode=implies]")) {
 		return []//not from an implies
@@ -790,6 +924,13 @@ function findvalidReplacedOrPremise($mouseDownENODE) {
 	return $valids
 }
 
+/**
+ * apply di `replaceDnD`: sostituisce l'occorrenza target con un link al
+ * membro dell'equazione trascinato (delega a `ENODEReplaceLink`).
+ * @param {JQuery} $link membro di equazione trascinato (sorgente del link)
+ * @param {JQuery} $replaced occorrenza da sostituire
+ * @returns {PActx}
+ */
 function ENODELinkReplace($link, $replaced) {
 	const PActx = newPActx();
 	PActx.replacedAlready = true;
@@ -797,6 +938,16 @@ function ENODELinkReplace($link, $replaced) {
 	PActx.matchedTF = true
 	return PActx
 }
+/**
+ * apply di `modusPonensDnD` (incompleta, v. TODO in software-modules.md):
+ * clona la conclusione dell'implicazione e la inserisce dopo l'occorrenza
+ * della premessa; il wrap in `and` della premessa è solo abbozzato in un
+ * commento.
+ * @param {JQuery} $premiseInProperty premessa trascinata (primo membro dell'implies)
+ * @param {JQuery} $premise occorrenza della premessa nel documento
+ * @returns {PActx} con replacedAlready=true ma matchedTF mai impostato
+ *   (resta false: anomalia)
+ */
 function ENODEModusPonens($premiseInProperty, $premise){
 	const PActx = newPActx();
 	PActx.replacedAlready = true;
@@ -813,6 +964,15 @@ function ENODEModusPonens($premiseInProperty, $premise){
 	return PActx
 }
 
+/**
+ * findTgt di `removeRedundantDnD`: attivo solo con Alt premuto e dragged
+ * booleano; cerca nodi uguali al mousedown node tra le proposizioni a valle
+ * visibili (es. `validRedundant($('.selected'))`).
+ * @param {JQuery} $mouseDownENODE espressione booleana trascinata
+ * @param {boolean} [ctrlOrMeta] ignorato
+ * @param {boolean} [altKey] richiesto true, altrimenti lista vuota
+ * @returns {JQuery|Array} occorrenze ridondanti (array vuoto se non applicabile)
+ */
 function validRedundant($mouseDownENODE, ctrlOrMeta, altKey) {
 	//validRedundant($('.selected'))
 	// cerca nodi uguali a mousedown node 
@@ -829,6 +989,15 @@ function validRedundant($mouseDownENODE, ctrlOrMeta, altKey) {
 	return $valids
 }
 
+/**
+ * findTgt di `addRedundantDnD`: attivo solo con Ctrl/Meta premuto e dragged
+ * booleano; i target sono i ruoli calcolati da
+ * `$calculateTargetsAddRedundantROLES` (dove il termine ridondante può essere
+ * aggiunto).
+ * @param {JQuery} $mouseDownENODE espressione booleana trascinata
+ * @param {boolean} [ctrlOrMeta] richiesto true, altrimenti lista vuota
+ * @returns {JQuery|Array} ruoli target validi (array vuoto se non applicabile)
+ */
 function validAddRedundant($mouseDownENODE, ctrlOrMeta) {
 	//validRedundant($('.selected'))
 	// cerca nodi uguali a mousedown node 
@@ -843,6 +1012,17 @@ function validAddRedundant($mouseDownENODE, ctrlOrMeta) {
 }
 
 
+/**
+ * Target validi per il drop di un elemento di pattern: gli ENODE visibili
+ * nelle proposizioni raggiungibili dalla proprietà originale (esclusi la
+ * proprietà stessa e i suoi discendenti) con data-type compatibile con il
+ * dragged (`typeOk`) e non congelati da una definizione (`ENODEfrozenDef`).
+ * Usata da `DnD.js`.
+ * @param {JQuery} $mouseDownENODE nodo trascinato (elemento del pattern)
+ * @param {JQuery} $originalProperty proprietà da cui il pattern proviene,
+ *   esclusa dai target
+ * @returns {JQuery} candidati validi
+ */
 function validCandidatesForPatternDrop($mouseDownENODE, $originalProperty) {
 	//exclude the $originalProperty
 	let $excludedENODES = $originalProperty.find('[data-enode]').addBack();
@@ -863,6 +1043,13 @@ function validCandidatesForPatternDrop($mouseDownENODE, $originalProperty) {
 	return $valids//.not($mouseDownENODE.parent())
 }
 
+/**
+ * findTgt di `hanoiMoveDnD`: il dragged deve essere il disco in cima a
+ * un'asta (`hanoirod`) di un `hanoi`; i target sono le aste vuote o con in
+ * cima un disco più grande del dragged.
+ * @param {JQuery} $mouseDownENODE disco trascinato
+ * @returns {JQuery|Array} aste valide (array vuoto se non applicabile)
+ */
 function validhanoiMove($mouseDownENODE) {
 	//dragged must be top element in hanoi rod
 	let $parentRod = ENODEparent($mouseDownENODE)
@@ -883,6 +1070,14 @@ function validhanoiMove($mouseDownENODE) {
 	});
 	return $filterdSiblings
 }
+/**
+ * apply di `hanoiMoveDnD`: sposta il disco trascinato in cima all'asta di
+ * destinazione.
+ * @param {JQuery} dragged disco trascinato
+ * @param {JQuery} target asta di destinazione
+ * @param {JQuery} [dropped] ignorato
+ * @returns {PActx}
+ */
 function hanoiMove(dragged, target, dropped) {
 	const PActx = newPActx();
 	ENODEprepend(target[0].ENODE_getRoles(), $(dragged));
@@ -897,6 +1092,14 @@ function hanoiMove(dragged, target, dropped) {
 
 
 
+/**
+ * apply di `removeRedundantDnD`: rimuove il termine ridondante: se è
+ * contenuto in un `and` lo elimina semplicemente, altrimenti lo sostituisce
+ * con `true`.
+ * @param {JQuery} $dragged ignorato
+ * @param {JQuery} $target occorrenza ridondante da rimuovere
+ * @returns {PActx}
+ */
 function removeRedundant($dragged, $target) {
 	const PActx = newPActx();
 	const $parent = ENODEparent($target)
@@ -916,6 +1119,15 @@ function removeRedundant($dragged, $target) {
 	return PActx
 }
 
+/**
+ * apply di `addRedundantDnD`: aggiunge il termine ridondante (o la
+ * deduzione): se il target è un ENODE lo avvolge in un `and` e vi appende il
+ * dropped; se è già un ruolo il dropped è già al suo posto.
+ * @param {JQuery} $dragged ignorato
+ * @param {JQuery} $target ruolo o ENODE di destinazione
+ * @param {JQuery} $dropped clone del dragged già inserito da Sortable
+ * @returns {PActx}
+ */
 function addRedundant($dragged, $target, $dropped) {
 	let PActx = newPActx();
 	$($dropped).removeClass('toBeCloned');//in case class 'toBeCloned' is present rempve it
@@ -977,6 +1189,16 @@ function evaluateComparison($exp) {
 	return PActx
 }
 
+/**
+ * Specifica un parametro di un forAll con un valore concreto ("forThis"),
+ * delegando a `ENODEForThisPar` sul forAll parent del parametro.
+ * Usata da `MAIN.js` e come apply della voce DnD `forThisDnD`
+ * (dragged = valore concreto, target = parametro nell'header).
+ * @param {JQuery} $specificValue valore concreto da sostituire al parametro
+ * @param {JQuery} $parameter parametro (bvar) nell'header del forAll
+ * @returns {PActx} con replacedAlready=true e `$transform` = risultato di
+ *   `ENODEForThisPar`
+ */
 function forThisPar_focus_nofocus($specificValue, $parameter) {
 	const PActx = newPActx();
 
