@@ -151,15 +151,22 @@
 			} catch (err) { return; }
 			if (!eventName) return;
 
-			const names = [];
+			const actions = [];
 			const $actions = ENODE_getRoles(this, '.actions').children();
 			for (let j = 0; j < $actions.length; j++) {
 				try {
 					const name = ENODE_getName(ENODE_getRoles($actions[j], '.function').children()[0]);
-					if (name) names.push(name);
+					if (!name) continue;
+					const action = { name: name };
+					// secondo argomento ltr/rtl/int (come tryEventActionsOnNode)
+					try {
+						const val = ENODE_getName(ENODE_getRoles($actions[j], '.values').children()[0]);
+						if (val) action.val = val;
+					} catch (errVal) { /* .values assente: ok */ }
+					actions.push(action);
 				} catch (err) { /* action malformata: ignora */ }
 			}
-			if (names.length) overrides[eventName] = { actions: names };
+			if (actions.length) overrides[eventName] = { actions: actions };
 		});
 		return overrides;
 	}
@@ -325,7 +332,13 @@
 			: (entry.actions || []);
 
 		for (let i = 0; i < tryList.length; i++) {
-			const name = tryList[i];
+			const raw = tryList[i];
+			const action = (global.INPUT2.normalizeAction
+				? global.INPUT2.normalizeAction(raw)
+				: (typeof raw === 'string' ? { name: raw } : raw));
+			if (!action || !action.name) continue;
+			const name = action.name;
+			const val = action.val;
 
 			if (global.INPUT2.isBuiltinAction && global.INPUT2.isBuiltinAction(name)) {
 				if (name === 'toggleSelect') {
@@ -349,7 +362,7 @@
 			const $target = resolveTargets(entry, intent, name);
 			if (!$target || $target.length === 0) continue;
 
-			const PActx = TryOnePropertyByName(name, $target);
+			const PActx = TryOnePropertyByName(name, $target, val);
 			if (PActx && PActx.matchedTF === true) {
 				conclude2(PActx);
 				return;

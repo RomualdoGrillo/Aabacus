@@ -478,21 +478,21 @@ Regole:
 
 ### 7.5 Tabella gesture↔action (Romualdo, 23/07 sera)
 
-Fonte: tabella di Romualdo (immagine agli atti della chat). Formalizza tre concetti: il **target** del gesto tra parentesi (`selected` = selezione corrente, `pinched`/`slashed` = bersaglio individuato dal gesto stesso), gli **alias tastiera** di ogni gesto (parità desktop), le **liste ordinate di azioni** (si prova nell'ordine finché una matcha, come gli eventi da tasto attuali).
+Fonte: tabella di Romualdo (immagine agli atti della chat) + ricette reali in `gestToAction.mml`. Formalizza tre concetti: il **target** del gesto tra parentesi (`selected` = selezione corrente, `pinched`/`slashed` = bersaglio individuato dal gesto stesso), gli **alias tastiera** di ogni gesto (parità desktop), le **liste ordinate di azioni** `{name, val?}` (si prova nell'ordine finché una matcha; `val` è il secondo argomento ltr/rtl/int passato a `TryOnePropertyByName`).
 
 | Trigger gesto | Alias tastiera | Target | Azioni (in ordine) | Classe |
 |---------------|----------------|--------|--------------------|--------|
 | — | command+z | — | undo | **sistema** |
 | — | Maiusc+l | — | load | **sistema** |
 | — | Maiusc+s | selected | save | **sistema** |
-| — | p | selected | createParenthesis | didattica |
-| — | c | selected | simplifyParethesis, delEmptyParenthesis | didattica |
-| pinchHor | arrowDown | pinched / selected | composePlus, composeTimes | didattica |
-| pinchVert | arrowLeft | pinched / selected | composePlus, composeTimes | didattica |
-| slashHor | arrowRight (*) | slashed / selected | decomposeInAProduct (*) | didattica |
-| slashVert | arrowUp | slashed / selected | decomposeInASum (*) | didattica |
+| — | p | selected | plusAssociate ltr, plusAssociate rtl, timesAssociate ltr, timesAssociate rtl, orAssociate ltr, orAssociate rtl, andAssociate ltr, andAssociate rtl | didattica |
+| — | c | selected | OppositeOfOpposite ltr, InvOfOpposite ltr, evaluateComparison int, PlusSingleTerm ltr, TimesSingleFactor ltr, AndSingleChild ltr, OrSingleChild ltr, defOne ltr, OrNeutral ltr, AndNeutral ltr, andAbsorbingEl ltr, orAbsorbingEl ltr, notFalse ltr, zeroAsEmptyPlus ltr, oneAsEmptyTimes ltr, plusAssociate ltr, timesAssociate ltr, andAssociate ltr, orAssociate ltr | didattica |
+| pinchHor | arrowDown | pinched / selected | compose, AndNeutral ltr, timesAbsorbingEl ltr | didattica |
+| pinchVert | arrowLeft | pinched / selected | compose, composeXorNotX rtl | didattica |
+| slashHor | arrowUp (*) | slashed / selected | timesAbsorbingEl rtl, decomposeInAProduct, AndNeutral rtl, Reciprocal rtl | didattica |
+| slashVert | arrowRight (*) | slashed / selected | decomposeInASum, Opposite rtl, defZero rtl, composeXorNotX rtl | didattica |
 
-(*) Assunzioni **confermate da Romualdo (24/07/2026)**: slash→decompose come da mappatura validata; alias arrowUp per slashVert e arrowRight per slashHor; pinch con la stessa try-list in entrambe le direzioni (distinte solo dall'alias tastiera).
+(*) Alias slash allineati alla convenzione legacy delle frecce (ArrowRight=addendi, ArrowUp=fattori), in attesa di conferma esplicita di Romualdo; azioni con secondo argomento ltr/rtl ora supportate.
 
 Regole di incorporamento nel codice (accortezze di Romualdo):
 

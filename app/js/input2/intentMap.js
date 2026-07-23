@@ -6,7 +6,7 @@
  *     trigger: string|null,       // gesto: 'tap'|'pinchHor'|'pinchVert'|'slashHor'|'slashVert'|null
  *     alias: string|null,         // tastiera: 'Mod+z'|'Shift+L'|'Shift+S'|'p'|'c'|'ArrowDown'|…
  *     targetSource: 'selected'|'pinched'|'slashed'|null,
- *     actions: string[],          // try-list ordinata (builtin o nomi proprietà)
+ *     actions: Array<{name:string, val?:string}|string>,  // try-list; stringhe → {name}
  *     system: boolean             // true → non riconfigurabile da .mmls
  *   }
  *
@@ -25,8 +25,34 @@
 	};
 
 	/**
-	 * Tabella di default — §7.5 + tap strutturale + compose in coda al pinch
-	 * (composePlus/composeTimes ancora non nel registry).
+	 * Normalizza un'azione: stringa → {name}; oggetto → {name, val?} clonati.
+	 * @param {string|{name:string, val?:string}} a
+	 * @returns {{name:string, val?:string}|null}
+	 */
+	function normalizeAction(a) {
+		if (a == null) return null;
+		if (typeof a === 'string') {
+			const name = String(a);
+			return name ? { name: name } : null;
+		}
+		if (typeof a === 'object' && a.name != null && String(a.name)) {
+			const out = { name: String(a.name) };
+			if (a.val != null && a.val !== '') out.val = String(a.val);
+			return out;
+		}
+		return null;
+	}
+
+	/** Nome azione da stringa o oggetto. */
+	function actionName(a) {
+		if (typeof a === 'string') return a;
+		if (a && a.name != null) return String(a.name);
+		return null;
+	}
+
+	/**
+	 * Tabella di default — §7.5; ricette reali da gestToAction.mml.
+	 * Alias slash allineati al legacy (ArrowRight=addendi, ArrowUp=fattori).
 	 */
 	const DEFAULT_TABLE = [
 		{
@@ -61,52 +87,108 @@
 			trigger: null,
 			alias: 'p',
 			targetSource: 'selected',
-			actions: ['createParenthesis'],
+			actions: [
+				{ name: 'plusAssociate', val: 'ltr' },
+				{ name: 'plusAssociate', val: 'rtl' },
+				{ name: 'timesAssociate', val: 'ltr' },
+				{ name: 'timesAssociate', val: 'rtl' },
+				{ name: 'orAssociate', val: 'ltr' },
+				{ name: 'orAssociate', val: 'rtl' },
+				{ name: 'andAssociate', val: 'ltr' },
+				{ name: 'andAssociate', val: 'rtl' }
+			],
 			system: false
 		},
 		{
 			trigger: null,
 			alias: 'c',
 			targetSource: 'selected',
-			actions: ['simplifyParethesis', 'delEmptyParenthesis'],
+			actions: [
+				{ name: 'OppositeOfOpposite', val: 'ltr' },
+				{ name: 'InvOfOpposite', val: 'ltr' },
+				{ name: 'evaluateComparison', val: 'int' },
+				{ name: 'PlusSingleTerm', val: 'ltr' },
+				{ name: 'TimesSingleFactor', val: 'ltr' },
+				{ name: 'AndSingleChild', val: 'ltr' },
+				{ name: 'OrSingleChild', val: 'ltr' },
+				{ name: 'defOne', val: 'ltr' },
+				{ name: 'OrNeutral', val: 'ltr' },
+				{ name: 'AndNeutral', val: 'ltr' },
+				{ name: 'andAbsorbingEl', val: 'ltr' },
+				{ name: 'orAbsorbingEl', val: 'ltr' },
+				{ name: 'notFalse', val: 'ltr' },
+				{ name: 'zeroAsEmptyPlus', val: 'ltr' },
+				{ name: 'oneAsEmptyTimes', val: 'ltr' },
+				{ name: 'plusAssociate', val: 'ltr' },
+				{ name: 'timesAssociate', val: 'ltr' },
+				{ name: 'andAssociate', val: 'ltr' },
+				{ name: 'orAssociate', val: 'ltr' }
+			],
 			system: false
 		},
 		{
 			trigger: 'pinchHor',
 			alias: 'ArrowDown',
 			targetSource: 'pinched',
-			actions: ['composePlus', 'composeTimes', 'compose'],
+			actions: [
+				{ name: 'compose' },
+				{ name: 'AndNeutral', val: 'ltr' },
+				{ name: 'timesAbsorbingEl', val: 'ltr' }
+			],
 			system: false
 		},
 		{
 			trigger: 'pinchVert',
 			alias: 'ArrowLeft',
 			targetSource: 'pinched',
-			actions: ['composePlus', 'composeTimes', 'compose'],
+			actions: [
+				{ name: 'compose' },
+				{ name: 'composeXorNotX', val: 'rtl' }
+			],
 			system: false
 		},
 		{
 			trigger: 'slashHor',
-			alias: 'ArrowRight',
+			alias: 'ArrowUp',
 			targetSource: 'slashed',
-			actions: ['decomposeInAProduct'],
+			actions: [
+				{ name: 'timesAbsorbingEl', val: 'rtl' },
+				{ name: 'decomposeInAProduct' },
+				{ name: 'AndNeutral', val: 'rtl' },
+				{ name: 'Reciprocal', val: 'rtl' }
+			],
 			system: false
 		},
 		{
 			trigger: 'slashVert',
-			alias: 'ArrowUp',
+			alias: 'ArrowRight',
 			targetSource: 'slashed',
-			actions: ['decomposeInASum'],
+			actions: [
+				{ name: 'decomposeInASum' },
+				{ name: 'Opposite', val: 'rtl' },
+				{ name: 'defZero', val: 'rtl' },
+				{ name: 'composeXorNotX', val: 'rtl' }
+			],
 			system: false
 		}
 	];
+
+	function cloneActions(actions) {
+		const out = [];
+		if (!Array.isArray(actions)) return out;
+		for (let i = 0; i < actions.length; i++) {
+			const n = normalizeAction(actions[i]);
+			if (n) out.push(n);
+		}
+		return out;
+	}
 
 	function cloneRow(row) {
 		return {
 			trigger: row.trigger == null ? null : String(row.trigger),
 			alias: row.alias == null ? null : String(row.alias),
 			targetSource: row.targetSource == null ? null : String(row.targetSource),
-			actions: Array.isArray(row.actions) ? row.actions.slice() : [],
+			actions: cloneActions(row.actions),
 			system: !!row.system
 		};
 	}
@@ -217,15 +299,17 @@
 	/**
 	 * Prima azione della try-list ancora disponibile.
 	 * @param {Object} entry
-	 * @param {Object<string,boolean>} [availability]
-	 * @returns {string|null} nome azione o builtin
+	 * @param {Object<string,boolean>} [availability] — chiavi = nome proprietà
+	 * @returns {{name:string, val?:string}|null}
 	 */
 	function nextAction(entry, availability) {
 		if (!entry || !Array.isArray(entry.actions)) return null;
 		for (let i = 0; i < entry.actions.length; i++) {
-			const name = entry.actions[i];
-			if (isBuiltinAction(name) || entry.system) return name;
-			if (!availability || availability[name] !== false) return name;
+			const action = normalizeAction(entry.actions[i]);
+			if (!action) continue;
+			const name = action.name;
+			if (isBuiltinAction(name) || entry.system) return action;
+			if (!availability || availability[name] !== false) return action;
 		}
 		return null;
 	}
@@ -234,18 +318,20 @@
 	 * Try-list filtrata (salta non disponibili). Pure.
 	 * @param {Object} entry
 	 * @param {Object<string,boolean>} [availability]
-	 * @returns {string[]}
+	 * @returns {Array<{name:string, val?:string}>}
 	 */
 	function listTryActions(entry, availability) {
 		if (!entry || !Array.isArray(entry.actions)) return [];
 		const out = [];
 		for (let i = 0; i < entry.actions.length; i++) {
-			const name = entry.actions[i];
+			const action = normalizeAction(entry.actions[i]);
+			if (!action) continue;
+			const name = action.name;
 			if (isBuiltinAction(name) || entry.system) {
-				out.push(name);
+				out.push(action);
 				continue;
 			}
-			if (!availability || availability[name] !== false) out.push(name);
+			if (!availability || availability[name] !== false) out.push(action);
 		}
 		return out;
 	}
@@ -289,7 +375,7 @@
 				violations.push(String(key));
 				continue;
 			}
-			if (Array.isArray(ov.actions)) base[hit].actions = ov.actions.slice();
+			if (Array.isArray(ov.actions)) base[hit].actions = cloneActions(ov.actions);
 			if (ov.targetSource !== undefined) base[hit].targetSource = ov.targetSource;
 			if (ov.alias !== undefined && ov.alias !== null) base[hit].alias = String(ov.alias);
 		}
@@ -317,8 +403,8 @@
 			const row = rows[r];
 			const actions = row.actions || [];
 			for (let a = 0; a < actions.length; a++) {
-				const name = actions[a];
-				if (seen[name]) continue;
+				const name = actionName(actions[a]);
+				if (!name || seen[name]) continue;
 				seen[name] = true;
 				if (row.system || isBuiltinAction(name)) {
 					availability[name] = true;
@@ -351,16 +437,19 @@
 	function lookupIntent(intent) {
 		const entry = resolveIntent(intent, activeTable);
 		if (!entry) return null;
-		const name = nextAction(entry, null);
-		if (!name) return null;
-		if (isBuiltinAction(name)) return { kind: 'builtin', name: name, entry: entry };
-		return { kind: 'property', name: name, entry: entry };
+		const action = nextAction(entry, null);
+		if (!action) return null;
+		const name = action.name;
+		if (isBuiltinAction(name)) return { kind: 'builtin', name: name, entry: entry, action: action };
+		return { kind: 'property', name: name, entry: entry, action: action };
 	}
 
 	const api = {
 		DEFAULT_TABLE: cloneTable(DEFAULT_TABLE),
 		BUILTIN_ACTIONS: Object.assign({}, BUILTIN_ACTIONS),
 		isBuiltinAction: isBuiltinAction,
+		normalizeAction: normalizeAction,
+		actionName: actionName,
 		resolveIntent: resolveIntent,
 		nextAction: nextAction,
 		listTryActions: listTryActions,
@@ -385,6 +474,8 @@
 	global.INPUT2.DEFAULT_TABLE = api.DEFAULT_TABLE;
 	global.INPUT2.BUILTIN_ACTIONS = api.BUILTIN_ACTIONS;
 	global.INPUT2.isBuiltinAction = isBuiltinAction;
+	global.INPUT2.normalizeAction = normalizeAction;
+	global.INPUT2.actionName = actionName;
 	global.INPUT2.resolveIntent = resolveIntent;
 	global.INPUT2.nextAction = nextAction;
 	global.INPUT2.listTryActions = listTryActions;
