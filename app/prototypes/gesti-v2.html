@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Aabacus — Prototipo gesti v2 (confronto)</title>
+  <style>
+    :root {
+      --bg: #e8eef5;
+      --canvas-bg: #f7fafc;
+      --ink: #1a2332;
+      --muted: #5a6a7e;
+      --block-bg: #fffdf8;
+      --block-border: #2c3e50;
+      --accent: #2a6f97;
+      --accent-soft: rgba(42, 111, 151, 0.18);
+      --sel: #3d8b6e;
+      --warn: #b36b00;
+      --danger: #b33a3a;
+      --blade: #c45c26;
+      --shadow: 0 2px 8px rgba(26, 35, 50, 0.12);
+      --radius: 14px;
+      --anim: 200ms ease-out;
+      --target: 56px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: "Segoe UI", "Avenir Next", "Helvetica Neue", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(160deg, #d9e4f0 0%, var(--bg) 45%, #f0e9df 100%);
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 10px 14px 8px;
+      gap: 8px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.05rem, 2.3vw, 1.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      margin: 2px 0 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0.5rem 0.95rem;
+      border-radius: 999px;
+      border: 2px solid var(--block-border);
+      background: #fff;
+      color: var(--ink);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tabs button {
+      border-radius: 12px;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.86rem;
+      min-height: 42px;
+    }
+
+    .tabs button[aria-selected="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      color: var(--muted);
+      align-items: center;
+    }
+
+    .stats b { color: var(--ink); }
+    .stats .ok { color: var(--sel); }
+    .stats .fail { color: var(--danger); }
+
+    .panel-instr {
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.4;
+      padding: 6px 4px 2px;
+      max-height: 22vh;
+      overflow: auto;
+      touch-action: pan-y;
+    }
+
+    .panel-instr strong { color: var(--ink); }
+    .panel-instr ul { margin: 4px 0 0; padding-left: 1.15rem; }
+    .panel-instr li { margin: 2px 0; }
+
+    .hint-pill {
+      display: inline-block;
+      padding: 0.08rem 0.4rem;
+      border-radius: 6px;
+      background: rgba(42, 111, 151, 0.12);
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .warn-note {
+      color: var(--warn);
+      font-weight: 600;
+    }
+
+    #canvas {
+      position: relative;
+      flex: 1;
+      min-height: 280px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.7), transparent 40%),
+        var(--canvas-bg);
+      border: 2px solid #c5d0dc;
+      border-radius: 20px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6), var(--shadow);
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .workspace {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 28px 36px;
+      padding: 36px 40px;
+    }
+
+    .enode {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: var(--target);
+      min-height: var(--target);
+      padding: 0.5rem 0.95rem;
+      background: var(--block-bg);
+      border: 3px solid var(--block-border);
+      border-radius: var(--radius);
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: var(--shadow);
+      transform-origin: center center;
+      transition: transform var(--anim), box-shadow var(--anim), background var(--anim), opacity var(--anim);
+      z-index: 2;
+      touch-action: none;
+    }
+
+    .enode.anchor {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+      background: #eef6fb;
+    }
+
+    .enode.preview-host {
+      opacity: 0.35;
+    }
+
+    .group {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 18px;
+      position: relative;
+      z-index: 2;
+      transition: transform var(--anim), opacity var(--anim);
+      touch-action: none;
+    }
+
+    .group.sum { flex-direction: row; flex-wrap: nowrap; }
+    .group.product { flex-direction: column; align-items: center; gap: 6px; }
+
+    .op {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--muted);
+      min-width: 28px;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .group.product .op { line-height: 0.8; margin: -2px 0; }
+
+    .group.anim-in, .enode.anim-in { animation: popIn var(--anim) both; }
+    .group.anim-out, .enode.anim-out { animation: popOut var(--anim) both; }
+    .group.split-h { animation: splitH 220ms ease-out both; }
+    .group.split-v { animation: splitV 220ms ease-out both; }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.86); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes popOut {
+      from { opacity: 1; transform: scale(1); }
+      to   { opacity: 0; transform: scale(0.86); }
+    }
+    @keyframes splitH {
+      from { opacity: 0; transform: scaleX(0.55); }
+      to   { opacity: 1; transform: scaleX(1); }
+    }
+    @keyframes splitV {
+      from { opacity: 0; transform: scaleY(0.55); }
+      to   { opacity: 1; transform: scaleY(1); }
+    }
+
+    #previewLayer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    .preview-ghost {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      opacity: 0.72;
+      pointer-events: none;
+    }
+
+    .preview-ghost.sum { flex-direction: row; }
+    .preview-ghost.product { flex-direction: column; gap: 4px; }
+
+    .preview-ghost .ghost-part {
+      min-width: var(--target);
+      min-height: var(--target);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.45rem 0.85rem;
+      border: 3px dashed var(--accent);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 248, 0.55);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .preview-ghost .ghost-op {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+      opacity: 0.85;
+    }
+
+    #bladeSvg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 12;
+      overflow: visible;
+    }
+
+    #bladePath {
+      fill: none;
+      stroke: var(--blade);
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-dasharray: 10 7;
+      filter: drop-shadow(0 0 2px rgba(196, 92, 38, 0.45));
+    }
+
+    #debug {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      z-index: 30;
+      width: min(300px, 48vw);
+      background: rgba(26, 35, 50, 0.92);
+      color: #e8f0f8;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      padding: 10px 12px;
+      border-radius: 12px;
+      display: none;
+      pointer-events: none;
+      white-space: pre-wrap;
+    }
+
+    #debug.on { display: block; }
+
+    footer.desktop-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 2px 2px 4px;
+      line-height: 1.35;
+    }
+
+    footer.desktop-note strong { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>Gesti v2 — confronto ergonomia</h1>
+        <p>Stesso compito, quattro gesti · 6 / 12 / 8 → addendi o fattori</p>
+      </div>
+      <div class="toolbar">
+        <button type="button" id="btnDebug" aria-pressed="false">Debug</button>
+        <button type="button" id="btnReset">Reset tab</button>
+      </div>
+    </header>
+
+    <div class="tabs" role="tablist" aria-label="Varianti gesto">
+      <button type="button" role="tab" id="tabA" data-tab="A" aria-selected="true">A · Unpinch+</button>
+      <button type="button" role="tab" id="tabB" data-tab="B" aria-selected="false">B · Taglio</button>
+      <button type="button" role="tab" id="tabC" data-tab="C" aria-selected="false">C · Strappo</button>
+      <button type="button" role="tab" id="tabD" data-tab="D" aria-selected="false">D · Scuotimento</button>
+    </div>
+
+    <div class="stats" id="statsBar" aria-live="polite"></div>
+
+    <div class="panel-instr" id="instrPanel"></div>
+
+    <div id="canvas" aria-label="Area di lavoro gesti v2">
+      <div class="workspace" id="workspace"></div>
+      <div id="previewLayer" aria-hidden="true"></div>
+      <svg id="bladeSvg" aria-hidden="true"><path id="bladePath" d=""></path></svg>
+      <div id="debug" aria-live="polite"></div>
+    </div>
+
+    <footer class="desktop-note" id="desktopNote"></footer>
+  </div>
+
+  <script>
+(function () {
+  'use strict';
+
+  // ——— Costanti ———
+  const UNPINCH_RATIO = 1.22;       // soglia min apertura (conferma al rilascio)
+  const PINCH_RATIO = 0.78;         // ricomposizione pinch
+  const MOVE_SLOP_PX = 10;
+  const STRETCH_MAX = 0.45;
+  const SLICE_ANGLE_TOL = 35;       // ±35° sugli assi
+  const SLICE_MIN_LEN = 48;         // px min per taglio «finisce dentro»
+  const TEAR_MIN_PX = 40;           // trascinamento min dito mobile
+  const SHAKE_INV_MS = 250;         // max ms tra inversioni
+  const SHAKE_MIN_INV = 3;          // inversioni richieste
+  const SHAKE_MIN_AMP = 14;         // ampiezza min per contare un'inversione
+  const MERGE_DIST_PX = 72;         // tab B: pezzi vicini → ricomposizione
+
+  const ADDENDS = { 6: [3, 3], 12: [6, 6], 8: [4, 4] };
+  const FACTORS = { 6: [2, 3], 12: [3, 4], 8: [2, 4] };
+
+  const INSTR = {
+    A: {
+      title: 'Tab A — Unpinch migliorato',
+      html: `<strong>Tab A — Unpinch migliorato</strong>
+        <ul>
+          <li><span class="hint-pill">Apri due dita</span> su 6 / 12 / 8: l'asse <em>dominante</em> decide (H → addendi, V → fattori). Niente zona morta diagonale.</li>
+          <li>Durante il gesto vedi l'<strong>anteprima</strong> in trasparenza; ruota le dita per cambiare H/V. Rilascia sopra soglia per confermare.</li>
+          <li><span class="hint-pill">Pinch</span> sulla coppia scomposta → ricompone (H su somma, V su prodotto).</li>
+        </ul>`
+    },
+    B: {
+      title: 'Tab B — Taglio (slice)',
+      html: `<strong>Tab B — Taglio (slice)</strong>
+        <ul>
+          <li>Uno swipe di <strong>un dito</strong> che attraversa il blocco (parti fuori e esci dall'altro lato, oppure parti fuori e finisci dentro con tratto abbastanza lungo).</li>
+          <li>Taglio quasi-<strong>verticale</strong> → addendi affiancati; quasi-<strong>orizzontale</strong> → fattori impilati (±35°).</li>
+          <li><strong>Ricomposizione:</strong> trascina i due pezzi della stessa coppia finché i centri si avvicinano (&lt;~72&nbsp;px).</li>
+        </ul>`
+    },
+    C: {
+      title: 'Tab C — Strappo (tear)',
+      html: `<strong>Tab C — Strappo (tear)</strong>
+        <ul>
+          <li>Primo dito <strong>àncora</strong> sul blocco (resta fermo); secondo dito sullo stesso blocco e <em>strappa</em> via.</li>
+          <li>Solo la direzione del dito mobile conta: H → addendi, V → fattori. Il blocco si stira dal lato mobile.</li>
+          <li><span class="hint-pill">Pinch</span> (due dita che si avvicinano) sulla coppia → ricompone. Ideale anche a due mani su tablet appoggiato.</li>
+        </ul>`
+    },
+    D: {
+      title: 'Tab D — Scuotimento (shake)',
+      html: `<strong>Tab D — Scuotimento (shake)</strong>
+        <ul>
+          <li>Drag su un blocco con almeno <strong>3 inversioni</strong> rapide (&lt;250&nbsp;ms) sullo stesso asse. H → addendi, V → fattori.</li>
+          <li>Il blocco <em>non</em> si sposta: vibra sul posto. Distinto da un drag normale.</li>
+          <li><span class="hint-pill">Pinch</span> sulla coppia → ricompone.</li>
+          <li class="warn-note">Convenzione a rischio: nelle app esistenti lo scuotimento segnala di solito un errore.</li>
+        </ul>`
+    }
+  };
+
+  const DESKTOP = {
+    A: '<strong>Desktop:</strong> mouse = un dito; tieni <strong>ALT</strong> durante il drag per la seconda dito speculare (pinch/unpinch).',
+    B: '<strong>Desktop:</strong> basta il mouse — swipe attraverso il blocco; per ricomporre trascina un pezzo verso l\'altro.',
+    C: '<strong>Desktop:</strong> <strong>SHIFT+click</strong> sul blocco per piazzare l\'àncora, poi drag col mouse (dito mobile). Oppure due pointer reali / touch.',
+    D: '<strong>Desktop:</strong> basta il mouse — scuoti avanti/indietro sul blocco (≥3 inversioni rapide).'
+  };
+
+  // ——— DOM ———
+  const canvas = document.getElementById('canvas');
+  const workspace = document.getElementById('workspace');
+  const previewLayer = document.getElementById('previewLayer');
+  const bladePath = document.getElementById('bladePath');
+  const debugEl = document.getElementById('debug');
+  const btnDebug = document.getElementById('btnDebug');
+  const btnReset = document.getElementById('btnReset');
+  const instrPanel = document.getElementById('instrPanel');
+  const desktopNote = document.getElementById('desktopNote');
+  const statsBar = document.getElementById('statsBar');
+
+  let activeTab = 'A';
+  let debugOn = false;
+  let altHeld = false;
+  let shiftHeld = false;
+  let nextId = 1;
+
+  /** @type {Record<string, {ok:number, fail:number}>} */
+  const counters = {
+    A: { ok: 0, fail: 0 },
+    B: { ok: 0, fail: 0 },
+    C: { ok: 0, fail: 0 },
+    D: { ok: 0, fail: 0 }
+  };
+
+  /** @type {Record<string, any[]>} */
+  const tabItems = { A: [], B: [], C: [], D: [] };
+
+  function uid() { return 'b' + (nextId++); }
+
+  function initialItems() {
+    return [
+      { id: uid(), kind: 'atom', value: 6 },
+      { id: uid(), kind: 'atom', value: 12 },
+      { id: uid(), kind: 'atom', value: 8 }
+    ];
+  }
+
+  function items() { return tabItems[activeTab]; }
+  function setItems(arr) { tabItems[activeTab] = arr; }
+
+  function bumpOk() { counters[activeTab].ok++; updateStats(); }
+  function bumpFail() { counters[activeTab].fail++; updateStats(); }
+
+  function updateStats() {
+    const c = counters[activeTab];
+    statsBar.innerHTML =
+      `Tab <b>${activeTab}</b> · ` +
+      `<span class="ok">scomposizioni OK: <b>${c.ok}</b></span> · ` +
+      `<span class="fail">tentativi falliti: <b>${c.fail}</b></span>`;
+  }
+
+  function setTab(tab) {
+    if (!INSTR[tab] || tab === activeTab) {
+      // force refresh if same
+    }
+    activeTab = tab;
+    document.querySelectorAll('.tabs [role="tab"]').forEach((btn) => {
+      btn.setAttribute('aria-selected', btn.dataset.tab === tab ? 'true' : 'false');
+    });
+    instrPanel.innerHTML = INSTR[tab].html;
+    desktopNote.innerHTML = DESKTOP[tab];
+    updateStats();
+    clearPreview();
+    setBlade([]);
+    G.reset();
+    render();
+  }
+
+  // ——— Render ———
+  function render() {
+    workspace.innerHTML = '';
+    for (const item of items()) {
+      workspace.appendChild(renderItem(item));
+    }
+  }
+
+  function renderItem(item) {
+    if (item.kind === 'atom') {
+      const el = document.createElement('div');
+      el.className = 'enode';
+      el.dataset.id = item.id;
+      el.dataset.kind = 'atom';
+      el.dataset.value = String(item.value);
+      el.textContent = String(item.value);
+      return el;
+    }
+    if (item.kind === 'sum' || item.kind === 'product') {
+      const g = document.createElement('div');
+      g.className = 'group ' + item.kind;
+      g.dataset.id = item.id;
+      g.dataset.kind = item.kind;
+      const value = item.kind === 'sum'
+        ? item.parts.reduce((a, b) => a + b, 0)
+        : item.parts.reduce((a, b) => a * b, 1);
+      g.dataset.value = String(value);
+      item.parts.forEach((n, i) => {
+        if (i > 0) {
+          const op = document.createElement('span');
+          op.className = 'op';
+          op.textContent = item.kind === 'sum' ? '+' : '×';
+          g.appendChild(op);
+        }
+        const el = document.createElement('div');
+        el.className = 'enode';
+        el.dataset.parent = item.id;
+        el.dataset.role = 'part';
+        el.dataset.partIndex = String(i);
+        el.textContent = String(n);
+        g.appendChild(el);
+      });
+      return g;
+    }
+    return document.createDocumentFragment();
+  }
+
+  function findItem(id) {
+    return items().find((it) => it.id === id) || null;
+  }
+
+  function atomElFromTarget(target) {
+    if (!(target instanceof Element)) return null;
+    const enode = target.closest('.enode');
+    if (!enode || !workspace.contains(enode)) return null;
+    if (enode.dataset.kind === 'atom') return enode;
+    return null;
+  }
+
+  function groupElFromTarget(target) {
+    if (!(target instanceof Element)) return null;
+    const g = target.closest('.group[data-id]');
+    return g && workspace.contains(g) ? g : null;
+  }
+
+  function topElFromPoint(x, y) {
+    const el = document.elementFromPoint(x, y);
+    return atomElFromTarget(el) || groupElFromTarget(el);
+  }
+
+  // ——— Azioni modello ———
+  function decompose(itemId, axis, animClass) {
+    const item = findItem(itemId);
+    if (!item || item.kind !== 'atom') return false;
+    const parts = axis === 'h' ? ADDENDS[item.value] : FACTORS[item.value];
+    if (!parts) return false;
+    const list = items();
+    const idx = list.indexOf(item);
+    const neu = {
+      id: uid(),
+      kind: axis === 'h' ? 'sum' : 'product',
+      parts: parts.slice()
+    };
+    list.splice(idx, 1, neu);
+    render();
+    const el = workspace.querySelector(`[data-id="${neu.id}"]`);
+    if (el) el.classList.add(animClass || 'anim-in');
+    bumpOk();
+    return true;
+  }
+
+  function recompose(itemId) {
+    const item = findItem(itemId);
+    if (!item || (item.kind !== 'sum' && item.kind !== 'product')) return false;
+    const value = item.kind === 'sum'
+      ? item.parts.reduce((a, b) => a + b, 0)
+      : item.parts.reduce((a, b) => a * b, 1);
+    const expected = item.kind === 'sum' ? ADDENDS[value] : FACTORS[value];
+    if (!expected || expected.length !== item.parts.length) return false;
+    if (!expected.every((n, i) => n === item.parts[i])) return false;
+
+    const el = workspace.querySelector(`[data-id="${itemId}"]`);
+    const list = items();
+    const idx = list.indexOf(item);
+    const finish = () => {
+      list.splice(idx, 1, { id: uid(), kind: 'atom', value });
+      render();
+      const neu = workspace.querySelector(`[data-value="${value}"][data-kind="atom"]`);
+      if (neu) neu.classList.add('anim-in');
+    };
+    if (el) {
+      el.classList.add('anim-out');
+      setTimeout(finish, 180);
+    } else {
+      finish();
+    }
+    return true;
+  }
+
+  // ——— Geometria ———
+  function dist(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+
+  function angleDegFromHorizontal(a, b) {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const deg = Math.abs(Math.atan2(dy, dx) * 180 / Math.PI);
+    return deg > 90 ? 180 - deg : deg; // 0=H, 90=V
+  }
+
+  /** Asse dominante: sempre 'h' o 'v' (niente zona morta). */
+  function dominantAxis(a, b) {
+    const ang = angleDegFromHorizontal(a, b);
+    return ang < 45 ? 'h' : 'v';
+  }
+
+  function dominantAxisDelta(dx, dy) {
+    return Math.abs(dx) >= Math.abs(dy) ? 'h' : 'v';
+  }
+
+  function classifyAxisTol(a, b, tol) {
+    const ang = angleDegFromHorizontal(a, b);
+    if (ang <= tol) return 'h';
+    if (ang >= 90 - tol) return 'v';
+    return null;
+  }
+
+  function pointInRect(p, r) {
+    return p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom;
+  }
+
+  function segmentCrossesRect(p0, p1, r) {
+    // attraversamento grezzo: estremi su lati opposti, o intersezione lato
+    const in0 = pointInRect(p0, r);
+    const in1 = pointInRect(p1, r);
+    if (in0 && in1) return false;
+    if (!in0 && in1) return true; // fuori → dentro (candidato «finisce dentro»)
+    if (in0 && !in1) return true;
+
+    // entrambi fuori: verifica se il segmento interseca il rettangolo
+    function segIntersect(ax, ay, bx, by, cx, cy, dx, dy) {
+      const den = (bx - ax) * (dy - cy) - (by - ay) * (dx - cx);
+      if (Math.abs(den) < 1e-9) return false;
+      const t = ((cx - ax) * (dy - cy) - (cy - ay) * (dx - cx)) / den;
+      const u = ((cx - ax) * (by - ay) - (cy - ay) * (bx - ax)) / den;
+      return t >= 0 && t <= 1 && u >= 0 && u <= 1;
+    }
+    const edges = [
+      [r.left, r.top, r.right, r.top],
+      [r.right, r.top, r.right, r.bottom],
+      [r.right, r.bottom, r.left, r.bottom],
+      [r.left, r.bottom, r.left, r.top]
+    ];
+    for (const e of edges) {
+      if (segIntersect(p0.x, p0.y, p1.x, p1.y, e[0], e[1], e[2], e[3])) return true;
+    }
+    return false;
+  }
+
+  function oppositeSides(p0, p1, r) {
+    const left0 = p0.x < r.left, right0 = p0.x > r.right;
+    const top0 = p0.y < r.top, bottom0 = p0.y > r.bottom;
+    const left1 = p1.x < r.left, right1 = p1.x > r.right;
+    const top1 = p1.y < r.top, bottom1 = p1.y > r.bottom;
+    if ((left0 && right1) || (right0 && left1)) return true;
+    if ((top0 && bottom1) || (bottom0 && top1)) return true;
+    return false;
+  }
+
+  // ——— Preview / blade / stretch ———
+  function clearPreview() {
+    previewLayer.innerHTML = '';
+  }
+
+  function showDecomposePreview(atomEl, axis, value) {
+    clearPreview();
+    if (!atomEl) return;
+    const parts = axis === 'h' ? ADDENDS[value] : FACTORS[value];
+    if (!parts) return;
+    const canvasRect = canvas.getBoundingClientRect();
+    const r = atomEl.getBoundingClientRect();
+    const ghost = document.createElement('div');
+    ghost.className = 'preview-ghost ' + (axis === 'h' ? 'sum' : 'product');
+    parts.forEach((n, i) => {
+      if (i > 0) {
+        const op = document.createElement('span');
+        op.className = 'ghost-op';
+        op.textContent = axis === 'h' ? '+' : '×';
+        ghost.appendChild(op);
+      }
+      const p = document.createElement('span');
+      p.className = 'ghost-part';
+      p.textContent = String(n);
+      ghost.appendChild(p);
+    });
+    previewLayer.appendChild(ghost);
+    // misura e centra sul blocco
+    const gw = ghost.offsetWidth;
+    const gh = ghost.offsetHeight;
+    const cx = (r.left + r.right) / 2 - canvasRect.left;
+    const cy = (r.top + r.bottom) / 2 - canvasRect.top;
+    ghost.style.left = (cx - gw / 2) + 'px';
+    ghost.style.top = (cy - gh / 2) + 'px';
+  }
+
+  function setBlade(points) {
+    if (!points.length) {
+      bladePath.setAttribute('d', '');
+      return;
+    }
+    const canvasRect = canvas.getBoundingClientRect();
+    let d = '';
+    points.forEach((p, i) => {
+      const x = p.x - canvasRect.left;
+      const y = p.y - canvasRect.top;
+      d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+    });
+    bladePath.setAttribute('d', d.trim());
+  }
+
+  function applyStretch(el, axis, amount, origin) {
+    if (!el) return;
+    const t = Math.max(-STRETCH_MAX, Math.min(STRETCH_MAX, amount));
+    if (origin === 'right') el.style.transformOrigin = 'left center';
+    else if (origin === 'left') el.style.transformOrigin = 'right center';
+    else if (origin === 'bottom') el.style.transformOrigin = 'center top';
+    else if (origin === 'top') el.style.transformOrigin = 'center bottom';
+    else el.style.transformOrigin = 'center center';
+    if (axis === 'h') el.style.transform = `scaleX(${(1 + t).toFixed(3)})`;
+    else el.style.transform = `scaleY(${(1 + t).toFixed(3)})`;
+  }
+
+  function clearStretch(el) {
+    if (!el) return;
+    el.style.transform = '';
+    el.style.transformOrigin = '';
+  }
+
+  function applyShakeVibrate(el, axis, phase) {
+    if (!el) return;
+    const amp = 3 + Math.min(8, Math.abs(phase) * 0.08);
+    if (axis === 'h') el.style.transform = `translateX(${(Math.sin(phase) * amp).toFixed(2)}px)`;
+    else el.style.transform = `translateY(${(Math.sin(phase) * amp).toFixed(2)}px)`;
+  }
+
+  function setDebug(lines) {
+    if (!debugOn) return;
+    debugEl.textContent = lines.join('\n');
+  }
+
+  // ——— Gesture engine ———
+  const G = {
+    state: 'idle',
+    pointers: new Map(),
+    primaryId: null,
+    secondaryId: null,
+    startDist: 0,
+    axis: null,
+    targetItemId: null,
+    targetEl: null,
+    mode: null,
+    fired: false,
+    mirrorActive: false,
+    // A
+    previewAxis: null,
+    // B
+    bladePoints: [],
+    sliceCandidateId: null,
+    // C
+    anchorId: null,       // pointer id àncora
+    anchorItemId: null,
+    mobileId: null,
+    desktopAnchorEl: null, // SHIFT+click àncora desktop
+    // D
+    shakeAxis: null,
+    inversions: 0,
+    lastDir: 0,
+    lastInvTs: 0,
+    shakeSamples: [],
+
+    reset() {
+      this.state = 'idle';
+      this.pointers.clear();
+      this.primaryId = null;
+      this.secondaryId = null;
+      this.startDist = 0;
+      this.axis = null;
+      clearStretch(this.targetEl);
+      this.targetEl = null;
+      this.targetItemId = null;
+      this.mode = null;
+      this.fired = false;
+      this.mirrorActive = false;
+      this.previewAxis = null;
+      this.bladePoints = [];
+      this.sliceCandidateId = null;
+      this.anchorId = null;
+      this.anchorItemId = null;
+      this.mobileId = null;
+      if (this.desktopAnchorEl) {
+        this.desktopAnchorEl.classList.remove('anchor');
+        this.desktopAnchorEl = null;
+      }
+      this.shakeAxis = null;
+      this.inversions = 0;
+      this.lastDir = 0;
+      this.lastInvTs = 0;
+      this.shakeSamples = [];
+      clearPreview();
+      setBlade([]);
+      setDebug([`tab: ${activeTab}`, 'state: idle', 'pointers: 0']);
+    },
+
+    pointerCount() { return this.pointers.size; },
+
+    getPair() {
+      if (this.pointers.size < 2) return null;
+      const ids = [...this.pointers.keys()];
+      const a = this.pointers.get(this.primaryId) || this.pointers.get(ids[0]);
+      const b = this.pointers.get(this.secondaryId) || this.pointers.get(ids[1]);
+      if (!a || !b) return null;
+      return { a, b };
+    },
+
+    mirrorPoint(origin, p) {
+      return { x: 2 * origin.x - p.x, y: 2 * origin.y - p.y };
+    },
+
+    ensureAltMirror(e) {
+      if (activeTab !== 'A' && activeTab !== 'C') return;
+      const wantMirror = altHeld && e.pointerType === 'mouse' && activeTab === 'A';
+      if (wantMirror && this.pointers.size === 1 && this.primaryId != null) {
+        const primary = this.pointers.get(this.primaryId);
+        if (!primary) return;
+        const origin = { x: primary.startX, y: primary.startY };
+        const m = this.mirrorPoint(origin, { x: e.clientX, y: e.clientY });
+        this.pointers.set(-1, {
+          x: m.x, y: m.y, startX: origin.x, startY: origin.y, target: primary.target
+        });
+        this.secondaryId = -1;
+        this.mirrorActive = true;
+        this.onTwoReadyA();
+      } else if (!wantMirror && this.mirrorActive) {
+        this.pointers.delete(-1);
+        this.secondaryId = null;
+        this.mirrorActive = false;
+        clearStretch(this.targetEl);
+        clearPreview();
+        this.state = this.pointers.size ? 'tracking' : 'idle';
+      } else if (wantMirror && this.mirrorActive && this.primaryId != null) {
+        const primary = this.pointers.get(this.primaryId);
+        if (!primary) return;
+        const origin = { x: primary.startX, y: primary.startY };
+        const m = this.mirrorPoint(origin, { x: e.clientX, y: e.clientY });
+        const virt = this.pointers.get(-1);
+        if (virt) { virt.x = m.x; virt.y = m.y; }
+      }
+    },
+
+    // ——— dispatch ———
+    onPointerDown(e) {
+      if (e.target.closest('.toolbar') || e.target.closest('.tabs') || e.target.closest('.panel-instr')) return;
+      try { canvas.setPointerCapture(e.pointerId); } catch (_) { /* */ }
+
+      if (activeTab === 'A') this.downA(e);
+      else if (activeTab === 'B') this.downB(e);
+      else if (activeTab === 'C') this.downC(e);
+      else if (activeTab === 'D') this.downD(e);
+      this.updateDebug();
+    },
+
+    onPointerMove(e) {
+      const p = this.pointers.get(e.pointerId);
+      if (!p) return;
+      p.x = e.clientX;
+      p.y = e.clientY;
+      if (activeTab === 'A') this.moveA(e);
+      else if (activeTab === 'B') this.moveB(e);
+      else if (activeTab === 'C') this.moveC(e);
+      else if (activeTab === 'D') this.moveD(e);
+      this.updateDebug();
+    },
+
+    onPointerUp(e) {
+      if (activeTab === 'A') this.upA(e);
+      else if (activeTab === 'B') this.upB(e);
+      else if (activeTab === 'C') this.upC(e);
+      else if (activeTab === 'D') this.upD(e);
+      try { canvas.releasePointerCapture(e.pointerId); } catch (_) { /* */ }
+      this.updateDebug();
+    },
+
+    // ========== TAB A ==========
+    downA(e) {
+      const pt = {
+        x: e.clientX, y: e.clientY,
+        startX: e.clientX, startY: e.clientY,
+        target: e.target
+      };
+      this.pointers.set(e.pointerId, pt);
+      if (this.pointerCount() === 1) {
+        this.primaryId = e.pointerId;
+        this.state = 'tracking';
+        this.fired = false;
+        this.ensureAltMirror(e);
+      } else if (this.pointerCount() === 2) {
+        this.secondaryId = e.pointerId;
+        this.onTwoReadyA();
+      }
+    },
+
+    onTwoReadyA() {
+      const pair = this.getPair();
+      if (!pair) return;
+      this.startDist = dist(pair.a, pair.b) || 1;
+      this.axis = dominantAxis(pair.a, pair.b);
+      this.previewAxis = this.axis;
+      const mid = { x: (pair.a.x + pair.b.x) / 2, y: (pair.a.y + pair.b.y) / 2 };
+      const elAtMid = document.elementFromPoint(mid.x, mid.y);
+      const atom = atomElFromTarget(elAtMid) || atomElFromTarget(pair.a.target);
+      const group = groupElFromTarget(elAtMid) || groupElFromTarget(pair.a.target);
+      if (atom) {
+        this.targetEl = atom;
+        this.targetItemId = atom.dataset.id;
+        this.mode = 'decompose';
+        this.state = this.axis === 'h' ? 'pinch-h' : 'pinch-v';
+      } else if (group) {
+        const kind = group.dataset.kind;
+        const ok = (this.axis === 'h' && kind === 'sum') || (this.axis === 'v' && kind === 'product');
+        if (ok) {
+          this.targetEl = group;
+          this.targetItemId = group.dataset.id;
+          this.mode = 'recompose';
+          this.state = this.axis === 'h' ? 'pinch-h' : 'pinch-v';
+        } else {
+          this.state = 'tracking';
+          this.mode = null;
+        }
+      } else {
+        this.state = 'tracking';
+        this.mode = null;
+      }
+    },
+
+    moveA(e) {
+      this.ensureAltMirror(e);
+      if (this.state !== 'pinch-h' && this.state !== 'pinch-v') return;
+      const pair = this.getPair();
+      if (!pair || this.fired) return;
+      const d = dist(pair.a, pair.b);
+      const ratio = d / (this.startDist || 1);
+      const liveAxis = dominantAxis(pair.a, pair.b);
+      this.previewAxis = liveAxis;
+      this.axis = liveAxis;
+      this.state = liveAxis === 'h' ? 'pinch-h' : 'pinch-v';
+
+      // aggiorna mode recompose se asse/tipo non combaciano più
+      if (this.mode === 'recompose' && this.targetEl) {
+        const kind = this.targetEl.dataset.kind;
+        const ok = (liveAxis === 'h' && kind === 'sum') || (liveAxis === 'v' && kind === 'product');
+        if (!ok) {
+          clearStretch(this.targetEl);
+          clearPreview();
+          return;
+        }
+      }
+
+      const stretchAmt = (ratio - 1) * 0.75;
+      applyStretch(this.targetEl, liveAxis, stretchAmt);
+
+      if (this.mode === 'decompose' && this.targetEl && ratio > 1.05) {
+        this.targetEl.classList.add('preview-host');
+        const val = Number(this.targetEl.dataset.value);
+        showDecomposePreview(this.targetEl, liveAxis, val);
+      } else if (this.mode === 'recompose') {
+        clearPreview();
+        this.targetEl && this.targetEl.classList.remove('preview-host');
+      }
+
+      // pinch ricompone live (come v1) al raggiungimento soglia
+      if (this.mode === 'recompose' && ratio <= PINCH_RATIO) {
+        this.fired = true;
+        clearStretch(this.targetEl);
+        clearPreview();
+        const ok = recompose(this.targetItemId);
+        if (!ok) bumpFail();
+      }
+    },
+
+    upA(e) {
+      const p = this.pointers.get(e.pointerId);
+      this.pointers.delete(e.pointerId);
+      if (e.pointerId === this.primaryId) this.primaryId = null;
+      if (e.pointerId === this.secondaryId) this.secondaryId = null;
+
+      if (this.mirrorActive && e.pointerType === 'mouse') {
+        this.pointers.delete(-1);
+        this.mirrorActive = false;
+        this.secondaryId = null;
+      }
+
+      // conferma unpinch al rilascio
+      if (!this.fired && (this.state === 'pinch-h' || this.state === 'pinch-v') && this.mode === 'decompose') {
+        const pairLeft = this.getPair();
+        // usa ultima distanza nota dai pointer rimanenti o dal pointer rilasciato
+        let ratio = 1;
+        if (pairLeft) {
+          ratio = dist(pairLeft.a, pairLeft.b) / (this.startDist || 1);
+        } else if (p && this.startDist) {
+          // ricostruisci con mirror o secondary già cancellato: usa stato salvato
+          const other = [...this.pointers.values()][0];
+          if (other) ratio = dist(p, other) / this.startDist;
+          else {
+            // entrambi rilasciati quasi insieme: stima da previewAxis + stretch
+            ratio = this._lastRatioA || 1;
+          }
+        } else {
+          ratio = this._lastRatioA || 1;
+        }
+
+        if (ratio >= UNPINCH_RATIO && this.targetItemId) {
+          this.fired = true;
+          const axis = this.previewAxis || this.axis;
+          clearStretch(this.targetEl);
+          clearPreview();
+          if (this.targetEl) this.targetEl.classList.remove('preview-host');
+          const ok = decompose(this.targetItemId, axis, axis === 'h' ? 'split-h' : 'split-v');
+          if (!ok) bumpFail();
+        } else if (ratio > 1.05) {
+          // gesto tentato ma sotto soglia
+          bumpFail();
+        }
+      }
+
+      clearStretch(this.targetEl);
+      if (this.targetEl) this.targetEl.classList.remove('preview-host');
+      clearPreview();
+
+      if (this.pointerCount() === 0) {
+        this.state = 'idle';
+        this.targetEl = null;
+        this.targetItemId = null;
+        this.mode = null;
+        this.axis = null;
+        this.previewAxis = null;
+        this.fired = false;
+      } else {
+        this.state = 'tracking';
+      }
+    },
+
+    // track last ratio during move for release confirm
+    _lastRatioA: 1,
+
+    // ========== TAB B ==========
+    downB(e) {
+      const pt = {
+        x: e.clientX, y: e.clientY,
+        startX: e.clientX, startY: e.clientY,
+        target: e.target
+      };
+      this.pointers.set(e.pointerId, pt);
+      this.primaryId = e.pointerId;
+      this.fired = false;
+      this.bladePoints = [{ x: e.clientX, y: e.clientY }];
+      this.sliceCandidateId = null;
+
+      // drag pezzo per ricomposizione
+      const part = e.target.closest && e.target.closest('.enode[data-role="part"]');
+      const group = groupElFromTarget(e.target);
+      if (part && group) {
+        this.state = 'drag-part';
+        this.targetEl = part;
+        this.targetItemId = group.dataset.id;
+        this._dragOffset = {
+          x: e.clientX - part.getBoundingClientRect().left,
+          y: e.clientY - part.getBoundingClientRect().top
+        };
+        part.style.position = 'relative';
+        part.style.zIndex = '20';
+      } else {
+        const startedOnBlock = !!(atomElFromTarget(e.target) || groupElFromTarget(e.target));
+        this.state = startedOnBlock ? 'tracking' : 'slice';
+      }
+    },
+
+    moveB(e) {
+      if (this.state === 'slice') {
+        this.bladePoints.push({ x: e.clientX, y: e.clientY });
+        setBlade(this.bladePoints);
+        // feedback: se attraversa un atomo, stira leggermente
+        const atoms = workspace.querySelectorAll('.enode[data-kind="atom"]');
+        for (const atom of atoms) {
+          const r = atom.getBoundingClientRect();
+          if (pointInRect({ x: e.clientX, y: e.clientY }, r)) {
+            this.sliceCandidateId = atom.dataset.id;
+            const p0 = this.bladePoints[0];
+            const axis = classifyAxisTol(p0, { x: e.clientX, y: e.clientY }, SLICE_ANGLE_TOL);
+            if (axis) {
+              // taglio V separa lateralmente → stretch H; taglio H → stretch V
+              applyStretch(atom, axis === 'v' ? 'h' : 'v', 0.12);
+              this.targetEl = atom;
+            }
+          }
+        }
+      } else if (this.state === 'drag-part' && this.targetEl) {
+        const dx = e.clientX - this.pointers.get(e.pointerId).startX;
+        const dy = e.clientY - this.pointers.get(e.pointerId).startY;
+        this.targetEl.style.transform = `translate(${dx}px, ${dy}px)`;
+      }
+    },
+
+    upB(e) {
+      const p = this.pointers.get(e.pointerId);
+      this.pointers.delete(e.pointerId);
+
+      if (this.state === 'drag-part' && this.targetEl && this.targetItemId) {
+        // verifica distanza centri parti
+        const group = workspace.querySelector(`[data-id="${this.targetItemId}"]`);
+        if (group) {
+          const parts = [...group.querySelectorAll('.enode[data-role="part"]')];
+          if (parts.length >= 2) {
+            const r0 = parts[0].getBoundingClientRect();
+            const r1 = parts[1].getBoundingClientRect();
+            const c0 = { x: (r0.left + r0.right) / 2, y: (r0.top + r0.bottom) / 2 };
+            const c1 = { x: (r1.left + r1.right) / 2, y: (r1.top + r1.bottom) / 2 };
+            if (dist(c0, c1) < MERGE_DIST_PX) {
+              recompose(this.targetItemId);
+            }
+          }
+        }
+        this.targetEl.style.transform = '';
+        this.targetEl.style.position = '';
+        this.targetEl.style.zIndex = '';
+      } else if (this.state === 'slice' && p && !this.fired) {
+        const p0 = { x: p.startX, y: p.startY };
+        const p1 = { x: p.x, y: p.y };
+        const len = dist(p0, p1);
+        const axis = classifyAxisTol(p0, p1, SLICE_ANGLE_TOL);
+        // Nota: taglio verticale → addendi (h); taglio orizzontale → fattori (v)
+        let decompAxis = null;
+        if (axis === 'v') decompAxis = 'h';
+        else if (axis === 'h') decompAxis = 'v';
+
+        let hit = null;
+        let crossedThrough = false;
+        for (const atom of workspace.querySelectorAll('.enode[data-kind="atom"]')) {
+          const r = atom.getBoundingClientRect();
+          const startOut = !pointInRect(p0, r);
+          if (!startOut) continue;
+          const endIn = pointInRect(p1, r);
+          const through = oppositeSides(p0, p1, r) && segmentCrossesRect(p0, p1, r);
+          const into = endIn && len >= SLICE_MIN_LEN && segmentCrossesRect(p0, p1, r);
+          if (through || into) {
+            hit = atom;
+            crossedThrough = through || into;
+            break;
+          }
+        }
+
+        clearStretch(this.targetEl);
+        setBlade([]);
+
+        if (hit && decompAxis && crossedThrough) {
+          this.fired = true;
+          const ok = decompose(hit.dataset.id, decompAxis, decompAxis === 'h' ? 'split-h' : 'split-v');
+          if (!ok) bumpFail();
+        } else if (len > MOVE_SLOP_PX * 2) {
+          // swipe tentato ma non riconosciuto
+          bumpFail();
+        }
+      } else {
+        clearStretch(this.targetEl);
+        setBlade([]);
+      }
+
+      this.state = 'idle';
+      this.targetEl = null;
+      this.targetItemId = null;
+      this.bladePoints = [];
+      this.sliceCandidateId = null;
+      this.fired = false;
+    },
+
+    // ========== TAB C ==========
+    downC(e) {
+      // Desktop: SHIFT+click piazza àncora
+      if (e.pointerType === 'mouse' && shiftHeld) {
+        const atom = atomElFromTarget(e.target);
+        const group = groupElFromTarget(e.target);
+        if (this.desktopAnchorEl) this.desktopAnchorEl.classList.remove('anchor');
+        this.desktopAnchorEl = atom || group;
+        if (this.desktopAnchorEl) {
+          this.desktopAnchorEl.classList.add('anchor');
+          this.anchorItemId = this.desktopAnchorEl.dataset.id;
+          this.state = 'anchor-set';
+        }
+        return;
+      }
+
+      const pt = {
+        x: e.clientX, y: e.clientY,
+        startX: e.clientX, startY: e.clientY,
+        target: e.target
+      };
+      this.pointers.set(e.pointerId, pt);
+
+      // Desktop: àncora già piazzata + drag = tear asimmetrico
+      if (e.pointerType === 'mouse' && this.desktopAnchorEl && this.anchorItemId) {
+        const atom = atomElFromTarget(e.target) ||
+          (this.desktopAnchorEl.dataset.id === this.anchorItemId ? this.desktopAnchorEl : null);
+        if (atom && atom.dataset.id === this.anchorItemId) {
+          this.primaryId = e.pointerId;
+          this.mobileId = e.pointerId;
+          this.anchorId = -2; // virtuale fermo
+          this.pointers.set(-2, {
+            x: atom.getBoundingClientRect().left + atom.offsetWidth / 2,
+            y: atom.getBoundingClientRect().top + atom.offsetHeight / 2,
+            startX: 0, startY: 0, target: atom
+          });
+          this.targetEl = atom;
+          this.targetItemId = atom.dataset.id;
+          this.mode = 'decompose';
+          this.state = 'tear';
+          this.fired = false;
+          return;
+        }
+        // pinch ricompone con ALT? su C usiamo due dita o pinch mouse+ALT non richiesto;
+        // ricomposizione: due pointer o pinch su group con due tocchi
+      }
+
+      if (this.pointerCount() === 1) {
+        this.primaryId = e.pointerId;
+        this.state = 'tracking';
+        this.fired = false;
+        const atom = atomElFromTarget(e.target);
+        const group = groupElFromTarget(e.target);
+        if (atom) {
+          this.anchorId = e.pointerId;
+          this.anchorItemId = atom.dataset.id;
+          this.targetEl = atom;
+          atom.classList.add('anchor');
+        } else if (group) {
+          // possibile pinch ricompone: aspetta secondo dito
+          this.targetEl = group;
+          this.targetItemId = group.dataset.id;
+          this.mode = 'recompose';
+        }
+      } else if (this.pointerCount() === 2) {
+        this.secondaryId = e.pointerId;
+        const ids = [...this.pointers.keys()];
+        const a = this.pointers.get(ids[0]);
+        const b = this.pointers.get(ids[1]);
+        // se entrambi su stesso atomo → tear; se su group → pinch recompose
+        const atomA = atomElFromTarget(a.target);
+        const atomB = atomElFromTarget(b.target);
+        const groupA = groupElFromTarget(a.target);
+        const groupB = groupElFromTarget(b.target);
+
+        if (atomA && atomB && atomA.dataset.id === atomB.dataset.id) {
+          // àncora = primo dito (meno movimento iniziale), mobile = secondo
+          this.anchorId = this.primaryId;
+          this.mobileId = this.secondaryId;
+          this.targetEl = atomA;
+          this.targetItemId = atomA.dataset.id;
+          this.mode = 'decompose';
+          this.state = 'tear';
+          atomA.classList.add('anchor');
+        } else if ((groupA || groupB) && this.mode === 'recompose') {
+          this.startDist = dist(a, b) || 1;
+          this.state = 'pinch-recompose';
+          const g = groupA || groupB;
+          this.targetEl = g;
+          this.targetItemId = g.dataset.id;
+          this.axis = dominantAxis(a, b);
+        } else if (groupA || groupB) {
+          const g = groupA || groupB;
+          this.startDist = dist(a, b) || 1;
+          this.targetEl = g;
+          this.targetItemId = g.dataset.id;
+          this.mode = 'recompose';
+          this.state = 'pinch-recompose';
+          this.axis = dominantAxis(a, b);
+        } else {
+          this.state = 'tracking';
+        }
+      }
+    },
+
+    moveC(e) {
+      if (this.state === 'tear' && !this.fired) {
+        const mobile = this.pointers.get(this.mobileId);
+        const anchor = this.pointers.get(this.anchorId);
+        if (!mobile) return;
+        const dx = mobile.x - mobile.startX;
+        const dy = mobile.y - mobile.startY;
+        // àncora deve restare relativamente ferma (se reale)
+        if (anchor && this.anchorId !== -2) {
+          const adx = anchor.x - anchor.startX;
+          const ady = anchor.y - anchor.startY;
+          if (Math.hypot(adx, ady) > 36 && Math.hypot(adx, ady) > Math.hypot(dx, dy) * 0.8) {
+            // àncora si è mossa troppo → non è tear asimmetrico; ignora stretch
+          }
+        }
+        const axis = dominantAxisDelta(dx, dy);
+        this.axis = axis;
+        const travel = Math.hypot(dx, dy);
+        let origin = 'center';
+        if (axis === 'h') origin = dx >= 0 ? 'right' : 'left';
+        else origin = dy >= 0 ? 'bottom' : 'top';
+        applyStretch(this.targetEl, axis, Math.min(STRETCH_MAX, travel / 120), origin);
+
+        if (travel >= TEAR_MIN_PX) {
+          this.fired = true;
+          clearStretch(this.targetEl);
+          if (this.targetEl) this.targetEl.classList.remove('anchor');
+          const ok = decompose(this.targetItemId, axis, axis === 'h' ? 'split-h' : 'split-v');
+          if (!ok) bumpFail();
+          if (this.desktopAnchorEl) {
+            this.desktopAnchorEl.classList.remove('anchor');
+            this.desktopAnchorEl = null;
+          }
+        }
+      } else if (this.state === 'pinch-recompose' && !this.fired) {
+        const pair = this.getPair();
+        if (!pair) return;
+        const ratio = dist(pair.a, pair.b) / (this.startDist || 1);
+        this.axis = dominantAxis(pair.a, pair.b);
+        applyStretch(this.targetEl, this.axis, (ratio - 1) * 0.7);
+        if (ratio <= PINCH_RATIO) {
+          const kind = this.targetEl && this.targetEl.dataset.kind;
+          const okAxis =
+            (this.axis === 'h' && kind === 'sum') ||
+            (this.axis === 'v' && kind === 'product') ||
+            // tolleranza: accetta pinch su qualsiasi asse per ricomporre
+            true;
+          if (okAxis) {
+            this.fired = true;
+            clearStretch(this.targetEl);
+            recompose(this.targetItemId);
+          }
+        }
+      }
+    },
+
+    upC(e) {
+      if (e.pointerType === 'mouse' && shiftHeld && !this.pointers.has(e.pointerId)) {
+        // solo piazzamento àncora
+        this.updateDebug();
+        return;
+      }
+
+      const p = this.pointers.get(e.pointerId);
+      this.pointers.delete(e.pointerId);
+      if (e.pointerId === this.primaryId) this.primaryId = null;
+      if (e.pointerId === this.secondaryId) this.secondaryId = null;
+      if (e.pointerId === this.mobileId) this.mobileId = null;
+      if (e.pointerId === this.anchorId) this.anchorId = null;
+      this.pointers.delete(-2);
+
+      if (this.state === 'tear' && !this.fired && p) {
+        const travel = Math.hypot(p.x - p.startX, p.y - p.startY);
+        if (travel > MOVE_SLOP_PX) bumpFail();
+      }
+
+      clearStretch(this.targetEl);
+      workspace.querySelectorAll('.enode.anchor').forEach((el) => {
+        if (el !== this.desktopAnchorEl) el.classList.remove('anchor');
+      });
+
+      if (this.pointerCount() === 0) {
+        this.state = this.desktopAnchorEl ? 'anchor-set' : 'idle';
+        this.targetEl = null;
+        this.targetItemId = null;
+        this.mode = null;
+        this.fired = false;
+        this.mobileId = null;
+        this.anchorId = null;
+      }
+    },
+
+    // ========== TAB D ==========
+    downD(e) {
+      const pt = {
+        x: e.clientX, y: e.clientY,
+        startX: e.clientX, startY: e.clientY,
+        target: e.target
+      };
+      this.pointers.set(e.pointerId, pt);
+      this.primaryId = e.pointerId;
+      this.fired = false;
+      this.inversions = 0;
+      this.lastDir = 0;
+      this.lastInvTs = 0;
+      this.shakeSamples = [];
+      this.shakeAxis = null;
+
+      const atom = atomElFromTarget(e.target);
+      const group = groupElFromTarget(e.target);
+
+      if (atom) {
+        this.targetEl = atom;
+        this.targetItemId = atom.dataset.id;
+        this.mode = 'decompose';
+        this.state = 'shake';
+      } else if (group) {
+        // secondo dito per pinch? con un dito solo aspettiamo; con due → recompose
+        this.targetEl = group;
+        this.targetItemId = group.dataset.id;
+        this.mode = 'recompose';
+        this.state = 'tracking';
+      } else {
+        this.state = 'tracking';
+      }
+
+      if (this.pointerCount() === 2 && this.mode === 'recompose') {
+        const pair = this.getPair() || (() => {
+          const vals = [...this.pointers.values()];
+          return { a: vals[0], b: vals[1] };
+        })();
+        if (pair && pair.a && pair.b) {
+          this.startDist = dist(pair.a, pair.b) || 1;
+          this.state = 'pinch-recompose';
+          this.secondaryId = e.pointerId;
+        }
+      }
+    },
+
+    moveD(e) {
+      if (this.state === 'shake' && !this.fired && this.targetEl) {
+        const p = this.pointers.get(e.pointerId);
+        if (!p) return;
+        const now = performance.now();
+        const dx = p.x - p.startX;
+        const dy = p.y - p.startY;
+
+        // asse dominante del movimento complessivo finora
+        if (Math.hypot(dx, dy) > SHAKE_MIN_AMP) {
+          this.shakeAxis = dominantAxisDelta(dx, dy);
+        }
+
+        const axis = this.shakeAxis || 'h';
+        const coord = axis === 'h' ? p.x : p.y;
+        this.shakeSamples.push({ t: now, v: coord });
+        // tieni ultimi ~600ms
+        while (this.shakeSamples.length && now - this.shakeSamples[0].t > 600) {
+          this.shakeSamples.shift();
+        }
+
+        if (this.shakeSamples.length >= 2) {
+          const prev = this.shakeSamples[this.shakeSamples.length - 2];
+          const cur = this.shakeSamples[this.shakeSamples.length - 1];
+          const delta = cur.v - prev.v;
+          if (Math.abs(delta) >= 2) {
+            const dir = Math.sign(delta);
+            if (this.lastDir !== 0 && dir !== this.lastDir && Math.abs(cur.v - (this._lastPeakV ?? cur.v)) >= SHAKE_MIN_AMP) {
+              if (this.lastInvTs === 0 || (now - this.lastInvTs) <= SHAKE_INV_MS) {
+                this.inversions++;
+                this.lastInvTs = now;
+              } else {
+                // troppo lento: reset conteggio ma conta questa
+                this.inversions = 1;
+                this.lastInvTs = now;
+              }
+            }
+            if (dir !== 0) {
+              if (this.lastDir !== 0 && dir !== this.lastDir) {
+                this._lastPeakV = cur.v;
+              }
+              this.lastDir = dir;
+            }
+          }
+        }
+
+        // vibrazione sul posto (NON traslare col drag)
+        const phase = (axis === 'h' ? dx : dy);
+        applyShakeVibrate(this.targetEl, axis, phase * 0.4 + this.inversions * 2);
+
+        if (this.inversions >= SHAKE_MIN_INV && this.shakeAxis) {
+          this.fired = true;
+          clearStretch(this.targetEl);
+          const ok = decompose(this.targetItemId, this.shakeAxis, this.shakeAxis === 'h' ? 'split-h' : 'split-v');
+          if (!ok) bumpFail();
+        }
+      } else if (this.state === 'pinch-recompose' && !this.fired) {
+        // aggiorna secondary
+        if (!this.pointers.has(this.secondaryId) && this.pointerCount() === 2) {
+          const ids = [...this.pointers.keys()];
+          this.secondaryId = ids.find((id) => id !== this.primaryId) ?? null;
+        }
+        const vals = [...this.pointers.values()];
+        if (vals.length < 2) return;
+        if (!this.startDist) this.startDist = dist(vals[0], vals[1]) || 1;
+        const ratio = dist(vals[0], vals[1]) / this.startDist;
+        this.axis = dominantAxis(vals[0], vals[1]);
+        applyStretch(this.targetEl, this.axis, (ratio - 1) * 0.7);
+        if (ratio <= PINCH_RATIO) {
+          this.fired = true;
+          clearStretch(this.targetEl);
+          recompose(this.targetItemId);
+        }
+      } else if (this.state === 'tracking' && this.pointerCount() === 2 && this.mode === 'recompose') {
+        const vals = [...this.pointers.values()];
+        this.startDist = dist(vals[0], vals[1]) || 1;
+        this.state = 'pinch-recompose';
+      }
+    },
+
+    upD(e) {
+      const p = this.pointers.get(e.pointerId);
+      this.pointers.delete(e.pointerId);
+      if (e.pointerId === this.primaryId) this.primaryId = null;
+      if (e.pointerId === this.secondaryId) this.secondaryId = null;
+
+      if (this.state === 'shake' && !this.fired && p) {
+        const moved = Math.hypot(p.x - p.startX, p.y - p.startY);
+        if (moved > SHAKE_MIN_AMP && this.inversions > 0) bumpFail();
+      }
+
+      clearStretch(this.targetEl);
+
+      if (this.pointerCount() === 0) {
+        this.state = 'idle';
+        this.targetEl = null;
+        this.targetItemId = null;
+        this.mode = null;
+        this.fired = false;
+        this.inversions = 0;
+        this.shakeAxis = null;
+        this.shakeSamples = [];
+      }
+    },
+
+    updateDebug() {
+      if (!debugOn) return;
+      const pair = this.getPair();
+      let angle = '—';
+      let axis = this.axis || this.previewAxis || this.shakeAxis || '—';
+      let ratio = '—';
+      if (pair) {
+        angle = angleDegFromHorizontal(pair.a, pair.b).toFixed(1) + '°';
+        axis = dominantAxis(pair.a, pair.b);
+        if (this.startDist) {
+          ratio = (dist(pair.a, pair.b) / this.startDist).toFixed(2);
+          G._lastRatioA = dist(pair.a, pair.b) / this.startDist;
+        }
+      } else if (this.state === 'pinch-h' || this.state === 'pinch-v') {
+        // keep last
+      }
+      if (activeTab === 'A' && pair && this.startDist) {
+        G._lastRatioA = dist(pair.a, pair.b) / this.startDist;
+      }
+
+      const lines = [
+        `tab: ${activeTab}`,
+        `state: ${this.state}`,
+        `pointers: ${this.pointerCount()}${this.mirrorActive ? ' (+ALT mirror)' : ''}`,
+        `axis dominante: ${axis}`,
+        `angle: ${angle}`,
+        `Δratio: ${ratio}`,
+        `mode: ${this.mode || '—'}`,
+        `target: ${this.targetItemId || '—'}`,
+        `inversioni: ${this.inversions}` + (activeTab === 'D' ? ` / ${SHAKE_MIN_INV}` : ''),
+        `sliceCand: ${this.sliceCandidateId || '—'}`,
+        `anchor: ${this.anchorItemId || (this.desktopAnchorEl && this.desktopAnchorEl.dataset.id) || '—'}`
+      ];
+      setDebug(lines);
+    }
+  };
+
+  // patch moveA to store ratio
+  const _moveA = G.moveA.bind(G);
+  G.moveA = function (e) {
+    _moveA(e);
+    const pair = this.getPair();
+    if (pair && this.startDist) this._lastRatioA = dist(pair.a, pair.b) / this.startDist;
+  };
+
+  // ——— Events ———
+  canvas.addEventListener('pointerdown', (e) => {
+    if (e.button != null && e.button !== 0) return;
+    e.preventDefault();
+    G.onPointerDown(e);
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    e.preventDefault();
+    G.onPointerMove(e);
+  });
+  canvas.addEventListener('pointerup', (e) => {
+    e.preventDefault();
+    G.onPointerUp(e);
+  });
+  canvas.addEventListener('pointercancel', (e) => {
+    e.preventDefault();
+    G.onPointerUp(e);
+  });
+
+  document.addEventListener('gesturestart', (e) => e.preventDefault());
+  document.addEventListener('gesturechange', (e) => e.preventDefault());
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Alt') { altHeld = true; G.updateDebug(); }
+    if (e.key === 'Shift') { shiftHeld = true; }
+  });
+  window.addEventListener('keyup', (e) => {
+    if (e.key === 'Alt') {
+      altHeld = false;
+      if (G.mirrorActive) {
+        G.pointers.delete(-1);
+        G.mirrorActive = false;
+        G.secondaryId = null;
+        clearStretch(G.targetEl);
+        clearPreview();
+        G.state = G.pointers.size ? 'tracking' : 'idle';
+        G.updateDebug();
+      }
+    }
+    if (e.key === 'Shift') { shiftHeld = false; }
+  });
+  window.addEventListener('blur', () => { altHeld = false; shiftHeld = false; });
+
+  document.querySelectorAll('.tabs [role="tab"]').forEach((btn) => {
+    btn.addEventListener('click', () => setTab(btn.dataset.tab));
+  });
+
+  btnDebug.addEventListener('click', () => {
+    debugOn = !debugOn;
+    debugEl.classList.toggle('on', debugOn);
+    btnDebug.classList.toggle('active', debugOn);
+    btnDebug.setAttribute('aria-pressed', debugOn ? 'true' : 'false');
+    if (debugOn) G.updateDebug();
+  });
+
+  btnReset.addEventListener('click', () => {
+    G.reset();
+    nextId = 1;
+    setItems(initialItems());
+    // non azzera i contatori: servono al confronto; doppio-click reset? 
+    // Spec: reset tab = workspace. Contatori restano finché non si ricarica.
+    render();
+  });
+
+  // ——— Boot ———
+  ['A', 'B', 'C', 'D'].forEach((t) => { tabItems[t] = initialItems(); });
+  // re-uid: initialItems called 4 times shared nextId — ok
+  setTab('A');
+
+  // API test
+  window.__gestiV2 = {
+    getTab: () => activeTab,
+    setTab: (t) => setTab(t),
+    getItems: () => items().map((it) => ({ ...it, parts: it.parts ? it.parts.slice() : undefined })),
+    getCounters: () => JSON.parse(JSON.stringify(counters)),
+    reset: () => btnReset.click(),
+    /** helper: forza scomposizione (non usato nei test gestuali) */
+    _decompose: (id, axis) => decompose(id, axis)
+  };
+})();
+  </script>
+</body>
+</html>
