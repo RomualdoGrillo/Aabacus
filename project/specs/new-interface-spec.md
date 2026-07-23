@@ -1,6 +1,6 @@
 # Specifica — Rifacimento interfaccia utente (touch-first)
 
-**STATO: BOZZA — prima revisione di Romualdo ricevuta (23/07/2026); pinch in attesa di validazione ergonomica su prototipo**
+**STATO: BOZZA — prima revisione di Romualdo ricevuta (23/07/2026); unpinch orizzontale bocciato alla prova su tablet (v. §3.3.1), gesti alternativi in confronto sul prototipo v2**
 
 ## Decisioni di revisione (Romualdo, 23/07/2026)
 
@@ -231,6 +231,23 @@ Allineamento col motore esistente:
 | R2.4 | SHOULD | Pinch **in** (unpinch inverso) | Compose / riassorbimento verso il termine (es. `compose` sui fratelli selezionati o sul contesto) | Ambiguità se più interpretazioni — Domanda 4 |
 | R2.5 | SHOULD | Preview durante il pinch | Hint visivo (addendi vs fattori) prima del commit al sollevamento | Commit solo se soglia di scala superata |
 | R2.6 | COULD | Scelta fattorizzazione non canonica | UI per scegliere 2×3 vs 6×1 ecc. | Oggi `primeFactorization` è automatica |
+
+#### 3.3.1 Ergonomia dell'unpinch — esiti prova su tablet e ricerca (23/07/2026)
+
+Prova sul prototipo v1 (`app/prototypes/pinch-lasso.html`, tablet 10"): l'unpinch **orizzontale è scomodo e tende a scivolare in diagonale**. La letteratura conferma che non è un difetto di esecuzione ma di progetto:
+
+- **Hoggan et al., ITS 2013** (*Multi-touch pinch gestures: performance and ergonomics*): l'espansione (unpinch) è più lenta e con più fallimenti ergonomici della contrazione; i fallimenti crescono con la distanza; estensione ottimale < 90 mm.
+- **HFES 2014** (*Task-related Factors in Pinch Gestures*): i movimenti di pinch **diagonali sono i più accurati** — la diagonale è l'asse anatomico di apertura pollice-indice. Pretendere l'asse orizzontale puro rema contro la biomeccanica.
+- **Prior art — Graspable Math** (Weitnauer & Ottmar, notazione algebrica dinamica touch): gesti = drag, tap; lo **shaking è usato come feedback di errore** (l'espressione si scuote su azione non valida), convenzione diffusa (iOS incluso). Usare lo scuotimento come gesto costruttivo è semanticamente a rischio.
+
+Candidati alternativi in valutazione empirica sul prototipo v2 (`app/prototypes/gesti-v2.html`), tutti con variante H→addendi / V→fattori:
+
+| Candidato | Idea | Pro | Contro |
+|-----------|------|-----|--------|
+| Unpinch migliorato | Classificazione su asse dominante (niente zona morta diagonale) + preview live orientabile | Conserva il gesto originale; due mani su tablet appoggiato | Resta a due dita |
+| Taglio (slice) | Un dito attraversa il blocco; taglio verticale → addendi, orizzontale → fattori | Un dito, direzione netta, metafora "spezzare", niente conflitto col drag | Dualità taglio⊥scomposizione da verificare |
+| Strappo (tear) | Un dito àncora, l'altro tira via; decide la direzione del dito mobile | Direzione precisa, comodo a due mani | Richiede coordinazione àncora+tiro |
+| Scuotimento (shake) | ≥3 inversioni rapide sullo stesso asse (proposta di Romualdo) | Un dito, memorabile | Collisione semantica con shake=errore; ritarda il riconoscimento del drag; asse sporco |
 
 ### 3.4 Traduzione touch delle interazioni da conservare
 
