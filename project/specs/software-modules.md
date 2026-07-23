@@ -11,7 +11,7 @@ Documenti correlati: [core-concepts.md](core-concepts.md) (concetti fondamentali
 Vincoli di fondo, comuni a tutti i moduli:
 
 - **Nessun sistema di moduli**: i file sono caricati con `<script>` in `app/index.html`; ogni funzione e variabile top-level è globale. I riferimenti incrociati si risolvono a tempo di chiamata, quindi l'ordine di caricamento conta solo per il codice eseguito al boot.
-- **Il DOM è il modello dati**: l'espressione è un albero di `div[data-enode]` (ENODE) dentro `#canvasRole`. Attributi (`data-enode`, `data-type`, `title`/`mark`, `data-import`) e classi CSS codificano sia semantica sia stato UI. `ENODEextend` copia i metodi dell'oggetto `ENODE` direttamente sui nodi DOM.
+- **Il DOM è il modello dati**: l'espressione è un albero di `div[data-enode]` (ENODE) dentro `#canvasRole`. Attributi (`data-enode`, `data-type`, `title`/`mark`, `data-import`) e classi CSS codificano sia semantica sia stato UI. Le operazioni sugli ENODE sono funzioni globali (`ENODE_getRoles(node)`, `ENODE_getChildren(node)`, ...) che ricevono il nodo come primo parametro; il vecchio meccanismo `ENODEextend` (metodi copiati sui nodi con `$.extend`) è stato eliminato.
 - **Due motori di trasformazione**: proprietà *hard-wired* (funzioni JS registrate in `propertyRegistry.js`) e proprietà *pattern-based* (dichiarate come `forAll`+`eq` nel canvas, applicate dal pattern matcher). Entrambe producono un `PActx` e convergono in `PActxConclude` → `refine.js`.
 
 ### Strati
@@ -165,18 +165,18 @@ Espone:
 - `$parserForMixedMMLHTML(toBeParsed) → jQuery` — usata da: `SaveLoad.js`, `preload.js`.
 
 #### `ExpressionManager.js`
-Ruolo: facciata dell'albero ENODE. È il modulo più esposto: primitive strutturali, navigazione, clonazione da prototipi, sostituzioni, validazione dei drop, valutazione numerica parziale, uguaglianza strutturale, refresh di parentesi/infix. Espone inoltre l'oggetto `ENODE` (metodi copiati sui nodi DOM da `ENODEextend`) e la costante `symbols = ["ci","cn","csymbol"]` (usata da `inflatedeflate.js`, `PatternMatchingTrasform.js`).
+Ruolo: facciata dell'albero ENODE. È il modulo più esposto: primitive strutturali, navigazione, clonazione da prototipi, sostituzioni, validazione dei drop, valutazione numerica parziale, uguaglianza strutturale, refresh di parentesi/infix. Espone la costante `symbols = ["ci","cn","csymbol"]` (usata da `inflatedeflate.js`, `PatternMatchingTrasform.js`).
 
 Interfaccia, per gruppi (i chiamanti principali sono lo strato properties, `DnD.js`, `MAIN.js`, persistence e `newPM/`):
 
 - Primitive strutturali: `ENODEremove`, `ENODEinsertBefore`, `ENODEinsertAfter`, `ENODEappend`, `ENODEprepend`, `ENODEreplaceNode`, `ENODEswapEqMembers`, `ENODEcreateSymbol`, `identifierToENODE`, `dummyParser`, `getExpressionRootNode` (per `Undo.js`).
 - Navigazione e stato: `ENODEparent($n)`, `ENODEtiedDef`, `isDefinition`, `ENODEfrozenDef`, `ENODECreateDefinition`.
-- Metodi sui nodi (via oggetto `ENODE`): `ENODE_getRoles(selector)`, `ENODE_getChildren(selector)`, `ENODE_getName(considerSuffix?)`, `ENODE_setName(name)`, `ENODE_addRole(...)`, `ENODE_dissolveContainer()` — usati da quasi tutti gli strati.
+- Accesso ai nodi (funzioni globali con il nodo come primo parametro): `ENODE_getRoles(node, selector?)`, `ENODE_getChildren(node, selector?)`, `ENODE_getName(node, considerSuffix?)`, `ENODE_setName(node, name)`, `ENODE_addRole(node, ...)`, `ENODE_dissolveContainer(node)` — usate da quasi tutti gli strati.
 - Sostituzione e forAll: `ENODEReplaceLink`, `ENODEReplaceAll`, `GetforAllContentRole`, `GetforAllHeader`, `ENODEForThisPar`, `createForThis`.
 - Compatibilità drop: `typeOk($dragged, $role)`, `validTargetsFromOpened($dragged)`, `getNumOfPlaces($role)`, `isTherePlaceForAnother($role)`.
 - Clonazione e wrap: `ENODEclone($n, Extend?, removeID?)`, `prototypeSearch(className, dataType?, ...)`, `wrapIfNeeded`, `wrapWithOperation`, `wrapWithDefIfNeededreturnTarget`, `checkSiblings`.
 - Valori e confronto: `ENODEsToVal`, `ValToENODEs`, `ENODEgetNameWithSign`, `ENODErename`, `ENODEEqual(n1, n2, checkType?, neglectRootSign?)`, `compareExtENODE($input, $pattern, ...)` (cuore del matching, usata da `PMTutilities.js` e `newPM/match.js`).
-- Refresh ed estensione: `RefreshEmptyInfixBraketsGlued($start?, tree?, options?)` (refresh visivo completo, chiamata da quasi tutti gli strati dopo una modifica), `ENODEextend`, `ENODEselectable`, `ENODERefreshAsymmEq`, `ENODEnodesAddClass`, `ENODEapplyFunctToTree`, `getDefaultTool`.
+- Refresh: `RefreshEmptyInfixBraketsGlued($start?, tree?, options?)` (refresh visivo completo, chiamata da quasi tutti gli strati dopo una modifica), `ENODEselectable`, `ENODERefreshAsymmEq`, `ENODEnodesAddClass`, `ENODEapplyFunctToTree`, `getDefaultTool`.
 
 #### `calculateSpan.js`
 Ruolo: analisi di scope e giurisdizione logica: span delle variabili legate (`forAll`), occorrenze, propagazione attraverso `and`/`implies`, cluster associativi, evidenziazione delle occorrenze.
@@ -323,7 +323,7 @@ Espone: `removeClassStartNodeAndDiscendence` (→ `PMTutilities.js`, `Expression
 
 Ruolo: reimplementazione sperimentale del pattern matching con match tracciato, bind eager (`replaceInForall` a ogni bind) e storyboard visuale. Caricato in `index.html` ma **non** sostituisce il PM di produzione: si invoca da console con `newPM(selectorDragged, selectorTarget, options?)` (contratto allineato ad autoAdapt). File: `match.js` (matcher), `resolve.js` (dragged+target → forAll/direzione/clone), `phases.js` (script visuale), `visualize.js` (player), `api.js` (facciata `newPM`), `load.js` (loader console-only, non in `index.html`).
 
-Dipende dalle interfacce di produzione: `compareExtENODE`, `replaceInForall`, `swapMembersClone`, `levelsToAncestor`, `ENODESmarkUnmark`, `ENODEclone`/`ENODEextend`/`ENODEremove`, `refreshAndReplace`, `RefreshEmptyInfixBraketsGlued`. Dettagli, fixture e API in [app/js/newPM/README.md](../../app/js/newPM/README.md).
+Dipende dalle interfacce di produzione: `compareExtENODE`, `replaceInForall`, `swapMembersClone`, `levelsToAncestor`, `ENODESmarkUnmark`, `ENODEclone`/`ENODEremove`, `refreshAndReplace`, `RefreshEmptyInfixBraketsGlued`. Dettagli, fixture e API in [app/js/newPM/README.md](../../app/js/newPM/README.md).
 
 ---
 

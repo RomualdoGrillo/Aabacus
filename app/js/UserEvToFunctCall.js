@@ -19,8 +19,8 @@ function tryEventActionsOnNode($ENODE, eventKey) {
 		let actionString
 		let firstValString
 		try {
-			actionString = $actions[i].ENODE_getRoles('.function').children()[0].ENODE_getName()
-			firstValString = $actions[i].ENODE_getRoles('.values').children()[0].ENODE_getName()
+			actionString = ENODE_getName(ENODE_getRoles($actions[i], '.function').children()[0])
+			firstValString = ENODE_getName(ENODE_getRoles($actions[i], '.values').children()[0])
 		} catch (err) {}
 
 		PActx = TryOnePropertyByName(actionString, $ENODE, firstValString)
@@ -105,7 +105,7 @@ function getDnDpropEnabled(dataTag){
 function searchEventHandler(event){// trova la definizione della proprietà
    let res
    const $found = $('#events').find('[data-enode="eventtoaction"]').filter(function(index){
-        const $role = this.ENODE_getRoles('.event');
+        const $role = ENODE_getRoles(this, '.event');
         if($role.length !== 1){
             console.warn('Role not found for event: ' + event);
             res = $()
@@ -113,7 +113,7 @@ function searchEventHandler(event){// trova la definizione della proprietà
         }
         const ENODE = $role.children()[0]
         if( ENODE !== undefined){
-            return ENODE.ENODE_getName().toLowerCase() === event.toLowerCase()//case insensitive
+            return ENODE_getName(ENODE).toLowerCase() === event.toLowerCase()//case insensitive
         }
         else{
         	res = $()
@@ -121,7 +121,7 @@ function searchEventHandler(event){// trova la definizione della proprietà
         }
     })
     if ($found.length !== 0){
-        res = $found[0].ENODE_getRoles('.actions').children()
+        res = ENODE_getRoles($found[0], '.actions').children()
     }
     else{ res = $()}
     return  res
@@ -137,14 +137,14 @@ function searchForProperty(field,value,returnedField){
 	let candidates = Array.from( canvasRole.querySelectorAll('[data-enode=deftrue]') );
 	let i=0;
 	while(candidates[i]){
-		let $role = candidates[i].ENODE_getRoles().filter('.' + field)
+		let $role = ENODE_getRoles(candidates[i]).filter('.' + field)
 		if($role.length !== 1){
 			console.warn('Role not found' + field);
 		}
 		let ENODEvalue = $role.children()[0]
-		if(ENODEvalue !== undefined && ENODEvalue.ENODE_getName().toLowerCase() === value.toLowerCase() ){
+		if(ENODEvalue !== undefined && ENODE_getName(ENODEvalue).toLowerCase() === value.toLowerCase() ){
 		    //case insensitive
-        	return   $( candidates[i].ENODE_getRoles().filter("." + returnedField ).children()[0] ) 
+        	return   $( ENODE_getRoles(candidates[i]).filter("." + returnedField ).children()[0] ) 
 		}	
 	i++}
 }

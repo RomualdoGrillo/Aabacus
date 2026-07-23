@@ -13,10 +13,10 @@ function ENODEfactorizeMinus($startNode) {
 	const $clone = ENODEclone(prototype);
 	const $cloneMinus = ENODEclone(prototypeMinus);
 	$clone.attr('data-enode', 'cn');
-	$clone[0].ENODE_setName("1");
+	ENODE_setName($clone[0], "1");
 	$cloneMinus.insertAfter($startNode);
-	$cloneMinus[0].ENODE_getRoles().append($clone);
-	$startNode[0].ENODE_dissolveContainer()
+	ENODE_getRoles($cloneMinus[0]).append($clone);
+	ENODE_dissolveContainer($startNode[0])
 	//remove minus from $startNode  
 	RefreshEmptyInfixBraketsGlued($('body'));//rinfresca anche gli infix di $extOp
 	ssnapshot.take();
@@ -34,7 +34,7 @@ function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsCl
 ) {
 	// <>-a<> to <class="minus">a<>
 	// nota: non possono coesistere segni meno all'interno del nome e "minus" come classi
-	let name = $ENODE[0].ENODE_getName()
+	let name = ENODE_getName($ENODE[0])
 	if (mode == "SignsInNames_to_SignsAsClasses") {
 		if (name[0] === "/") {
 			name = name.substr(1)
@@ -69,15 +69,15 @@ function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsCl
 			wrapWithOperation($ENODE, "minus")
 		}
 	} else if (mode == "MinusOp_to_SignsAsClasses") {
-		const $ENODEchildren = $ENODE[0].ENODE_getRoles().children().filter('[data-enode]')
+		const $ENODEchildren = ENODE_getRoles($ENODE[0]).children().filter('[data-enode]')
 		if ($ENODE.attr('data-enode') === "minus" && $ENODEchildren.length == 1) {
 			// i minus che hanno un solo children
-			$ENODE[0].ENODE_dissolveContainer();
+			ENODE_dissolveContainer($ENODE[0]);
 			$ENODEchildren.filter(':first').addClass('minus');
 		}
 	}
 
-	$ENODE[0].ENODE_setName(name);
+	ENODE_setName($ENODE[0], name);
 	$ENODE.attr("data-enode", (isNaN(name)) ? "ci" : "cn")
 	// se numero allora classe "cn"
 }
@@ -123,7 +123,7 @@ function refreshGlued($startNode) {
     
     // Applica la classe "glued" ai figli degli elementi trovati
     $stickyParents.each(function() {
-        const $toBeGlued = this.ENODE_getRoles().children().filter('[data-enode]');
+        const $toBeGlued = ENODE_getRoles(this).children().filter('[data-enode]');
         $toBeGlued.addClass('glued');
     });
 }

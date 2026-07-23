@@ -35,7 +35,7 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 		$('#canvasRole [data-enode=eq] [data-enode]').filter(function () {
 			return $(this).closest('[data-import]').length == 0;
 		}).map(function () {
-			return this.getAttribute('data-enode') + '(' + (this.ENODE_getName ? this.ENODE_getName() : '') + ')';
+			return this.getAttribute('data-enode') + '(' + ENODE_getName(this) + ')';
 		}).get().join(' '));
 
 	// ---------- 3) Serializzazione AlltoMMLSstring (deflate aab->mml) ----------
@@ -46,8 +46,8 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 	// ---------- 4) plusAssociate ltr: (1+1+1)+(1+1) -> 1+1+1+(1+1) ----------
 	const pmRes = await page.evaluate(() => {
 		const $inner = $('#canvasRole [data-enode=plus]').filter(function () {
-			const $k = this.ENODE_getChildren();
-			return $k.length === 3 && $k.filter(function () { return this.ENODE_getName() === '1'; }).length === 3;
+			const $k = ENODE_getChildren(this);
+			return $k.length === 3 && $k.filter(function () { return ENODE_getName(this) === '1'; }).length === 3;
 		}).first();
 		if ($inner.length === 0) { return { ok: false, msg: 'inner plus not found' }; }
 		const nBefore = $('#canvasRole [data-enode=plus]').length;
@@ -62,17 +62,17 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 	// ---------- 5) compose: seleziona il plus(1,1) e componi -> 2 ----------
 	const composeRes = await page.evaluate(() => {
 		const $inner = $('#canvasRole [data-enode=plus]').filter(function () {
-			const $k = this.ENODE_getChildren();
-			return $k.length === 2 && $k.filter(function () { return this.ENODE_getName() === '1'; }).length === 2;
+			const $k = ENODE_getChildren(this);
+			return $k.length === 2 && $k.filter(function () { return ENODE_getName(this) === '1'; }).length === 2;
 		}).first();
 		if ($inner.length === 0) { return { ok: false, msg: 'plus(1,1) not found' }; }
-		const $kids = $inner[0].ENODE_getChildren();
+		const $kids = ENODE_getChildren($inner[0]);
 		$kids.addClass('selected');
 		const PActx = TryOnePropertyByName('compose', $kids);
 		if (!PActx || !PActx.matchedTF) { return { ok: false, msg: 'compose not matched: ' + (PActx && PActx.msg) }; }
 		PActxConclude(PActx);
 		const found2 = $('#canvasRole [data-enode=cn]').filter(function () {
-			return this.ENODE_getName() === '2' && $(this).closest('[data-import]').length == 0;
+			return ENODE_getName(this) === '2' && $(this).closest('[data-import]').length == 0;
 		}).length > 0;
 		return { ok: found2, msg: 'cn(2) found=' + found2 };
 	});
@@ -84,7 +84,7 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 			return $(this).closest('[data-import]').length == 0;
 		}).first();
 		if ($outer.length === 0) { return { ok: false, msg: 'outer plus not found' }; }
-		const $cn = $outer[0].ENODE_getChildren(':first');
+		const $cn = ENODE_getChildren($outer[0], ':first');
 		const nBefore = $('#canvasRole [data-enode=plus]').length;
 		const PActx = TryOnePropertyByName('plusAssociate', $cn, 'rtl');
 		if (!PActx || !PActx.matchedTF) { return { ok: false, msg: 'rtl not matched: ' + (PActx && PActx.msg) }; }
@@ -98,7 +98,7 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 	// nota: lo snapshot viene preso DOPO ogni azione, servono più undo
 	const undoRes = await page.evaluate(() => {
 		const has2 = () => $('#canvasRole [data-enode=cn]').filter(function () {
-			return this.ENODE_getName() === '2' && $(this).closest('[data-import]').length == 0;
+			return ENODE_getName(this) === '2' && $(this).closest('[data-import]').length == 0;
 		}).length > 0;
 		let i = 0;
 		while (has2() && i < 5) { ssnapshot.undo(); i++; }
@@ -109,30 +109,30 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 	// ---------- 8) decomposeInASum su un cn>1 ----------
 	const decRes = await page.evaluate(() => {
 		const $cn = $('#canvasRole [data-enode=cn]').filter(function () {
-			return Number(this.ENODE_getName()) > 1 && $(this).closest('[data-import]').length == 0;
+			return Number(ENODE_getName(this)) > 1 && $(this).closest('[data-import]').length == 0;
 		}).first();
 		if ($cn.length === 0) {
 			// dopo l'undo potrebbe non esserci un cn>1: ricrea componendo 1+1
 			const $inner = $('#canvasRole [data-enode=plus]').filter(function () {
-				const $k = this.ENODE_getChildren();
-				return $k.length === 2 && $k.filter(function () { return this.ENODE_getName() === '1'; }).length === 2;
+				const $k = ENODE_getChildren(this);
+				return $k.length === 2 && $k.filter(function () { return ENODE_getName(this) === '1'; }).length === 2;
 			}).first();
 			if ($inner.length === 0) { return { ok: false, msg: 'no cn>1 and no plus(1,1)' }; }
-			const $kids = $inner[0].ENODE_getChildren();
+			const $kids = ENODE_getChildren($inner[0]);
 			$kids.addClass('selected');
 			PActxConclude(TryOnePropertyByName('compose', $kids));
 		}
 		const $cn2 = $('#canvasRole [data-enode=cn]').filter(function () {
-			return Number(this.ENODE_getName()) > 1 && $(this).closest('[data-import]').length == 0;
+			return Number(ENODE_getName(this)) > 1 && $(this).closest('[data-import]').length == 0;
 		}).first();
 		if ($cn2.length === 0) { return { ok: false, msg: 'still no cn>1' }; }
-		const val = Number($cn2[0].ENODE_getName());
+		const val = Number(ENODE_getName($cn2[0]));
 		const PActx = decomposeInASum($cn2);
 		if (!PActx || !PActx.matchedTF) { return { ok: false, msg: 'decompose not matched' }; }
 		PActxConclude(PActx);
 		const names = $('#canvasRole [data-enode=cn]').filter(function () {
 			return $(this).closest('[data-import]').length == 0;
-		}).map(function () { return this.ENODE_getName(); }).get();
+		}).map(function () { return ENODE_getName(this); }).get();
 		return { ok: names.indexOf(String(val - 1)) !== -1, msg: 'val=' + val + ' cn names=' + names.join(',') };
 	});
 	report('decomposeInASum n -> (n-1)+1', decRes.ok, decRes.msg + ' | ' + await dump());
@@ -141,16 +141,16 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 	const parserRes = await page.evaluate(() => {
 		const $eq = dummyParser('3=x');
 		if (!$eq || $eq.length === 0) { return { ok: false, msg: 'dummyParser returned nothing' }; }
-		const first0 = $eq[0].ENODE_getRoles('.firstMember').children()[0].ENODE_getName();
+		const first0 = ENODE_getName(ENODE_getRoles($eq[0], '.firstMember').children()[0]);
 		ENODEswapEqMembers($eq);
-		const first1 = $eq[0].ENODE_getRoles('.firstMember').children()[0].ENODE_getName();
+		const first1 = ENODE_getName(ENODE_getRoles($eq[0], '.firstMember').children()[0]);
 		return { ok: first0 === '3' && first1 === 'x', msg: 'firstMember: ' + first0 + ' -> ' + first1 };
 	});
 	report('dummyParser + ENODEswapEqMembers', parserRes.ok, parserRes.msg);
 
 	const symRes = await page.evaluate(() => {
 		const $s = ENODEcreateSymbol('y', 'num');
-		return { ok: $s.attr('data-enode') === 'ci' && $s.attr('data-type') === 'num' && $s[0].ENODE_getName() === 'y' };
+		return { ok: $s.attr('data-enode') === 'ci' && $s.attr('data-type') === 'num' && ENODE_getName($s[0]) === 'y' };
 	});
 	report('ENODEcreateSymbol creates ci with data-type', symRes.ok);
 

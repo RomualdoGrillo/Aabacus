@@ -180,7 +180,7 @@ function AlltoMMLSstring(){
 	//palette
 	let paletteString = ENODEcreateMathmlString($('#palette').children(':not(.fundamental)'),true);
 	//canvas
-	let canvasString = ENODEcreateMathmlString($('#canvasAnd')[0].ENODE_getChildren(),true);
+	let canvasString = ENODEcreateMathmlString(ENODE_getChildren($('#canvasAnd')[0]),true);
 	//events
 	let eventsString = ENODEcreateMathmlString($('#events').children(),true);
 	//result

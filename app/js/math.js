@@ -26,10 +26,10 @@ function ENODENumericCdsAsText($ENODE){
   let sign = 1
   while( $elementUnderTest.attr('data-enode') === "minus" ){
     //passa all'elemento interno
-    $elementUnderTest = $elementUnderTest[0].ENODE_getRoles().children(':first');
+    $elementUnderTest = ENODE_getRoles($elementUnderTest[0]).children(':first');
     sign = sign * -1
   }
-  let res = $elementUnderTest[0].ENODE_getName();
+  let res = ENODE_getName($elementUnderTest[0]);
   if( sign == -1 ){//se necessario aggiungi segno meno
     res = "-" + res
   }

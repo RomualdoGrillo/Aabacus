@@ -11,11 +11,11 @@
 function parameterInHeader($parameter,$property){
     if ($property.attr('data-enode') !== 'forAll'){ return undefined}
     const $bvars = GetforAllHeader($property).children('[data-enode]');
-    const parameterName = $parameter[0].ENODE_getName();
+    const parameterName = ENODE_getName($parameter[0]);
     let i
     for(let i=0; i<$bvars.length ;i++){
-        const bvaTag = $bvars[i].ENODE_getName(true)
-        const bvarName = $bvars[i].ENODE_getName();//ottieni il nome privato degli underscore __
+        const bvaTag = ENODE_getName($bvars[i], true)
+        const bvarName = ENODE_getName($bvars[i]);//ottieni il nome privato degli underscore __
         if(parameterName === bvarName){
             return $($bvars[i]) 
         }
@@ -94,7 +94,7 @@ function parameterType($ENODE,$prop){
     if(symbols.indexOf(className) == -1){//not a symbol?(ci,cs,csymbol)
         return "n"
     }
-    const parameterName = $ENODE[0].ENODE_getName(true);
+    const parameterName = ENODE_getName($ENODE[0], true);
     //****** compatibilità con notazione "Mathematica"
     //search if name's tail is _ __ ___
     if(parameterName.slice(-3) === "___" ){return "x___"}//x___
@@ -110,8 +110,8 @@ function parameterType($ENODE,$prop){
     let i
     let $match = undefined
     for(let i=0; i<$bvars.length ;i++){
-        const bvaTag = $bvars[i].ENODE_getName(true)
-        const bvarName = $bvars[i].ENODE_getName();//ottieni il nome privato degli underscore __
+        const bvaTag = ENODE_getName($bvars[i], true)
+        const bvarName = ENODE_getName($bvars[i]);//ottieni il nome privato degli underscore __
         if(parameterName === bvarName){
             $match = $($bvars[i]); 
             break
@@ -213,7 +213,6 @@ function swapMembersClone($origProp,mode){
     res.$cloneProp = ENODEclone($origProp);
     res.visualization =    wrapUnwrapUrlString( $origProp[0].style.backgroundImage ,'cutFirstDir')
     //if(debugMode){$('#canvasRole').append(res.$cloneProp)}//debug 
-    ENODEextend(res.$cloneProp,true)
     //***********marca TUTTI I CLONI clone ************************************************
     res.$cloneProp.find('[data-enode]').addBack().addClass('PMclone')//is a pattern matching clone
 

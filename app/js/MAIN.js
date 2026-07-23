@@ -8,9 +8,7 @@ ssnapshot()
 //***********************
 //all elements that can be dragged around are initiated by making their container Sortable
 let sortablesSelectorString = '.ul_role,.ol_role,.s_role:not(.unsortable),.bVar_role'
-ENODEextend($('body'), true);
 //************ Preload  ************
-//preload will extend new ENODEs 
 preloadAll(preloadPath);//ATTENTION contains asinchronous functions
 //initialize lock icons??
 //RefreshEmptyInfixBraketsGlued();
@@ -331,13 +329,13 @@ function ExtendAndInitializeTree($startElement) {
 }
 
 /**
- * Estende un singolo nodo con i metodi ENODE (ENODEextend) e, se è una
- * definizione, ne inizializza l'icona del lucchetto (ENODERefreshAsymmEq).
- * @param {JQuery} $ENODE - Nodo da estendere e inizializzare.
+ * Inizializza un singolo nodo: se è una definizione ne aggiorna l'icona del
+ * lucchetto (ENODERefreshAsymmEq). (Storicamente estendeva anche il nodo con i
+ * metodi ENODE; l'extend è stato eliminato in favore di funzioni libere.)
+ * @param {JQuery} $ENODE - Nodo da inizializzare.
  * @returns {void}
  */
 function ExtendAndInitialize($ENODE) {
-	ENODEextend($ENODE, true)
 	//initialize lock icon
 	if ($ENODE.is('[data-enode]') && isDefinition($ENODE[0])) {
 		ENODERefreshAsymmEq($ENODE)

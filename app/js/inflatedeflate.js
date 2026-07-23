@@ -3,19 +3,12 @@
 
 /**
  * Serializza uno o più alberi ENODE in una stringa MathML formattata (deflate).
- * Doppia convenzione di chiamata: come funzione, `ENODEcreateMathmlString($nodi)`,
- * oppure come metodo sul nodo DOM, `node.ENODEcreateMathmlString()` (in tal caso
- * $startNodes viene ricavato da `this`).
- * @param {JQuery} [$startNodes] - Nodi ENODE di partenza; se omesso usa $(this) (chiamata come metodo).
+ * @param {JQuery} $startNodes - Nodi ENODE di partenza.
  * @param {boolean} [describeDataType] - Se true serializza anche i data-type (formato "aab_mmlWithType" anziché "aab_mml").
  * @param {boolean} [neglectRootSign] - Se true ignora il segno del nodo radice nella serializzazione.
  * @returns {string} La stringa MathML formattata (via formatXml), oppure "" se la conversione non produce nodi.
  */
 function ENODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) {
-	//per poter chiamare sia come funzione che come metodo
-	if ($startNodes == undefined) {
-		$startNodes = $(this);
-	}
 	var from_to
 	if (describeDataType) {
 		from_to = "aab_mmlWithType"
@@ -55,12 +48,8 @@ function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImport
 		$containerForClone.append($thisClone)
 		//deflate todo: completare distinzione tra mml e mml + type
 
-		//estendi tutti i nodi ENODE
-		$thisClone.parent().find('[data-enode]').each(function(i, node) {
-			$.extend(node, ENODE)
-		})
 		//rimuovi il contenuto importato da altri files
-		$thisClone.parent().find('[data-import]').each(function(i, node){node.ENODE_getChildren().remove()});
+		$thisClone.parent().find('[data-import]').each(function(i, node){ENODE_getChildren(node).remove()});
 	
 
 		//signsAsClassesSubtree($thisClone,"SignsAsClasses_to_MinusOp")// converti in modo che il segno meno sia una operazione applicata al nodo
@@ -117,19 +106,19 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 		var nodeText = ""
 		if (symbols.indexOf(originalData.enode.toLowerCase()) !== -1) {
 			//if [cn;ci;csymbol] then the content is the text, else some role must be present
-			nodeText = node.ENODE_getName(true);
+			nodeText = ENODE_getName(node, true);
 			$newNode = $('<' + originalData.enode.toLowerCase() + '/>');
 			$newNode.text(nodeText)
 		} else {
 			/*
-			var $role= node.ENODE_getRoles();
+			var $role= ENODE_getRoles(node);
 			var $bVarChildren=$role.filter('.bVar_role').children().filter('[data-enode]')// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
 			var $nobBvarchildren=$role.not('.bVar_role').children().filter('[data-enode]')
 			*/
-			var $bVarChildren = node.ENODE_getRoles('.bVar_role').children().filter('[data-enode]')
+			var $bVarChildren = ENODE_getRoles(node, '.bVar_role').children().filter('[data-enode]')
 			// se un role è di tipo bvar, viene elencato per primo, e va trattato in modo speciale
-			var $nobBvarchildren = node.ENODE_getRoles(':not(.bVar_role)').children().filter('[data-enode]')
-			var $htmlDivChildren = node.ENODE_getRoles(':not(.bVar_role)').children().filter(':not([data-enode])').filter('.saveAsHtml')
+			var $nobBvarchildren = ENODE_getRoles(node, ':not(.bVar_role)').children().filter('[data-enode]')
+			var $htmlDivChildren = ENODE_getRoles(node, ':not(.bVar_role)').children().filter(':not([data-enode])').filter('.saveAsHtml')
 			//salvo ciò che è .saveAsHtmlL
 			$newNode = $('<apply></apply>')
 			$newNode.text(nodeText)
@@ -178,22 +167,20 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 			var $prototype = prototypeSearch(ENODE, dataType,undefined,nodeText)
 			if($prototype.length==0){console.log('prototype not found prototypeSearch()');console.log([ENODE, $node.attr("type"),undefined,nodeText])}
 			$newNode = ENODEclone($prototype)
-			ENODEextend($newNode)
-			// extend the new node
 			if (symbols.indexOf(ENODE.toLowerCase()) !== -1) {
 				//todo: eccezione if leafTag with children
 				try {
-					$newNode[0].ENODE_setName($node.text());
+					ENODE_setName($newNode[0], $node.text());
 				} catch (err) {
 					console.log('error on prototype '+ENODE+" "+ $node.attr("type"))
 				}
 				//signsAsClasses($newNode,"SignsInNames_to_SignsAsClasses"); //convert to_signs_as_classes 
 			} else {
 				//append children in roles
-				var $tgtRoles = $newNode[0].ENODE_getRoles();
+				var $tgtRoles = ENODE_getRoles($newNode[0]);
 				if($tgtRoles.length==0){
-					$newNode[0].ENODE_addRole();
-					$tgtRoles = $newNode[0].ENODE_getRoles();
+					ENODE_addRole($newNode[0]);
+					$tgtRoles = ENODE_getRoles($newNode[0]);
 				}
 				var $bVarRole = $tgtRoles.filter('.bVar_role');
 				var $noBVarRole = $tgtRoles.not('.bVar_role');

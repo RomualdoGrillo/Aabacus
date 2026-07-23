@@ -50,7 +50,7 @@
 		if (typeof GetforAllContentRole === 'function') {
 			$content = GetforAllContentRole($forAll).children();
 		} else {
-			$content = $forAll[0].ENODE_getChildren();
+			$content = ENODE_getChildren($forAll[0]);
 		}
 		var $eq = $content.filter('[data-enode=eq]').first();
 		if (!$eq.length) $eq = $content.first();
@@ -71,8 +71,8 @@
 		if (!$eq.length || $eq.attr('data-enode') !== 'eq') {
 			return null;
 		}
-		var $first = $eq[0].ENODE_getRoles('.firstMember').children().first();
-		var $second = $eq[0].ENODE_getRoles('.secondMember').children().first();
+		var $first = ENODE_getRoles($eq[0], '.firstMember').children().first();
+		var $second = ENODE_getRoles($eq[0], '.secondMember').children().first();
 		var $pattern = direction === 'ltr' ? $first : $second;
 		var $transform = direction === 'ltr' ? $second : $first;
 		return {
@@ -95,9 +95,7 @@
 		while (cur && cur !== rootEl && guard++ < 64) {
 			var $parentEn = $(cur).parent().closest('[data-enode]');
 			if (!$parentEn.length) return null;
-			var kids = $parentEn[0].ENODE_getChildren
-				? $parentEn[0].ENODE_getChildren().toArray()
-				: $parentEn.children('[data-enode]').toArray();
+			var kids = ENODE_getChildren($parentEn[0]).toArray();
 			var idx = kids.indexOf(cur);
 			if (idx < 0) return null;
 			path.unshift(idx);
@@ -112,8 +110,8 @@
 		if (!path || !path.length) return $root;
 		var $n = $root;
 		for (var i = 0; i < path.length; i++) {
-			if (!$n.length || !$n[0].ENODE_getChildren) return $();
-			var kids = $n[0].ENODE_getChildren();
+			if (!$n.length) return $();
+			var kids = ENODE_getChildren($n[0]);
 			$n = $(kids[path[i]]);
 		}
 		return $n;
@@ -176,9 +174,8 @@
 		if ($cloneProp.attr('data-enode') === 'eq') {
 			return {
 				$equation: $cloneProp,
-				$pattern: $cloneProp[0].ENODE_getRoles('.firstMember').children().first(),
-				$transform: $cloneProp[0]
-					.ENODE_getRoles('.secondMember')
+				$pattern: ENODE_getRoles($cloneProp[0], '.firstMember').children().first(),
+				$transform: ENODE_getRoles($cloneProp[0], '.secondMember')
 					.children()
 					.first()
 			};
@@ -230,7 +227,7 @@
 			throw new Error('newPM: contenuto del forAll non è un’equazione');
 		}
 
-		var $members = $eq[0].ENODE_getRoles('.firstMember,.secondMember');
+		var $members = ENODE_getRoles($eq[0], '.firstMember,.secondMember');
 		var $roleMember = $members.filter(function (i, e) {
 			return e.contains($dragged[0]);
 		});

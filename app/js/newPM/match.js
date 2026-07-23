@@ -27,8 +27,8 @@
 		var kind = $node.attr('data-enode') || '?';
 		var name = '';
 		try {
-			if (el && typeof el.ENODE_getName === 'function') {
-				name = el.ENODE_getName(true) || '';
+			if (el && $(el).is('[data-enode]')) {
+				name = ENODE_getName(el, true) || '';
 			}
 		} catch (e) {
 			/* ignore */
@@ -38,7 +38,7 @@
 
 	function getName($node) {
 		try {
-			return $node[0].ENODE_getName(true) || '';
+			return ENODE_getName($node[0], true) || '';
 		} catch (e) {
 			return '';
 		}
@@ -101,9 +101,6 @@
 			return null;
 		}
 		var $snap = ENODEclone($cloneProp, false, false);
-		if (typeof ENODEextend === 'function') {
-			ENODEextend($snap, true);
-		}
 		$snap.find('[data-enode]').addBack().addClass('PMclone');
 		return $snap;
 	}
@@ -159,7 +156,6 @@
 		var $tf = currentTransform(ctx);
 		if (!$tf || !$tf.length || typeof ENODEclone !== 'function') return null;
 		var $snap = ENODEclone($tf, false, false);
-		if (typeof ENODEextend === 'function') ENODEextend($snap, true);
 		$snap.addClass('PMclone newPM-tf-snap');
 		return $snap;
 	}
@@ -242,10 +238,10 @@
 			parentPath.length === 0
 				? ctx.$patternRoot
 				: nodeUnderPatternRoot(ctx, parentPath);
-		if (!$parent.length || !$parent[0].ENODE_getChildren) {
+		if (!$parent.length) {
 			return ctx.$patternRoot;
 		}
-		return $parent[0].ENODE_getChildren();
+		return ENODE_getChildren($parent[0]);
 	}
 
 	function matchTrees($Input, $Pattern, options) {
@@ -472,10 +468,10 @@
 			var $preNestedSnap = snapshotCloneProp(ctx.$cloneProp);
 
 			if (!isParameter) {
-				var $pattArg = $pattNode[0].ENODE_getChildren();
-				var $inArg = $inNode[0].ENODE_getChildren();
+				var $pattArg = ENODE_getChildren($pattNode[0]);
+				var $inArg = ENODE_getChildren($inNode[0]);
 				var childOrdered =
-					$inNode[0].ENODE_getRoles().is('.ol_role') ||
+					ENODE_getRoles($inNode[0]).is('.ol_role') ||
 					$pattNode.attr('data-nosort') === 'true' ||
 					ctx.orderedList;
 				if ($pattArg.length || $inArg.length) {

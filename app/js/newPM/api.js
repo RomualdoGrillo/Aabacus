@@ -83,7 +83,6 @@
 				: null;
 		if (!mem || !mem.$transform || !mem.$transform.length) return $();
 		var $snap = ENODEclone(mem.$transform, false, false);
-		if (typeof ENODEextend === 'function') ENODEextend($snap, true);
 		$snap.addClass('PMclone newPM-tf-snap');
 		return $snap;
 	}

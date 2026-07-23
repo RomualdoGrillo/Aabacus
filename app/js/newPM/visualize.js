@@ -101,8 +101,8 @@
 				typeof GetforAllContentRole === 'function'
 					? GetforAllContentRole($prop).children('[data-enode=eq]').first()
 					: $prop.find('[data-enode=eq]').first();
-			if ($eq.length && $eq[0].ENODE_getRoles) {
-				$anchor = $eq[0].ENODE_getRoles('.secondMember').children().first();
+			if ($eq.length) {
+				$anchor = ENODE_getRoles($eq[0], '.secondMember').children().first();
 			}
 		}
 
@@ -140,7 +140,6 @@
 		if (!$snap || !$snap.length) return null;
 		var $show =
 			typeof ENODEclone === 'function' ? ENODEclone($snap, false, false) : $snap.clone(true);
-		if (typeof ENODEextend === 'function') ENODEextend($show, true);
 		$show.addClass('newPM-specialize-expr');
 		$(body).append($show);
 		$(body).addClass('newPM-specialize-pulse');
@@ -471,7 +470,7 @@
 		var $src = $('[data-tag^=newPM-] .firstMember [data-enode], #newPM-demo-pattern [data-enode]').filter(
 			function () {
 				try {
-					return this.ENODE_getName(true) === paramName;
+					return ENODE_getName(this, true) === paramName;
 				} catch (e) {
 					return false;
 				}

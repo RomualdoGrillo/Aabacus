@@ -56,7 +56,7 @@ if($ENODETarget.length==0){
 			let $forallContent=GetforAllContentRole(GLBDnD.$originalProperty).children();
 			let $equation=$($forallContent[0]);
 			if(!$equation.is('[data-enode=eq]')){console.log('forall content is not an equation'); return}
-			let $eqRoleMembers=$equation[0].ENODE_getRoles('.firstMember,.secondMember');
+			let $eqRoleMembers=ENODE_getRoles($equation[0], '.firstMember,.secondMember');
 			let $RoleMember = $eqRoleMembers.filter(function(i,e){return e.contains(event.target)})
             if($RoleMember.length==0){return}
             //decide if ltr or rtl
@@ -138,7 +138,7 @@ if($ENODETarget.length==0){
 		else if(GLBDnD.toolWhenMousedown=="declare"){
 			//check if specific commutative property is selected
 			let commutativeOf = $('.selectedTool').attr('data-commutative');
-			let op = $ENODETarget[0].ENODEparent().attr('data-enode')
+			let op = ENODEparent($ENODETarget).attr('data-enode')
 			sort = (op==commutativeOf);// op of drag start == specific type of commutative prop
 		}
 		else{

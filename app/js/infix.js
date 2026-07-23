@@ -5,12 +5,12 @@
  * circondati da due ENODE e clona il prototipo `.infix.proto` davanti a ogni
  * figlio ENODE (tranne il primo) che ne è privo.
  * Usata da `ExpressionManager.js` dentro `RefreshEmptyInfixBraketsGlued`.
- * @param {JQuery} $ENODEnode nodo ENODE esteso (deve avere `ENODE_getRoles`);
- *   se il nodo non è esteso la funzione esce senza fare nulla
+ * @param {JQuery} $ENODEnode nodo ENODE ([data-enode]);
+ *   se non lo è la funzione esce senza fare nulla
  */
 function refreshOneInfix($ENODEnode){
-	if($ENODEnode[0].ENODE_getRoles === undefined){return}// invalid parameter
-	var $role=$ENODEnode[0].ENODE_getRoles();
+	if(!$ENODEnode.is('[data-enode]')){return}// invalid parameter
+	var $role=ENODE_getRoles($ENODEnode[0]);
 	var $ENODEchildren = $role.children().filter('[data-enode]');
 	var $InfixChildren = $role.children().filter('.infix:not(.proto)');
 	var $infixProto = $role.find('>.infix.proto');
@@ -41,12 +41,12 @@ function refreshOneInfix($ENODEnode){
  * numero minimo; per gli altri applica/toglie la classe `empty` a seconda che
  * il ruolo sia rimasto senza figli ENODE.
  * Usata da `ExpressionManager.js` dentro `RefreshEmptyInfixBraketsGlued`.
- * @param {JQuery} $ENODE nodo ENODE esteso (deve avere `ENODE_getRoles`);
- *   se il nodo non è esteso la funzione esce senza fare nulla
+ * @param {JQuery} $ENODE nodo ENODE ([data-enode]);
+ *   se non lo è la funzione esce senza fare nulla
  */
 function refreshOneEmpty($ENODE){
-	if($ENODE[0].ENODE_getRoles==undefined){return};
-	$ENODE[0].ENODE_getRoles().each(function(i,e){
+	if(!$ENODE.is('[data-enode]')){return};
+	ENODE_getRoles($ENODE[0]).each(function(i,e){
 		let childrenNum = $(e).children().filter('[data-enode],.dummyrole').length
 		let minPlaces=getNumOfPlaces($(this))[0]
 		if(minPlaces>1){//manage dummies to ensure minimum places

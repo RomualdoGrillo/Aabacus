@@ -39,11 +39,11 @@ function overwriteFromHeader($forAll) {
     var $parameterList = GetforAllHeader($forAll).children()
     //replace parametri come appaiono nell header
     $parameterList.each(function() {
-        var name = this.ENODE_getName(true);
+        var name = ENODE_getName(this, true);
         if(name.indexOf("_")==-1){name=name+"_"}//se compaiono in hader sono comunque dei parametri variabili
         var $occurrences = $findOccurrences($(this),$forAll,undefined,true);
 		$occurrences.each(function(){
-			this.ENODE_setName(name)
+			ENODE_setName(this, name)
 		})
 
     })
@@ -161,7 +161,7 @@ function ENODEpath($ENODE,$spanRoot,$matchedPattern){
 			else{nthchild=1}
 		}
 		else{
-			nthchild=$currENODEparent[0].ENODE_getChildren().index($currENODE)
+			nthchild=ENODE_getChildren($currENODEparent[0]).index($currENODE)
 		}
 		path = ENODEdescForPath($currPATTparent) + nthchild + " > "+ path //nome del parent + posizione all'interno del parent
 		$currENODE = $currENODEparent;
@@ -212,14 +212,14 @@ function orderUL($property){
 	//gli eq vanno per ora gestiti separatamente
 	var $eqList = 	$property.find('[data-enode="eq"]').addBack('[data-enode="eq"]');//sottoalbero + root
 	$eqList.each(function(i,e){
-		var $firstMember = e.ENODE_getRoles('.firstMember').children()
-		var $secondMember = e.ENODE_getRoles('.secondMember').children()
+		var $firstMember = ENODE_getRoles(e, '.firstMember').children()
+		var $secondMember = ENODE_getRoles(e, '.secondMember').children()
 		if( $firstMember != undefined && $secondMember != undefined){
 			if( newENODEcompareOrder($firstMember,$secondMember)>0 ){
 				//in questi casi inverti primo e secondo membro;
 				//$firstMember.prepend($secondMember);
-				ENODEappend(e.ENODE_getRoles('.firstMember'), $secondMember);
-				ENODEappend(e.ENODE_getRoles('.secondMember'), $firstMember);		
+				ENODEappend(ENODE_getRoles(e, '.firstMember'), $secondMember);
+				ENODEappend(ENODE_getRoles(e, '.secondMember'), $firstMember);		
 			} 
 		}
 	});
@@ -529,7 +529,7 @@ function InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry){//instruct pra
             PActx.$cloneProp = reformatForallProp(PActx.$cloneProp,PActx.$transform);
         }
    		 
-		PActx.$transform = PActx.$equation[0].ENODE_getRoles('.secondMember').children();//alla fine degli adapt match riaggiorno transform
+		PActx.$transform = ENODE_getRoles(PActx.$equation[0], '.secondMember').children();//alla fine degli adapt match riaggiorno transform
     }
     ENODESmarkUnmark(PActx.$operand,"","all")//l'operando viene inizialmente marcato come "s" selected 
     //"s" è usato come punto di partenza
@@ -562,13 +562,13 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
     if( PActx.$cloneProp.attr('data-enode') === "forAll" ){//l'equazione è circondata da un forall
         $pattParameters = GetforAllHeader(PActx.$cloneProp).children();
         PActx.$equation = GetforAllContentRole(PActx.$cloneProp).children();
-        PActx.$pattern = PActx.$equation[0].ENODE_getRoles('.firstMember').children()   
+        PActx.$pattern = ENODE_getRoles(PActx.$equation[0], '.firstMember').children()   
     }
     else{//l'equazione non è circondata da un forall
         PActx.$equation = PActx.$cloneProp;
     }
-    PActx.$pattern = PActx.$equation[0].ENODE_getRoles('.firstMember').children();
-    PActx.$transform = PActx.$equation[0].ENODE_getRoles('.secondMember').children();
+    PActx.$pattern = ENODE_getRoles(PActx.$equation[0], '.firstMember').children();
+    PActx.$transform = ENODE_getRoles(PActx.$equation[0], '.secondMember').children();
     //***********determina l'Operando**************************
     //per determinare l'operando considera il primo parametro definito
     var $refInputPar 
@@ -759,7 +759,7 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
     while ($Pattern[patternIndex] != undefined) {
         var $resList = $()
         //$Pattern[patternIndex].$resList = $()
-        var parType = ParameterNameToType($Pattern[patternIndex].ENODE_getName(true))
+        var parType = ParameterNameToType(ENODE_getName($Pattern[patternIndex], true))
         var isParameter = (parType == "x_" || parType == "x__" || parType == "x___" )
         inputIndex = 0
         while ($Input[inputIndex] != undefined) {
@@ -776,9 +776,9 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
                 else{
 					//se l'esterno è uguale pargona la lista degli argomenti 
 					//todo: dovrò fare qualcosa per eq i cui due membri risulteranno non più commutabili
-					var $pattArg = $Pattern[patternIndex].ENODE_getChildren();
-					var $inArg = $Input[inputIndex].ENODE_getChildren();
-					var orderedList = ( $Input[inputIndex].ENODE_getRoles().is('.ol_role') ||
+					var $pattArg = ENODE_getChildren($Pattern[patternIndex]);
+					var $inArg = ENODE_getChildren($Input[inputIndex]);
+					var orderedList = ( ENODE_getRoles($Input[inputIndex]).is('.ol_role') ||
 									   $Pattern[patternIndex].getAttribute("data-nosort")=='true'||
 									  functarg_orderedList);
 					//var $parent = $Pattern.parent()//AdaptMatchUL sostituisce all'interno del dom, si deve poi sincronizzare la lista $pattern

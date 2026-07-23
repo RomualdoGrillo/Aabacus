@@ -13,7 +13,7 @@ function tabelline($toBeComp,firstVal,img){
 	let op = $toBeComp.attr('data-enode');
 	if(op == "times"){
 		//if a times operation is selected, operate on his children
-		$toBeComp = $toBeComp[0].ENODE_getChildren()
+		$toBeComp = ENODE_getChildren($toBeComp[0])
 	}
 	else{
 		const $parent=ENODEparent($toBeComp);

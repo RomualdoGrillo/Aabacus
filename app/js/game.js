@@ -37,6 +37,5 @@ function compareWithResult($expression, $result,strictOrder) {
 	MyPActx.$operand = $expression;
 	//compare with a clone of the result
 	MyPActx.$pattern = ENODEclone($result);
-	ENODEextend(MyPActx.$pattern, true);
 	return orderMatch(MyPActx, false, true, strictOrder).matchedTF
 }
