@@ -258,7 +258,7 @@ Ruolo: persistenza locale: download/upload file, primitiva di iniezione MML nel 
 Espone:
 - `inject(MMLstring, $targetRoleOrENODE, containerRequirements?, toBeImported?)` — usata da: `preload.js`, `newPM/demo-fixtures.js`.
 - `importAll($startNode?)` — risolve i `[data-import]` — usata da: `preload.js`.
-- `AlltoMMLSstring() → string` — serializza palette/events/canvas/result/settings — usata da: `MAIN.js` (Shift+S).
+- `AlltoMMLSstring() → string` — serializza palette/canvas/events/result (**non** i settings: il commento `//save settings` nel corpo è senza codice, v. TODO) — usata da: `MAIN.js` (Shift+S).
 - `saveTextAsFile(text, fileName)`, `loadFileConvert(fileToLoadPar, $targetNode?, fileSuffix?)` — usate da: `MAIN.js`.
 
 #### `preload.js`
@@ -388,6 +388,8 @@ Cosa resta da fare, verificato sul codice attuale (la storia della rifattorizzaz
 4. **`ENODEModusPonens` (`HardWiredProperties.js`)**: incompleto (il wrap in `and` della premessa è solo un commento) ma registrato come `modusPonensDnD`.
 5. **`newPM/`**: decidere il percorso di integrazione o sostituzione rispetto al PM di produzione (`PMTutilities.js` + `PatternMatchingTrasform.js`); finché convivono, ogni modifica alle interfacce elencate in §2.7 va verificata su entrambi.
 6. **Funzioni definite senza chiamanti attivi** (candidate a rimozione o a completamento): `ENODEfactorizeMinus`, `signsAsClasses`/`signsAsClassesSubtree` (`TranslateFormat.js`), `ENODENumericCdsAsText` (`math.js`), `getHardWiredEntry`/`listHardWiredPropertyNames` (`propertyRegistry.js`), `searchForProperty` (`UserEvToFunctCall.js`, l'unico uso in `HardWiredProperties.js` è in un blocco commentato).
+7. **`AlltoMMLSstring` (`SaveLoad.js`) non serializza i settings**: il salvataggio Shift+S produce un `.mmls` senza sezione settings (il commento `//save settings` è un TODO senza codice); al ricaricamento l'esercizio perde le impostazioni (tool, gameMode, ...).
+8. **`ENODE_dissolveContainer` (`ExpressionManager.js`, bug latente)**: il `return $children` finale riferisce una `const` dichiarata dentro il ramo `if` → `ReferenceError` a ogni chiamata. Oggi non scatta solo perché i due chiamanti (`ENODEfactorizeMinus`, `signsAsClasses` in `TranslateFormat.js`) sono a loro volta senza chiamanti attivi (voce 6). Da correggere prima di riattivare quei percorsi.
 
 ### Criteri di verifica per ogni modifica strutturale
 

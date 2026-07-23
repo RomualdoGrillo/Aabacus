@@ -1,6 +1,16 @@
 //i tag foglia sono definiti nella costante "symbols" (ExpressionManager.js)
 
 
+/**
+ * Serializza uno o più alberi ENODE in una stringa MathML formattata (deflate).
+ * Doppia convenzione di chiamata: come funzione, `ENODEcreateMathmlString($nodi)`,
+ * oppure come metodo sul nodo DOM, `node.ENODEcreateMathmlString()` (in tal caso
+ * $startNodes viene ricavato da `this`).
+ * @param {JQuery} [$startNodes] - Nodi ENODE di partenza; se omesso usa $(this) (chiamata come metodo).
+ * @param {boolean} [describeDataType] - Se true serializza anche i data-type (formato "aab_mmlWithType" anziché "aab_mml").
+ * @param {boolean} [neglectRootSign] - Se true ignora il segno del nodo radice nella serializzazione.
+ * @returns {string} La stringa MathML formattata (via formatXml), oppure "" se la conversione non produce nodi.
+ */
 function ENODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) {
 	//per poter chiamare sia come funzione che come metodo
 	if ($startNodes == undefined) {
@@ -23,6 +33,16 @@ function ENODEcreateMathmlString($startNodes,describeDataType, neglectRootSign) 
 
 }
 
+/**
+ * Conversione bidirezionale albero ENODE ⇄ MathML: clona l'input in un
+ * contenitore di lavoro e sostituisce nodo per nodo (via ReplaceOneENODE)
+ * nella direzione indicata da from_to.
+ * @param {JQuery|Element|string} startNodeOrMML - Albero ENODE di partenza (deflate) oppure markup/nodi MathML (inflate).
+ * @param {string} from_to - Direzione di conversione: "aab_mml" o "aab_mmlWithType" (ENODE → MathML, con o senza data-type) oppure "mml_aab" (MathML → ENODE).
+ * @param {boolean} [neglectRootSign] - Solo in deflate: se true ignora il segno del nodo radice.
+ * @param {string} [toBeImported] - Solo in inflate: se indicato converte soltanto i nodi con [data-tag=toBeImported], altrimenti tutto l'input.
+ * @returns {JQuery} I nodi convertiti (figli del contenitore di lavoro, staccati dal DOM).
+ */
 function createConvertedTree(startNodeOrMML, from_to, neglectRootSign,toBeImported) {
 	var $containerForClone = $('<div></div>')
 	//$('#canvasRole').html("") ;var $containerForClone = $('#canvasRole');// debug
@@ -218,6 +238,13 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 }
 
 
+/**
+ * Parser per markup misto MathML + HTML: $(string) dà risultati inattesi quando
+ * nel MathML sono presenti div o img, quindi i tag div vengono temporaneamente
+ * rinominati in "dix" per il parsing e poi ricostruiti uno a uno come veri div.
+ * @param {JQuery|string} toBeParsed - Markup da interpretare (stringa) o nodo jQuery di cui usare l'outerHTML.
+ * @returns {JQuery} L'albero jQuery risultante, con i div ripristinati.
+ */
 function $parserForMixedMMLHTML(toBeParsed){
 	// $(string) gives strange results when div or img are present
 	//$parserForMixedMMLHTML('<math xmlns="http://www.w3.org/1998/Math/MathML"><apply data-type="num"><plus></plus><cn data-type="num">2</cn><div data-enode="times" data-type="num" class="ENODE saveAsHtml" draggable="false" style="background-color: red;"><div class="ul_role" data-type="num"><cn data-type="num">6</cn><cn data-type="num">2</cn></div></div><apply data-type="num"><minus></minus><cn data-type="num">1</cn></apply></apply></math>')

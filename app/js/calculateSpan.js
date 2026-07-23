@@ -78,6 +78,14 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 	return $stepStoneORtarget
 }
 
+/**
+ * Trova gli ENODE adiacenti (cluster associativo immediato) con la stessa
+ * operazione del nodo di partenza: il genitore, se è la stessa operazione,
+ * e i figli diretti con lo stesso data-enode.
+ * @param {JQuery} $starAssociativeOperation - ENODE di partenza; deve essere un'operazione associativa.
+ * @returns {JQuery} Gli ENODE (genitore e/o figli) con la stessa operazione, eventualmente vuoto.
+ * @example $ImmediateAssociativeENODE($('.selected')) // il selezionato deve essere un'operazione associativa
+ */
 function $ImmediateAssociativeENODE($starAssociativeOperation) {
 	//test: $ImmediateAssociativeENODE($('.selected')) selected should be associative operation
 	let op = $starAssociativeOperation.attr("data-enode");
@@ -173,6 +181,17 @@ function $RecursiveTreeExplorerCriteriumROLES($startRole, selectionStringOrFunct
 	return $discendence
 }
 
+/**
+ * Esploratore ricorsivo generico: a partire da $startNode applica il criterio
+ * per ottenere gli elementi a distanza 1, poi ricorre su ciascuno di essi
+ * accumulando i risultati; gli elementi già visitati non vengono riesplorati
+ * (sicuro anche su strutture cicliche).
+ * @param {JQuery} $startNode - Elemento di partenza dell'esplorazione (escluso dal risultato).
+ * @param {string|function(JQuery): JQuery} selectionStringOrFunction - Criterio: selettore (usato con .find) oppure funzione che dato un elemento restituisce gli elementi a distanza 1 già filtrati.
+ * @param {JQuery} [$exploredAlready] - Elementi già visitati; usato internamente dalle chiamate ricorsive, i chiamanti di norma lo omettono.
+ * @returns {JQuery} Tutta la discendenza raggiunta secondo il criterio.
+ * @example $RecursiveTreeExplorerCriterium($('.selected'), '[data-enode]')
+ */
 function $RecursiveTreeExplorerCriterium($startNode, selectionStringOrFunction, $exploredAlready) {
 	//test:  $RecursiveTreeExplorerCriterium($('.selected'),'[data-enode]')  
 	//criterium:selector string or function() return items at distace 1 from $startNode and fitered with some criteria  
@@ -218,13 +237,13 @@ function $SameOpInOut($startRole) {
 }
 
 /**
- * Determines the scope (span) of a given identifier by searching upwards in the DOM tree.
- * It looks for the closest ancestor element representing a 'forAll' quantifier
- * that declares the identifier as a bound variable (Bvar) in its header.
+ * Determina il campo di validità (span) di un identificatore risalendo l'albero DOM:
+ * cerca l'antenato 'forAll' più vicino che dichiara l'identificatore come
+ * variabile legata (Bvar) nel proprio header (verifica via parameterInHeader).
  *
- * @param {jQuery} $identifier - The jQuery object representing the identifier element.
- * @returns {jQuery} The closest ancestor 'forAll' element that binds the identifier,
- *                   or the element with ID 'canvasAnd' if no such binding ancestor is found (representing the global scope).
+ * @param {JQuery} $identifier - L'elemento identificatore (ci) di cui determinare lo span.
+ * @returns {JQuery} L'antenato 'forAll' più vicino che lega l'identificatore,
+ *                   oppure l'elemento #canvasAnd (scope globale) se nessun antenato lo lega.
  */
 function $identifierSpanForAll($identifier) {
 	// Determina il campo di validità dell'identificatore
@@ -250,6 +269,13 @@ function $identifierSpanForAll($identifier) {
 	return $('#canvasAnd');
 }
 
+/**
+ * Evidenzia lo span e le occorrenze visibili di un identificatore: aggiunge la
+ * classe 'mu_span' allo span (a meno che non sia l'intero canvas #canvasAnd)
+ * e la classe indicata alle occorrenze trovate con $findOccurrences.
+ * @param {JQuery} $identifier - L'identificatore di cui evidenziare span e occorrenze.
+ * @param {string} addClass - Classe CSS da aggiungere alle occorrenze visibili.
+ */
 function highlightOccurrences($identifier, addClass) {
 	//evidenzia lo span e le occorrenze dell'identificatore
 	let $span = $identifierSpanForAll($identifier);
@@ -262,9 +288,18 @@ function highlightOccurrences($identifier, addClass) {
 	})*/
 }
 
-// example use:
-// $findOccurrences($identifier,$forAll,undefined,true)
-	
+/**
+ * Cerca le occorrenze di un ENODE tra i candidati: confronta ogni candidato con
+ * $wanted usando ENODEEqual (uguaglianza strutturale) oppure, se asParameter è
+ * true, compareExtENODE (confronto shallow per data-type). Nota (todo nel codice):
+ * la ricerca non distingue le variabili interne legate (Bvar) omonime.
+ * @param {JQuery} $wanted - L'ENODE di cui cercare le occorrenze.
+ * @param {JQuery} [$span] - Ambito di ricerca; se omesso (e senza $candidates) viene calcolato con $identifierSpanForAll($wanted).
+ * @param {JQuery} [$candidates] - Candidati espliciti; se omesso si usano tutti i [data-enode] dentro $span.
+ * @param {boolean} [asParameter] - Se true confronta come parametro (compareExtENODE con solo data-type) anziché con ENODEEqual.
+ * @returns {JQuery} I candidati che risultano occorrenze di $wanted.
+ * @example $findOccurrences($identifier, $forAll, undefined, true)
+ */
 function $findOccurrences($wanted, $span, $candidates,asParameter) {
 	if (!$candidates) {
 		if (!$span) {
@@ -282,12 +317,27 @@ function $findOccurrences($wanted, $span, $candidates,asParameter) {
 }
 
 
+/**
+ * Calcola la giurisdizione logica verso l'alto di un role: esplora
+ * ricorsivamente gli antenati risalendo solo attraverso i nodi 'and'
+ * (criterio $immediateJurisdictionRoleUpstream).
+ * @param {JQuery} $startRole - Il role di partenza.
+ * @returns {JQuery} I role/contenitori raggiunti risalendo attraverso gli 'and'.
+ */
 function $calculateJurisdictionUpstream($startRole) {
 	// .addClass('mu_Downstream').filter('[data-enode]:visible')
 	return $RecursiveTreeExplorerCriterium($startRole, $immediateJurisdictionRoleUpstream)
 }
 
 
+/**
+ * Trova le proposizioni (ENODE) contenute nei role raggiunti dalla propagazione
+ * logica della proposizione di partenza (attraverso 'and' e 'implies', via
+ * $RolesAffectedByStartPropositionROLES), escludendo gli 'and' stessi.
+ * @param {JQuery} $startProposition - La proposizione (ENODE) di partenza.
+ * @returns {JQuery} Gli ENODE figli dei role raggiunti, esclusi quelli [data-enode=and].
+ * @example $PropositionsAffectedByStartPropositionROLES($('.selected')).each(function(){ENODEparent($(this)).addClass('selected')});
+ */
 function $PropositionsAffectedByStartPropositionROLES($startProposition) {
 	//test: $PropositionsAffectedByStartPropositionROLES($('.selected')).each(function(){ENODEparent($(this)).addClass('selected')});
 	let $roles = $RolesAffectedByStartPropositionROLES($startProposition)
@@ -319,6 +369,15 @@ function $RolesAffectedByStartPropositionROLES($startProposition) {
 	return $roles
 }
 
+/**
+ * Calcola i target validi per la proprietà "add redundant": parte dai role
+ * raggiunti dalla propagazione logica della proposizione e li rimappa secondo
+ * il tipo di role booleano (i role 'or' e i role pieni vengono sostituiti
+ * dagli ENODE contenuti non-'and'; i role vuoti e i role di 'and' restano target).
+ * @param {JQuery} $startProposition - La proposizione (ENODE) di partenza.
+ * @returns {JQuery} I target validi (role oppure ENODE contenuti, a seconda del caso).
+ * @example $calculateTargetsAddRedundantROLES($('.selected')).each(function(){ENODEparent($(this)).addClass('selected')});
+ */
 function $calculateTargetsAddRedundantROLES($startProposition) {
 	//test: $validAddRedundantROLES($('.selected')).each(function(){ENODEparent($(this)).addClass('selected')});
 	//propagate all Roles excluding start ENODE //note: apply to yourself?

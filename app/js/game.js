@@ -1,6 +1,15 @@
 //Logica di gioco: confronto dell'espressione col risultato atteso e celebrazione.
 //Estratta da AldoUtilities.js (passo 5 del piano in project/specs/software-modules.md).
 
+/**
+ * Confronta ogni espressione di primo livello in #canvasRole con #result (match
+ * stretto: il risultato deve avere lo stesso ordine) e, in caso di vittoria,
+ * suona victorySound, toglie la sorpresa (gameModeSurpriseRes) e mostra la
+ * celebrazione; medaglia d'oro se le mosse rientrano nel minimo.
+ * @param {number} [movesCounter] - Mosse effettuate finora (per la medaglia d'oro).
+ * @param {number} [movesMinNumber] - Numero minimo di mosse previsto dall'esercizio.
+ * @returns {boolean} true se un'espressione del canvas corrisponde al risultato.
+ */
 function lookForResultAndCelebrate(movesCounter,movesMinNumber) {
 	let $expressions = $('#canvasRole>*');
 	let found = false;

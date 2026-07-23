@@ -1,3 +1,13 @@
+/**
+ * Cerca tra le bvar dell'header di un forAll quella con lo stesso nome del
+ * parametro dato (nome privato degli underscore).
+ * Usata da `MAIN.js`, `calculateSpan.js` e da `replaceInForall`.
+ * @param {JQuery} $parameter parametro di cui cercare il nome
+ * @param {JQuery} $property proprietà candidata; se non è un forAll la
+ *   funzione restituisce subito undefined
+ * @returns {JQuery|undefined} la bvar corrispondente nell'header, oppure
+ *   undefined se assente o se `$property` non è un forAll
+ */
 function parameterInHeader($parameter,$property){
     if ($property.attr('data-enode') !== 'forAll'){ return undefined}
     const $bvars = GetforAllHeader($property).children('[data-enode]');
@@ -12,6 +22,17 @@ function parameterInHeader($parameter,$property){
     }
 }
 
+/**
+ * Sostituisce un parametro con un nuovo valore: se il parametro compare
+ * nell'header del forAll delega a `ENODEForThisPar` (che può modificare la
+ * struttura della proprietà), altrimenti sostituisce tutte le occorrenze
+ * all'interno della proprietà (`ENODEReplaceAll`).
+ * Usata da `PMTutilities.js` (adaptMatch) e `newPM/match.js`.
+ * @param {JQuery} $parameter parametro da sostituire
+ * @param {JQuery} $newVal nuovo valore (anche lista di nodi)
+ * @param {JQuery} $property proprietà/span entro cui avviene la sostituzione
+ * @returns {JQuery} la proprietà eventualmente modificata
+ */
 function replaceInForall($parameter,$newVal,$property){
     //individua il parametro dall'header' se presente
     const $parHeader = parameterInHeader($parameter,$property);
@@ -26,6 +47,15 @@ function replaceInForall($parameter,$newVal,$property){
 }
 
 
+/**
+ * Contiene bvar? Controlla se `$member` (incluso il suo sottoalbero) contiene
+ * ancora parametri (bvar) del forAll dato.
+ * Usata da `PMTutilities.js` (InstructAndTryOnePMT).
+ * @param {JQuery} $member sottoespressione da ispezionare
+ * @param {JQuery} $forAll forAll di riferimento; se non è un forAll la
+ *   risposta è subito false (nessuna ulteriore ispezione necessaria)
+ * @returns {boolean}
+ */
 function containsBvar($member,$forAll){//contiene bvar?
     if($forAll.attr('data-enode') != 'forAll'){return false}//if there is no outer forall.. no need for further inspection
     $candidates = $member.add( $member.find('[data-enode]') );
@@ -37,6 +67,15 @@ function containsBvar($member,$forAll){//contiene bvar?
 
 
 
+/**
+ * Sposta il forAll che contiene tutta la proprietà in modo che circondi solo
+ * il `$transform` (usato quando nel transform restano parametri liberi: la
+ * proprietà è ancora generale).
+ * Usata da `PMTutilities.js` (InstructAndTryOnePMT).
+ * @param {JQuery} $prop proprietà forAll da riformattare
+ * @param {JQuery} $transform trasformato che resterà avvolto dal forAll
+ * @returns {JQuery} il contenuto estratto dal forAll (nuova radice della proprietà)
+ */
 function reformatForallProp($prop,$transform){
     //sposta il forall che contiene tutto in modo che circondi solo il "$transform" 
 	const $forallContRole = GetforAllContentRole($prop);
@@ -91,6 +130,14 @@ function parameterType($ENODE,$prop){
 }
 
 
+/**
+ * Classifica un nome secondo la notazione dei parametri a suffisso (stile
+ * "Mathematica"): x = non specificabile, x_ = specificabile, x__ = lista
+ * specificabile, x___ = lista specificabile anche nulla.
+ * Usata da `PMTutilities.js` (adaptMatch) e `newPM/match.js`.
+ * @param {string} name nome del simbolo, eventuale suffisso incluso
+ * @returns {string} 'x' | 'x_' | 'x__' | 'x___'
+ */
 function ParameterNameToType(name){
 // n	not a symbol
 // x	(non specificabile)
@@ -109,6 +156,15 @@ function ParameterNameToType(name){
     else return "x"
 }
 
+/**
+ * Conta quanti livelli ENODE (ancestors) separano `$marked` da
+ * `$patternMember`.
+ * Usata da `PMTutilities.js` (PActxFromAttackPoints) e `newPM/resolve.js`.
+ * @param {JQuery} $marked nodo di partenza
+ * @param {JQuery} $patternMember presunto ancestor di `$marked`
+ * @returns {number} 0 se i due nodi coincidono; n = livelli di profondità;
+ *   NaN se `$patternMember` non è un ancestor di `$marked`
+ */
 function levelsToAncestor($marked,$patternMember){
     //ancestors fino a $prop
     if($marked.is($patternMember)){
@@ -124,11 +180,30 @@ function levelsToAncestor($marked,$patternMember){
 }
 
 
+/**
+ * Trova nel documento la proprietà con il `data-tag` indicato.
+ * Usata da `PMTutilities.js` (TryOnePropertyByName).
+ * @param {string} propName valore dell'attributo data-tag
+ * @returns {JQuery} gli elementi trovati (collezione vuota se nessuno)
+ */
 function findPMPropByName(propName){
 	const $prop = $('[data-tag=' + propName + ']');
 	return $prop;
 }
 
+/**
+ * Clona la proprietà e prepara l'equazione con il pattern come primo membro:
+ * marca tutti i nodi del clone con `PMclone`, individua l'equazione (dentro
+ * il forAll se presente, mettendo il clone in stato `waiting`) e, se `mode`
+ * è "rtl", scambia i membri dell'equazione.
+ * Usata da `PMTutilities.js` (InstructAndTryOnePMT) e `newPM/resolve.js`.
+ * @param {JQuery} $origProp proprietà originale (forAll o eq)
+ * @param {string} [mode] "rtl" inverte primo e secondo membro; con
+ *   "ltr"/omesso l'equazione è già pronta
+ * @returns {{foundTF: boolean, msg: string, $cloneProp: JQuery, visualization: string}}
+ *   foundTF=false (con msg) se nella proprietà non si trova un'equazione;
+ *   visualization = path dell'immagine di feedback ricavato dal background
+ */
 function swapMembersClone($origProp,mode){
     const res = {foundTF:false, msg:"", $cloneProp: "",visualization:""}
     

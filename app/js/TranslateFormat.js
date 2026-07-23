@@ -89,8 +89,13 @@ function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsCl
 const glueFunctions = ["minus", "m_inverse", "not"];
 
 /**
- * Aggiorna gli elementi che devono essere "incollati" (glued) nel DOM
- * @param {jQuery|undefined} $startNode - Nodo di partenza opzionale
+ * Aggiorna gli elementi che devono essere "incollati" (glued) nel DOM:
+ * rimuove la classe `glued` dagli elementi precedentemente marcati e la
+ * riapplica ai figli ENODE degli operatori elencati in `glueFunctions`
+ * (minus, m_inverse, not).
+ * Usata da `ExpressionManager.js`.
+ * @param {JQuery} [$startNode] nodo di partenza opzionale: se fornito il
+ *   contenitore di lavoro è il suo parent ENODE, altrimenti `#canvasRole`
  */
 function refreshGlued($startNode) {
     // Determina il nodo contenitore da cui iniziare la ricerca

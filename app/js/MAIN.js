@@ -1,5 +1,6 @@
 //************************Init*******************************
 // GLBsettings, debugMode, preloadPath, tools, FILO: state.js
+/** @type {Element} Globale d'interfaccia: contenitore #canvasRole (letta anche da UserEvToFunctCall.js). */
 let canvasRole = document.getElementById('canvasRole');
 //************ inizializza UNDO  ************
 ssnapshot()
@@ -165,6 +166,16 @@ function clickHandler(event) {
 
 }
 
+/**
+ * Gestisce la selezione al click: deseleziona tutto, seleziona il tool "declare"
+ * (classe selectedTool sulle proprietà con data-tag), oppure applica la logica
+ * selected/unselected (ctrl = multiselezione, shift = deselezione mirata).
+ * @param {JQuery|string} $clickedENODE - ENODE cliccato; DnD.js passa "" quando serve solo il deselectAll.
+ * @param {boolean} ctrl - Ctrl (o Cmd su Mac) premuto: multiselezione.
+ * @param {boolean} shift - Shift premuto: deselezione/esclusione del nodo.
+ * @param {boolean} [deselectAll] - Se truthy deseleziona tutto e ignora gli altri parametri.
+ * @returns {void}
+ */
 function selectionManager($clickedENODE, ctrl, shift, deselectAll) {
 	if (deselectAll) {
 		//clear selected unselected
@@ -309,10 +320,22 @@ function debugToggle() {
 	}
 }
 
+/**
+ * Applica ExtendAndInitialize a un intero sottoalbero (radice inclusa)
+ * tramite ENODEapplyFunctToTree.
+ * @param {JQuery} $startElement - Radice del sottoalbero da estendere e inizializzare.
+ * @returns {void}
+ */
 function ExtendAndInitializeTree($startElement) {
 	ENODEapplyFunctToTree($startElement, true, ExtendAndInitialize)
 }
 
+/**
+ * Estende un singolo nodo con i metodi ENODE (ENODEextend) e, se è una
+ * definizione, ne inizializza l'icona del lucchetto (ENODERefreshAsymmEq).
+ * @param {JQuery} $ENODE - Nodo da estendere e inizializzare.
+ * @returns {void}
+ */
 function ExtendAndInitialize($ENODE) {
 	ENODEextend($ENODE, true)
 	//initialize lock icon
@@ -336,6 +359,15 @@ function cancelSelected() {
 	}
 }
 
+/**
+ * Punto di convergenza di tutte le proprietà applicate (da tastiera e da DnD):
+ * se PActx.matchedTF è true delega a postApplyAfterProperty (sostituzione +
+ * cascade refining), fa il refresh visivo, prende lo snapshot undo, aggiorna il
+ * contatore mosse, verifica la vittoria (lookForResultAndCelebrate) e mostra il
+ * feedback visivo (PActxVisualize).
+ * @param {PActx} PActx - Contesto della proprietà appena applicata.
+ * @returns {void}
+ */
 function PActxConclude(PActx) {
 	if (PActx.matchedTF == true) {
 		//********** Post *************
@@ -369,8 +401,14 @@ function PActxVisualize(PActx) {
 	}
 	setTimeout(removeVisualization, 3000);
 }
+/**
+ * Mostra un'immagine di celebrazione in #result.
+ * Esempio: VisualizeCelebration('images/properties/zero.svg', 3000).
+ * @param {string} imagePath - Percorso dell'immagine da mostrare; se falsy non fa nulla.
+ * @param {number} [timeout] - Millisecondi dopo i quali rimuovere la celebrazione; se assente resta visibile.
+ * @returns {void}
+ */
 function VisualizeCelebration(imagePath, timeout) {
-	// VisualizeCelebration('images/properties/zero.svg',PActx.$transform,3000) 
 	if (!imagePath) { return } //nothing to visualize
 	let visContent = '<img src="' + imagePath + '">';
 	let $visualization = $('<div class="celebration">' + visContent + '</div>')

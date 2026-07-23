@@ -1,5 +1,11 @@
+/**
+ * Bootstrap dei contenuti: scarica via AJAX (GET asincrona) il file indicato e ne
+ * inietta le sezioni con injectAllMMLS; in caso di errore mostra un alert.
+ * Esempio: preloadAll('./Data/Preload/preload.json').
+ * @param {string} myUrl - URL del file .mmls da caricare.
+ * @returns {void}
+ */
 function preloadAll(myUrl) {
-	//preloadAll('./Data/Preload/preload.json')
 	$.ajax({
 		type: "GET",
 		url: myUrl,
@@ -16,6 +22,15 @@ function preloadAll(myUrl) {
 		}
 	});
 }
+/**
+ * Loader legacy da manifest JSON: svuota #canvasRole e, per ogni sezione presente
+ * (palette_html, foundation_mml, content_mml, result_mml, gestToAction_mml,
+ * settings_json), inietta la stringa inline oppure carica l'URL relativo
+ * (risolto con buildPath); i settings vengono parsati in GLBsettings.
+ * @param {string} response - Testo JSON del manifest con le sezioni da iniettare.
+ * @param {string} [rootUrl] - URL base per risolvere i path relativi del manifest.
+ * @returns {void}
+ */
 function injectAll(response,rootUrl){
 	//console.log(response);
 	let all = JSON.parse(response);
@@ -79,6 +94,15 @@ function injectAll(response,rootUrl){
 	
 }
 
+/**
+ * Inietta un bundle .mmls multi-sezione: palette prima del canvas (l'inflate usa i
+ * prototipi della palette), poi events, canvas e result; risolve gli import
+ * (importAll, saltato in debugMode), popola GLBsettings dalla sezione settings
+ * (inline o via import_json_settings) e conclude col refresh visivo e il tool di default.
+ * @param {string} response - Contenuto del file .mmls (testo con le <section data-section=...>).
+ * @param {string} [rootUrl] - URL base per risolvere il path di import_json_settings.
+ * @returns {void}
+ */
 function injectAllMMLS(response,rootUrl){
 	//let $MML = $(response)
 	let $MML = $parserForMixedMMLHTML(response)
@@ -140,8 +164,17 @@ function injectAllMMLS(response,rootUrl){
 
 }
 
+/**
+ * GET sincrona di un file MML e iniezione immediata nel target via inject.
+ * Se myUrl è falsy non fa nulla (un URL vuoto verrebbe interpretato come path
+ * relativo, col risultato di caricare index.html).
+ * Esempio: loadAjaxAndInject('./Data/Preload/preload.mml').
+ * @param {string} myUrl - URL del file da caricare.
+ * @param {JQuery} [target] - Destinazione dell'iniezione; default #canvasRole.
+ * @param {string} [toBeImported] - data-tag da filtrare nell'iniezione (inoltrato a inject).
+ * @returns {Object|undefined} L'oggetto jqXHR della richiesta, o undefined se myUrl è falsy.
+ */
 function loadAjaxAndInject(myUrl,target,toBeImported) {
-	//loadAjaxAndInject('./Data/Preload/preload.mml')
 	let res
 	if(myUrl){
 	//altrimenti un url vuoto verrebbe interpretato come path relativo,

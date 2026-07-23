@@ -1,11 +1,22 @@
 //snapshot manager — FILO dichiarato in state.js
 
+/**
+ * Inizializza lo snapshot manager dell'undo: azzera lo stack FILO (dichiarato in
+ * state.js) e la clipboard interna. Attenzione: chiamare ssnapshot() per creare
+ * l'oggetto prima di invocare qualsiasi metodo (take/undo/copy/paste).
+ * @returns {void}
+ */
 function ssnapshot() {
-	// Attenzione	prima di invocare qualsiasi metodo, chiamare ssnapshot per creare oggetto
 		FILO = new Array;
     	ssnapshot.clipBoard = ""
 }
 
+/**
+ * Prende uno snapshot: clona la radice dell'espressione corrente
+ * (getExpressionRootNode) e impila il clone su FILO; se la radice non esiste
+ * logga un errore. La politica (quando fotografare) è dei chiamanti.
+ * @returns {void}
+ */
 ssnapshot.take = function(){
 		const rootElement = getExpressionRootNode(); // Ottiene HTMLElement
 		if (rootElement) {
@@ -17,6 +28,12 @@ ssnapshot.take = function(){
 		}
 }
 
+/**
+ * Ripristina l'ultimo snapshot: sostituisce la radice corrente con un clone della
+ * cima dello stack FILO, ri-estende/inizializza il nuovo albero e rimuove lo
+ * stato dallo stack.
+ * @returns {JQuery|null} Il nodo radice ripristinato, o null se lo stack è vuoto o la radice corrente non esiste.
+ */
 ssnapshot.undo = function(){
 		let $toBeRestored = null; // Inizializza per restituire null se l'undo fallisce
 		const currentRootElement = getExpressionRootNode(); // Ottiene HTMLElement
@@ -43,9 +60,19 @@ ssnapshot.undo = function(){
 		return $toBeRestored; // Restituisce l'oggetto jQuery ripristinato o null
 }
 
+/**
+ * Copia nella clipboard interna (ssnapshot.clipBoard) un clone degli elementi
+ * .selected (non esteso, con ID conservati).
+ * @returns {void}
+ */
 ssnapshot.copy = function(){
 	ssnapshot.clipBoard = ENODEclone($(".selected"),false,false);
 }
+/**
+ * Incolla: se la clipboard non è vuota, sostituisce gli elementi .selected con
+ * un clone (esteso, con ID conservati) del contenuto copiato.
+ * @returns {void}
+ */
 ssnapshot.paste = function(){
 	if(ssnapshot.clipBoard.length != 0){
 		const $newCds = ENODEclone( ssnapshot.clipBoard,true,false ); //extend, do not removeID

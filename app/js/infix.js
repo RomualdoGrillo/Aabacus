@@ -1,4 +1,13 @@
 
+/**
+ * Aggiorna i separatori infissi (`.infix`) tra gli operandi di un ENODE con la
+ * strategia "cambia solo il necessario": rimuove i separatori non più
+ * circondati da due ENODE e clona il prototipo `.infix.proto` davanti a ogni
+ * figlio ENODE (tranne il primo) che ne è privo.
+ * Usata da `ExpressionManager.js` dentro `RefreshEmptyInfixBraketsGlued`.
+ * @param {JQuery} $ENODEnode nodo ENODE esteso (deve avere `ENODE_getRoles`);
+ *   se il nodo non è esteso la funzione esce senza fare nulla
+ */
 function refreshOneInfix($ENODEnode){
 	if($ENODEnode[0].ENODE_getRoles === undefined){return}// invalid parameter
 	var $role=$ENODEnode[0].ENODE_getRoles();
@@ -26,6 +35,15 @@ function refreshOneInfix($ENODEnode){
 }
 
 
+/**
+ * Aggiorna i segnaposto dei ruoli di un ENODE: per i ruoli con minimo posti
+ * maggiore di 1 aggiunge/rimuove i `.dummyrole` necessari a garantire il
+ * numero minimo; per gli altri applica/toglie la classe `empty` a seconda che
+ * il ruolo sia rimasto senza figli ENODE.
+ * Usata da `ExpressionManager.js` dentro `RefreshEmptyInfixBraketsGlued`.
+ * @param {JQuery} $ENODE nodo ENODE esteso (deve avere `ENODE_getRoles`);
+ *   se il nodo non è esteso la funzione esce senza fare nulla
+ */
 function refreshOneEmpty($ENODE){
 	if($ENODE[0].ENODE_getRoles==undefined){return};
 	$ENODE[0].ENODE_getRoles().each(function(i,e){

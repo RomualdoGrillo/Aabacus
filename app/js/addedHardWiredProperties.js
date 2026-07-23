@@ -1,3 +1,13 @@
+/**
+ * Proprietà unary `tabelline`: `compose` limitato alle moltiplicazioni tra
+ * due numeri "semplici" (una sola cifra significativa: 4, 90, 300...). Se è
+ * selezionata un'operazione times opera sui suoi figli; se è selezionato un
+ * solo elemento prova a comporlo con il fratello adiacente.
+ * @param {JQuery} $toBeComp operazione times oppure fattore/i da comporre
+ * @param {string} [firstVal] inoltrato a `compose`
+ * @param {string} [img] path dell'immagine di feedback, inoltrato a `compose`
+ * @returns {PActx} PActx fallito (`newPActx()`) se le precondizioni non valgono
+ */
 function tabelline($toBeComp,firstVal,img){
 	//limit to times
 	let op = $toBeComp.attr('data-enode');
@@ -30,6 +40,14 @@ function tabelline($toBeComp,firstVal,img){
 
 
 
+/**
+ * Proprietà unary `composePlusOnly`: `compose` limitato agli addendi di un
+ * `plus`.
+ * @param {JQuery} $toBeComp addendo/i da comporre (il parent deve essere plus)
+ * @param {string} [firstVal] inoltrato a `compose`
+ * @param {string} [img] path dell'immagine di feedback, inoltrato a `compose`
+ * @returns {PActx} PActx fallito (`newPActx()`) se il parent non è un plus
+ */
 function composePlusOnly($toBeComp,firstVal,img){
 	const $parent=ENODEparent($toBeComp);
 	const op = $parent.attr('data-enode');
@@ -40,6 +58,17 @@ function composePlusOnly($toBeComp,firstVal,img){
 }
 
  
+/**
+ * Proprietà unary `decomposeTens`: scompone un numero (`cn`) nella somma di
+ * unità/decine/centinaia via `separateTensHundreds`, avvolgendolo se
+ * necessario in un `plus`; l'ultimo termine resta selezionato.
+ * @param {JQuery} $toBeDec numero da scomporre (esattamente un elemento `cn`)
+ * @param {*} [undefined] secondo parametro ignorato (nel sorgente è
+ *   dichiarato letteralmente con nome `undefined`)
+ * @param {string} [img] path dell'immagine di feedback
+ * @returns {PActx} fallito se le precondizioni non valgono o se il numero non
+ *   è scomponibile
+ */
 function decomposeTens($toBeDec,undefined,img){
 	const PActx = newPActx();
 	PActx.$operand = $toBeDec;

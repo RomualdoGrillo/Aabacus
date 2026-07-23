@@ -7,6 +7,16 @@
 </svg>
 */
 
+/**
+ * Aggiunge una linea SVG che collega i centri dei due elementi, clonando il
+ * prototipo `#protoLine` e appendendo il clone a `#svgContainer`.
+ * Usata da `PMTutilities.js`, `HardWiredProperties.js`, `calculateSpan.js`.
+ * @param {JQuery} $from elemento di partenza
+ * @param {JQuery} $to elemento di arrivo
+ * @param {string} [addClass] se fornita, viene impostata come attributo
+ *   `class` della linea (sostituisce le classi del prototipo)
+ * @returns {JQuery} la linea creata
+ */
 function lineAB($from,$to,addClass)//aggiungi una linea che collega i due elementi
 {
 	var lc=$("#protoLine").clone()//clona il prototipo di linea
@@ -23,6 +33,11 @@ function lineAB($from,$to,addClass)//aggiungi una linea che collega i due elemen
 	return lc
 }
 
+/**
+ * Rimuove tutte le linee (e ogni altro contenuto) da `#svgContainer`.
+ * Usata da `DnD.js`.
+ * @returns {JQuery} gli elementi rimossi
+ */
 function clearLines()
 {
 	return $("#svgContainer *").remove()	

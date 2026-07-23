@@ -4,6 +4,13 @@
 
 let dd_colors = $('#select_colors')[0]
 let $dd_visSelection = $('#visSettingSelected');
+/**
+ * Applica GLBsettings all'interfaccia: stato tied/untied del canvas, attributo
+ * tool sul body, visibilità delle sezioni (palette, colonne), controlli del
+ * pannello #settings e classi/attributi sul body usati dal CSS (gameMode,
+ * showPar, timesDisposition, colori, ecc.).
+ * @returns {void}
+ */
 function GLBsettingsToInterface() {
 	
 	if(GLBsettings.tiedCanvas != undefined){

@@ -5,6 +5,16 @@ let GLBDnD = { toolWhenMousedown: "" }
 //see discussion https://github.com/SortableJS/Sortable/issues/1196 
 
 
+/**
+ * Handler di mousedown/touchstart (registrato da MAIN.js): individua il primo
+ * ENODE trascinabile, fa la selezione (selectionManager) e le evidenziazioni
+ * (occorrenze, giurisdizione), calcola i target validi secondo il tool corrente
+ * (autoAdapt → pattern matching; copy/untied/palette → target "opened"; altrimenti
+ * proprietà DnD dal registro con priorità first-wins), crea pigramente i Sortable
+ * e inietta l'evento di inizio drag nel Sortable di origine.
+ * @param {JQuery.Event} event - Evento mousedown o touchstart (jQuery).
+ * @returns {void}
+ */
 function MakeSortableAndInjectMouseDown(event) {
 	let $validTgT=$();
 	/******** from target to ENODE target *************/
@@ -307,6 +317,13 @@ function makeSortableMouseDown(roles, sort) {// roles is an array containing bot
 	}
 	return sortables
 }
+/**
+ * Handler di mouseup/touchend (registrato da MAIN.js) e onEnd di SortableJS:
+ * se non si è in debugMode nasconde target ed evidenziazioni (i target sono
+ * nascosti, non rimossi: la rimozione completa spetta a cleanupDnD).
+ * @param {JQuery.Event|Event} [event] - (attualmente ignorato) evento mouseup/touchend o onEnd di SortableJS.
+ * @returns {void}
+ */
 function MouseUpCleanup(event) {
 	if (!debugMode) {//in debugMode i target sono lasciati visibili
 		hideTargetsOnMouseUp()// targets are hidden, not removed 
@@ -314,14 +331,16 @@ function MouseUpCleanup(event) {
 	}
 }
 
+/**
+ * Pulizia completa dello stato DnD: rimuove le classi mu_*, distrugge/disabilita
+ * i Sortable e i target, cancella i marcatori di refine e le linee SVG.
+ * Chiamata sia su sortEnd sia su mouseup: almeno uno dei due eventi deve scattare
+ * (mouseup non scatta se l'elemento è rimosso dall'applicazione di una proprietà;
+ * sortEnd non scatta se si clicca senza trascinare) — soluzione non ottimale.
+ * Documentazione: https://docs.google.com/drawings/d/1sASg3RC51sOYWCRIxJjdRI_lL0ZKpATyPaFWfkVxT70/edit
+ * @returns {void}
+ */
 function cleanupDnD() {
-	//called both on sortEnd an Mouseup events 
-	//at least one of the events must fire
-	//not optimal
-	//Mouseup does not fire if the element is removed as a result of property applications
-	//Sortend is not fired if click without drag
-	//Documentation:
-	//https://docs.google.com/drawings/d/1sASg3RC51sOYWCRIxJjdRI_lL0ZKpATyPaFWfkVxT70/edit
 	removeClassByPrefix(undefined,'mu_') //clear classes in case mouseup failed to fire
 	clearSortableTargets()
 	clearLines()//todo: distinguish between hints and PatternMatching and other lines

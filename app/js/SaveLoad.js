@@ -1,5 +1,12 @@
 //Load/Save from https://thiscouldbebetter.wordpress.com/2012/12/18/loading-editing-and-saving-a-text-file-in-html5-using-javascrip/
 
+/**
+ * Fa scaricare al browser un file di testo col contenuto dato,
+ * formattato con formatXml, tramite un link di download temporaneo.
+ * @param {string} textToWrite - Testo (XML/MML) da salvare; viene passato da formatXml prima del download.
+ * @param {string} fileNameToSaveAs - Nome del file proposto per il download.
+ * @returns {void}
+ */
 function saveTextAsFile(textToWrite,fileNameToSaveAs)
 {
 	const textFileAsBlob = new Blob([  formatXml(textToWrite) ], {type:'text/plain'});
@@ -31,6 +38,17 @@ function destroyClickedElement(event)
 	document.body.removeChild(event.target);
 }
 
+/**
+ * Legge il file scelto nell'input #fileToLoad e lo inietta secondo l'estensione:
+ * "mml" → parsing e inject nel $targetNode; "mmls" → injectAllMMLS previa conferma
+ * (sostituisce il canvas); "json" → injectAll (manifest legacy); "prt" → iniezione
+ * in #palette (con conferma per rimpiazzare i prototipi non fondamentali).
+ * Al termine esegue RefreshEmptyInfixBraketsGlued. La lettura è asincrona (FileReader).
+ * @param {File} fileToLoadPar - (attualmente ignorato) il file letto è sempre il primo di #fileToLoad.
+ * @param {JQuery} [$targetNode] - Destinazione dell'iniezione, usata solo per i file "mml".
+ * @param {string} [fileSuffix] - Estensione del file ("mml"|"mmls"|"json"|"prt"); se sconosciuta logga e non inietta.
+ * @returns {void}
+ */
 function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 {
 	const fileToLoad = document.getElementById("fileToLoad").files[0];
@@ -70,14 +88,16 @@ function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 
 
 
-//inject(MMLstring,$('#canvasRole'))
 /**
- * Injects an MML string into a target element, handling various cases such as wrapping the content and preserving existing data attributes.
- *
- * @param {string} MMLstring - The MML string to be injected.
- * @param {jQuery} $targetRoleOrENODE - The target element to inject the MML string into.
- * @param {boolean} containerRequirements - A flag indicating whether the content should not be wrapped.
- * @param {boolean} toBeImported - A flag indicating whether the content is being imported.
+ * Primitiva di iniezione MML nel DOM: converte la stringa in albero ENODE
+ * (createConvertedTree), lo estende/inizializza e lo inserisce nel target,
+ * gestendo i vari casi (wrap del contenuto, conservazione degli attributi di
+ * import esistenti) e prendendo lo snapshot undo alla fine.
+ * Esempio: inject(MMLstring, $('#canvasRole')).
+ * @param {string|JQuery} MMLstring - Stringa MML da iniettare, o collezione jQuery già parsata (es. da $parserForMixedMMLHTML).
+ * @param {JQuery} $targetRoleOrENODE - Destinazione: se è un ENODE ([data-enode]) viene sostituito dal contenuto (ereditando data-import/importStatus), altrimenti il contenuto è appeso al ruolo.
+ * @param {string|boolean} [containerRequirements] - Se 'boolean' o true, i nodi appesi vengono avvolti in una definizione se necessario (wrapWithDefIfNeededreturnTarget).
+ * @param {string} [toBeImported] - data-tag da filtrare durante la conversione (inoltrato a createConvertedTree); se assente importa tutto.
  * @returns {void}
  */
 function inject(MMLstring, $targetRoleOrENODE, containerRequirements, toBeImported)
@@ -117,6 +137,14 @@ function inject(MMLstring, $targetRoleOrENODE, containerRequirements, toBeImport
 	ssnapshot.take(); 
 }
 
+/**
+ * Risolve gli import: cerca in tutto il body gli ENODE con [data-import] non ancora
+ * importati né falliti, li marca con importStatus e carica/inietta il file riferito
+ * via loadAjaxAndInject (filtrando per l'eventuale data-tag). Passata singola:
+ * import annidati nei file appena caricati possono restare irrisolti.
+ * @param {JQuery} [$startNode] - (attualmente ignorato) la ricerca avviene sempre in body; se assente viene valorizzato a #canvasRole ma senza effetto sulla ricerca.
+ * @returns {void}
+ */
 function importAll($startNode){
 	//futuribile for()//fino a che c’è qualcosa da importare
 	if(!$startNode){
@@ -142,6 +170,12 @@ function importAll($startNode){
 	
 }
 
+/**
+ * Serializza la sessione corrente in una stringa .mmls a sezioni: palette (senza i
+ * prototipi fondamentali), canvas, events e result. Nota: la sezione settings non
+ * viene serializzata (il commento "save settings" nel corpo è senza seguito).
+ * @returns {string} Stringa MMLS composta dalle <section data-section=...>.
+ */
 function AlltoMMLSstring(){
 	//palette
 	let paletteString = ENODEcreateMathmlString($('#palette').children(':not(.fundamental)'),true);

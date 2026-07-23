@@ -5,8 +5,12 @@
 
 
 /**
- * Prova in ordine le azioni associate a un evento in #events (es. "c" = semplificazioni).
+ * Prova in ordine le azioni associate a un evento in #events (es. "c" = semplificazioni),
+ * fermandosi alla prima che va a segno (via TryOnePropertyByName).
  * Usata dalla tastiera e dal refine post-proprietà (senza passare da keyboardEvToFC).
+ * @param {JQuery} $ENODE - Nodo/i ENODE su cui tentare le azioni.
+ * @param {string} eventKey - Chiave dell'evento da cercare in #events (case insensitive).
+ * @returns {PActx} Il contesto dell'ultima proprietà tentata (matchedTF true se applicata), o un PActx nuovo/fallito se nessuna azione è definita.
  */
 function tryEventActionsOnNode($ENODE, eventKey) {
 	let PActx
@@ -32,8 +36,16 @@ function tryEventActionsOnNode($ENODE, eventKey) {
 	return PActx
 }
 
+/**
+ * Traduce un tasto premuto in una chiamata di proprietà: in modalità "declare"
+ * con Invio applica il tool selezionato (.selectedTool; Shift = direzione rtl),
+ * altrimenti delega alle ricette di #events via tryEventActionsOnNode.
+ * @param {JQuery} $ENODE - Nodo/i ENODE selezionati su cui applicare la proprietà.
+ * @param {string} keyPressed - Carattere corrispondente al tasto premuto.
+ * @param {JQuery.Event} [event] - Evento keydown originale; se undefined è una chiamata interna che ignora il selectedTool.
+ * @returns {PActx} Il contesto della proprietà applicata, o un PActx nuovo/fallito se nessuna proprietà è stata applicata.
+ */
 function keyboardEvToFC($ENODE, keyPressed,event){
-	//if event is undefined, this is an internal call: use the property disregarding selectedTool
 	let PActx 
 	if(event && GLBsettings.tool=="declare" ){
 		const actionString = $('.selectedTool').attr('data-tag');
@@ -58,8 +70,15 @@ function keyboardEvToFC($ENODE, keyPressed,event){
 }
 
 
+/**
+ * Calcola le proprietà DnD abilitate: le always-on (requiresCanvasCi false) più
+ * quelle gated presenti come ci[data-tag] in canvas (in modalità "declare" contano
+ * solo i ci del tool selezionato). Legge listDnDProperties() e conserva l'ordine
+ * di registrazione (priorità first-wins in DnD.js).
+ * @param {string} [dataTag] - Se presente, filtra per il solo data-tag indicato.
+ * @returns {Array<{name: string, findTgt: Function, apply: Function, icon: (string|undefined)}>} Descrittori abilitati; icon proviene dal data-tagimg del ci in canvas, se presente.
+ */
 function getDnDpropEnabled(dataTag){
-	// DnD abilitate: always-on (requiresCanvasCi false) + gated presenti come ci in canvas.
 	let $propInCanvas = $('#canvasRole [data-enode=ci][data-tag]')
 	if (GLBsettings.tool=='declare'){$propInCanvas = $propInCanvas.filter('.selectedTool,.selectedTool *')}
 	if(dataTag){$propInCanvas = $propInCanvas.filter('[data-tag=' + dataTag + ']')}

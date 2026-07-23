@@ -1,3 +1,10 @@
+/**
+ * Pretty-printer XML puro, senza dipendenze applicative: spezza la stringa
+ * inserendo un a-capo tra ogni coppia di tag e indenta ogni riga con tabulazioni
+ * in base alla profondità di annidamento.
+ * @param {string} xml - Stringa XML (o MathML) da formattare.
+ * @returns {string} La stringa formattata con a-capo (\r\n) e indentazione a tab.
+ */
 function formatXml(xml) {
     var formatted = '';
     var reg = /(>)(<)(\/*)/g;

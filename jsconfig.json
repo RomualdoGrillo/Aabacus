@@ -7,5 +7,5 @@
 	"typeAcquisition": {
 		"include": ["jquery", "sortablejs"]
 	},
-	"include": ["app/js/**/*.js"]
+	"include": ["app/js/**/*.js", "types/**/*.d.ts"]
 }

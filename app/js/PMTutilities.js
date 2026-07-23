@@ -48,7 +48,20 @@ function overwriteFromHeader($forAll) {
 
     })
 }
-//getAllMarks(searchForMarkedInSubtree($root, "*"))
+/**
+ * Cerca in `$root` e nel suo sottoalbero gli ENODE che presentano tutte le
+ * marcature specificate in `mark`; con `mark="*"` restituisce tutti i marcati
+ * (es. `getAllMarks(searchForMarkedInSubtree($root, "*"))`).
+ * Usata da `DnD.js`.
+ * @param {JQuery} $root radice della ricerca (inclusa tra i candidati)
+ * @param {string} mark marcature richieste (singoli caratteri, tutte devono
+ *   essere presenti); "*" = qualunque elemento marcato
+ * @param {string} [attrName] sezione della stringa mark-link-post da leggere:
+ *   "m" (default), "l", "p" o "all" (v. `ENODESmarkUnmark`)
+ * @param {boolean} [usePermanentMark] se true legge l'attributo persistente
+ *   `title` invece del volatile `mark`
+ * @returns {JQuery} gli elementi marcati trovati (collezione vuota se nessuno)
+ */
 function searchForMarkedInSubtree($root, mark, attrName,usePermanentMark) {
     //cerca gli elementi che presentano tutte le marcature specificate in "mark"
     //se mark="*" return all marked
@@ -87,6 +100,15 @@ function allMarksInSubtree($root,mark){
 }
 
 
+/**
+ * Controlla che ogni marcatura presente nell'albero del pattern compaia anche
+ * nel sottoalbero dell'input (condizione necessaria per il match). Se il
+ * pattern non ha marcature, nessuna richiesta sull'input: restituisce true.
+ * Usata da `ExpressionManager.js` dentro `compareExtENODE`.
+ * @param {JQuery} $input sottoespressione candidata al match
+ * @param {JQuery} $pattern pattern di confronto
+ * @returns {boolean}
+ */
 function checkMarksOkForPattern($input,$pattern){
      var pMark =  getAllMarks(searchForMarkedInSubtree($pattern, "*"));//ottieni tutte le marcature dell'albero    
      //var pMarkNoC = pMark.split("c").join("")//c non è una marcatura da cercare nell'input 
@@ -278,6 +300,27 @@ function hideAllMarks() {
 	$(".label").remove();
 }
 
+/**
+ * Legge o scrive le marcature di un ENODE nella stringa `mark-link-post`
+ * (attributo volatile `mark` o, in modo permanente, `title`: le marcature
+ * permanenti passano nel file mml). Le marcature sono intese come singoli
+ * caratteri, ad esempio "s" per selected o "d" per dragged: una marcatura
+ * "sp" va intesa come marcato "s" e marcato "p". Sezioni della stringa:
+ * m = marcature che devono apparire anche nell'input perché ci sia un match;
+ * l = per associare ENODE tra pattern e transform;
+ * p = post-azioni (c = semplifica, n = nonRiordinare).
+ * Usata da `ExpressionManager.js`, `HardWiredProperties.js`, `newPM/resolve.js`.
+ * @param {JQuery} $ENODE nodo da leggere/scrivere
+ * @param {string} [value] se undefined la funzione legge; altrimenti scrive il
+ *   valore nella sezione scelta (`ENODESmarkUnmark($ENODE,"","all")` cancella
+ *   tutte le marcature)
+ * @param {string} [attrName] sezione su cui operare: "m" (default, anche per
+ *   compatibilità con vecchie chiamate), "l", "p", "all"
+ * @param {boolean} [usePermanentMark] se true usa l'attributo `title` invece
+ *   del volatile `mark`
+ * @returns {string} in lettura: la sezione richiesta (mai undefined); in
+ *   scrittura: la stringa completa scritta nell'attributo
+ */
 function ENODESmarkUnmark($ENODE,value,attrName,usePermanentMark){
 //la funzione scrive o legge marcature ENODEs in modo permanente: le marcature passano nel file mml. 
 //attrname può assumere i valori m,l,p corrispondenti al formato della stringa mark-link-post
@@ -347,6 +390,18 @@ function ENODESmarkUnmark($ENODE,value,attrName,usePermanentMark){
 
 
 
+/**
+ * Posiziona in modo assoluto `$ENODE` dentro `#divOverlay`, vicino a un ENODE
+ * di riferimento. Se si tratta di forAll piazzare il pattern circondato dal
+ * suo forAll. Caso speciale: se il riferimento è `#canvasAnd` la posizione è
+ * fissa in alto a destra.
+ * Usata da `ExpressionManager.js`.
+ * @param {JQuery} $ENODE nodo da spostare nell'overlay
+ * @param {JQuery} $refENODE nodo di riferimento per la posizione
+ * @param {string} [relativePosition] "beside": accanto al riferimento,
+ *   spostato di qualche pixel (per il clone di un clone sovrapposto al
+ *   "clonato"); qualunque altro valore: sovrapposto con piccolo offset
+ */
 function ENODEappendInABSPosition($ENODE,$refENODE,relativePosition){
 //posiziona in modo assoluto $ENODE vicino a un ENODE di riferimento $refENODE
 //Se si tratta di forall piazzare il pattern circondato dal suo forall.
@@ -369,7 +424,24 @@ function ENODEappendInABSPosition($ENODE,$refENODE,relativePosition){
 } 
 
 
-//  TryOnePropertyByName("name",actionString,firstValString)
+/**
+ * Dispatch di una proprietà per nome (es.
+ * `TryOnePropertyByName("name", actionString, firstValString)`): a partire da
+ * un "ordine" del tipo «esegui la proprietà "semplifica frazione" "ltr" sul
+ * tal elemento», "apre un fascicolo" (PActx) e tenta di "dare seguito"
+ * all'ordine. Cerca `$('[data-tag=propName]')`: se è un `ci` risolve la
+ * hard-wired via registro (`getHardWired`), altrimenti applica la proprietà
+ * pattern-based scritta nel canvas (`InstructAndTryOnePMT`).
+ * Usata da `UserEvToFunctCall.js`.
+ * @param {string} propName nome della proprietà (data-tag)
+ * @param {JQuery} $par1 operando su cui applicare la proprietà
+ * @param {string} [firstVal] nota multiforme!! può essere: 1) direzione di
+ *   applicazione della proprietà ("ltr"/"rtl") 2) parametro della proprietà
+ * @param {boolean} [justTry] usato solo per le pattern-based: inoltrato a
+ *   `InstructAndTryOnePMT` (sostituzioni limitate al pattern)
+ * @returns {PActx} contesto risultante; con `error=true` (e matchedTF falso)
+ *   se la proprietà non esiste o la hard-wired non è registrata
+ */
 function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
 	//a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
@@ -411,6 +483,24 @@ function TryOnePropertyByName(propName, $par1, firstVal, justTry) {
 }
 
 
+/**
+ * Istruisce la pratica (PActx) e tenta di applicare una proprietà
+ * pattern-based (Pattern Matching and Transform): clona la proprietà
+ * orientandola secondo `firstVal` (`swapMembersClone`), determina l'operando
+ * dai punti di attacco, esegue l'adapt/order match e, a successo avvenuto,
+ * il post-match (marcature `p`, pulizia). A partire da un "ordine" del tipo
+ * «esegui la proprietà "semplifica frazione" "ltr" sul tal elemento», "apre
+ * un fascicolo" e tenta di "dare seguito" all'ordine.
+ * Usata da `DnD.js` (drop su pattern) e da `TryOnePropertyByName`.
+ * @param {JQuery} $origProp proprietà originale nel canvas (forAll o eq)
+ * @param {JQuery} $par1 operando (nota multiforme: è il primo parametro
+ *   definito da cui ricavare i punti di attacco)
+ * @param {string} [firstVal] direzione di applicazione della proprietà:
+ *   "rtl" scambia i membri dell'equazione, altrimenti "ltr"
+ * @param {boolean} [justTry] se true le sostituzioni avvengono solo nel
+ *   pattern (inoltrato a `orderMatch` come replaceInPatternOnly)
+ * @returns {PActx}
+ */
 function InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry){//instruct practice and try to apply one property by  Pattern Matching and Transform
 	//nota multiforme!! first val può essere:1) direzione di applicaz prop 2)parametro
     //a partire da un "ordine" del tipo esegui la proprietà "semplifica frazione" "ltr" sul tal elemento
@@ -577,6 +667,23 @@ function PMcleanAndPost(PActx){
 
 
 
+/**
+ * Esegue il match ricorsivo (`adaptMatch`) tra `PActx.$operand` e
+ * `PActx.$pattern` e poi, se richiesto, riordina il transform (`orderUL`)
+ * provando a ristabilire l'ordine originale memorizzato nei `data-path`
+ * (che vengono infine rimossi).
+ * Usata da `game.js` (confronto col risultato a meno di riordino) e da
+ * `InstructAndTryOnePMT`.
+ * @param {PActx} PActx contesto con `$operand`, `$pattern` (e `$cloneProp`)
+ *   già impostati
+ * @param {boolean} [order] default true: riordina il transform; se order =
+ *   true, deve passare `PActx.$cloneProp`
+ * @param {boolean} [replaceInPatternOnly] se true lo span delle sostituzioni
+ *   è il solo `PActx.$pattern` invece dell'intera `PActx.$cloneProp`
+ * @param {boolean} [strictOrder] se true gli argomenti sono confrontati come
+ *   lista ordinata (inoltrato ad `adaptMatch`)
+ * @returns {PActx} lo stesso contesto con `matchedTF` aggiornato
+ */
 function orderMatch(PActx,order,replaceInPatternOnly,strictOrder){
 	//se order = true, deve passare PActx.$cloneProp
 	//************Imposta valori di default************
