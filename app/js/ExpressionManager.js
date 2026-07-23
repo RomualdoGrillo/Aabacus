@@ -2,29 +2,52 @@
 //todo: in teoria tutte le operazioni sull'espressione dovrebbero avvenire tramite queste funzioni, anche se per ora questa riformattazione del codice non è ancora avvenuta
 //todo: cercare,tutti i punti in cui il codice  al di fuori di questo file e sostituire la manipolazione diretta di elementi html che costituiscono l'espressione matematica con chiamate a questo file 
 
-/*
-Nota: non sempre � comodo usare ENODEobject.ENODEmethod()
-Il risultato di un select $('selector'), � un oggetto jQuery contenente n altri oggetti. Quindi non si pu� chiamare $('selector').ENODEmethod
-Si pu� chiamare in uno dei modi seguenti:  
-1)  $('selector')[0].ENODEmethod
-	$('selector').each(function(index) {this.ENODEmethod})
-2) oppure chiamare la funzione corrispondente al metodo, per come � costruito ENODE ENODEmethod(ENODEobject)
-*/
+/* ---- Il tipo ENode ----
+DEFINIZIONE: un ENODE è un elemento HTML con attributo `data-enode`; è il nodo
+dell'albero dell'espressione matematica (il DOM è il modello dati, vedi
+project/specs/software-modules.md §1).
 
-/*
-Nota:
-ENODEnomefunzione possono essere usati sia come metodi che come funzioni
-ENODE_nomemetodo possono essere chiamati solo come metodi
-ad esempio ENODEparent può essere invocato come metodo di un ENODE oppure come
-funzione su un qualsiasi elemento html anche se non è un ENODE 
-*/
+Il typedef qui sotto dichiara il tipo per il motore dei tipi dell'IDE: le
+funzioni concepite per agire su un ENODE lo dichiarano nella firma con
+`@param {ENode}` / `@returns {JQuery<ENode>}`. Il "brand" `__enodeBrand`
+esiste solo per il type-checker e rende ENode non intercambiabile con un
+Element qualunque; a runtime un ENode è un normale Element. Il modo corretto
+di ottenere un ENode da un Element generico è passare da asENode(), che
+verifica davvero l'attributo (controllo statico e controllo a runtime si
+incontrano lì). */
+
+/**
+ * Elemento HTML con attributo `data-enode`: nodo dell'albero dell'espressione.
+ * @typedef {Element & { __enodeBrand: 'ENode' }} ENode
+ */
+
+/**
+ * true se el è un ENODE (elemento HTML con attributo data-enode).
+ * @param {Element|null|undefined} el
+ * @returns {el is ENode}
+ */
+function isENode(el) {
+	return !!el && el.nodeType === 1 && el.hasAttribute('data-enode');
+}
+
+/**
+ * "Dogana" del tipo ENode: verifica a runtime che el sia un ENODE e lo
+ * restituisce tipato; lancia TypeError altrimenti. Da usare ai confini
+ * (selezioni generiche, input utente), non dove l'ENODE è già garantito.
+ * @param {Element|null|undefined} el
+ * @returns {ENode}
+ */
+function asENode(el) {
+	if (!isENode(el)) { throw new TypeError('asENode: elemento senza data-enode'); }
+	return el;
+}
+
 /* ---- Expression Global Utilities ---- */
 
 /**
  * Restituisce il nodo radice dell'espressione matematica principale
  * (il primo figlio [data-enode] dentro #canvas>.secondMember).
- * @returns {Element|undefined} L'elemento DOM che rappresenta il nodo radice con attributo [data-enode],
- *                              o undefined se non trovato.
+ * @returns {ENode|undefined} Il nodo radice, o undefined se non trovato.
  */
 function getExpressionRootNode() {
     // Trova il primo figlio con [data-enode] all'interno del contenitore principale
@@ -186,7 +209,7 @@ function dummyParser(string){
  * @param {JQuery} [$startNode] - Elemento di partenza (anche non ENODE);
  *   se undefined restituisce un jQuery vuoto (alcuni chiamanti, es.
  *   refreshAndReplace con $transform assente, contano su questo).
- * @returns {JQuery} L'ENODE antenato più vicino (eventualmente vuoto).
+ * @returns {JQuery<ENode>} L'ENODE antenato più vicino (eventualmente vuoto).
  */
 function ENODEparent($startNode) {
 	if ($startNode == undefined) { return $() }
@@ -236,8 +259,8 @@ function ENODEfrozenDef(Node) {
  * suoi role; se non ha figli ENODE, rimuove semplicemente il nodo.
  * Attenzione: la variabile $children è dichiarata dentro il ramo if, quindi il
  * `return $children` finale non è raggiungibile senza errore (anomalia nota).
- * @param {Element} node - Il nodo contenitore da dissolvere.
- * @returns {JQuery} Gli ENODE figli che hanno preso il posto del contenitore.
+ * @param {ENode} node - Il nodo contenitore da dissolvere.
+ * @returns {JQuery<ENode>} Gli ENODE figli che hanno preso il posto del contenitore.
  */
 function ENODE_dissolveContainer(node) {
 	if (ENODE_getChildren(node).length > 0) {
@@ -523,9 +546,9 @@ function formatForall($forall, $toBeRenamed) {
 /**
  * Restituisce il nodo stesso più tutti i suoi sotto-elementi interni,
  * esclusi gli ENODE annidati e il loro contenuto.
- * @param {Element} node - Il nodo ENODE radice.
+ * @param {ENode} node - Il nodo ENODE radice.
  * @param {string} [selector] - Selettore jQuery per filtrare i risultati.
- * @returns {JQuery} Il nodo e i suoi sotto-elementi propri.
+ * @returns {JQuery} Il nodo e i suoi sotto-elementi propri (non solo ENODE).
  */
 function ENODE_getNodes(node, selector) {
 	$(node).addClass("gettingNodes");
@@ -545,9 +568,9 @@ function ENODE_getNodes(node, selector) {
  * Restituisce i role del nodo (elementi con classe *_role interni al nodo,
  * esclusi quelli di ENODE annidati), ordinati con i bVar_role per primi e poi
  * per data-roleOrder.
- * @param {Element} node - Il nodo ENODE.
+ * @param {ENode} node - Il nodo ENODE.
  * @param {string} [selector] - Selettore jQuery per filtrare i role.
- * @returns {JQuery} I role del nodo, ordinati.
+ * @returns {JQuery} I role del nodo, ordinati (i role non sono ENODE).
  */
 function ENODE_getRoles(node, selector) {
 	let $roles = ENODE_getNodes(node, selector).filter('[class*="_role"]');
@@ -579,9 +602,9 @@ function ENODE_getRoles(node, selector) {
 /**
  * Restituisce gli ENODE figli diretti, cioè i [data-enode] contenuti nei role
  * del nodo.
- * @param {Element} node - Il nodo ENODE.
+ * @param {ENode} node - Il nodo ENODE.
  * @param {string} [selector] - Selettore jQuery per filtrare i figli.
- * @returns {JQuery} Gli ENODE figli.
+ * @returns {JQuery<ENode>} Gli ENODE figli.
  */
 function ENODE_getChildren(node, selector) {
 	let $children = ENODE_getRoles(node).children("[data-enode]");
@@ -596,7 +619,7 @@ function ENODE_getChildren(node, selector) {
  * Restituisce il nome del nodo, cioè il testo dell'elemento figlio .name; di
  * default il nome viene troncato al primo underscore (i suffissi _ / __ / ___
  * codificano il tipo di parametro).
- * @param {Element} node - Il nodo ENODE.
+ * @param {ENode} node - Il nodo ENODE.
  * @param {boolean} [considerSuffix] - Se true restituisce il nome completo, suffisso incluso.
  * @returns {string} Il nome del nodo (senza suffisso, salvo considerSuffix).
  */
@@ -611,7 +634,7 @@ function ENODE_getName(node, considerSuffix) {
 
 /**
  * Imposta il nome del nodo scrivendo il testo nell'elemento figlio .name.
- * @param {Element} node - Il nodo ENODE.
+ * @param {ENode} node - Il nodo ENODE.
  * @param {string|number} newName - Il nuovo nome.
  */
 function ENODE_setName(node, newName) {
@@ -621,7 +644,7 @@ function ENODE_setName(node, newName) {
 /**
  * Aggiunge al nodo un nuovo role (div.role) con il data-type e la classe
  * indicati; da usare quando si crea una nuova funzione o definizione.
- * @param {Element} node - Il nodo ENODE a cui aggiungere il role.
+ * @param {ENode} node - Il nodo ENODE a cui aggiungere il role.
  * @param {string} [dataType] - Valore per l'attributo data-type del nuovo role.
  * @param {string} [roleClass] - Classe del role; default 'ol_role' (adatta alle chiamate di funzione).
  * @param {string} [content] - Contenuto HTML iniziale del role; default ''.
@@ -741,7 +764,7 @@ function attrAcceptToMinMax(acceptString) {
  * @param {JQuery} $node - Il nodo (o i nodi) da clonare.
  * @param {boolean} [Extend] - Se === false salta l'inizializzazione del clone; default true.
  * @param {boolean} [removeID] - Se === false salta la pulizia di id e attributi da prototipo; default true.
- * @returns {JQuery} Il clone (staccato dal DOM).
+ * @returns {JQuery<ENode>} Il clone (staccato dal DOM).
  */
 function ENODEclone($node, Extend, removeID) {//default: Extend and RemoveID
 	let $clone = $node.clone(); //clona
@@ -772,7 +795,7 @@ const symbols = ["ci", "cn", "csymbol"];
  * @param {string} [dataType] - Valore di data-type richiesto; se omesso qualsiasi tipo va bene.
  * @param {string} [selector] - Selettore jQuery aggiuntivo per filtrare i prototipi.
  * @param {string} [name] - Nome del simbolo, usato per raffinare la scelta tra più cn/ci.
- * @returns {JQuery} Il prototipo trovato (l'ultimo, se più di uno), il prototipo generico adattato, oppure una collezione vuota se in palette non c'è alcun prototipo.
+ * @returns {JQuery<ENode>} Il prototipo trovato (l'ultimo, se più di uno), il prototipo generico adattato, oppure una collezione vuota se in palette non c'è alcun prototipo.
  */
 function prototypeSearch(className, dataType, selector, name) {
 	//alcune classi, ad esempio "ci", possono avere vari datatype
@@ -1271,7 +1294,7 @@ function compareExtENODE(
 /**
  * Verifica se il nodo è un contenitore associativo "inutile": con al più un
  * figlio, oppure con la stessa operazione del genitore.
- * @param {Element} node - Il nodo ENODE da verificare.
+ * @param {ENode} node - Il nodo ENODE da verificare.
  * @returns {boolean|undefined} true se il contenitore è inutile.
  */
 function ENODE_checkIfPointlessSingleNode(node) {
