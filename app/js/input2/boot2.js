@@ -131,6 +131,61 @@
 	};
 
 	/**
+	 * Legge la sezione #events (iniettata dal preload .mmls) e trasforma gli
+	 * eventtoaction in override della tabella (spec §7.4-7.5): l'evento può
+	 * essere un nome di gesto (slashVert, pinchHor, …) o un alias tastiera.
+	 * I nomi che non corrispondono a nessuna riga restano al path legacy
+	 * (tryEventActionsOnNode) e qui vengono ignorati.
+	 * @returns {Object} overrides per applyMmlsOverrides
+	 */
+	function readMmlsGestureOverrides() {
+		const overrides = {};
+		$('#events').find('[data-enode="eventtoaction"]').each(function () {
+			let eventName;
+			try {
+				const $role = ENODE_getRoles(this, '.event');
+				if ($role.length !== 1) return;
+				const ev = $role.children()[0];
+				if (ev === undefined) return;
+				eventName = ENODE_getName(ev);
+			} catch (err) { return; }
+			if (!eventName) return;
+
+			const names = [];
+			const $actions = ENODE_getRoles(this, '.actions').children();
+			for (let j = 0; j < $actions.length; j++) {
+				try {
+					const name = ENODE_getName(ENODE_getRoles($actions[j], '.function').children()[0]);
+					if (name) names.push(name);
+				} catch (err) { /* action malformata: ignora */ }
+			}
+			if (names.length) overrides[eventName] = { actions: names };
+		});
+		return overrides;
+	}
+
+	/**
+	 * Ricostruisce la tabella attiva dagli override del .mmls corrente.
+	 * Le righe system non sono sovrascrivibili: violazioni → warning.
+	 * @returns {{table: Object[], violations: string[]}}
+	 */
+	function reloadMmlsOverrides() {
+		if (typeof global.INPUT2.applyMmlsOverrides !== 'function') {
+			return { table: getActiveTable(), violations: [] };
+		}
+		const overrides = readMmlsGestureOverrides();
+		const res = global.INPUT2.applyMmlsOverrides(
+			global.INPUT2.DEFAULT_TABLE, overrides);
+		activeTable = res.table;
+		for (let i = 0; i < res.violations.length; i++) {
+			console.warn('INPUT2: il .mmls tenta di rimappare un gesto di sistema, ignorato:', res.violations[i]);
+		}
+		invalidateAvailability();
+		return res;
+	}
+	global.INPUT2.reloadMmlsOverrides = reloadMmlsOverrides;
+
+	/**
 	 * Wrap GLBsettingsToInterface: dopo tiedCanvas dal preload, ricalcola availability.
 	 * Aggancio robusto (preload è async via ajax).
 	 */
@@ -140,7 +195,10 @@
 		const orig = global.GLBsettingsToInterface;
 		function wrapped() {
 			const ret = orig.apply(this, arguments);
-			invalidateAvailability();
+			// #events è già iniettata a questo punto: applica gli override gesto→azione del .mmls
+			try { reloadMmlsOverrides(); } catch (err) {
+				console.warn('INPUT2: reloadMmlsOverrides post-settings', err);
+			}
 			// tied applicato: ricalcola subito (ci già nel DOM a questo punto)
 			try { refreshAvailability(); } catch (err) {
 				console.warn('INPUT2: refreshAvailability post-settings', err);
@@ -320,11 +378,19 @@
 			altKey: !!e.altKey
 		};
 
-		// Solo alias presenti in tabella (nessuna scorciatoia legacy extra)
 		const entry = global.INPUT2.resolveIntent
 			? global.INPUT2.resolveIntent(intent, getActiveTable())
 			: null;
-		if (!entry) return;
+		if (!entry) {
+			// Fallback legacy: tasti definiti solo nella sezione events del .mmls
+			// (ricette esercizio, es. 'f'), come keyboardEvToFC in index.html.
+			if (!e.ctrlKey && !e.metaKey && !e.altKey &&
+				typeof tryEventActionsOnNode === 'function' && $('.selected').length > 0) {
+				const PActx = tryEventActionsOnNode($('.selected'), e.key);
+				if (PActx && PActx.matchedTF === true) conclude2(PActx);
+			}
+			return;
+		}
 
 		// Evita scroll frecce / comportamento browser su Mod+z
 		if (entry.alias === 'Mod+z' || (entry.trigger && String(entry.trigger).indexOf('slash') === 0) ||
@@ -350,7 +416,8 @@
 			const fileSuffix = parts[parts.length - 1];
 			loadFileConvert(fileToLoad, $($target[0]), fileSuffix);
 			this.value = '';
-			invalidateAvailability();
+			// il file può ridefinire #events: riapplica override e disponibilità
+			try { reloadMmlsOverrides(); } catch (err) { invalidateAvailability(); }
 		});
 	}
 

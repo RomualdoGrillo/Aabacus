@@ -492,7 +492,7 @@ Fonte: tabella di Romualdo (immagine agli atti della chat). Formalizza tre conce
 | slashHor | arrowRight (*) | slashed / selected | decomposeInAProduct (*) | didattica |
 | slashVert | arrowUp | slashed / selected | decomposeInASum (*) | didattica |
 
-(*) Assunzioni da confermare con Romualdo: le celle Action delle righe slash erano vuote (riempite con la mappatura già validata slice→decompose); i due alias erano entrambi "arrowUp/arrowup" (assunto refuso: arrowUp per slashVert, arrowRight per slashHor); il pinch ha la stessa try-list in entrambe le direzioni (distinte solo dall'alias tastiera).
+(*) Assunzioni **confermate da Romualdo (24/07/2026)**: slash→decompose come da mappatura validata; alias arrowUp per slashVert e arrowRight per slashHor; pinch con la stessa try-list in entrambe le direzioni (distinte solo dall'alias tastiera).
 
 Regole di incorporamento nel codice (accortezze di Romualdo):
 
