@@ -9,7 +9,8 @@
  *                   lucchetto sulle definizioni), senza DnD/sortable.
  *   - conclude2   — analogo snello di PActxConclude senza game/sound/DnD.
  *
- * Non modifica file esistenti. Nessun git commit da questo modulo.
+ * Smistamento gesture→action: funzioni pure in intentMap.js; qui solo cablaggio.
+ * Non modifica file fuori perimetro. Nessun git commit da questo modulo.
  */
 (function (global) {
 	'use strict';
@@ -40,8 +41,17 @@
 	global.ExtendAndInitialize = ExtendAndInitialize;
 	global.ExtendAndInitializeTree = ExtendAndInitializeTree;
 
+	// searchEventHandler / tryEventActionsOnNode (usati da refine.js per il
+	// cascade refining 'c') arrivano da UserEvToFunctCall.js, caricato in
+	// index2.html: solo definizioni, i listener legacy vivono in MAIN.js (escluso).
+
 	const INTENT_LOG_MAX = 50;
 	const intentLog = [];
+	const unresolvedWarned = {};
+
+	/** Cache disponibilità; null = dirty (ricalcolo lazy). */
+	let availabilityCache = null;
+	let activeTable = null;
 
 	global.INPUT2 = global.INPUT2 || {};
 	global.INPUT2.lastIntent = null;
@@ -62,6 +72,87 @@
 	}
 	global.INPUT2.conclude2 = conclude2;
 
+	function getActiveTable() {
+		if (!activeTable) {
+			activeTable = global.INPUT2.getTable
+				? global.INPUT2.getTable()
+				: (global.INPUT2.DEFAULT_TABLE || []).slice();
+		}
+		return activeTable;
+	}
+
+	function buildResolverFns() {
+		return {
+			hasCanvasCi: function (name) {
+				if (typeof findPMPropByName !== 'function') return false;
+				return findPMPropByName(name).length > 0;
+			},
+			isRegistered: function (name) {
+				if (typeof getHardWired !== 'function') return false;
+				return typeof getHardWired(name) === 'function';
+			}
+		};
+	}
+
+	/**
+	 * Ricalcola disponibilità (dopo tied / preload). Invalidabile.
+	 * Aggancio: wrap di GLBsettingsToInterface + lazy alla prima dispatch.
+	 */
+	function refreshAvailability() {
+		const table = getActiveTable();
+		const result = global.INPUT2.computeAvailability
+			? global.INPUT2.computeAvailability(table, buildResolverFns())
+			: { availability: {}, unresolved: [] };
+		availabilityCache = result.availability || result;
+		const unresolved = result.unresolved || [];
+		for (let i = 0; i < unresolved.length; i++) {
+			const name = unresolved[i];
+			if (!unresolvedWarned[name]) {
+				unresolvedWarned[name] = true;
+				console.warn('INPUT2: azione dichiarata ma non risolta nel registry:', name);
+			}
+		}
+		return availabilityCache;
+	}
+
+	function invalidateAvailability() {
+		availabilityCache = null;
+	}
+
+	function ensureAvailability() {
+		if (!availabilityCache) refreshAvailability();
+		return availabilityCache;
+	}
+
+	global.INPUT2.refreshAvailability = refreshAvailability;
+	global.INPUT2.invalidateAvailability = invalidateAvailability;
+	global.INPUT2.availability = function () {
+		return Object.assign({}, ensureAvailability());
+	};
+
+	/**
+	 * Wrap GLBsettingsToInterface: dopo tiedCanvas dal preload, ricalcola availability.
+	 * Aggancio robusto (preload è async via ajax).
+	 */
+	function hookSettingsToInterface() {
+		if (typeof global.GLBsettingsToInterface !== 'function') return;
+		if (global.GLBsettingsToInterface._input2Wrapped) return;
+		const orig = global.GLBsettingsToInterface;
+		function wrapped() {
+			const ret = orig.apply(this, arguments);
+			invalidateAvailability();
+			// tied applicato: ricalcola subito (ci già nel DOM a questo punto)
+			try { refreshAvailability(); } catch (err) {
+				console.warn('INPUT2: refreshAvailability post-settings', err);
+			}
+			// checkpoint post-preload (il take iniziale in boot è troppo presto: ajax)
+			try { if (typeof ssnapshot !== 'undefined' && ssnapshot.take) ssnapshot.take(); } catch (_) { /* ignore */ }
+			return ret;
+		}
+		wrapped._input2Wrapped = true;
+		global.GLBsettingsToInterface = wrapped;
+	}
+
 	function pushIntent(intent) {
 		global.INPUT2.lastIntent = intent;
 		intentLog.push({
@@ -80,26 +171,192 @@
 		target.classList.toggle('selected');
 	}
 
+	/** Builtin undo — come scorciatoia sistema (ssnapshot.undo + refresh). */
+	function builtinUndo() {
+		if (typeof ssnapshot !== 'undefined' && ssnapshot.undo) {
+			ssnapshot.undo();
+			if (typeof RefreshEmptyInfixBraketsGlued === 'function') {
+				RefreshEmptyInfixBraketsGlued($('body'), true);
+			}
+		}
+	}
+
+	/** Builtin load — stessa azione di MAIN.js shift+l. */
+	function builtinLoad() {
+		$('#fileToLoad').trigger('click');
+	}
+
+	/** Builtin save — stessa logica di MAIN.js shift+s (funzioni SaveLoad). */
+	function builtinSave() {
+		let fileExtension;
+		let stringToBeSaved;
+		if ($('.selected').length === 0) {
+			stringToBeSaved = AlltoMMLSstring();
+			fileExtension = '.mmls';
+		} else {
+			const $toBeSaved = $('.selected');
+			$('.selected').removeClass('selected');
+			const contentString = ENODEcreateMathmlString($toBeSaved, true);
+			stringToBeSaved = '<math xmlns="http://www.w3.org/1998/Math/MathML">' + contentString + '</math>';
+			fileExtension = '.mml';
+		}
+		if (stringToBeSaved) {
+			const fileName = prompt('Save as... Attenzione: Il file verrà salvato nella cartella "Download" !! non è possibile salvare in altre cartelle', 'noname');
+			if (fileName !== null) {
+				saveTextAsFile(stringToBeSaved, fileName + fileExtension);
+			}
+		}
+	}
+
+	/**
+	 * Target jQuery per l'azione: selected / pinched / slashed.
+	 * Per compose* su nodo operazione → figli (compose lavora sugli operandi).
+	 */
+	function resolveTargets(entry, intent, actionName) {
+		let $target = $();
+		const src = entry.targetSource;
+		if (intent && intent.type === 'key') {
+			$target = $('.selected');
+		} else if (src === 'selected') {
+			$target = $('.selected');
+		} else if (src === 'pinched' || src === 'slashed' || !src) {
+			if (intent && intent.target) $target = $(intent.target);
+		}
+
+		if ($target.length === 0 && intent && intent.target && (src === 'pinched' || src === 'slashed')) {
+			$target = $(intent.target);
+		}
+
+		// compose su plus/times/or: passare i figli
+		if (actionName && /^compose/i.test(actionName) && $target.length === 1) {
+			const tag = $target.attr('data-enode');
+			if (tag === 'plus' || tag === 'times' || tag === 'or') {
+				if (typeof ENODE_getChildren === 'function') {
+					$target = ENODE_getChildren($target);
+				} else {
+					$target = $target.find('> .ul_role > [data-enode], > .ol_role > [data-enode], > .s_role > [data-enode]');
+				}
+			}
+		}
+		return $target;
+	}
+
+	function runBuiltin(name) {
+		if (name === 'undo') builtinUndo();
+		else if (name === 'load') builtinLoad();
+		else if (name === 'save') builtinSave();
+		else if (name === 'toggleSelect') { /* gestito a parte con target */ }
+	}
+
 	function dispatchIntent(intent) {
 		pushIntent(intent);
-		const action = global.INPUT2.lookupIntent
-			? global.INPUT2.lookupIntent(intent)
+		const table = getActiveTable();
+		const avail = ensureAvailability();
+		const entry = global.INPUT2.resolveIntent
+			? global.INPUT2.resolveIntent(intent, table)
 			: null;
-		if (!action) {
+		if (!entry) {
 			if (typeof debugMode !== 'undefined' && debugMode) {
 				console.log('INPUT2: nessun mapping per', intent);
 			}
 			return;
 		}
-		if (action.kind === 'property') {
-			const PActx = TryOnePropertyByName(action.name, $(intent.target));
-			conclude2(PActx);
-		} else if (action.kind === 'builtin' && action.name === 'toggleSelect') {
-			toggleSelect(intent.target);
+
+		const tryList = global.INPUT2.listTryActions
+			? global.INPUT2.listTryActions(entry, avail)
+			: (entry.actions || []);
+
+		for (let i = 0; i < tryList.length; i++) {
+			const name = tryList[i];
+
+			if (global.INPUT2.isBuiltinAction && global.INPUT2.isBuiltinAction(name)) {
+				if (name === 'toggleSelect') {
+					toggleSelect(intent.target);
+					return;
+				}
+				runBuiltin(name);
+				return;
+			}
+
+			// dichiarate ma non risolte: salta (warning già emesso in refresh)
+			const resolvers = buildResolverFns();
+			if (!resolvers.isRegistered(name)) {
+				if (!unresolvedWarned[name]) {
+					unresolvedWarned[name] = true;
+					console.warn('INPUT2: azione dichiarata ma non risolta nel registry:', name);
+				}
+				continue;
+			}
+
+			const $target = resolveTargets(entry, intent, name);
+			if (!$target || $target.length === 0) continue;
+
+			const PActx = TryOnePropertyByName(name, $target);
+			if (PActx && PActx.matchedTF === true) {
+				conclude2(PActx);
+				return;
+			}
 		}
+	}
+	global.INPUT2.dispatchIntent = dispatchIntent;
+
+	function isEditableTarget(el) {
+		if (!el || !el.tagName) return false;
+		const tag = el.tagName.toLowerCase();
+		if (tag === 'input' || tag === 'textarea' || tag === 'select') return true;
+		if (el.isContentEditable) return true;
+		return false;
+	}
+
+	function onKeyDown(e) {
+		if (isEditableTarget(e.target)) return;
+
+		const intent = {
+			type: 'key',
+			key: e.key,
+			metaKey: !!e.metaKey,
+			ctrlKey: !!e.ctrlKey,
+			shiftKey: !!e.shiftKey,
+			altKey: !!e.altKey
+		};
+
+		// Solo alias presenti in tabella (nessuna scorciatoia legacy extra)
+		const entry = global.INPUT2.resolveIntent
+			? global.INPUT2.resolveIntent(intent, getActiveTable())
+			: null;
+		if (!entry) return;
+
+		// Evita scroll frecce / comportamento browser su Mod+z
+		if (entry.alias === 'Mod+z' || (entry.trigger && String(entry.trigger).indexOf('slash') === 0) ||
+			entry.alias === 'ArrowUp' || entry.alias === 'ArrowDown' ||
+			entry.alias === 'ArrowLeft' || entry.alias === 'ArrowRight') {
+			e.preventDefault();
+		}
+		if (entry.alias === 'Mod+z') e.preventDefault();
+
+		dispatchIntent(intent);
+	}
+
+	/** Change su #fileToLoad — stesso path di MAIN.js (SaveLoad.loadFileConvert). */
+	function bindFileToLoad() {
+		const $input = $('#fileToLoad');
+		if (!$input.length) return;
+		$input.off('change.input2').on('change.input2', function () {
+			const fileToLoad = this.files && this.files[0];
+			if (!fileToLoad) return;
+			const $target = $('#canvasRole');
+			const fileName = fileToLoad.name;
+			const parts = fileName.split('.');
+			const fileSuffix = parts[parts.length - 1];
+			loadFileConvert(fileToLoad, $($target[0]), fileSuffix);
+			this.value = '';
+			invalidateAvailability();
+		});
 	}
 
 	function boot() {
+		hookSettingsToInterface();
+
 		// Init undo (come MAIN.js)
 		ssnapshot();
 		// Preload asincrono (state.js ha già letto ?preloadPath=)
@@ -114,6 +371,12 @@
 			root: '#centralColumn',
 			onIntent: dispatchIntent
 		});
+
+		document.addEventListener('keydown', onKeyDown, false);
+		bindFileToLoad();
+
+		// availability lazy: se settings già applicati sync, prova subito
+		invalidateAvailability();
 
 		console.log('INPUT2 boot ok — preloadPath=', preloadPath);
 	}

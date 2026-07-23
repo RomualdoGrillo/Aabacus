@@ -153,7 +153,7 @@
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.6.4/math.js"></script>
 			<!-- Passo 7 (software-modules.md §5): strati core → rendering → properties → persistence → input2.
-			     Vietato introdurre dipendenze verso il basso. NIENTE MAIN/UserEv/DnD/game/sound/newPM. -->
+			     Vietato introdurre dipendenze verso il basso. NIENTE MAIN/DnD/game/sound/newPM. -->
 			<!-- 1. core — nucleo espressioni -->
 			<script type="text/javascript" src="js/formatXML.js"></script>
 			<script type="text/javascript" src="js/math.js"></script>
@@ -178,6 +178,9 @@
 			<!-- 5. utility + settings (senza interaction legacy) -->
 			<script type="text/javascript" src="js/dom-utils.js"></script>
 			<script type="text/javascript" src="js/Undo.js"></script>
+			<!-- UserEvToFunctCall: solo definizioni (nessun listener al load; quelli vivono in MAIN.js, escluso).
+			     Serve a refine.js (tryEventActionsOnNode per il cascade refining 'c'). -->
+			<script type="text/javascript" src="js/UserEvToFunctCall.js"></script>
 			<script type="text/javascript" src="js/settings.js"></script>
 			<!-- 6. input2 — recognizer → intent map → boot/dispatcher -->
 			<script type="text/javascript" src="js/input2/gestures.js"></script>

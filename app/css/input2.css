@@ -23,3 +23,9 @@
 	outline: 2px solid #3d8b6e;
 	outline-offset: 2px;
 }
+
+/* Feedback leggero durante pinch (opzionale; il recognizer non dipende da questo) */
+#canvasRole [data-enode].input2-pinch-target {
+	outline: 2px dashed #c45c26;
+	outline-offset: 2px;
+}

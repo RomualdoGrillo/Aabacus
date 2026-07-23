@@ -5,11 +5,14 @@
  * Intent:
  *   { type:'tap', target: Element[data-enode], points:[...] }
  *   { type:'slice', target: Element[data-enode], axis:'h'|'v', points:[...] }
+ *   { type:'pinch', target: Element[data-enode], axis:'h'|'v', points:[...] }
  *
- * Slice: tratto che inizia FUORI da ogni [data-enode], attraversa ENODEs
- * (campionamento con document.elementFromPoint); bersaglio = più profondo attraversato.
- * Asse: ±35° su verticale → 'v', su orizzontale → 'h'; altrimenti scarto.
- * Desktop: mouse = un dito (nessun modificatore).
+ * Slice: tratto che inizia FUORI da ogni foglia [data-enode], attraversa ENODEs;
+ *   bersaglio = più profondo attraversato. Asse ±35°; altrimenti scarto.
+ * Pinch: due dita che INIZIANO dentro lo stesso ENODE (il più profondo che
+ *   contiene entrambi i punti di partenza) e si AVVICINANO oltre soglia.
+ *   Asse = dominante del vettore tra le dita. Allontanamento → nessun intent.
+ * Desktop pinch: ALT+mouse = secondo dito speculare (come prototipo gesti-v2 TAB A).
  */
 (function (global) {
 	'use strict';
@@ -18,11 +21,14 @@
 	const MOVE_SLOP_PX = 10;
 	const SLICE_MIN_LEN = 48;
 	const SAMPLE_STEP_PX = 4;
+	const PINCH_RATIO = 0.78;
+	const MIRROR_ID = -1;
 
 	const STATE = {
 		IDLE: 'idle',
-		TRACKING: 'tracking', // partito su un ENODE → candidato tap
-		SLICE: 'slice'        // partito fuori → candidato taglio
+		TRACKING: 'tracking', // un dito su foglia → tap; o attesa secondo dito
+		SLICE: 'slice',
+		PINCH: 'pinch'
 	};
 
 	function dist(a, b) {
@@ -44,6 +50,12 @@
 		return null;
 	}
 
+	/** Asse dominante (sempre h|v, niente zona morta). */
+	function dominantAxis(a, b) {
+		const ang = angleDegFromHorizontal(a, b);
+		return ang < 45 ? 'h' : 'v';
+	}
+
 	function pointInRect(p, r) {
 		return p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom;
 	}
@@ -63,7 +75,6 @@
 		const en = enodeFromPoint(x, y);
 		if (!en) return null;
 		if (isLeafEnode(en)) return en;
-		// se siamo su un contenitore, cerca la foglia più interna sotto il punto
 		const leaves = en.querySelectorAll('[data-enode]');
 		for (let i = 0; i < leaves.length; i++) {
 			const leaf = leaves[i];
@@ -79,7 +90,6 @@
 		if (!b) return a;
 		if (a.contains(b)) return b;
 		if (b.contains(a)) return a;
-		// preferisci il più profondo nel DOM (più antenati)
 		const da = depth(a);
 		const db = depth(b);
 		return db >= da ? b : a;
@@ -93,9 +103,21 @@
 	}
 
 	/**
-	 * Campiona il segmento p0→p1 e raccoglie gli ENODE attraversati.
-	 * Ritorna il più profondo.
+	 * Più profondo [data-enode] il cui bounding box contiene entrambi i punti.
+	 * Cammina verso l'alto dal nodo sotto p1.
 	 */
+	function deepestEnodeContainingBoth(p1, p2) {
+		let el = enodeFromPoint(p1.x, p1.y);
+		while (el) {
+			if (el.matches && el.matches('[data-enode]')) {
+				const r = el.getBoundingClientRect();
+				if (pointInRect(p1, r) && pointInRect(p2, r)) return el;
+			}
+			el = el.parentElement;
+		}
+		return null;
+	}
+
 	function deepestEnodeAlongPath(points) {
 		let best = null;
 		if (!points || points.length < 2) return null;
@@ -109,6 +131,26 @@
 				const x = a.x + (b.x - a.x) * t;
 				const y = a.y + (b.y - a.y) * t;
 				const hit = enodeFromPoint(x, y);
+				if (hit) best = deepestEnode(best, hit);
+			}
+		}
+		return best;
+	}
+
+	/** Come deepestEnodeAlongPath ma preferisce foglie (cn/ci) attraversate. */
+	function deepestLeafAlongPath(points) {
+		let best = null;
+		if (!points || points.length < 2) return null;
+		for (let i = 1; i < points.length; i++) {
+			const a = points[i - 1];
+			const b = points[i];
+			const len = dist(a, b);
+			const steps = Math.max(1, Math.ceil(len / SAMPLE_STEP_PX));
+			for (let s = 0; s <= steps; s++) {
+				const t = s / steps;
+				const x = a.x + (b.x - a.x) * t;
+				const y = a.y + (b.y - a.y) * t;
+				const hit = leafEnodeFromPoint(x, y);
 				if (hit) best = deepestEnode(best, hit);
 			}
 		}
@@ -196,19 +238,30 @@
 
 		const bladePath = createBlade();
 		let state = STATE.IDLE;
+		/** @type {Map<number, {x:number,y:number,startX:number,startY:number}>} */
+		const pointers = new Map();
 		let primaryId = null;
+		let secondaryId = null;
 		let startPt = null;
 		let startEnode = null;
 		let points = [];
 		let fired = false;
+		let pinchTarget = null;
+		let startDist = 0;
+		let mirrorActive = false;
 
 		function reset() {
 			state = STATE.IDLE;
+			pointers.clear();
 			primaryId = null;
+			secondaryId = null;
 			startPt = null;
 			startEnode = null;
 			points = [];
 			fired = false;
+			pinchTarget = null;
+			startDist = 0;
+			mirrorActive = false;
 			setBlade(bladePath, []);
 		}
 
@@ -218,39 +271,235 @@
 			onIntent(intent);
 		}
 
+		function realPointerCount() {
+			let n = 0;
+			pointers.forEach(function (_v, id) {
+				if (id !== MIRROR_ID) n++;
+			});
+			return n;
+		}
+
+		function getPair() {
+			if (pointers.size < 2) return null;
+			const a = pointers.get(primaryId);
+			const b = pointers.get(secondaryId != null ? secondaryId : MIRROR_ID);
+			if (!a || !b) {
+				const vals = [];
+				pointers.forEach(function (v) { vals.push(v); });
+				if (vals.length < 2) return null;
+				return { a: vals[0], b: vals[1] };
+			}
+			return { a: a, b: b };
+		}
+
+		function mirrorPoint(origin, p) {
+			return { x: 2 * origin.x - p.x, y: 2 * origin.y - p.y };
+		}
+
+		function tryEnterPinch() {
+			const pair = getPair();
+			if (!pair) return false;
+			const p1 = { x: pair.a.startX, y: pair.a.startY };
+			const p2 = { x: pair.b.startX, y: pair.b.startY };
+			const common = deepestEnodeContainingBoth(p1, p2);
+			if (!common) return false;
+			pinchTarget = common;
+			startDist = dist(pair.a, pair.b) || 1;
+			state = STATE.PINCH;
+			setBlade(bladePath, []);
+			return true;
+		}
+
+		function ensureAltMirror(e) {
+			const wantMirror = e.altKey && e.pointerType === 'mouse';
+			if (wantMirror && realPointerCount() === 1 && primaryId != null && !mirrorActive) {
+				const primary = pointers.get(primaryId);
+				if (!primary) return;
+				const origin = { x: primary.startX, y: primary.startY };
+				const m = mirrorPoint(origin, { x: e.clientX, y: e.clientY });
+				pointers.set(MIRROR_ID, {
+					x: m.x,
+					y: m.y,
+					startX: origin.x,
+					startY: origin.y
+				});
+				secondaryId = MIRROR_ID;
+				mirrorActive = true;
+				if (state === STATE.TRACKING || state === STATE.IDLE) {
+					tryEnterPinch();
+				}
+			} else if (!wantMirror && mirrorActive) {
+				pointers.delete(MIRROR_ID);
+				if (secondaryId === MIRROR_ID) secondaryId = null;
+				mirrorActive = false;
+				if (state === STATE.PINCH && realPointerCount() < 2) {
+					state = startEnode && isLeafEnode(startEnode) ? STATE.TRACKING : STATE.SLICE;
+					pinchTarget = null;
+					startDist = 0;
+				}
+			} else if (wantMirror && mirrorActive && primaryId != null) {
+				const primary = pointers.get(primaryId);
+				if (!primary) return;
+				const origin = { x: primary.startX, y: primary.startY };
+				const m = mirrorPoint(origin, { x: e.clientX, y: e.clientY });
+				const virt = pointers.get(MIRROR_ID);
+				if (virt) {
+					virt.x = m.x;
+					virt.y = m.y;
+				}
+			}
+		}
+
+		function updatePinch() {
+			if (state !== STATE.PINCH || fired) return;
+			const pair = getPair();
+			if (!pair || !startDist) return;
+			const ratio = dist(pair.a, pair.b) / startDist;
+			if (ratio <= PINCH_RATIO && pinchTarget) {
+				const axis = dominantAxis(pair.a, pair.b);
+				emit({
+					type: 'pinch',
+					target: pinchTarget,
+					axis: axis,
+					points: [
+						{ x: pair.a.x, y: pair.a.y },
+						{ x: pair.b.x, y: pair.b.y }
+					]
+				});
+			}
+		}
+
+		function finishSlice(endPt) {
+			setBlade(bladePath, []);
+			const axis = classifyAxisTol(startPt, endPt, SLICE_ANGLE_TOL);
+			const len = dist(startPt, endPt);
+			if (!(axis && len >= SLICE_MIN_LEN)) return;
+			// Preferisci foglia attraversata (cn); fallback al più profondo generico.
+			let target = deepestLeafAlongPath(points) || deepestEnodeAlongPath(points);
+			if (target && !isLeafEnode(target)) {
+				const all = target.querySelectorAll('[data-enode]');
+				let deepest = null;
+				for (let i = 0; i < all.length; i++) {
+					if (!isLeafEnode(all[i])) continue;
+					const r = all[i].getBoundingClientRect();
+					if (segmentCrossesRect(startPt, endPt, r) || pointInRect(endPt, r) || pointInRect(startPt, r)) {
+						deepest = deepestEnode(deepest, all[i]);
+					}
+				}
+				if (deepest) target = deepest;
+			}
+			if (!target) return;
+			const r = target.getBoundingClientRect();
+			const startOut = !pointInRect(startPt, r);
+			const through = oppositeSides(startPt, endPt, r) || segmentCrossesRect(startPt, endPt, r);
+			const into = pointInRect(endPt, r) && segmentCrossesRect(startPt, endPt, r);
+			// Taglio valido: parte fuori dalla foglia e la attraversa (o vi termina).
+			if (startOut && (through || into || segmentCrossesRect(startPt, endPt, r))) {
+				emit({
+					type: 'slice',
+					target: target,
+					axis: axis,
+					points: points.slice()
+				});
+			}
+		}
+
 		function onPointerDown(e) {
-			if (primaryId !== null) return;
 			if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+			// secondo dito reale → candidato pinch
+			if (primaryId !== null && e.pointerId !== primaryId && !pointers.has(e.pointerId)) {
+				pointers.set(e.pointerId, {
+					x: e.clientX,
+					y: e.clientY,
+					startX: e.clientX,
+					startY: e.clientY
+				});
+				secondaryId = e.pointerId;
+				try { root.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+				if (state === STATE.TRACKING || state === STATE.SLICE) {
+					if (!tryEnterPinch()) {
+						// dita non nello stesso ENODE: resta sullo stato a un dito del primary
+						pointers.delete(e.pointerId);
+						secondaryId = null;
+					}
+				}
+				return;
+			}
+
+			if (primaryId !== null) return;
+
 			primaryId = e.pointerId;
 			try { root.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
 			startPt = { x: e.clientX, y: e.clientY };
 			points = [{ x: e.clientX, y: e.clientY }];
 			fired = false;
-			// Tap su foglia; slice solo se si parte FUORI da ogni foglia [data-enode]
-			// (i contenitori eq/and/plus non bloccano lo slice — vedi TAB B adattato).
+			pointers.set(e.pointerId, {
+				x: e.clientX,
+				y: e.clientY,
+				startX: e.clientX,
+				startY: e.clientY
+			});
+
 			startEnode = leafEnodeFromPoint(e.clientX, e.clientY)
 				|| enodeFromPoint(e.clientX, e.clientY);
 			const startLeaf = leafEnodeFromPoint(e.clientX, e.clientY);
 			state = startLeaf ? STATE.TRACKING : STATE.SLICE;
+
+			// ALT già premuto al down → avvia pinch desktop
+			if (e.altKey && e.pointerType === 'mouse' && startLeaf) {
+				ensureAltMirror(e);
+			}
 		}
 
 		function onPointerMove(e) {
-			if (e.pointerId !== primaryId || !startPt) return;
-			const pt = { x: e.clientX, y: e.clientY };
-			points.push(pt);
-			if (state === STATE.SLICE) {
+			const rec = pointers.get(e.pointerId);
+			if (!rec && e.pointerId !== primaryId) return;
+			if (rec) {
+				rec.x = e.clientX;
+				rec.y = e.clientY;
+			}
+			if (e.pointerId === primaryId || (mirrorActive && e.pointerId === primaryId)) {
+				const pt = { x: e.clientX, y: e.clientY };
+				points.push(pt);
+			}
+
+			ensureAltMirror(e);
+
+			if (state === STATE.PINCH) {
+				updatePinch();
+			} else if (state === STATE.SLICE && e.pointerId === primaryId) {
 				setBlade(bladePath, points);
 			}
 		}
 
 		function onPointerUp(e) {
-			if (e.pointerId !== primaryId || !startPt) return;
+			const wasPrimary = e.pointerId === primaryId;
+			pointers.delete(e.pointerId);
+			if (e.pointerId === secondaryId) secondaryId = null;
+
+			if (state === STATE.PINCH) {
+				// se non ha già sparato (solo avvicinamento conta), al rilascio non emettere unpinch
+				if (mirrorActive) {
+					pointers.delete(MIRROR_ID);
+					mirrorActive = false;
+				}
+				try { root.releasePointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+				if (realPointerCount() === 0) reset();
+				return;
+			}
+
+			if (!wasPrimary || !startPt) {
+				try { root.releasePointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+				if (realPointerCount() === 0) reset();
+				return;
+			}
+
 			const endPt = { x: e.clientX, y: e.clientY };
 			points.push(endPt);
 			const len = dist(startPt, endPt);
 
 			if (state === STATE.TRACKING) {
-				// tap: poco movimento, preferisci foglia sotto il punto
 				if (len <= MOVE_SLOP_PX * 2) {
 					const target = leafEnodeFromPoint(startPt.x, startPt.y)
 						|| startEnode
@@ -264,40 +513,7 @@
 					}
 				}
 			} else if (state === STATE.SLICE) {
-				setBlade(bladePath, []);
-				const axis = classifyAxisTol(startPt, endPt, SLICE_ANGLE_TOL);
-				if (axis && len >= SLICE_MIN_LEN) {
-					// Campiona il percorso: bersaglio = ENODE più profondo attraversato
-					const crossed = deepestEnodeAlongPath(points);
-					// Preferisci la foglia più profonda attraversata (cn tipicamente)
-					let target = crossed;
-					if (target && !isLeafEnode(target)) {
-						const all = target.querySelectorAll('[data-enode]');
-						let deepest = null;
-						for (let i = 0; i < all.length; i++) {
-							if (!isLeafEnode(all[i])) continue;
-							const r = all[i].getBoundingClientRect();
-							if (segmentCrossesRect(startPt, endPt, r) || pointInRect(endPt, r)) {
-								deepest = deepestEnode(deepest, all[i]);
-							}
-						}
-						if (deepest) target = deepest;
-					}
-					if (target) {
-						const r = target.getBoundingClientRect();
-						const startOut = !pointInRect(startPt, r);
-						const through = oppositeSides(startPt, endPt, r) && segmentCrossesRect(startPt, endPt, r);
-						const into = pointInRect(endPt, r) && segmentCrossesRect(startPt, endPt, r);
-						if (startOut && (through || into)) {
-							emit({
-								type: 'slice',
-								target: target,
-								axis: axis,
-								points: points.slice()
-							});
-						}
-					}
-				}
+				finishSlice(endPt);
 			}
 
 			try { root.releasePointerCapture(e.pointerId); } catch (_) { /* ignore */ }
@@ -305,8 +521,8 @@
 		}
 
 		function onPointerCancel(e) {
-			if (e.pointerId !== primaryId) return;
-			reset();
+			pointers.delete(e.pointerId);
+			if (e.pointerId === primaryId || realPointerCount() === 0) reset();
 		}
 
 		root.addEventListener('pointerdown', onPointerDown);
@@ -325,7 +541,10 @@
 			},
 			_debug: {
 				classifyAxisTol: classifyAxisTol,
-				deepestEnodeAlongPath: deepestEnodeAlongPath
+				dominantAxis: dominantAxis,
+				deepestEnodeAlongPath: deepestEnodeAlongPath,
+				deepestEnodeContainingBoth: deepestEnodeContainingBoth,
+				PINCH_RATIO: PINCH_RATIO
 			}
 		};
 	}
@@ -334,7 +553,9 @@
 	global.INPUT2.bindGestureRecognizer = bindGestureRecognizer;
 	global.INPUT2._gestureHelpers = {
 		classifyAxisTol: classifyAxisTol,
+		dominantAxis: dominantAxis,
 		SLICE_ANGLE_TOL: SLICE_ANGLE_TOL,
-		SLICE_MIN_LEN: SLICE_MIN_LEN
+		SLICE_MIN_LEN: SLICE_MIN_LEN,
+		PINCH_RATIO: PINCH_RATIO
 	};
 })(typeof window !== 'undefined' ? window : globalThis);
