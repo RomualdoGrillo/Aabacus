@@ -47,13 +47,13 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="1"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="0.57814084"
-     inkscape:cx="422.90733"
-     inkscape:cy="315.66703"
-     inkscape:window-width="1242"
-     inkscape:window-height="684"
+     inkscape:zoom="2.3005671"
+     inkscape:cx="498.13804"
+     inkscape:cy="138.00945"
+     inkscape:window-width="1102"
+     inkscape:window-height="554"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="25"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg49" />
   <defs
@@ -87,13 +87,14 @@
   </defs>
   <!-- Utente -->
   <g
-     id="user">
+     id="user"
+     transform="translate(160.39523,-68.678717)">
     <circle
        cx="55"
        cy="168"
        r="14"
        fill="none"
-       stroke="#333"
+       stroke="#333333"
        stroke-width="1.5"
        id="circle1" />
     <circle
@@ -139,92 +140,29 @@
        id="line6" />
   </g>
   <!-- Interazione utente -->
-  <rect
-     class="box-user"
-     x="110"
-     y="60"
-     width="210"
-     height="46"
-     rx="2"
-     id="rect6" />
-  <text
-     class="label"
-     x="215"
-     y="76"
-     id="text6">Tool selection, settings...</text>
   <text
      class="file-ref"
      x="215"
      y="94"
-     id="text7">MAIN.js � preload.js</text>
-  <rect
-     class="box-user"
-     x="110"
-     y="122"
-     width="210"
-     height="58"
-     rx="2"
-     id="rect7" />
-  <text
-     class="label"
-     x="215"
-     y="137"
-     id="text8">DnD</text>
+     id="text7" />
   <text
      class="file-ref"
-     x="215"
-     y="153"
-     id="text9">DnD.js</text>
-  <text
-     class="label"
-     x="215"
-     y="169"
-     id="text10">Advanced gestures</text>
-  <text
-     class="file-ref"
-     x="215"
-     y="182"
-     font-size="9"
-     id="text11">MAIN.js (touch, parziale)</text>
-  <rect
-     class="box-user"
-     x="110"
-     y="196"
-     width="210"
-     height="46"
-     rx="2"
-     id="rect11" />
-  <text
-     class="label"
      x="215"
      y="212"
-     id="text12">input via keyboard</text>
+     font-size="9"
+     id="text11" />
   <text
      class="file-ref"
      x="215"
-     y="230"
-     id="text13">MAIN.js � UserEvToFunctCall.js</text>
+     y="260"
+     id="text13" />
   <line
-     x1="70"
-     y1="168"
-     x2="110"
-     y2="83"
-     class="conn"
-     id="line13" />
-  <line
-     x1="70"
-     y1="200"
-     x2="110"
-     y2="151"
+     x1="250.93755"
+     y1="126.81159"
+     x2="314.18491"
+     y2="127.69046"
      class="conn"
      id="line14" />
-  <line
-     x1="70"
-     y1="228"
-     x2="110"
-     y2="219"
-     class="conn"
-     id="line15" />
   <!-- index.html -->
   <g
      id="index-html">
