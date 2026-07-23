@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<link rel="stylesheet" href="Resources/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="css/styleIDEhideSections.css">
+		<link rel="stylesheet" type="text/css" href="css/styleIDE.css">
+		<link rel="stylesheet" type="text/css" href="css/SVGstyle.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="css/styleForTest.css">
+		<link rel="stylesheet" type="text/css" href="css/fromJQExamples.css">
+		<link rel="stylesheet" type="text/css" href="css/sortableTest.css">
+		<link rel="stylesheet" type="text/css" href="css/pseudoEl.css">
+		<!-- newPM sperimentale (non sostituisce il PM di produzione) — CSS lasciato come in index.html -->
+		<link rel="stylesheet" type="text/css" href="js/newPM/fitting.css">
+		<!-- input2: strato touch-first (aggiunto in coda; riscrittura CSS = fase successiva) -->
+		<link rel="stylesheet" type="text/css" href="css/input2.css">
+	</head>
+	<body class="greyBorders">
+		<svg id="prototypeContainer" width="0%" height="0%">
+			<marker id="triangle" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto">
+				<path d="M 0 0 L 10 5 L 0 10 z"/>
+			</marker>
+			<line id="protoLine" x1="100" y1="50.5" x2="300" y2="50.5"  stroke="black" stroke-width="3"/>
+		</svg>
+		<div id="statusDisplay">
+		</div>
+		<div id="leftColumn" class="columnSection">
+			<input type="checkbox" class="fixButton" onclick="this.parentElement.classList.toggle('fixed')">
+			<div id="events" class="row ide ol_role">
+					
+				
+			</div>
+		</div>
+		
+		<div id="centralColumn" class="columnSection">
+			<div id="paletteRow" class="row ide" vis="dynamic">
+				<input type="checkbox" class="fixButton" onclick="this.parentElement.classList.toggle('fixed')">
+				<div id="palette" class="ol_role">
+					<div data-enode="eq" data-proto="asymmeq" data-viseq="asymmetric" class="untied fundamental" data-type="bool">
+						<div class="s_role firstMember ui-icon ui-icon-unlocked" ></div>
+						<div class="decoration">:=</div>
+						<div class="s_role secondMember" data-type="obj" ></div>
+					</div>
+					<div data-enode="deftrue" data-proto="deftrue" class="fundamental hide" data-type="bool">
+						<div class="s_role name" data-type="obj" ></div>
+						<div class="decoration">≡</div>
+						<div class="s_role prop" data-type="obj" ></div>
+						<div class="s_role shortCutLtr" data-type="obj" ></div>
+						<div class="s_role shortCutRtl" data-type="obj" ></div>
+					</div>
+					<div data-enode="eventtoaction" data-proto="eventtoaction" data-type="bool" class="fundamental hide">
+						events
+						<div class="s_role event" data-type="obj" ></div>
+						actions
+						<div class="ol_role actions" data-type="obj" ></div>
+					</div>
+					<div data-enode="ci" data-proto="ci" data-type="" class="fundamental hide">
+						<div class="name"></div>
+					</div>
+					<div data-proto="and" data-enode="and" data-type="bool" class="fundamental">
+						<div class="ul_role" data-type="bool"></div>
+					</div>
+					<div data-enode="ci" data-proto="function" data-type="function" class="fundamental hide">
+						<div class="name"></div>
+					</div>
+					<div data-enode="callfunction" data-proto="callfunction" data-type="obj" class="fundamental hide">
+						call
+						<div class="s_role function" data-type="bool" ></div>
+						values
+						<div class="ol_role values" data-type="obj" ></div>
+					</div>
+					<div data-enode="" data-proto="" data-type="" class="fundamental hide">
+						<div class="name"></div>
+					</div>
+				</div>
+			</div>
+			<div id="canvas" data-enode="eq" data-viseq="asymmetric" class="undraggable unselectable untied" data-type="bool">
+				<div class="s_role firstMember ui-icon" ></div>
+				<div class="decoration">=</div>
+				<div class="s_role secondMember unsortable" data-type="obj" >
+					<div id="canvasAnd" class="undraggable unselectable " data-enode="and" data-type="bool">
+						<div id="canvasRole" class="ul_role " data-type="bool">
+						<!-- ************inizio contenuto************* aggiungi qui classe "debug" -->
+						</div>
+						<!-- questa fine div non fa parte del contenuto************************* -->
+					</div>
+				</div>
+			</div>
+			<div id="divOverlay">
+				<!-- alla DIV posso dare "position:absolute" all SVG no -->
+				<svg id="svgContainer" width="100%" height="100%"></svg>
+			</div>
+			<div id="result" class="ul_role row ide" data-type="bool"></div>
+		</div>
+		<div id="rightColumn" class="columnSection ide">
+			<input type="file" id="fileToLoad">
+			<div id="testSpan"></div>
+			<!-- <button id="create-link" class="">Define!</button> -->
+			<!-- <button id="help-link" class=""><div class="ui-icon ui-icon-newwin"></div>Help</button> -->
+			<div id="settings">
+				<input type="checkbox" class="fixButton" onclick="this.parentElement.parentElement.classList.toggle('fixed')">
+				<!-- Rectangular switch -->
+				<input id="BUTT_gameMode" type="checkbox" onclick="" value="game mode">
+				<input id="BUTT_gameModeSurpriseRes" type="checkbox" onclick="" value="game mode">
+				<form id="mySettings">
+					<select id="visSettingSelected" name="visualization"></select>
+					<div id="visSetup">
+						<div class="checkbox">
+							<input type="checkbox" id="cb_showPar" title="show brackets">brackets
+						</div>
+
+						<select name="timesDisposition" id="timesDisposition" title="disponi le moltiplicazioni verticalmente">
+							<option value="horizontal">horiz.</option>
+							<option value="vertTimes">vert</option>
+							<option value="brTimes">num/den</option>
+						  </select>
+						<div class="checkbox">
+							<input type="checkbox" id="cb_showNumerator1" title="reciprocal of x as 1/x">1 / ....
+						</div>
+						<div class="checkbox">
+							<input type="checkbox" id="cb_fixBorders" title="alwais show ENODEs borders">
+							fix borders
+						</div>
+						<div class="checkbox">
+							<input type="checkbox" id="cb_hidePlus" title="hide + sign and times container">
+							hide +
+						</div>
+						<div class="checkbox">
+							<input type="checkbox" id="cb_eforall" title="">
+							elegant forall
+						</div>
+						<select id="select_colors" name="colors">
+							<option id="whiteBorders">B &W</option>
+							<option id="greyBorders">grey</option>
+							<option id="coloredBorders">Rainbow</option>
+						</select>
+						<!--<div class="checkbox">
+					<input type="checkbox" id="cb_showFuctName" onclick="$('body').toggleClass('showFuctName')" title="show names of function instad of icons (when both are available) ">
+					show txt
+				</div>
+						<input type="button" onclick="alert('Questa funzione dovrebbe consentire di scegliere e caricare un file di testo');canvas.append('dummy text')" value="load">
+						<input type="button" onclick="alert('save file')" value="save">
+					-->
+					</div>
+				</form>
+			</div>
+			<!--<script type="text/javascript" src="Resources/jquery341.js"></script>-->
+			<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+			<script type="text/javascript" src="js/state.js"></script>
+			<script type="text/javascript" src="Resources/sortablejs/Sortable.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.6.4/math.js"></script>
+			<!-- Passo 7 (software-modules.md §5): strati core → rendering → properties → persistence → input2.
+			     Vietato introdurre dipendenze verso il basso. NIENTE MAIN/UserEv/DnD/game/sound/newPM. -->
+			<!-- 1. core — nucleo espressioni -->
+			<script type="text/javascript" src="js/formatXML.js"></script>
+			<script type="text/javascript" src="js/math.js"></script>
+			<script type="text/javascript" src="js/inflatedeflate.js"></script>
+			<!-- inflatedeflate prima di ExpressionManager: definisce ENODEcreateMathmlString usata nell'oggetto ENODE -->
+			<script type="text/javascript" src="js/ExpressionManager.js"></script>
+			<script type="text/javascript" src="js/calculateSpan.js"></script>
+			<!-- 2. rendering — refresh visivo -->
+			<script type="text/javascript" src="js/infix.js"></script>
+			<script type="text/javascript" src="js/TranslateFormat.js"></script>
+			<script type="text/javascript" src="js/SVGlines.js"></script>
+			<!-- 3. properties — motori di trasformazione -->
+			<script type="text/javascript" src="js/propertyRegistry.js"></script>
+			<script type="text/javascript" src="js/PMTutilities.js"></script>
+			<script type="text/javascript" src="js/PatternMatchingTrasform.js"></script>
+			<script type="text/javascript" src="js/HardWiredProperties.js"></script>
+			<script type="text/javascript" src="js/addedHardWiredProperties.js"></script>
+			<script type="text/javascript" src="js/refine.js"></script>
+			<!-- 4. persistence — caricamento e salvataggio -->
+			<script type="text/javascript" src="js/SaveLoad.js"></script>
+			<script type="text/javascript" src="js/preload.js"></script>
+			<!-- 5. utility + settings (senza interaction legacy) -->
+			<script type="text/javascript" src="js/dom-utils.js"></script>
+			<script type="text/javascript" src="js/Undo.js"></script>
+			<script type="text/javascript" src="js/settings.js"></script>
+			<!-- 6. input2 — recognizer → intent map → boot/dispatcher -->
+			<script type="text/javascript" src="js/input2/gestures.js"></script>
+			<script type="text/javascript" src="js/input2/intentMap.js"></script>
+			<script type="text/javascript" src="js/input2/boot2.js"></script>
+	</body>
+</html>

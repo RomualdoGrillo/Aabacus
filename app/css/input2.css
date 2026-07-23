@@ -1,0 +1,25 @@
+/* input2 — strato touch-first (prototipo). Non sostituisce lo stile IDE esistente. */
+
+#centralColumn,
+#canvas,
+#canvasRole {
+	touch-action: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+/* Lama del taglio (path SVG in #svgContainer) */
+#svgContainer .input2-blade {
+	fill: none;
+	stroke: #c45c26;
+	stroke-width: 3;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	pointer-events: none;
+	opacity: 0.92;
+}
+
+#canvasRole [data-enode].selected {
+	outline: 2px solid #3d8b6e;
+	outline-offset: 2px;
+}
