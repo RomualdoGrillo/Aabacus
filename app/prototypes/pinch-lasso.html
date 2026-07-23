@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Aabacus — Prototipo gesti pinch / lazo</title>
+  <style>
+    :root {
+      --bg: #e8eef5;
+      --canvas-bg: #f7fafc;
+      --ink: #1a2332;
+      --muted: #5a6a7e;
+      --block-bg: #fffdf8;
+      --block-border: #2c3e50;
+      --accent: #2a6f97;
+      --accent-soft: rgba(42, 111, 151, 0.18);
+      --lasso: #c45c26;
+      --sel: #3d8b6e;
+      --danger: #b33a3a;
+      --shadow: 0 2px 8px rgba(26, 35, 50, 0.12);
+      --radius: 14px;
+      --anim: 200ms ease-out;
+      --target: 56px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: "Segoe UI", "Avenir Next", "Helvetica Neue", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(160deg, #d9e4f0 0%, var(--bg) 45%, #f0e9df 100%);
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 16px 10px;
+      gap: 10px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.1rem, 2.4vw, 1.45rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      margin: 2px 0 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      border: 2px solid var(--block-border);
+      background: #fff;
+      color: var(--ink);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    #canvas {
+      position: relative;
+      flex: 1;
+      min-height: 320px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.7), transparent 40%),
+        var(--canvas-bg);
+      border: 2px solid #c5d0dc;
+      border-radius: 20px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6), var(--shadow);
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .workspace {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 28px 36px;
+      padding: 36px 40px;
+    }
+
+    /* ——— Blocchi stile ENODE ——— */
+    .enode {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: var(--target);
+      min-height: var(--target);
+      padding: 0.45rem 0.85rem;
+      background: var(--block-bg);
+      border: 3px solid var(--block-border);
+      border-radius: var(--radius);
+      font-size: 1.85rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: var(--shadow);
+      transform-origin: center center;
+      transition: transform var(--anim), box-shadow var(--anim), background var(--anim);
+      z-index: 2;
+      touch-action: none;
+    }
+
+    .enode.selected {
+      outline: 3px solid var(--sel);
+      outline-offset: 4px;
+      background: #f0fff8;
+    }
+
+    .enode.stretch-h {
+      will-change: transform;
+    }
+
+    .enode.stretch-v {
+      will-change: transform;
+    }
+
+    .group {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 18px;
+      position: relative;
+      z-index: 2;
+      transition: transform var(--anim), opacity var(--anim);
+    }
+
+    .group.sum {
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+
+    .group.product {
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .op {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--muted);
+      min-width: 28px;
+      text-align: center;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .group.product .op {
+      line-height: 0.8;
+      margin: -2px 0;
+    }
+
+    .group.anim-in {
+      animation: popIn var(--anim) both;
+    }
+
+    .group.anim-out {
+      animation: popOut var(--anim) both;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.86); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes popOut {
+      from { opacity: 1; transform: scale(1); }
+      to   { opacity: 0; transform: scale(0.86); }
+    }
+
+    /* Confine selezione lazo */
+    .selection-hull {
+      position: absolute;
+      pointer-events: none;
+      border: 3px dashed var(--sel);
+      background: rgba(61, 139, 110, 0.08);
+      border-radius: 22px;
+      z-index: 1;
+      transition: left var(--anim), top var(--anim), width var(--anim), height var(--anim), opacity var(--anim);
+      opacity: 0;
+    }
+
+    .selection-hull.visible {
+      opacity: 1;
+    }
+
+    /* Tratto lazo */
+    #lassoSvg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      overflow: visible;
+    }
+
+    #lassoPath {
+      fill: rgba(196, 92, 38, 0.08);
+      stroke: var(--lasso);
+      stroke-width: 2.5;
+      stroke-dasharray: 8 6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Menù contestuale long-press */
+    #ctxMenu {
+      position: absolute;
+      z-index: 40;
+      min-width: 180px;
+      background: #fff;
+      border: 2px solid var(--block-border);
+      border-radius: 14px;
+      box-shadow: 0 10px 28px rgba(26, 35, 50, 0.22);
+      padding: 6px;
+      display: none;
+    }
+
+    #ctxMenu.open { display: block; }
+
+    #ctxMenu button {
+      display: block;
+      width: 100%;
+      border: none;
+      box-shadow: none;
+      border-radius: 10px;
+      text-align: left;
+      min-height: 48px;
+      font-size: 1.05rem;
+      background: transparent;
+    }
+
+    #ctxMenu button:hover,
+    #ctxMenu button:active {
+      background: var(--accent-soft);
+    }
+
+    /* Overlay debug */
+    #debug {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      z-index: 30;
+      width: min(280px, 46vw);
+      background: rgba(26, 35, 50, 0.92);
+      color: #e8f0f8;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      padding: 10px 12px;
+      border-radius: 12px;
+      display: none;
+      pointer-events: none;
+      white-space: pre-wrap;
+    }
+
+    #debug.on { display: block; }
+
+    footer.instructions {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.45;
+      padding: 4px 2px 6px;
+      max-height: 28vh;
+      overflow: auto;
+      touch-action: pan-y;
+    }
+
+    footer.instructions strong { color: var(--ink); }
+
+    footer.instructions ul {
+      margin: 4px 0 0;
+      padding-left: 1.2rem;
+    }
+
+    footer.instructions li { margin: 2px 0; }
+
+    .hint-pill {
+      display: inline-block;
+      padding: 0.1rem 0.45rem;
+      border-radius: 6px;
+      background: rgba(42, 111, 151, 0.12);
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>Prototipo ergonomia gesti</h1>
+        <p>Somma ↔ orizzontale · Prodotto ↕ verticale · Target tablet ~10″</p>
+      </div>
+      <div class="toolbar">
+        <button type="button" id="btnDebug" aria-pressed="false">Debug</button>
+        <button type="button" id="btnReset">Reset</button>
+      </div>
+    </header>
+
+    <div id="canvas" aria-label="Area di lavoro gesti">
+      <div class="workspace" id="workspace"></div>
+      <svg id="lassoSvg" aria-hidden="true"><path id="lassoPath" d=""></path></svg>
+      <div class="selection-hull" id="selectionHull"></div>
+      <div id="ctxMenu" role="menu" aria-hidden="true">
+        <button type="button" data-action="scomponi">Scomponi</button>
+        <button type="button" data-action="definisci">Definisci</button>
+        <button type="button" data-action="elimina">Elimina</button>
+      </div>
+      <div id="debug" aria-live="polite"></div>
+    </div>
+
+    <footer class="instructions">
+      <strong>Come provare</strong>
+      <ul>
+        <li><span class="hint-pill">Unpinch orizzontale</span> su 6 / 12 / 8 → addendi (es. 6 → 3+3). Pinch orizzontale sulla coppia → ricompone.</li>
+        <li><span class="hint-pill">Unpinch verticale</span> sullo stesso numero → fattori impilati con ×. Pinch verticale → ricompone.</li>
+        <li><span class="hint-pill">Lazo</span> (un dito da area vuota): trattiene, seleziona i blocchi di primo livello toccati/racchiusi; tocco fuori deseleziona.</li>
+        <li><span class="hint-pill">Long-press</span> (~500&nbsp;ms) su un blocco → menù finto (Scomponi / Definisci / Elimina).</li>
+        <li><strong>Desktop:</strong> mouse = un dito; tieni premuto <strong>ALT</strong> durante il drag per simulare la seconda dito speculare rispetto al punto di partenza (pinch/unpinch).</li>
+      </ul>
+    </footer>
+  </div>
+
+  <script>
+(function () {
+  'use strict';
+
+  // ——— Costanti gesto ———
+  const ANGLE_TOL_DEG = 30;          // ±30° rispetto ad asse H/V
+  const UNPINCH_RATIO = 1.28;        // distanza / distanza0 per trigger scomposizione
+  const PINCH_RATIO = 0.78;          // distanza / distanza0 per ricomposizione
+  const MOVE_SLOP_PX = 10;           // soglia “fermo” per long-press / lazo
+  const LONGPRESS_MS = 500;
+  const STRETCH_MAX = 0.35;          // scala max feedback stiramento
+
+  // Mappe scomposizione hardcoded
+  const ADDENDS = { 6: [3, 3], 12: [6, 6], 8: [4, 4] };
+  const FACTORS = { 6: [2, 3], 12: [3, 4], 8: [2, 4] };
+
+  // ——— DOM ———
+  const canvas = document.getElementById('canvas');
+  const workspace = document.getElementById('workspace');
+  const lassoPath = document.getElementById('lassoPath');
+  const selectionHull = document.getElementById('selectionHull');
+  const ctxMenu = document.getElementById('ctxMenu');
+  const debugEl = document.getElementById('debug');
+  const btnDebug = document.getElementById('btnDebug');
+  const btnReset = document.getElementById('btnReset');
+
+  let debugOn = false;
+  let altHeld = false;
+  let nextId = 1;
+
+  // ——— Stato selezione / menù ———
+  let selectedIds = new Set();
+
+  // ——— Macchina a stati gesti ———
+  /**
+   * Stati: idle | tracking | pinch-h | pinch-v | lasso | longpress
+   * Transizioni gestite da GestureRecognizer.onPointer*
+   */
+  const SM = {
+    IDLE: 'idle',
+    TRACKING: 'tracking',
+    PINCH_H: 'pinch-h',
+    PINCH_V: 'pinch-v',
+    LASSO: 'lasso',
+    LONGPRESS: 'longpress'
+  };
+
+  // ——— Model workspace (blocchi di primo livello) ———
+  /** @typedef {{ id:string, kind:'atom'|'sum'|'product', value?:number, parts?:number[], label?:string }} Item */
+
+  /** @type {Item[]} */
+  let items = [];
+
+  function uid() { return 'b' + (nextId++); }
+
+  function initialItems() {
+    return [
+      { id: uid(), kind: 'atom', value: 6 },
+      { id: uid(), kind: 'atom', value: 12 },
+      { id: uid(), kind: 'atom', value: 8 },
+      { id: uid(), kind: 'sum', parts: [2, 3, 4], label: 'demo-sum' }
+    ];
+  }
+
+  function render() {
+    workspace.innerHTML = '';
+    for (const item of items) {
+      workspace.appendChild(renderItem(item));
+    }
+    updateSelectionHull();
+  }
+
+  function renderItem(item) {
+    if (item.kind === 'atom') {
+      const el = document.createElement('div');
+      el.className = 'enode';
+      el.dataset.id = item.id;
+      el.dataset.kind = 'atom';
+      el.dataset.value = String(item.value);
+      el.textContent = String(item.value);
+      if (selectedIds.has(item.id)) el.classList.add('selected');
+      return el;
+    }
+    if (item.kind === 'sum') {
+      const g = document.createElement('div');
+      g.className = 'group sum';
+      g.dataset.id = item.id;
+      g.dataset.kind = 'sum';
+      g.dataset.value = String(item.parts.reduce((a, b) => a + b, 0));
+      item.parts.forEach((n, i) => {
+        if (i > 0) {
+          const op = document.createElement('span');
+          op.className = 'op';
+          op.textContent = '+';
+          g.appendChild(op);
+        }
+        const el = document.createElement('div');
+        el.className = 'enode';
+        el.dataset.parent = item.id;
+        el.dataset.role = 'part';
+        el.textContent = String(n);
+        g.appendChild(el);
+      });
+      if (selectedIds.has(item.id)) {
+        g.querySelectorAll('.enode').forEach((e) => e.classList.add('selected'));
+      }
+      return g;
+    }
+    if (item.kind === 'product') {
+      const g = document.createElement('div');
+      g.className = 'group product';
+      g.dataset.id = item.id;
+      g.dataset.kind = 'product';
+      g.dataset.value = String(item.parts.reduce((a, b) => a * b, 1));
+      item.parts.forEach((n, i) => {
+        if (i > 0) {
+          const op = document.createElement('span');
+          op.className = 'op';
+          op.textContent = '×';
+          g.appendChild(op);
+        }
+        const el = document.createElement('div');
+        el.className = 'enode';
+        el.dataset.parent = item.id;
+        el.dataset.role = 'part';
+        el.textContent = String(n);
+        g.appendChild(el);
+      });
+      if (selectedIds.has(item.id)) {
+        g.querySelectorAll('.enode').forEach((e) => e.classList.add('selected'));
+      }
+      return g;
+    }
+    return document.createDocumentFragment();
+  }
+
+  function findItem(id) {
+    return items.find((it) => it.id === id) || null;
+  }
+
+  function topLevelElFromTarget(target) {
+    if (!(target instanceof Element)) return null;
+    const part = target.closest('[data-id]');
+    return part && workspace.contains(part) ? part : null;
+  }
+
+  function atomElFromTarget(target) {
+    if (!(target instanceof Element)) return null;
+    const enode = target.closest('.enode');
+    if (!enode || !workspace.contains(enode)) return null;
+    // solo atomi di primo livello (non parti di sum/product)
+    if (enode.dataset.kind === 'atom') return enode;
+    return null;
+  }
+
+  function groupElFromTarget(target) {
+    if (!(target instanceof Element)) return null;
+    const g = target.closest('.group[data-id]');
+    return g && workspace.contains(g) ? g : null;
+  }
+
+  // ——— Azioni scomposizione / ricomposizione ———
+  function decomposeHorizontal(itemId) {
+    const item = findItem(itemId);
+    if (!item || item.kind !== 'atom') return false;
+    const parts = ADDENDS[item.value];
+    if (!parts) return false;
+    const idx = items.indexOf(item);
+    const neu = { id: uid(), kind: 'sum', parts: parts.slice() };
+    items.splice(idx, 1, neu);
+    render();
+    const el = workspace.querySelector(`[data-id="${neu.id}"]`);
+    if (el) el.classList.add('anim-in');
+    return true;
+  }
+
+  function decomposeVertical(itemId) {
+    const item = findItem(itemId);
+    if (!item || item.kind !== 'atom') return false;
+    const parts = FACTORS[item.value];
+    if (!parts) return false;
+    const idx = items.indexOf(item);
+    const neu = { id: uid(), kind: 'product', parts: parts.slice() };
+    items.splice(idx, 1, neu);
+    render();
+    const el = workspace.querySelector(`[data-id="${neu.id}"]`);
+    if (el) el.classList.add('anim-in');
+    return true;
+  }
+
+  function recompose(itemId) {
+    const item = findItem(itemId);
+    if (!item || (item.kind !== 'sum' && item.kind !== 'product')) return false;
+    // solo coppie scomposte da un numero noto (non la somma demo 2+3+4)
+    const value = item.kind === 'sum'
+      ? item.parts.reduce((a, b) => a + b, 0)
+      : item.parts.reduce((a, b) => a * b, 1);
+    const expected = item.kind === 'sum' ? ADDENDS[value] : FACTORS[value];
+    if (!expected || expected.length !== item.parts.length) return false;
+    if (!expected.every((n, i) => n === item.parts[i])) return false;
+
+    const el = workspace.querySelector(`[data-id="${itemId}"]`);
+    const idx = items.indexOf(item);
+    const finish = () => {
+      items.splice(idx, 1, { id: uid(), kind: 'atom', value });
+      render();
+      const neu = workspace.querySelector(`[data-value="${value}"][data-kind="atom"]`);
+      if (neu) neu.classList.add('anim-in');
+    };
+    if (el) {
+      el.classList.add('anim-out');
+      setTimeout(finish, 180);
+    } else {
+      finish();
+    }
+    return true;
+  }
+
+  // ——— Selezione / hull ———
+  function clearSelection() {
+    selectedIds.clear();
+    workspace.querySelectorAll('.selected').forEach((e) => e.classList.remove('selected'));
+    updateSelectionHull();
+  }
+
+  function setSelection(ids) {
+    selectedIds = new Set(ids);
+    workspace.querySelectorAll('[data-id]').forEach((el) => {
+      const on = selectedIds.has(el.dataset.id);
+      if (el.classList.contains('enode')) {
+        el.classList.toggle('selected', on);
+      } else if (el.classList.contains('group')) {
+        el.querySelectorAll('.enode').forEach((c) => c.classList.toggle('selected', on));
+      }
+    });
+    updateSelectionHull();
+  }
+
+  function updateSelectionHull() {
+    if (selectedIds.size === 0) {
+      selectionHull.classList.remove('visible');
+      return;
+    }
+    const canvasRect = canvas.getBoundingClientRect();
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    let any = false;
+    for (const id of selectedIds) {
+      const el = workspace.querySelector(`[data-id="${id}"]`);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      minX = Math.min(minX, r.left);
+      minY = Math.min(minY, r.top);
+      maxX = Math.max(maxX, r.right);
+      maxY = Math.max(maxY, r.bottom);
+      any = true;
+    }
+    if (!any) {
+      selectionHull.classList.remove('visible');
+      return;
+    }
+    const pad = 10;
+    selectionHull.style.left = (minX - canvasRect.left - pad) + 'px';
+    selectionHull.style.top = (minY - canvasRect.top - pad) + 'px';
+    selectionHull.style.width = (maxX - minX + pad * 2) + 'px';
+    selectionHull.style.height = (maxY - minY + pad * 2) + 'px';
+    selectionHull.classList.add('visible');
+  }
+
+  function closeCtxMenu() {
+    ctxMenu.classList.remove('open');
+    ctxMenu.setAttribute('aria-hidden', 'true');
+  }
+
+  function openCtxMenu(clientX, clientY) {
+    const canvasRect = canvas.getBoundingClientRect();
+    let x = clientX - canvasRect.left;
+    let y = clientY - canvasRect.top;
+    ctxMenu.classList.add('open');
+    ctxMenu.setAttribute('aria-hidden', 'false');
+    // clamp
+    const mw = ctxMenu.offsetWidth;
+    const mh = ctxMenu.offsetHeight;
+    x = Math.max(8, Math.min(x, canvasRect.width - mw - 8));
+    y = Math.max(8, Math.min(y, canvasRect.height - mh - 8));
+    ctxMenu.style.left = x + 'px';
+    ctxMenu.style.top = y + 'px';
+  }
+
+  // ——— Geometria ———
+  function dist(a, b) {
+    const dx = a.x - b.x, dy = a.y - b.y;
+    return Math.hypot(dx, dy);
+  }
+
+  function angleDegFromHorizontal(a, b) {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    // angolo assoluto rispetto all'asse orizzontale, in [0, 90]
+    const deg = Math.abs(Math.atan2(dy, dx) * 180 / Math.PI);
+    const folded = deg > 90 ? 180 - deg : deg;
+    return folded; // 0 = orizzontale puro, 90 = verticale puro
+  }
+
+  function classifyAxis(a, b) {
+    const ang = angleDegFromHorizontal(a, b);
+    if (ang <= ANGLE_TOL_DEG) return 'h';
+    if (ang >= 90 - ANGLE_TOL_DEG) return 'v';
+    return null;
+  }
+
+  function rectsIntersect(a, b) {
+    return !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+  }
+
+  function pointInRect(p, r) {
+    return p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom;
+  }
+
+  /** Selezione lazo: intersezione bbox tratto ↔ blocchi di primo livello, oppure contenimento */
+  function selectByLasso(points) {
+    if (points.length < 2) return [];
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (const p of points) {
+      minX = Math.min(minX, p.x);
+      minY = Math.min(minY, p.y);
+      maxX = Math.max(maxX, p.x);
+      maxY = Math.max(maxY, p.y);
+    }
+    const lassoBox = { left: minX, top: minY, right: maxX, bottom: maxY };
+    const ids = [];
+    for (const el of workspace.querySelectorAll(':scope > [data-id]')) {
+      const r = el.getBoundingClientRect();
+      const center = { x: (r.left + r.right) / 2, y: (r.top + r.bottom) / 2 };
+      const enclosed = pointInRect(center, lassoBox);
+      const crossed = rectsIntersect(r, lassoBox);
+      // intersezione con il tratto: se il path passa vicino al blocco
+      let pathHit = false;
+      for (const p of points) {
+        if (pointInRect(p, r)) { pathHit = true; break; }
+      }
+      if (enclosed || crossed || pathHit) ids.push(el.dataset.id);
+    }
+    return ids;
+  }
+
+  function setLassoPath(points) {
+    if (!points.length) {
+      lassoPath.setAttribute('d', '');
+      return;
+    }
+    const canvasRect = canvas.getBoundingClientRect();
+    let d = '';
+    points.forEach((p, i) => {
+      const x = p.x - canvasRect.left;
+      const y = p.y - canvasRect.top;
+      d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+    });
+    lassoPath.setAttribute('d', d.trim());
+  }
+
+  // ——— Feedback stiramento ———
+  function applyStretch(el, axis, ratio) {
+    if (!el) return;
+    // ratio > 1 unpinch, < 1 pinch — mappa a scala leggera
+    const t = Math.max(-STRETCH_MAX, Math.min(STRETCH_MAX, (ratio - 1) * 0.7));
+    if (axis === 'h') {
+      el.style.transform = `scaleX(${(1 + t).toFixed(3)})`;
+      el.classList.add('stretch-h');
+    } else {
+      el.style.transform = `scaleY(${(1 + t).toFixed(3)})`;
+      el.classList.add('stretch-v');
+    }
+  }
+
+  function clearStretch(el) {
+    if (!el) return;
+    el.style.transform = '';
+    el.classList.remove('stretch-h', 'stretch-v');
+  }
+
+  // ——— Debug ———
+  function setDebug(lines) {
+    if (!debugOn) return;
+    debugEl.textContent = lines.join('\n');
+  }
+
+  // ——— GestureRecognizer (macchina a stati) ———
+  const GestureRecognizer = {
+    state: SM.IDLE,
+    /** @type {Map<number, {x:number,y:number, startX:number, startY:number, target:Element|null}>} */
+    pointers: new Map(),
+    primaryId: null,
+    secondaryId: null,
+    startDist: 0,
+    startAngle: 0,
+    axis: null,            // 'h' | 'v' | null
+    targetItemId: null,    // id item di primo livello sotto il gesto
+    targetEl: null,
+    mode: null,            // 'decompose' | 'recompose' | null
+    lassoPoints: [],
+    longPressTimer: null,
+    longPressOrigin: null,
+    fired: false,          // gesto già consumato (evita doppio trigger)
+    // ALT-mirror (desktop)
+    mirrorActive: false,
+
+    reset() {
+      this.clearLongPress();
+      this.state = SM.IDLE;
+      this.pointers.clear();
+      this.primaryId = null;
+      this.secondaryId = null;
+      this.startDist = 0;
+      this.startAngle = 0;
+      this.axis = null;
+      this.targetItemId = null;
+      clearStretch(this.targetEl);
+      this.targetEl = null;
+      this.mode = null;
+      this.lassoPoints = [];
+      setLassoPath([]);
+      this.fired = false;
+      this.mirrorActive = false;
+      setDebug(['state: idle', 'pointers: 0']);
+    },
+
+    clearLongPress() {
+      if (this.longPressTimer) {
+        clearTimeout(this.longPressTimer);
+        this.longPressTimer = null;
+      }
+      this.longPressOrigin = null;
+    },
+
+    pointerCount() {
+      return this.pointers.size;
+    },
+
+    getPair() {
+      if (this.pointers.size < 2) return null;
+      const ids = [...this.pointers.keys()];
+      // preferisci primary/secondary se noti
+      const a = this.pointers.get(this.primaryId) || this.pointers.get(ids[0]);
+      const b = this.pointers.get(this.secondaryId) || this.pointers.get(ids[1]);
+      if (!a || !b) return null;
+      return { a, b };
+    },
+
+    /** Seconda dito virtuale: speculare di p rispetto a origin */
+    mirrorPoint(origin, p) {
+      return { x: 2 * origin.x - p.x, y: 2 * origin.y - p.y };
+    },
+
+    ensureAltMirror(e) {
+      // Con ALT + un solo pointer reale, inietta una seconda "dito" virtuale (id -1)
+      const wantMirror = altHeld && e.pointerType === 'mouse';
+      if (wantMirror && this.pointers.size === 1 && this.primaryId != null) {
+        const primary = this.pointers.get(this.primaryId);
+        if (!primary) return;
+        const origin = { x: primary.startX, y: primary.startY };
+        const m = this.mirrorPoint(origin, { x: e.clientX, y: e.clientY });
+        this.pointers.set(-1, {
+          x: m.x, y: m.y,
+          startX: origin.x, startY: origin.y,
+          target: primary.target
+        });
+        this.secondaryId = -1;
+        this.mirrorActive = true;
+        this.onTwoFingerReady();
+      } else if (!wantMirror && this.mirrorActive) {
+        this.pointers.delete(-1);
+        this.secondaryId = null;
+        this.mirrorActive = false;
+        if (this.state === SM.PINCH_H || this.state === SM.PINCH_V) {
+          clearStretch(this.targetEl);
+          this.state = this.pointers.size ? SM.TRACKING : SM.IDLE;
+        }
+      } else if (wantMirror && this.mirrorActive && this.primaryId != null) {
+        const primary = this.pointers.get(this.primaryId);
+        if (!primary) return;
+        const origin = { x: primary.startX, y: primary.startY };
+        const m = this.mirrorPoint(origin, { x: e.clientX, y: e.clientY });
+        const virt = this.pointers.get(-1);
+        if (virt) { virt.x = m.x; virt.y = m.y; }
+      }
+    },
+
+    onPointerDown(e) {
+      if (e.target.closest('#ctxMenu')) return;
+      if (e.target.closest('.toolbar') || e.target.closest('footer')) return;
+
+      // chiusura menù / deselect su tap in area vuota gestiti in up se non c’è stato movimento
+      try { canvas.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+
+      const pt = {
+        x: e.clientX,
+        y: e.clientY,
+        startX: e.clientX,
+        startY: e.clientY,
+        target: e.target
+      };
+      this.pointers.set(e.pointerId, pt);
+
+      if (this.pointerCount() === 1) {
+        this.primaryId = e.pointerId;
+        this.state = SM.TRACKING;
+        this.fired = false;
+        closeCtxMenu();
+
+        const onBlock = !!(atomElFromTarget(e.target) || groupElFromTarget(e.target));
+        if (onBlock) {
+          this.longPressOrigin = { x: e.clientX, y: e.clientY, target: e.target };
+          this.clearLongPress();
+          this.longPressTimer = setTimeout(() => {
+            if (this.state !== SM.TRACKING || this.pointerCount() !== 1) return;
+            this.state = SM.LONGPRESS;
+            this.fired = true;
+            openCtxMenu(e.clientX, e.clientY);
+            setDebug(['state: longpress', 'menu: open']);
+          }, LONGPRESS_MS);
+        } else {
+          // possibile inizio lazo
+          this.lassoPoints = [{ x: e.clientX, y: e.clientY }];
+        }
+        this.ensureAltMirror(e);
+      } else if (this.pointerCount() === 2) {
+        this.clearLongPress();
+        this.secondaryId = e.pointerId;
+        this.onTwoFingerReady();
+      }
+
+      this.updateDebugLive();
+    },
+
+    onTwoFingerReady() {
+      const pair = this.getPair();
+      if (!pair) return;
+      this.startDist = dist(pair.a, pair.b) || 1;
+      this.startAngle = angleDegFromHorizontal(pair.a, pair.b);
+      this.axis = classifyAxis(pair.a, pair.b);
+
+      // target: atomo o gruppo sotto il centro del pinch, o sotto il primary
+      const mid = { x: (pair.a.x + pair.b.x) / 2, y: (pair.a.y + pair.b.y) / 2 };
+      const elAtMid = document.elementFromPoint(mid.x, mid.y);
+      const atom = atomElFromTarget(elAtMid) || atomElFromTarget(pair.a.target);
+      const group = groupElFromTarget(elAtMid) || groupElFromTarget(pair.a.target);
+
+      if (atom && this.axis) {
+        this.targetEl = atom;
+        this.targetItemId = atom.dataset.id;
+        this.mode = 'decompose';
+        this.state = this.axis === 'h' ? SM.PINCH_H : SM.PINCH_V;
+      } else if (group && this.axis) {
+        const kind = group.dataset.kind;
+        const ok =
+          (this.axis === 'h' && kind === 'sum') ||
+          (this.axis === 'v' && kind === 'product');
+        if (ok) {
+          this.targetEl = group;
+          this.targetItemId = group.dataset.id;
+          this.mode = 'recompose';
+          this.state = this.axis === 'h' ? SM.PINCH_H : SM.PINCH_V;
+        } else {
+          this.state = SM.TRACKING;
+        }
+      } else {
+        this.state = SM.TRACKING;
+      }
+      this.lassoPoints = [];
+      setLassoPath([]);
+    },
+
+    onPointerMove(e) {
+      const p = this.pointers.get(e.pointerId);
+      if (!p) return;
+      p.x = e.clientX;
+      p.y = e.clientY;
+
+      this.ensureAltMirror(e);
+
+      if (this.state === SM.TRACKING && this.pointerCount() === 1) {
+        const dx = p.x - p.startX;
+        const dy = p.y - p.startY;
+        const moved = Math.hypot(dx, dy);
+        if (moved > MOVE_SLOP_PX) {
+          this.clearLongPress();
+          // se partenza da vuoto → lazo
+          const startedOnBlock = !!(atomElFromTarget(p.target) || groupElFromTarget(p.target));
+          if (!startedOnBlock) {
+            this.state = SM.LASSO;
+            this.lassoPoints = [
+              { x: p.startX, y: p.startY },
+              { x: p.x, y: p.y }
+            ];
+            setLassoPath(this.lassoPoints);
+          }
+        }
+      } else if (this.state === SM.LASSO) {
+        this.lassoPoints.push({ x: p.x, y: p.y });
+        setLassoPath(this.lassoPoints);
+      } else if (this.state === SM.PINCH_H || this.state === SM.PINCH_V) {
+        const pair = this.getPair();
+        if (!pair || this.fired) {
+          this.updateDebugLive();
+          return;
+        }
+        const d = dist(pair.a, pair.b);
+        const ratio = d / (this.startDist || 1);
+        const liveAxis = classifyAxis(pair.a, pair.b) || this.axis;
+        applyStretch(this.targetEl, this.axis, ratio);
+
+        if (this.mode === 'decompose' && ratio >= UNPINCH_RATIO && liveAxis === this.axis) {
+          this.fired = true;
+          clearStretch(this.targetEl);
+          const ok = this.axis === 'h'
+            ? decomposeHorizontal(this.targetItemId)
+            : decomposeVertical(this.targetItemId);
+          setDebug([
+            `state: ${this.state}`,
+            `trigger: unpinch-${this.axis}`,
+            `ratio: ${ratio.toFixed(2)}`,
+            `result: ${ok ? 'ok' : 'fail'}`
+          ]);
+        } else if (this.mode === 'recompose' && ratio <= PINCH_RATIO && liveAxis === this.axis) {
+          this.fired = true;
+          clearStretch(this.targetEl);
+          const ok = recompose(this.targetItemId);
+          setDebug([
+            `state: ${this.state}`,
+            `trigger: pinch-${this.axis}`,
+            `ratio: ${ratio.toFixed(2)}`,
+            `result: ${ok ? 'ok' : 'fail'}`
+          ]);
+        }
+      }
+
+      this.updateDebugLive();
+    },
+
+    onPointerUp(e) {
+      const p = this.pointers.get(e.pointerId);
+      this.pointers.delete(e.pointerId);
+      if (e.pointerId === this.primaryId) this.primaryId = null;
+      if (e.pointerId === this.secondaryId) this.secondaryId = null;
+
+      if (this.mirrorActive && e.pointerType === 'mouse') {
+        this.pointers.delete(-1);
+        this.mirrorActive = false;
+        this.secondaryId = null;
+      }
+
+      try { canvas.releasePointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+
+      if (this.state === SM.LASSO && this.lassoPoints.length > 2) {
+        const ids = selectByLasso(this.lassoPoints);
+        setSelection(ids);
+        setLassoPath([]);
+        this.lassoPoints = [];
+        this.state = SM.IDLE;
+        this.updateDebugLive();
+        return;
+      }
+
+      if (this.state === SM.LONGPRESS) {
+        // menù resta aperto fino a tocco successivo
+        this.clearLongPress();
+        this.state = SM.IDLE;
+        this.pointers.clear();
+        this.updateDebugLive();
+        return;
+      }
+
+      // tap breve fuori: deseleziona / chiudi menù
+      if (this.state === SM.TRACKING && p && !this.fired) {
+        const moved = Math.hypot(p.x - p.startX, p.y - p.startY);
+        if (moved <= MOVE_SLOP_PX) {
+          const onBlock = !!(atomElFromTarget(p.target) || groupElFromTarget(p.target));
+          if (!onBlock) {
+            clearSelection();
+            closeCtxMenu();
+          }
+        }
+      }
+
+      clearStretch(this.targetEl);
+
+      if (this.pointerCount() === 0) {
+        this.clearLongPress();
+        this.state = SM.IDLE;
+        this.targetEl = null;
+        this.targetItemId = null;
+        this.mode = null;
+        this.axis = null;
+        this.lassoPoints = [];
+        setLassoPath([]);
+        this.fired = false;
+      } else if (this.pointerCount() === 1) {
+        this.state = SM.TRACKING;
+        clearStretch(this.targetEl);
+      }
+
+      this.updateDebugLive();
+    },
+
+    onPointerCancel(e) {
+      this.onPointerUp(e);
+    },
+
+    updateDebugLive() {
+      if (!debugOn) return;
+      const pair = this.getPair();
+      let angle = '—';
+      let dNow = '—';
+      let d0 = '—';
+      let ratio = '—';
+      let axis = this.axis || '—';
+      if (pair) {
+        const ang = angleDegFromHorizontal(pair.a, pair.b);
+        angle = ang.toFixed(1) + '° (0=H, 90=V)';
+        dNow = dist(pair.a, pair.b).toFixed(1);
+        d0 = this.startDist ? this.startDist.toFixed(1) : '—';
+        ratio = this.startDist ? (dist(pair.a, pair.b) / this.startDist).toFixed(2) : '—';
+        axis = classifyAxis(pair.a, pair.b) || this.axis || '—';
+      }
+      setDebug([
+        `state: ${this.state}`,
+        `pointers: ${this.pointerCount()}${this.mirrorActive ? ' (+ALT mirror)' : ''}`,
+        `axis: ${axis}`,
+        `angle: ${angle}`,
+        `dist: ${dNow}  (start ${d0})`,
+        `Δratio: ${ratio}`,
+        `mode: ${this.mode || '—'}`,
+        `target: ${this.targetItemId || '—'}`,
+        `tol: ±${ANGLE_TOL_DEG}°  unpinch≥${UNPINCH_RATIO}  pinch≤${PINCH_RATIO}`
+      ]);
+    }
+  };
+
+  // ——— Binding pointer events ———
+  canvas.addEventListener('pointerdown', (e) => {
+    if (e.button != null && e.button !== 0) return;
+    e.preventDefault();
+    GestureRecognizer.onPointerDown(e);
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    e.preventDefault();
+    GestureRecognizer.onPointerMove(e);
+  });
+  canvas.addEventListener('pointerup', (e) => {
+    e.preventDefault();
+    GestureRecognizer.onPointerUp(e);
+  });
+  canvas.addEventListener('pointercancel', (e) => {
+    GestureRecognizer.onPointerCancel(e);
+  });
+
+  // Previeni gesture browser (pinch-zoom pagina)
+  document.addEventListener('gesturestart', (e) => e.preventDefault());
+  document.addEventListener('gesturechange', (e) => e.preventDefault());
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Alt') {
+      altHeld = true;
+      GestureRecognizer.updateDebugLive();
+    }
+  });
+  window.addEventListener('keyup', (e) => {
+    if (e.key === 'Alt') {
+      altHeld = false;
+      // rimuovi mirror se presente
+      if (GestureRecognizer.mirrorActive) {
+        GestureRecognizer.pointers.delete(-1);
+        GestureRecognizer.mirrorActive = false;
+        GestureRecognizer.secondaryId = null;
+        if (GestureRecognizer.state === SM.PINCH_H || GestureRecognizer.state === SM.PINCH_V) {
+          clearStretch(GestureRecognizer.targetEl);
+          GestureRecognizer.state = GestureRecognizer.pointers.size ? SM.TRACKING : SM.IDLE;
+        }
+        GestureRecognizer.updateDebugLive();
+      }
+    }
+  });
+  window.addEventListener('blur', () => { altHeld = false; });
+
+  ctxMenu.addEventListener('pointerdown', (e) => {
+    e.stopPropagation();
+    const btn = e.target.closest('button');
+    if (btn) {
+      // placeholder: chiudi solo
+      closeCtxMenu();
+    }
+  });
+
+  btnDebug.addEventListener('click', () => {
+    debugOn = !debugOn;
+    debugEl.classList.toggle('on', debugOn);
+    btnDebug.classList.toggle('active', debugOn);
+    btnDebug.setAttribute('aria-pressed', debugOn ? 'true' : 'false');
+    if (debugOn) GestureRecognizer.updateDebugLive();
+  });
+
+  btnReset.addEventListener('click', () => {
+    closeCtxMenu();
+    clearSelection();
+    GestureRecognizer.reset();
+    nextId = 1;
+    items = initialItems();
+    render();
+  });
+
+  // ——— Boot ———
+  items = initialItems();
+  render();
+  GestureRecognizer.reset();
+
+  // Esposizione minima per test automatici
+  window.__pinchLasso = {
+    getItems: () => items.map((it) => ({ ...it, parts: it.parts ? it.parts.slice() : undefined })),
+    reset: () => btnReset.click()
+  };
+})();
+  </script>
+</body>
+</html>
