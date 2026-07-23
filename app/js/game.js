@@ -1,3 +1,4 @@
+// @ts-check
 //Logica di gioco: confronto dell'espressione col risultato atteso e celebrazione.
 //Estratta da AldoUtilities.js (passo 5 del piano in project/specs/software-modules.md).
 
@@ -32,10 +33,18 @@ function lookForResultAndCelebrate(movesCounter,movesMinNumber) {
 	return found
 }
 
+/**
+ * Confronta un'espressione del canvas con il risultato atteso (orderMatch su
+ * un clone del risultato, senza sostituzioni nel DOM).
+ * @param {JQuery} $expression - Espressione candidata (primo livello del canvas).
+ * @param {JQuery} $result - Risultato atteso (viene clonato, non toccato).
+ * @param {boolean} strictOrder - Se true gli argomenti sono confrontati come lista ordinata.
+ * @returns {boolean} true se l'espressione corrisponde al risultato.
+ */
 function compareWithResult($expression, $result,strictOrder) {
 	var MyPActx = newPActx();
 	MyPActx.$operand = $expression;
 	//compare with a clone of the result
-	MyPActx.$pattern = ENODEclone($result);
+	MyPActx.$pattern = /** @type {JQuery} */ (ENODEclone($result));
 	return orderMatch(MyPActx, false, true, strictOrder).matchedTF
 }

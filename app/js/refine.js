@@ -1,3 +1,4 @@
+// @ts-check
 // Post-applicazione proprietà (Property Application Mode): replace + refine.
 // Strato properties (software-modules.md).
 //
@@ -16,6 +17,7 @@
  * Percorsi di raffinamento disponibili.
  * markerClass: classe DOM sui nodi da trattare
  * eventKey: evento in #events la cui lista azioni è la ricetta
+ * @type {Object.<string, {markerClass: string, eventKey: string}>}
  */
 const REFINE_KINDS = {
 	c: {
@@ -33,6 +35,10 @@ const REFINE_MARKER_CLASS = REFINE_KINDS.c.markerClass;
 const REFINE_MARKER_SELECTOR = '.' + REFINE_MARKER_CLASS;
 const REFINE_EVENT_KEY = REFINE_KINDS.c.eventKey;
 
+/**
+ * @param {string} kind chiave in REFINE_KINDS
+ * @returns {string} classe marker del percorso
+ */
 function refineMarkerClass(kind) {
 	const def = REFINE_KINDS[kind]
 	if (!def) {
@@ -42,10 +48,18 @@ function refineMarkerClass(kind) {
 	return def.markerClass
 }
 
+/**
+ * @param {string} kind chiave in REFINE_KINDS
+ * @returns {string} selettore CSS del marker
+ */
 function refineMarkerSelector(kind) {
 	return '.' + refineMarkerClass(kind)
 }
 
+/**
+ * @param {string} kind chiave in REFINE_KINDS
+ * @returns {string} eventKey del percorso
+ */
 function refineEventKey(kind) {
 	const def = REFINE_KINDS[kind]
 	if (!def) {
@@ -63,7 +77,7 @@ function refineEventKey(kind) {
  */
 function markNeedsRefine($nodes, kind) {
 	if (kind == null) { kind = 'c' }
-	return $($nodes).addClass(refineMarkerClass(kind));
+	return $(/** @type {JQuery} */ ($nodes)).addClass(refineMarkerClass(kind));
 }
 
 /**
@@ -111,8 +125,8 @@ function refreshAndReplace(PActx) {
 		$toBeRefreshed = ENODEparent(PActx.$transform)
 	} else {
 		$toBeRefreshed = ENODEparent(PActx.$operand)
-		ENODEinsertBefore(PActx.$transform, PActx.$operand[0]);
-		ENODEremove(PActx.$operand)
+		ENODEinsertBefore(/** @type {JQuery} */ (PActx.$transform), /** @type {JQuery} */ (PActx.$operand)[0]);
+		ENODEremove(/** @type {JQuery} */ (PActx.$operand))
 	}
 
 	if ($toBeRefreshed !== undefined && $toBeRefreshed.length != 0) {
@@ -205,7 +219,12 @@ function postApplyAfterProperty(PActx) {
 	return PActx
 }
 
-/** @deprecated usare refineAfterProperty — alias per compatibilità */
+/**
+ * @deprecated usare refineAfterProperty — alias per compatibilità
+ * @param {JQuery} $transform
+ * @param {string} [key]
+ * @param {string} [selector]
+ */
 function RepeatedRefine_c($transform, key, selector) {
 	return refineAfterProperty($transform, { key: key, selector: selector })
 }

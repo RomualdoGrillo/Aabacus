@@ -1,3 +1,4 @@
+// @ts-check
 // Registro proprietà hard-wired: descrittori tipizzati.
 // - kind 'unary': tastiera / #events via TryOnePropertyByName (apply($ENODE, firstVal?, img?))
 // - kind 'dnd': drag&drop (findTgt + apply(dragged, target, dropped?))
@@ -49,6 +50,7 @@ function registerHardWired(nameOrDesc, maybeFn) {
 		return
 	}
 	const already = hwPropertyRegistry[desc.name]
+	/** @type {HWPropertyDescriptor} */
 	const entry = {
 		name: desc.name,
 		kind: kind,

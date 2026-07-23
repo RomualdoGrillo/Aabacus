@@ -1,3 +1,4 @@
+// @ts-check
 
 /**
  * Aggiorna i separatori infissi (`.infix`) tra gli operandi di un ENODE con la
@@ -10,7 +11,7 @@
  */
 function refreshOneInfix($ENODEnode){
 	if(!$ENODEnode.is('[data-enode]')){return}// invalid parameter
-	var $role=ENODE_getRoles($ENODEnode[0]);
+	var $role=ENODE_getRoles(/** @type {ENode} */ ($ENODEnode[0]));
 	var $ENODEchildren = $role.children().filter('[data-enode]');
 	var $InfixChildren = $role.children().filter('.infix:not(.proto)');
 	var $infixProto = $role.find('>.infix.proto');
@@ -46,7 +47,7 @@ function refreshOneInfix($ENODEnode){
  */
 function refreshOneEmpty($ENODE){
 	if(!$ENODE.is('[data-enode]')){return};
-	ENODE_getRoles($ENODE[0]).each(function(i,e){
+	ENODE_getRoles(/** @type {ENode} */ ($ENODE[0])).each(function(i,e){
 		let childrenNum = $(e).children().filter('[data-enode],.dummyrole').length
 		let minPlaces=getNumOfPlaces($(this))[0]
 		if(minPlaces>1){//manage dummies to ensure minimum places

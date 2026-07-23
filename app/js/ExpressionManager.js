@@ -18,7 +18,10 @@ incontrano lì). */
 
 /**
  * Elemento HTML con attributo `data-enode`: nodo dell'albero dell'espressione.
- * @typedef {Element & { __enodeBrand: 'ENode' }} ENode
+ * (Brand su HTMLElement, non su Element: gli ENODE sono sempre elementi HTML
+ * e così i risultati jQuery — JQuery<HTMLElement> — si possono castare a ENode
+ * con un solo cast inline.)
+ * @typedef {HTMLElement & { __enodeBrand: 'ENode' }} ENode
  */
 
 /**
