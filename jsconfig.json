@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"checkJs": false,
+		"target": "es2020",
+		"lib": ["dom", "es2020"]
+	},
+	"typeAcquisition": {
+		"include": ["jquery", "sortablejs"]
+	},
+	"include": ["app/js/**/*.js"]
+}

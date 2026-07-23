@@ -4,8 +4,19 @@
 // - requiresCanvasCi: se true serve un ci[data-tag] in canvas; se false è fondazione (sempre on)
 // Canvas = gate didattico; registro = contratto di esecuzione.
 
+/**
+ * @typedef {Object} HWPropertyDescriptor Voce del registro hard-wired.
+ * @property {string} name nome della proprietà (= data-tag nel canvas / #events)
+ * @property {'unary'|'dnd'} kind unary: tastiera/#events; dnd: drag&drop
+ * @property {Function} apply unary: apply($ENODE, firstVal?, img?) → PActx; dnd: apply(dragged, target, dropped?) → PActx
+ * @property {Function} [findTgt] solo dnd: findTgt($mouseDownENODE, ctrlOrMeta?, altKey?) → target validi
+ * @property {boolean} requiresCanvasCi se true serve un ci[data-tag] in canvas; se false è fondazione (sempre attiva)
+ * @property {string} [icon]
+ */
+
+/** @type {Object.<string, HWPropertyDescriptor>} */
 const hwPropertyRegistry = Object.create(null)
-/** Ordine di registrazione delle voci DnD (first-wins in DnD.js) */
+/** Ordine di registrazione delle voci DnD (first-wins in DnD.js) @type {string[]} */
 const hwDnDRegistrationOrder = []
 
 /**
@@ -13,6 +24,8 @@ const hwDnDRegistrationOrder = []
  * Forme:
  *   registerHardWired('compose', composeFn)           // shorthand unary
  *   registerHardWired({ name, kind, apply, findTgt?, requiresCanvasCi? })
+ * @param {string|HWPropertyDescriptor} nameOrDesc
+ * @param {Function} [maybeFn] apply unary (solo con la forma shorthand)
  */
 function registerHardWired(nameOrDesc, maybeFn) {
 	let desc
@@ -57,14 +70,20 @@ function registerHardWired(nameOrDesc, maybeFn) {
 	hwPropertyRegistry[entry.name] = entry
 }
 
-/** @returns {function|undefined} apply unary (compat TryOnePropertyByName) */
+/**
+ * @param {string} name
+ * @returns {Function|undefined} apply unary (compat TryOnePropertyByName)
+ */
 function getHardWired(name) {
 	const entry = hwPropertyRegistry[name]
 	if (!entry || entry.kind !== 'unary') { return undefined }
 	return entry.apply
 }
 
-/** @returns {object|undefined} descrittore completo */
+/**
+ * @param {string} name
+ * @returns {HWPropertyDescriptor|undefined} descrittore completo
+ */
 function getHardWiredEntry(name) {
 	return hwPropertyRegistry[name]
 }
@@ -74,7 +93,7 @@ function listHardWiredPropertyNames() {
 	return Object.keys(hwPropertyRegistry).sort()
 }
 
-/** @returns {object[]} descrittori DnD in ordine di registrazione (priorità first-wins) */
+/** @returns {HWPropertyDescriptor[]} descrittori DnD in ordine di registrazione (priorità first-wins) */
 function listDnDProperties() {
 	const out = []
 	for (let i = 0; i < hwDnDRegistrationOrder.length; i++) {
@@ -86,7 +105,7 @@ function listDnDProperties() {
 
 /**
  * Registra in blocco unary da mappa { nome: fn }.
- * @param {Object.<string, function>} map
+ * @param {Object.<string, Function>} map
  */
 function registerHardWiredMap(map) {
 	if (!map) { return }

@@ -57,15 +57,20 @@ function refineEventKey(kind) {
 
 /**
  * Marca uno o più ENODE come da raffinare dopo PActxConclude.
- * @param {jQuery|Element|string} $nodes
- * @param {string} [kind='c'] — chiave in REFINE_KINDS
+ * @param {JQuery|Element|string} $nodes
+ * @param {string} [kind='c'] chiave in REFINE_KINDS
+ * @returns {JQuery} i nodi marcati
  */
 function markNeedsRefine($nodes, kind) {
 	if (kind == null) { kind = 'c' }
 	return $($nodes).addClass(refineMarkerClass(kind));
 }
 
-/** Rimuove tutte le classi marker dei percorsi registrati (e opzionalmente da un sottoalbero). */
+/**
+ * Rimuove tutte le classi marker dei percorsi registrati (e opzionalmente da un sottoalbero).
+ * @param {JQuery} [$root] se assente pulisce l'intero documento
+ * @returns {JQuery} l'ambito ripulito
+ */
 function clearRefineMarkers($root) {
 	const $scope = $root && $root.length ? $root.find('[data-enode]').addBack('[data-enode]') : $('*')
 	const kinds = Object.keys(REFINE_KINDS)
@@ -78,6 +83,9 @@ function clearRefineMarkers($root) {
 /**
  * Prova le proprietà del percorso `kind` (o eventKey esplicito) su un nodo.
  * Non passa da keyboardEvToFC: usa tryEventActionsOnNode.
+ * @param {JQuery} $ENODE
+ * @param {string} [kindOrEventKey] chiave in REFINE_KINDS oppure eventKey esplicito
+ * @returns {PActx|undefined}
  */
 function trySimplifyNode($ENODE, kindOrEventKey) {
 	let eventKey = REFINE_EVENT_KEY
@@ -92,6 +100,8 @@ function trySimplifyNode($ENODE, kindOrEventKey) {
 /**
  * Sostituisce l'operando con il transform (se non già fatto) e aggiorna infix/empty/brackets.
  * Usata sia dal conclude esterno sia da ogni passo di refine.
+ * @param {PActx} PActx
+ * @returns {PActx}
  */
 function refreshAndReplace(PActx) {
 	console.log("Applied property: " + PActx.msg)
@@ -114,6 +124,8 @@ function refreshAndReplace(PActx) {
 /**
  * Cascade refining: ripete trySimplifyNode sui nodi che matchano selector
  * finché non ci sono più match, al più REFINE_MAX_STEPS volte (anti-loop).
+ * @param {JQuery} $transform ramo trasformato da cui partire
+ * @param {{key: string, selector: string}} pass eventKey e selettore dei nodi marcati
  */
 function runRefinePass($transform, pass) {
 	const key = pass.key
@@ -150,7 +162,7 @@ function runRefinePass($transform, pass) {
  * Cascade refining sul ramo trasformato. Di default esegue tutti i percorsi in REFINE_KINDS
  * (oggi solo "c"). Non richiama PActxConclude (niente snapshot/celebrate intermedi).
  *
- * @param {jQuery} $transform
+ * @param {JQuery} $transform
  * @param {{kinds?: string[], key?: string, selector?: string}} [options]
  *   - kinds: elenco ordinato di kind da eseguire (default: chiavi di REFINE_KINDS)
  *   - key + selector: una sola passata legacy (RepeatedRefine_c)
@@ -182,6 +194,8 @@ function refineAfterProperty($transform, options) {
 /**
  * Post immediato dopo una proprietà riuscita: replace/refresh, poi cascade refining
  * sui nodi marcati (REFINE_KINDS). Snapshot/celebrate/visualize restano in PActxConclude.
+ * @param {PActx} PActx
+ * @returns {PActx}
  */
 function postApplyAfterProperty(PActx) {
 	refreshAndReplace(PActx)

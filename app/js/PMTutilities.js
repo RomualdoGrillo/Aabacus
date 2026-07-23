@@ -1,8 +1,23 @@
+/**
+ * @typedef {Object} PActx Contesto di applicazione di una proprietà (hard-wired o pattern-based).
+ * @property {boolean} matchedTF true se la proprietà è stata applicata
+ * @property {string} msg se matchedTF: nome della proprietà applicata; altrimenti motivo del no-match
+ * @property {string} visualization path dell'immagine per il feedback visivo
+ * @property {JQuery} [$cloneProp] clone istanziato della proprietà pattern-based
+ * @property {JQuery} [$pattern] membro del pattern che ha matchato
+ * @property {JQuery} [$operand] sottoespressione su cui la proprietà è applicata
+ * @property {JQuery} [$transform] il più grande elemento trasformato (radice del risultato); il suo parent guida il refresh di infix/brackets
+ * @property {JQuery} [$equation]
+ * @property {boolean} replacedAlready true se la apply ha già sostituito l'operando nel DOM
+ * @property {JQuery} lineList linee SVG di hint associate al match
+ * @property {boolean} error
+ */
+
+/**
+ * Crea un PActx vuoto (stato iniziale: proprietà non applicata).
+ * @returns {PActx}
+ */
 function newPActx() {
-	//contesto di applicazione di una proprietà (hard-wired o pattern-based)
-	//msg: in caso data di matchedTF=true contiene il nome della proprietà applicata
-	//in caso contrario dovrebbe contenere il motivo del noMatch.
-	//$transform deve contenere il più grande elemento trasformato
 	return {
 		matchedTF: false,
 		msg: "", visualization: "",
