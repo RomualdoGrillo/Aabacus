@@ -1,6 +1,6 @@
 # Specifica — Rifacimento interfaccia utente (touch-first)
 
-**STATO: BOZZA — prima revisione di Romualdo ricevuta (23/07/2026); unpinch orizzontale bocciato alla prova su tablet (v. §3.3.1), gesti alternativi in confronto sul prototipo v2**
+**STATO: BOZZA — prima revisione di Romualdo ricevuta (23/07/2026); taglio promosso alla prova su tablet come gesto di scomposizione (§3.3.1); avviata pista parallela `index2` (§7)**
 
 ## Decisioni di revisione (Romualdo, 23/07/2026)
 
@@ -249,6 +249,8 @@ Candidati alternativi in valutazione empirica sul prototipo v2 (`app/prototypes/
 | Strappo (tear) | Un dito àncora, l'altro tira via; decide la direzione del dito mobile | Direzione precisa, comodo a due mani | Richiede coordinazione àncora+tiro |
 | Scuotimento (shake) | ≥3 inversioni rapide sullo stesso asse (proposta di Romualdo) | Un dito, memorabile | Collisione semantica con shake=errore; ritarda il riconoscimento del drag; asse sporco |
 
+**Verdetto prova su tablet (23/07/2026 pomeriggio): il TAGLIO è il candidato promosso** ("molto bello" — Romualdo). Diventa il gesto di riferimento per la scomposizione nel nuovo modulo di input (§7); gli altri candidati restano documentati come alternative. Restano dovuti test più approfonditi (v. §7.3).
+
 ### 3.4 Traduzione touch delle interazioni da conservare
 
 #### Selezione e tool
@@ -428,6 +430,33 @@ Fasi incrementali; ciascuna ha un **criterio di uscita** verificabile. Il motore
 - Eventuale serializzazione settings (debito noto) se ancora rilevante.
 
 **Uscita:** diagramma strato input aggiornato in `software-modules.md` (con approvazione architetturale se richiesta).
+
+---
+
+## 7. Pista parallela `index2` — modulo di input alternativo (avviata 23/07/2026)
+
+Decisione di Romualdo: attaccare il problema anche dal lato UI in parallelo al refactoring — accorcia la strada verso un prodotto usabile e chiarisce le priorità del refactoring stesso.
+
+### 7.1 Perimetro e invarianti
+
+- **Guscio:** `app/index2.html`, accanto a `index.html` (non in `prototypes/`: così tutti i path relativi — `./Data/...`, `js/`, `css/`, immagini — e `?preloadPath=` di `state.js` funzionano invariati).
+- **Invarianti dichiarate da Romualdo:** (1) stessa struttura HTML dell'ExpressionTree; (2) stesso aspetto dell'albero — la riscrittura CSS da zero è un'occasione da cogliere, ma come **fase separata** con test di parità visiva; (3) **preload integrato dal primo giorno** (`preloadAll(preloadPath)`, esercizi `.mmls` reali via `?preloadPath=`).
+- **Riuso intatto degli strati 1–4** (core, rendering, properties, persistence). Si sostituisce solo lo strato interaction: niente `MAIN.js`, `UserEvToFunctCall.js`, `DnD.js` nel guscio nuovo.
+- Il gating didattico resta: i gesti passano da `TryOnePropertyByName`, che richiede il `ci` della proprietà nel canvas dell'esercizio.
+
+### 7.2 Architettura del modulo input (`app/js/input2/`)
+
+Tre pezzi con confini netti, pensati per la sostituibilità dei gesti:
+
+1. `gestures.js` — **recognizer puro** (Pointer Events → FSM → *intent*). Nessuna conoscenza del dominio matematico. Emette es. `{type:'slice', axis:'v', target}`.
+2. `intentMap.js` — **mappa dichiarativa intent→azione** (es. `slice.v → decomposeInASum`, `slice.h → decomposeInAProduct`). È il punto di customizzazione: cambiare combinazione di gesti o dare all'utente finale la scelta = cambiare questa mappa, non il codice.
+3. `boot2.js` — orchestrazione: preload, dispatch delle azioni (`TryOnePropertyByName` + conclude minimale con `postApplyAfterProperty`), stub documentati dei simboli dello strato escluso.
+
+### 7.3 Requisiti di test sui gesti (Romualdo, 23/07)
+
+1. **Non-sovrapposizione:** quasi mai un utente che vuole fattorizzare deve ritrovarsi con un lazo, ecc. Piano: matrice di confusione tra gesti — corpora di tratti sintetici (Playwright touch, con jitter e varianti diagonali) classificati dal recognizer + contatori riuscito/fallito in-app per le prove dal vivo.
+2. **Coerenza del set:** il set finale dev'essere coerente, intuitivo e piacevole; si valuta sul prototipo con esercizi reali, non su blocchi finti.
+3. **Modularità:** cambiare il set di gesti (o renderlo customizzabile dall'utente) non deve costare riscritture — garantito dall'intent map (§7.2.2).
 
 ---
 
