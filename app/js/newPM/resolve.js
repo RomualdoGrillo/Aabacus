@@ -50,7 +50,7 @@
 		if (typeof GetforAllContentRole === 'function') {
 			$content = GetforAllContentRole($forAll).children();
 		} else {
-			$content = ENODE_getChildren($forAll[0]);
+			$content = ENODE_getChildren($forAll);
 		}
 		var $eq = $content.filter('[data-enode=eq]').first();
 		if (!$eq.length) $eq = $content.first();
@@ -71,8 +71,8 @@
 		if (!$eq.length || $eq.attr('data-enode') !== 'eq') {
 			return null;
 		}
-		var $first = ENODE_getRoles($eq[0], '.firstMember').children().first();
-		var $second = ENODE_getRoles($eq[0], '.secondMember').children().first();
+		var $first = ENODE_getRoles($eq, '.firstMember').children().first();
+		var $second = ENODE_getRoles($eq, '.secondMember').children().first();
 		var $pattern = direction === 'ltr' ? $first : $second;
 		var $transform = direction === 'ltr' ? $second : $first;
 		return {
@@ -95,7 +95,7 @@
 		while (cur && cur !== rootEl && guard++ < 64) {
 			var $parentEn = $(cur).parent().closest('[data-enode]');
 			if (!$parentEn.length) return null;
-			var kids = ENODE_getChildren($parentEn[0]).toArray();
+			var kids = ENODE_getChildren($parentEn).toArray();
 			var idx = kids.indexOf(cur);
 			if (idx < 0) return null;
 			path.unshift(idx);
@@ -111,7 +111,7 @@
 		var $n = $root;
 		for (var i = 0; i < path.length; i++) {
 			if (!$n.length) return $();
-			var kids = ENODE_getChildren($n[0]);
+			var kids = ENODE_getChildren($n);
 			$n = $(kids[path[i]]);
 		}
 		return $n;
@@ -174,8 +174,8 @@
 		if ($cloneProp.attr('data-enode') === 'eq') {
 			return {
 				$equation: $cloneProp,
-				$pattern: ENODE_getRoles($cloneProp[0], '.firstMember').children().first(),
-				$transform: ENODE_getRoles($cloneProp[0], '.secondMember')
+				$pattern: ENODE_getRoles($cloneProp, '.firstMember').children().first(),
+				$transform: ENODE_getRoles($cloneProp, '.secondMember')
 					.children()
 					.first()
 			};
@@ -227,7 +227,7 @@
 			throw new Error('newPM: contenuto del forAll non è un’equazione');
 		}
 
-		var $members = ENODE_getRoles($eq[0], '.firstMember,.secondMember');
+		var $members = ENODE_getRoles($eq, '.firstMember,.secondMember');
 		var $roleMember = $members.filter(function (i, e) {
 			return e.contains($dragged[0]);
 		});

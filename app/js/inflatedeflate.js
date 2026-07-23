@@ -170,17 +170,17 @@ function ReplaceOneENODE(node, from_to, neglectSign) {
 			if (symbols.indexOf(ENODE.toLowerCase()) !== -1) {
 				//todo: eccezione if leafTag with children
 				try {
-					ENODE_setName($newNode[0], $node.text());
+					ENODE_setName($newNode, $node.text());
 				} catch (err) {
 					console.log('error on prototype '+ENODE+" "+ $node.attr("type"))
 				}
 				//signsAsClasses($newNode,"SignsInNames_to_SignsAsClasses"); //convert to_signs_as_classes 
 			} else {
 				//append children in roles
-				var $tgtRoles = ENODE_getRoles($newNode[0]);
+				var $tgtRoles = ENODE_getRoles($newNode);
 				if($tgtRoles.length==0){
-					ENODE_addRole($newNode[0]);
-					$tgtRoles = ENODE_getRoles($newNode[0]);
+					ENODE_addRole($newNode);
+					$tgtRoles = ENODE_getRoles($newNode);
 				}
 				var $bVarRole = $tgtRoles.filter('.bVar_role');
 				var $noBVarRole = $tgtRoles.not('.bVar_role');

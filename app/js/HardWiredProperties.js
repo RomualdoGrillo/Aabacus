@@ -254,9 +254,9 @@ function ENODEPartDistribute($dragged, target, dropped) {
 	ENODEinsertBefore($clone, dropped);
 	$siblings.each(function (i, e) {
 		const $siblingClone = ENODEclone($(e));
-		ENODEappend(ENODE_getRoles($clone[0]), $siblingClone);
+		ENODEappend(ENODE_getRoles($clone), $siblingClone);
 	});
-	const previous = ENODE_getRoles($clone[0]).children().eq(childrenIndex - 1);
+	const previous = ENODE_getRoles($clone).children().eq(childrenIndex - 1);
 	ENODEinsertAfter($dragged, previous);
 	markNeedsRefine($parent);
 	ENODEremove(dropped);
@@ -282,17 +282,17 @@ function ENODEdistribute($dragged, target, dropped) {
 	if ($parent !== undefined) { op = $parent.attr("data-enode") }
 	let opD = opIsDistDop(op);
 	const $prototype = prototypeSearch(op)// for example search for times proto
-	ENODE_getChildren($(target)[0]).each(function (i, e) {
+	ENODE_getChildren($(target)).each(function (i, e) {
 		markNeedsRefine(e);
 		const $clone = ENODEclone($prototype)//create times
 		const $cloneDragged = ENODEclone($dragged)// clone dragged
 		ENODEinsertBefore($clone, $(this));
-		ENODEappend(ENODE_getRoles($clone[0]), $cloneDragged);
+		ENODEappend(ENODE_getRoles($clone), $cloneDragged);
 		if ($dragged.index() > target.index()) {
-			ENODEprepend(ENODE_getRoles($clone[0]), $(this));
+			ENODEprepend(ENODE_getRoles($clone), $(this));
 		}
 		else {
-			ENODEappend(ENODE_getRoles($clone[0]), $(this));
+			ENODEappend(ENODE_getRoles($clone), $(this));
 		}
 		//$cloneDragged.css({display:""})
 	})
@@ -335,7 +335,7 @@ function validForColl($mouseDownENODE) {
 		return $() //empty $ array
 	}
 	//***** test su ciascun termine
-	const $terms = ENODE_getChildren($parentParent[0]) // ottieni la lista degli addendi
+	const $terms = ENODE_getChildren($parentParent) // ottieni la lista degli addendi
 	for (let i = 0; i < $terms.length; i++) {
 		const term = $terms[i]
 		let okForThisTerm = false;
@@ -365,7 +365,7 @@ function validForColl($mouseDownENODE) {
 		}
 	};
 	console.log('okForCollection')
-	//return ENODE_getRoles($parentParent[0])
+	//return ENODE_getRoles($parentParent)
 	return ENODEparent($parentParent).find('>.ul_role')//target is the external ENODE	
 }
 
@@ -473,7 +473,7 @@ function ENODEpartCollect($dragged, $target) {
 		if ($siblingsT.length == 1) {
 			if ($siblingsT.eq(0).attr("data-enode") == opPlus) {//if 'plus' ther's no need to create a new plus container
 				$opPlus = $siblingsT
-				$termT = ENODE_getChildren($siblingsT[0])
+				$termT = ENODE_getChildren($siblingsT)
 				ENODEremove($termT);//svuoto il target plus e poi lo riempio ordinatamente
 				//il plus si trova già all'interno del target, quindi non lo sposto
 			}
@@ -487,7 +487,7 @@ function ENODEpartCollect($dragged, $target) {
 		if ($siblingsD.length == 1) {
 			if (!$opPlus && $siblingsD.eq(0).attr("data-enode") == opPlus) {//if 'plus' ther's no need to create a new plus container
 				$opPlus = $siblingsD
-				$termD = ENODE_getChildren($siblingsD[0])
+				$termD = ENODE_getChildren($siblingsD)
 				ENODEremove($termD);//svuoto il target plus e poi lo riempio ordinatamente
 				ENODEinsertBefore($opPlus, $termT);//preferisco mettere sempre il plus all'interno del target 
 				ENODEremove($termT);
@@ -504,7 +504,7 @@ function ENODEpartCollect($dragged, $target) {
 			ENODEinsertBefore($opPlus, $termT);
 			ENODEremove($termT);
 		}
-		const $plusRole = ENODE_getRoles($opPlus[0])
+		const $plusRole = ENODE_getRoles($opPlus)
 		if ($targetParent.index() > $draggedParent.index()) {//order of terms is inherited from order of oarents
 			ENODEappend($plusRole, $termD);
 			ENODEappend($plusRole, $termT);
@@ -566,7 +566,7 @@ function compose($toBeComp, firstVal, img) {
 		/*
 		const tBcClass = $toBeComp.attr("data-enode"); 
 		if( tBcClass === "cn" || tBcClass === "ci"){
-			const name = ENODE_getName($toBeComp[0])
+			const name = ENODE_getName($toBeComp)
 			if( (op === "times" && name === "1")||
 				(op === "plus" && name === "0")||
 				(op === "and" && name === "true")||
@@ -756,7 +756,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 
 				//stabilisci dove va aggiunto il -1
 				const $minusParent = ENODEparent($minus);
-				const $minusContent = ENODE_getChildren($minus[0]);
+				const $minusContent = ENODE_getChildren($minus);
 				$extOp = $minusParent;
 				if ($minusParent.attr('data-enode') == 'times') {//aggiungi il -1 all'interno del minus parent
 					ENODEinsertBefore($minusOne, $minus);
@@ -765,14 +765,14 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 					if ($minusContent.attr('data-enode') !== 'times') {//è necessario aggiungere una enclosure di tipo "times"
 						$minusContent = wrapWithOperation($minusContent, 'times')
 					}
-					ENODEprepend(ENODE_getRoles($minusContent[0]), $minusOne);
+					ENODEprepend(ENODE_getRoles($minusContent), $minusOne);
 				}
 				//******Rimuovi il MINUS
 				ENODEinsertAfter($minusContent, $minus);
 				markNeedsRefine($minusContent);//if the content was a "times" it may by dissolved if the parent is also times
 				ENODEremove($minus);
 
-				//var $roleContainingFactors = ENODE_getRoles($minusContent[0]);
+				//var $roleContainingFactors = ENODE_getRoles($minusContent);
 				//$roleContainingFactors.prepend($minusOne);
 
 				$toBeDec = $minusContent;
@@ -855,7 +855,7 @@ function decompose($toBeDec, direction, img) {//"up" for factorize
 			$clone.insertAfter($toBeDec);
 			$clone.css({display:""});
 		}
-		else if( ENODE_getName($toBeDec[0]) === "true"){
+		else if( ENODE_getName($toBeDec) === "true"){
 			op = "or";
 			const $X_or_NotX = searchForProperty("name","X_or_NotX");// trova la definizione della proprietà da applicare
 			createForThis($X_or_NotX,$toBeDec);
@@ -957,7 +957,7 @@ function ENODEModusPonens($premiseInProperty, $premise){
 	//create clone
 	
 	let $clone = ENODEclone(
-		ENODE_getRoles(ENODEparent($premiseInProperty)[0], ".secondMember").children()
+		ENODE_getRoles(ENODEparent($premiseInProperty), ".secondMember").children()
 	);
 	//isert deduction after $premise
 	ENODEinsertAfter($clone, $premise);
@@ -1061,11 +1061,11 @@ function validhanoiMove($mouseDownENODE) {
 		return []
 	}
 	//check if the las element of each road is smaller than dragged
-	let draggedDiscNum = parseInt(ENODE_getName($mouseDownENODE[0]));
+	let draggedDiscNum = parseInt(ENODE_getName($mouseDownENODE));
 	let $filterdSiblings = $parentRod.siblings().filter(function () {
 		let $topDisc = ENODE_getChildren(this, ':first');
 		if ($topDisc.length == 0) { return true };
-		let topDiscNum = parseInt(ENODE_getName($topDisc[0]))
+		let topDiscNum = parseInt(ENODE_getName($topDisc))
 		return topDiscNum > draggedDiscNum;
 	});
 	return $filterdSiblings
@@ -1080,7 +1080,7 @@ function validhanoiMove($mouseDownENODE) {
  */
 function hanoiMove(dragged, target, dropped) {
 	const PActx = newPActx();
-	ENODEprepend(ENODE_getRoles(target[0]), $(dragged));
+	ENODEprepend(ENODE_getRoles(target), $(dragged));
 	PActx.matchedTF = true;
 	PActx.replacedAlready = true;
 	PActx.msg = "moved";
@@ -1110,7 +1110,7 @@ function removeRedundant($dragged, $target) {
 	}
 	else {
 		const $clone = ENODEclone(prototypeSearch("ci", "bool"))
-		ENODE_setName($clone[0], 'true');
+		ENODE_setName($clone, 'true');
 		ENODEreplaceNode($target, $clone);
 	}
 	PActx.matchedTF = true
@@ -1133,7 +1133,7 @@ function addRedundant($dragged, $target, $dropped) {
 	$($dropped).removeClass('toBeCloned');//in case class 'toBeCloned' is present rempve it
 	if ($target.attr('data-enode')) {//if target is an ENODE, create an AND around it
 		let $extOp = wrapWithOperation($target, 'and')
-		$target = ENODE_getRoles($extOp[0])
+		$target = ENODE_getRoles($extOp)
 		PActx.msg = "created and, added Redundant or deduction"
 		ENODEappend($target, $dropped);
 	}
@@ -1151,9 +1151,9 @@ function evaluateComparison($exp) {
 	PActx.$operand = $exp;
 	const ENODEClass = $exp.attr('data-enode');
 	if (comparisons.indexOf(ENODEClass) != -1) {
-		const $firstMember = ENODE_getRoles($exp[0], '.firstMember').children();
+		const $firstMember = ENODE_getRoles($exp, '.firstMember').children();
 		const firstMember = ENODEsToVal($firstMember);
-		const $secondMember = ENODE_getRoles($exp[0], '.secondMember').children();
+		const $secondMember = ENODE_getRoles($exp, '.secondMember').children();
 		const secondMember = ENODEsToVal($secondMember);
 		if (!isNaN(firstMember.computedVal) && !isNaN(secondMember.computedVal)) {
 			const prototype = prototypeSearch("ci", "bool")
@@ -1177,7 +1177,7 @@ function evaluateComparison($exp) {
 			if (result) { stringResult = "true" } else { stringResult = "false" }
 			const $clone = ENODEclone(prototype);
 			// $clone.attr('data-enode','cn');
-			ENODE_setName($clone[0], stringResult)
+			ENODE_setName($clone, stringResult)
 			ENODEinsertAfter($clone, $exp);
 			$clone.addClass('selected');// il risultato rimane selezionato
 			ENODEremove($exp);

@@ -102,7 +102,7 @@
 					? GetforAllContentRole($prop).children('[data-enode=eq]').first()
 					: $prop.find('[data-enode=eq]').first();
 			if ($eq.length) {
-				$anchor = ENODE_getRoles($eq[0], '.secondMember').children().first();
+				$anchor = ENODE_getRoles($eq, '.secondMember').children().first();
 			}
 		}
 

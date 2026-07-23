@@ -56,7 +56,7 @@ if($ENODETarget.length==0){
 			let $forallContent=GetforAllContentRole(GLBDnD.$originalProperty).children();
 			let $equation=$($forallContent[0]);
 			if(!$equation.is('[data-enode=eq]')){console.log('forall content is not an equation'); return}
-			let $eqRoleMembers=ENODE_getRoles($equation[0], '.firstMember,.secondMember');
+			let $eqRoleMembers=ENODE_getRoles($equation, '.firstMember,.secondMember');
 			let $RoleMember = $eqRoleMembers.filter(function(i,e){return e.contains(event.target)})
             if($RoleMember.length==0){return}
             //decide if ltr or rtl

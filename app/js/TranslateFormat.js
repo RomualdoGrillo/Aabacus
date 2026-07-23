@@ -13,10 +13,10 @@ function ENODEfactorizeMinus($startNode) {
 	const $clone = ENODEclone(prototype);
 	const $cloneMinus = ENODEclone(prototypeMinus);
 	$clone.attr('data-enode', 'cn');
-	ENODE_setName($clone[0], "1");
+	ENODE_setName($clone, "1");
 	$cloneMinus.insertAfter($startNode);
-	ENODE_getRoles($cloneMinus[0]).append($clone);
-	ENODE_dissolveContainer($startNode[0])
+	ENODE_getRoles($cloneMinus).append($clone);
+	ENODE_dissolveContainer($startNode)
 	//remove minus from $startNode  
 	RefreshEmptyInfixBraketsGlued($('body'));//rinfresca anche gli infix di $extOp
 	ssnapshot.take();
@@ -34,7 +34,7 @@ function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsCl
 ) {
 	// <>-a<> to <class="minus">a<>
 	// nota: non possono coesistere segni meno all'interno del nome e "minus" come classi
-	let name = ENODE_getName($ENODE[0])
+	let name = ENODE_getName($ENODE)
 	if (mode == "SignsInNames_to_SignsAsClasses") {
 		if (name[0] === "/") {
 			name = name.substr(1)
@@ -69,15 +69,15 @@ function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsCl
 			wrapWithOperation($ENODE, "minus")
 		}
 	} else if (mode == "MinusOp_to_SignsAsClasses") {
-		const $ENODEchildren = ENODE_getRoles($ENODE[0]).children().filter('[data-enode]')
+		const $ENODEchildren = ENODE_getRoles($ENODE).children().filter('[data-enode]')
 		if ($ENODE.attr('data-enode') === "minus" && $ENODEchildren.length == 1) {
 			// i minus che hanno un solo children
-			ENODE_dissolveContainer($ENODE[0]);
+			ENODE_dissolveContainer($ENODE);
 			$ENODEchildren.filter(':first').addClass('minus');
 		}
 	}
 
-	ENODE_setName($ENODE[0], name);
+	ENODE_setName($ENODE, name);
 	$ENODE.attr("data-enode", (isNaN(name)) ? "ci" : "cn")
 	// se numero allora classe "cn"
 }

@@ -11,7 +11,7 @@
 function parameterInHeader($parameter,$property){
     if ($property.attr('data-enode') !== 'forAll'){ return undefined}
     const $bvars = GetforAllHeader($property).children('[data-enode]');
-    const parameterName = ENODE_getName($parameter[0]);
+    const parameterName = ENODE_getName($parameter);
     let i
     for(let i=0; i<$bvars.length ;i++){
         const bvaTag = ENODE_getName($bvars[i], true)
@@ -94,7 +94,7 @@ function parameterType($ENODE,$prop){
     if(symbols.indexOf(className) == -1){//not a symbol?(ci,cs,csymbol)
         return "n"
     }
-    const parameterName = ENODE_getName($ENODE[0], true);
+    const parameterName = ENODE_getName($ENODE, true);
     //****** compatibilità con notazione "Mathematica"
     //search if name's tail is _ __ ___
     if(parameterName.slice(-3) === "___" ){return "x___"}//x___

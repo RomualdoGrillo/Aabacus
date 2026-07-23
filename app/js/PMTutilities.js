@@ -161,7 +161,7 @@ function ENODEpath($ENODE,$spanRoot,$matchedPattern){
 			else{nthchild=1}
 		}
 		else{
-			nthchild=ENODE_getChildren($currENODEparent[0]).index($currENODE)
+			nthchild=ENODE_getChildren($currENODEparent).index($currENODE)
 		}
 		path = ENODEdescForPath($currPATTparent) + nthchild + " > "+ path //nome del parent + posizione all'interno del parent
 		$currENODE = $currENODEparent;
@@ -529,7 +529,7 @@ function InstructAndTryOnePMT($origProp, $par1 ,firstVal,justTry){//instruct pra
             PActx.$cloneProp = reformatForallProp(PActx.$cloneProp,PActx.$transform);
         }
    		 
-		PActx.$transform = ENODE_getRoles(PActx.$equation[0], '.secondMember').children();//alla fine degli adapt match riaggiorno transform
+		PActx.$transform = ENODE_getRoles(PActx.$equation, '.secondMember').children();//alla fine degli adapt match riaggiorno transform
     }
     ENODESmarkUnmark(PActx.$operand,"","all")//l'operando viene inizialmente marcato come "s" selected 
     //"s" è usato come punto di partenza
@@ -562,13 +562,13 @@ function PActxFromAttackPoints(PActx,$par1,$par2){
     if( PActx.$cloneProp.attr('data-enode') === "forAll" ){//l'equazione è circondata da un forall
         $pattParameters = GetforAllHeader(PActx.$cloneProp).children();
         PActx.$equation = GetforAllContentRole(PActx.$cloneProp).children();
-        PActx.$pattern = ENODE_getRoles(PActx.$equation[0], '.firstMember').children()   
+        PActx.$pattern = ENODE_getRoles(PActx.$equation, '.firstMember').children()   
     }
     else{//l'equazione non è circondata da un forall
         PActx.$equation = PActx.$cloneProp;
     }
-    PActx.$pattern = ENODE_getRoles(PActx.$equation[0], '.firstMember').children();
-    PActx.$transform = ENODE_getRoles(PActx.$equation[0], '.secondMember').children();
+    PActx.$pattern = ENODE_getRoles(PActx.$equation, '.firstMember').children();
+    PActx.$transform = ENODE_getRoles(PActx.$equation, '.secondMember').children();
     //***********determina l'Operando**************************
     //per determinare l'operando considera il primo parametro definito
     var $refInputPar 

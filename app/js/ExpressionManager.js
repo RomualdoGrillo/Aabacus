@@ -133,8 +133,8 @@ function ENODEreplaceNode(replaced, replacer) {
  */
 function ENODEswapEqMembers($equation) {
 	//scambia il contenuto di primo e secondo membro di una equazione
-	const $firstMember = ENODE_getRoles($equation[0], '.firstMember');
-	const $secondMember = ENODE_getRoles($equation[0], '.secondMember');
+	const $firstMember = ENODE_getRoles($equation, '.firstMember');
+	const $secondMember = ENODE_getRoles($equation, '.secondMember');
 	const $firstMemberContent = $firstMember.children().remove();
 	const $secondMemberContent = $secondMember.children().remove();
 	$firstMember.append($secondMemberContent);
@@ -152,7 +152,7 @@ function ENODEswapEqMembers($equation) {
 function ENODEcreateSymbol(name, dataType) {
 	//crea un nuovo simbolo (ci o cn a seconda del nome) con l'eventuale data-type indicato
 	const $newNode = ENODEclone(prototypeSearch((isNaN(name)) ? "ci" : "cn"));
-	ENODE_setName($newNode[0], name);
+	ENODE_setName($newNode, name);
 	if (dataType != undefined) { $newNode.attr('data-type', dataType); }
 	return $newNode;
 }
@@ -172,7 +172,7 @@ function identifierToENODE(string){
 		ENODEType = 'cn'
 	}
 	let $clone = ENODEclone( prototypeSearch("cn","num") )
-	ENODE_setName($clone[0], string);
+	ENODE_setName($clone, string);
 	$clone.attr('data-enode', ENODEType);//uso un generico prototipo num e qui specifico se cn o ci
 	return	$clone
 }
@@ -198,8 +198,8 @@ function dummyParser(string){
 		let $operation = ENODEclone( prototypeSearch(op) )
 		let first = identifierToENODE(splitted[0]);
 		let second = identifierToENODE(splitted[1]);
-		ENODE_getRoles($operation[0], '.firstMember').append(first)
-		ENODE_getRoles($operation[0], '.secondMember').append(second)
+		ENODE_getRoles($operation, '.firstMember').append(first)
+		ENODE_getRoles($operation, '.secondMember').append(second)
 		return $operation
 	}
 }
@@ -262,10 +262,12 @@ function ENODEfrozenDef(Node) {
  * suoi role; se non ha figli ENODE, rimuove semplicemente il nodo.
  * Attenzione: la variabile $children è dichiarata dentro il ramo if, quindi il
  * `return $children` finale non è raggiungibile senza errore (anomalia nota).
- * @param {ENode} node - Il nodo contenitore da dissolvere.
+ * Accetta un ENode o un oggetto jQuery (usa sempre il primo elemento).
+ * @param {ENode|JQuery<ENode>} node - Il nodo contenitore da dissolvere.
  * @returns {JQuery<ENode>} Gli ENODE figli che hanno preso il posto del contenitore.
  */
 function ENODE_dissolveContainer(node) {
+	node = $(node)[0];
 	if (ENODE_getChildren(node).length > 0) {
 		const $children = ENODE_getRoles(node).children().filter("[data-enode]");
 		$(node).replaceWith($children);
@@ -328,7 +330,7 @@ function ENODECreateDefinition(startNode, newName) {
 				"data-type",
 				thisType
 			); //data() e' un casino
-			ENODE_setName($newNode[0], paramDefNames[i]);
+			ENODE_setName($newNode, paramDefNames[i]);
 			$(this).replaceWith($newNode);
 			const $Clone1 = ENODEclone($newNode); //clone da inserire in definendum
 			const $Clone2 = ENODEclone($newNode); //clone da inserire in forAll header
@@ -377,11 +379,11 @@ function ENODEReplaceLink($replaced, $link) {
 	let $replacer;
 	if ($link.parent().hasClass("firstMember")) {
 		$replacer = ENODEclone(
-			ENODE_getRoles(ENODEparent($link)[0], ".secondMember").children()
+			ENODE_getRoles(ENODEparent($link), ".secondMember").children()
 		);
 	} else if ($link.parent().hasClass("secondMember")) {
 		$replacer = ENODEclone(
-			ENODE_getRoles(ENODEparent($link)[0], ".firstMember").children()
+			ENODE_getRoles(ENODEparent($link), ".firstMember").children()
 		);
 	} else {
 		console.log("dragged ne primo ne secondo membro");
@@ -472,7 +474,7 @@ function ENODEReplaceAll(
  * @returns {JQuery} Il role .forAllContent.
  */
 function GetforAllContentRole($forAll) {
-	return ENODE_getRoles($forAll[0], ".forAllContent");
+	return ENODE_getRoles($forAll, ".forAllContent");
 }
 /**
  * Restituisce il role header (.forAllHeader, che elenca le variabili legate) di un ENODE forAll.
@@ -480,7 +482,7 @@ function GetforAllContentRole($forAll) {
  * @returns {JQuery} Il role .forAllHeader.
  */
 function GetforAllHeader($forAll) {
-	return ENODE_getRoles($forAll[0], ".forAllHeader");
+	return ENODE_getRoles($forAll, ".forAllHeader");
 }
 
 function ENODEForThis_Par_newVal($newVal, $parameter) {
@@ -507,7 +509,7 @@ function ENODEForThisPar($parameter, $newVal) {
 	//************stabilisci se c'è conflitto con i nomi delle Bvar******
 	//il nome della variabile specificata nel forThis è per caso già presente tra i parametri del forall?
 	if ($newVal.length != 0) {
-		const newValName = ENODE_getName($newVal[0]);
+		const newValName = ENODE_getName($newVal);
 		const $toBeRenamed = $h.children().filter(function () {
 			return ENODE_getName(this) == newValName;
 		});
@@ -515,7 +517,7 @@ function ENODEForThisPar($parameter, $newVal) {
 			formatForall($f, $(this));
 		});
 	}
-	//var mark = ENODE_getName($parameter[0])
+	//var mark = ENODE_getName($parameter)
 	//ENODESmarkUnmark($newVal,mark)//se sostituisci il paramtro di nome xxx sarai marcato xxx
 	//sostituisci
 	ENODEReplaceAll($c, $parameter, $newVal);
@@ -537,7 +539,7 @@ function ENODEForThisPar($parameter, $newVal) {
 }
 
 function formatForall($forall, $toBeRenamed) {
-	const oldName = ENODE_getName($toBeRenamed[0]);
+	const oldName = ENODE_getName($toBeRenamed);
 	const newName = "(" + oldName + ")";
 	//cerca le occorrenze e marca ciascuna occorrenza
 	const $occurrences = $findOccurrences($toBeRenamed, $forall);
@@ -549,11 +551,13 @@ function formatForall($forall, $toBeRenamed) {
 /**
  * Restituisce il nodo stesso più tutti i suoi sotto-elementi interni,
  * esclusi gli ENODE annidati e il loro contenuto.
- * @param {ENode} node - Il nodo ENODE radice.
+ * Accetta un ENode o un oggetto jQuery (usa sempre il primo elemento).
+ * @param {ENode|JQuery<ENode>} node - Il nodo ENODE radice.
  * @param {string} [selector] - Selettore jQuery per filtrare i risultati.
  * @returns {JQuery} Il nodo e i suoi sotto-elementi propri (non solo ENODE).
  */
 function ENODE_getNodes(node, selector) {
+	node = $(node)[0];
 	$(node).addClass("gettingNodes");
 	const $subnodes = $(node)
 		.find("*")
@@ -571,11 +575,13 @@ function ENODE_getNodes(node, selector) {
  * Restituisce i role del nodo (elementi con classe *_role interni al nodo,
  * esclusi quelli di ENODE annidati), ordinati con i bVar_role per primi e poi
  * per data-roleOrder.
- * @param {ENode} node - Il nodo ENODE.
+ * Accetta un ENode o un oggetto jQuery (usa sempre il primo elemento).
+ * @param {ENode|JQuery<ENode>} node - Il nodo ENODE.
  * @param {string} [selector] - Selettore jQuery per filtrare i role.
  * @returns {JQuery} I role del nodo, ordinati (i role non sono ENODE).
  */
 function ENODE_getRoles(node, selector) {
+	node = $(node)[0];
 	let $roles = ENODE_getNodes(node, selector).filter('[class*="_role"]');
 	$roles.sort(function (a, b) {
 		if ($(a).hasClass("bVar_role") && !$(b).hasClass("bVar_role")) {
@@ -605,11 +611,13 @@ function ENODE_getRoles(node, selector) {
 /**
  * Restituisce gli ENODE figli diretti, cioè i [data-enode] contenuti nei role
  * del nodo.
- * @param {ENode} node - Il nodo ENODE.
+ * Accetta un ENode o un oggetto jQuery (usa sempre il primo elemento).
+ * @param {ENode|JQuery<ENode>} node - Il nodo ENODE.
  * @param {string} [selector] - Selettore jQuery per filtrare i figli.
  * @returns {JQuery<ENode>} Gli ENODE figli.
  */
 function ENODE_getChildren(node, selector) {
+	node = $(node)[0];
 	let $children = ENODE_getRoles(node).children("[data-enode]");
 	if (selector != undefined) {
 		// se viene passato un "selector", filtra
@@ -622,11 +630,13 @@ function ENODE_getChildren(node, selector) {
  * Restituisce il nome del nodo, cioè il testo dell'elemento figlio .name; di
  * default il nome viene troncato al primo underscore (i suffissi _ / __ / ___
  * codificano il tipo di parametro).
- * @param {ENode} node - Il nodo ENODE.
+ * Accetta un ENode o un oggetto jQuery (usa sempre il primo elemento).
+ * @param {ENode|JQuery<ENode>} node - Il nodo ENODE.
  * @param {boolean} [considerSuffix] - Se true restituisce il nome completo, suffisso incluso.
  * @returns {string} Il nome del nodo (senza suffisso, salvo considerSuffix).
  */
 function ENODE_getName(node, considerSuffix) {
+	node = $(node)[0];
 	const nameWithSuffix = $(node).find(">.name").text();
 	if (considerSuffix) {
 		return nameWithSuffix;
@@ -637,23 +647,27 @@ function ENODE_getName(node, considerSuffix) {
 
 /**
  * Imposta il nome del nodo scrivendo il testo nell'elemento figlio .name.
- * @param {ENode} node - Il nodo ENODE.
+ * Accetta un ENode o un oggetto jQuery (usa sempre il primo elemento).
+ * @param {ENode|JQuery<ENode>} node - Il nodo ENODE.
  * @param {string|number} newName - Il nuovo nome.
  */
 function ENODE_setName(node, newName) {
+	node = $(node)[0];
 	$(node).find(">.name").text(newName);
 }
 
 /**
  * Aggiunge al nodo un nuovo role (div.role) con il data-type e la classe
  * indicati; da usare quando si crea una nuova funzione o definizione.
- * @param {ENode} node - Il nodo ENODE a cui aggiungere il role.
+ * Accetta un ENode o un oggetto jQuery (usa sempre il primo elemento).
+ * @param {ENode|JQuery<ENode>} node - Il nodo ENODE a cui aggiungere il role.
  * @param {string} [dataType] - Valore per l'attributo data-type del nuovo role.
  * @param {string} [roleClass] - Classe del role; default 'ol_role' (adatta alle chiamate di funzione).
  * @param {string} [content] - Contenuto HTML iniziale del role; default ''.
  * @returns {JQuery} Il nuovo role appena aggiunto.
  */
 function ENODE_addRole(node, dataType, roleClass, content) {
+	node = $(node)[0];
 	let $newNode;
 	if (content == undefined) { content = '' }//default content = ''
 	if (roleClass == undefined) { roleClass = 'ol_role' }//default ol_role ok for function calls
@@ -691,7 +705,7 @@ function canDraggedBeDroopedInRoleYesWrapNo($ENODEdragged,$role){
 	}
 	//******target is CLOSED 
 	else if(ENODEparent($role).attr('data-enode')=='and' &&
-			$ENODEdragged.is("[data-proto=asymmeq]") || ENODE_getName($ENODEdragged[0]) == "true"){
+			$ENODEdragged.is("[data-proto=asymmeq]") || ENODE_getName($ENODEdragged) == "true"){
 			// parent is 'And' and dragged is new definition or 'true' 
 			//New definition and neutral element of conjunction are properties constituent of the environment, so fundamental the environment can't work without it.	
 		return 'yes'
@@ -842,7 +856,7 @@ function prototypeSearch(className, dataType, selector, name) {
 		$prototype.attr("data-enode", className);
 		$prototype.attr("data-type", dataType);
 		// add ENODEtype name as decoration name 
-		ENODE_setName($prototype[0], className)
+		ENODE_setName($prototype, className)
 		return $prototype;
 	}
 	return $prototypes.last(); //in case you find more prototypes
@@ -890,7 +904,7 @@ function wrapWithOperation($ENODEelement, op){
 	const $clone = ENODEclone($prototype);
 	//ENODEparent($ENODEelement).replaceWith($clone);//replace provoca la distruzione degli eventi nel replaced
 	$clone.insertBefore($ENODEelement.eq(0));
-	$ENODEelement.appendTo(ENODE_getRoles($clone[0], roleSelector));
+	$ENODEelement.appendTo(ENODE_getRoles($clone, roleSelector));
 	return $clone;
 }
 
@@ -947,7 +961,7 @@ function checkSiblings($s) {
  */
 function ENODEgetNameWithSign($ENODE) {
 	//nome del simbolo con gli eventuali prefissi "-" (opposto) e "/" (inverso)
-	let name = ENODE_getName($ENODE[0]);
+	let name = ENODE_getName($ENODE);
 	if ($ENODE.hasClass("minus")) {
 		name = "-" + name;
 	}
@@ -981,7 +995,7 @@ function ENODErename($ENODE, newName) {
 	else {
 		$ENODE.removeClass("minus");
 	}
-	ENODE_setName($ENODE[0], newName);
+	ENODE_setName($ENODE, newName);
 	$ENODE.attr("data-enode", isNaN(newName) ? "ci" : "cn"); // se numero allora classe "cn"
 }
 
@@ -1041,7 +1055,7 @@ function ENODEsToVal($currENODE, res) {
 	const op = $currENODE.attr("data-enode");
 	if (op === "minus" || op === "m_inverse") {
 		//------------------> recursive
-		const newRes = ENODEsToVal(ENODE_getChildren($currENODE[0]), res);
+		const newRes = ENODEsToVal(ENODE_getChildren($currENODE), res);
 		//<------------------
 		if (op === "minus") {
 			res.sign = newRes.sign * -1;
@@ -1049,13 +1063,13 @@ function ENODEsToVal($currENODE, res) {
 			res.exp = newRes.exp * -1;
 		}
 	} else if (op === "power") {
-		let $exponent = ENODE_getChildren($currENODE[0], ':last');//:first child is exponent\
+		let $exponent = ENODE_getChildren($currENODE, ':last');//:first child is exponent\
 		if ($exponent.attr("data-enode") == "cn") {
 			//------>
 			let resExp = ENODEsToVal($exponent);
 			//<-----
 			res.exp = res.exp * resExp.val;
-			let $base = ENODE_getChildren($currENODE[0], ':first');//:first child is base
+			let $base = ENODE_getChildren($currENODE, ':first');//:first child is base
 			//------>
 			res.val = ENODEsToVal($base).val;
 			//<-----
@@ -1067,7 +1081,7 @@ function ENODEsToVal($currENODE, res) {
 	} else if (op === "cn" || op === "ci") {
 		//todo: per ora gestisce solo cn e ci
 		res.type = op;
-		res.val = ENODE_getName($currENODE[0]);
+		res.val = ENODE_getName($currENODE);
 	} else {
 		res.val = NaN;
 		res.canBeReplaced = false;
@@ -1097,7 +1111,7 @@ function ValToENODEs(partial) {
 		//segno meno?
 		$clone = ENODEclone(prototypeSearch("minus"));
 		$newENODE = $clone;
-		$target = ENODE_getRoles($clone[0]);
+		$target = ENODE_getRoles($clone);
 	}
 	if (partial.exp === -1) {
 		//inverso?
@@ -1107,7 +1121,7 @@ function ValToENODEs(partial) {
 		} else {
 			$newENODE = $clone;
 		}
-		$target = ENODE_getRoles($clone[0]);
+		$target = ENODE_getRoles($clone);
 	}
 	else if (partial.exp != 1) {
 		//power
@@ -1118,13 +1132,13 @@ function ValToENODEs(partial) {
 			$newENODE = $clone;
 		}
 		let $exponent = ENODEclone(prototypeSearch("cn", "num"));
-		ENODE_setName($exponent[0], partial.exp);
-		ENODE_getRoles($clone[0], '.exponent').append($exponent);
-		$target = ENODE_getRoles($clone[0], '.base');
+		ENODE_setName($exponent, partial.exp);
+		ENODE_getRoles($clone, '.exponent').append($exponent);
+		$target = ENODE_getRoles($clone, '.base');
 
 	}
 	$clone = ENODEclone(prototypeSearch(partial.type, "num", undefined, partial.val));
-	ENODE_setName($clone[0], partial.val);
+	ENODE_setName($clone, partial.val);
 	$clone.attr("data-enode", partial.type); //uso un generico prototipo num e qui specifico se cn o ci
 	if ($target !== undefined) {
 		$target.append($clone);
@@ -1162,7 +1176,7 @@ function ENODEneedsBracket($ENODE) {
 	//check if plus timess etc.. have one or zero children
 	let needMoreThanOneChild = ["plus", "times", "power"]
 	if (needMoreThanOneChild.indexOf(ENODEclass) != -1 &&
-		ENODE_getChildren($ENODE[0]).length < 2) {
+		ENODE_getChildren($ENODE).length < 2) {
 		return true //highlight 0 or one child
 	}
 	return false // bracket not needed
@@ -1286,7 +1300,7 @@ function compareExtENODE(
 	) {
 		return false;
 	} else if (symbols.indexOf($input.attr("data-enode")) != -1 /*is a symbol*/) {
-		res = ENODE_getName($input[0]) === ENODE_getName($pattern[0]);
+		res = ENODE_getName($input) === ENODE_getName($pattern);
 	} else {
 		res = true; //no more tests required
 	}
@@ -1297,10 +1311,12 @@ function compareExtENODE(
 /**
  * Verifica se il nodo è un contenitore associativo "inutile": con al più un
  * figlio, oppure con la stessa operazione del genitore.
- * @param {ENode} node - Il nodo ENODE da verificare.
+ * Accetta un ENode o un oggetto jQuery (usa sempre il primo elemento).
+ * @param {ENode|JQuery<ENode>} node - Il nodo ENODE da verificare.
  * @returns {boolean|undefined} true se il contenitore è inutile.
  */
 function ENODE_checkIfPointlessSingleNode(node) {
+	node = $(node)[0];
 	let op = $(node).attr("data-enode");
 	if (!OpIsAssociative(op)) {
 		return false;
@@ -1409,12 +1425,12 @@ function reorderTimes($startTimes, brRemove) {
 	//reorderTimes($('.selected'),true)  te remove br
 	try {
 
-		let role = ENODE_getRoles($startTimes[0])[0];
+		let role = ENODE_getRoles($startTimes)[0];
 		$(role).find('br').remove();
 		if (brRemove) { return }
 		let brExist = false;
 		let numeratorFound = false;
-		let childrenArr = ENODE_getChildren($startTimes[0]).toArray()
+		let childrenArr = ENODE_getChildren($startTimes).toArray()
 		/**metti i reciproci al per ultimi preceduti da br */
 		for (let i = 0; childrenArr[i]; i++) {
 			if ($(childrenArr[i]).is('[data-enode=m_inverse]')) {

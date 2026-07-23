@@ -66,7 +66,7 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 			return $k.length === 2 && $k.filter(function () { return ENODE_getName(this) === '1'; }).length === 2;
 		}).first();
 		if ($inner.length === 0) { return { ok: false, msg: 'plus(1,1) not found' }; }
-		const $kids = ENODE_getChildren($inner[0]);
+		const $kids = ENODE_getChildren($inner);
 		$kids.addClass('selected');
 		const PActx = TryOnePropertyByName('compose', $kids);
 		if (!PActx || !PActx.matchedTF) { return { ok: false, msg: 'compose not matched: ' + (PActx && PActx.msg) }; }
@@ -84,7 +84,7 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 			return $(this).closest('[data-import]').length == 0;
 		}).first();
 		if ($outer.length === 0) { return { ok: false, msg: 'outer plus not found' }; }
-		const $cn = ENODE_getChildren($outer[0], ':first');
+		const $cn = ENODE_getChildren($outer, ':first');
 		const nBefore = $('#canvasRole [data-enode=plus]').length;
 		const PActx = TryOnePropertyByName('plusAssociate', $cn, 'rtl');
 		if (!PActx || !PActx.matchedTF) { return { ok: false, msg: 'rtl not matched: ' + (PActx && PActx.msg) }; }
@@ -118,7 +118,7 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 				return $k.length === 2 && $k.filter(function () { return ENODE_getName(this) === '1'; }).length === 2;
 			}).first();
 			if ($inner.length === 0) { return { ok: false, msg: 'no cn>1 and no plus(1,1)' }; }
-			const $kids = ENODE_getChildren($inner[0]);
+			const $kids = ENODE_getChildren($inner);
 			$kids.addClass('selected');
 			PActxConclude(TryOnePropertyByName('compose', $kids));
 		}
@@ -126,7 +126,7 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 			return Number(ENODE_getName(this)) > 1 && $(this).closest('[data-import]').length == 0;
 		}).first();
 		if ($cn2.length === 0) { return { ok: false, msg: 'still no cn>1' }; }
-		const val = Number(ENODE_getName($cn2[0]));
+		const val = Number(ENODE_getName($cn2));
 		const PActx = decomposeInASum($cn2);
 		if (!PActx || !PActx.matchedTF) { return { ok: false, msg: 'decompose not matched' }; }
 		PActxConclude(PActx);
@@ -141,16 +141,16 @@ const BASE = process.env.BASE_URL || 'http://127.0.0.1:5500';
 	const parserRes = await page.evaluate(() => {
 		const $eq = dummyParser('3=x');
 		if (!$eq || $eq.length === 0) { return { ok: false, msg: 'dummyParser returned nothing' }; }
-		const first0 = ENODE_getName(ENODE_getRoles($eq[0], '.firstMember').children()[0]);
+		const first0 = ENODE_getName(ENODE_getRoles($eq, '.firstMember').children()[0]);
 		ENODEswapEqMembers($eq);
-		const first1 = ENODE_getName(ENODE_getRoles($eq[0], '.firstMember').children()[0]);
+		const first1 = ENODE_getName(ENODE_getRoles($eq, '.firstMember').children()[0]);
 		return { ok: first0 === '3' && first1 === 'x', msg: 'firstMember: ' + first0 + ' -> ' + first1 };
 	});
 	report('dummyParser + ENODEswapEqMembers', parserRes.ok, parserRes.msg);
 
 	const symRes = await page.evaluate(() => {
 		const $s = ENODEcreateSymbol('y', 'num');
-		return { ok: $s.attr('data-enode') === 'ci' && $s.attr('data-type') === 'num' && ENODE_getName($s[0]) === 'y' };
+		return { ok: $s.attr('data-enode') === 'ci' && $s.attr('data-type') === 'num' && ENODE_getName($s) === 'y' };
 	});
 	report('ENODEcreateSymbol creates ci with data-type', symRes.ok);
 

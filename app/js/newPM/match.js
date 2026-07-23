@@ -38,7 +38,7 @@
 
 	function getName($node) {
 		try {
-			return ENODE_getName($node[0], true) || '';
+			return ENODE_getName($node, true) || '';
 		} catch (e) {
 			return '';
 		}
@@ -241,7 +241,7 @@
 		if (!$parent.length) {
 			return ctx.$patternRoot;
 		}
-		return ENODE_getChildren($parent[0]);
+		return ENODE_getChildren($parent);
 	}
 
 	function matchTrees($Input, $Pattern, options) {
@@ -468,10 +468,10 @@
 			var $preNestedSnap = snapshotCloneProp(ctx.$cloneProp);
 
 			if (!isParameter) {
-				var $pattArg = ENODE_getChildren($pattNode[0]);
-				var $inArg = ENODE_getChildren($inNode[0]);
+				var $pattArg = ENODE_getChildren($pattNode);
+				var $inArg = ENODE_getChildren($inNode);
 				var childOrdered =
-					ENODE_getRoles($inNode[0]).is('.ol_role') ||
+					ENODE_getRoles($inNode).is('.ol_role') ||
 					$pattNode.attr('data-nosort') === 'true' ||
 					ctx.orderedList;
 				if ($pattArg.length || $inArg.length) {

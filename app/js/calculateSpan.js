@@ -17,11 +17,11 @@ function $immediateJurisdictionRolesNEW($role) {
 	//-immediate propagate roles, excluding start node
 	//-upstream: And
 	if ($parentENODE.is('[data-enode=and]')) {
-		$immediateDiscendence = $immediateDiscendence.add(ENODE_getRoles($parentENODE[0]))
+		$immediateDiscendence = $immediateDiscendence.add(ENODE_getRoles($parentENODE))
 	}
 	//-sameLevel: implies firstMember to secondMember
 	if ((startENODE_op == 'implies') && $role.hasClass('firstMember')) {
-		let $secondMember = ENODE_getRoles($startENODE[0], '.secondMember');
+		let $secondMember = ENODE_getRoles($startENODE, '.secondMember');
 		$immediateDiscendence = $immediateDiscendence.add($secondMember);
 	}
 	//-downstream: all boolean roles
@@ -72,7 +72,7 @@ function $immediateJurisdictionRolesForAddRedundant($role) {
 	})
 	//downstream implies firstMember
 	if ((startNode_op == 'implies') && $role.hasClass('firstMember')) {
-		let $secondMember = ENODE_getRoles($startENODE[0], '.secondMember');
+		let $secondMember = ENODE_getRoles($startENODE, '.secondMember');
 		$stepStoneORtarget = $stepStoneORtarget.add($secondMember);
 	}
 	return $stepStoneORtarget
@@ -96,7 +96,7 @@ function $ImmediateAssociativeENODE($starAssociativeOperation) {
 		$result = $result.add($parent);
 	}
 	//downstream same operation
-	let ENODEchildren = ENODE_getChildren($starAssociativeOperation[0]);
+	let ENODEchildren = ENODE_getChildren($starAssociativeOperation);
 	ENODEchildren.each(function (i, e) {
 		if ($(e).attr("data-enode") === op) {
 			//$result = $result.add(ENODE_getRoles(e));
@@ -121,7 +121,7 @@ function $PropositionUpstreamRec($startENODE, $outerRoleLimit) {
 	}
 	$validRoles = $parentRoles.map(function () {
 		if (this.matches('[data-enode=implies]>.s_role:nth-child(2)')) {
-			return ENODE_getRoles(ENODEparent($(this))[0])[0]//return the first role of the implies  	
+			return ENODE_getRoles(ENODEparent($(this)))[0]//return the first role of the implies  	
 		}
 		else if (this.matches('[data-enode=and]>.ul_role')) {
 			let $roles = $AssRolesRec(undefined, false, $(this)).add($(this))
@@ -231,7 +231,7 @@ function $SameOpInOut($startRole) {
 	let $validRoles = $startRole.find('>[data-enode=' + op + ']>.ul_role');
 	let $parentENODE = ENODEparent($startENODE);
 	if ($parentENODE.attr("data-enode") == op) {//parent
-		$validRoles = $validRoles.add(ENODE_getRoles($parentENODE[0]))//children
+		$validRoles = $validRoles.add(ENODE_getRoles($parentENODE))//children
 	}
 	return $validRoles
 }
@@ -353,13 +353,13 @@ function $RolesAffectedByStartPropositionROLES($startProposition) {
 	let $propositionParent = ENODEparent($startProposition)
 	let propParentOp = $propositionParent.attr('data-enode')
 	let $startRole
-	let $excludedRoles = ENODE_getRoles($startProposition[0]);
+	let $excludedRoles = ENODE_getRoles($startProposition);
 	let $roles = $()
 	if (propParentOp == 'and') {
 		$startRole = $startProposition.parent()
 	}
 	else if (propParentOp == 'implies' && $startProposition.hasClass('firstMember')) {
-		$startRole = ENODE_getRoles($propositionParent[0], '.secondMember');
+		$startRole = ENODE_getRoles($propositionParent, '.secondMember');
 	}
 	if ($startRole) {
 		//propagate all Roles excluding start Node //note: apply to yourself?

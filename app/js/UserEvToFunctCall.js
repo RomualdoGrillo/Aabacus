@@ -121,7 +121,7 @@ function searchEventHandler(event){// trova la definizione della proprietà
         }
     })
     if ($found.length !== 0){
-        res = ENODE_getRoles($found[0], '.actions').children()
+        res = ENODE_getRoles($found, '.actions').children()
     }
     else{ res = $()}
     return  res
