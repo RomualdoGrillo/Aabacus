@@ -476,6 +476,35 @@ Regole:
 2. **Vocabolario canonico degli intent** fissato in specifica: `tap`, `lasso`, `dnd`, `slice.h`, `slice.v` (+ estensioni future). La sezione `events` usa questi nomi; nomi sconosciuti → warning in console, mai fallimento silenzioso.
 3. Doppio gating invariato: il gesto mappato passa comunque da `TryOnePropertyByName`, quindi serve anche il `ci` della proprietà nel canvas.
 
+### 7.5 Tabella gesture↔action (Romualdo, 23/07 sera)
+
+Fonte: tabella di Romualdo (immagine agli atti della chat) + ricette reali in `gestToAction.mml`. Formalizza tre concetti: il **target** del gesto tra parentesi (`selected` = selezione corrente, `pinched`/`slashed` = bersaglio individuato dal gesto stesso), gli **alias tastiera** di ogni gesto (parità desktop), le **liste ordinate di azioni** `{name, val?}` (si prova nell'ordine finché una matcha; `val` è il secondo argomento ltr/rtl/int passato a `TryOnePropertyByName`).
+
+| Trigger gesto | Alias tastiera | Target | Azioni (in ordine) | Classe |
+|---------------|----------------|--------|--------------------|--------|
+| — | command+z | — | undo | **sistema** |
+| — | Maiusc+l | — | load | **sistema** |
+| — | Maiusc+s | selected | save | **sistema** |
+| tap | — | (target del tap) | toggleSelect | **sistema** |
+| lasso | — | targets del lazo | selectSiblings | **sistema** |
+| dnd | — | source→target del drag | applyDnD | **sistema** |
+| — | p | selected | plusAssociate ltr, plusAssociate rtl, timesAssociate ltr, timesAssociate rtl, orAssociate ltr, orAssociate rtl, andAssociate ltr, andAssociate rtl | didattica |
+| — | c | selected | OppositeOfOpposite ltr, InvOfOpposite ltr, evaluateComparison int, PlusSingleTerm ltr, TimesSingleFactor ltr, AndSingleChild ltr, OrSingleChild ltr, defOne ltr, OrNeutral ltr, AndNeutral ltr, andAbsorbingEl ltr, orAbsorbingEl ltr, notFalse ltr, zeroAsEmptyPlus ltr, oneAsEmptyTimes ltr, plusAssociate ltr, timesAssociate ltr, andAssociate ltr, orAssociate ltr | didattica |
+| pinchHor | arrowDown | pinched / selected | compose, AndNeutral ltr, timesAbsorbingEl ltr | didattica |
+| pinchVert | arrowLeft | pinched / selected | compose, composeXorNotX rtl | didattica |
+| slashHor | arrowUp (*) | slashed / selected | timesAbsorbingEl rtl, decomposeInAProduct, AndNeutral rtl, Reciprocal rtl | didattica |
+| slashVert | arrowRight (*) | slashed / selected | decomposeInASum, Opposite rtl, defZero rtl, composeXorNotX rtl | didattica |
+
+(*) Alias slash allineati alla convenzione legacy delle frecce (ArrowRight=addendi, ArrowUp=fattori), in attesa di conferma esplicita di Romualdo; azioni con secondo argomento ltr/rtl ora supportate.
+
+**Discriminazione slice / lazo / drag** (recognizer `gestures.js`, §7.3.1): slice e lazo partono entrambi *fuori da ogni foglia* `[data-enode]` (i contenitori `and`/`eq` riempiono il canvas: l'interpretazione operativa di «fuori dagli ENODE» è «fuori dalle foglie»). Un tratto quasi rettilineo che *attraversa* un ENODE → `slice`; un percorso con curvatura/ritorno che *racchiude* senza attraversare → `lasso`; se i due criteri competono o il gesto è insufficiente → nessun intent. Il drag (`dnd`) parte *su una foglia* e supera la soglia di movimento (il tap resta giù+su senza move). Tutti gli intent passano da `dispatchIntent` → `resolveIntent` (tabella sopra); nessun percorso di smistamento parallelo.
+
+Regole di incorporamento nel codice (accortezze di Romualdo):
+
+1. Lo smistamento gesture→action è **centralizzato in un unico modulo unit-testabile**: `intentMap.js` possiede tabella e risoluzione come funzioni pure (niente DOM); `boot2.js` fa solo il cablaggio eventi.
+2. Le righe **sistema** non sono riconfigurabili da `.mmls` (warning al tentativo).
+3. **Disabilitazione al "tied"**: quando il canvas diventa tied si calcola quali proprietà hanno il `ci` nel canvas e si disabilitano le azioni che non avrebbero comunque conseguenze (esposto anche per future affordance UI).
+
 ---
 
 ## Appendice A — Mappa rapida file analizzati
