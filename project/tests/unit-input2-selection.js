@@ -195,11 +195,57 @@ const H = INPUT2._gestureHelpers;
 
 {
 	const mini = makeMiniDom();
+
+	function wrap(elOrList) {
+		const list = Array.isArray(elOrList) ? elOrList : (elOrList ? [elOrList] : []);
+		const api = {
+			length: list.length,
+			0: list[0],
+			attr: function (k) { return list[0] ? list[0].getAttribute(k) : undefined; },
+			hasClass: function (c) { return !!(list[0] && list[0].classList.contains(c)); },
+			addClass: function (c) {
+				list.forEach(function (el) { el.classList.add(c); });
+				return api;
+			},
+			removeClass: function (c) {
+				list.forEach(function (el) { el.classList.remove(c); });
+				return api;
+			},
+			find: function (sel) {
+				const out = [];
+				list.forEach(function (el) {
+					const found = el.querySelectorAll(sel);
+					for (let i = 0; i < found.length; i++) out.push(found[i]);
+				});
+				return wrap(out);
+			},
+			closest: function (sel) {
+				if (!list[0] || !list[0].closest) return wrap([]);
+				const c = list[0].closest(sel);
+				return wrap(c ? [c] : []);
+			}
+		};
+		return api;
+	}
+
+	function $(arg) {
+		if (typeof arg === 'string') {
+			if (arg === '[data-enode]') {
+				return wrap(mini.document.querySelectorAll('[data-enode]'));
+			}
+			return wrap([]);
+		}
+		if (arg && arg.nodeType === 1) return wrap([arg]);
+		return wrap([]);
+	}
+
 	const sandbox = {
 		window: { INPUT2: {} },
 		document: mini.document,
 		console: console,
-		$: function () { return { length: 0 }; },
+		$: $,
+		GLBsettings: { tool: 'autoAdapt' },
+		getDefaultTool: function () { return wrap([]); },
 		ssnapshot: (function () {
 			function ssnapshot() {}
 			ssnapshot.take = function () {};
@@ -217,7 +263,15 @@ const H = INPUT2._gestureHelpers;
 	sandbox.globalThis = sandbox.window;
 	sandbox.global = sandbox.window;
 	sandbox.window.document = mini.document;
-	// Intent map + boot (boot registra _selectionHelpers)
+	sandbox.window.$ = $;
+	sandbox.window.GLBsettings = sandbox.GLBsettings;
+	sandbox.window.getDefaultTool = sandbox.getDefaultTool;
+
+	vm.runInNewContext(
+		fs.readFileSync(path.join(__dirname, '../../app/js/selectionManager.js'), 'utf8'),
+		sandbox,
+		{ filename: 'selectionManager.js' }
+	);
 	vm.runInNewContext(
 		fs.readFileSync(path.join(__dirname, '../../app/js/input2/intentMap.js'), 'utf8'),
 		sandbox,
@@ -245,11 +299,11 @@ const H = INPUT2._gestureHelpers;
 	assert(!a.classList.contains('selected'), 'selectSiblings non marca a');
 
 	Sel.applySelect({ target: a, metaKey: false, ctrlKey: false, shiftKey: false });
-	assert(a.classList.contains('selected'), 'tap seleziona a');
-	assert(!e.classList.contains('selected') && !f.classList.contains('selected'), 'tap plain deseleziona e,f');
+	assert(a.classList.contains('selected'), 'tap seleziona a via selectionManager');
+	assert(!e.classList.contains('selected') && !f.classList.contains('selected'), 'tap plain deseleziona e,f via selectionManager');
 
 	Sel.applySelect({ target: b, metaKey: true, ctrlKey: false, shiftKey: false });
-	assert(a.classList.contains('selected') && b.classList.contains('selected'), 'Cmd+tap aggiunge b');
+	assert(a.classList.contains('selected') && b.classList.contains('selected'), 'Cmd+tap aggiunge b via selectionManager');
 }
 
 console.log('\nRisultato:', passed, 'PASS,', failed, 'FAIL');

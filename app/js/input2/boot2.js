@@ -9,10 +9,9 @@
  *                   lucchetto sulle definizioni), senza DnD/sortable.
  *   - conclude2   — analogo snello di PActxConclude senza game/sound/DnD.
  *
- * Selezione (strutturale):
- *   tap          → come selectionManager senza Cmd (sostituisce) / con Cmd (add)
- *   lasso        → selectSiblings: solo i target del lazo che condividono lo stesso padre
- *                  (mai “tutti i fratelli del role”)
+ * Selezione (strutturale) — riusa `selectionManager` (js/selectionManager.js):
+ *   tap          → selectionManager($target, meta|ctrl, shift)
+ *   lasso        → deselectAll + ctrl-add sui soli sibling colpiti
  */
 (function (global) {
 	'use strict';
@@ -83,12 +82,12 @@
 		return !!(el && el.nodeType === 1 && el.classList && typeof el.matches === 'function');
 	}
 
-	function clearSelection(scope) {
-		const root = scope || document;
-		const nodes = root.querySelectorAll('[data-enode].selected, [data-enode].unselected');
-		for (let i = 0; i < nodes.length; i++) {
-			nodes[i].classList.remove('selected', 'unselected');
+	function requireSelectionManager() {
+		if (typeof selectionManager !== 'function') {
+			console.error('INPUT2: selectionManager.js non caricato');
+			return false;
 		}
+		return true;
 	}
 
 	/**
@@ -150,74 +149,30 @@
 	}
 
 	/**
-	 * Selezione lazo = multi-select dei soli target (fratelli) colpiti.
+	 * Selezione lazo via selectionManager: clear + multi-select (ctrl) sui soli colpiti.
 	 * @param {Element[]} targets
 	 */
 	function selectSiblings(targets) {
-		clearSelection(document.getElementById('canvasRole') || document);
+		if (!requireSelectionManager()) return [];
 		const chosen = filterSiblingSet(targets || []);
+		selectionManager('', false, false, true);
 		for (let i = 0; i < chosen.length; i++) {
-			chosen[i].classList.add('selected');
+			selectionManager($(chosen[i]), true, false);
 		}
 		return chosen;
 	}
 
 	/**
-	 * Tap: allineato a selectionManager (MAIN.js).
-	 * - senza Cmd/Ctrl: deseleziona tutto e seleziona il target (o deseleziona se era già selected)
-	 * - con Cmd/Ctrl: aggiunge alla selezione (multi), senza toccare gli altri
-	 * - Shift: unselect mirato (come legacy)
+	 * Tap → selectionManager (stessa semantica della UI legacy / DnD.js).
 	 * @param {Object} intent
 	 */
 	function applySelect(intent) {
+		if (!requireSelectionManager()) return;
 		const target = intent && intent.target;
 		if (!isDomElement(target)) return;
-		const multi = !!(intent.metaKey || intent.ctrlKey);
+		const ctrl = !!(intent.metaKey || intent.ctrlKey);
 		const shift = !!intent.shiftKey;
-
-		if (multi) {
-			if (target.classList.contains('selected')) {
-				target.classList.remove('selected');
-				const nested = target.querySelectorAll('[data-enode]');
-				for (let i = 0; i < nested.length; i++) {
-					nested[i].classList.remove('selected', 'unselected');
-				}
-			} else if (target.closest && target.closest('.selected')) {
-				// antenato già selected: ignora (come legacy)
-			} else {
-				target.classList.add('selected');
-			}
-			return;
-		}
-
-		if (shift) {
-			if (target.classList.contains('selected')) {
-				target.classList.remove('selected');
-				const nested = target.querySelectorAll('[data-enode]');
-				for (let i = 0; i < nested.length; i++) {
-					nested[i].classList.remove('selected', 'unselected');
-				}
-			} else if (target.classList.contains('unselected')) {
-				target.classList.remove('unselected');
-				const nested = target.querySelectorAll('[data-enode]');
-				for (let i = 0; i < nested.length; i++) {
-					nested[i].classList.remove('selected', 'unselected');
-				}
-			} else if (target.closest('.selected') && !target.closest('.unselected')) {
-				target.classList.add('unselected');
-				const nested = target.querySelectorAll('[data-enode]');
-				for (let i = 0; i < nested.length; i++) {
-					nested[i].classList.remove('selected', 'unselected');
-				}
-			}
-			return;
-		}
-
-		const wasSelected = target.classList.contains('selected');
-		clearSelection(document.getElementById('canvasRole') || document);
-		if (!wasSelected) {
-			target.classList.add('selected');
-		}
+		selectionManager($(target), ctrl, shift);
 	}
 
 	function dispatchIntent(intent) {
@@ -234,13 +189,10 @@
 		if (action.kind === 'property') {
 			const PActx = TryOnePropertyByName(action.name, $(intent.target));
 			conclude2(PActx);
-		} else if (action.kind === 'builtin' && action.name === 'select') {
+		} else if (action.kind === 'builtin' && (action.name === 'select' || action.name === 'toggleSelect')) {
 			applySelect(intent);
 		} else if (action.kind === 'builtin' && action.name === 'selectSiblings') {
 			selectSiblings(intent.targets || (intent.target ? [intent.target] : []));
-		} else if (action.kind === 'builtin' && action.name === 'toggleSelect') {
-			// retrocompat: tratta come select semplice
-			applySelect(intent);
 		}
 	}
 
@@ -264,7 +216,6 @@
 	}
 
 	global.INPUT2._selectionHelpers = {
-		clearSelection: clearSelection,
 		filterSiblingSet: filterSiblingSet,
 		selectSiblings: selectSiblings,
 		applySelect: applySelect,
