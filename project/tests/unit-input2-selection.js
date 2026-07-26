@@ -245,9 +245,9 @@ console.log('unit-input2-selection');
 		{ filename: 'selectionManager.js' }
 	);
 	vm.runInNewContext(
-		fs.readFileSync(path.join(__dirname, '../../app/js/input2/intentMap.js'), 'utf8'),
+		fs.readFileSync(path.join(__dirname, '../../app/js/UserEvToFunctCall2.js'), 'utf8'),
 		sandbox,
-		{ filename: 'intentMap.js' }
+		{ filename: 'UserEvToFunctCall2.js' }
 	);
 	// evita boot completo: document ready already complete, ma bindGestureRecognizer manca → ok
 	vm.runInNewContext(

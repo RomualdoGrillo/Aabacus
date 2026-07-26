@@ -15,4 +15,6 @@ Senza ruolo assegnato: solo lettura e proposte, nessuna modifica al codice.
 | **Consultant-PriorArt** | —       | Software simili, didattica, letteratura                    | Solo documenti in `project/specs/`                                        | Non implementa; propone e documenta |
 
 
+Specialist attivi (L3): `css-specialist`, `core-specialist`, **`frontend2-specialist`** (pista `index2` / `UserEvToFunctCall2.js`).
+
 Definizioni estese: [`project/Organization/`](project/Organization/) (organigramma, schede ruolo, agenti attivi).

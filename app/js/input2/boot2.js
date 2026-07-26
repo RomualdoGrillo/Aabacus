@@ -9,9 +9,8 @@
  *                   lucchetto sulle definizioni), senza DnD/sortable.
  *   - conclude2   — analogo snello di PActxConclude senza game/sound/DnD.
  *
- * Smistamento gesture→action: funzioni pure in intentMap.js; qui solo cablaggio.
- * Selezione strutturale: riusa `selectionManager` (js/selectionManager.js) —
- * tap → selectionManager($target, meta|ctrl, shift); lasso → deselectAll + ctrl-add.
+ * Smistamento gesture→action: tabella in UserEvToFunctCall2.js (tied/untied);
+ * qui solo cablaggio. Selezione: `selectionManager` (condiviso con legacy).
  * Non modifica file fuori perimetro. Nessun git commit da questo modulo.
  */
 (function (global) {
@@ -486,12 +485,17 @@
 		else if (name === 'toggleSelect') { /* gestito a parte con target */ }
 	}
 
+	function isCanvasTied() {
+		return !!(typeof GLBsettings !== 'undefined' && GLBsettings.tiedCanvas);
+	}
+
 	function dispatchIntent(intent) {
 		pushIntent(intent);
 		const table = getActiveTable();
 		const avail = ensureAvailability();
+		const tied = isCanvasTied();
 		const entry = global.INPUT2.resolveIntent
-			? global.INPUT2.resolveIntent(intent, table)
+			? global.INPUT2.resolveIntent(intent, table, { tied: tied })
 			: null;
 		if (!entry) {
 			if (typeof debugMode !== 'undefined' && debugMode) {
@@ -518,7 +522,7 @@
 					toggleSelect(intent);
 					return;
 				}
-				if (name === 'selectSiblings') {
+				if (name === 'selectSiblings' || name === 'selectMultiple') {
 					selectSiblings(intent.targets || []);
 					return;
 				}
@@ -573,7 +577,7 @@
 		};
 
 		const entry = global.INPUT2.resolveIntent
-			? global.INPUT2.resolveIntent(intent, getActiveTable())
+			? global.INPUT2.resolveIntent(intent, getActiveTable(), { tied: isCanvasTied() })
 			: null;
 		if (!entry) {
 			// Fallback legacy: tasti definiti solo nella sezione events del .mmls
@@ -585,6 +589,8 @@
 			}
 			return;
 		}
+		// Riga presente ma lista vuota per lo stato tied/untied corrente → no-op
+		if (!entry.actions || entry.actions.length === 0) return;
 
 		// Evita scroll frecce / comportamento browser su Mod+z
 		if (entry.alias === 'Mod+z' || (entry.trigger && String(entry.trigger).indexOf('slash') === 0) ||
