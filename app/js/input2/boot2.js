@@ -189,6 +189,7 @@
 			console.warn('INPUT2: il .mmls tenta di rimappare un gesto di sistema, ignorato:', res.violations[i]);
 		}
 		invalidateAvailability();
+		refreshDebugPanel();
 		return res;
 	}
 	global.INPUT2.reloadMmlsOverrides = reloadMmlsOverrides;
@@ -564,8 +565,112 @@
 		return false;
 	}
 
+	function formatActionsCell(actions) {
+		if (!actions || !actions.length) return '—';
+		return actions.map(function (a) {
+			if (typeof a === 'string') return a;
+			if (!a || !a.name) return '?';
+			return a.val ? (a.name + '(' + a.val + ')') : a.name;
+		}).join(', ');
+	}
+
+	function ensureDebugPanel() {
+		let panel = document.getElementById('input2DebugPanel');
+		if (panel) return panel;
+		panel = document.createElement('div');
+		panel.id = 'input2DebugPanel';
+		panel.setAttribute('aria-label', 'Debug FrontEnd2 — tabella gesture/azioni');
+		panel.innerHTML =
+			'<header class="input2-debug-header">' +
+			'<strong>FrontEnd2 debug</strong>' +
+			'<span class="input2-debug-meta" id="input2DebugMeta"></span>' +
+			'<button type="button" class="input2-debug-close" title="Chiudi (Maiusc+D)">×</button>' +
+			'</header>' +
+			'<div class="input2-debug-body">' +
+			'<table class="input2-debug-table">' +
+			'<thead><tr>' +
+			'<th>Trigger</th><th>Alias</th><th>Target</th><th>System</th>' +
+			'<th>Untied</th><th>Tied</th>' +
+			'</tr></thead>' +
+			'<tbody id="input2DebugTableBody"></tbody>' +
+			'</table>' +
+			'</div>';
+		document.body.appendChild(panel);
+		const closeBtn = panel.querySelector('.input2-debug-close');
+		if (closeBtn) {
+			closeBtn.addEventListener('click', function () {
+				if (typeof debugMode !== 'undefined' && debugMode) debugToggle();
+			});
+		}
+		return panel;
+	}
+
+	function refreshDebugPanel() {
+		const panel = document.getElementById('input2DebugPanel');
+		if (!panel || panel.hidden) return;
+		const tbody = document.getElementById('input2DebugTableBody');
+		const meta = document.getElementById('input2DebugMeta');
+		if (!tbody) return;
+		const tied = isCanvasTied();
+		if (meta) {
+			meta.textContent = 'stato: ' + (tied ? 'tied' : 'untied') +
+				' · Maiusc+D per chiudere';
+		}
+		const rows = getActiveTable();
+		let html = '';
+		for (let i = 0; i < rows.length; i++) {
+			const r = rows[i];
+			const activeCol = tied ? 'tied' : 'untied';
+			html += '<tr class="input2-debug-row' + (r.system ? ' is-system' : '') + '">';
+			html += '<td>' + (r.trigger || '—') + '</td>';
+			html += '<td>' + (r.alias || '—') + '</td>';
+			html += '<td>' + (r.targetSource || '—') + '</td>';
+			html += '<td>' + (r.system ? 'yes' : '') + '</td>';
+			html += '<td class="col-untied' + (activeCol === 'untied' ? ' is-active' : '') + '">' +
+				formatActionsCell(r.actionsUntied) + '</td>';
+			html += '<td class="col-tied' + (activeCol === 'tied' ? ' is-active' : '') + '">' +
+				formatActionsCell(r.actionsTied) + '</td>';
+			html += '</tr>';
+		}
+		tbody.innerHTML = html;
+	}
+
+	/**
+	 * Come MAIN.js debugToggle: Maiusc+D. Su index2 apre anche il pannello tabella.
+	 */
+	function debugToggle() {
+		if (typeof debugMode === 'undefined') {
+			console.warn('INPUT2: debugMode non definito (state.js)');
+			return;
+		}
+		debugMode = !debugMode;
+		const panel = ensureDebugPanel();
+		if (debugMode) {
+			document.body.classList.add('debug');
+			const palette = document.getElementById('palette');
+			if (palette) palette.classList.add('hidden');
+			panel.hidden = false;
+			refreshDebugPanel();
+		} else {
+			document.body.classList.remove('debug');
+			const palette = document.getElementById('palette');
+			if (palette) palette.classList.remove('hidden');
+			panel.hidden = true;
+		}
+	}
+	global.INPUT2.debugToggle = debugToggle;
+	global.INPUT2.refreshDebugPanel = refreshDebugPanel;
+
 	function onKeyDown(e) {
 		if (isEditableTarget(e.target)) return;
+
+		// Maiusc+D — come MAIN.js (prima della tabella gesture→azioni)
+		if (e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey &&
+			(e.key === 'd' || e.key === 'D')) {
+			e.preventDefault();
+			debugToggle();
+			return;
+		}
 
 		const intent = {
 			type: 'key',
@@ -642,6 +747,7 @@
 
 		document.addEventListener('keydown', onKeyDown, false);
 		bindFileToLoad();
+		ensureDebugPanel().hidden = true;
 
 		// availability lazy: se settings già applicati sync, prova subito
 		invalidateAvailability();
