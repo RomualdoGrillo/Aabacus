@@ -34,7 +34,7 @@ Sei **Specialist FrontEnd2** (AGENTS.md, livello 3): mantieni la **pista paralle
 ## Documenti obbligatori
 
 1. `project/Organization/roles/frontend2-specialist.md`
-2. `project/specs/gesture-action-table.md` — contratto L2 GOV2 (assenza trigger ⇒ recognizer non ascolta)
+2. `project/specs/gesture-action-table.md` — contratto L2 GOV2 (tabella G/A, mmls v1→tied / v2 JSON)
 3. `project/specs/new-interface-spec.md` §7
 4. Prime righe di ogni file — cerca `!!!GOV`
 

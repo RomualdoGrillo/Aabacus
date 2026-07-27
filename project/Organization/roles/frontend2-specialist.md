@@ -36,7 +36,7 @@ Quando possibile, **sostituire** un modulo legacy con un omologo `*2` (stesso ru
 
 ## Documenti
 
-- `project/specs/gesture-action-table.md` — **L2 GOV2**: contratto tabella; ascolto per colonna tied/untied (non modificare senza Romualdo)
+- `project/specs/gesture-action-table.md` — **L2 GOV2**: tabella G/A, mmls v1/v2 (non modificare senza Romualdo)
 - `project/specs/new-interface-spec.md` §7
 - `project/specs/software-modules.md` (strato input)
 - `AGENTS.md`, `project/Organization/organigramma.md`

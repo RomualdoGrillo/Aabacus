@@ -450,8 +450,8 @@ Decisione di Romualdo: attaccare il problema anche dal lato UI in parallelo al r
 Sdoppiamento per **sostituzione** dei moduli interaction legacy (`UserEvToFunctCall.js` → `UserEvToFunctCall2.js`). `index.html` resta intatto.
 
 1. `app/js/input2/gestures.js` — **recognizer puro** (Pointer Events → FSM → *intent*). Nessuna conoscenza del dominio matematico.
-2. `app/js/UserEvToFunctCall2.js` — **unico custode** della tabella gesture/tasto → azioni. Omologo di `UserEvToFunctCall.js`. Ogni riga ha due try-list: `actionsUntied` / `actionsTied` (scelta via `GLBsettings.tiedCanvas`). API pure unit-testabili.
-3. `app/js/MAIN2.js` — omologo di `MAIN.js`: orchestrazione (preload, cablaggio eventi, dispatch `resolveIntent` + `TryOnePropertyByName` / builtin, stub dello strato escluso). **Non** possiede la tabella.
+2. `app/js/UserEvToFunctCall2.js` — **unico custode** della **tabella G/A** (gesture/actions, `actionsUntied` / `actionsTied`). Omologo di `UserEvToFunctCall.js`. API pure unit-testabili.
+3. `app/js/MAIN2.js` — omologo di `MAIN.js`: orchestrazione (preload, cablaggio eventi, dispatch `resolveIntent` + `TryOnePropertyByName` / builtin, stub dello strato escluso). **Non** possiede la tabella G/A.
 
 ### 7.3 Requisiti di test sui gesti (Romualdo, 23/07)
 
@@ -459,28 +459,22 @@ Sdoppiamento per **sostituzione** dei moduli interaction legacy (`UserEvToFunctC
 2. **Coerenza del set:** il set finale dev'essere coerente, intuitivo e piacevole; si valuta sul prototipo con esercizi reali, non su blocchi finti.
 3. **Modularità:** cambiare il set di gesti (o renderlo customizzabile dall'utente) non deve costare riscritture — garantito da `UserEvToFunctCall2.js` (§7.2).
 
-### 7.4 Gesti configurabili dal file `.mmls` (proposta Romualdo 23/07, approvata)
+### 7.4 File `.mmls` e tabella G/A (Romualdo, 27/07/2026)
 
-La sezione `events` del `.mmls` — che oggi associa un tasto a una proprietà o lista di proprietà — estende il proprio vocabolario dai tasti ai **nomi di gesto**: la struttura `eventtoaction` resta identica, cambia solo cosa può comparire come evento (es. `slice.h → decomposeInAProduct`). L'esercizio resta così l'unica fonte di verità didattica: contenuto, palette, obiettivo, semantica dei gesti.
+Il formato corretto delle associazioni gesture↔action è la **tabella G/A** (tied/untied). Contratto L2: [`gesture-action-table.md`](gesture-action-table.md).
 
-Due classi di gesti, in simmetria con `requiresCanvasCi` del property registry (infrastruttura non configurabile vs didattica configurabile):
+| Versione file | Sezione `events` | Effetto sulla G/A |
+|---------------|------------------|-------------------|
+| **mmls v1** (legacy) | MathML `eventtoaction` (es. `gestToAction.mml`) | Modulo di import dedicato: sovrascrive **solo** `actionsTied` |
+| **mmls v2** | JSON `{ format: "gestureActionTable", formatVersion: 2, rows: […] }` | Carica la G/A dall’esercizio (`settings.mmlsVersion: 2`) |
 
-| Classe | Gesti | Configurabile da `.mmls`? |
-|--------|-------|---------------------------|
-| **Strutturali** | `tap` → select, `lasso` → selectSiblings, `dnd` → replace / applyPMproperty, undo | **No** — cablati nel core dell'input; tentativi di rimappatura → warning |
-| **Didattici** | `slice.h`, `slice.v`, futuri `pinch.*`, `doubletap`, … | **Sì** — via sezione `events` |
+Prototipo v2: `app/Data/exercises/prop_comm_gen_mmlsv2.mmls`.
 
-Regole:
+La G/A è l’unico punto in cui scrivere le associazioni (salvo eccezioni documentate in L2, es. doppio click ancora nel codice). Vocabolario intent: `tap`, `lasso`, `dnd`, `slashHor`/`slashVert`, `pinchHor`/`pinchVert`. Dispatch: `TryOnePropertyByName` / availability invariati.
 
-1. **Default nel codice, override nell'esercizio**: la tabella di default vive in `UserEvToFunctCall2.js`; il `.mmls` può restringere o rimappare gesti **non** system (anche per colonna `actionsUntied` / `actionsTied`).
-2. **Vocabolario canonico degli intent**: `tap`, `lasso`, `dnd`, `slashHor`/`slashVert` (slice), `pinchHor`/`pinchVert` (+ estensioni). Nomi sconosciuti → warning, mai fallimento silenzioso.
-3. Doppio gating invariato: il gesto mappato passa comunque da `TryOnePropertyByName` (serve il `ci` nel canvas).
+### 7.5 Tabella G/A — riepilogo runtime
 
-### 7.5 Tabella gesture↔action (tied / untied)
-
-**Contratto architetturale L2 (GOV2):** struttura, significato e interazione tra moduli sono fissati in [`gesture-action-table.md`](gesture-action-table.md) (`!!!GOV level:2architecture`). In particolare: il recognizer ascolta una gesture solo se la riga ha **azioni non vuote nella colonna tied/untied corrente** (lista vuota in quella colonna ⇒ non ascoltare).
-
-Fonte: tabella Romualdo (untied vs tied) + ricette `gestToAction.mml` per le liste didattiche in tied. Custode: `UserEvToFunctCall2.js`. Discriminante runtime: `GLBsettings.tiedCanvas`.
+**Contratto L2 (GOV2):** [`gesture-action-table.md`](gesture-action-table.md). Recognizer: ascolto solo se la try-list della **colonna corrente** non è vuota. Custode: `UserEvToFunctCall2.js`. Discriminante: `GLBsettings.tiedCanvas`.
 
 | Trigger / alias | Target | Azioni **untied** | Azioni **tied** | Classe |
 |-----------------|--------|-------------------|-----------------|--------|
@@ -490,22 +484,14 @@ Fonte: tabella Romualdo (untied vs tied) + ricette `gestToAction.mml` per le lis
 | tap | target tap | toggleSelect | toggleSelect | sistema |
 | lasso | targets lazo | selectSiblings | plusAssociate rtl | sistema |
 | dnd | source→target | applyDnD | applyDnD | sistema |
-| p | selected | — | plusAssociate ltr, plusAssociate rtl | didattica |
-| c | selected | — | OppositeOfOpposite, PlusSingleTerm, … | didattica |
-| pinchHor / ArrowDown | pinched | — | compose, AndNeutral ltr, timesAbsorbingEl ltr | didattica |
-| pinchVert / ArrowLeft | pinched | — | compose, composeXorNotX rtl | didattica |
-| slashHor / ArrowUp | slashed | — | timesAbsorbingEl rtl, decomposeInAProduct, … | didattica |
-| slashVert / ArrowRight | slashed | — | decomposeInASum, Opposite rtl, … | didattica |
+| p | selected | — | plusAssociate ltr/rtl | didattica |
+| c | selected | — | OppositeOfOpposite, … | didattica |
+| pinchHor / ArrowDown | pinched | — | compose, … | didattica |
+| pinchVert / ArrowLeft | pinched | — | compose, … | didattica |
+| slashHor / ArrowUp | slashed | — | decomposeInAProduct, … | didattica |
+| slashVert / ArrowRight | slashed | — | decomposeInASum, … | didattica |
 
-Lista vuota per lo stato corrente → no-op. Override `.mmls`: `actionsUntied` / `actionsTied`, oppure `actions` (copia su entrambe).
-
-**Discriminazione slice / lazo / drag**: come in `gestures.js` (slice rettilineo vs lazo chiuso vs drag da foglia). Tutti gli intent: `MAIN2.dispatchIntent` → `UserEvToFunctCall2.resolveIntent(…, {tied})`.
-
-Regole:
-
-1. Un solo modulo unit-testabile possiede la tabella: `UserEvToFunctCall2.js`.
-2. Righe **sistema** non riconfigurabili da `.mmls` (warning).
-3. Oltre alle due colonne, resta il filtro di **availability** (`ci` nel canvas) sulle azioni didattiche.
+**Discriminazione slice / lazo / drag**: `gestures.js`. Intent → `MAIN2.dispatchIntent` → `resolveIntent(…, {tied})`.
 
 ---
 
