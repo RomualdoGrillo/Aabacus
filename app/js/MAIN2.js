@@ -209,7 +209,7 @@
 		const rec = global.INPUT2._recognizer;
 		if (!rec || typeof rec.setEnabledIntents !== 'function') return;
 		const flags = global.INPUT2.enabledRecognizerIntents
-			? global.INPUT2.enabledRecognizerIntents(getActiveTable())
+			? global.INPUT2.enabledRecognizerIntents(getActiveTable(), { tied: isCanvasTied() })
 			: null;
 		if (flags) rec.setEnabledIntents(flags);
 	}
@@ -581,7 +581,9 @@
 		}
 		if (typeof ENODERefreshAsymmEq === 'function') ENODERefreshAsymmEq($ENODE);
 		if (typeof ssnapshot !== 'undefined' && ssnapshot.take) ssnapshot.take();
+		// Cambio colonna tied/untied ⇒ quali gesti ascoltare può cambiare
 		invalidateAvailability();
+		syncRecognizerEnabledIntents();
 		refreshDebugPanel();
 	}
 	global.INPUT2.clickHandler = clickHandler;
@@ -850,7 +852,7 @@
 			return;
 		}
 		const initialEnabled = global.INPUT2.enabledRecognizerIntents
-			? global.INPUT2.enabledRecognizerIntents(getActiveTable())
+			? global.INPUT2.enabledRecognizerIntents(getActiveTable(), { tied: isCanvasTied() })
 			: undefined;
 		global.INPUT2._recognizer = global.INPUT2.bindGestureRecognizer({
 			root: '#centralColumn',

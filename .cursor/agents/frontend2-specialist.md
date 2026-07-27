@@ -42,7 +42,7 @@ Sei **Specialist FrontEnd2** (AGENTS.md, livello 3): mantieni la **pista paralle
 
 1. **Sdoppiamento per sostituzione**: preferisci `Foo2.js` come omologo di `Foo.js`; non inventare nomi (`intentMap`) senza motivo.
 2. **Tabella tied/untied**: solo `UserEvToFunctCall2.js` legge/scrive la tabella; `MAIN2` chiede la try-list già risolti.
-3. **Ascolto gated dalla tabella**: se un `trigger` non compare nella tabella attiva, `gestures.js` non deve ascoltare quella gesture (spec L2).
+3. **Ascolto gated dalla colonna attiva**: `gestures.js` ascolta un trigger solo se la try-list tied/untied corrente non è vuota (spec L2); al toggle lucchetto si ricalcolano i flag.
 4. **Production intatta**: nessun regresso su `index.html`.
 5. **Diff minimo** e test Node/e2e input2 dopo i cambi.
 

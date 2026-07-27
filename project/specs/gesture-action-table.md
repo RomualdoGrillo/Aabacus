@@ -42,20 +42,26 @@ Vincoli:
 
 1. Ogni riga ha almeno un discriminante tra `trigger` e `alias` (non entrambi null in produzione).
 2. Le due colonne `actionsUntied` / `actionsTied` esistono sempre (possono essere liste vuote).
-3. Lista vuota per lo stato tied/untied **corrente** → dispatch **no-op** (la riga resta in tabella).
+3. Lista vuota per lo stato tied/untied **corrente** → recognizer **non ascolta** quel `trigger` (e il dispatch non riceve l’intent).
 4. `system: true` → override `.mmls` ignorato (warning); non rimuove la riga.
 
 ---
 
-## 3. Significato: presenza vs lista vuota
+## 3. Significato: ascolto per colonna (tied / untied)
+
+L’ascolto del recognizer si decide **leggendo l’intera riga** e scegliendo la colonna dello stato corrente (`GLBsettings.tiedCanvas`).
 
 | Situazione | Significato |
 |------------|-------------|
-| **Riga assente** (nessuna riga con quel `trigger`) | Il recognizer **non ascolta** quella gesture: non entra negli stati FSM dedicati, non mostra feedback, non emette l’intent |
-| **Riga presente, lista azioni vuota** per lo stato tied/untied attuale | Il recognizer **ascolta** ancora; il dispatch risolve la riga ma non esegue azioni |
-| **Riga presente, lista non vuota** | Ascolto + dispatch della try-list (filtrata da availability per le azioni didattiche) |
+| **Riga assente** (nessuna riga con quel `trigger`) | Non ascoltare |
+| **Riga presente, lista della colonna attiva vuota** (`actionsUntied` se untied, `actionsTied` se tied) | **Non ascoltare** quella gesture in quello stato |
+| **Riga presente, lista della colonna attiva non vuota** | Ascoltare + dispatch della try-list (filtrata da availability per le azioni didattiche) |
 
-Esempio: se dalla tabella attiva viene rimossa la riga `trigger: 'lasso'`, un tratto a lazo **non** deve produrre selezione né `plusAssociate`. Se la riga c’è ma `actionsUntied: []` e il canvas è untied, il lazo può essere riconosciuto ma non applica azioni.
+Esempio: riga `lasso` con `actionsUntied: []` e `actionsTied: [plusAssociate rtl]`:
+- canvas **untied** → il recognizer **non** traccia il lazo;
+- canvas **tied** → il recognizer ascolta il lazo e prova `plusAssociate`.
+
+Il toggle tied/untied (lucchetto) deve ricalcolare i flag di ascolto.
 
 ---
 
@@ -107,7 +113,7 @@ flowchart LR
 ## 6. Regole immutabili (non cambiare senza Romualdo)
 
 1. Un solo custode della tabella: `UserEvToFunctCall2.js`.
-2. **Assenza di riga `trigger` ⇒ nessun ascolto** di quella gesture nel recognizer.
+2. **Ascolto gated dalla colonna attiva**: niente ascolto se la riga manca **oppure** se la try-list della colonna tied/untied corrente è vuota.
 3. Colonne tied/untied: discriminante runtime `GLBsettings.tiedCanvas`.
 4. Righe `system` non rimappabili da `.mmls`.
 5. Azioni didattiche passano da `TryOnePropertyByName` / registry (availability); i builtin (`undo`, `toggleSelect`, `selectSiblings`, `applyDnD`, …) no.
@@ -122,8 +128,9 @@ Custode (`UserEvToFunctCall2.js`):
 - `DEFAULT_TABLE`, `getTable` / `setTable`
 - `resolveIntent(intent, table, { tied })`
 - `applyMmlsOverrides(table, overrides)`
-- `listGestureTriggers(table)` — trigger non null presenti
-- `enabledRecognizerIntents(table)` — flag per il recognizer (`tap`, `lasso`, `dnd`, `slice`, `pinch`, e assi `slashHor` / `slashVert` / `pinchHor` / `pinchVert`)
+- `listGestureTriggers(table)` — trigger non null presenti (indipendenti dallo stato)
+- `listActiveGestureTriggers(table, { tied })` — trigger con azioni non vuote nella colonna corrente
+- `enabledRecognizerIntents(table, { tied })` — flag per il recognizer nella colonna corrente
 
 Recognizer (`gestures.js`):
 

@@ -211,36 +211,67 @@ const UNTIED = { tied: false };
 	);
 })();
 
-// ——— 5) enabledRecognizerIntents (spec L2: assenza trigger ⇒ non ascoltare) ———
+// ——— 5) enabledRecognizerIntents (spec L2: colonna attiva decide l’ascolto) ———
 (function () {
-	const en = UEV2.enabledRecognizerIntents(table);
+	const enTied = UEV2.enabledRecognizerIntents(table, TIED);
 	assert(
-		'default table abilita tap/lasso/dnd/slice/pinch',
-		en.tap && en.lasso && en.dnd && en.slice && en.pinch &&
-			en.slashHor && en.slashVert && en.pinchHor && en.pinchVert
+		'tied: default abilita tap/lasso/dnd/slice/pinch',
+		enTied.tap && enTied.lasso && enTied.dnd && enTied.slice && enTied.pinch &&
+			enTied.slashHor && enTied.slashVert && enTied.pinchHor && enTied.pinchVert
+	);
+
+	const enUntied = UEV2.enabledRecognizerIntents(table, UNTIED);
+	assert(
+		'untied: lasso sì (selectSiblings), slash/pinch no (liste vuote)',
+		enUntied.lasso === true && enUntied.tap === true &&
+			enUntied.slashVert === false && enUntied.slashHor === false &&
+			enUntied.pinch === false && enUntied.slice === false,
+		JSON.stringify(enUntied)
 	);
 
 	const noLasso = table.filter(function (r) { return r.trigger !== 'lasso'; });
-	const en2 = UEV2.enabledRecognizerIntents(noLasso);
+	const en2 = UEV2.enabledRecognizerIntents(noLasso, UNTIED);
 	assert(
 		'senza riga lasso → lasso false, tap ancora true',
 		en2.lasso === false && en2.tap === true && en2.dnd === true,
 		JSON.stringify({ lasso: en2.lasso, tap: en2.tap })
 	);
 
+	// Riga presente ma solo tied ha azioni → untied non ascolta
+	const lassoTiedOnly = table.map(function (r) {
+		if (r.trigger !== 'lasso') return r;
+		return {
+			trigger: 'lasso',
+			alias: null,
+			targetSource: null,
+			actionsUntied: [],
+			actionsTied: [{ name: 'plusAssociate', val: 'rtl' }],
+			system: true
+		};
+	});
+	assert(
+		'lasso solo in tied → untied non ascolta',
+		UEV2.enabledRecognizerIntents(lassoTiedOnly, UNTIED).lasso === false
+	);
+	assert(
+		'lasso solo in tied → tied ascolta',
+		UEV2.enabledRecognizerIntents(lassoTiedOnly, TIED).lasso === true
+	);
+
 	const onlyTap = [
 		{ trigger: 'tap', alias: null, targetSource: null, actionsUntied: ['toggleSelect'], actionsTied: ['toggleSelect'], system: true }
 	];
-	const en3 = UEV2.enabledRecognizerIntents(onlyTap);
+	const en3 = UEV2.enabledRecognizerIntents(onlyTap, UNTIED);
 	assert(
 		'solo tap → slice/pinch/lasso/dnd off',
 		en3.tap && !en3.lasso && !en3.dnd && !en3.slice && !en3.pinch
 	);
 
 	assert(
-		'listGestureTriggers esporta i trigger',
-		UEV2.listGestureTriggers(table).indexOf('lasso') !== -1 &&
-			UEV2.listGestureTriggers(noLasso).indexOf('lasso') === -1
+		'listGestureTriggers esporta i trigger (anche se colonna vuota)',
+		UEV2.listGestureTriggers(lassoTiedOnly).indexOf('lasso') !== -1 &&
+			UEV2.listActiveGestureTriggers(lassoTiedOnly, UNTIED).indexOf('lasso') === -1 &&
+			UEV2.listActiveGestureTriggers(lassoTiedOnly, TIED).indexOf('lasso') !== -1
 	);
 })();
 
@@ -250,13 +281,13 @@ const UNTIED = { tied: false };
 	UEV2.setTable(slim);
 	assert(
 		'setTable senza lasso → enabled.lasso false',
-		UEV2.enabledRecognizerIntents(UEV2.getTable()).lasso === false
+		UEV2.enabledRecognizerIntents(UEV2.getTable(), UNTIED).lasso === false
 	);
 	const json = JSON.stringify(table);
 	UEV2.setTable(json);
 	assert(
 		'setTable da JSON string ripristina lasso',
-		UEV2.enabledRecognizerIntents(UEV2.getTable()).lasso === true
+		UEV2.enabledRecognizerIntents(UEV2.getTable(), UNTIED).lasso === true
 	);
 	let threw = false;
 	try { UEV2.setTable('{not json'); } catch (e) { threw = true; }

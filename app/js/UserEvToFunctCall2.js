@@ -254,8 +254,7 @@
 	}
 
 	/**
-	 * Trigger di gesto (campo `trigger` non null) presenti nella tabella.
-	 * Spec L2: project/specs/gesture-action-table.md §3 — assenza ⇒ recognizer non ascolta.
+	 * Trigger di gesto presenti in tabella (campo `trigger` non null), indipendenti dallo stato tied.
 	 * @param {Object[]} [table]
 	 * @returns {string[]}
 	 */
@@ -273,15 +272,40 @@
 	}
 
 	/**
-	 * Flag per il recognizer: quali famiglie/assi ascoltare, derivati dalla tabella.
-	 * Lista azioni vuota ≠ riga assente: se il trigger c’è, il flag resta true.
+	 * Trigger con almeno un’azione nella colonna dello stato tied/untied corrente.
+	 * Spec L2 gesture-action-table.md §3: lista vuota nella colonna attiva ⇒ non ascoltare.
 	 * @param {Object[]} [table]
+	 * @param {{tied?: boolean}} [opts] — default untied (tied:false)
+	 * @returns {string[]}
+	 */
+	function listActiveGestureTriggers(table, opts) {
+		const tied = !!(opts && opts.tied);
+		const rows = table || DEFAULT_TABLE;
+		const out = [];
+		const seen = {};
+		for (let i = 0; i < rows.length; i++) {
+			const row = normalizeRow(rows[i]);
+			const t = row.trigger;
+			if (!t || seen[t]) continue;
+			const actions = tied ? row.actionsTied : row.actionsUntied;
+			if (!actions || actions.length === 0) continue;
+			seen[t] = true;
+			out.push(t);
+		}
+		return out;
+	}
+
+	/**
+	 * Flag per il recognizer: ascolta solo i trigger con azioni non vuote
+	 * nella colonna dello stato tied/untied corrente.
+	 * @param {Object[]} [table]
+	 * @param {{tied?: boolean}} [opts]
 	 * @returns {{tap:boolean,lasso:boolean,dnd:boolean,slice:boolean,pinch:boolean,
 	 *   slashHor:boolean,slashVert:boolean,pinchHor:boolean,pinchVert:boolean}}
 	 */
-	function enabledRecognizerIntents(table) {
+	function enabledRecognizerIntents(table, opts) {
 		const set = {};
-		const triggers = listGestureTriggers(table);
+		const triggers = listActiveGestureTriggers(table, opts);
 		for (let i = 0; i < triggers.length; i++) set[triggers[i]] = true;
 		const slashHor = !!(set.slashHor || set['slice.h']);
 		const slashVert = !!(set.slashVert || set['slice.v']);
@@ -568,6 +592,7 @@
 		applyMmlsOverrides: applyMmlsOverrides,
 		computeAvailability: computeAvailability,
 		listGestureTriggers: listGestureTriggers,
+		listActiveGestureTriggers: listActiveGestureTriggers,
 		enabledRecognizerIntents: enabledRecognizerIntents,
 		intentToTrigger: intentToTrigger,
 		intentToAlias: intentToAlias,
@@ -597,6 +622,7 @@
 	global.INPUT2.applyMmlsOverrides = applyMmlsOverrides;
 	global.INPUT2.computeAvailability = computeAvailability;
 	global.INPUT2.listGestureTriggers = listGestureTriggers;
+	global.INPUT2.listActiveGestureTriggers = listActiveGestureTriggers;
 	global.INPUT2.enabledRecognizerIntents = enabledRecognizerIntents;
 	global.INPUT2.intentToTrigger = intentToTrigger;
 	global.INPUT2.intentToAlias = intentToAlias;
