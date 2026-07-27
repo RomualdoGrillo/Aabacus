@@ -260,21 +260,19 @@ function ENODEfrozenDef(Node) {
 /**
  * "Dissolve" il contenitore sostituendolo con gli ENODE figli contenuti nei
  * suoi role; se non ha figli ENODE, rimuove semplicemente il nodo.
- * Attenzione: la variabile $children è dichiarata dentro il ramo if, quindi il
- * `return $children` finale non è raggiungibile senza errore (anomalia nota).
  * Accetta un ENode o un oggetto jQuery (usa sempre il primo elemento).
  * @param {ENode|JQuery<ENode>} node - Il nodo contenitore da dissolvere.
- * @returns {JQuery<ENode>} Gli ENODE figli che hanno preso il posto del contenitore.
+ * @returns {JQuery<ENode>} Gli ENODE figli che hanno preso il posto del contenitore (vuoto se il nodo è stato rimosso).
  */
 function ENODE_dissolveContainer(node) {
 	node = $(node)[0];
 	if (ENODE_getChildren(node).length > 0) {
 		const $children = ENODE_getRoles(node).children().filter("[data-enode]");
 		$(node).replaceWith($children);
-	} else {
-		$(node).remove();
+		return $children;
 	}
-	return $children;
+	$(node).remove();
+	return $();
 }
 
 /**
