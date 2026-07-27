@@ -130,26 +130,6 @@ function searchEventHandler(event){// trova la definizione della proprietà
 
 
 
-//searchForProperty('firstMember','distTimes')
-function searchForProperty(field,value,returnedField){
-	// trova la definizione della proprietà
-	if( value == undefined){ return undefined}
-	let candidates = Array.from( canvasRole.querySelectorAll('[data-enode=deftrue]') );
-	let i=0;
-	while(candidates[i]){
-		let $role = ENODE_getRoles(candidates[i]).filter('.' + field)
-		if($role.length !== 1){
-			console.warn('Role not found' + field);
-		}
-		let ENODEvalue = $role.children()[0]
-		if(ENODEvalue !== undefined && ENODE_getName(ENODEvalue).toLowerCase() === value.toLowerCase() ){
-		    //case insensitive
-        	return   $( ENODE_getRoles(candidates[i]).filter("." + returnedField ).children()[0] ) 
-		}	
-	i++}
-}
-
-
-
-
 //refineAfterProperty / markNeedsRefine: app/js/refine.js (post-applicazione delle proprietà)
+//searchForProperty (ricerca di una deftrue per campo/valore) era definita qui senza
+//chiamanti attivi: rimossa (software-modules.md §4 voce 6, recuperabile dalla history git).

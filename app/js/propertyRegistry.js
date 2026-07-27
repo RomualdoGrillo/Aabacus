@@ -82,19 +82,6 @@ function getHardWired(name) {
 	return entry.apply
 }
 
-/**
- * @param {string} name
- * @returns {HWPropertyDescriptor|undefined} descrittore completo
- */
-function getHardWiredEntry(name) {
-	return hwPropertyRegistry[name]
-}
-
-/** @returns {string[]} nomi registrati (ordinati alfabeticamente) */
-function listHardWiredPropertyNames() {
-	return Object.keys(hwPropertyRegistry).sort()
-}
-
 /** @returns {HWPropertyDescriptor[]} descrittori DnD in ordine di registrazione (priorità first-wins) */
 function listDnDProperties() {
 	const out = []

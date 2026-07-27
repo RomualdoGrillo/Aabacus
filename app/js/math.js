@@ -21,21 +21,6 @@ function primeFactorization(num){
   //if num isn't prime factor make recursive call
   return (x === num) ? result : primeFactorization(num/x, result) ;
 }
-function ENODENumericCdsAsText($ENODE){
-  let $elementUnderTest = $ENODE
-  let sign = 1
-  while( $elementUnderTest.attr('data-enode') === "minus" ){
-    //passa all'elemento interno
-    $elementUnderTest = ENODE_getRoles($elementUnderTest).children(':first');
-    sign = sign * -1
-  }
-  let res = ENODE_getName($elementUnderTest);
-  if( sign == -1 ){//se necessario aggiungi segno meno
-    res = "-" + res
-  }
-  return res
-}
-
 /**
  * Separa da un numero la sua parte meno significativa non nulla (unità, poi
  * decine, centinaia, ...) e restituisce [parte, resto]; gli zeri intermedi non
