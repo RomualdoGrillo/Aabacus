@@ -244,7 +244,28 @@ const UNTIED = { tied: false };
 	);
 })();
 
-// ——— 6) API ———
+// ——— 6) setTable (array + JSON) aggiorna il custode ———
+(function () {
+	const slim = table.filter(function (r) { return r.trigger !== 'lasso'; });
+	UEV2.setTable(slim);
+	assert(
+		'setTable senza lasso → enabled.lasso false',
+		UEV2.enabledRecognizerIntents(UEV2.getTable()).lasso === false
+	);
+	const json = JSON.stringify(table);
+	UEV2.setTable(json);
+	assert(
+		'setTable da JSON string ripristina lasso',
+		UEV2.enabledRecognizerIntents(UEV2.getTable()).lasso === true
+	);
+	let threw = false;
+	try { UEV2.setTable('{not json'); } catch (e) { threw = true; }
+	assert('setTable JSON invalido → throw', threw);
+	// ripristino default per eventuali assert successivi
+	UEV2.setTable(UEV2.DEFAULT_TABLE);
+})();
+
+// ——— 7) API ———
 (function () {
 	assert(
 		'API pure esportate',

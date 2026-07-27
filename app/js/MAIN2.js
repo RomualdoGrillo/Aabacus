@@ -52,7 +52,6 @@
 
 	/** Cache disponibilità; null = dirty (ricalcolo lazy). */
 	let availabilityCache = null;
-	let activeTable = null;
 
 	global.INPUT2 = global.INPUT2 || {};
 	global.INPUT2.lastIntent = null;
@@ -73,13 +72,38 @@
 	}
 	global.INPUT2.conclude2 = conclude2;
 
+	/**
+	 * Tabella attiva = sempre il custode UserEvToFunctCall2 (niente cache locale divergente).
+	 * @returns {Object[]}
+	 */
 	function getActiveTable() {
-		if (!activeTable) {
-			activeTable = global.INPUT2.getTable
-				? global.INPUT2.getTable()
-				: (global.INPUT2.DEFAULT_TABLE || []).slice();
+		if (global.INPUT2.getTable) return global.INPUT2.getTable();
+		return (global.INPUT2.DEFAULT_TABLE || []).slice();
+	}
+
+	/**
+	 * Dopo ogni cambio tabella: availability, recognizer (trigger presenti), pannello debug.
+	 */
+	function onTableChanged() {
+		invalidateAvailability();
+		syncRecognizerEnabledIntents();
+		refreshDebugPanel();
+	}
+
+	/**
+	 * Avvolge INPUT2.setTable così console/API aggiornano anche recognizer e Shift+D.
+	 */
+	function installSetTableHook() {
+		const orig = global.INPUT2.setTable;
+		if (typeof orig !== 'function' || orig._main2Wrapped) return;
+		function wrapped(table) {
+			const result = orig.call(global.INPUT2, table);
+			onTableChanged();
+			return result;
 		}
-		return activeTable;
+		wrapped._main2Wrapped = true;
+		global.INPUT2.setTable = wrapped;
+		global.INPUT2.setIntentMap = wrapped;
 	}
 
 	function buildResolverFns() {
@@ -198,13 +222,16 @@
 		const overrides = readMmlsGestureOverrides();
 		const res = global.INPUT2.applyMmlsOverrides(
 			global.INPUT2.DEFAULT_TABLE, overrides);
-		activeTable = res.table;
+		// Scrive sul custode; se il wrap MAIN2 è attivo aggiorna anche recognizer + debug
+		if (typeof global.INPUT2.setTable === 'function') {
+			global.INPUT2.setTable(res.table);
+			if (!global.INPUT2.setTable._main2Wrapped) onTableChanged();
+		} else {
+			onTableChanged();
+		}
 		for (let i = 0; i < res.violations.length; i++) {
 			console.warn('INPUT2: il .mmls tenta di rimappare un gesto di sistema, ignorato:', res.violations[i]);
 		}
-		invalidateAvailability();
-		syncRecognizerEnabledIntents();
-		refreshDebugPanel();
 		return res;
 	}
 	global.INPUT2.reloadMmlsOverrides = reloadMmlsOverrides;
@@ -800,6 +827,8 @@
 	}
 
 	function boot() {
+		// Prima di preload/settings: setTable da console o da reload aggiorna recognizer+debug
+		installSetTableHook();
 		hookSettingsToInterface();
 
 		// Init undo (come MAIN.js)
@@ -829,6 +858,8 @@
 			isValidDnDTarget: isValidDnDTarget,
 			enabledIntents: initialEnabled
 		});
+		// Tabella può essere già stata aggiornata dal preload async: riallinea i flag
+		syncRecognizerEnabledIntents();
 
 		console.log('INPUT2 boot ok — preloadPath=', preloadPath);
 	}

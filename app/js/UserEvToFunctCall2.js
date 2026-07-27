@@ -522,8 +522,25 @@
 		return cloneTable(activeTable);
 	}
 
+	/**
+	 * Sostituisce la tabella attiva (unico custode).
+	 * Accetta array di righe oppure stringa JSON dello stesso array.
+	 * @param {Object[]|string} table
+	 * @returns {Object[]} clone della tabella attiva
+	 */
 	function setTable(table) {
-		activeTable = cloneTable(table);
+		let rows = table;
+		if (typeof table === 'string') {
+			try {
+				rows = JSON.parse(table);
+			} catch (err) {
+				throw new Error('INPUT2.setTable: JSON non valido — ' + (err && err.message ? err.message : err));
+			}
+		}
+		if (!Array.isArray(rows)) {
+			throw new Error('INPUT2.setTable: serve un array di righe (o JSON di un array)');
+		}
+		activeTable = cloneTable(rows);
 		return getTable();
 	}
 
