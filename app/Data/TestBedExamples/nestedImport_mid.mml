@@ -1,0 +1,5 @@
+<ci data-type="bool">MID</ci>
+<apply data-import="./Data/TestBedExamples/nestedImport_leaf.mml" data-type="bool">
+	<and>
+	</and>
+</apply>
