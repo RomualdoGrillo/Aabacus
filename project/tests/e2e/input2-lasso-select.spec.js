@@ -1,5 +1,10 @@
 /**
- * Regressione input2: lazo = multi-select parziale; tap plain deseleziona.
+ * Regressione input2: toggle tied/untied, lazo = multi-select (solo untied),
+ * tap plain deseleziona.
+ *
+ * Nota: prop_comm_gen.mmls ha tiedCanvas:true → in tied il lazo mappa a
+ * plusAssociate (non select). I test di selezione devono prima passare a untied
+ * cliccando il lucchetto `#canvas > .firstMember`.
  */
 const { test, expect } = require('@playwright/test');
 
@@ -8,7 +13,9 @@ const URL = '/index2?preloadPath=./Data/exercises/prop_comm_gen.mmls';
 
 async function waitReady(page) {
 	await page.waitForFunction(() => {
-		if (!(window.INPUT2 && window.INPUT2.dispatchIntent)) return false;
+		if (!(window.INPUT2 && window.INPUT2.dispatchIntent && window.INPUT2.clickHandler)) return false;
+		// settings del .mmls applicati (tiedCanvas definito)
+		if (typeof GLBsettings === 'undefined' || GLBsettings.tiedCanvas === undefined) return false;
 		const roles = document.querySelectorAll('#canvasRole [data-enode="plus"] > .ul_role, #canvasRole [data-enode="plus"] > .ol_role');
 		for (let i = 0; i < roles.length; i++) {
 			const kids = roles[i].querySelectorAll(':scope > [data-enode]');
@@ -19,6 +26,31 @@ async function waitReady(page) {
 		}
 		return false;
 	}, null, { timeout: 20000 });
+}
+
+async function isTied(page) {
+	// GLBsettings è binding globale (state.js), non proprietà di window
+	return page.evaluate(() => !!(typeof GLBsettings !== 'undefined' && GLBsettings.tiedCanvas));
+}
+
+/** Click sul lucchetto in alto a sinistra del canvas (toggle tied ↔ untied). */
+async function clickCanvasLock(page) {
+	const lock = page.locator('#canvas > .firstMember');
+	await expect(lock).toBeVisible();
+	await lock.click();
+	await page.waitForTimeout(50);
+}
+
+async function ensureUntied(page) {
+	if (await isTied(page)) await clickCanvasLock(page);
+	expect(await isTied(page)).toBe(false);
+	await expect(page.locator('#canvas')).toHaveClass(/untied/);
+}
+
+async function ensureTied(page) {
+	if (!(await isTied(page))) await clickCanvasLock(page);
+	expect(await isTied(page)).toBe(true);
+	await expect(page.locator('#canvas')).not.toHaveClass(/untied/);
 }
 
 /** Restituisce i 6 termini della somma expression (figli del ul_role del plus). */
@@ -88,10 +120,32 @@ async function drawLassoAround(page, centers) {
 	await page.waitForTimeout(100);
 }
 
-test.describe('input2 lasso + tap select', () => {
-	test('lasso sugli ultimi due termini seleziona solo quelli', async ({ page }) => {
+test.describe('input2 tied toggle + lasso/tap select', () => {
+	test('click sul lucchetto canvas passa da tied a untied e viceversa', async ({ page }) => {
 		await page.goto(URL);
 		await waitReady(page);
+
+		// prop_comm_gen parte tied
+		expect(await isTied(page)).toBe(true);
+		await expect(page.locator('#canvas')).not.toHaveClass(/untied/);
+		await expect(page.locator('#canvas > .firstMember')).toHaveClass(/ui-icon-bullet/);
+
+		await clickCanvasLock(page);
+		expect(await isTied(page)).toBe(false);
+		await expect(page.locator('#canvas')).toHaveClass(/untied/);
+		await expect(page.locator('#canvas > .firstMember')).toHaveClass(/ui-icon-unlocked/);
+
+		await clickCanvasLock(page);
+		expect(await isTied(page)).toBe(true);
+		await expect(page.locator('#canvas')).not.toHaveClass(/untied/);
+		await expect(page.locator('#canvas > .firstMember')).toHaveClass(/ui-icon-bullet/);
+	});
+
+	test('lasso untied sugli ultimi due termini seleziona solo quelli', async ({ page }) => {
+		await page.goto(URL);
+		await waitReady(page);
+		await ensureUntied(page);
+
 		const terms = await sumTermIds(page);
 		expect(terms.length).toBeGreaterThanOrEqual(6);
 		// ultimi due: a, b nell'esercizio (ordine e c d f a b)
@@ -103,9 +157,36 @@ test.describe('input2 lasso + tap select', () => {
 		expect(selected.length).toBe(2);
 	});
 
+	test('lasso untied su un solo termine lo seleziona', async ({ page }) => {
+		await page.goto(URL);
+		await waitReady(page);
+		await ensureUntied(page);
+
+		const terms = await sumTermIds(page);
+		const one = terms[terms.length - 1]; // b
+		await drawLassoAround(page, [one.rect]);
+		const selected = await selectedTexts(page);
+		expect(selected.length).toBe(1);
+		expect(selected[0].text).toBe(one.text);
+	});
+
+	test('lasso tied non lascia .selected (colonna plusAssociate)', async ({ page }) => {
+		await page.goto(URL);
+		await waitReady(page);
+		await ensureTied(page);
+
+		const terms = await sumTermIds(page);
+		const lastTwo = terms.slice(-2);
+		await drawLassoAround(page, lastTwo.map((t) => t.rect));
+		const selected = await selectedTexts(page);
+		expect(selected.length).toBe(0);
+	});
+
 	test('tap senza Cmd deseleziona la selezione precedente', async ({ page }) => {
 		await page.goto(URL);
 		await waitReady(page);
+		await ensureUntied(page);
+
 		const terms = await sumTermIds(page);
 		const lastTwo = terms.slice(-2);
 		const first = terms[0];

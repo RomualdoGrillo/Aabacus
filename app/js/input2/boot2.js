@@ -491,6 +491,59 @@
 		return !!(typeof GLBsettings !== 'undefined' && GLBsettings.tiedCanvas);
 	}
 
+	/**
+	 * True se event.target è il lucchetto (.firstMember) di una definizione asimmetrica.
+	 * @param {Event} event
+	 * @returns {JQuery|null} il parent [data-viseq=asymmetric], o null
+	 */
+	function definitionLockFromEvent(event) {
+		const $t = $(event.target);
+		if (!$t.is('.firstMember')) return null;
+		const $ENODE = $t.parent();
+		if (!$ENODE.length || typeof isDefinition !== 'function' || !isDefinition($ENODE[0])) return null;
+		return $ENODE;
+	}
+
+	/**
+	 * Capture: sul lucchetto non far arrivare pointerdown al recognizer (#centralColumn).
+	 * Altrimenti setPointerCapture ritargetta pointerup/click su centralColumn e il
+	 * toggle tied/untied non scatta mai (click “perso”).
+	 */
+	function lockPointerDownCapture(event) {
+		if (definitionLockFromEvent(event)) {
+			event.stopPropagation();
+		}
+	}
+
+	/**
+	 * Click sul lucchetto (.firstMember di una definizione) — omologo di MAIN.js clickHandler.
+	 * Su #canvas alterna GLBsettings.tiedCanvas (e classi .untied su canvas/result/events);
+	 * sulle altre definizioni asimmetriche toggla solo .untied locale.
+	 * Necessario in index2 perché MAIN.js non è caricato: senza questo il lazo resta
+	 * sulla colonna tied (plusAssociate) e non seleziona.
+	 */
+	function clickHandler(event) {
+		const $ENODE = definitionLockFromEvent(event);
+		if (!$ENODE) return;
+
+		if ($ENODE.is('#canvas')) {
+			if (!GLBsettings.tiedCanvas) {
+				GLBsettings.tiedCanvas = true;
+				$('#canvas,#result,#events').removeClass('untied');
+			} else {
+				GLBsettings.tiedCanvas = false;
+				$('#canvas,#result,#events').addClass('untied');
+			}
+		} else {
+			$ENODE.toggleClass('untied');
+		}
+		if (typeof ENODERefreshAsymmEq === 'function') ENODERefreshAsymmEq($ENODE);
+		if (typeof ssnapshot !== 'undefined' && ssnapshot.take) ssnapshot.take();
+		invalidateAvailability();
+		refreshDebugPanel();
+	}
+	global.INPUT2.clickHandler = clickHandler;
+
 	function dispatchIntent(intent) {
 		pushIntent(intent);
 		const table = getActiveTable();
@@ -576,8 +629,12 @@
 	}
 
 	function ensureDebugPanel() {
-		let panel = document.getElementById('input2DebugPanel');
+		let panel = document.getElementById && document.getElementById('input2DebugPanel');
 		if (panel) return panel;
+		// Sandbox unit test: document minimale senza createElement
+		if (typeof document.createElement !== 'function') {
+			return { hidden: true, querySelector: function () { return null; } };
+		}
 		panel = document.createElement('div');
 		panel.id = 'input2DebugPanel';
 		panel.setAttribute('aria-label', 'Debug FrontEnd2 — tabella gesture/azioni');
@@ -736,6 +793,14 @@
 		preloadAll(preloadPath);
 		ssnapshot.take();
 
+		// Tied/untied e tastiera anche se il recognizer manca (test / degradazione)
+		document.addEventListener('keydown', onKeyDown, false);
+		document.addEventListener('pointerdown', lockPointerDownCapture, true);
+		document.addEventListener('click', clickHandler, false);
+		bindFileToLoad();
+		ensureDebugPanel().hidden = true;
+		invalidateAvailability();
+
 		if (typeof global.INPUT2.bindGestureRecognizer !== 'function') {
 			console.error('INPUT2: gestures.js non caricato');
 			return;
@@ -745,13 +810,6 @@
 			onIntent: dispatchIntent,
 			isValidDnDTarget: isValidDnDTarget
 		});
-
-		document.addEventListener('keydown', onKeyDown, false);
-		bindFileToLoad();
-		ensureDebugPanel().hidden = true;
-
-		// availability lazy: se settings già applicati sync, prova subito
-		invalidateAvailability();
 
 		console.log('INPUT2 boot ok — preloadPath=', preloadPath);
 	}

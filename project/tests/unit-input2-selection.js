@@ -264,6 +264,7 @@ console.log('unit-input2-selection');
 
 	assert(typeof Sel.toggleSelect === 'function', 'toggleSelect esportato');
 	assert(typeof Sel.selectSiblings === 'function', 'selectSiblings esportato');
+	assert(typeof sandbox.window.INPUT2.clickHandler === 'function', 'clickHandler tied/untied esportato');
 
 	Sel.selectSiblings([e, f]);
 	assert(e.classList.contains('selected') && f.classList.contains('selected'), 'selectSiblings marca e,f via selectionManager');
