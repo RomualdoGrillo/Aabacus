@@ -743,6 +743,24 @@
 			}
 		}
 
+		function showLassoFeedback(pts) {
+			setSvgPath(bladePath, []);
+			setSvgPath(lassoPath, pts, true);
+			updateHull(hull, selectLassoTargets(pts));
+		}
+
+		function showBladeFeedback(pts) {
+			setSvgPath(lassoPath, []);
+			updateHull(hull, []);
+			setSvgPath(bladePath, pts);
+		}
+
+		/**
+		 * Feedback PATH dipende da quali famiglie sono in ascolto (colonna tabella):
+		 * - solo lasso → tratto lazo subito (non aspettare la curvatura)
+		 * - solo slice → lama solo se già abbastanza rettilineo/lungo; niente flash su archi
+		 * - entrambi → discriminazione curve vs retta (come prima)
+		 */
 		function updatePathFeedback() {
 			if (state !== STATE.PATH || !startPt || points.length < 2) return;
 			const endPt = points[points.length - 1];
@@ -751,17 +769,28 @@
 			const efficiency = plen > 1e-6 ? chord / plen : 1;
 			const closes = chord <= LASSO_CLOSE_PX && plen >= LASSO_MIN_PATH;
 			const curved = efficiency <= CURVE_EFFICIENCY || closes;
-			if (curved && enabledIntents.lasso) {
-				setSvgPath(bladePath, []);
-				setSvgPath(lassoPath, points, true);
-				updateHull(hull, selectLassoTargets(points));
-			} else if (!curved && enabledIntents.slice) {
-				setSvgPath(lassoPath, []);
-				updateHull(hull, []);
-				setSvgPath(bladePath, points);
-			} else {
-				clearPathFeedback();
+			const axis = classifyAxisTol(startPt, endPt, SLICE_ANGLE_TOL);
+			const straightSlice = efficiency >= STRAIGHT_EFFICIENCY && !!axis && chord >= SLICE_MIN_LEN;
+
+			const lassoOn = !!enabledIntents.lasso;
+			const sliceOn = !!enabledIntents.slice;
+
+			if (lassoOn && !sliceOn) {
+				showLassoFeedback(points);
+				return;
 			}
+			if (sliceOn && !lassoOn) {
+				if (straightSlice) showBladeFeedback(points);
+				else clearPathFeedback();
+				return;
+			}
+			if (lassoOn && sliceOn) {
+				if (curved) showLassoFeedback(points);
+				else if (straightSlice || (!curved && chord >= MOVE_SLOP_PX)) showBladeFeedback(points);
+				else clearPathFeedback();
+				return;
+			}
+			clearPathFeedback();
 		}
 
 		function enterDrag(x, y) {
