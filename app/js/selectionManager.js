@@ -1,7 +1,7 @@
 /**
  * selectionManager.js — selezione ENODE (selected / unselected / selectedTool).
  *
- * Condiviso tra l'interfaccia legacy (MAIN.js + DnD.js) e input2 (boot2.js).
+ * Condiviso tra l'interfaccia legacy (MAIN.js + DnD.js) e input2 (MAIN2.js).
  * Dipende da: jQuery, GLBsettings, getDefaultTool (ExpressionManager.js).
  */
 

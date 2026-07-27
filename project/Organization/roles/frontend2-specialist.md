@@ -10,7 +10,8 @@ Pista parallela UI touch-first (`index2` / input2): recognizer di gesti, traduzi
 ## Perimetro
 
 - `app/index2.html`
-- `app/js/input2/**` (`gestures.js`, `boot2.js`, …)
+- `app/js/input2/**` (`gestures.js`, …)
+- `app/js/MAIN2.js` — omologo di `MAIN.js` (orchestrazione index2)
 - `app/js/UserEvToFunctCall2.js` — tabella gesture/tasto → azioni (tied/untied); unico custode della tabella
 - `app/js/selectionManager.js` — condiviso con legacy; modifiche solo se servono a entrambe le UI o a index2
 - `app/css/input2.css`

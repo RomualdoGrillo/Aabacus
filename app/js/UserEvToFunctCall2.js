@@ -31,7 +31,7 @@
 		save: true,
 		toggleSelect: true,
 		selectSiblings: true,
-		selectMultiple: true, // alias bozza Romualdo → selectSiblings in boot2
+		selectMultiple: true, // alias bozza Romualdo → selectSiblings in MAIN2
 		applyDnD: true
 	};
 

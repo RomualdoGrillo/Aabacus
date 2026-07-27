@@ -16,10 +16,10 @@ La tabella è il **contratto** tra:
 |--------|-----------------------------|
 | `UserEvToFunctCall2.js` | **Unico custode**: formato riga, tabella di default, resolve, override `.mmls`, API pure |
 | `gestures.js` | Recognizer puro: emette *intent*; **ascolta solo** le famiglie di gesto i cui `trigger` compaiono nella tabella attiva |
-| `boot2.js` | Orchestrazione: carica/aggiorna la tabella attiva, passa al recognizer l’insieme abilitato, dispatch → azioni |
+| `MAIN2.js` | Orchestrazione (omologo di `MAIN.js`): carica/aggiorna la tabella attiva, passa al recognizer l’insieme abilitato, dispatch → azioni |
 | Sezione `#events` del `.mmls` | Override didattici (non system) su righe esistenti |
 
-`boot2` **non** possiede la tabella; `gestures` **non** conosce proprietà matematiche né colonne tied/untied.
+`MAIN2` **non** possiede la tabella; `gestures` **non** conosce proprietà matematiche né colonne tied/untied.
 
 ---
 
@@ -83,7 +83,7 @@ flowchart LR
     T[tabella attiva]
     E[enabledRecognizerIntents]
   end
-  subgraph boot [boot2]
+  subgraph boot [MAIN2]
     R[reload / setTable]
     D[dispatchIntent]
   end
@@ -97,7 +97,7 @@ flowchart LR
   D -->|"resolveIntent + tied"| T
 ```
 
-1. Boot / post-preload / cambio `#events`: `boot2` ricostruisce la tabella attiva (`DEFAULT_TABLE` + override `.mmls`).
+1. Boot / post-preload / cambio `#events`: `MAIN2` ricostruisce la tabella attiva (`DEFAULT_TABLE` + override `.mmls`).
 2. Da quella tabella deriva `enabledRecognizerIntents` e lo passa a `gestures.setEnabledIntents`.
 3. Il recognizer ignora le famiglie disabilitate.
 4. Intent emessi → `dispatchIntent` → `resolveIntent(…, { tied })` → try-list della colonna corrente.
@@ -134,5 +134,5 @@ Recognizer (`gestures.js`):
 
 ## 8. Allineamento codice
 
-Implementazione corrente della pista: `app/js/UserEvToFunctCall2.js`, `app/js/input2/gestures.js`, `app/js/input2/boot2.js`.  
+Implementazione corrente della pista: `app/js/UserEvToFunctCall2.js`, `app/js/input2/gestures.js`, `app/js/MAIN2.js`.  
 Requisiti di prodotto e bozza tabella: [`new-interface-spec.md`](new-interface-spec.md) §7.4–7.5 (rimanda qui per il contratto L2).

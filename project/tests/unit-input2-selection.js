@@ -1,5 +1,5 @@
 /**
- * Unit test (Node): selectionManager + boot2 (tap deseleziona / lazo multi).
+ * Unit test (Node): selectionManager + MAIN2 (tap deseleziona / lazo multi).
  * Esegue: node project/tests/unit-input2-selection.js
  */
 'use strict';
@@ -21,7 +21,7 @@ function assert(cond, msg) {
 	}
 }
 
-/** Mini DOM sufficiente a esercitare selectionManager via boot2. */
+/** Mini DOM sufficiente a esercitare selectionManager via MAIN2. */
 function makeMiniDom() {
 	function makeEl(tag, attrs) {
 		const classSet = new Set();
@@ -260,9 +260,9 @@ console.log('unit-input2-selection');
 	);
 	// evita boot completo: document ready already complete, ma bindGestureRecognizer manca → ok
 	vm.runInNewContext(
-		fs.readFileSync(path.join(__dirname, '../../app/js/input2/boot2.js'), 'utf8'),
+		fs.readFileSync(path.join(__dirname, '../../app/js/MAIN2.js'), 'utf8'),
 		sandbox,
-		{ filename: 'boot2.js' }
+		{ filename: 'MAIN2.js' }
 	);
 
 	const Sel = sandbox.window.INPUT2._selectionHelpers;

@@ -451,7 +451,7 @@ Sdoppiamento per **sostituzione** dei moduli interaction legacy (`UserEvToFunctC
 
 1. `app/js/input2/gestures.js` — **recognizer puro** (Pointer Events → FSM → *intent*). Nessuna conoscenza del dominio matematico.
 2. `app/js/UserEvToFunctCall2.js` — **unico custode** della tabella gesture/tasto → azioni. Omologo di `UserEvToFunctCall.js`. Ogni riga ha due try-list: `actionsUntied` / `actionsTied` (scelta via `GLBsettings.tiedCanvas`). API pure unit-testabili.
-3. `app/js/input2/boot2.js` — orchestrazione: preload, cablaggio eventi, dispatch (`resolveIntent` + `TryOnePropertyByName` / builtin), stub dello strato escluso. **Non** possiede la tabella.
+3. `app/js/MAIN2.js` — omologo di `MAIN.js`: orchestrazione (preload, cablaggio eventi, dispatch `resolveIntent` + `TryOnePropertyByName` / builtin, stub dello strato escluso). **Non** possiede la tabella.
 
 ### 7.3 Requisiti di test sui gesti (Romualdo, 23/07)
 
@@ -499,7 +499,7 @@ Fonte: tabella Romualdo (untied vs tied) + ricette `gestToAction.mml` per le lis
 
 Lista vuota per lo stato corrente → no-op. Override `.mmls`: `actionsUntied` / `actionsTied`, oppure `actions` (copia su entrambe).
 
-**Discriminazione slice / lazo / drag**: come in `gestures.js` (slice rettilineo vs lazo chiuso vs drag da foglia). Tutti gli intent: `boot2.dispatchIntent` → `UserEvToFunctCall2.resolveIntent(…, {tied})`.
+**Discriminazione slice / lazo / drag**: come in `gestures.js` (slice rettilineo vs lazo chiuso vs drag da foglia). Tutti gli intent: `MAIN2.dispatchIntent` → `UserEvToFunctCall2.resolveIntent(…, {tied})`.
 
 Regole:
 

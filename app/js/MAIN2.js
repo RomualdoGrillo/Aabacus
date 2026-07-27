@@ -1,17 +1,17 @@
 /**
- * input2/boot2.js — orchestrazione input2 (sostituisce MAIN.js + layer interaction).
+ * MAIN2.js — omologo FrontEnd2 di MAIN.js (pista index2).
  *
- * STUB / globali definiti qui (file esclusi da index2.html):
+ * Orchestrazione input2: boot, stub dei globali che mancano senza MAIN.js,
+ * dispatch intent → tabella UserEvToFunctCall2, tied/untied, debug.
+ * Il recognizer puro resta in input2/gestures.js.
+ *
+ * STUB / globali definiti qui (MAIN.js escluso da index2.html):
  *   - canvasRole  — in MAIN.js; usata da alcuni path di ExpressionManager/UserEv…;
- *                   definita qui perché MAIN.js non è caricato.
- *   - ExtendAndInitialize / ExtendAndInitializeTree — in MAIN.js; chiamate da
- *                   ENODEclone / inject / Undo. Reimplementate qui (solo refresh
- *                   lucchetto sulle definizioni), senza DnD/sortable.
+ *   - ExtendAndInitialize / ExtendAndInitializeTree — refresh lucchetto, senza DnD/sortable;
  *   - conclude2   — analogo snello di PActxConclude senza game/sound/DnD.
  *
  * Smistamento gesture→action: tabella in UserEvToFunctCall2.js (tied/untied);
  * qui solo cablaggio. Selezione: `selectionManager` (condiviso con legacy).
- * Non modifica file fuori perimetro. Nessun git commit da questo modulo.
  */
 (function (global) {
 	'use strict';
