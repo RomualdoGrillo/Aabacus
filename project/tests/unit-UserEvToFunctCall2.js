@@ -211,13 +211,47 @@ const UNTIED = { tied: false };
 	);
 })();
 
-// ——— 5) API ———
+// ——— 5) enabledRecognizerIntents (spec L2: assenza trigger ⇒ non ascoltare) ———
+(function () {
+	const en = UEV2.enabledRecognizerIntents(table);
+	assert(
+		'default table abilita tap/lasso/dnd/slice/pinch',
+		en.tap && en.lasso && en.dnd && en.slice && en.pinch &&
+			en.slashHor && en.slashVert && en.pinchHor && en.pinchVert
+	);
+
+	const noLasso = table.filter(function (r) { return r.trigger !== 'lasso'; });
+	const en2 = UEV2.enabledRecognizerIntents(noLasso);
+	assert(
+		'senza riga lasso → lasso false, tap ancora true',
+		en2.lasso === false && en2.tap === true && en2.dnd === true,
+		JSON.stringify({ lasso: en2.lasso, tap: en2.tap })
+	);
+
+	const onlyTap = [
+		{ trigger: 'tap', alias: null, targetSource: null, actionsUntied: ['toggleSelect'], actionsTied: ['toggleSelect'], system: true }
+	];
+	const en3 = UEV2.enabledRecognizerIntents(onlyTap);
+	assert(
+		'solo tap → slice/pinch/lasso/dnd off',
+		en3.tap && !en3.lasso && !en3.dnd && !en3.slice && !en3.pinch
+	);
+
+	assert(
+		'listGestureTriggers esporta i trigger',
+		UEV2.listGestureTriggers(table).indexOf('lasso') !== -1 &&
+			UEV2.listGestureTriggers(noLasso).indexOf('lasso') === -1
+	);
+})();
+
+// ——— 6) API ———
 (function () {
 	assert(
 		'API pure esportate',
 		typeof UEV2.resolveIntent === 'function' &&
 			typeof UEV2.actionsForTiedState === 'function' &&
 			typeof UEV2.applyMmlsOverrides === 'function' &&
+			typeof UEV2.enabledRecognizerIntents === 'function' &&
 			Array.isArray(UEV2.DEFAULT_TABLE) &&
 			UEV2.DEFAULT_TABLE[0].actionsUntied &&
 			UEV2.DEFAULT_TABLE[0].actionsTied

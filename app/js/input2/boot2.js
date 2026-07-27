@@ -177,6 +177,20 @@
 	 * Le righe system non sono sovrascrivibili: violazioni → warning.
 	 * @returns {{table: Object[], violations: string[]}}
 	 */
+	/**
+	 * Propaga alla FSM i trigger presenti in tabella (spec L2 gesture-action-table.md).
+	 * Assenza di riga ⇒ recognizer non ascolta quella gesture.
+	 */
+	function syncRecognizerEnabledIntents() {
+		const rec = global.INPUT2._recognizer;
+		if (!rec || typeof rec.setEnabledIntents !== 'function') return;
+		const flags = global.INPUT2.enabledRecognizerIntents
+			? global.INPUT2.enabledRecognizerIntents(getActiveTable())
+			: null;
+		if (flags) rec.setEnabledIntents(flags);
+	}
+	global.INPUT2.syncRecognizerEnabledIntents = syncRecognizerEnabledIntents;
+
 	function reloadMmlsOverrides() {
 		if (typeof global.INPUT2.applyMmlsOverrides !== 'function') {
 			return { table: getActiveTable(), violations: [] };
@@ -189,6 +203,7 @@
 			console.warn('INPUT2: il .mmls tenta di rimappare un gesto di sistema, ignorato:', res.violations[i]);
 		}
 		invalidateAvailability();
+		syncRecognizerEnabledIntents();
 		refreshDebugPanel();
 		return res;
 	}
@@ -805,10 +820,14 @@
 			console.error('INPUT2: gestures.js non caricato');
 			return;
 		}
+		const initialEnabled = global.INPUT2.enabledRecognizerIntents
+			? global.INPUT2.enabledRecognizerIntents(getActiveTable())
+			: undefined;
 		global.INPUT2._recognizer = global.INPUT2.bindGestureRecognizer({
 			root: '#centralColumn',
 			onIntent: dispatchIntent,
-			isValidDnDTarget: isValidDnDTarget
+			isValidDnDTarget: isValidDnDTarget,
+			enabledIntents: initialEnabled
 		});
 
 		console.log('INPUT2 boot ok — preloadPath=', preloadPath);

@@ -253,6 +253,53 @@
 		return !!(name && BUILTIN_ACTIONS[name]);
 	}
 
+	/**
+	 * Trigger di gesto (campo `trigger` non null) presenti nella tabella.
+	 * Spec L2: project/specs/gesture-action-table.md §3 — assenza ⇒ recognizer non ascolta.
+	 * @param {Object[]} [table]
+	 * @returns {string[]}
+	 */
+	function listGestureTriggers(table) {
+		const rows = table || DEFAULT_TABLE;
+		const out = [];
+		const seen = {};
+		for (let i = 0; i < rows.length; i++) {
+			const t = rows[i] && rows[i].trigger != null ? String(rows[i].trigger) : '';
+			if (!t || seen[t]) continue;
+			seen[t] = true;
+			out.push(t);
+		}
+		return out;
+	}
+
+	/**
+	 * Flag per il recognizer: quali famiglie/assi ascoltare, derivati dalla tabella.
+	 * Lista azioni vuota ≠ riga assente: se il trigger c’è, il flag resta true.
+	 * @param {Object[]} [table]
+	 * @returns {{tap:boolean,lasso:boolean,dnd:boolean,slice:boolean,pinch:boolean,
+	 *   slashHor:boolean,slashVert:boolean,pinchHor:boolean,pinchVert:boolean}}
+	 */
+	function enabledRecognizerIntents(table) {
+		const set = {};
+		const triggers = listGestureTriggers(table);
+		for (let i = 0; i < triggers.length; i++) set[triggers[i]] = true;
+		const slashHor = !!(set.slashHor || set['slice.h']);
+		const slashVert = !!(set.slashVert || set['slice.v']);
+		const pinchHor = !!set.pinchHor;
+		const pinchVert = !!set.pinchVert;
+		return {
+			tap: !!set.tap,
+			lasso: !!set.lasso,
+			dnd: !!set.dnd,
+			slice: !!(slashHor || slashVert),
+			pinch: !!(pinchHor || pinchVert),
+			slashHor: slashHor,
+			slashVert: slashVert,
+			pinchHor: pinchHor,
+			pinchVert: pinchVert
+		};
+	}
+
 	function intentToTrigger(intent) {
 		if (!intent || !intent.type) return null;
 		if (intent.type === 'tap') return 'tap';
@@ -503,6 +550,8 @@
 		listTryActions: listTryActions,
 		applyMmlsOverrides: applyMmlsOverrides,
 		computeAvailability: computeAvailability,
+		listGestureTriggers: listGestureTriggers,
+		enabledRecognizerIntents: enabledRecognizerIntents,
 		intentToTrigger: intentToTrigger,
 		intentToAlias: intentToAlias,
 		getTable: getTable,
@@ -530,6 +579,8 @@
 	global.INPUT2.listTryActions = listTryActions;
 	global.INPUT2.applyMmlsOverrides = applyMmlsOverrides;
 	global.INPUT2.computeAvailability = computeAvailability;
+	global.INPUT2.listGestureTriggers = listGestureTriggers;
+	global.INPUT2.enabledRecognizerIntents = enabledRecognizerIntents;
 	global.INPUT2.intentToTrigger = intentToTrigger;
 	global.INPUT2.intentToAlias = intentToAlias;
 	global.INPUT2.getTable = getTable;

@@ -478,6 +478,8 @@ Regole:
 
 ### 7.5 Tabella gesture↔action (tied / untied)
 
+**Contratto architetturale L2 (GOV2):** struttura, significato e interazione tra moduli sono fissati in [`gesture-action-table.md`](gesture-action-table.md) (`!!!GOV level:2architecture`). In particolare: **se una gesture non compare come `trigger` nella tabella attiva, il recognizer non la ascolta** (diverso da lista azioni vuota → no-op in dispatch).
+
 Fonte: tabella Romualdo (untied vs tied) + ricette `gestToAction.mml` per le liste didattiche in tied. Custode: `UserEvToFunctCall2.js`. Discriminante runtime: `GLBsettings.tiedCanvas`.
 
 | Trigger / alias | Target | Azioni **untied** | Azioni **tied** | Classe |

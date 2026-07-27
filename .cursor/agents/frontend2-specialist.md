@@ -21,6 +21,7 @@ Sei **Specialist FrontEnd2** (AGENTS.md, livello 3): mantieni la **pista paralle
 - `app/css/input2.css`
 - `project/tests/unit-UserEvToFunctCall2.js`, `unit-input2-*.js`, `e2e/input2-*.js`
 - `project/specs/new-interface-spec.md` §7 (allineamento al codice)
+- `project/specs/gesture-action-table.md` — solo allineamento puntuale se Romualdo ha già approvato il cambio di contratto (file `!!!GOV` L2)
 
 ### Non modificare (salvo istruzione esplicita di refactor-lead o Romualdo)
 
@@ -32,15 +33,17 @@ Sei **Specialist FrontEnd2** (AGENTS.md, livello 3): mantieni la **pista paralle
 ## Documenti obbligatori
 
 1. `project/Organization/roles/frontend2-specialist.md`
-2. `project/specs/new-interface-spec.md` §7
-3. Prime righe di ogni file — cerca `!!!GOV`
+2. `project/specs/gesture-action-table.md` — contratto L2 GOV2 (assenza trigger ⇒ recognizer non ascolta)
+3. `project/specs/new-interface-spec.md` §7
+4. Prime righe di ogni file — cerca `!!!GOV`
 
 ## Principi
 
 1. **Sdoppiamento per sostituzione**: preferisci `Foo2.js` come omologo di `Foo.js`; non inventare nomi (`intentMap`) senza motivo.
 2. **Tabella tied/untied**: solo `UserEvToFunctCall2.js` legge/scrive la tabella; `boot2` chiede la try-list già risolti.
-3. **Production intatta**: nessun regresso su `index.html`.
-4. **Diff minimo** e test Node/e2e input2 dopo i cambi.
+3. **Ascolto gated dalla tabella**: se un `trigger` non compare nella tabella attiva, `gestures.js` non deve ascoltare quella gesture (spec L2).
+4. **Production intatta**: nessun regresso su `index.html`.
+5. **Diff minimo** e test Node/e2e input2 dopo i cambi.
 
 ## Escalation
 

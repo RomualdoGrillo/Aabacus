@@ -129,6 +129,7 @@ console.log('unit-input2-selection');
 			getElementById: () => null,
 			querySelector: () => null,
 			querySelectorAll: () => [],
+			elementFromPoint: () => null,
 			readyState: 'complete',
 			addEventListener: () => {}
 		},
@@ -147,6 +148,14 @@ console.log('unit-input2-selection');
 	];
 	assert(H.pointInPolygon({ x: 50, y: 50 }, square), 'centro dentro poligono');
 	assert(!H.pointInPolygon({ x: 150, y: 50 }, square), 'fuori a destra');
+
+	const enNoLasso = H.normalizeEnabledIntents({
+		tap: true, lasso: false, dnd: true, slice: true, pinch: true,
+		slashHor: true, slashVert: true, pinchHor: true, pinchVert: true
+	});
+	assert(H.isIntentEnabled(enNoLasso, 'lasso') === false, 'isIntentEnabled lasso off');
+	assert(H.isIntentEnabled(enNoLasso, 'tap') === true, 'isIntentEnabled tap on');
+	assert(H.isIntentEnabled(enNoLasso, 'slice', 'h') === true, 'isIntentEnabled slice.h on');
 }
 
 {
