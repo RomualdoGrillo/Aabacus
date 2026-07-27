@@ -212,6 +212,7 @@
 			try { refreshAvailability(); } catch (err) {
 				console.warn('INPUT2: refreshAvailability post-settings', err);
 			}
+			try { refreshDebugPanel(); } catch (err) { /* pannello opzionale */ }
 			// checkpoint post-preload (il take iniziale in boot è troppo presto: ajax)
 			try { if (typeof ssnapshot !== 'undefined' && ssnapshot.take) ssnapshot.take(); } catch (_) { /* ignore */ }
 			return ret;
