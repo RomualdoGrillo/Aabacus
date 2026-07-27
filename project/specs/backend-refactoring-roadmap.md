@@ -38,28 +38,35 @@ Tutta la post-applicazione (raffinamento del risultato dopo HW o pattern-matchin
 ### 1.4 propertyRegistry — dispatch per nome senza `window[nome]`
 `propertyRegistry.js` è l'unico canale di dispatch per nome (`af3f298`): descrittori `kind: 'unary' | 'dnd'`, `requiresCanvasCi` (gate didattico), ordine di registrazione = priorità **first-wins** per i target DnD (`8ed87c5`, PR #46 associativa generalizzata). Decisione: nessuna introspezione iniziale — il registro esplicito basta.
 
-### 1.5 Abbandono di `ENODEextend`
+### 1.5 TODO puntuali di `software-modules.md` §4 chiusi (sessione §2, branch `cursor/backend-refactoring-cf8b`)
+- `ENODE_dissolveContainer`: corretto il `return $children` su `const` di ramo (ritorna i figli, o jQuery vuoto se il nodo è stato rimosso).
+- Funzioni senza chiamanti attivi **rimosse** (recuperabili dalla history git): `ENODEfactorizeMinus`, `signsAsClasses`/`signsAsClassesSubtree`, `ENODENumericCdsAsText`, `getHardWiredEntry`/`listHardWiredPropertyNames`, `searchForProperty`. La strategia sulle tre rappresentazioni del segno resta una decisione aperta (per quello si sono preferite rimozioni a completamenti).
+- `importAll`: rispetta `$startNode` (default: body) ed è a passate successive fino a `IMPORT_MAX_PASSES` → import annidati risolti. Testbed dedicato: `app/Data/TestBedExamples/nestedImport.mmls` (due livelli di import).
+- `loadFileConvert`: usa `fileToLoadPar` se fornito (fallback `#fileToLoad`).
+- `AlltoMMLSstring`: serializza la sezione settings (`GLBsettings` come JSON inline); Shift+S → Shift+L ora preserva tool/gameMode/layout.
+- `ENODEModusPonens` completata: wrap in `and` della premessa se necessario, `matchedTF`/`$transform`/`msg` valorizzati; resta registrata come `modusPonensDnD` (esercizio: `TestBedExamples/ModusPonens.mmls`).
+
+### 1.6 Refine — ricetta esplicita e pulizia API (sessione §2)
+- Ogni kind di `REFINE_KINDS` può dichiarare, in alternativa a `eventKey`, una `recipe` esplicita `[{prop, arg}]` indipendente dalla sezione `#events` (`tryRecipeOnNode`).
+- Rimossi: alias `RepeatedRefine_c`, ramo legacy `key`/`selector` di `refineAfterProperty`, costanti retrocompatibili `REFINE_MARKER_*`/`REFINE_EVENT_KEY`, helper `refineEventKey`.
+- Rename della classe marker valutato e **scartato**: `Refine_c` (schema `Refine_<kind>`) resta coerente e non collide con le classi `mu_*`.
+
+### 1.7 Abbandono di `ENODEextend`
 I metodi aggiunti dinamicamente agli ENODE sono diventati **funzioni globali** (`7efe271`). Tipizzazione: typedef `ENode` con brand JSDoc, dogana `asENode`/`isENode` (`7b97e73`), JSDoc su interfacce di tutti i moduli + `ENODE.d.ts` (`deda509`), `@ts-check` sui moduli più stabili (`07b0935`), jsconfig (`259bfca`). Le funzioni `ENODE_*` accettano anche jQuery, eliminando il balletto `[0]` nei call-site (`0836d7c`). Fix collaterale: `ENODEpartCollect` restituisce PActx fallito a guardia mancata (`cddc4b7`).
 
 ---
 
 ## 2. Roadmap aperta (in ordine consigliato)
 
-### 2.1 Moduli veri (ex passo 8)
-Avvolgere i file in IIFE con namespace (`Aabacus.core`, `Aabacus.props`, …) oppure migrare a ES modules. Il prerequisito — registro esplicito al posto di `window[nome]` — è soddisfatto da `propertyRegistry.js`; resta da chiudere lo scope globale **strato per strato** (ordine naturale: core → rendering → properties → persistence → interaction). Decisione presa in chat: "non ora" al momento della discussione — è il primo candidato quando si riparte.
+### 2.1 Moduli veri (ex passo 8) — attende scelta e via libera di Romualdo
+Avvolgere i file in IIFE con namespace (`Aabacus.core`, `Aabacus.props`, …) oppure migrare a ES modules. Il prerequisito — registro esplicito al posto di `window[nome]` — è soddisfatto da `propertyRegistry.js`; resta da chiudere lo scope globale **strato per strato** (ordine naturale: core → rendering → properties → persistence → interaction).
 
-### 2.2 Refine, evoluzioni
-- Secondo kind tipizzato (es. forma normale); lettera libera, **non** riusare `n` (riservata a "non riordinare").
-- Ricetta di refine esplicita `{prop, arg}` indipendente dalla sezione `#events` dell'esercizio.
-- Pulizia API: rimuovere l'alias `RepeatedRefine_c`; valutare rename della classe marker.
+Proposta del refactor-lead (da approvare prima di partire): **IIFE + namespace**, non ES modules. Motivi: nessun cambio di pipeline (niente bundler/`type=module`), l'ordine `<script>` a strati di `index.html` resta la struttura portante, il dispatch per nome via registro già isola le proprietà, e `index2`/`newPM` (che leggono le globali di produzione) continuano a funzionare esponendo per ogni strato solo l'interfaccia documentata in `software-modules.md` §2. Primo passo suggerito: strato core (5 file), un file per commit.
 
-### 2.3 TODO puntuali di `software-modules.md` §4
-1. `importAll` (`SaveLoad.js`): ignora `$startNode` ed è a passata singola → import annidati irrisolti.
-2. `loadFileConvert` (`SaveLoad.js`): ignora `fileToLoadPar`, legge sempre `#fileToLoad`.
-3. `AlltoMMLSstring` (`SaveLoad.js`): Shift+S non serializza la sezione settings → l'esercizio ricaricato perde tool/gameMode/….
-4. `ENODE_dissolveContainer` (`ExpressionManager.js`): bug latente (`return $children` su `const` di ramo) — da correggere prima di riattivare i chiamanti.
-5. `ENODEModusPonens`: incompleto ma registrato come `modusPonensDnD`.
-6. Funzioni senza chiamanti attivi (rimozione o completamento): `ENODEfactorizeMinus`, `signsAsClasses*`, `ENODENumericCdsAsText`, `getHardWiredEntry`/`listHardWiredPropertyNames`, `searchForProperty`.
+### 2.2 Refine, evoluzioni residue
+- Secondo kind tipizzato (es. forma normale); lettera libera, **non** riusare `n` (riservata a "non riordinare"). L'infrastruttura (`recipe` esplicita, v. §1.6) è pronta: registrare il kind è una riga, ma **lettera e contenuto della ricetta li sceglie Romualdo**.
+
+(La ricetta esplicita `{prop, arg}` e la pulizia API sono fatte: v. §1.6. I TODO puntuali dell'ex §2.3 sono chiusi: v. §1.5.)
 
 ### 2.4 newPM/ — decidere il destino
 Motore PM sperimentale (match tracciato, bind eager, storyboard): integrarlo o sostituire il PM di produzione (`PMTutilities.js` + `PatternMatchingTrasform.js`). Finché convivono, ogni modifica alle interfacce elencate in `software-modules.md` §2.7 va verificata su entrambi.

@@ -195,7 +195,7 @@ Espone: `refreshOneInfix($ENODE)`, `refreshOneEmpty($ENODE)` — usate da: `Expr
 
 #### `TranslateFormat.js`
 Ruolo: trasformazioni di formato del segno (meno come carattere nel nome / classe CSS / operatore) e figli "glued" degli operatori unari.
-Espone: `refreshGlued($startNode?)` — usata da: `ExpressionManager.js`. (`ENODEfactorizeMinus` e `signsAsClasses*` sono definite ma oggi senza chiamanti attivi.)
+Espone: `refreshGlued($startNode?)` — usata da: `ExpressionManager.js`. (Le conversioni di formato del segno `ENODEfactorizeMinus` e `signsAsClasses*`, senza chiamanti attivi, sono state rimosse; la strategia sulle tre rappresentazioni del segno resta una decisione aperta.)
 
 #### `SVGlines.js`
 Ruolo: linee SVG di collegamento su `#svgContainer` (hint di match, debug).
@@ -243,7 +243,7 @@ Interfaccia:
 Ruolo: specializzazioni didattiche delle proprietà di calcolo (`tabelline`, `composePlusOnly`, `decomposeTens`), registrate come unary via `registerHardWiredMap`; usate dagli esercizi (es. `Crotti.mmls`). Le guardie restituiscono sempre un `newPActx()` fallito quando le precondizioni non valgono. Chiama `compose` del file principale.
 
 #### `refine.js`
-Ruolo: post-applicazione di una proprietà: sostituzione operando → transform, refresh visivo, e *cascade refining* tipizzato sui nodi marcati (`REFINE_KINDS`, oggi solo `'c'` = simplify), con limite `REFINE_MAX_STEPS` e warn anti-loop.
+Ruolo: post-applicazione di una proprietà: sostituzione operando → transform, refresh visivo, e *cascade refining* tipizzato sui nodi marcati (`REFINE_KINDS`, oggi solo `'c'` = simplify), con limite `REFINE_MAX_STEPS` e warn anti-loop. Ogni kind dichiara `markerClass` e la propria ricetta: `eventKey` (azioni della sezione `#events`, dipende dall'esercizio) oppure `recipe` esplicita `[{prop, arg}]` indipendente da `#events`.
 Espone:
 - `postApplyAfterProperty(PActx) → PActx` — usata da: `MAIN.js` (`PActxConclude`). Fa `refreshAndReplace` + `refineAfterProperty`.
 - `markNeedsRefine($nodes, kind='c')` — usata da: `HardWiredProperties.js`, `PMTutilities.js` (post-mark `p:c`).
@@ -257,8 +257,8 @@ Espone:
 Ruolo: persistenza locale: download/upload file, primitiva di iniezione MML nel DOM, risoluzione degli import, serializzazione della sessione.
 Espone:
 - `inject(MMLstring, $targetRoleOrENODE, containerRequirements?, toBeImported?)` — usata da: `preload.js`, `newPM/demo-fixtures.js`.
-- `importAll($startNode?)` — risolve i `[data-import]` — usata da: `preload.js`.
-- `AlltoMMLSstring() → string` — serializza palette/canvas/events/result (**non** i settings: il commento `//save settings` nel corpo è senza codice, v. TODO) — usata da: `MAIN.js` (Shift+S).
+- `importAll($startNode?)` — risolve i `[data-import]` nell'ambito dato (default body), a passate successive fino a `IMPORT_MAX_PASSES` (gli import annidati nei file appena caricati vengono risolti; testbed: `nestedImport.mmls`) — usata da: `preload.js`.
+- `AlltoMMLSstring() → string` — serializza palette/canvas/events/result/settings (`GLBsettings` come JSON inline, stesso formato letto da `injectAllMMLS`) — usata da: `MAIN.js` (Shift+S).
 - `saveTextAsFile(text, fileName)`, `loadFileConvert(fileToLoadPar, $targetNode?, fileSuffix?)` — usate da: `MAIN.js`.
 
 #### `preload.js`
@@ -383,13 +383,9 @@ Le globali intenzionali sono dichiarate e documentate in [app/js/state.js](../..
 Cosa resta da fare, verificato sul codice attuale (la storia della rifattorizzazione 2025-26 — bonifica codice morto, bug latenti, globali implicite, estrazione UI dal core, `state.js`, ordine a strati — è ricostruibile dai commit e non è più tracciata qui):
 
 1. **Moduli veri** (ex passo 8): avvolgere i file in IIFE con namespace (`Aabacus.core`, ...) o migrare a ES modules. Il prerequisito (registro esplicito al posto di `window[nome]`) è soddisfatto da `propertyRegistry.js`; resta da chiudere lo scope globale strato per strato.
-2. **`importAll` (`SaveLoad.js`)**: ignora il parametro `$startNode` (cerca sempre in `body`) ed è a passata singola: import annidati in file appena caricati possono restare irrisolti.
-3. **`loadFileConvert` (`SaveLoad.js`)**: ignora il parametro `fileToLoadPar` e legge sempre `#fileToLoad`.
-4. **`ENODEModusPonens` (`HardWiredProperties.js`)**: incompleto (il wrap in `and` della premessa è solo un commento) ma registrato come `modusPonensDnD`.
-5. **`newPM/`**: decidere il percorso di integrazione o sostituzione rispetto al PM di produzione (`PMTutilities.js` + `PatternMatchingTrasform.js`); finché convivono, ogni modifica alle interfacce elencate in §2.7 va verificata su entrambi.
-6. **Funzioni definite senza chiamanti attivi** (candidate a rimozione o a completamento): `ENODEfactorizeMinus`, `signsAsClasses`/`signsAsClassesSubtree` (`TranslateFormat.js`), `ENODENumericCdsAsText` (`math.js`), `getHardWiredEntry`/`listHardWiredPropertyNames` (`propertyRegistry.js`), `searchForProperty` (`UserEvToFunctCall.js`, l'unico uso in `HardWiredProperties.js` è in un blocco commentato).
-7. **`AlltoMMLSstring` (`SaveLoad.js`) non serializza i settings**: il salvataggio Shift+S produce un `.mmls` senza sezione settings (il commento `//save settings` è un TODO senza codice); al ricaricamento l'esercizio perde le impostazioni (tool, gameMode, ...).
-8. **`ENODE_dissolveContainer` (`ExpressionManager.js`, bug latente)**: il `return $children` finale riferisce una `const` dichiarata dentro il ramo `if` → `ReferenceError` a ogni chiamata. Oggi non scatta solo perché i due chiamanti (`ENODEfactorizeMinus`, `signsAsClasses` in `TranslateFormat.js`) sono a loro volta senza chiamanti attivi (voce 6). Da correggere prima di riattivare quei percorsi.
+2. **`newPM/`**: decidere il percorso di integrazione o sostituzione rispetto al PM di produzione (`PMTutilities.js` + `PatternMatchingTrasform.js`); finché convivono, ogni modifica alle interfacce elencate in §2.7 va verificata su entrambi.
+
+Voci chiuse dal branch `cursor/backend-refactoring-cf8b` (dettagli in `backend-refactoring-roadmap.md` §1): `importAll` multi-passata con scope, `loadFileConvert` rispetta `fileToLoadPar`, `ENODEModusPonens` completata, funzioni senza chiamanti attivi rimosse, `AlltoMMLSstring` serializza i settings, bug `ENODE_dissolveContainer` corretto.
 
 ### Criteri di verifica per ogni modifica strutturale
 
