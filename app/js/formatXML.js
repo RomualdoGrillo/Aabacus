@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.core + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 /**
  * Pretty-printer XML puro, senza dipendenze applicative: spezza la stringa
  * inserendo un a-capo tra ogni coppia di tag e indenta ogni riga con tabulazioni
@@ -35,3 +39,13 @@ function formatXml(xml) {
 
     return formatted;
 }
+
+//--- interfaccia del modulo (software-modules.md §2.1) ---
+var api = {
+	formatXml: formatXml
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.core = global.Aabacus.core || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
