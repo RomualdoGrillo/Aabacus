@@ -116,8 +116,8 @@ const UNTIED = { tied: false };
 
 	const shiftLTied = UEV2.resolveIntent({ type: 'key', key: 'L', shiftKey: true }, table, TIED);
 	assert(
-		'Shift+L tied → load (parità con MAIN.js / dopo preload)',
-		shiftLTied && aName(shiftLTied.actions[0]) === 'load'
+		'Shift+L tied → lista vuota (load solo untied; UI avvisa in MAIN2)',
+		shiftLTied && shiftLTied.actions.length === 0
 	);
 
 	const shiftL = UEV2.resolveIntent({ type: 'key', key: 'L', shiftKey: true }, table, UNTIED);

@@ -789,8 +789,17 @@
 			}
 			return;
 		}
-		// Riga presente ma lista vuota per lo stato tied/untied corrente → no-op
-		if (!entry.actions || entry.actions.length === 0) return;
+		// Riga presente ma lista vuota per lo stato tied/untied corrente
+		if (!entry.actions || entry.actions.length === 0) {
+			// Shift+L con canvas tied: load disabilitato — avvisa invece di silenzio
+			if (entry.alias === 'Shift+L' && isCanvasTied()) {
+				e.preventDefault();
+				window.alert(
+					'Per caricare nuovi contenuti svincola prima il canvas (lucchetto sulla definizione).'
+				);
+			}
+			return;
+		}
 
 		// Evita scroll frecce / comportamento browser su Mod+z
 		if (entry.alias === 'Mod+z' || (entry.trigger && String(entry.trigger).indexOf('slash') === 0) ||

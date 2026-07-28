@@ -137,9 +137,9 @@
 			trigger: null,
 			alias: 'Shift+L',
 			targetSource: null,
-			// Come MAIN.js: load sempre, indipendente da tied/untied (dopo preload tipicamente tied).
+			// Load solo a canvas svincolato; in tied MAIN2 avvisa di svincolare prima.
 			actionsUntied: ['load'],
-			actionsTied: ['load'],
+			actionsTied: [],
 			system: true
 		},
 		{

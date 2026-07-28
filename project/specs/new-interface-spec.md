@@ -159,7 +159,7 @@ Mappatura frecce: tipicamente via dati in `#events` (es. esercizi Crotti / dbo: 
 | E3  | Canc / Backspace         | Rimuove `.selected` non tied                     | `cancelSelected` → `ENODEremove`                                 |
 | E4  | Ctrl+B                   | “Baptize”: prompt nome → `ENODECreateDefinition` | prompt                                                           |
 | E5  | Shift+S                  | Salva `.mmls` o `.mml` della selezione           | `AlltoMMLSstring` / `ENODEcreateMathmlString` + `saveTextAsFile` |
-| E6  | Shift+L                  | Apre `#fileToLoad`                               | trigger click → `loadFileConvert`                                |
+| E6  | Shift+L                  | Untied: apre `#fileToLoad`; tied: avviso svincola | `load` solo untied; tied → alert in MAIN2                          |
 | E7  | Shift+D                  | Toggle `debugMode` (body.debug, palette hidden)  | `debugToggle`                                                    |
 
 
@@ -584,7 +584,7 @@ La G/A è l’unico punto in cui scrivere le associazioni (salvo eccezioni docum
 | Trigger / alias        | Target        | Azioni **untied** | Azioni **tied**        | Classe    |
 | ---------------------- | ------------- | ----------------- | ---------------------- | --------- |
 | Mod+z                  | —             | undo              | undo                   | sistema   |
-| Shift+L                | —             | load              | load                   | sistema   |
+| Shift+L                | —             | load              | — (avviso: svincola)   | sistema   |
 | Shift+S                | selected      | save              | save                   | sistema   |
 | tap                    | target tap    | toggleSelect      | toggleSelect           | sistema   |
 | lasso                  | targets lazo  | selectSiblings    | plusAssociate rtl      | sistema   |
