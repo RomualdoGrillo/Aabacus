@@ -526,40 +526,35 @@
 		return !!(typeof GLBsettings !== 'undefined' && GLBsettings.tiedCanvas);
 	}
 
+	const LOCK_TAP_SLOP_PX = 16;
+	/** @type {{ pointerId: number, x: number, y: number, enode: Element }|null} */
+	let lockGesture = null;
+	/** Evita doppio toggle (pointerup touch + click sintetico). */
+	let suppressLockClickUntil = 0;
+
 	/**
-	 * True se event.target è il lucchetto (.firstMember) di una definizione asimmetrica.
+	 * True se event.target è (o è dentro) il lucchetto (.firstMember) di una definizione.
 	 * @param {Event} event
 	 * @returns {JQuery|null} il parent [data-viseq=asymmetric], o null
 	 */
 	function definitionLockFromEvent(event) {
-		const $t = $(event.target);
-		if (!$t.is('.firstMember')) return null;
-		const $ENODE = $t.parent();
-		if (!$ENODE.length || typeof isDefinition !== 'function' || !isDefinition($ENODE[0])) return null;
-		return $ENODE;
+		const t = event && event.target;
+		if (!t || typeof t.closest !== 'function') return null;
+		const fm = t.closest('.firstMember');
+		if (!fm) return null;
+		const enode = fm.parentElement;
+		if (!enode || typeof isDefinition !== 'function' || !isDefinition(enode)) return null;
+		// Solo il firstMember diretto della definizione (non un antenato casuale)
+		if (!$(enode).children('.firstMember').is(fm)) return null;
+		return $(enode);
 	}
 
 	/**
-	 * Capture: sul lucchetto non far arrivare pointerdown al recognizer (#centralColumn).
-	 * Altrimenti setPointerCapture ritargetta pointerup/click su centralColumn e il
-	 * toggle tied/untied non scatta mai (click “perso”).
+	 * Toggle tied/untied — omologo di MAIN.js clickHandler sul lucchetto.
+	 * Su #canvas aggiorna GLBsettings.tiedCanvas e classi su canvas/result/events.
 	 */
-	function lockPointerDownCapture(event) {
-		if (definitionLockFromEvent(event)) {
-			event.stopPropagation();
-		}
-	}
-
-	/**
-	 * Click sul lucchetto (.firstMember di una definizione) — omologo di MAIN.js clickHandler.
-	 * Su #canvas alterna GLBsettings.tiedCanvas (e classi .untied su canvas/result/events);
-	 * sulle altre definizioni asimmetriche toggla solo .untied locale.
-	 * Necessario in index2 perché MAIN.js non è caricato: senza questo il lazo resta
-	 * sulla colonna tied (plusAssociate) e non seleziona.
-	 */
-	function clickHandler(event) {
-		const $ENODE = definitionLockFromEvent(event);
-		if (!$ENODE) return;
+	function toggleDefinitionLock($ENODE) {
+		if (!$ENODE || !$ENODE.length) return;
 
 		if ($ENODE.is('#canvas')) {
 			if (!GLBsettings.tiedCanvas) {
@@ -574,12 +569,62 @@
 		}
 		if (typeof ENODERefreshAsymmEq === 'function') ENODERefreshAsymmEq($ENODE);
 		if (typeof ssnapshot !== 'undefined' && ssnapshot.take) ssnapshot.take();
-		// Cambio colonna tied/untied ⇒ quali gesti ascoltare può cambiare
 		invalidateAvailability();
 		syncRecognizerEnabledIntents();
 		refreshDebugPanel();
 	}
+
+	/**
+	 * Capture: sul lucchetto non far arrivare pointerdown al recognizer (#centralColumn).
+	 * Altrimenti setPointerCapture ritargetta pointerup/click su centralColumn e il
+	 * toggle tied/untied non scatta mai (click “perso”).
+	 */
+	function lockPointerDownCapture(event) {
+		const $ENODE = definitionLockFromEvent(event);
+		if (!$ENODE) return;
+		event.stopPropagation();
+		if (typeof event.button === 'number' && event.button !== 0) return;
+		lockGesture = {
+			pointerId: event.pointerId,
+			x: event.clientX,
+			y: event.clientY,
+			enode: $ENODE[0]
+		};
+	}
+
+	/**
+	 * Su tablet il click sintetico è inaffidabile con touch-action:none + recognizer.
+	 * Attiva il lucchetto su pointerup (tap con poco movimento).
+	 */
+	function lockPointerUpCapture(event) {
+		if (!lockGesture || event.pointerId !== lockGesture.pointerId) return;
+		const g = lockGesture;
+		lockGesture = null;
+		event.stopPropagation();
+		const dx = event.clientX - g.x;
+		const dy = event.clientY - g.y;
+		if (Math.hypot(dx, dy) > LOCK_TAP_SLOP_PX) return;
+		toggleDefinitionLock($(g.enode));
+		suppressLockClickUntil = Date.now() + 450;
+	}
+
+	function lockPointerCancelCapture(event) {
+		if (lockGesture && event.pointerId === lockGesture.pointerId) {
+			lockGesture = null;
+		}
+	}
+
+	/**
+	 * Fallback click (mouse / ambienti senza pointerup gestito).
+	 */
+	function clickHandler(event) {
+		if (Date.now() < suppressLockClickUntil) return;
+		const $ENODE = definitionLockFromEvent(event);
+		if (!$ENODE) return;
+		toggleDefinitionLock($ENODE);
+	}
 	global.INPUT2.clickHandler = clickHandler;
+	global.INPUT2.toggleDefinitionLock = toggleDefinitionLock;
 
 	function dispatchIntent(intent) {
 		pushIntent(intent);
@@ -844,6 +889,8 @@
 		// Tied/untied e tastiera anche se il recognizer manca (test / degradazione)
 		document.addEventListener('keydown', onKeyDown, false);
 		document.addEventListener('pointerdown', lockPointerDownCapture, true);
+		document.addEventListener('pointerup', lockPointerUpCapture, true);
+		document.addEventListener('pointercancel', lockPointerCancelCapture, true);
 		document.addEventListener('click', clickHandler, false);
 		bindFileToLoad();
 		ensureDebugPanel().hidden = true;

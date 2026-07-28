@@ -8,6 +8,26 @@
 	user-select: none;
 }
 
+/*
+ * D1 (new-interface-spec): tie/untie — hit target ampio (≥44px), non solo lo sprite 16×16.
+ * ::after espande l’area attiva senza spostare l’icona jQuery UI.
+ */
+#centralColumn [data-viseq="asymmetric"] > .firstMember {
+	z-index: 30;
+	cursor: pointer;
+	touch-action: manipulation;
+}
+
+#centralColumn [data-viseq="asymmetric"] > .firstMember::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 44px;
+	height: 44px;
+	transform: translate(-50%, -50%);
+}
+
 /* Lama del taglio (path SVG in #svgContainer) */
 #svgContainer .input2-blade {
 	fill: none;

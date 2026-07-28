@@ -12,7 +12,7 @@
 # Error details
 
 ```
-Error: browserType.launch: Executable doesn't exist at /var/folders/4d/y3x9j24s6_n070mhwgpqc7k40000gp/T/cursor-sandbox-cache/2431f99eebbbec855434311fc72600d9/playwright/chromium_headless_shell-1228/chrome-headless-shell-mac-arm64/chrome-headless-shell
+Error: browserType.launch: Executable doesn't exist at /var/folders/4d/y3x9j24s6_n070mhwgpqc7k40000gp/T/cursor-sandbox-cache/8bd6d66589e795d5a83ef27d3a20bcd4/playwright/chromium_headless_shell-1228/chrome-headless-shell-mac-arm64/chrome-headless-shell
 ╔════════════════════════════════════════════════════════════╗
 ║ Looks like Playwright was just installed or updated.       ║
 ║ Please run the following command to download new browsers: ║
