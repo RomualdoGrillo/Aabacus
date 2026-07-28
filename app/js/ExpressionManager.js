@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.core + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 // In questo file dovrebbero comparire tutte le funzioni che manipolano l'espressione matematica
 //todo: in teoria tutte le operazioni sull'espressione dovrebbero avvenire tramite queste funzioni, anche se per ora questa riformattazione del codice non è ancora avvenuta
 //todo: cercare,tutti i punti in cui il codice  al di fuori di questo file e sostituire la manipolazione diretta di elementi html che costituiscono l'espressione matematica con chiamate a questo file 
@@ -1466,3 +1470,71 @@ function getDefaultTool(){
 	}
 	return $defaultTool;
 }
+
+//--- interfaccia del modulo (software-modules.md §2.1) ---
+var api = {
+	symbols: symbols,
+	//primitive strutturali
+	ENODEremove: ENODEremove,
+	ENODEinsertBefore: ENODEinsertBefore,
+	ENODEinsertAfter: ENODEinsertAfter,
+	ENODEappend: ENODEappend,
+	ENODEprepend: ENODEprepend,
+	ENODEreplaceNode: ENODEreplaceNode,
+	ENODEswapEqMembers: ENODEswapEqMembers,
+	ENODEcreateSymbol: ENODEcreateSymbol,
+	identifierToENODE: identifierToENODE,
+	dummyParser: dummyParser,
+	getExpressionRootNode: getExpressionRootNode,
+	//navigazione e stato
+	ENODEparent: ENODEparent,
+	ENODEtiedDef: ENODEtiedDef,
+	isDefinition: isDefinition,
+	ENODEfrozenDef: ENODEfrozenDef,
+	ENODECreateDefinition: ENODECreateDefinition,
+	//accesso ai nodi
+	ENODE_getRoles: ENODE_getRoles,
+	ENODE_getChildren: ENODE_getChildren,
+	ENODE_getName: ENODE_getName,
+	ENODE_setName: ENODE_setName,
+	ENODE_addRole: ENODE_addRole,
+	ENODE_dissolveContainer: ENODE_dissolveContainer,
+	//sostituzione e forAll
+	ENODEReplaceLink: ENODEReplaceLink,
+	ENODEReplaceAll: ENODEReplaceAll,
+	GetforAllContentRole: GetforAllContentRole,
+	GetforAllHeader: GetforAllHeader,
+	ENODEForThisPar: ENODEForThisPar,
+	createForThis: createForThis,
+	//compatibilità drop
+	typeOk: typeOk,
+	validTargetsFromOpened: validTargetsFromOpened,
+	getNumOfPlaces: getNumOfPlaces,
+	isTherePlaceForAnother: isTherePlaceForAnother,
+	//clonazione e wrap
+	ENODEclone: ENODEclone,
+	prototypeSearch: prototypeSearch,
+	wrapIfNeeded: wrapIfNeeded,
+	wrapWithOperation: wrapWithOperation,
+	wrapWithDefIfNeededreturnTarget: wrapWithDefIfNeededreturnTarget,
+	checkSiblings: checkSiblings,
+	//valori e confronto
+	ENODEsToVal: ENODEsToVal,
+	ValToENODEs: ValToENODEs,
+	ENODEgetNameWithSign: ENODEgetNameWithSign,
+	ENODErename: ENODErename,
+	ENODEEqual: ENODEEqual,
+	compareExtENODE: compareExtENODE,
+	//refresh
+	RefreshEmptyInfixBraketsGlued: RefreshEmptyInfixBraketsGlued,
+	ENODEselectable: ENODEselectable,
+	ENODERefreshAsymmEq: ENODERefreshAsymmEq,
+	ENODEnodesAddClass: ENODEnodesAddClass,
+	ENODEapplyFunctToTree: ENODEapplyFunctToTree,
+	getDefaultTool: getDefaultTool
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.core = global.Aabacus.core || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
