@@ -156,54 +156,7 @@
 	};
 
 	/**
-	 * Legge la sezione #events (iniettata dal preload .mmls) e trasforma gli
-	 * eventtoaction in override della tabella (spec §7.4-7.5): l'evento può
-	 * essere un nome di gesto (slashVert, pinchHor, …) o un alias tastiera.
-	 * I nomi che non corrispondono a nessuna riga restano al path legacy
-	 * (tryEventActionsOnNode) e qui vengono ignorati.
-	 * @returns {Object} overrides per applyMmlsOverrides
-	 */
-	function readMmlsGestureOverrides() {
-		const overrides = {};
-		$('#events').find('[data-enode="eventtoaction"]').each(function () {
-			let eventName;
-			try {
-				const $role = ENODE_getRoles(this, '.event');
-				if ($role.length !== 1) return;
-				const ev = $role.children()[0];
-				if (ev === undefined) return;
-				eventName = ENODE_getName(ev);
-			} catch (err) { return; }
-			if (!eventName) return;
-
-			const actions = [];
-			const $actions = ENODE_getRoles(this, '.actions').children();
-			for (let j = 0; j < $actions.length; j++) {
-				try {
-					const name = ENODE_getName(ENODE_getRoles($actions[j], '.function').children()[0]);
-					if (!name) continue;
-					const action = { name: name };
-					// secondo argomento ltr/rtl/int (come tryEventActionsOnNode)
-					try {
-						const val = ENODE_getName(ENODE_getRoles($actions[j], '.values').children()[0]);
-						if (val) action.val = val;
-					} catch (errVal) { /* .values assente: ok */ }
-					actions.push(action);
-				} catch (err) { /* action malformata: ignora */ }
-			}
-			if (actions.length) overrides[eventName] = { actions: actions };
-		});
-		return overrides;
-	}
-
-	/**
-	 * Ricostruisce la tabella attiva dagli override del .mmls corrente.
-	 * Le righe system non sono sovrascrivibili: violazioni → warning.
-	 * @returns {{table: Object[], violations: string[]}}
-	 */
-	/**
-	 * Propaga alla FSM i trigger presenti in tabella (spec L2 gesture-action-table.md).
-	 * Assenza di riga ⇒ recognizer non ascolta quella gesture.
+	 * Propaga alla FSM i trigger attivi nella colonna tied/untied corrente (spec L2 G/A).
 	 */
 	function syncRecognizerEnabledIntents() {
 		const rec = global.INPUT2._recognizer;
@@ -215,24 +168,64 @@
 	}
 	global.INPUT2.syncRecognizerEnabledIntents = syncRecognizerEnabledIntents;
 
+	/**
+	 * Tentativo load G/A da events JSON (mmls v2). Ritorna null se non applicabile.
+	 * @returns {{table:Object[], violations:string[]}|null}
+	 */
+	function tryLoadMmlsV2GA() {
+		if (typeof GLBsettings !== 'undefined' && GLBsettings && Number(GLBsettings.mmlsVersion) === 2) {
+			/* ok */
+		} else if (!$('#events').length) {
+			return null;
+		}
+		// Testo grezzo della sezione #events (prototipo v2: JSON, non eventtoaction)
+		let raw = '';
+		try {
+			raw = ($('#events').text() || '').trim();
+		} catch (err) { return null; }
+		if (!raw || raw.charAt(0) !== '{') return null;
+		let parsed;
+		try {
+			parsed = JSON.parse(raw);
+		} catch (err) { return null; }
+		if (!parsed || parsed.format !== 'gestureActionTable' || !Array.isArray(parsed.rows)) {
+			return null;
+		}
+		if (typeof global.INPUT2.setTable !== 'function') return null;
+		const table = global.INPUT2.setTable(parsed.rows);
+		if (!global.INPUT2.setTable._main2Wrapped) onTableChanged();
+		return { table: table, violations: [] };
+	}
+
+	/**
+	 * Dopo injectAllMMLS / settings (backend esistente): aggiorna la G/A.
+	 * - mmls v2 → JSON in #events
+	 * - mmls v1 → importMmlsV1 (solo colonna tied); index.html resta intatto
+	 * @returns {{table: Object[], violations: string[]}}
+	 */
 	function reloadMmlsOverrides() {
-		if (typeof global.INPUT2.applyMmlsOverrides !== 'function') {
+		// v2: tabella G/A completa dal file
+		if (!(global.INPUT2.isMmlsEventsV1 && global.INPUT2.isMmlsEventsV1())) {
+			const v2 = tryLoadMmlsV2GA();
+			if (v2) return v2;
+		}
+
+		// v1: backend ha già riempito #events con eventtoaction → solo actionsTied
+		if (typeof global.INPUT2.importMmlsV1ToGA !== 'function') {
+			console.warn('INPUT2: importMmlsV1.js non caricato — G/A non aggiornata dal .mmls');
 			return { table: getActiveTable(), violations: [] };
 		}
-		const overrides = readMmlsGestureOverrides();
-		const res = global.INPUT2.applyMmlsOverrides(
-			global.INPUT2.DEFAULT_TABLE, overrides);
-		// Scrive sul custode; se il wrap MAIN2 è attivo aggiorna anche recognizer + debug
+		const res = global.INPUT2.importMmlsV1ToGA(global.INPUT2.DEFAULT_TABLE);
 		if (typeof global.INPUT2.setTable === 'function') {
 			global.INPUT2.setTable(res.table);
 			if (!global.INPUT2.setTable._main2Wrapped) onTableChanged();
 		} else {
 			onTableChanged();
 		}
-		for (let i = 0; i < res.violations.length; i++) {
-			console.warn('INPUT2: il .mmls tenta di rimappare un gesto di sistema, ignorato:', res.violations[i]);
+		for (let i = 0; i < (res.violations || []).length; i++) {
+			console.warn('INPUT2: import mmls v1 ignora riga system:', res.violations[i]);
 		}
-		return res;
+		return { table: res.table, violations: res.violations || [] };
 	}
 	global.INPUT2.reloadMmlsOverrides = reloadMmlsOverrides;
 
@@ -821,10 +814,10 @@
 			const fileName = fileToLoad.name;
 			const parts = fileName.split('.');
 			const fileSuffix = parts[parts.length - 1];
+			// Backend esistente (SaveLoad): async → injectAllMMLS → GLBsettingsToInterface
+			// (wrappata) → reloadMmlsOverrides (v1→tied o v2 JSON). Non rileggere qui.
 			loadFileConvert(fileToLoad, $($target[0]), fileSuffix);
 			this.value = '';
-			// il file può ridefinire #events: riapplica override e disponibilità
-			try { reloadMmlsOverrides(); } catch (err) { invalidateAvailability(); }
 		});
 	}
 

@@ -137,8 +137,9 @@
 			trigger: null,
 			alias: 'Shift+L',
 			targetSource: null,
+			// Come MAIN.js: load sempre, indipendente da tied/untied (dopo preload tipicamente tied).
 			actionsUntied: ['load'],
-			actionsTied: [],
+			actionsTied: ['load'],
 			system: true
 		},
 		{

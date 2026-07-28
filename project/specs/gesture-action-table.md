@@ -23,7 +23,7 @@ Eccezioni ammesse solo con motivo preciso, ad esempio:
 | `UserEvToFunctCall2.js` | **Unico custode** runtime della tabella G/A (default, `getTable`/`setTable`, resolve, API pure) |
 | `gestures.js` | Recognizer puro: ascolta solo i trigger con try-list non vuota nella **colonna attiva** |
 | `MAIN2.js` | Orchestrazione: carica G/A, sync recognizer, dispatch, toggle tied |
-| Import **mmls v1** (modulo dedicato, da implementare) | Solo adattatore legacy → scrive/sovrascrive la colonna **tied** |
+| Import **mmls v1** (`app/js/input2/importMmlsV1.js`) | Adattatore legacy → scrive/sovrascrive solo la colonna **tied** dopo load backend |
 | File **mmls v2** | Sezione `events` = JSON della tabella G/A |
 
 `MAIN2` e `gestures` **non** possiedono la tabella; non si inventano mappe parallele (`intentMap`, ecc.).
@@ -189,6 +189,6 @@ Da implementare: modulo **import mmls v1**; reader **events JSON v2** in catena 
 |-------|------|
 | Runtime G/A + ascolto per colonna | `UserEvToFunctCall2.js`, `gestures.js`, `MAIN2.js` |
 | Prototipo mmls v2 | `app/Data/exercises/prop_comm_gen_mmlsv2.mmls` |
-| Import v1 dedicato | **TODO** (oggi `readMmlsGestureOverrides` in MAIN2 applica `{actions}` su entrambe le colonne — da sostituire) |
-| Reader events JSON v2 | **TODO** |
+| Import v1 dedicato | `importMmlsV1.js` — usato da `MAIN2.reloadMmlsOverrides` dopo preload/Shift+L (SaveLoad) |
+| Reader events JSON v2 | Parziale in `MAIN2.tryLoadMmlsV2GA` (prototipo); da irrigidire |
 | Doppio click → azioni | ancora nel codice (`MAIN.js`); fuori G/A — da migrare o documentare come eccezione |
