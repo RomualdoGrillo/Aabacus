@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.rendering + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //Le conversioni di formato del segno (ENODEfactorizeMinus, signsAsClasses,
 //signsAsClassesSubtree) erano definite qui ma senza chiamanti attivi: rimosse
 //(software-modules.md §4 voce 6, recuperabili dalla history git). La strategia
@@ -48,3 +52,13 @@ function refreshGlued($startNode) {
         $toBeGlued.addClass('glued');
     });
 }
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	refreshGlued: refreshGlued
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.rendering = global.Aabacus.rendering || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
