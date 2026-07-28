@@ -10,7 +10,7 @@ Documenti correlati: [core-concepts.md](core-concepts.md) (concetti fondamentali
 
 Vincoli di fondo, comuni a tutti i moduli:
 
-- **Nessun sistema di moduli**: i file sono caricati con `<script>` in `app/index.html`; ogni funzione e variabile top-level è globale. I riferimenti incrociati si risolvono a tempo di chiamata, quindi l'ordine di caricamento conta solo per il codice eseguito al boot.
+- **Moduli IIFE con namespace** (passo 8, eseguito): i file sono caricati con `<script>` in `app/index.html`; ogni file è avvolto in una IIFE che tiene **privati** gli helper interni ed esporta l'interfaccia pubblica (documentata in §2) su `Aabacus.<strato>` (`core`, `rendering`, `props`, `persistence`, `session`, `input`) **e** come alias su `window` (compatibilità: `index2`, `newPM/`, test, console). I riferimenti incrociati si risolvono a tempo di chiamata via alias globali, quindi l'ordine di caricamento conta solo per il codice eseguito al boot. Unica eccezione non avvolta: `state.js` (stato condiviso esplicito). Le dichiarazioni ambient per l'editor TS sono in `types/globals.d.ts` (firme lasche `any`, da raffinare).
 - **Il DOM è il modello dati**: l'espressione è un albero di `div[data-enode]` (ENODE) dentro `#canvasRole`. Attributi (`data-enode`, `data-type`, `title`/`mark`, `data-import`) e classi CSS codificano sia semantica sia stato UI. Le operazioni sugli ENODE sono funzioni globali (`ENODE_getRoles(node)`, `ENODE_getChildren(node)`, ...) che ricevono il nodo come primo parametro; il vecchio meccanismo `ENODEextend` (metodi copiati sui nodi con `$.extend`) è stato eliminato.
 - **Due motori di trasformazione**: proprietà *hard-wired* (funzioni JS registrate in `propertyRegistry.js`) e proprietà *pattern-based* (dichiarate come `forAll`+`eq` nel canvas, applicate dal pattern matcher). Entrambe producono un `PActx` e convergono in `PActxConclude` → `refine.js`.
 
@@ -382,10 +382,11 @@ Le globali intenzionali sono dichiarate e documentate in [app/js/state.js](../..
 
 Cosa resta da fare, verificato sul codice attuale (la storia della rifattorizzazione 2025-26 — bonifica codice morto, bug latenti, globali implicite, estrazione UI dal core, `state.js`, ordine a strati — è ricostruibile dai commit e non è più tracciata qui):
 
-1. **Moduli veri** (ex passo 8): avvolgere i file in IIFE con namespace (`Aabacus.core`, ...) o migrare a ES modules. Il prerequisito (registro esplicito al posto di `window[nome]`) è soddisfatto da `propertyRegistry.js`; resta da chiudere lo scope globale strato per strato.
-2. **`newPM/`**: decidere il percorso di integrazione o sostituzione rispetto al PM di produzione (`PMTutilities.js` + `PatternMatchingTrasform.js`); finché convivono, ogni modifica alle interfacce elencate in §2.7 va verificata su entrambi.
+1. **`newPM/`** (FUTURIBILE): decidere il percorso di integrazione o sostituzione rispetto al PM di produzione (`PMTutilities.js` + `PatternMatchingTrasform.js`); finché convivono, ogni modifica alle interfacce elencate in §2.7 va verificata su entrambi.
+2. **Firme in `types/globals.d.ts`**: oggi tutte `any`; raffinare gradualmente insieme all'estensione di `@ts-check`.
+3. **Alias globali su `window`**: rimuovibili solo quando `index2`/`newPM` (e i test) passeranno a `Aabacus.<strato>`; finché esistono, l'incapsulamento reale è dato dai soli helper privatizzati.
 
-Voci chiuse dal branch `cursor/backend-refactoring-cf8b` (dettagli in `backend-refactoring-roadmap.md` §1): `importAll` multi-passata con scope, `loadFileConvert` rispetta `fileToLoadPar`, `ENODEModusPonens` completata, funzioni senza chiamanti attivi rimosse, `AlltoMMLSstring` serializza i settings, bug `ENODE_dissolveContainer` corretto.
+Voci chiuse dal branch `cursor/backend-refactoring-cf8b` (dettagli in `backend-refactoring-roadmap.md` §1): **moduli veri** (IIFE + namespace su tutti gli strati, passo 8), `importAll` multi-passata con scope, `loadFileConvert` rispetta `fileToLoadPar`, `ENODEModusPonens` completata, funzioni senza chiamanti attivi rimosse, `AlltoMMLSstring` serializza i settings, bug `ENODE_dissolveContainer` corretto.
 
 ### Criteri di verifica per ogni modifica strutturale
 

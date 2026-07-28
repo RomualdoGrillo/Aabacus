@@ -73,6 +73,14 @@ Tutta la post-applicazione (raffinamento del risultato dopo HW o pattern-matchin
 
 I metodi aggiunti dinamicamente agli ENODE sono diventati **funzioni globali** (`7efe271`). Tipizzazione: typedef `ENode` con brand JSDoc, dogana `asENode`/`isENode` (`7b97e73`), JSDoc su interfacce di tutti i moduli + `ENODE.d.ts` (`deda509`), `@ts-check` sui moduli più stabili (`07b0935`), jsconfig (`259bfca`). Le funzioni `ENODE_`* accettano anche jQuery, eliminando il balletto `[0]` nei call-site (`0836d7c`). Fix collaterale: `ENODEpartCollect` restituisce PActx fallito a guardia mancata (`cddc4b7`).
 
+### 1.8 Moduli veri (ex passo 8) — eseguito (IIFE + namespace, approvato da Romualdo)
+
+- Tutti i file di `app/js` (tranne `state.js`, volutamente globale) sono avvolti in IIFE: helper interni **privati**, interfaccia pubblica esportata su `Aabacus.<strato>` (`core`, `rendering`, `props`, `persistence`, `session`, `input`) e come **alias su `window`** per compatibilità (index2, `newPM/`, test, dispatch da console). Un commit per file.
+- Scelta IIFE (non ES modules): nessun cambio di pipeline, ordine `<script>` invariato, `index2`/`newPM` intatti.
+- Privatizzazioni principali: registro `hwPropertyRegistry`/`hwDnDRegistrationOrder` (dispatch solo via api del registry), bus `GLBDnD`, 18 helper del PM in `PMTutilities.js`, `findTgt`/`apply` DnD di `HardWiredProperties.js` (raggiungibili solo via registry), `canvasRole` (nessun uso esterno residuo).
+- Editor TS: dichiarazioni ambient dell'interfaccia pubblica in `types/globals.d.ts` (firme `any`, da raffinare); il `jsconfig` le includeva già.
+- Non toccati: `app/js/input2/**`, `app/js/newPM/**`, `app/index.html`, `app/index2.html` (verificato boot di `index2` senza errori).
+
 ---
 
 
@@ -81,11 +89,9 @@ I metodi aggiunti dinamicamente agli ENODE sono diventati **funzioni globali** (
 
 
 
-### 2.1 Moduli veri (ex passo 8) — attende scelta e via libera di Romualdo
+### 2.1 Moduli veri — FATTO (v. §1.8)
 
-Avvolgere i file in IIFE con namespace (`Aabacus.core`, `Aabacus.props`, …) oppure migrare a ES modules. Il prerequisito — registro esplicito al posto di `window[nome]` — è soddisfatto da `propertyRegistry.js`; resta da chiudere lo scope globale **strato per strato** (ordine naturale: core → rendering → properties → persistence → interaction).
-
-Proposta del refactor-lead (da approvare prima di partire): **IIFE + namespace**, non ES modules. Motivi: nessun cambio di pipeline (niente bundler/`type=module`), l'ordine `<script>` a strati di `index.html` resta la struttura portante, il dispatch per nome via registro già isola le proprietà, e `index2`/`newPM` (che leggono le globali di produzione) continuano a funzionare esponendo per ogni strato solo l'interfaccia documentata in `software-modules.md` §2. Primo passo suggerito: strato core (5 file), un file per commit.  
+Approvato da Romualdo (IIFE + namespace) ed eseguito su tutti gli strati. Code residue, non urgenti: raffinare le firme in `types/globals.d.ts`; rimuovere gli alias globali su `window` quando `index2`/`newPM`/test passeranno a `Aabacus.<strato>`.
 
 
 ### 2.2  Refine, evoluzioni residue
