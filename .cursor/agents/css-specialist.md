@@ -1,7 +1,7 @@
 ---
 name: css-specialist
 description: Specialista CSS per Aabacus. Refactor stili ENODE/canvas/IDE; modifica libera app/css/; legge JS per accoppiamenti; propone o applica fix cross-file minimali. Scheda ruolo in project/Organization/roles/css-specialist.md.
-model: inherit
+model: cursor-grok-4.5-high
 readonly: false
 is_background: false
 ---
