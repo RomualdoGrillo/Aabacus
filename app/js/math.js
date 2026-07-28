@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.core + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 /**
  * Scompone un numero intero nei suoi fattori primi (funzione ricorsiva).
  * Il secondo parametro non dichiarato (arguments[1]) è l'accumulatore usato
@@ -47,3 +51,14 @@ function separateTensHundreds(n) {
   }
   return arr;
 }
+
+//--- interfaccia del modulo (software-modules.md §2.1) ---
+var api = {
+	primeFactorization: primeFactorization,
+	separateTensHundreds: separateTensHundreds
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.core = global.Aabacus.core || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
