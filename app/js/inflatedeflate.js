@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.core + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //i tag foglia sono definiti nella costante "symbols" (ExpressionManager.js)
 
 
@@ -255,3 +259,15 @@ function $parserForMixedMMLHTML(toBeParsed){
 	}
 	return $workTree
 }
+
+//--- interfaccia del modulo (software-modules.md §2.1) ---
+var api = {
+	ENODEcreateMathmlString: ENODEcreateMathmlString,
+	createConvertedTree: createConvertedTree,
+	$parserForMixedMMLHTML: $parserForMixedMMLHTML
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.core = global.Aabacus.core || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
