@@ -1,4 +1,8 @@
 // @ts-check
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.props + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 // Registro proprietà hard-wired: descrittori tipizzati.
 // - kind 'unary': tastiera / #events via TryOnePropertyByName (apply($ENODE, firstVal?, img?))
 // - kind 'dnd': drag&drop (findTgt + apply(dragged, target, dropped?))
@@ -108,3 +112,16 @@ function registerHardWiredMap(map) {
 		})
 	}
 }
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	registerHardWired: registerHardWired,
+	registerHardWiredMap: registerHardWiredMap,
+	getHardWired: getHardWired,
+	listDnDProperties: listDnDProperties
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.props = global.Aabacus.props || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
