@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.input + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //UI Event to function call
 //traduce i comandi dell'utente, in questo caso inpartiti via mouse e tastiera,
 // in chiamate a funzioni del modulo ENODE
@@ -133,3 +137,15 @@ function searchEventHandler(event){// trova la definizione della proprietà
 //refineAfterProperty / markNeedsRefine: app/js/refine.js (post-applicazione delle proprietà)
 //searchForProperty (ricerca di una deftrue per campo/valore) era definita qui senza
 //chiamanti attivi: rimossa (software-modules.md §4 voce 6, recuperabile dalla history git).
+
+//--- interfaccia del modulo (software-modules.md §2.5) ---
+var api = {
+	tryEventActionsOnNode: tryEventActionsOnNode,
+	keyboardEvToFC: keyboardEvToFC,
+	getDnDpropEnabled: getDnDpropEnabled
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.input = global.Aabacus.input || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
