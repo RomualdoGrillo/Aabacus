@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.persistence + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 /**
  * Bootstrap dei contenuti: scarica via AJAX (GET asincrona) il file indicato e ne
  * inietta le sezioni con injectAllMMLS; in caso di errore mostra un alert.
@@ -200,3 +204,16 @@ function loadAjaxAndInject(myUrl,target,toBeImported) {
 
 //La parte settings-UI (GLBsettingsToInterface, populateDropdown, listener su #settings)
 //vive in settings.js: preload.js resta solo loader.
+
+//--- interfaccia del modulo (software-modules.md §2.4) ---
+var api = {
+	preloadAll: preloadAll,
+	injectAll: injectAll,
+	injectAllMMLS: injectAllMMLS,
+	loadAjaxAndInject: loadAjaxAndInject
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.persistence = global.Aabacus.persistence || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
