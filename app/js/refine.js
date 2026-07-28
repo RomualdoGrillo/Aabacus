@@ -1,4 +1,8 @@
 // @ts-check
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.props + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 // Post-applicazione proprietà (Property Application Mode): replace + refine.
 // Strato properties (software-modules.md).
 //
@@ -211,3 +215,19 @@ function postApplyAfterProperty(PActx) {
 	}
 	return PActx
 }
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	REFINE_KINDS: REFINE_KINDS,
+	markNeedsRefine: markNeedsRefine,
+	clearRefineMarkers: clearRefineMarkers,
+	trySimplifyNode: trySimplifyNode,
+	refreshAndReplace: refreshAndReplace,
+	refineAfterProperty: refineAfterProperty,
+	postApplyAfterProperty: postApplyAfterProperty
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.props = global.Aabacus.props || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
