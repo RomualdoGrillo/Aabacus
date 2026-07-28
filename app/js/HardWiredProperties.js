@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.props + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //newPActx è definita in PMTutilities.js: punto comune per proprietà hard-wired e pattern-based
 // Le proprietà DnD si registrano in fondo al file (dopo le implementazioni) via registerHardWired.
 
@@ -1250,3 +1254,19 @@ registerHardWiredMap({
 		requiresCanvasCi: d.requiresCanvasCi !== false
 	})
 })
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	OpIsAssociative: OpIsAssociative,
+	validCandidatesForPatternDrop: validCandidatesForPatternDrop,
+	forThisPar_focus_nofocus: forThisPar_focus_nofocus,
+	compose: compose,
+	decomposeInAProduct: decomposeInAProduct,
+	decomposeInASum: decomposeInASum,
+	evaluateComparison: evaluateComparison
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.props = global.Aabacus.props || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
