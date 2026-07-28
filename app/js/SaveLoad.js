@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.persistence + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //Load/Save from https://thiscouldbebetter.wordpress.com/2012/12/18/loading-editing-and-saving-a-text-file-in-html5-using-javascrip/
 
 /**
@@ -206,3 +210,17 @@ function AlltoMMLSstring(){
 	}
 	return MMLSString
 }
+
+//--- interfaccia del modulo (software-modules.md §2.4) ---
+var api = {
+	saveTextAsFile: saveTextAsFile,
+	loadFileConvert: loadFileConvert,
+	inject: inject,
+	importAll: importAll,
+	AlltoMMLSstring: AlltoMMLSstring
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.persistence = global.Aabacus.persistence || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
