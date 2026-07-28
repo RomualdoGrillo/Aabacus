@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.props + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 /**
  * @typedef {Object} PActx Contesto di applicazione di una proprietà (hard-wired o pattern-based).
  * @property {boolean} matchedTF true se la proprietà è stata applicata
@@ -864,3 +868,20 @@ function adaptMatch(PActx,$Input, $Pattern, $span, functarg_orderedList) {//Try:
     $Input.removeClass('taken');
     return PActx
 }
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	newPActx: newPActx,
+	TryOnePropertyByName: TryOnePropertyByName,
+	InstructAndTryOnePMT: InstructAndTryOnePMT,
+	orderMatch: orderMatch,
+	ENODESmarkUnmark: ENODESmarkUnmark,
+	searchForMarkedInSubtree: searchForMarkedInSubtree,
+	checkMarksOkForPattern: checkMarksOkForPattern,
+	ENODEappendInABSPosition: ENODEappendInABSPosition
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.props = global.Aabacus.props || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
