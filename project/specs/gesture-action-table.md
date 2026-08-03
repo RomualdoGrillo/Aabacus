@@ -113,7 +113,10 @@ Forma di riferimento (prototipo `prop_comm_gen_mmlsv2.mmls`):
 | `lasso` | `lasso` |
 | `dnd` | `dnd` |
 | `slice` + `h` / `v` | `slashHor` / `slashVert` |
-| `pinch` + `h` / `v` | `pinchHor` / `pinchVert` |
+| `pinch` (+ `axis` h/v ancora emesso) | `pinch` (**v1f interim**: H/V fusi; axis ignorato in resolve) |
+
+*(Futuro: ridiscriminare `pinchHor`/`pinchVert` e/o determinare meglio gli operandi.)*  
+`alias` può essere stringa o array (es. `['ArrowDown','ArrowLeft']` sulla riga `pinch`).
 
 Gli `alias` tastiera abilitano la via tastiera; l’ascolto pointer dipende dal `trigger` e dalla colonna attiva.
 

@@ -576,7 +576,7 @@ Il formato corretto delle associazioni gesture↔action è la **tabella G/A** (t
 
 Prototipo v2: `app/Data/exercises/prop_comm_gen_mmlsv2.mmls`.
 
-La G/A è l’unico punto in cui scrivere le associazioni (salvo eccezioni documentate in L2, es. doppio click ancora nel codice). Vocabolario intent: `tap`, `lasso`, `dnd`, `slashHor`/`slashVert`, `pinchHor`/`pinchVert`. Dispatch: `TryOnePropertyByName` / availability invariati.
+La G/A è l’unico punto in cui scrivere le associazioni (salvo eccezioni documentate in L2, es. doppio click ancora nel codice). Vocabolario intent: `tap`, `lasso`, `dnd`, `slashHor`/`slashVert`, `pinch` (H/V fusi in v1f interim). Dispatch: `TryOnePropertyByName` / availability invariati.
 
 ### 7.5 Tabella G/A — riepilogo runtime
 
@@ -593,8 +593,7 @@ La G/A è l’unico punto in cui scrivere le associazioni (salvo eccezioni docum
 | dnd                    | source→target | applyDnD          | applyDnD               | sistema   |
 | p                      | selected      | —                 | plusAssociate ltr/rtl  | didattica |
 | c                      | selected      | —                 | OppositeOfOpposite, …  | didattica |
-| pinchHor / ArrowDown   | pinched       | —                 | compose, …             | didattica |
-| pinchVert / ArrowLeft  | pinched       | —                 | compose, …             | didattica |
+| pinch / ↓·←            | pinched       | —                 | compose, … (unione H+V)| didattica |
 | slashHor / ArrowUp     | slashed       | —                 | decomposeInAProduct, … | didattica |
 | slashVert / ArrowRight | slashed       | —                 | decomposeInASum, …     | didattica |
 

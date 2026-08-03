@@ -40,10 +40,10 @@ assert('override non usa actions (entrambe le colonne)', !ov.ArrowDown.actions);
 assert('p → solo actionsTied', !!ov.p.actionsTied && !ov.p.actionsUntied && !ov.p.actions);
 
 const res = Imp.importMmlsV1ToGA(UEV2.DEFAULT_TABLE, recipes);
-const pinch = res.table.find(function (r) { return r.trigger === 'pinchHor'; });
+const pinch = res.table.find(function (r) { return r.trigger === 'pinch'; });
 const pRow = res.table.find(function (r) { return r.alias === 'p'; });
 assert(
-	'v1 su pinchHor aggiorna tied, untied resta vuoto',
+	'v1 su pinch (ex pinchHor) aggiorna tied, untied resta vuoto',
 	pinch && pinch.actionsTied[0].name === 'compose' && pinch.actionsUntied.length === 0
 );
 assert(

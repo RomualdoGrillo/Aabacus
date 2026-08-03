@@ -25,8 +25,10 @@
 		'slice.v': 'slashVert',
 		'slashhor': 'slashHor',
 		'slashvert': 'slashVert',
-		'pinchhor': 'pinchHor',
-		'pinchvert': 'pinchVert'
+		'pinchhor': 'pinch',
+		'pinchvert': 'pinch',
+		'pinch.h': 'pinch',
+		'pinch.v': 'pinch'
 	};
 
 	/**

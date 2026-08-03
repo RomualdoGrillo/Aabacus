@@ -763,7 +763,7 @@
 			const activeCol = tied ? 'tied' : 'untied';
 			html += '<tr class="input2-debug-row' + (r.system ? ' is-system' : '') + '">';
 			html += '<td>' + (r.trigger || '—') + '</td>';
-			html += '<td>' + (r.alias || '—') + '</td>';
+			html += '<td>' + (Array.isArray(r.alias) ? r.alias.join(', ') : (r.alias || '—')) + '</td>';
 			html += '<td>' + (r.targetSource || '—') + '</td>';
 			html += '<td>' + (r.system ? 'yes' : '') + '</td>';
 			html += '<td class="col-untied' + (activeCol === 'untied' ? ' is-active' : '') + '">' +
@@ -847,12 +847,17 @@
 		}
 
 		// Evita scroll frecce / comportamento browser su Mod+z
-		if (entry.alias === 'Mod+z' || (entry.trigger && String(entry.trigger).indexOf('slash') === 0) ||
-			entry.alias === 'ArrowUp' || entry.alias === 'ArrowDown' ||
-			entry.alias === 'ArrowLeft' || entry.alias === 'ArrowRight') {
+		const aliases = Array.isArray(entry.alias)
+			? entry.alias
+			: (entry.alias ? [entry.alias] : []);
+		const isArrowAlias = aliases.some(function (a) {
+			return a === 'ArrowUp' || a === 'ArrowDown' || a === 'ArrowLeft' || a === 'ArrowRight';
+		});
+		if (entry.alias === 'Mod+z' || aliases.indexOf('Mod+z') >= 0 ||
+			(entry.trigger && String(entry.trigger).indexOf('slash') === 0) ||
+			entry.trigger === 'pinch' || isArrowAlias) {
 			e.preventDefault();
 		}
-		if (entry.alias === 'Mod+z') e.preventDefault();
 
 		dispatchIntent(intent);
 	}

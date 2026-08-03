@@ -61,11 +61,19 @@ const UNTIED = { tied: false };
 	);
 
 	const pinchH = UEV2.resolveIntent({ type: 'pinch', axis: 'h' }, table, TIED);
+	const pinchV = UEV2.resolveIntent({ type: 'pinch', axis: 'v' }, table, TIED);
+	const pinchUnion = 'compose,AndNeutral:ltr,timesAbsorbingEl:ltr,composeXorNotX:rtl';
 	assert(
-		'resolveIntent pinch.h tied → compose…',
-		pinchH && pinchH.trigger === 'pinchHor' &&
-			pinchH.actions.map(actionKey).join(',') === 'compose,AndNeutral:ltr,timesAbsorbingEl:ltr',
+		'resolveIntent pinch.h tied → riga unificata pinch',
+		pinchH && pinchH.trigger === 'pinch' &&
+			pinchH.actions.map(actionKey).join(',') === pinchUnion,
 		pinchH && pinchH.actions.map(actionKey).join(',')
+	);
+	assert(
+		'resolveIntent pinch.v tied → stessa try-list di pinch.h',
+		pinchV && pinchV.trigger === 'pinch' &&
+			pinchV.actions.map(actionKey).join(',') === pinchUnion,
+		pinchV && pinchV.actions.map(actionKey).join(',')
 	);
 
 	const tap = UEV2.resolveIntent({ type: 'tap' }, table, UNTIED);
@@ -171,7 +179,9 @@ const UNTIED = { tied: false };
 	assert('override system lasso → violazione', res.violations.indexOf('lasso') >= 0);
 	assert('override system dnd → violazione', res.violations.indexOf('dnd') >= 0);
 
-	const undoRow = res.table.find(function (r) { return r.alias === 'Mod+z'; });
+	const undoRow = res.table.find(function (r) {
+		return r.alias === 'Mod+z' || (Array.isArray(r.alias) && r.alias.indexOf('Mod+z') >= 0);
+	});
 	assert(
 		'system undo invariato (actionsUntied)',
 		undoRow && aName(undoRow.actionsUntied[0]) === 'undo'
@@ -183,9 +193,9 @@ const UNTIED = { tied: false };
 		lassoRow && aName(lassoRow.actionsUntied[0]) === 'selectSiblings'
 	);
 
-	const pinchRow = res.table.find(function (r) { return r.trigger === 'pinchHor'; });
+	const pinchRow = res.table.find(function (r) { return r.trigger === 'pinch'; });
 	assert(
-		'override didattico pinchHor (actions → entrambe le colonne)',
+		'override didattico pinchHor → riga pinch (actions → entrambe le colonne)',
 		pinchRow && pinchRow.actionsTied.length === 1 && pinchRow.actionsTied[0].name === 'compose' &&
 			pinchRow.actionsUntied.length === 1 && pinchRow.actionsUntied[0].name === 'compose'
 	);

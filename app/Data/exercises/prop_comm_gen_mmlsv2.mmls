@@ -128,24 +128,14 @@
 			"system": false
 		},
 		{
-			"trigger": "pinchHor",
-			"alias": "ArrowDown",
+			"trigger": "pinch",
+			"alias": ["ArrowDown", "ArrowLeft"],
 			"targetSource": "pinched",
 			"actionsUntied": [],
 			"actionsTied": [
 				{ "name": "compose" },
 				{ "name": "AndNeutral", "val": "ltr" },
-				{ "name": "timesAbsorbingEl", "val": "ltr" }
-			],
-			"system": false
-		},
-		{
-			"trigger": "pinchVert",
-			"alias": "ArrowLeft",
-			"targetSource": "pinched",
-			"actionsUntied": [],
-			"actionsTied": [
-				{ "name": "compose" },
+				{ "name": "timesAbsorbingEl", "val": "ltr" },
 				{ "name": "composeXorNotX", "val": "rtl" }
 			],
 			"system": false

@@ -7,7 +7,7 @@
  * Formato riga (DEFAULT_TABLE):
  *   {
  *     trigger: string|null,       // 'tap'|'lasso'|'dnd'|'pinchHor'|…|null
- *     alias: string|null,         // 'Mod+z'|'Shift+L'|'p'|'ArrowDown'|…
+ *     alias: string|string[]|null,// 'Mod+z'|'p'|… oppure ['ArrowDown','ArrowLeft']
  *     targetSource: 'selected'|'pinched'|'slashed'|null,
  *     actionsUntied: Array<{name,val?}|string>,
  *     actionsTied:   Array<{name,val?}|string>,
@@ -71,6 +71,31 @@
 	 * Normalizza una riga: accetta actionsUntied/actionsTied oppure legacy `actions`
 	 * (copiato su entrambe le colonne se le colonne mancano).
 	 */
+	/** Alias riga: stringa singola, array, o null. */
+	function normalizeAliasField(alias) {
+		if (alias == null) return null;
+		if (Array.isArray(alias)) {
+			const out = [];
+			const seen = {};
+			for (let i = 0; i < alias.length; i++) {
+				const a = normalizeAliasString(alias[i]);
+				if (!a || seen[a]) continue;
+				seen[a] = true;
+				out.push(a);
+			}
+			return out.length ? out : null;
+		}
+		return normalizeAliasString(alias);
+	}
+
+	function rowHasAlias(row, alias) {
+		if (!row || alias == null) return false;
+		const field = normalizeAliasField(row.alias);
+		if (!field) return false;
+		if (Array.isArray(field)) return field.indexOf(alias) >= 0;
+		return field === alias;
+	}
+
 	function normalizeRow(row) {
 		if (!row || typeof row !== 'object') {
 			return {
@@ -90,7 +115,7 @@
 		}
 		return {
 			trigger: row.trigger == null ? null : String(row.trigger),
-			alias: row.alias == null ? null : String(row.alias),
+			alias: normalizeAliasField(row.alias),
 			targetSource: row.targetSource == null ? null : String(row.targetSource),
 			actionsUntied: cloneActions(untied || []),
 			actionsTied: cloneActions(tied || []),
@@ -198,24 +223,16 @@
 			system: false
 		},
 		{
-			trigger: 'pinchHor',
-			alias: 'ArrowDown',
+			// v1f interim: H/V pinch poco discriminabili → un solo trigger; axis ignorato in resolve.
+			// Futuro: ridiscriminare e/o determinare meglio gli operandi del pinch.
+			trigger: 'pinch',
+			alias: ['ArrowDown', 'ArrowLeft'],
 			targetSource: 'pinched',
 			actionsUntied: [],
 			actionsTied: [
 				{ name: 'compose' },
 				{ name: 'AndNeutral', val: 'ltr' },
-				{ name: 'timesAbsorbingEl', val: 'ltr' }
-			],
-			system: false
-		},
-		{
-			trigger: 'pinchVert',
-			alias: 'ArrowLeft',
-			targetSource: 'pinched',
-			actionsUntied: [],
-			actionsTied: [
-				{ name: 'compose' },
+				{ name: 'timesAbsorbingEl', val: 'ltr' },
 				{ name: 'composeXorNotX', val: 'rtl' }
 			],
 			system: false
@@ -308,18 +325,18 @@
 		for (let i = 0; i < triggers.length; i++) set[triggers[i]] = true;
 		const slashHor = !!(set.slashHor || set['slice.h']);
 		const slashVert = !!(set.slashVert || set['slice.v']);
-		const pinchHor = !!set.pinchHor;
-		const pinchVert = !!set.pinchVert;
+		// pinch unificato (trigger 'pinch'); pinchHor/pinchVert legacy → stesso flag
+		const pinch = !!(set.pinch || set.pinchHor || set.pinchVert);
 		return {
 			tap: !!set.tap,
 			lasso: !!set.lasso,
 			dnd: !!set.dnd,
 			slice: !!(slashHor || slashVert),
-			pinch: !!(pinchHor || pinchVert),
+			pinch: pinch,
 			slashHor: slashHor,
 			slashVert: slashVert,
-			pinchHor: pinchHor,
-			pinchVert: pinchVert
+			pinchHor: pinch,
+			pinchVert: pinch
 		};
 	}
 
@@ -334,9 +351,8 @@
 			return null;
 		}
 		if (intent.type === 'pinch') {
-			if (intent.axis === 'h') return 'pinchHor';
-			if (intent.axis === 'v') return 'pinchVert';
-			return null;
+			// axis h/v ancora emesso dal recognizer; lookup G/A unificato
+			return 'pinch';
 		}
 		if (typeof intent.trigger === 'string') return intent.trigger;
 		return null;
@@ -411,7 +427,7 @@
 			const alias = intentToAlias(intent);
 			if (alias) {
 				for (let i = 0; i < rows.length; i++) {
-					if (rows[i].alias && normalizeAliasString(rows[i].alias) === alias) {
+					if (rowHasAlias(rows[i], alias)) {
 						found = cloneRow(rows[i]);
 						break;
 					}
@@ -471,17 +487,35 @@
 			});
 
 		function rowKey(row) {
-			return row.trigger || row.alias || null;
+			if (row.trigger) return row.trigger;
+			const a = normalizeAliasField(row.alias);
+			if (Array.isArray(a)) return a[0] || null;
+			return a || null;
+		}
+
+		/** Chiavi override legacy pinchHor/pinchVert → riga unificata `pinch`. */
+		function normalizeOverrideKey(key) {
+			const s = String(key);
+			const low = s.toLowerCase();
+			if (low === 'pinchhor' || low === 'pinchvert' || low === 'pinch.h' || low === 'pinch.v') {
+				return 'pinch';
+			}
+			return s;
 		}
 
 		for (let o = 0; o < ovList.length; o++) {
 			const ov = ovList[o];
-			const key = ov.key || ov.trigger || ov.alias;
-			if (!key) continue;
+			const rawKey = ov.key || ov.trigger || (Array.isArray(ov.alias) ? ov.alias[0] : ov.alias);
+			if (!rawKey) continue;
+			const key = normalizeOverrideKey(rawKey);
 			let hit = -1;
 			for (let i = 0; i < base.length; i++) {
 				const rk = rowKey(base[i]);
 				if (rk === key || normalizeAliasString(rk) === normalizeAliasString(key)) {
+					hit = i;
+					break;
+				}
+				if (rowHasAlias(base[i], normalizeAliasString(key))) {
 					hit = i;
 					break;
 				}
@@ -503,7 +537,9 @@
 				base[hit].actionsTied = cloneActions(ov.actions);
 			}
 			if (ov.targetSource !== undefined) base[hit].targetSource = ov.targetSource;
-			if (ov.alias !== undefined && ov.alias !== null) base[hit].alias = String(ov.alias);
+			if (ov.alias !== undefined && ov.alias !== null) {
+				base[hit].alias = normalizeAliasField(ov.alias);
+			}
 		}
 		return { table: base, violations: violations };
 	}
