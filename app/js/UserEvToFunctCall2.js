@@ -18,8 +18,6 @@
  * applyMmlsOverrides, computeAvailability.
  * Browser: window.INPUT2.*; Node: module.exports.
  *
- * Fonte tabella: bozza Romualdo (tied/untied) + ricette gestToAction dove la
- * bozza lascia i slash/pinch didattici solo in tied.
  */
 (function (global) {
 	'use strict';
