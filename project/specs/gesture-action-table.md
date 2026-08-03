@@ -2,10 +2,12 @@
 
 # Tabella G/A (Gesture/Actions) — contratto architetturale
 
+**Fase: v1f** — etichette: [`release-phases.md`](release-phases.md).  
 Documento di **livello 2**: fissa struttura, significato e interazione tra moduli per la **tabella G/A** (gesture/actions, colonne tied/untied) della pista `index2`. Non va modificato senza approvazione esplicita di Romualdo.
 
-Documenti correlati: [`new-interface-spec.md`](new-interface-spec.md) §7 (requisiti UI), [`software-modules.md`](software-modules.md) (strati).  
-Prototipo file **mmls v2**: `app/Data/exercises/prop_comm_gen_mmlsv2.mmls`.
+Documenti correlati: [`session-lifecycle.md`](session-lifecycle.md) (BOOT/PRELOAD/LOAD/SAVE), [`new-interface-spec.md`](new-interface-spec.md) §7 (requisiti UI), [`software-modules.md`](software-modules.md) (strati).  
+Prototipo file **mmls formato-events v2** (JSON G/A in `events`): `app/Data/exercises/prop_comm_gen_mmlsv2.mmls`.  
+*(Il nome “mmls v2” qui è il formato della sezione events, non la fase prodotto **v2**.)*
 
 ---
 

@@ -1,5 +1,7 @@
 # Specifica — Rifacimento interfaccia utente (touch-first)
 
+**Fase: v1f** — etichette: [`release-phases.md`](release-phases.md). Ciclo sessione: [`session-lifecycle.md`](session-lifecycle.md).
+
 **STATO: BOZZA — prima revisione di Romualdo ricevuta (23/07/2026); taglio promosso alla prova su tablet come gesto di scomposizione (§3.3.1); avviata pista parallela** `index2` **(§7)**
 
 ## Decisioni di revisione (Romualdo, 23/07/2026)

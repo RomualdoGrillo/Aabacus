@@ -5,6 +5,8 @@ Materiale di supporto allo sviluppo (non fa parte del deploy dell'app).
 | Cartella | Contenuto |
 |----------|-----------|
 | `specs/` | Documentazione tecnica e concetti |
+| `specs/release-phases.md` | Etichette di fase: **v1**, **v1f**, **v1b**, **v1fb**, **v2**, *futuribile* |
+| `specs/session-lifecycle.md` | Policy BOOT / PRELOAD / LOAD / SAVE (**v1f**) |
 | `specs/diagrams/` | Diagrammi architetturali (SVG editabili) |
 | `dev/` | Script di sviluppo (es. ChromeLauncher) |
 | `Organization/` | Organigramma agenti, schede ruolo (`roles/`), diagrammi PDF |
