@@ -2,6 +2,8 @@
 
 # Aabacus Core Concepts
 
+**Fase: v1** (concetti stabili della baseline). Etichette di evoluzione: [`release-phases.md`](release-phases.md).
+
 This document define what Aabacus is and how it works at a conceptual level. For technical implementation details, please see the [implementation details](implementation-details.md) document.
 
 ## Introduction

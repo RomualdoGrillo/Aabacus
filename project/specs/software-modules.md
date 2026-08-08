@@ -1,8 +1,10 @@
 # Aabacus — Moduli software
 
+**Fase: v1** (descrizione baseline; dove compare `index2` / G/A → **v1f**). Etichette: [`release-phases.md`](release-phases.md).
+
 Specifica dell'organizzazione del codice JavaScript di Aabacus (directory `app/js/`): la divisione dei ruoli tra i moduli, le interfacce con cui interagiscono e i contratti trasversali (PActx, registro delle proprietà, marcature, formati dati). Chi modifica un modulo trova qui che cosa il modulo promette agli altri e da chi è usato.
 
-Documenti correlati: [core-concepts.md](core-concepts.md) (concetti fondamentali), [implementation-details.md](implementation-details.md) (dettagli implementativi), [tests.md](tests.md) (test).
+Documenti correlati: [core-concepts.md](core-concepts.md) (concetti fondamentali), [implementation-details.md](implementation-details.md) (dettagli implementativi), [tests.md](tests.md) (test), [session-lifecycle.md](session-lifecycle.md) (BOOT/PRELOAD/LOAD/SAVE, **v1f**).
 
 ---
 
