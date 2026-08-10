@@ -16,122 +16,180 @@ Vincoli di fondo, comuni a tutti i moduli:
 
 ### Strati
 
-Gli script sono organizzati a strati (ordine di caricamento in `index.html`, con `state.js` per primo dopo jQuery). Ogni strato può dipendere solo dagli strati sopra di lui; è vietato introdurre dipendenze verso il basso (es. core che richiama MAIN o settings).
+Gli script sono caricati in `index.html` in quest'ordine (jQuery → `state.js` → strati): il verso consentito delle dipendenze va **dagli strati alti verso quelli bassi** della tabella (input → … → core); le eccezioni esistenti sono censite come *risalite* sotto la vista completa. Ogni strato è anche un namespace runtime (`Aabacus.<strato>`), popolato dai moduli IIFE.
 
-Il diagramma è in due versioni: la **vista sintetica** mostra solo il flusso principale tra strati; la **vista completa** mostra i moduli e le chiamate documentate in §2. In entrambe `state.js` compare come nodo isolato: è stato **globale**, letto e scritto da più strati (dettaglio in §3.5), e disegnarne gli archi renderebbe illeggibile il resto.
+| Strato | Namespace | File (`app/js/`) | Simboli api |
+|--------|-----------|------------------|-------------|
+| input | `Aabacus.input` | `MAIN.js` (5), `DnD.js` (3), `UserEvToFunctCall.js` (3) | 11 |
+| session | `Aabacus.session` | `dom-utils.js` (8), `sound.js` (2), `Undo.js` (1), `game.js` (1), `settings.js` (1) | 13 |
+| persistence | `Aabacus.persistence` | `SaveLoad.js` (5), `preload.js` (4) | 9 |
+| properties | `Aabacus.props` | `propertyRegistry.js` (4), `PMTutilities.js` (8), `PatternMatchingTrasform.js` (8), `HardWiredProperties.js` (7), `addedHardWiredProperties.js` (4), `refine.js` (7) | 38 |
+| rendering | `Aabacus.rendering` | `infix.js` (2), `TranslateFormat.js` (1), `SVGlines.js` (2) | 5 |
+| core | `Aabacus.core` | `ExpressionManager.js` (51), `calculateSpan.js` (8), `inflatedeflate.js` (3), `math.js` (2), `formatXML.js` (1) | 65 |
+| — | (globale) | `state.js` — stato condiviso intenzionale, non avvolto | — |
+
+Il diagramma è in due versioni: la **vista sintetica** mostra solo il flusso principale tra strati; la **vista completa** mostra i moduli e le chiamate verificate sul codice. In entrambe `state.js` compare come nodo isolato: è stato **globale**, letto e scritto da più strati (dettaglio in §3.5), e disegnarne gli archi renderebbe illeggibile il resto. Render pronti (per chi non ha un visualizzatore Mermaid): [diagrams/schema-moduli-sintetico.svg](diagrams/schema-moduli-sintetico.svg), [diagrams/schema-moduli-completo.svg](diagrams/schema-moduli-completo.svg) — da rigenerare se si tocca questa sezione.
 
 #### Vista sintetica
 
 ```mermaid
 flowchart LR
-    Utente((Utente)) --> uiNode["UI: index.html, #canvasRole"]
-    uiNode --> inputNode["input (MAIN, DnD, tastiera)"]
-    inputNode --> propertiesNode["properties (registro, PM, HW, refine)"]
-    propertiesNode --> coreNode["core (ENODE API)"]
-    coreNode --> renderingNode["rendering (infix, segni, SVG)"]
-    inputNode --> persistenceNode["persistence (preload, SaveLoad)"]
+    Utente((Utente)) --> uiNode["UI: index.html, #canvasRole<br/>(il DOM è il modello)"]
+    uiNode --> inputNode["input<br/>MAIN, DnD, tastiera"]
+    inputNode -->|"proprietà per nome<br/>o drop"| propertiesNode["properties<br/>registro, PM, HW, refine"]
+    propertiesNode --> coreNode["core<br/>API ENODE"]
+    coreNode --> renderingNode["rendering<br/>infix, glued, SVG"]
+    inputNode -->|"boot, Shift+S/L"| persistenceNode["persistence<br/>preload, SaveLoad"]
     persistenceNode --> coreNode
-    inputNode --> sessionNode["session services (Undo, game, settings)"]
-    stateNode["state.js — global"]
+    inputNode --> sessionNode["session<br/>Undo, game, settings, suoni"]
+    stateNode["state.js — stato globale"]
 ```
 
-#### Vista completa (senza gli archi di `state.js`)
+#### Vista completa
+
+Convenzioni di lettura (per non trasformare il grafo in spaghetti):
+
+- **Non sono disegnati** gli archi verso `ExpressionManager.js`: è la facciata dell'albero ENODE e la chiamano **tutti** i moduli di tutti gli strati (più `newPM/` e `input2/`).
+- **Non sono disegnati** gli archi verso `dom-utils.js`: utilità trasversale senza logica di esercizio, usata da core, rendering, properties, persistence e input.
+- **Non sono disegnati** gli archi interni al core (`ExpressionManager` ↔ `inflatedeflate`, → `calculateSpan`; `inflatedeflate` → `formatXML`).
+- Le etichette compaiono solo sugli archi-contratto (dispatch per nome, registrazione, recipe); l'elenco completo dei simboli chiamati per ogni coppia di moduli è in §2.
+- Freccia **tratteggiata** = *risalita*: dipendenza contro il verso degli strati, censita nell'elenco sotto il diagramma.
 
 ```mermaid
-flowchart TB
+flowchart LR
     Utente((Utente))
 
     subgraph ui [UI]
-        canvasDom["index.html / #canvasRole: albero ENODE nel DOM"]
+        canvasDom["index.html / #canvasRole<br/>albero ENODE nel DOM"]
     end
 
-    subgraph inputL [input]
-        MAIN["MAIN.js"]
-        DnD["DnD.js"]
-        UserEv["UserEvToFunctCall.js"]
+    subgraph inputL ["input — Aabacus.input"]
+        direction TB
+        MAIN["MAIN.js<br/>hub eventi, PActxConclude"]
+        DnD["DnD.js<br/>drag & drop (SortableJS)"]
+        UserEv["UserEvToFunctCall.js<br/>tasti/#events → proprietà"]
     end
 
-    subgraph sessionL [session services]
-        UndoM["Undo.js"]
+    subgraph persistenceL ["persistence — Aabacus.persistence"]
+        direction TB
+        preloadM["preload.js<br/>boot .mmls"]
+        SaveLoadM["SaveLoad.js<br/>file, inject, import"]
+    end
+
+    subgraph sessionL ["session — Aabacus.session"]
+        direction TB
+        UndoM["Undo.js<br/>ssnapshot"]
         gameM["game.js"]
         settingsM["settings.js"]
-        domUtils["dom-utils.js / sound.js (utilità condivise, v. §2.6)"]
+        soundM["sound.js"]
+        domUtils["dom-utils.js<br/>(utilità trasversale: archi omessi)"]
     end
 
-    subgraph persistenceL [persistence]
-        preloadM["preload.js"]
-        SaveLoadM["SaveLoad.js"]
-    end
-
-    subgraph propertiesL [properties]
-        registry["propertyRegistry.js"]
-        PMT["PMTutilities.js"]
+    subgraph propertiesL ["properties — Aabacus.props"]
+        direction TB
+        registry["propertyRegistry.js<br/>dispatch per nome"]
+        PMT["PMTutilities.js<br/>PActx, pattern matching"]
         PMTr["PatternMatchingTrasform.js"]
-        HW["HardWiredProperties.js + added"]
-        refineM["refine.js"]
+        HW["HardWiredProperties.js"]
+        added["addedHardWiredProperties.js"]
+        refineM["refine.js<br/>post-apply + cascade"]
     end
 
-    subgraph renderingL [rendering]
+    subgraph renderingL ["rendering — Aabacus.rendering"]
+        direction TB
         infixM["infix.js"]
         TranslateF["TranslateFormat.js"]
         SVGl["SVGlines.js"]
     end
 
-    subgraph coreL [core]
-        EM["ExpressionManager.js — ENODE API"]
-        inflate["inflatedeflate.js"]
+    subgraph coreL ["core — Aabacus.core"]
+        direction TB
+        EM["ExpressionManager.js<br/>facciata ENODE (archi in ingresso omessi)"]
+        inflate["inflatedeflate.js<br/>ENODE ⇄ MathML"]
+        spanM["calculateSpan.js<br/>scope e occorrenze"]
         mathM["math.js"]
-        spanM["calculateSpan.js"]
         fXML["formatXML.js"]
     end
 
-    stateM["state.js — global: GLBsettings, debugMode, ssnapshot/FILO"]
-    newPMNode["newPM/ — sperimentale, usa core e properties (v. §2.7)"]
+    stateM["state.js — globale:<br/>GLBsettings, debugMode, preloadPath, tools, FILO"]
+    newPMNode["newPM/ — motore PM sperimentale, solo console (v. §2.7)"]
 
+    %% ---- input ----
     Utente --> canvasDom
     canvasDom --> MAIN
-    MAIN --> DnD
+    MAIN <--> DnD
     MAIN --> UserEv
-    MAIN --> UndoM
-    MAIN --> gameM
-    MAIN --> refineM
-    MAIN --> preloadM
-    MAIN --> SaveLoadM
     DnD --> UserEv
-    DnD --> PMT
-    DnD --> spanM
     UserEv -->|"dispatch per nome"| PMT
     UserEv --> registry
-    PMT --> registry
-    HW -->|registrazione| registry
-    PMT --> PMTr
-    PMT --> EM
-    HW --> EM
-    HW --> mathM
-    HW --> spanM
-    PMTr --> EM
-    refineM --> UserEv
-    refineM --> EM
-    gameM --> PMT
-    UndoM --> EM
-    settingsM --> EM
+    DnD --> PMT
+    DnD --> refineM
+    DnD --> HW
+    MAIN -->|postApplyAfterProperty| refineM
+    MAIN --> preloadM
+    MAIN -->|"Shift+S / Shift+L"| SaveLoadM
+    MAIN --> UndoM
+    MAIN --> gameM
+    DnD --> gameM
+    DnD --> soundM
+
+    %% ---- persistence ----
     preloadM <--> SaveLoadM
     SaveLoadM --> inflate
-    inflate --> fXML
-    EM --> infixM
-    EM --> TranslateF
+    SaveLoadM --> fXML
+    preloadM --> inflate
+    preloadM --> settingsM
+    SaveLoadM --> UndoM
+
+    %% ---- session ----
+    gameM --> PMT
+    gameM --> soundM
+
+    %% ---- properties ----
+    HW -->|registrazione| registry
+    added -->|registrazione| registry
+    PMT -->|getHardWired| registry
+    PMT --> PMTr
+    HW <--> added
+    HW --> refineM
+    PMT --> refineM
+    refineM -->|"recipe"| PMT
+    HW --> mathM
+    added --> mathM
+    HW --> spanM
+    PMT --> spanM
     PMT --> SVGl
     HW --> SVGl
+
+    %% ---- core → rendering (refresh; archi interni al core omessi) ----
+    EM --> infixM
+    EM --> TranslateF
+
+    %% ---- risalite (contro il verso degli strati) ----
+    refineM -.->|"ricetta #events"| UserEv
+    EM -.->|"ExtendAndInitialize*"| MAIN
+    EM -.->|OpIsAssociative| HW
+    EM -.->|marcature| PMT
+    SaveLoadM -.-> MAIN
+    UndoM -.-> MAIN
+    gameM -.->|celebrate| MAIN
 ```
 
 Regole di dipendenza:
 
-- `core` non conosce UI interattiva (prompt, suoni, snapshot, tool).
+- `core` non conosce UI interattiva (prompt, suoni, tool); pilota il refresh visivo chiamando `rendering`.
 - `rendering` legge il core e scrive solo presentazione (classi CSS, `.infix`, SVG).
 - `properties` usa `core` + `rendering`; non registra listener.
 - `input` (MAIN, DnD, UserEvToFunctCall) è l'unico gruppo che registra eventi document-level e cambia `GLBsettings.tool`.
-- `session services` (Undo, game, settings, sound, dom-utils) mantengono stato di sessione o offrono supporto: non gestiscono eventi utente (al più il proprio pannello) e sono invocati da input e persistence. In `index.html` i due gruppi sono caricati insieme nel blocco commentato "interaction".
+- `session` (Undo, game, settings, sound, dom-utils) mantiene stato di sessione o offre supporto: non gestisce eventi utente (al più il proprio pannello) ed è invocato da input e persistence. In `index.html` i due gruppi sono caricati insieme nel blocco commentato "interaction".
 - Lo stato condiviso residuo è dichiarato e documentato in `state.js` (vedi §3.5).
+
+**Risalite note** (dipendenze contro il verso degli strati, tollerate ma da non estendere; frecce tratteggiate nel diagramma):
+
+1. `refine.js` → `UserEvToFunctCall.tryEventActionsOnNode`: il cascade refining col kind a `eventKey` legge la ricetta dalla sezione `#events`; il kind con `recipe` esplicita non risale (usa `TryOnePropertyByName`).
+2. `ExpressionManager.js` → `MAIN.ExtendAndInitialize*` (e idem da `SaveLoad.js`, `Undo.js`): l'inizializzazione dei sottoalberi vive in MAIN; candidata a scendere di strato in un refactor futuro.
+3. `ExpressionManager.js` → `HardWiredProperties.OpIsAssociative` e → `PMTutilities` (`ENODESmarkUnmark`, `checkMarksOkForPattern`, `ENODEappendInABSPosition`): il confronto strutturale (`compareExtENODE`) conosce marcature e associatività.
+4. `game.js` → `MAIN.VisualizeCelebration`: la celebrazione visiva è in MAIN.
 
 ---
 
@@ -144,7 +202,7 @@ Per ogni modulo: il ruolo e le funzioni che costituiscono la sua interfaccia ver
 #### `state.js`
 Ruolo: dichiara le globali condivise intenzionali e ne documenta in testa il contratto (chi scrive, chi legge). Nessuna funzione. Simboli: `GLBsettings` (config esercizio/sessione), `debugMode`, `preloadPath` (da query string `?preloadPath=`, default `PRELOAD.mmls`), `tools` (ciclo tool), `FILO` (stack undo), `ssnapshot` (dichiarato qui, implementato in `Undo.js`). L'header di `state.js` è la fonte autoritativa per campi e accessi.
 
-### 2.1 Core — nucleo espressioni
+### 2.1 Core — nucleo espressioni (`Aabacus.core`)
 
 #### `formatXML.js`
 Ruolo: pretty-printer XML puro, senza dipendenze applicative.
@@ -187,7 +245,7 @@ Espone:
 - `$calculateJurisdictionUpstream($startRole) → jQuery` — usata da: `DnD.js`.
 - `$PropositionsAffectedByStartPropositionROLES`, `$calculateTargetsAddRedundantROLES`, `$ImmediateAssociativeENODE`, `$RecursiveTreeExplorerCriterium` — usate da: `HardWiredProperties.js`.
 
-### 2.2 Rendering — refresh visivo
+### 2.2 Rendering — refresh visivo (`Aabacus.rendering`)
 
 #### `infix.js`
 Ruolo: separatori infissi (`.infix`) tra operandi e segnaposto (`.dummyrole`/classe `empty`) per i ruoli con posti liberi.
@@ -201,7 +259,7 @@ Espone: `refreshGlued($startNode?)` — usata da: `ExpressionManager.js`. (Le co
 Ruolo: linee SVG di collegamento su `#svgContainer` (hint di match, debug).
 Espone: `lineAB($from, $to, addClass?) → jQuery` — usata da: `PMTutilities.js`, `HardWiredProperties.js`, `calculateSpan.js`; `clearLines()` — usata da: `DnD.js`.
 
-### 2.3 Properties — motori di trasformazione
+### 2.3 Properties — motori di trasformazione (`Aabacus.props`)
 
 #### `propertyRegistry.js`
 Ruolo: registro dei descrittori delle proprietà hard-wired; unico punto di dispatch per nome (sostituisce il vecchio `window[nome]`). Descrittori: `{ name, kind: 'unary'|'dnd', apply, findTgt?, requiresCanvasCi }` (dettagli in §3.2).
@@ -251,7 +309,7 @@ Espone:
 - `refreshAndReplace(PActx) → PActx` — usata da: `newPM/api.js`.
 - Costante `REFINE_KINDS` — letta da `PMTutilities.js`.
 
-### 2.4 Persistence — caricamento e salvataggio
+### 2.4 Persistence — caricamento e salvataggio (`Aabacus.persistence`)
 
 #### `SaveLoad.js`
 Ruolo: persistenza locale: download/upload file, primitiva di iniezione MML nel DOM, risoluzione degli import, serializzazione della sessione.
@@ -269,7 +327,7 @@ Espone:
 - `injectAll(response, rootUrl?)` — loader legacy JSON — usata da: `SaveLoad.js`.
 - `loadAjaxAndInject(myUrl, target?, toBeImported?)` — GET sincrona + inject — usata da: `SaveLoad.js` (`importAll`).
 
-### 2.5 Input — gestione degli eventi utente
+### 2.5 Input — gestione degli eventi utente (`Aabacus.input`)
 
 I tre moduli che traducono le azioni dell'utente in chiamate agli strati superiori. Sono gli unici a registrare listener document-level.
 
@@ -279,8 +337,7 @@ Espone:
 - `PActxConclude(PActx)` — usata da: `DnD.js` (e internamente dopo la tastiera). Punto di convergenza di *tutte* le proprietà: delega a `postApplyAfterProperty` (replace + cascade refining), aggiorna `movesCounter`, prende lo snapshot undo, chiama `lookForResultAndCelebrate` e la visualizzazione del feedback.
 - `selectionManager($clicked, ctrl, shift, deselectAll)` — usata da: `DnD.js`.
 - `ExtendAndInitializeTree($start)` / `ExtendAndInitialize($ENODE)` — usate da: `SaveLoad.js`, `Undo.js`, `ExpressionManager.js`.
-- `VisualizeCelebration(imagePath, timeout?)` — usata da: `game.js`.
-- Globale `canvasRole` — usata da: `UserEvToFunctCall.js`.
+- `VisualizeCelebration(imagePath, timeout?)` — usata da: `game.js`. (La globale `canvasRole` è tornata privata di MAIN: nessun uso esterno; `input2/boot2.js` ne definisce una propria.)
 
 #### `DnD.js`
 Ruolo: motore drag & drop su SortableJS: al mousedown individua il nodo trascinabile e i target validi (riordino su untied, proprietà DnD dal registro, autoAdapt, copy), crea pigramente i Sortable, gestisce il drop e la pulizia. Stato interno nel bus `GLBDnD` (usato solo da questo file).
@@ -296,13 +353,13 @@ Espone:
 - `tryEventActionsOnNode($ENODE, eventKey) → PActx` — usata da: `refine.js` (cascade refining).
 - `getDnDpropEnabled(dataTag?) → descrittori[]` — usata da: `DnD.js`. Legge `listDnDProperties()` e filtra per `requiresCanvasCi`/presenza del `ci` in canvas.
 
-### 2.6 Session services — stato e servizi di sessione
+### 2.6 Session services — stato e servizi di sessione (`Aabacus.session`)
 
 Servizi con memoria o funzioni di supporto: non gestiscono eventi utente (al più ascoltano il proprio pannello), ma sono invocati dagli strati input e persistence. In `index.html` sono caricati nello stesso blocco dello strato input.
 
 #### `Undo.js`
 Ruolo: undo a snapshot: stack `FILO` di cloni dell'albero radice; lo snapshot è preso *dopo* ogni azione. La *politica* (quando fotografare) è dei chiamanti; qui c'è solo il meccanismo.
-Espone: `ssnapshot()` (init) e i metodi `ssnapshot.take/undo/copy/paste` — usati da: `MAIN.js`, `SaveLoad.js`, `TranslateFormat.js`.
+Espone: `ssnapshot()` (init) e i metodi `ssnapshot.take/undo/copy/paste` — usati da: `MAIN.js`, `SaveLoad.js` (e `input2/boot2.js`).
 
 #### `game.js`
 Ruolo: confronto dell'espressione nel canvas con `#result` e celebrazione della vittoria (conteggio mosse incluso).

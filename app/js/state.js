@@ -31,7 +31,7 @@
 //
 // ssnapshot — manager undo/copy/paste (funzione factory + metodi take/undo/
 //   copy/paste definiti in Undo.js; clipBoard è proprietà di ssnapshot)
-//   Scrittura: Undo.js; invocazione: MAIN.js, SaveLoad.js, TranslateFormat.js.
+//   Scrittura: Undo.js; invocazione: MAIN.js, SaveLoad.js, input2/boot2.js.
 //   Lettura:  MAIN.js (scorciatoie tastiera, PActxConclude, rename, tie).
 
 let GLBsettings;
