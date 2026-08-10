@@ -124,6 +124,8 @@ flowchart TB
     HW --> SVGl
 ```
 
+**Stampa (solo schema, sfondo bianco):** [vista completa PDF](diagrams/moduli-vista-completa.pdf) · [vista sintetica PDF](diagrams/moduli-vista-sintetica.pdf) — sorgenti in [`project/specs/diagrams/`](diagrams/) (`moduli-vista-completa.mmd`, `moduli-vista-sintetica.mmd`). Rigenera con `bash project/specs/diagrams/render-diagrams.sh all`.
+
 Regole di dipendenza:
 
 - `core` non conosce UI interattiva (prompt, suoni, snapshot, tool).

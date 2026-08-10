@@ -1,0 +1,88 @@
+%% Aabacus — schema moduli (vista completa)
+%% Sincronizza con project/specs/software-modules.md §1 «Vista completa»
+%% Rigenera PDF: bash project/specs/diagrams/render-diagrams.sh
+
+flowchart TB
+    Utente((Utente))
+
+    subgraph ui [UI]
+        canvasDom["index.html / #canvasRole: albero ENODE nel DOM"]
+    end
+
+    subgraph inputL [input]
+        MAIN["MAIN.js"]
+        DnD["DnD.js"]
+        UserEv["UserEvToFunctCall.js"]
+    end
+
+    subgraph sessionL [session services]
+        UndoM["Undo.js"]
+        gameM["game.js"]
+        settingsM["settings.js"]
+        domUtils["dom-utils.js / sound.js (utilità condivise, v. §2.6)"]
+    end
+
+    subgraph persistenceL [persistence]
+        preloadM["preload.js"]
+        SaveLoadM["SaveLoad.js"]
+    end
+
+    subgraph propertiesL [properties]
+        registry["propertyRegistry.js"]
+        PMT["PMTutilities.js"]
+        PMTr["PatternMatchingTrasform.js"]
+        HW["HardWiredProperties.js + added"]
+        refineM["refine.js"]
+    end
+
+    subgraph renderingL [rendering]
+        infixM["infix.js"]
+        TranslateF["TranslateFormat.js"]
+        SVGl["SVGlines.js"]
+    end
+
+    subgraph coreL [core]
+        EM["ExpressionManager.js — ENODE API"]
+        inflate["inflatedeflate.js"]
+        mathM["math.js"]
+        spanM["calculateSpan.js"]
+        fXML["formatXML.js"]
+    end
+
+    stateM["state.js — global: GLBsettings, debugMode, ssnapshot/FILO"]
+    newPMNode["newPM/ — sperimentale, usa core e properties (v. §2.7)"]
+
+    Utente --> canvasDom
+    canvasDom --> MAIN
+    MAIN --> DnD
+    MAIN --> UserEv
+    MAIN --> UndoM
+    MAIN --> gameM
+    MAIN --> refineM
+    MAIN --> preloadM
+    MAIN --> SaveLoadM
+    DnD --> UserEv
+    DnD --> PMT
+    DnD --> spanM
+    UserEv -->|"dispatch per nome"| PMT
+    UserEv --> registry
+    PMT --> registry
+    HW -->|registrazione| registry
+    PMT --> PMTr
+    PMT --> EM
+    HW --> EM
+    HW --> mathM
+    HW --> spanM
+    PMTr --> EM
+    refineM --> UserEv
+    refineM --> EM
+    gameM --> PMT
+    UndoM --> EM
+    settingsM --> EM
+    preloadM <--> SaveLoadM
+    SaveLoadM --> inflate
+    inflate --> fXML
+    EM --> infixM
+    EM --> TranslateF
+    PMT --> SVGl
+    HW --> SVGl
