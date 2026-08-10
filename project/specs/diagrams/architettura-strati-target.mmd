@@ -1,0 +1,32 @@
+%% Aabacus — Architettura modulare di destinazione
+%% Sorgente: project/specs/software-modules.md §5
+%% Rigenera: bash project/specs/diagrams/render-diagrams.sh
+
+flowchart TB
+  L1["<b>1. core/</b><br/>nucleo espressioni — nessuna dipendenza da UI<br/><br/>ExpressionManager.js · inflatedeflate.js · math.js<br/>formatXML.js · calculateSpan.js (parte logica)"]
+
+  L2["<b>2. rendering/</b><br/>refresh visivo dell'espressione<br/><br/>infix.js · TranslateFormat.js · SVGlines.js<br/>calculateSpan.js (parte highlight)"]
+
+  L3["<b>3. properties/</b><br/>motori di trasformazione<br/><br/>PMTutilities.js · PatternMatchingTrasform.js<br/>HardWiredProperties.js · addedHardWiredProperties.js · PActx"]
+
+  L4["<b>4. persistence/</b><br/>caricamento e salvataggio<br/><br/>preload.js (solo loading) · SaveLoad.js"]
+
+  L5["<b>5. interaction/</b><br/>input utente e orchestrazione<br/><br/>MAIN.js · DnD.js · UserEvToFunctCall.js · Undo.js · sound.js<br/>settings-UI (da preload.js) · game/goal (da AldoUtilities.js)"]
+
+  L1 --> L2
+  L2 --> L3
+  L1 --> L3
+  L3 --> L4
+  L4 --> L5
+  L1 --> L5
+  L2 --> L5
+  L3 --> L5
+
+  R["<b>Regole</b><br/>• core: no prompt, suoni, snapshot, mu_*, body[tool]<br/>• rendering: legge core, solo presentazione<br/>• properties: core + rendering, no listener<br/>• interaction: unico strato con eventi e GLBsettings<br/>• stato condiviso: GLBsettings, ssnapshot, propertiesDnD in un punto unico"]
+
+  L5 --- R
+
+  classDef layer fill:#ffffff,stroke:#333,stroke-width:2px,color:#111
+  classDef rules fill:#f8f8f8,stroke:#666,stroke-width:1px,color:#333
+  class L1,L2,L3,L4,L5 layer
+  class R rules

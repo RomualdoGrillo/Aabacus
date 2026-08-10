@@ -154,6 +154,8 @@ Obiettivo: confini espliciti a **strati**, senza cambiare (per ora) il modello D
    settings-UI (estratta da preload.js), game/goal (estratta da AldoUtilities.js)
 ```
 
+**Stampa (solo schema, sfondo bianco):** [`diagrams/architettura-strati-target.pdf`](diagrams/architettura-strati-target.pdf) — sorgente Mermaid [`architettura-strati-target.mmd`](diagrams/architettura-strati-target.mmd). Rigenera con `bash project/specs/diagrams/render-diagrams.sh`.
+
 Regole di dipendenza volute:
 
 - `core` non conosce `prompt`, suoni, snapshot, classi `mu_*`, `body[tool]`.
