@@ -1,7 +1,7 @@
 ---
 name: core-specialist
 description: Specialista nucleo espressioni ENODE per Aabacus. Usa per ExpressionManager, MathML, math, formatXML, calculateSpan (logica), dom-utils. Perimetro app/js core only — non CSS né interaction/properties.
-model: cursor-grok-4.5-high
+model: cursor-grok-4.6-high-fast
 readonly: false
 is_background: false
 ---
