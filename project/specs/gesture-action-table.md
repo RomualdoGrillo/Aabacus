@@ -41,7 +41,7 @@ Eccezioni ammesse solo con motivo preciso, ad esempio:
   targetSource: string|null,// 'selected'|'pinched'|'slashed'|null
   actionsUntied: Action[],  // try-list se GLBsettings.tiedCanvas === false
   actionsTied: Action[],    // try-list se GLBsettings.tiedCanvas === true
-  system: boolean           // true → vincoli di rimappatura (vedi §6)
+  system: boolean           // true → vincoli di rimappatura (vedi §8)
 }
 ```
 
@@ -54,9 +54,46 @@ Vincoli:
 3. Lista vuota per lo stato tied/untied **corrente** → recognizer **non ascolta** quel `trigger`.
 4. `system: true` → non sovrascrivibile in modo arbitrario da import v1 senza policy esplicita (warning).
 
+### 2.1 Azioni chiuse vs canale aperto
+
+| Tipo | Cosa c’è nella try-list | Chi sceglie la proprietà |
+|------|-------------------------|---------------------------|
+| **Chiusa** | Nome proprietà (es. `plusAssociate`) | Il record G/A; l’utente indica solo l’operando (es. `.selected`) |
+| **Canale aperto** (builtin) | Solo il gate (es. `applyDnD`) | Runtime: drag source/target, `ci[data-tag]` in canvas, registry HW, … |
+
+La G/A **non** elenca `replaceDnD` / `associativeDnD` / …: quelle restano nel registro proprietà + presenza in canvas. La riga aperta dice solo *se* il canale è disponibile nella colonna tied/untied.
+
 ---
 
-## 3. Ascolto per colonna (tied / untied)
+## 3. Canale aperto: DnD (minimo v1f)
+
+Record system di riferimento (`DEFAULT_TABLE`):
+
+```text
+{
+  trigger: 'dnd',
+  alias: null,
+  targetSource: null,          // source/target arrivano dall’intent recognizer
+  actionsUntied: ['applyDnD'],
+  actionsTied: ['applyDnD'],
+  system: true
+}
+```
+
+| Campo | Ruolo |
+|-------|--------|
+| `trigger: 'dnd'` | Gesto drag→drop del recognizer (`gestures.js`) |
+| `applyDnD` | Builtin in `MAIN2`: first-wins su `getDnDpropEnabled` / `findTgt` → `property.apply` |
+| Liste non vuote | Abilita l’ascolto `dnd` in quella colonna; liste vuote ⇒ DnD off (come gli altri trigger) |
+
+**Non** in questa riga: autoAdapt / copy / declare come tool separati; commutativa-via-sort (Sortable, fuori registry).  
+*(Futuro / altro passo: riga aperta `confirmApply` + Enter → `applySelectedTool`.)*
+
+Allineamento inventario UI: B1 in [`new-interface-spec.md`](new-interface-spec.md); B3 autoAdapt = debito/ramo interno, non seconda riga G/A per ora.
+
+---
+
+## 4. Ascolto per colonna (tied / untied)
 
 L’ascolto si decide **leggendo l’intera riga** e la colonna dello stato corrente (`GLBsettings.tiedCanvas`).
 
@@ -71,16 +108,16 @@ Il toggle lucchetto ricalcola i flag di ascolto (non ricarica il file).
 
 ---
 
-## 4. Persistenza: mmls v1 vs mmls v2
+## 5. Persistenza: mmls v1 vs mmls v2
 
-### 4.1 mmls versione 1 (legacy)
+### 5.1 mmls versione 1 (legacy)
 
 - Sezione `events`: MathML/`eventtoaction` (es. import `gestToAction.mml`), **senza** distinzione tied/untied.
 - Semantica storica: descrive lo stato **tied** (didattica vincolata).
 - **Import**: un modulo dedicato (unico responsabile dell’adattamento legacy) legge quel formato e **sovrascrive implicitamente la colonna `actionsTied`** della tabella G/A (a partire dal default o dalla G/A già caricata, secondo la policy del modulo).
 - Non è il formato di scrittura preferito per i nuovi esercizi.
 
-### 4.2 mmls versione 2
+### 5.2 mmls versione 2
 
 - `settings.mmlsVersion`: `2`.
 - Sezione `events`: **JSON** che descrive la tabella G/A, non MathML `eventtoaction`.
@@ -98,14 +135,14 @@ Forma di riferimento (prototipo `prop_comm_gen_mmlsv2.mmls`):
 - In v2 la sezione `events` è la **fonte file** della G/A per l’esercizio (caricata nel custode via `setTable` / merge definito dal loader).
 - Save/load futuri devono serializzare la G/A in questo JSON, non ricostruire `eventtoaction` v1 salvo export esplicito di compatibilità.
 
-### 4.3 Rilevazione versione
+### 5.3 Rilevazione versione
 
 - `settings.mmlsVersion === 2` (e/o `events.format === "gestureActionTable"`) → percorso v2.
 - Assenza / v1 → percorso import legacy (modulo v1 → colonna tied).
 
 ---
 
-## 5. Vocabolario dei `trigger`
+## 6. Vocabolario dei `trigger`
 
 | Intent recognizer (`type` [+ `axis`]) | `trigger` in G/A |
 |---------------------------------------|------------------|
@@ -122,7 +159,7 @@ Gli `alias` tastiera abilitano la via tastiera; l’ascolto pointer dipende dal 
 
 ---
 
-## 6. Flusso tra moduli (target)
+## 7. Flusso tra moduli (target)
 
 ```mermaid
 flowchart LR
@@ -161,7 +198,7 @@ flowchart LR
 
 ---
 
-## 7. Regole immutabili (non cambiare senza Romualdo)
+## 8. Regole immutabili (non cambiare senza Romualdo)
 
 1. Un solo custode runtime della G/A: `UserEvToFunctCall2.js`.
 2. **Niente associazioni gesture↔action fuori dalla G/A**, salvo eccezioni documentate (§1).
@@ -173,7 +210,7 @@ flowchart LR
 
 ---
 
-## 8. API di riferimento (contratto)
+## 9. API di riferimento (contratto)
 
 Custode (`UserEvToFunctCall2.js`):
 
@@ -188,12 +225,14 @@ Da implementare: modulo **import mmls v1**; reader **events JSON v2** in catena 
 
 ---
 
-## 9. Allineamento codice / debito
+## 10. Allineamento codice / debito
 
 | Stato | Note |
 |-------|------|
 | Runtime G/A + ascolto per colonna | `UserEvToFunctCall2.js`, `gestures.js`, `MAIN2.js` |
+| Canale aperto DnD (`applyDnD`) | Riga system in `DEFAULT_TABLE`; dispatch in `MAIN2.applyDnD` — §3 |
 | Prototipo mmls v2 | `app/Data/exercises/prop_comm_gen_mmlsv2.mmls` |
 | Import v1 dedicato | `importMmlsV1.js` — usato da `MAIN2.reloadMmlsOverrides` dopo preload/Shift+L (SaveLoad) |
 | Reader events JSON v2 | Parziale in `MAIN2.tryLoadMmlsV2GA` (prototipo); da irrigidire |
 | Doppio click → azioni | ancora nel codice (`MAIN.js`); fuori G/A — da migrare o documentare come eccezione |
+| confirmApply / Enter → selectedTool | *futuribile* (altro passo del piano canali aperti) |

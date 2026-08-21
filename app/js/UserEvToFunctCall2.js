@@ -22,7 +22,11 @@
 (function (global) {
 	'use strict';
 
-	/** Azioni builtin (non passano da TryOnePropertyByName). */
+	/**
+	 * Azioni builtin (non passano da TryOnePropertyByName).
+	 * applyDnD = canale aperto: la G/A abilita il gesto; quale proprietà HW
+	 * applicare lo decide MAIN2 a runtime (registry + canvas), non la try-list.
+	 */
 	const BUILTIN_ACTIONS = {
 		undo: true,
 		load: true,
@@ -30,7 +34,7 @@
 		toggleSelect: true,
 		selectSiblings: true,
 		selectMultiple: true, // alias bozza Romualdo → selectSiblings in MAIN2
-		applyDnD: true
+		applyDnD: true // canale aperto DnD — v. gesture-action-table.md §3
 	};
 
 	/**
@@ -190,6 +194,8 @@
 			system: true
 		},
 		{
+			// Canale aperto: non elenca replaceDnD/associativeDnD/… — solo gate ascolto.
+			// Intent {type:'dnd', source, target} → MAIN2.applyDnD.
 			trigger: 'dnd',
 			alias: null,
 			targetSource: null,

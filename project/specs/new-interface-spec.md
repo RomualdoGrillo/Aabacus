@@ -576,7 +576,7 @@ Il formato corretto delle associazioni gesture↔action è la **tabella G/A** (t
 
 Prototipo v2: `app/Data/exercises/prop_comm_gen_mmlsv2.mmls`.
 
-La G/A è l’unico punto in cui scrivere le associazioni (salvo eccezioni documentate in L2, es. doppio click ancora nel codice). Vocabolario intent: `tap`, `lasso`, `dnd`, `slashHor`/`slashVert`, `pinch` (H/V fusi in v1f interim). Dispatch: `TryOnePropertyByName` / availability invariati.
+La G/A è l’unico punto in cui scrivere le associazioni (salvo eccezioni documentate in L2, es. doppio click ancora nel codice). Vocabolario intent: `tap`, `lasso`, `dnd`, `slashHor`/`slashVert`, `pinch` (H/V fusi in v1f interim). **`dnd` → `applyDnD`** è un *canale aperto* (gate ascolto; le proprietà HW non sono listate nella riga — L2 §3). Dispatch: `TryOnePropertyByName` / availability / `MAIN2.applyDnD`.
 
 ### 7.5 Tabella G/A — riepilogo runtime
 
@@ -590,7 +590,7 @@ La G/A è l’unico punto in cui scrivere le associazioni (salvo eccezioni docum
 | Shift+S                | selected      | save              | save                   | sistema   |
 | tap                    | target tap    | toggleSelect      | toggleSelect           | sistema   |
 | lasso                  | targets lazo  | selectSiblings    | plusAssociate rtl      | sistema   |
-| dnd                    | source→target | applyDnD          | applyDnD               | sistema   |
+| dnd                    | source→target | applyDnD (canale aperto) | applyDnD (canale aperto) | sistema   |
 | p                      | selected      | —                 | plusAssociate ltr/rtl  | didattica |
 | c                      | selected      | —                 | OppositeOfOpposite, …  | didattica |
 | pinch / ↓·←            | pinched       | —                 | compose, … (unione H+V)| didattica |

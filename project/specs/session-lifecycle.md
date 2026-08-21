@@ -2,172 +2,178 @@
 
 # Ciclo di sessione — BOOT / PRELOAD / LOAD / SAVE
 
-**Fase: v1f** (bozza L2)  
-Etichette di fase: [`release-phases.md`](release-phases.md).  
-Documenti correlati: [`gesture-action-table.md`](gesture-action-table.md) (G/A), [`new-interface-spec.md`](new-interface-spec.md) §7, [`software-modules.md`](software-modules.md) (preload / SaveLoad).
+**Fase principale: v1** (produzione = `index.html` + backend SaveLoad/preload).  
+Sezioni marcate **v1f** / *futuribile* descrivono la pista `index2` o obiettivi non ancora in produzione.  
+Etichette: [`release-phases.md`](release-phases.md).  
+Disegno di riferimento (Romualdo): [Google Drawing — boot/preload/Load/Save](https://docs.google.com/drawings/d/1JCNdfnflDztLSefOmkGGkRilHv8-15BhFF9KIXd8A08/edit?usp=sharing).  
+Correlati: [`software-modules.md`](software-modules.md), [`gesture-action-table.md`](gesture-action-table.md) (**v1f**).
 
-Documento di **livello 2**: fissa la policy di **hardwired vs file** e il significato di BOOT, PRELOAD, LOAD, SAVE sulla pista che evolve verso **v1fb**. Non va modificato senza approvazione esplicita di Romualdo.
-
----
-
-## 1. Principio
-
-| Origine | Contenuto | Motivo |
-|---------|-----------|--------|
-| **Hardwired (BOOT)** | Comandi di sessione nella G/A marcati `system`; prototipi ENODE `.fundamental` nell’HTML iniziale | Devono funzionare anche senza preload / in debug; non dipendono da I/O |
-| **Da file** | Canvas e sezioni esercizio: `events` (G/A didattica), `palette`, `settings`, `result` | Contenuto scenario; caricabile e (obiettivo) salvabile come `.mmls` |
-
-La **tabella G/A** è il formato corretto della sezione **`events`** (sostituisce progressivamente il MathML `eventtoaction` — oggi ancora **mmls formato-events v1** in molti esercizi; target **mmls formato-events v2** = JSON G/A).
-
-Le righe G/A con `system: true` (undo / save / load / tap / lasso base, …) **non vengono sovrascritte** da PRELOAD né da LOAD.
+Documento di **livello 2**. Non va modificato senza approvazione esplicita di Romualdo.
 
 ---
 
-## 2. BOOT (hardwired)
+## 1. Modello (come deve intendersi)
 
-All’apertura di `index.html` (**v1**) o `index2.html` (**v1f**), prima di ogni file:
+Due sole fonti di contenuto per le sezioni UI:
 
-### 2.1 Events → G/A system (**v1f**)
+| Fonte | Quando | Cosa fa |
+|-------|--------|---------|
+| **Hardcoded (BOOT)** | All’apertura della pagina, **prima** di qualsiasi file | Riempie *alcune* sezioni da codice / markup fisso |
+| **File** (`.mmls` / `.mml` / `.prt` / …) | Solo in **Preload** e **Load** | Aggiunge o sostituisce contenuto di esercizio *sopra* il boot |
 
-Presenti nel custode (`UserEvToFunctCall2.js` → `DEFAULT_TABLE`), almeno:
+Il **boot non legge mai** `.mmls` / `.mml`. Quei formati compaiono solo in preload (URL) e load (file locale).
 
-| Alias / trigger | Ruolo | Note |
-|-----------------|-------|------|
-| `Mod+z` | undo | entrambe le colonne |
-| `Shift+S` | save | entrambe le colonne |
-| `Shift+L` | load | solo **untied**; in **tied** avviso di svincolare (policy v1f) |
-| `tap` | toggleSelect | sistema |
-| `lasso` | selectSiblings (untied) / azione base tied | sistema |
+Sezioni tipiche dopo il boot (come nel [disegno](https://docs.google.com/drawings/d/1JCNdfnflDztLSefOmkGGkRilHv8-15BhFF9KIXd8A08/edit?usp=sharing)):
 
-Altri trigger system (es. `dnd`) secondo [`gesture-action-table.md`](gesture-action-table.md).
+| Sezione | Contenuto da BOOT (hardcoded) |
+|---------|--------------------------------|
+| **Palette** | Prototipi ENODE **fondamentali** (Def, And, …) — oggi scritti in `index.html` / `index2.html` con classe `.fundamental` |
+| **Events** | Comandi di sessione non-didattici: almeno **Shift+L → load**, più Save, Undo, copy/paste (nel disegno: blocco “Non proprietà”) |
+| **Canvas / Result / Settings** | Solo scheletro vuoto (o default UI); il contenuto esercizio arriva da file |
 
-### 2.2 Palette / scheletro DOM
-
-Prototipi **irrinunciabili** (es. Def, And e quanto serve a creare il canvas) restano **hardwired** nel markup caricato inizialmente (`index.html` / `index2.html`), tipicamente con classe `.fundamental`. Senza di essi il canvas non si crea correttamente.
-
-Il BOOT **non** dipende da un file di preload.
-
----
-
-## 3. PRELOAD
-
-Carica da URL (query `?preloadPath=…`, default di sessione) un `.mmls` e lo inietta nelle sezioni, **sopra** il BOOT.
-
-| Sezione | Policy rispetto al BOOT |
-|---------|-------------------------|
-| **palette** | Aggiunge / sostituisce i prototipi **non** `.fundamental`; i fundamental restano |
-| **events** | **v1f:** merge nella G/A → solo righe / colonne ammesse (didattica; in import mmls-events-v1 → colonna **tied**). Mai overwrite delle righe `system` |
-| **canvas** | Di fatto **sostituisce** il contenuto esercizio (policy da dichiarare nei loader; non è un append didattico) |
-| **settings** | Popola `GLBsettings` e l’UI settings |
-| **result** | Sostituisce / riempie la sezione risultato |
-
-PRELOAD è il percorso normale per esercizi e debug con file in repo. Usa il backend esistente (`preload.js` → `injectAllMMLS` → …); in **v1f** la catena termina con aggiornamento G/A (`MAIN2.reloadMmlsOverrides` / reader v2).
-
----
-
-## 4. LOAD (file locale)
-
-Apre il file picker sulla macchina locale (Maiusc+L / azione `load`).  
-**Non** si basa su URL remoto per il file utente (limitazione browser + scelta di prodotto).
-
-Usi:
-
-- debug e test di nuovi esercizi;
-- *(futuribile / utenti avanzati)* creazione e prova di esercizi propri.
-
-### 4.1 Dialog di policy (**target v1f**, oggi parziale)
-
-Essendo LOAD uno strumento di **sperimentazione**, deve chiedere come combinare i contenuti con la sessione corrente, almeno per:
-
-| Area | Opzioni attese |
-|------|----------------|
-| **canvas** | sovrascrivere **oppure** aggiungere |
-| **palette** | sovrascrivere i non-fundamental **oppure** aggiungere |
-
-I `.fundamental` e le righe G/A `system` restano intoccabili.
-
-**Stato codice oggi (v1 / v1f condiviso SaveLoad):** conferma tipica “scarta il canvas”, poi `injectAllMMLS` in modalità prevalentemente **replace**. La dialog bilanciata replace/append è **debito v1f** (o v1fb se si unifica il loader).
-
-In **v1f**, con canvas **tied**, Load non parte in silenzio: avviso di svincolare prima (G/A: `actionsTied` vuota per `Shift+L`).
-
----
-
-## 5. SAVE
-
-### 5.1 Comportamento attuale (v1, ancora in v1f)
-
-| Contesto | Output |
-|----------|--------|
-| Nessuna selezione + Shift+S | `AlltoMMLSstring()` → `.mmls` con sezioni **palette, canvas, events, result** |
-| Selezione presente | `.mml` del solo pezzo selezionato |
-
-Limitazioni note (v. anche `software-modules.md`):
-
-- sezione **settings** **non** serializzata (TODO storico);
-- sezione **events** ancora in formato MathML legacy, non G/A JSON;
-- UX di salvataggio poco adatta a “edita esercizio → risalva bundle completo”.
-
-### 5.2 Obiettivo (**v1f → v1fb**, parte *must* per parità autori)
-
-Poter editare un esercizio e salvarlo in un `.mmls` che contenga **tutte** le sezioni rilevanti:
-
-- palette (senza fundamental, come oggi)
-- canvas
-- **events** = snapshot G/A **didattica** (o tabella completa con `system` omessi / reiniettati al load dal BOOT)
-- result
-- **settings**
-
-*(futuribile)* Scelta UI esplicita: “salva esercizio completo” vs “salva selezione”; eventuale Include di events comuni (solo didattica, non comandi system).
-
----
-
-## 6. Riepilogo flussi
-
-```text
-BOOT (HTML + G/A system)
-  │
-  ├─► PRELOAD(.mmls da URL)     — replace controllato sezioni esercizio
-  │         │
-  │         └─► merge events → G/A (no overwrite system)
-  │
-  └─► LOAD(.mmls locale)        — dialog replace/append (target)
-            │
-            └─► stesso backend inject + merge G/A
-
-SAVE ← serializza sezioni (obiettivo: + settings + events G/A)
+```mermaid
+flowchart LR
+  boot[Boot_hardcoded] --> preload[Preload_file]
+  preload --> load[Load_file]
+  load --> edit[UserEditing]
+  edit --> save[Save]
 ```
 
 ---
 
-## 7. Criteri di accettazione per fase
+## 2. Cosa fa oggi la produzione (v1) — scostamenti dal modello
 
-### v1f (chiudere la pista frontend)
+Il modello sopra è quello di riferimento. In **v1** (`index.html`) l’implementazione è **parzialmente allineata**:
 
-- G/A system hardwired; Load/Save/Undo senza preload — *in codice*
-- PRELOAD/LOAD condividono SaveLoad; post-load aggiorna G/A (import mmls-events-v1 → tied) — *in codice*
-- events in file nuovi = G/A (mmls formato-events v2) come default per esercizi index2 — *debito*
-- LOAD: dialog canvas/palette replace vs append — *debito*
-- SAVE: settings + events G/A nel `.mmls` completo — *debito*
+| Sezione al boot | Modello | Produzione v1 oggi |
+|-----------------|---------|---------------------|
+| **Palette** | fundamental hardcoded | **Sì** — markup in `index.html` |
+| **Events** | Shift+L, Save, Undo, copyPaste *nella sezione events* (o equivalente) | **No in `#events`** — `#events` resta vuoto; le stesse azioni sono **hardcoded in `MAIN.js`** (keydown), quindi funzionano comunque senza preload |
+| Canvas / result / settings | scheletro | scheletro / UI vuota |
 
-### v1b
-
-Fuori da questo documento (nuova backend); il merge in **v1fb** dovrà rispettare le stesse policy di sezione e di `system`.
-
-### futuribile
-
-- Include di file events didattici condivisi
-- Autori avanzati: workflow Load/Save come editor di esercizi
-- Deprecazione completa di `eventtoaction` MathML
+Quindi: il boot *comportamentale* (Load/Save/Undo senza file) c’è; il boot *nella sezione Events* come nel disegno **non** è ancora materializzato in DOM in v1. In **v1f** la G/A `system` (`UserEvToFunctCall2.js` → `DEFAULT_TABLE`) è l’equivalente corretto della sezione Events al boot (Shift+L, Shift+S, Mod+z, …).
 
 ---
 
-## 8. Allineamento codice (snapshot)
+## 3. Preload e Load — unici punti che leggono file
+
+```text
+Boot (solo hardcoded)     Preload (.mmls URL)        Load (locale)           Editing    Save
+ |                              |                          |                      |         |
+ v                              v                          v                      v         v
+ palette ← fundamental     + sezioni da .mmls         stesso inject di        sessione   §6
+ events  ← sessioni        (palette non-fund.,         preload per .mmls
+            (modello /       events didattici,          (.mml / .prt: rami
+             G/A v1f;        canvas, settings,           dedicati)
+             MAIN.js in v1)  result)
+ canvas/result vuoti
+```
+
+| Fase | Input file | Effetto sulle sezioni |
+|------|------------|------------------------|
+| **Preload** | `.mmls` da URL (`?preloadPath=`, default `PRELOAD.mmls`) via `preloadAll` → `injectAllMMLS` | Sopra il boot: palette (non-fundamental), events (ricette file), canvas, settings, result. I **fundamental** restano. |
+| **Load** | file locale Maiusc+L → `loadFileConvert` | `.mmls`: confirm “scarta canvas” poi **stesso** `injectAllMMLS` (replace, non ancora dialog sovrascrivi/aggiungi). `.mml` → `#canvasRole`. `.prt` → palette. |
+
+Nessun altro percorso di avvio deve aprire `.mmls`/`.mml` al posto del boot.
+
+---
+
+## 4. BOOT (dettaglio)
+
+### 4.1 Palette (v1 e v1f)
+
+Prototipi `.fundamental` nel HTML iniziale. Senza di essi il canvas non si crea correttamente. Il preload/load **non** li cancella (`:not(.fundamental)`).
+
+### 4.2 Events — modello vs implementazione
+
+| Contenuto atteso al boot | v1 | v1f |
+|--------------------------|----|-----|
+| Shift+L → load | in `MAIN.js` (non in `#events`) | riga G/A `system` + `MAIN2` |
+| Shift+S → save | idem | idem |
+| Ctrl+Z → undo; Ctrl+C/V/X | idem | Mod+z in G/A; copy/paste ancora tipicamente in codice |
+| tap / lasso / … | n/a (legacy) | G/A `system` |
+
+**Regola:** preload/load possono arricchire Events con ricette **didattiche**; non devono cancellare i comandi di sessione del boot (in v1f: righe `system: true` della G/A).
+
+### 4.3 Canvas / Result / Settings al boot
+
+Solo struttura DOM (e pannello settings vuoto). Contenuto esercizio **solo** da preload/load.
+
+---
+
+## 5. LOAD (file locale) — dettagli estensione
+
+| Estensione | Produzione oggi |
+|------------|-----------------|
+| `.mmls` | `confirm` “discart the existing canvas…” → `injectAllMMLS` (**replace**, come preload) |
+| `.mml` | inject nel target (di solito `#canvasRole`) **senza** svuotare tutto il bundle |
+| `.prt` | opzionale confirm “replace prototypes?” poi inject in `#palette` |
+| `.json` | `injectAll` (manifest legacy) |
+
+Non c’è dialog generica “sovrascrivere **o** aggiungere” su canvas/palette: quello resta **target / debito** (disegno Romualdo; checklist v1f).
+
+---
+
+## 6. SAVE
+
+### 6.1 Produzione (v1) — comportamento reale
+
+| Contesto | Output | Contenuto |
+|----------|--------|-----------|
+| Nessuna `.selected` + Shift+S | file `.mmls` via `AlltoMMLSstring()` | sezioni **palette** (senza fundamental), **canvas**, **events**, **result** |
+| Con `.selected` | file `.mml` | solo il frammento selezionato |
+
+**Non** serializza **settings** (TODO storico in `SaveLoad.js` / `software-modules.md`).  
+Il disegno che indica “Save al momento solo Canvas → .mml” descrive solo il ramo **con selezione**; il ramo senza selezione è già multi-sezione `.mmls`.
+
+### 6.2 Obiettivo (*futuribile* / chiusura autori v1f–v1fb)
+
+`.mmls` completo con **settings** + `events` in formato G/A; UI esplicita “esercizio completo” vs “selezione”.
+
+---
+
+## 7. Delta v1f (index2) rispetto allo schema produzione
+
+| Tema | v1 produzione | v1f (index2) |
+|------|---------------|--------------|
+| Events al **boot** | scorciatoie solo in `MAIN.js`; `#events` vuoto | G/A `system` = contenuto Events del boot (Shift+L, …) |
+| Events da **file** | MathML `eventtoaction` in `#events` | merge didattica in G/A (no overwrite `system`) |
+| Save/Load/Undo | `MAIN.js` | G/A `system` + builtin `MAIN2` (parallelo al modello del disegno) |
+| Post-load | `injectAllMMLS` fine | + `reloadMmlsOverrides` / import v1→tied |
+| Load se tied | sempre apre picker | avviso svincola |
+| Dialog replace/append | assente | debito (come nel disegno) |
+
+---
+
+## 8. Criteri / debito
+
+### Produzione (v1) — già così
+
+- Boot senza file: app usabile (scorciatoie + fundamental).
+- Preload e Load `.mmls` condividono `injectAllMMLS`.
+- Save senza selezione → `.mmls` senza settings.
+
+### v1f — in corso / debito
+
+- G/A system + import events → tied — *in codice*
+- events file = G/A JSON (formato-events v2) come default esercizi index2 — *debito*
+- LOAD: dialog canvas/palette replace vs append — *debito* (disegno)
+- SAVE: + settings (+ events G/A) — *debito*
+
+### futuribile
+
+- Include events didattici condivisi
+- Deprecazione `eventtoaction` MathML
+
+---
+
+## 9. Allineamento codice
 
 | Pezzo | Dove | Fase |
 |-------|------|------|
-| G/A default system | `UserEvToFunctCall2.js` | v1f |
-| Avviso Load se tied | `MAIN2.js` | v1f |
-| Import events legacy → tied | `input2/importMmlsV1.js` | v1f |
-| PRELOAD / inject sezioni | `preload.js`, `SaveLoad.js` | v1 (condiviso) |
-| `AlltoMMLSstring` senza settings | `SaveLoad.js` | v1 — debito SAVE |
-| Prototipi fundamental | markup `index.html` / `index2.html` | v1 / v1f |
+| Scorciatoie Save/Load/Undo/copy | `MAIN.js` | v1 |
+| `preloadAll` / `injectAllMMLS` | `preload.js` | v1 |
+| `loadFileConvert` / `AlltoMMLSstring` | `SaveLoad.js` | v1 |
+| Prototipi fundamental | `index.html` | v1 |
+| G/A system + Load tied avviso | `UserEvToFunctCall2.js`, `MAIN2.js` | v1f |
+| Import events → tied | `input2/importMmlsV1.js` | v1f |

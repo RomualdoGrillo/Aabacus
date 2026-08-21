@@ -417,11 +417,11 @@
 	}
 
 	/**
-	 * Builtin applyDnD: pipeline DnD.js SENZA SortableJS e SENZA spostare il
-	 * DOM prima della validazione. Alla prima findTgt valida → apply → conclude2.
-	 * replaceDnD (requiresCanvasCi:false) resta il fallback sempre disponibile
-	 * (se applicabile alla coppia). Proprietà che presuppongono dropped già
-	 * inserito da Sortable sono saltate (v. DND_SKIP_NEEDS_PREINSERT).
+	 * Builtin applyDnD — canale aperto G/A (`trigger: dnd` → `applyDnD`):
+	 * la tabella abilita solo l’ascolto; quale prop HW usare lo decide il registry
+	 * + canvas. Pipeline senza SortableJS / senza pre-insert DOM.
+	 * replaceDnD (requiresCanvasCi:false) resta fallback se applicabile.
+	 * Prop che richiedono dropped già inserito: DND_SKIP_NEEDS_PREINSERT.
 	 */
 	function applyDnD(source, target) {
 		const hit = findFirstValidDnD(source, target);
