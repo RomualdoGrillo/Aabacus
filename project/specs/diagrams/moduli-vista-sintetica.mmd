@@ -1,0 +1,13 @@
+%% Aabacus — schema moduli (vista sintetica)
+%% Sincronizza con project/specs/software-modules.md §1 «Vista sintetica»
+
+flowchart LR
+    Utente((Utente)) --> uiNode["UI: index.html, #canvasRole"]
+    uiNode --> inputNode["input (MAIN, DnD, tastiera)"]
+    inputNode --> propertiesNode["properties (registro, PM, HW, refine)"]
+    propertiesNode --> coreNode["core (ENODE API)"]
+    coreNode --> renderingNode["rendering (infix, segni, SVG)"]
+    inputNode --> persistenceNode["persistence (preload, SaveLoad)"]
+    persistenceNode --> coreNode
+    inputNode --> sessionNode["session services (Undo, game, settings)"]
+    stateNode["state.js — global"]
