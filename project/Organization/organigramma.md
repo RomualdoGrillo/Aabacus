@@ -65,15 +65,24 @@ flowchart LR
 
 ---
 
-## 3. Come collaborano — due modelli (scegliere quello giusto)
+## 3. Come collaborano — modello adottato: un agentone
 
-### ❌ Modello sbagliato: due Cloud Agent separati
+Definizione completa: [`modello-agentone.md`](modello-agentone.md).
 
-Aprire **css-specialist** in una tab e **Gabba** in un’altra → Romualdo deve **copiare ogni risposta** a mano. Non scala; Romualdo diventa collo di bottiglia sui test.
+In sintesi: **un agente genitore** per sessione (context fino a ~1M token) assume **subagent interinali** che capiscono il lavoro **solo dai file del progetto**. Non c’è memoria personale tra sessioni: l’unica memoria durevole sono **quaderni di laboratorio**, specs e git.
 
-### ✅ Modello giusto: subagent nella **stessa sessione**
+| Modello | Adottato? | Memoria | Handoff |
+|---------|-----------|---------|---------|
+| **Agenti paralleli** — più agenti autonomi che si parlano, ciascuno con esperienza propria | No (ideale teorico) | personale per agente | dialogo diretto agente↔agente |
+| **Un agentone** — genitore + subagent temporanei | **Sì** | solo file di progetto | quaderni + commit + stessa chat genitore |
 
-Un solo agente **genitore** (es. css-specialist) **delega** a Gabba; Gabba lavora in contesto isolato e **restituisce il risultato al genitore** nella stessa chat. Romualdo non incolla nulla.
+### ❌ Anti-pattern: chat parallele come “agenti paralleli”
+
+Aprire **css-specialist** in una tab e **Gabba** in un’altra simula gli agenti paralleli ma **non** li realizza: nessuna memoria condivisa, Romualdo deve **copiare ogni risposta** a mano.
+
+### ✅ Pattern corretto: subagent nella **stessa sessione** del genitore
+
+Il genitore (es. css-specialist) **delega** a Gabba; Gabba lavora in contesto isolato e **restituisce il risultato al genitore** nella stessa chat. Lo stato che deve sopravvivere alla chiusura della sessione va nel **quaderno di laboratorio** ([`quaderni/`](quaderni/)).
 
 | Meccanismo | Uso |
 |------------|-----|
@@ -82,7 +91,8 @@ Un solo agente **genitore** (es. css-specialist) **delega** a Gabba; Gabba lavor
 | **`project/specs/`** | contratto architetturale e regole |
 | **`AGENTS.md` + `Organization/roles/`** | ruoli e perimetri |
 | **CI su PR** (futuro) | smoke/playwright su ogni push senza umano in loop |
-| **Handoff locale ↔ cloud** | stessa conversazione, ambiente diverso (opzionale) |
+| **`project/Organization/quaderni/`** | memoria durevole tra sessioni e tra lavoratori interinali |
+| **Handoff locale ↔ cloud** | stesso repo + quaderno; la chat non è memoria condivisa |
 
 Gabba **è già definito** in `.cursor/agents/gabba.md` — non serve un secondo Cloud Agent creato da zero; serve **invocarlo come subagent** dal genitore.
 

@@ -6,7 +6,9 @@ Documentazione del team AI di sviluppo: ruoli, organigramma, interazioni e agent
 
 | File | Contenuto |
 |------|-----------|
+| [modello-agentone.md](modello-agentone.md) | **Un agentone** vs agenti paralleli; memoria solo via file e quaderni |
 | [organigramma.md](organigramma.md) | Livelli GOV, organigramma operativo, flussi di collaborazione |
+| [quaderni/](quaderni/) | Quaderni di laboratorio — handoff tra lavoratori interinali |
 | [roles/](roles/) | Schede ruolo (descrizione umana per Romualdo) |
 | [diagrams/](diagrams/) | Sorgenti Mermaid (`.mmd`) e PDF stampabili |
 
@@ -15,7 +17,8 @@ Documentazione del team AI di sviluppo: ruoli, organigramma, interazioni e agent
 | Concetto | Dove | Scopo |
 |----------|------|--------|
 | **Ruolo** | `AGENTS.md`, `project/Organization/roles/` | Mansione, livello, perimetro, escalation |
-| **Agente** | `.cursor/agents/*.md` | Istanza operativa per Cursor (modello, delega subagent) |
+| **Agente** | `.cursor/agents/*.md` | Profilo operativo che il **genitore** assume o delega come subagent interinale |
+| **Quaderno** | `project/Organization/quaderni/` | Memoria durevole tra sessioni (il subagent non “ricorda” altrove) |
 | **Romualdo** | umano | Master (L1), approvazioni GOV, review |
 
 Prima si definisce il **ruolo**; poi si “assume” un agente scrivendo (o aggiornando) un file in `.cursor/agents/`.
