@@ -27,43 +27,35 @@ Legenda forme: esagono = orchestratore; parallelogramma = gestore di eventi; ret
 ```mermaid
 flowchart TB
     USER((USER))
-
     UI["INDEX.HTML — #canvasRole<br/>il DOM è il modello"]
-
-    ENODES["ENODEs API — strato di comunicazione col DOM-modello<br/>manipolazione albero + refresh visivo<br/>(tutto il software a valle passa da qui)"]
-
     GM[/"GESTURE MANAGER<br/>gesti, drag, tasti → intenti"/]
-
     MAIN{{"MAIN — orchestratore<br/>boot, pipeline PActx"}}
-
+    ENODES["ENODEs API — strato di comunicazione col DOM-modello<br/>manipolazione albero + refresh visivo<br/>(tutto il software a valle passa da qui)"]
     PM[["PATTERN MATCHING<br/>motore delle proprietà:<br/>PM + hard-wired + registro + refine"]]
-
     LS["LOAD / SAVE<br/>serializzazione, import, formati MathML"]
-
     UNDO(["UNDO — servizio<br/>memoria degli stati (FILO)"])
-
     SESSION(["SESSIONE DIDATTICA — servizio<br/>settings, gioco, suoni, contamosse"])
-
     FILES[("FILES<br/>.mmls · .mml · .prt · .set")]
-
     STATE(["STATO CONDIVISO — state.js<br/>(da ridurre dentro i servizi)"])
 
     USER --> UI
-    UI <-->|"legge / scrive l'albero"| ENODES
     UI -->|"eventi grezzi<br/>(mouse, touch, tasti)"| GM
+    UI <-->|"legge / scrive l'albero"| ENODES
     GM -->|intenti| MAIN
     MAIN -->|"proprietà per nome (registro)"| PM
-    ENODES <--> PM
     MAIN --> LS
-    ENODES <--> LS
-    LS <--> FILES
     MAIN -->|"snapshot dopo ogni azione"| UNDO
-    ENODES <--> UNDO
     MAIN -->|"esito, celebrazione"| SESSION
+    ENODES <--> PM
+    ENODES <--> LS
+    ENODES <--> UNDO
     ENODES <--> SESSION
+    LS <--> FILES
 ```
 
-Flusso tipico di un'azione: l'utente agisce sulla UI → il GESTURE MANAGER riceve gli eventi grezzi, riconosce il gesto e produce un intento → MAIN lo instrada al motore (dispatch per nome via registro) → il motore calcola la trasformazione e la applica passando dallo strato ENODEs API → MAIN conclude (PActx): chiede lo snapshot a UNDO e l'esito alla SESSIONE DIDATTICA. ENODEs API sta in alto, subito sotto `index.html`, perché è lo **strato di comunicazione** tra il DOM-modello e tutto il software a valle: nessun modulo tocca l'albero senza passarci.
+Il render canonico [`diagrams/schema-target.svg`](diagrams/schema-target.svg) impagina lo stesso grafo come nello schema rivisto da Romualdo: GESTURE MANAGER–MAIN–PATTERN MATCHING nella riga superiore, ENODEs API come barra di comunicazione centrale, librerie e servizi sotto. Le posizioni del render sono fissate (non affidate al layout automatico Mermaid).
+
+Flusso tipico di un'azione: l'utente agisce sulla UI → il GESTURE MANAGER riceve gli eventi grezzi, riconosce il gesto e produce un intento → MAIN lo instrada al motore (dispatch per nome via registro) → il motore calcola la trasformazione e la applica passando dallo strato ENODEs API → MAIN conclude (PActx): chiede lo snapshot a UNDO e l'esito alla SESSIONE DIDATTICA. ENODEs API sta nella parte alta dell'architettura, come **strato di comunicazione** tra il DOM-modello e tutto il software a valle: nessun modulo tocca l'albero senza passarci.
 
 ## 3. Ruolo e contratto di ogni macro-modulo
 
