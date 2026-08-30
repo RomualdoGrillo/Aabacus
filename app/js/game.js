@@ -1,4 +1,8 @@
 // @ts-check
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.session + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //Logica di gioco: confronto dell'espressione col risultato atteso e celebrazione.
 //Estratta da AldoUtilities.js (passo 5 del piano in project/specs/software-modules.md).
 
@@ -48,3 +52,13 @@ function compareWithResult($expression, $result,strictOrder) {
 	MyPActx.$pattern = /** @type {JQuery} */ (ENODEclone($result));
 	return orderMatch(MyPActx, false, true, strictOrder).matchedTF
 }
+
+//--- interfaccia del modulo (software-modules.md §2.6) ---
+var api = {
+	lookForResultAndCelebrate: lookForResultAndCelebrate
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.session = global.Aabacus.session || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

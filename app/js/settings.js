@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.session + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //Ponte impostazioni <-> interfaccia: applica GLBsettings ai controlli della colonna destra
 //e riflette le modifiche dell'utente su GLBsettings.
 //Estratto da preload.js (passo 5 del piano in project/specs/software-modules.md).
@@ -119,3 +123,13 @@ mySettings.addEventListener('change', function(event) {
 	GLBsettingsToInterface();
 	RefreshEmptyInfixBraketsGlued($("#canvasRole"))
 });
+
+//--- interfaccia del modulo (software-modules.md §2.6) ---
+var api = {
+	GLBsettingsToInterface: GLBsettingsToInterface
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.session = global.Aabacus.session || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.input + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //UI Event to function call
 //traduce i comandi dell'utente, in questo caso inpartiti via mouse e tastiera,
 // in chiamate a funzioni del modulo ENODE
@@ -130,26 +134,18 @@ function searchEventHandler(event){// trova la definizione della proprietà
 
 
 
-//searchForProperty('firstMember','distTimes')
-function searchForProperty(field,value,returnedField){
-	// trova la definizione della proprietà
-	if( value == undefined){ return undefined}
-	let candidates = Array.from( canvasRole.querySelectorAll('[data-enode=deftrue]') );
-	let i=0;
-	while(candidates[i]){
-		let $role = ENODE_getRoles(candidates[i]).filter('.' + field)
-		if($role.length !== 1){
-			console.warn('Role not found' + field);
-		}
-		let ENODEvalue = $role.children()[0]
-		if(ENODEvalue !== undefined && ENODE_getName(ENODEvalue).toLowerCase() === value.toLowerCase() ){
-		    //case insensitive
-        	return   $( ENODE_getRoles(candidates[i]).filter("." + returnedField ).children()[0] ) 
-		}	
-	i++}
-}
-
-
-
-
 //refineAfterProperty / markNeedsRefine: app/js/refine.js (post-applicazione delle proprietà)
+//searchForProperty (ricerca di una deftrue per campo/valore) era definita qui senza
+//chiamanti attivi: rimossa (software-modules.md §4 voce 6, recuperabile dalla history git).
+
+//--- interfaccia del modulo (software-modules.md §2.5) ---
+var api = {
+	tryEventActionsOnNode: tryEventActionsOnNode,
+	keyboardEvToFC: keyboardEvToFC,
+	getDnDpropEnabled: getDnDpropEnabled
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.input = global.Aabacus.input || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

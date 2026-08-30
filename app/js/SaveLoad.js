@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.persistence + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //Load/Save from https://thiscouldbebetter.wordpress.com/2012/12/18/loading-editing-and-saving-a-text-file-in-html5-using-javascrip/
 
 /**
@@ -44,14 +48,14 @@ function destroyClickedElement(event)
  * (sostituisce il canvas); "json" → injectAll (manifest legacy); "prt" → iniezione
  * in #palette (con conferma per rimpiazzare i prototipi non fondamentali).
  * Al termine esegue RefreshEmptyInfixBraketsGlued. La lettura è asincrona (FileReader).
- * @param {File} fileToLoadPar - (attualmente ignorato) il file letto è sempre il primo di #fileToLoad.
+ * @param {File} fileToLoadPar - Il file da leggere; se assente si usa il primo di #fileToLoad.
  * @param {JQuery} [$targetNode] - Destinazione dell'iniezione, usata solo per i file "mml".
  * @param {string} [fileSuffix] - Estensione del file ("mml"|"mmls"|"json"|"prt"); se sconosciuta logga e non inietta.
  * @returns {void}
  */
 function loadFileConvert(fileToLoadPar,$targetNode,fileSuffix)
 {
-	const fileToLoad = document.getElementById("fileToLoad").files[0];
+	const fileToLoad = fileToLoadPar || document.getElementById("fileToLoad").files[0];
 	const fileReader = new FileReader();
 	fileReader.onload = function(fileLoadedEvent) 
 	{
@@ -138,42 +142,49 @@ function inject(MMLstring, $targetRoleOrENODE, containerRequirements, toBeImport
 }
 
 /**
- * Risolve gli import: cerca in tutto il body gli ENODE con [data-import] non ancora
- * importati né falliti, li marca con importStatus e carica/inietta il file riferito
- * via loadAjaxAndInject (filtrando per l'eventuale data-tag). Passata singola:
- * import annidati nei file appena caricati possono restare irrisolti.
- * @param {JQuery} [$startNode] - (attualmente ignorato) la ricerca avviene sempre in body; se assente viene valorizzato a #canvasRole ma senza effetto sulla ricerca.
+ * Risolve gli import: cerca nell'ambito dato (default: tutto il body) gli ENODE
+ * con [data-import] non ancora importati né falliti, li marca con importStatus e
+ * carica/inietta il file riferito via loadAjaxAndInject (filtrando per l'eventuale
+ * data-tag). Ripete la ricerca a passate successive finché non restano import da
+ * risolvere (i file appena caricati possono contenere import annidati), fino a
+ * IMPORT_MAX_PASSES (anti-loop su import circolari).
+ * @param {JQuery} [$startNode] - Ambito della ricerca (incluso il nodo stesso); se assente si cerca in tutto il body.
  * @returns {void}
  */
 function importAll($startNode){
-	//futuribile for()//fino a che c’è qualcosa da importare
-	if(!$startNode){
-		$startNode=$("#canvasRole");
-	}
-	$('body').find('[data-import]:not([importStatus=imported]):not([importStatus=failed])').each(function(i,el){//search for import
-
-		try{
-			let $el = $(el)
-			let path = $el.attr('data-import')
-			if(path){
-				let tag = $el.attr('data-tag')
-				//marca come imported! 
-				$el.attr('importStatus','imported')
-				loadAjaxAndInject(path,$el,tag); //will load and inject or mark the node as ImportFail or ImportSuccess
+	const IMPORT_MAX_PASSES = 10;
+	const pendingSelector = '[data-import]:not([importStatus=imported]):not([importStatus=failed])';
+	const $scope = ($startNode && $startNode.length) ? $startNode : $('body');
+	for (let pass = 0; pass < IMPORT_MAX_PASSES; pass++) {
+		const $pending = $scope.find(pendingSelector).addBack(pendingSelector);
+		if ($pending.length === 0) { return }
+		$pending.each(function(i,el){//search for import
+			const $el = $(el)
+			try{
+				const path = $el.attr('data-import')
+				if(path){
+					const tag = $el.attr('data-tag')
+					//marca come imported!
+					$el.attr('importStatus','imported')
+					loadAjaxAndInject(path,$el,tag); //will load and inject or mark the node as ImportFail or ImportSuccess
+				}
+				else{//data-import vuoto: marca failed per non riesaminarlo alle passate successive
+					$el.attr('importStatus','failed')
+				}
 			}
-		}
-		catch{
-			//failed to import!
-			$el.attr('importStatus','failed')
-		}
-	})
-	
+			catch{
+				//failed to import!
+				$el.attr('importStatus','failed')
+			}
+		})
+	}
+	console.warn('importAll: raggiunto IMPORT_MAX_PASSES (' + IMPORT_MAX_PASSES + ') con import ancora irrisolti');
 }
 
 /**
  * Serializza la sessione corrente in una stringa .mmls a sezioni: palette (senza i
- * prototipi fondamentali), canvas, events e result. Nota: la sezione settings non
- * viene serializzata (il commento "save settings" nel corpo è senza seguito).
+ * prototipi fondamentali), canvas, events, result e settings (GLBsettings come
+ * JSON inline, stesso formato letto da injectAllMMLS al ricaricamento).
  * @returns {string} Stringa MMLS composta dalle <section data-section=...>.
  */
 function AlltoMMLSstring(){
@@ -185,12 +196,31 @@ function AlltoMMLSstring(){
 	let eventsString = ENODEcreateMathmlString($('#events').children(),true);
 	//result
 	let resultString = ENODEcreateMathmlString($('#result').children(),true);
-	//save settings
+	//settings: GLBsettings inline (al caricamento injectAllMMLS fa JSON.parse dell'html della sezione)
+	let settingsString = (typeof GLBsettings === 'object' && GLBsettings !== null)
+		? JSON.stringify(GLBsettings)
+		: '';
 	let MMLSString =
 	'<section data-section="palette">' + paletteString + '</section>'+
 	'<section data-section="canvas">' + canvasString + '</section>'+
 	'<section data-section="events">' + eventsString + '</section>'+
 	'<section data-section="result">' + resultString + '</section>'
-
+	if(settingsString){
+		MMLSString += '<section data-section="settings">' + settingsString + '</section>'
+	}
 	return MMLSString
 }
+
+//--- interfaccia del modulo (software-modules.md §2.4) ---
+var api = {
+	saveTextAsFile: saveTextAsFile,
+	loadFileConvert: loadFileConvert,
+	inject: inject,
+	importAll: importAll,
+	AlltoMMLSstring: AlltoMMLSstring
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.persistence = global.Aabacus.persistence || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

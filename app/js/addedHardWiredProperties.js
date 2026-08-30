@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.props + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 /**
  * Proprietà unary `tabelline`: `compose` limitato alle moltiplicazioni tra
  * due numeri "semplici" (una sola cifra significativa: 4, 90, 300...). Se è
@@ -125,3 +129,16 @@ registerHardWiredMap({
 	composePlusOnly: composePlusOnly,
 	decomposeTens: decomposeTens
 })
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	tabelline: tabelline,
+	composePlusOnly: composePlusOnly,
+	decomposeTens: decomposeTens,
+	$toBeComposedWithSiblings: $toBeComposedWithSiblings
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.props = global.Aabacus.props || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

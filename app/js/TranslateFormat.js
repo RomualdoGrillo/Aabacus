@@ -1,86 +1,11 @@
-function ENODEfactorizeMinus($startNode) {
-	//translate from (-(a)) to (-1)(a)
-	//**** condizioni necessarie per applicare la funzione *****
-	if ($startNode.attr("data-enode") !== "minus") {
-		return
-	}
-	//è circondato un meno?
-	let $extOp = wrapIfNeeded($startNode, "times");
-	//se necessario crea una operazione container
-	//aggiungi un fattore "-1"
-	const prototype = prototypeSearch("ci", "num");
-	const prototypeMinus = prototypeSearch("minus");
-	const $clone = ENODEclone(prototype);
-	const $cloneMinus = ENODEclone(prototypeMinus);
-	$clone.attr('data-enode', 'cn');
-	ENODE_setName($clone, "1");
-	$cloneMinus.insertAfter($startNode);
-	ENODE_getRoles($cloneMinus).append($clone);
-	ENODE_dissolveContainer($startNode)
-	//remove minus from $startNode  
-	RefreshEmptyInfixBraketsGlued($('body'));//rinfresca anche gli infix di $extOp
-	ssnapshot.take();
-}
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.rendering + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
 
-function signsAsClassesSubtree($startNode, mode) {
-	//trova tutti i sotto nodi
-	$startNode.find('[data-enode]').each(function(index) {
-		// tutti gli HTML nodes con attributo data-enode
-		signsAsClasses($(this), mode);
-	})
-}
-
-function signsAsClasses($ENODE, mode /* SignsInNames_to_SignsAsClasses SignsAsClasses_to_SignsInNames SignsAsClasses_to_MinusOp MinusOp_to_SignsAsClasses*/
-) {
-	// <>-a<> to <class="minus">a<>
-	// nota: non possono coesistere segni meno all'interno del nome e "minus" come classi
-	let name = ENODE_getName($ENODE)
-	if (mode == "SignsInNames_to_SignsAsClasses") {
-		if (name[0] === "/") {
-			name = name.substr(1)
-			//nome privato del segno meno
-			$ENODE.addClass('inverse')
-		}// attenzione: / va inserito prima del meno
-		else {
-			$ENODE.removeClass('inverse')
-		}
-		if (name[0] === "-") {
-			name = name.substr(1)
-			//nome privato del segno meno
-			$ENODE.addClass('minus')
-		}//todo: cosa succede se input = ---2  ?
-		else {
-			$ENODE.removeClass('minus')
-		}
-
-	} else if (mode == "SignsAsClasses_to_SignsInNames") {
-		if ($ENODE.hasClass('minus')) {
-			name = "-" + name;
-			$ENODE.removeClass('minus');
-		}
-		if ($ENODE.hasClass('inverse')) {
-			name = "/" + name;
-			$ENODE.removeClass('inverse');
-		}
-	}
-	else if (mode == "SignsAsClasses_to_MinusOp") {
-		if ($ENODE.hasClass('minus')) {
-			$ENODE.removeClass('minus');
-			wrapWithOperation($ENODE, "minus")
-		}
-	} else if (mode == "MinusOp_to_SignsAsClasses") {
-		const $ENODEchildren = ENODE_getRoles($ENODE).children().filter('[data-enode]')
-		if ($ENODE.attr('data-enode') === "minus" && $ENODEchildren.length == 1) {
-			// i minus che hanno un solo children
-			ENODE_dissolveContainer($ENODE);
-			$ENODEchildren.filter(':first').addClass('minus');
-		}
-	}
-
-	ENODE_setName($ENODE, name);
-	$ENODE.attr("data-enode", (isNaN(name)) ? "ci" : "cn")
-	// se numero allora classe "cn"
-}
+//Le conversioni di formato del segno (ENODEfactorizeMinus, signsAsClasses,
+//signsAsClassesSubtree) erano definite qui ma senza chiamanti attivi: rimosse
+//(software-modules.md §4 voce 6, recuperabili dalla history git). La strategia
+//sulle tre rappresentazioni del segno resta una decisione aperta.
 
 /**
  * Array di funzioni che richiedono l'effetto "glued" sui loro elementi figli
@@ -127,3 +52,13 @@ function refreshGlued($startNode) {
         $toBeGlued.addClass('glued');
     });
 }
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	refreshGlued: refreshGlued
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.rendering = global.Aabacus.rendering || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.rendering + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //queste funzioni richiedono nel documento html le tag:
 /*
 <svg id="prototypeContainer" width="0%" height="0%">
@@ -42,3 +46,14 @@ function clearLines()
 {
 	return $("#svgContainer *").remove()	
 }
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	lineAB: lineAB,
+	clearLines: clearLines
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.rendering = global.Aabacus.rendering || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

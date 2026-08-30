@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.input + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //************************Init*******************************
 // GLBsettings, debugMode, preloadPath, tools, FILO: state.js
 /** @type {Element} Globale d'interfaccia: contenitore #canvasRole (letta anche da UserEvToFunctCall.js). */
@@ -447,3 +451,17 @@ function displayMoves(moves) {
 		movesSpan.textContent = displayedText;
 	}
 }
+
+//--- interfaccia del modulo (software-modules.md §2.5) ---
+var api = {
+	selectionManager: selectionManager,
+	ExtendAndInitializeTree: ExtendAndInitializeTree,
+	ExtendAndInitialize: ExtendAndInitialize,
+	PActxConclude: PActxConclude,
+	VisualizeCelebration: VisualizeCelebration
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.input = global.Aabacus.input || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

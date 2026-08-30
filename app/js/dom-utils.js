@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.session + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //Utilità generiche su DOM, stringhe e array, senza logica applicativa.
 //Estratte da AldoUtilities.js (passo 5 del piano in project/specs/software-modules.md).
 
@@ -168,3 +172,20 @@ function CriterionSonParent(a,b){
     else if( b.contains(a) ){return -1}
     else { return 0}
 }
+
+//--- interfaccia del modulo (software-modules.md §2.6) ---
+var api = {
+	removeClassStartNodeAndDiscendence: removeClassStartNodeAndDiscendence,
+	removeClassByPrefix: removeClassByPrefix,
+	buildPath: buildPath,
+	wrapUnwrapUrlString: wrapUnwrapUrlString,
+	getCol: getCol,
+	commonParent: commonParent,
+	writeData: writeData,
+	CriterionParentSon: CriterionParentSon
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.session = global.Aabacus.session || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

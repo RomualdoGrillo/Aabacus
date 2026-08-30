@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.input + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //Passing data between DnD, write on the Drag and use data on dragStat..dragEnd
 let GLBDnD = { toolWhenMousedown: "" }
 //at the moment ther's no clean whay to pass data between
@@ -385,3 +389,15 @@ function clearSortableTargets() {
 	}
 
 }
+
+//--- interfaccia del modulo (software-modules.md §2.5) ---
+var api = {
+	MakeSortableAndInjectMouseDown: MakeSortableAndInjectMouseDown,
+	MouseUpCleanup: MouseUpCleanup,
+	cleanupDnD: cleanupDnD
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.input = global.Aabacus.input || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

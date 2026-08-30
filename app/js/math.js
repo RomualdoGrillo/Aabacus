@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.core + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 /**
  * Scompone un numero intero nei suoi fattori primi (funzione ricorsiva).
  * Il secondo parametro non dichiarato (arguments[1]) è l'accumulatore usato
@@ -21,21 +25,6 @@ function primeFactorization(num){
   //if num isn't prime factor make recursive call
   return (x === num) ? result : primeFactorization(num/x, result) ;
 }
-function ENODENumericCdsAsText($ENODE){
-  let $elementUnderTest = $ENODE
-  let sign = 1
-  while( $elementUnderTest.attr('data-enode') === "minus" ){
-    //passa all'elemento interno
-    $elementUnderTest = ENODE_getRoles($elementUnderTest).children(':first');
-    sign = sign * -1
-  }
-  let res = ENODE_getName($elementUnderTest);
-  if( sign == -1 ){//se necessario aggiungi segno meno
-    res = "-" + res
-  }
-  return res
-}
-
 /**
  * Separa da un numero la sua parte meno significativa non nulla (unità, poi
  * decine, centinaia, ...) e restituisce [parte, resto]; gli zeri intermedi non
@@ -62,3 +51,14 @@ function separateTensHundreds(n) {
   }
   return arr;
 }
+
+//--- interfaccia del modulo (software-modules.md §2.1) ---
+var api = {
+	primeFactorization: primeFactorization,
+	separateTensHundreds: separateTensHundreds
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.core = global.Aabacus.core || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

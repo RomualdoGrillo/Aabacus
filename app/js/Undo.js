@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.session + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //snapshot manager — FILO dichiarato in state.js
 
 /**
@@ -79,3 +83,13 @@ ssnapshot.paste = function(){
 		ENODEreplaceNode( $(".selected"), $newCds );
 	}
 }
+
+//--- interfaccia del modulo (software-modules.md §2.6) ---
+var api = {
+	ssnapshot: ssnapshot
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.session = global.Aabacus.session || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

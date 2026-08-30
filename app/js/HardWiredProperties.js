@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.props + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 //newPActx è definita in PMTutilities.js: punto comune per proprietà hard-wired e pattern-based
 // Le proprietà DnD si registrano in fondo al file (dopo le implementazioni) via registerHardWired.
 
@@ -939,28 +943,28 @@ function ENODELinkReplace($link, $replaced) {
 	return PActx
 }
 /**
- * apply di `modusPonensDnD` (incompleta, v. TODO in software-modules.md):
- * clona la conclusione dell'implicazione e la inserisce dopo l'occorrenza
- * della premessa; il wrap in `and` della premessa è solo abbozzato in un
- * commento.
+ * apply di `modusPonensDnD`: dall'occorrenza della premessa deduce la
+ * conclusione dell'implicazione (clone del secondo membro) e la affianca alla
+ * premessa; se la premessa non è già dentro un `and` la avvolge prima in un
+ * `and` (la deduzione coesiste con la premessa, non la sostituisce).
  * @param {JQuery} $premiseInProperty premessa trascinata (primo membro dell'implies)
  * @param {JQuery} $premise occorrenza della premessa nel documento
- * @returns {PActx} con replacedAlready=true ma matchedTF mai impostato
- *   (resta false: anomalia)
+ * @returns {PActx} matchedTF true, replacedAlready true, $transform = la conclusione dedotta
  */
 function ENODEModusPonens($premiseInProperty, $premise){
 	const PActx = newPActx();
 	PActx.replacedAlready = true;
-	if(!ENODEparent($premise).is('[data-enode=and]')){
-		//wrap with AND
-	}
+	//se la premessa non è dentro un and, avvolgila (premessa AND deduzione)
+	wrapIfNeeded($premise, "and");
 	//create clone
-	
-	let $clone = ENODEclone(
+	const $clone = ENODEclone(
 		ENODE_getRoles(ENODEparent($premiseInProperty), ".secondMember").children()
 	);
-	//isert deduction after $premise
+	//insert deduction after $premise
 	ENODEinsertAfter($clone, $premise);
+	PActx.$transform = $clone;
+	PActx.matchedTF = true;
+	PActx.msg = "modusPonens";
 	return PActx
 }
 
@@ -1250,3 +1254,19 @@ registerHardWiredMap({
 		requiresCanvasCi: d.requiresCanvasCi !== false
 	})
 })
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	OpIsAssociative: OpIsAssociative,
+	validCandidatesForPatternDrop: validCandidatesForPatternDrop,
+	forThisPar_focus_nofocus: forThisPar_focus_nofocus,
+	compose: compose,
+	decomposeInAProduct: decomposeInAProduct,
+	decomposeInASum: decomposeInASum,
+	evaluateComparison: evaluateComparison
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.props = global.Aabacus.props || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

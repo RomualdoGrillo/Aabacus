@@ -1,4 +1,7 @@
 // @ts-check
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.rendering + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
 
 /**
  * Aggiorna i separatori infissi (`.infix`) tra gli operandi di un ENODE con la
@@ -71,3 +74,14 @@ function refreshOneEmpty($ENODE){
 		}
 	})
 }
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	refreshOneInfix: refreshOneInfix,
+	refreshOneEmpty: refreshOneEmpty
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.rendering = global.Aabacus.rendering || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);

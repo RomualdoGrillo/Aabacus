@@ -1,3 +1,7 @@
+//Modulo IIFE (passo 8, software-modules.md §4.1): helper privati nello scope del modulo,
+//interfaccia esportata su Aabacus.props + alias globali di compatibilità (index2, newPM, test).
+(function (/** @type {any} */ global) {
+
 /**
  * Cerca tra le bvar dell'header di un forAll quella con lo stesso nome del
  * parametro dato (nome privato degli underscore).
@@ -245,3 +249,20 @@ function swapMembersClone($origProp,mode){
     //else{//futuribile: ricava n-esimo ed m-esimo membro di eq a=b=n=m };
     return res
 }
+
+//--- interfaccia del modulo (software-modules.md §2.2/§2.3) ---
+var api = {
+	parameterInHeader: parameterInHeader,
+	replaceInForall: replaceInForall,
+	containsBvar: containsBvar,
+	reformatForallProp: reformatForallProp,
+	ParameterNameToType: ParameterNameToType,
+	levelsToAncestor: levelsToAncestor,
+	findPMPropByName: findPMPropByName,
+	swapMembersClone: swapMembersClone
+};
+global.Aabacus = global.Aabacus || {};
+Object.assign(global.Aabacus.props = global.Aabacus.props || {}, api);
+Object.assign(global, api);//alias globali di compatibilità
+
+})(window);
