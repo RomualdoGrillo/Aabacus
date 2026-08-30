@@ -253,6 +253,11 @@ console.log('unit-input2-selection');
 		sandbox,
 		{ filename: 'selectionManager.js' }
 	);
+	// selectionManager.js è un modulo IIFE (esporta su window/Aabacus.input):
+	// riporta l'alias nello scope del sandbox, come farebbe il browser col vero global.
+	if (!sandbox.selectionManager && sandbox.window && sandbox.window.selectionManager) {
+		sandbox.selectionManager = sandbox.window.selectionManager;
+	}
 	vm.runInNewContext(
 		fs.readFileSync(path.join(__dirname, '../../app/js/UserEvToFunctCall2.js'), 'utf8'),
 		sandbox,
