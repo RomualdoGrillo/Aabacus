@@ -26,9 +26,10 @@ Prima si definisce il **ruolo**; poi si “assume” un agente scrivendo (o aggi
 |--------|-------|---------|-------|
 | `css-specialist` | Specialist CSS | L3 | attivo |
 | `core-specialist` | Specialist nucleo espressioni | L3 | attivo |
+| `frontend2-specialist` | Specialist FrontEnd2 (`index2` / input2) | L3 | attivo |
 | `gabba` | Tester L4 | L4 | attivo — **subagent**, non chat parallela |
 
-Altri Specialist (rendering, properties, interaction, …) si aggiungono quando servirà.
+Altri Specialist (rendering, properties, interaction legacy, …) si aggiungono quando servirà.
 
 ## Diagrammi: come conservarli
 

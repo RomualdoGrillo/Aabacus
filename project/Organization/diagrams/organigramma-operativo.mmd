@@ -10,6 +10,7 @@ flowchart LR
   subgraph specialisti [Specialist L3 — attivi]
     CSS["css-specialist — app/css/ + proposte cross-file"]
     CORE["core-specialist — nucleo ENODE"]
+    FE2["frontend2-specialist — index2 / input2"]
   end
 
   subgraph qualita [Qualità — attivo]
@@ -19,7 +20,9 @@ flowchart LR
   R -->|"obiettivi, GOV, review PR"| AR
   AR -->|"delega stile"| CSS
   AR -->|"delega nucleo espressioni"| CORE
+  AR -->|"delega FrontEnd2"| FE2
   AR -->|"dopo modifiche"| T
   CSS --- Git[("git · specs · PR")]
   CORE --- Git
+  FE2 --- Git
   AR --- Git

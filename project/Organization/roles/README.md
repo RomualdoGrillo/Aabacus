@@ -8,5 +8,6 @@ Schede descrittive per Romualdo. Gli agenti Cursor corrispondenti (se presenti) 
 | Architecture Expert | L2 | [refactor-lead.md](refactor-lead.md) | *da creare* |
 | Specialist CSS | L3 | [css-specialist.md](css-specialist.md) — CSS libero + proposte cross-file | `css-specialist` |
 | Specialist core | L3 | [core-specialist.md](core-specialist.md) | `core-specialist` |
+| Specialist FrontEnd2 | L3 | [frontend2-specialist.md](frontend2-specialist.md) — pista `index2` / input2 | `frontend2-specialist` |
 | Tester (Gabba) | L4 | [tester.md](tester.md) | `gabba` |
 | Consultant-PriorArt | — | *opzionale* | *da creare* |

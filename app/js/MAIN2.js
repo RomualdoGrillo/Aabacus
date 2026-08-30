@@ -1,16 +1,17 @@
 /**
- * input2/boot2.js — orchestrazione input2 (sostituisce MAIN.js + layer interaction).
+ * MAIN2.js — omologo FrontEnd2 di MAIN.js (pista index2).
  *
- * STUB / globali definiti qui (file esclusi da index2.html):
+ * Orchestrazione input2: boot, stub dei globali che mancano senza MAIN.js,
+ * dispatch intent → tabella UserEvToFunctCall2, tied/untied, debug.
+ * Il recognizer puro resta in input2/gestures.js.
+ *
+ * STUB / globali definiti qui (MAIN.js escluso da index2.html):
  *   - canvasRole  — in MAIN.js; usata da alcuni path di ExpressionManager/UserEv…;
- *                   definita qui perché MAIN.js non è caricato.
- *   - ExtendAndInitialize / ExtendAndInitializeTree — in MAIN.js; chiamate da
- *                   ENODEclone / inject / Undo. Reimplementate qui (solo refresh
- *                   lucchetto sulle definizioni), senza DnD/sortable.
+ *   - ExtendAndInitialize / ExtendAndInitializeTree — refresh lucchetto, senza DnD/sortable;
  *   - conclude2   — analogo snello di PActxConclude senza game/sound/DnD.
  *
- * Smistamento gesture→action: funzioni pure in intentMap.js; qui solo cablaggio.
- * Non modifica file fuori perimetro. Nessun git commit da questo modulo.
+ * Smistamento gesture→action: tabella in UserEvToFunctCall2.js (tied/untied);
+ * qui solo cablaggio. Selezione: `selectionManager` (condiviso con legacy).
  */
 (function (global) {
 	'use strict';
@@ -51,7 +52,6 @@
 
 	/** Cache disponibilità; null = dirty (ricalcolo lazy). */
 	let availabilityCache = null;
-	let activeTable = null;
 
 	global.INPUT2 = global.INPUT2 || {};
 	global.INPUT2.lastIntent = null;
@@ -72,13 +72,38 @@
 	}
 	global.INPUT2.conclude2 = conclude2;
 
+	/**
+	 * Tabella attiva = sempre il custode UserEvToFunctCall2 (niente cache locale divergente).
+	 * @returns {Object[]}
+	 */
 	function getActiveTable() {
-		if (!activeTable) {
-			activeTable = global.INPUT2.getTable
-				? global.INPUT2.getTable()
-				: (global.INPUT2.DEFAULT_TABLE || []).slice();
+		if (global.INPUT2.getTable) return global.INPUT2.getTable();
+		return (global.INPUT2.DEFAULT_TABLE || []).slice();
+	}
+
+	/**
+	 * Dopo ogni cambio tabella: availability, recognizer (trigger presenti), pannello debug.
+	 */
+	function onTableChanged() {
+		invalidateAvailability();
+		syncRecognizerEnabledIntents();
+		refreshDebugPanel();
+	}
+
+	/**
+	 * Avvolge INPUT2.setTable così console/API aggiornano anche recognizer e Shift+D.
+	 */
+	function installSetTableHook() {
+		const orig = global.INPUT2.setTable;
+		if (typeof orig !== 'function' || orig._main2Wrapped) return;
+		function wrapped(table) {
+			const result = orig.call(global.INPUT2, table);
+			onTableChanged();
+			return result;
 		}
-		return activeTable;
+		wrapped._main2Wrapped = true;
+		global.INPUT2.setTable = wrapped;
+		global.INPUT2.setIntentMap = wrapped;
 	}
 
 	function buildResolverFns() {
@@ -131,64 +156,76 @@
 	};
 
 	/**
-	 * Legge la sezione #events (iniettata dal preload .mmls) e trasforma gli
-	 * eventtoaction in override della tabella (spec §7.4-7.5): l'evento può
-	 * essere un nome di gesto (slashVert, pinchHor, …) o un alias tastiera.
-	 * I nomi che non corrispondono a nessuna riga restano al path legacy
-	 * (tryEventActionsOnNode) e qui vengono ignorati.
-	 * @returns {Object} overrides per applyMmlsOverrides
+	 * Propaga alla FSM i trigger attivi nella colonna tied/untied corrente (spec L2 G/A).
 	 */
-	function readMmlsGestureOverrides() {
-		const overrides = {};
-		$('#events').find('[data-enode="eventtoaction"]').each(function () {
-			let eventName;
-			try {
-				const $role = ENODE_getRoles(this, '.event');
-				if ($role.length !== 1) return;
-				const ev = $role.children()[0];
-				if (ev === undefined) return;
-				eventName = ENODE_getName(ev);
-			} catch (err) { return; }
-			if (!eventName) return;
+	function syncRecognizerEnabledIntents() {
+		const rec = global.INPUT2._recognizer;
+		if (!rec || typeof rec.setEnabledIntents !== 'function') return;
+		const flags = global.INPUT2.enabledRecognizerIntents
+			? global.INPUT2.enabledRecognizerIntents(getActiveTable(), { tied: isCanvasTied() })
+			: null;
+		if (flags) rec.setEnabledIntents(flags);
+	}
+	global.INPUT2.syncRecognizerEnabledIntents = syncRecognizerEnabledIntents;
 
-			const actions = [];
-			const $actions = ENODE_getRoles(this, '.actions').children();
-			for (let j = 0; j < $actions.length; j++) {
-				try {
-					const name = ENODE_getName(ENODE_getRoles($actions[j], '.function').children()[0]);
-					if (!name) continue;
-					const action = { name: name };
-					// secondo argomento ltr/rtl/int (come tryEventActionsOnNode)
-					try {
-						const val = ENODE_getName(ENODE_getRoles($actions[j], '.values').children()[0]);
-						if (val) action.val = val;
-					} catch (errVal) { /* .values assente: ok */ }
-					actions.push(action);
-				} catch (err) { /* action malformata: ignora */ }
-			}
-			if (actions.length) overrides[eventName] = { actions: actions };
-		});
-		return overrides;
+	/**
+	 * Tentativo load G/A da events JSON (mmls v2). Ritorna null se non applicabile.
+	 * @returns {{table:Object[], violations:string[]}|null}
+	 */
+	function tryLoadMmlsV2GA() {
+		if (typeof GLBsettings !== 'undefined' && GLBsettings && Number(GLBsettings.mmlsVersion) === 2) {
+			/* ok */
+		} else if (!$('#events').length) {
+			return null;
+		}
+		// Testo grezzo della sezione #events (prototipo v2: JSON, non eventtoaction)
+		let raw = '';
+		try {
+			raw = ($('#events').text() || '').trim();
+		} catch (err) { return null; }
+		if (!raw || raw.charAt(0) !== '{') return null;
+		let parsed;
+		try {
+			parsed = JSON.parse(raw);
+		} catch (err) { return null; }
+		if (!parsed || parsed.format !== 'gestureActionTable' || !Array.isArray(parsed.rows)) {
+			return null;
+		}
+		if (typeof global.INPUT2.setTable !== 'function') return null;
+		const table = global.INPUT2.setTable(parsed.rows);
+		if (!global.INPUT2.setTable._main2Wrapped) onTableChanged();
+		return { table: table, violations: [] };
 	}
 
 	/**
-	 * Ricostruisce la tabella attiva dagli override del .mmls corrente.
-	 * Le righe system non sono sovrascrivibili: violazioni → warning.
+	 * Dopo injectAllMMLS / settings (backend esistente): aggiorna la G/A.
+	 * - mmls v2 → JSON in #events
+	 * - mmls v1 → importMmlsV1 (solo colonna tied); index.html resta intatto
 	 * @returns {{table: Object[], violations: string[]}}
 	 */
 	function reloadMmlsOverrides() {
-		if (typeof global.INPUT2.applyMmlsOverrides !== 'function') {
+		// v2: tabella G/A completa dal file
+		if (!(global.INPUT2.isMmlsEventsV1 && global.INPUT2.isMmlsEventsV1())) {
+			const v2 = tryLoadMmlsV2GA();
+			if (v2) return v2;
+		}
+
+		// v1: backend ha già riempito #events con eventtoaction → solo actionsTied
+		if (typeof global.INPUT2.importMmlsV1ToGA !== 'function') {
+			console.warn('INPUT2: importMmlsV1.js non caricato — G/A non aggiornata dal .mmls');
 			return { table: getActiveTable(), violations: [] };
 		}
-		const overrides = readMmlsGestureOverrides();
-		const res = global.INPUT2.applyMmlsOverrides(
-			global.INPUT2.DEFAULT_TABLE, overrides);
-		activeTable = res.table;
-		for (let i = 0; i < res.violations.length; i++) {
-			console.warn('INPUT2: il .mmls tenta di rimappare un gesto di sistema, ignorato:', res.violations[i]);
+		const res = global.INPUT2.importMmlsV1ToGA(global.INPUT2.DEFAULT_TABLE);
+		if (typeof global.INPUT2.setTable === 'function') {
+			global.INPUT2.setTable(res.table);
+			if (!global.INPUT2.setTable._main2Wrapped) onTableChanged();
+		} else {
+			onTableChanged();
 		}
-		invalidateAvailability();
-		return res;
+		for (let i = 0; i < (res.violations || []).length; i++) {
+			console.warn('INPUT2: import mmls v1 ignora riga system:', res.violations[i]);
+		}
+		return { table: res.table, violations: res.violations || [] };
 	}
 	global.INPUT2.reloadMmlsOverrides = reloadMmlsOverrides;
 
@@ -210,6 +247,7 @@
 			try { refreshAvailability(); } catch (err) {
 				console.warn('INPUT2: refreshAvailability post-settings', err);
 			}
+			try { refreshDebugPanel(); } catch (err) { /* pannello opzionale */ }
 			// checkpoint post-preload (il take iniziale in boot è troppo presto: ajax)
 			try { if (typeof ssnapshot !== 'undefined' && ssnapshot.take) ssnapshot.take(); } catch (_) { /* ignore */ }
 			return ret;
@@ -235,22 +273,48 @@
 		if (intentLog.length > INTENT_LOG_MAX) intentLog.shift();
 	}
 
-	function toggleSelect(target) {
-		if (!(target instanceof Element)) return;
-		target.classList.toggle('selected');
+	function requireSelectionManager() {
+		if (typeof selectionManager !== 'function') {
+			console.error('INPUT2: selectionManager.js non caricato');
+			return false;
+		}
+		return true;
 	}
 
 	/**
-	 * Builtin selectSiblings: deseleziona tutto, poi addClass('selected') sui
-	 * targets del lazo (fratelli già risolti dal recognizer).
+	 * Builtin tap/toggleSelect → selectionManager (stessa semantica legacy / DnD.js).
+	 * Click plain deseleziona il resto; Cmd/Ctrl = multi; Shift = unselect mirato.
+	 * @param {Object} intent
+	 */
+	function isDomElement(el) {
+		return !!(el && el.nodeType === 1 && el.classList);
+	}
+
+	function toggleSelect(intentOrTarget) {
+		if (!requireSelectionManager()) return;
+		const intent = (intentOrTarget && intentOrTarget.nodeType === 1)
+			? { target: intentOrTarget }
+			: (intentOrTarget || {});
+		const target = intent.target;
+		if (!isDomElement(target)) return;
+		const ctrl = !!(intent.metaKey || intent.ctrlKey);
+		const shift = !!intent.shiftKey;
+		selectionManager($(target), ctrl, shift);
+	}
+
+	/**
+	 * Builtin selectSiblings via selectionManager: clear + multi-select (ctrl)
+	 * sui soli targets del lazo (già filtrati dal recognizer).
+	 * @param {Element[]} targets
 	 */
 	function selectSiblings(targets) {
+		if (!requireSelectionManager()) return;
 		const list = targets || [];
-		document.querySelectorAll('#canvasRole [data-enode].selected').forEach(function (el) {
-			el.classList.remove('selected');
-		});
+		selectionManager('', false, false, true);
 		for (let i = 0; i < list.length; i++) {
-			if (list[i] instanceof Element) list[i].classList.add('selected');
+			if (isDomElement(list[i])) {
+				selectionManager($(list[i]), true, false);
+			}
 		}
 	}
 
@@ -353,11 +417,11 @@
 	}
 
 	/**
-	 * Builtin applyDnD: pipeline DnD.js SENZA SortableJS e SENZA spostare il
-	 * DOM prima della validazione. Alla prima findTgt valida → apply → conclude2.
-	 * replaceDnD (requiresCanvasCi:false) resta il fallback sempre disponibile
-	 * (se applicabile alla coppia). Proprietà che presuppongono dropped già
-	 * inserito da Sortable sono saltate (v. DND_SKIP_NEEDS_PREINSERT).
+	 * Builtin applyDnD — canale aperto G/A (`trigger: dnd` → `applyDnD`):
+	 * la tabella abilita solo l’ascolto; quale prop HW usare lo decide il registry
+	 * + canvas. Pipeline senza SortableJS / senza pre-insert DOM.
+	 * replaceDnD (requiresCanvasCi:false) resta fallback se applicabile.
+	 * Prop che richiedono dropped già inserito: DND_SKIP_NEEDS_PREINSERT.
 	 */
 	function applyDnD(source, target) {
 		const hit = findFirstValidDnD(source, target);
@@ -458,12 +522,117 @@
 		else if (name === 'toggleSelect') { /* gestito a parte con target */ }
 	}
 
+	function isCanvasTied() {
+		return !!(typeof GLBsettings !== 'undefined' && GLBsettings.tiedCanvas);
+	}
+
+	const LOCK_TAP_SLOP_PX = 16;
+	/** @type {{ pointerId: number, x: number, y: number, enode: Element }|null} */
+	let lockGesture = null;
+	/** Evita doppio toggle (pointerup touch + click sintetico). */
+	let suppressLockClickUntil = 0;
+
+	/**
+	 * True se event.target è (o è dentro) il lucchetto (.firstMember) di una definizione.
+	 * @param {Event} event
+	 * @returns {JQuery|null} il parent [data-viseq=asymmetric], o null
+	 */
+	function definitionLockFromEvent(event) {
+		const t = event && event.target;
+		if (!t || typeof t.closest !== 'function') return null;
+		const fm = t.closest('.firstMember');
+		if (!fm) return null;
+		const enode = fm.parentElement;
+		if (!enode || typeof isDefinition !== 'function' || !isDefinition(enode)) return null;
+		// Solo il firstMember diretto della definizione (non un antenato casuale)
+		if (!$(enode).children('.firstMember').is(fm)) return null;
+		return $(enode);
+	}
+
+	/**
+	 * Toggle tied/untied — omologo di MAIN.js clickHandler sul lucchetto.
+	 * Su #canvas aggiorna GLBsettings.tiedCanvas e classi su canvas/result/events.
+	 */
+	function toggleDefinitionLock($ENODE) {
+		if (!$ENODE || !$ENODE.length) return;
+
+		if ($ENODE.is('#canvas')) {
+			if (!GLBsettings.tiedCanvas) {
+				GLBsettings.tiedCanvas = true;
+				$('#canvas,#result,#events').removeClass('untied');
+			} else {
+				GLBsettings.tiedCanvas = false;
+				$('#canvas,#result,#events').addClass('untied');
+			}
+		} else {
+			$ENODE.toggleClass('untied');
+		}
+		if (typeof ENODERefreshAsymmEq === 'function') ENODERefreshAsymmEq($ENODE);
+		if (typeof ssnapshot !== 'undefined' && ssnapshot.take) ssnapshot.take();
+		invalidateAvailability();
+		syncRecognizerEnabledIntents();
+		refreshDebugPanel();
+	}
+
+	/**
+	 * Capture: sul lucchetto non far arrivare pointerdown al recognizer (#centralColumn).
+	 * Altrimenti setPointerCapture ritargetta pointerup/click su centralColumn e il
+	 * toggle tied/untied non scatta mai (click “perso”).
+	 */
+	function lockPointerDownCapture(event) {
+		const $ENODE = definitionLockFromEvent(event);
+		if (!$ENODE) return;
+		event.stopPropagation();
+		if (typeof event.button === 'number' && event.button !== 0) return;
+		lockGesture = {
+			pointerId: event.pointerId,
+			x: event.clientX,
+			y: event.clientY,
+			enode: $ENODE[0]
+		};
+	}
+
+	/**
+	 * Su tablet il click sintetico è inaffidabile con touch-action:none + recognizer.
+	 * Attiva il lucchetto su pointerup (tap con poco movimento).
+	 */
+	function lockPointerUpCapture(event) {
+		if (!lockGesture || event.pointerId !== lockGesture.pointerId) return;
+		const g = lockGesture;
+		lockGesture = null;
+		event.stopPropagation();
+		const dx = event.clientX - g.x;
+		const dy = event.clientY - g.y;
+		if (Math.hypot(dx, dy) > LOCK_TAP_SLOP_PX) return;
+		toggleDefinitionLock($(g.enode));
+		suppressLockClickUntil = Date.now() + 450;
+	}
+
+	function lockPointerCancelCapture(event) {
+		if (lockGesture && event.pointerId === lockGesture.pointerId) {
+			lockGesture = null;
+		}
+	}
+
+	/**
+	 * Fallback click (mouse / ambienti senza pointerup gestito).
+	 */
+	function clickHandler(event) {
+		if (Date.now() < suppressLockClickUntil) return;
+		const $ENODE = definitionLockFromEvent(event);
+		if (!$ENODE) return;
+		toggleDefinitionLock($ENODE);
+	}
+	global.INPUT2.clickHandler = clickHandler;
+	global.INPUT2.toggleDefinitionLock = toggleDefinitionLock;
+
 	function dispatchIntent(intent) {
 		pushIntent(intent);
 		const table = getActiveTable();
 		const avail = ensureAvailability();
+		const tied = isCanvasTied();
 		const entry = global.INPUT2.resolveIntent
-			? global.INPUT2.resolveIntent(intent, table)
+			? global.INPUT2.resolveIntent(intent, table, { tied: tied })
 			: null;
 		if (!entry) {
 			if (typeof debugMode !== 'undefined' && debugMode) {
@@ -486,11 +655,11 @@
 			const val = action.val;
 
 			if (global.INPUT2.isBuiltinAction && global.INPUT2.isBuiltinAction(name)) {
-				if (name === 'toggleSelect') {
-					toggleSelect(intent.target);
+				if (name === 'toggleSelect' || name === 'select') {
+					toggleSelect(intent);
 					return;
 				}
-				if (name === 'selectSiblings') {
+				if (name === 'selectSiblings' || name === 'selectMultiple') {
 					selectSiblings(intent.targets || []);
 					return;
 				}
@@ -532,8 +701,116 @@
 		return false;
 	}
 
+	function formatActionsCell(actions) {
+		if (!actions || !actions.length) return '—';
+		return actions.map(function (a) {
+			if (typeof a === 'string') return a;
+			if (!a || !a.name) return '?';
+			return a.val ? (a.name + '(' + a.val + ')') : a.name;
+		}).join(', ');
+	}
+
+	function ensureDebugPanel() {
+		let panel = document.getElementById && document.getElementById('input2DebugPanel');
+		if (panel) return panel;
+		// Sandbox unit test: document minimale senza createElement
+		if (typeof document.createElement !== 'function') {
+			return { hidden: true, querySelector: function () { return null; } };
+		}
+		panel = document.createElement('div');
+		panel.id = 'input2DebugPanel';
+		panel.setAttribute('aria-label', 'Debug FrontEnd2 — tabella gesture/azioni');
+		panel.innerHTML =
+			'<header class="input2-debug-header">' +
+			'<strong>FrontEnd2 debug</strong>' +
+			'<span class="input2-debug-meta" id="input2DebugMeta"></span>' +
+			'<button type="button" class="input2-debug-close" title="Chiudi (Maiusc+D)">×</button>' +
+			'</header>' +
+			'<div class="input2-debug-body">' +
+			'<table class="input2-debug-table">' +
+			'<thead><tr>' +
+			'<th>Trigger</th><th>Alias</th><th>Target</th><th>System</th>' +
+			'<th>Untied</th><th>Tied</th>' +
+			'</tr></thead>' +
+			'<tbody id="input2DebugTableBody"></tbody>' +
+			'</table>' +
+			'</div>';
+		document.body.appendChild(panel);
+		const closeBtn = panel.querySelector('.input2-debug-close');
+		if (closeBtn) {
+			closeBtn.addEventListener('click', function () {
+				if (typeof debugMode !== 'undefined' && debugMode) debugToggle();
+			});
+		}
+		return panel;
+	}
+
+	function refreshDebugPanel() {
+		const panel = document.getElementById('input2DebugPanel');
+		if (!panel || panel.hidden) return;
+		const tbody = document.getElementById('input2DebugTableBody');
+		const meta = document.getElementById('input2DebugMeta');
+		if (!tbody) return;
+		const tied = isCanvasTied();
+		if (meta) {
+			meta.textContent = 'stato: ' + (tied ? 'tied' : 'untied') +
+				' · Maiusc+D per chiudere';
+		}
+		const rows = getActiveTable();
+		let html = '';
+		for (let i = 0; i < rows.length; i++) {
+			const r = rows[i];
+			const activeCol = tied ? 'tied' : 'untied';
+			html += '<tr class="input2-debug-row' + (r.system ? ' is-system' : '') + '">';
+			html += '<td>' + (r.trigger || '—') + '</td>';
+			html += '<td>' + (Array.isArray(r.alias) ? r.alias.join(', ') : (r.alias || '—')) + '</td>';
+			html += '<td>' + (r.targetSource || '—') + '</td>';
+			html += '<td>' + (r.system ? 'yes' : '') + '</td>';
+			html += '<td class="col-untied' + (activeCol === 'untied' ? ' is-active' : '') + '">' +
+				formatActionsCell(r.actionsUntied) + '</td>';
+			html += '<td class="col-tied' + (activeCol === 'tied' ? ' is-active' : '') + '">' +
+				formatActionsCell(r.actionsTied) + '</td>';
+			html += '</tr>';
+		}
+		tbody.innerHTML = html;
+	}
+
+	/**
+	 * Come MAIN.js debugToggle: Maiusc+D. Su index2 apre anche il pannello tabella.
+	 */
+	function debugToggle() {
+		if (typeof debugMode === 'undefined') {
+			console.warn('INPUT2: debugMode non definito (state.js)');
+			return;
+		}
+		debugMode = !debugMode;
+		const panel = ensureDebugPanel();
+		if (debugMode) {
+			document.body.classList.add('debug');
+			const palette = document.getElementById('palette');
+			if (palette) palette.classList.add('hidden');
+			panel.hidden = false;
+			refreshDebugPanel();
+		} else {
+			document.body.classList.remove('debug');
+			const palette = document.getElementById('palette');
+			if (palette) palette.classList.remove('hidden');
+			panel.hidden = true;
+		}
+	}
+	global.INPUT2.debugToggle = debugToggle;
+	global.INPUT2.refreshDebugPanel = refreshDebugPanel;
+
 	function onKeyDown(e) {
 		if (isEditableTarget(e.target)) return;
+
+		// Maiusc+D — come MAIN.js (prima della tabella gesture→azioni)
+		if (e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey &&
+			(e.key === 'd' || e.key === 'D')) {
+			e.preventDefault();
+			debugToggle();
+			return;
+		}
 
 		const intent = {
 			type: 'key',
@@ -545,7 +822,7 @@
 		};
 
 		const entry = global.INPUT2.resolveIntent
-			? global.INPUT2.resolveIntent(intent, getActiveTable())
+			? global.INPUT2.resolveIntent(intent, getActiveTable(), { tied: isCanvasTied() })
 			: null;
 		if (!entry) {
 			// Fallback legacy: tasti definiti solo nella sezione events del .mmls
@@ -557,14 +834,30 @@
 			}
 			return;
 		}
+		// Riga presente ma lista vuota per lo stato tied/untied corrente
+		if (!entry.actions || entry.actions.length === 0) {
+			// Shift+L con canvas tied: load disabilitato — avvisa invece di silenzio
+			if (entry.alias === 'Shift+L' && isCanvasTied()) {
+				e.preventDefault();
+				window.alert(
+					'Per caricare nuovi contenuti svincola prima il canvas (lucchetto sulla definizione).'
+				);
+			}
+			return;
+		}
 
 		// Evita scroll frecce / comportamento browser su Mod+z
-		if (entry.alias === 'Mod+z' || (entry.trigger && String(entry.trigger).indexOf('slash') === 0) ||
-			entry.alias === 'ArrowUp' || entry.alias === 'ArrowDown' ||
-			entry.alias === 'ArrowLeft' || entry.alias === 'ArrowRight') {
+		const aliases = Array.isArray(entry.alias)
+			? entry.alias
+			: (entry.alias ? [entry.alias] : []);
+		const isArrowAlias = aliases.some(function (a) {
+			return a === 'ArrowUp' || a === 'ArrowDown' || a === 'ArrowLeft' || a === 'ArrowRight';
+		});
+		if (entry.alias === 'Mod+z' || aliases.indexOf('Mod+z') >= 0 ||
+			(entry.trigger && String(entry.trigger).indexOf('slash') === 0) ||
+			entry.trigger === 'pinch' || isArrowAlias) {
 			e.preventDefault();
 		}
-		if (entry.alias === 'Mod+z') e.preventDefault();
 
 		dispatchIntent(intent);
 	}
@@ -580,14 +873,16 @@
 			const fileName = fileToLoad.name;
 			const parts = fileName.split('.');
 			const fileSuffix = parts[parts.length - 1];
+			// Backend esistente (SaveLoad): async → injectAllMMLS → GLBsettingsToInterface
+			// (wrappata) → reloadMmlsOverrides (v1→tied o v2 JSON). Non rileggere qui.
 			loadFileConvert(fileToLoad, $($target[0]), fileSuffix);
 			this.value = '';
-			// il file può ridefinire #events: riapplica override e disponibilità
-			try { reloadMmlsOverrides(); } catch (err) { invalidateAvailability(); }
 		});
 	}
 
 	function boot() {
+		// Prima di preload/settings: setTable da console o da reload aggiorna recognizer+debug
+		installSetTableHook();
 		hookSettingsToInterface();
 
 		// Init undo (come MAIN.js)
@@ -596,24 +891,40 @@
 		preloadAll(preloadPath);
 		ssnapshot.take();
 
+		// Tied/untied e tastiera anche se il recognizer manca (test / degradazione)
+		document.addEventListener('keydown', onKeyDown, false);
+		document.addEventListener('pointerdown', lockPointerDownCapture, true);
+		document.addEventListener('pointerup', lockPointerUpCapture, true);
+		document.addEventListener('pointercancel', lockPointerCancelCapture, true);
+		document.addEventListener('click', clickHandler, false);
+		bindFileToLoad();
+		ensureDebugPanel().hidden = true;
+		invalidateAvailability();
+
 		if (typeof global.INPUT2.bindGestureRecognizer !== 'function') {
 			console.error('INPUT2: gestures.js non caricato');
 			return;
 		}
+		const initialEnabled = global.INPUT2.enabledRecognizerIntents
+			? global.INPUT2.enabledRecognizerIntents(getActiveTable(), { tied: isCanvasTied() })
+			: undefined;
 		global.INPUT2._recognizer = global.INPUT2.bindGestureRecognizer({
 			root: '#centralColumn',
 			onIntent: dispatchIntent,
-			isValidDnDTarget: isValidDnDTarget
+			isValidDnDTarget: isValidDnDTarget,
+			enabledIntents: initialEnabled
 		});
-
-		document.addEventListener('keydown', onKeyDown, false);
-		bindFileToLoad();
-
-		// availability lazy: se settings già applicati sync, prova subito
-		invalidateAvailability();
+		// Tabella può essere già stata aggiornata dal preload async: riallinea i flag
+		syncRecognizerEnabledIntents();
 
 		console.log('INPUT2 boot ok — preloadPath=', preloadPath);
 	}
+
+	global.INPUT2.dispatchIntent = dispatchIntent;
+	global.INPUT2._selectionHelpers = {
+		toggleSelect: toggleSelect,
+		selectSiblings: selectSiblings
+	};
 
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', boot);

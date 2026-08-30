@@ -1,5 +1,7 @@
 # Aabacus Testing
 
+**Fase: v1** (+ test **v1f** sotto `e2e/input2-*`). Etichette: [`release-phases.md`](release-phases.md).
+
 Workflow: per rendere veloce lo sviluppo è necessario che l'AI possa eseguire test e valutare il risultato senza intervento umano.
 
 I test devono comprendere:

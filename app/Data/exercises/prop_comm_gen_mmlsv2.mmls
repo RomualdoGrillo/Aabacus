@@ -1,0 +1,243 @@
+<!--
+  Prototipo mmls versione 2 (Romualdo, 27/07/2026).
+
+  Differenze rispetto a mmls v1:
+  - settings.mmlsVersion = 2
+  - sezione events: JSON della tabella G/A (gesture/actions, colonne tied/untied)
+    al posto del MathML eventtoaction / gestToAction.mml
+
+  mmls v1 (legacy): events = eventtoaction MathML → in import andranno a
+  sovrascrivere solo la colonna actionsTied (modulo dedicato, da implementare).
+
+  Questo file è un riferimento di formato: il loader index2 non lo interpreta
+  ancora come v2 (finché non esiste il reader G/A).
+-->
+<section data-section="palette">
+	<apply data-and="horizontal" data-import="./Data/Preload/palette.prt" data-type="bool">
+		<and>
+		</and>
+	</apply>
+</section>
+<section data-section="canvas">
+	<apply data-hide="true" data-type="bool">
+		<and>
+		</and>
+		<apply data-import="./Data/FOUNDATION.mml" data-and="horizontal" data-type="bool">
+			<and>
+			</and>
+		</apply>
+	</apply>
+	<ci data-type="bool">Seleziona la proprietà commutativa generalizzata della somma: clicca sull'icona che la raffigura</ci>
+	<ci data-type="bool">Applica la proprietà commutativa generalizzata: trascina gli elementi per rimetterli in ordine</ci>
+	<apply data-import="./Data/FOUNDATION_FIELD.mml" data-type="bool">
+		<and>
+		</and>
+	</apply>
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<apply data-type="num">
+			<plus>
+			</plus>
+			<ci data-type="num">e</ci>
+			<ci data-type="num">c</ci>
+			<ci data-type="num">d</ci>
+			<ci data-type="num">f</ci>
+			<ci data-type="num">a</ci>
+			<ci data-type="num">b</ci>
+		</apply>
+	</apply>
+</section>
+<section data-section="events">
+{
+	"format": "gestureActionTable",
+	"formatVersion": 2,
+	"rows": [
+		{
+			"trigger": null,
+			"alias": "Mod+z",
+			"targetSource": null,
+			"actionsUntied": ["undo"],
+			"actionsTied": ["undo"],
+			"system": true
+		},
+		{
+			"trigger": null,
+			"alias": "Shift+L",
+			"targetSource": null,
+			"actionsUntied": ["load"],
+			"actionsTied": [],
+			"system": true
+		},
+		{
+			"trigger": null,
+			"alias": "Shift+S",
+			"targetSource": "selected",
+			"actionsUntied": ["save"],
+			"actionsTied": ["save"],
+			"system": true
+		},
+		{
+			"trigger": "tap",
+			"alias": null,
+			"targetSource": null,
+			"actionsUntied": ["toggleSelect"],
+			"actionsTied": ["toggleSelect"],
+			"system": true
+		},
+		{
+			"trigger": "lasso",
+			"alias": null,
+			"targetSource": null,
+			"actionsUntied": ["selectSiblings"],
+			"actionsTied": [{ "name": "plusAssociate", "val": "rtl" }],
+			"system": true
+		},
+		{
+			"trigger": "dnd",
+			"alias": null,
+			"targetSource": null,
+			"actionsUntied": ["applyDnD"],
+			"actionsTied": ["applyDnD"],
+			"system": true
+		},
+		{
+			"trigger": null,
+			"alias": "p",
+			"targetSource": "selected",
+			"actionsUntied": [],
+			"actionsTied": [
+				{ "name": "plusAssociate", "val": "ltr" },
+				{ "name": "plusAssociate", "val": "rtl" }
+			],
+			"system": false
+		},
+		{
+			"trigger": null,
+			"alias": "c",
+			"targetSource": "selected",
+			"actionsUntied": [],
+			"actionsTied": [
+				{ "name": "OppositeOfOpposite", "val": "ltr" },
+				{ "name": "PlusSingleTerm", "val": "ltr" },
+				{ "name": "TimesSingleFactor", "val": "ltr" },
+				{ "name": "AndSingleChild", "val": "ltr" },
+				{ "name": "OrSingleChild", "val": "ltr" }
+			],
+			"system": false
+		},
+		{
+			"trigger": "pinch",
+			"alias": ["ArrowDown", "ArrowLeft"],
+			"targetSource": "pinched",
+			"actionsUntied": [],
+			"actionsTied": [
+				{ "name": "compose" },
+				{ "name": "AndNeutral", "val": "ltr" },
+				{ "name": "timesAbsorbingEl", "val": "ltr" },
+				{ "name": "composeXorNotX", "val": "rtl" }
+			],
+			"system": false
+		},
+		{
+			"trigger": "slashHor",
+			"alias": "ArrowUp",
+			"targetSource": "slashed",
+			"actionsUntied": [],
+			"actionsTied": [
+				{ "name": "timesAbsorbingEl", "val": "rtl" },
+				{ "name": "decomposeInAProduct" },
+				{ "name": "AndNeutral", "val": "rtl" },
+				{ "name": "Reciprocal", "val": "rtl" }
+			],
+			"system": false
+		},
+		{
+			"trigger": "slashVert",
+			"alias": "ArrowRight",
+			"targetSource": "slashed",
+			"actionsUntied": [],
+			"actionsTied": [
+				{ "name": "decomposeInASum" },
+				{ "name": "Opposite", "val": "rtl" },
+				{ "name": "defZero", "val": "rtl" },
+				{ "name": "composeXorNotX", "val": "rtl" }
+			],
+			"system": false
+		}
+	]
+}
+</section>
+<section data-section="result">
+	<apply data-viseq="asymmetric">
+		<eq>
+		</eq>
+		<ci>expression</ci>
+		<apply data-type="num">
+			<plus>
+			</plus>
+			<ci data-type="num">a</ci>
+			<ci data-type="num">b</ci>
+			<ci data-type="num">c</ci>
+			<ci data-type="num">d</ci>
+			<ci data-type="num">e</ci>
+			<ci data-type="num">f</ci>
+		</apply>
+	</apply>
+</section>
+
+<section data-section="settings">
+
+    {
+	"mmlsVersion": 2,
+	"debug":false,
+	"gameMode":true,
+	"gameModeSurpriseRes":false,
+	"tiedCanvas":true,
+	"visPalette":"hide",
+	"hideLeftColumn":true,
+	"hideRightColumn":true,
+	"resultHidden":false,
+	"visSettingSelected":1,
+	"tool":"declare",
+	"visSettings":[
+		{
+		"name":"classic",
+		"colors":"whiteBorders",
+		"brackets":true,
+        "timesDisposition":0,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":false
+		},
+		{
+		"name":"beauty",
+		"colors":"greyBorders",
+		"brackets":true,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":true
+		},
+		{
+		"name":"advanced",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":false,
+		"eforall":true
+		},
+		{
+		"name":"tooColored",
+		"colors":"coloredBorders",
+		"brackets":false,
+        "timesDisposition":1,
+		"showNumerator1":false,
+"fixBorders":true,
+		"eforall":false
+		}
+	]
+}
+</section>

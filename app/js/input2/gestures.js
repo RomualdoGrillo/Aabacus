@@ -359,9 +359,10 @@
 	/**
 	 * Classifica PATH → slice | lasso | null.
 	 * Regola: rettilineo+attraversa → slice; curvatura+racchiude senza attraversare → lasso;
-	 * ambiguo → null.
+	 * ambiguo → null. Se `enabled` filtra una famiglia, quella non compete (niente ambiguità fantasma).
+	 * @param {Object} [enabled] — flag normalizeEnabledIntents; omesso = entrambe le famiglie on
 	 */
-	function classifyPathIntent(startPt, endPt, points) {
+	function classifyPathIntent(startPt, endPt, points, enabled) {
 		const chord = dist(startPt, endPt);
 		const plen = pathLength(points);
 		const efficiency = plen > 1e-6 ? chord / plen : 1;
@@ -372,8 +373,10 @@
 
 		const sliceTarget = resolveSliceTarget(points, startPt, endPt);
 		const lassoTargets = selectLassoTargets(points);
-		const hasLasso = isCurved && lassoTargets.length >= LASSO_MIN_TARGETS && plen >= LASSO_MIN_PATH;
-		const hasSlice = isStraight && !!sliceTarget;
+		const sliceOk = !enabled || isIntentEnabled(enabled, 'slice', axis);
+		const lassoOk = !enabled || isIntentEnabled(enabled, 'lasso');
+		const hasLasso = lassoOk && isCurved && lassoTargets.length >= LASSO_MIN_TARGETS && plen >= LASSO_MIN_PATH;
+		const hasSlice = sliceOk && isStraight && !!sliceTarget;
 
 		if (hasSlice && hasLasso) return null; // ambiguo §7.3.1
 		if (hasSlice) {
@@ -461,11 +464,67 @@
 	}
 
 	/**
+	 * Normalizza i flag di ascolto (spec L2 gesture-action-table.md).
+	 * Se `src` è omesso/null → tutte abilitate (recognizer isolato / test).
+	 * Se `src` è l’oggetto da enabledRecognizerIntents, i booleani sono espliciti.
+	 * @param {Object|null|undefined} src
+	 * @returns {Object}
+	 */
+	function normalizeEnabledIntents(src) {
+		if (!src || typeof src !== 'object') {
+			return {
+				tap: true, lasso: true, dnd: true, slice: true, pinch: true,
+				slashHor: true, slashVert: true, pinchHor: true, pinchVert: true
+			};
+		}
+		const slashHor = !!src.slashHor;
+		const slashVert = !!src.slashVert;
+		const pinchHor = !!src.pinchHor;
+		const pinchVert = !!src.pinchVert;
+		return {
+			tap: !!src.tap,
+			lasso: !!src.lasso,
+			dnd: !!src.dnd,
+			slice: src.slice !== undefined ? !!src.slice : !!(slashHor || slashVert),
+			pinch: src.pinch !== undefined ? !!src.pinch : !!(pinchHor || pinchVert),
+			slashHor: slashHor,
+			slashVert: slashVert,
+			pinchHor: pinchHor,
+			pinchVert: pinchVert
+		};
+	}
+
+	/**
+	 * True se l’intent (o la famiglia) è ascoltato secondo i flag.
+	 * @param {Object} enabled
+	 * @param {string} type
+	 * @param {string} [axis]
+	 */
+	function isIntentEnabled(enabled, type, axis) {
+		const e = enabled || normalizeEnabledIntents(null);
+		if (type === 'tap') return !!e.tap;
+		if (type === 'lasso') return !!e.lasso;
+		if (type === 'dnd') return !!e.dnd;
+		if (type === 'slice' || type === 'slash') {
+			if (axis === 'h') return !!e.slashHor;
+			if (axis === 'v') return !!e.slashVert;
+			return !!e.slice;
+		}
+		if (type === 'pinch') {
+			if (axis === 'h') return !!e.pinchHor;
+			if (axis === 'v') return !!e.pinchVert;
+			return !!e.pinch;
+		}
+		return true;
+	}
+
+	/**
 	 * @param {Object} opts
 	 * @param {Element|string} [opts.root='#centralColumn']
 	 * @param {function(Object):void} opts.onIntent
 	 * @param {function(Element, Element):boolean} [opts.isValidDnDTarget] — opzionale, per highlight drop
-	 * @returns {{ destroy: function():void }}
+	 * @param {Object} [opts.enabledIntents] — da UserEvToFunctCall2.enabledRecognizerIntents; omesso = tutto on
+	 * @returns {{ destroy: function():void, setEnabledIntents: function(Object):void }}
 	 */
 	function bindGestureRecognizer(opts) {
 		const root = typeof opts.root === 'string'
@@ -478,6 +537,7 @@
 		if (!root || typeof onIntent !== 'function') {
 			throw new Error('bindGestureRecognizer: root e onIntent richiesti');
 		}
+		let enabledIntents = normalizeEnabledIntents(opts.enabledIntents);
 
 		const bladePath = createSvgPath('input2-blade');
 		const lassoPath = createSvgPath('input2-lasso');
@@ -560,9 +620,26 @@
 		}
 
 		function emit(intent) {
-			if (fired) return;
+			if (fired || !intent) return;
+			if (!isIntentEnabled(enabledIntents, intent.type, intent.axis)) return;
 			fired = true;
 			onIntent(intent);
+		}
+
+		function setEnabledIntents(next) {
+			enabledIntents = normalizeEnabledIntents(next);
+			// feedback di gesti ora disabilitati
+			if (!enabledIntents.lasso && !enabledIntents.slice) clearPathFeedback();
+			else if (!enabledIntents.lasso) {
+				setSvgPath(lassoPath, []);
+				updateHull(hull, []);
+			} else if (!enabledIntents.slice) {
+				setSvgPath(bladePath, []);
+			}
+			if (!enabledIntents.dnd) {
+				removeGhost();
+				clearDnDHighlight();
+			}
 		}
 
 		function realPointerCount() {
@@ -591,6 +668,7 @@
 		}
 
 		function tryEnterPinch() {
+			if (!enabledIntents.pinch) return false;
 			const pair = getPair();
 			if (!pair) return false;
 			const p1 = { x: pair.a.startX, y: pair.a.startY };
@@ -665,6 +743,24 @@
 			}
 		}
 
+		function showLassoFeedback(pts) {
+			setSvgPath(bladePath, []);
+			setSvgPath(lassoPath, pts, true);
+			updateHull(hull, selectLassoTargets(pts));
+		}
+
+		function showBladeFeedback(pts) {
+			setSvgPath(lassoPath, []);
+			updateHull(hull, []);
+			setSvgPath(bladePath, pts);
+		}
+
+		/**
+		 * Feedback PATH dipende da quali famiglie sono in ascolto (colonna tabella):
+		 * - solo lasso → tratto lazo subito (non aspettare la curvatura)
+		 * - solo slice → lama solo se già abbastanza rettilineo/lungo; niente flash su archi
+		 * - entrambi → discriminazione curve vs retta (come prima)
+		 */
 		function updatePathFeedback() {
 			if (state !== STATE.PATH || !startPt || points.length < 2) return;
 			const endPt = points[points.length - 1];
@@ -673,18 +769,32 @@
 			const efficiency = plen > 1e-6 ? chord / plen : 1;
 			const closes = chord <= LASSO_CLOSE_PX && plen >= LASSO_MIN_PATH;
 			const curved = efficiency <= CURVE_EFFICIENCY || closes;
-			if (curved) {
-				setSvgPath(bladePath, []);
-				setSvgPath(lassoPath, points, true);
-				updateHull(hull, selectLassoTargets(points));
-			} else {
-				setSvgPath(lassoPath, []);
-				updateHull(hull, []);
-				setSvgPath(bladePath, points);
+			const axis = classifyAxisTol(startPt, endPt, SLICE_ANGLE_TOL);
+			const straightSlice = efficiency >= STRAIGHT_EFFICIENCY && !!axis && chord >= SLICE_MIN_LEN;
+
+			const lassoOn = !!enabledIntents.lasso;
+			const sliceOn = !!enabledIntents.slice;
+
+			if (lassoOn && !sliceOn) {
+				showLassoFeedback(points);
+				return;
 			}
+			if (sliceOn && !lassoOn) {
+				if (straightSlice) showBladeFeedback(points);
+				else clearPathFeedback();
+				return;
+			}
+			if (lassoOn && sliceOn) {
+				if (curved) showLassoFeedback(points);
+				else if (straightSlice || (!curved && chord >= MOVE_SLOP_PX)) showBladeFeedback(points);
+				else clearPathFeedback();
+				return;
+			}
+			clearPathFeedback();
 		}
 
 		function enterDrag(x, y) {
+			if (!enabledIntents.dnd) return;
 			state = STATE.DRAG;
 			dragSource = startEnode;
 			clearPathFeedback();
@@ -708,7 +818,8 @@
 
 		function finishPath(endPt) {
 			clearPathFeedback();
-			const intent = classifyPathIntent(startPt, endPt, points);
+			if (!enabledIntents.lasso && !enabledIntents.slice) return;
+			const intent = classifyPathIntent(startPt, endPt, points, enabledIntents);
 			if (intent) emit(intent);
 		}
 
@@ -754,6 +865,13 @@
 
 			if (primaryId !== null) return;
 
+			// TRACKING solo su foglia (tap/dnd); PATH altrove (slice|lasso).
+			// Spec L2: se la famiglia non è in tabella → non ascoltare (niente capture/FSM).
+			const startLeaf = leafEnodeFromPoint(e.clientX, e.clientY);
+			const wantTrack = !!startLeaf && (enabledIntents.tap || enabledIntents.dnd);
+			const wantPath = !startLeaf && (enabledIntents.lasso || enabledIntents.slice);
+			if (!wantTrack && !wantPath) return;
+
 			primaryId = e.pointerId;
 			try { root.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
 			startPt = { x: e.clientX, y: e.clientY };
@@ -765,12 +883,8 @@
 				startX: e.clientX,
 				startY: e.clientY
 			});
-
-			// TRACKING solo su foglia: tap/dnd. Altrimenti PATH (slice|lasso),
-			// anche se il punto cade in un contenitore and/eq non-foglia.
-			const startLeaf = leafEnodeFromPoint(e.clientX, e.clientY);
 			startEnode = startLeaf || enodeFromPoint(e.clientX, e.clientY);
-			state = startLeaf ? STATE.TRACKING : STATE.PATH;
+			state = wantTrack ? STATE.TRACKING : STATE.PATH;
 
 			if (e.altKey && e.pointerType === 'mouse' && startLeaf) {
 				ensureAltMirror(e);
@@ -839,6 +953,9 @@
 						emit({
 							type: 'tap',
 							target: target,
+							metaKey: !!e.metaKey,
+							ctrlKey: !!e.ctrlKey,
+							shiftKey: !!e.shiftKey,
 							points: points.slice()
 						});
 					}
@@ -871,6 +988,7 @@
 				root.removeEventListener('pointercancel', onPointerCancel);
 				reset();
 			},
+			setEnabledIntents: setEnabledIntents,
 			_debug: {
 				classifyAxisTol: classifyAxisTol,
 				dominantAxis: dominantAxis,
@@ -879,6 +997,8 @@
 				pointInPolygon: pointInPolygon,
 				deepestEnodeAlongPath: deepestEnodeAlongPath,
 				deepestEnodeContainingBoth: deepestEnodeContainingBoth,
+				isIntentEnabled: isIntentEnabled,
+				getEnabledIntents: function () { return enabledIntents; },
 				PINCH_RATIO: PINCH_RATIO,
 				STATE: STATE
 			}
@@ -893,6 +1013,8 @@
 		pointInPolygon: pointInPolygon,
 		selectLassoTargets: selectLassoTargets,
 		classifyPathIntent: classifyPathIntent,
+		normalizeEnabledIntents: normalizeEnabledIntents,
+		isIntentEnabled: isIntentEnabled,
 		SLICE_ANGLE_TOL: SLICE_ANGLE_TOL,
 		SLICE_MIN_LEN: SLICE_MIN_LEN,
 		PINCH_RATIO: PINCH_RATIO,
