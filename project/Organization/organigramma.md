@@ -10,7 +10,7 @@ Romualdo coordina il team AI attraverso ruoli a livelli (`AGENTS.md`). Gli agent
 flowchart TB
   M["L1 — Master<br/>(Romualdo)"]
   A["L2 — Architecture Expert<br/>refactor-lead"]
-  S["L3 — Specialist<br/>css-specialist, core-specialist"]
+  S["L3 — Specialist<br/>css-specialist, core-specialist, frontend2-specialist"]
   T["L4 — Tester<br/>(da attivare)"]
   C["Consultant-PriorArt<br/>(opzionale)"]
 
@@ -48,6 +48,7 @@ flowchart LR
   subgraph specialisti [Specialist L3 — attivi]
     CSS[css-specialist<br/>app/css/ + proposte cross-file]
     CORE[core-specialist<br/>nucleo ENODE]
+    FE2[frontend2-specialist<br/>index2 / input2]
   end
 
   subgraph qualita [Qualità — attivo]
@@ -57,9 +58,11 @@ flowchart LR
   R -->|obiettivi, GOV, review PR| AR
   AR -->|delega stile| CSS
   AR -->|delega nucleo espressioni| CORE
+  AR -->|delega FrontEnd2| FE2
   AR -->|dopo modifiche| T
   CSS --- Git[(git · specs · PR)]
   CORE --- Git
+  FE2 --- Git
   AR --- Git
 ```
 
@@ -129,7 +132,8 @@ Su AISandbox aprire sempre la **cartella locale** del clone; altrimenti Cursor o
 |-------|-----------------|--------|
 | Architecture Expert | `refactor-lead.md` | prossimo passo orchestrazione |
 | ~~Tester~~ | **Gabba** (`gabba.md`) | **attivo** — gate + espansione suite |
-| Altri Specialist | rendering, properties, interaction, … | solo se necessario |
+| Specialist FrontEnd2 | `frontend2-specialist.md` | **attivo** — pista `index2` |
+| Altri Specialist | rendering, properties, interaction legacy, … | solo se necessario |
 
 ---
 

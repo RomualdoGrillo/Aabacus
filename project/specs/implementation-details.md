@@ -2,6 +2,8 @@
 
 # Aabacus Implementation Details
 
+**Fase: v1** (implementazione baseline). Etichette: [`release-phases.md`](release-phases.md). Per la pista `index2` / G/A vedere **v1f**: [`new-interface-spec.md`](new-interface-spec.md), [`gesture-action-table.md`](gesture-action-table.md), [`session-lifecycle.md`](session-lifecycle.md).
+
 This document describes the current technical implementation of Aabacus. While the [core concepts](core-concepts.md) of Aabacus define its fundamental nature, the implementation details described here may evolve over time.
 
 ## MathMLContent Implementation

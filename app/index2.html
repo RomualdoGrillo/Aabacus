@@ -182,9 +182,13 @@
 			     Serve a refine.js (tryEventActionsOnNode per il cascade refining 'c'). -->
 			<script type="text/javascript" src="js/UserEvToFunctCall.js"></script>
 			<script type="text/javascript" src="js/settings.js"></script>
-			<!-- 6. input2 — recognizer → intent map → boot/dispatcher -->
+			<!-- selezione ENODE: stessa selectionManager della UI legacy -->
+			<script type="text/javascript" src="js/selectionManager.js"></script>
+			<!-- 6. input2 — recognizer → G/A → import mmls v1 → MAIN2 (omologo MAIN.js) -->
 			<script type="text/javascript" src="js/input2/gestures.js"></script>
-			<script type="text/javascript" src="js/input2/intentMap.js"></script>
-			<script type="text/javascript" src="js/input2/boot2.js"></script>
+			<script type="text/javascript" src="js/UserEvToFunctCall2.js"></script>
+			<!-- adattatore events legacy (v1) → colonna tied della G/A; load via SaveLoad/preload -->
+			<script type="text/javascript" src="js/input2/importMmlsV1.js"></script>
+			<script type="text/javascript" src="js/MAIN2.js"></script>
 	</body>
 </html>
