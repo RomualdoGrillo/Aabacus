@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Aabacus — architettura target</title>
+  <desc id="desc">Schema dei macro-moduli con ENODEs API come barra centrale di comunicazione tra index.html e il software.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="arrowStart" markerWidth="10" markerHeight="10" refX="2" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M10,0 L0,5 L10,10 z" fill="#333"/>
+    </marker>
+    <style>
+      .node { fill:#f4f0ff; stroke:#8f73d8; stroke-width:1.5; }
+      .edge { fill:none; stroke:#333; stroke-width:1.8; marker-end:url(#arrow); }
+      .both { fill:none; stroke:#333; stroke-width:1.8; marker-start:url(#arrowStart); marker-end:url(#arrow); }
+      .title { font:600 16px Arial,sans-serif; fill:#292929; text-anchor:middle; }
+      .body { font:14px Arial,sans-serif; fill:#292929; text-anchor:middle; }
+      .label { font:13px Arial,sans-serif; fill:#292929; text-anchor:middle; paint-order:stroke; stroke:white; stroke-width:5px; stroke-linejoin:round; }
+    </style>
+  </defs>
+
+  <!-- Utente e stato -->
+  <ellipse class="node" cx="600" cy="35" rx="39" ry="25"/>
+  <text class="title" x="600" y="41">USER</text>
+  <rect class="node" x="807" y="10" width="270" height="50" rx="25"/>
+  <text class="body" x="942" y="31"><tspan x="942">STATO CONDIVISO — state.js</tspan><tspan x="942" dy="18">(da ridurre dentro i servizi)</tspan></text>
+
+  <!-- UI -->
+  <rect class="node" x="480" y="90" width="240" height="58"/>
+  <text class="title" x="600" y="115">INDEX.HTML — #canvasRole</text>
+  <text class="body" x="600" y="136">il DOM è il modello</text>
+
+  <!-- Riga controllo: gesture, main, motore -->
+  <polygon class="node" points="65,195 335,195 315,275 45,275"/>
+  <text class="title" x="190" y="226">GESTURE MANAGER</text>
+  <text class="body" x="190" y="248">gesti, drag, tasti → intenti</text>
+
+  <polygon class="node" points="475,200 695,200 720,235 695,270 475,270 450,235"/>
+  <text class="title" x="585" y="228">MAIN — orchestratore</text>
+  <text class="body" x="585" y="250">boot, pipeline PActx</text>
+
+  <rect class="node" x="855" y="185" width="300" height="98"/>
+  <rect class="node" x="861" y="191" width="288" height="86"/>
+  <text class="title" x="1005" y="218">PATTERN MATCHING</text>
+  <text class="body" x="1005" y="240"><tspan x="1005">motore delle proprietà:</tspan><tspan x="1005" dy="18">PM + hard-wired + registro + refine</tspan></text>
+
+  <!-- Barra di comunicazione -->
+  <rect class="node" x="250" y="340" width="700" height="92" rx="8"/>
+  <text class="title" x="600" y="369">ENODEs API — STRATO DI COMUNICAZIONE COL DOM-MODELLO</text>
+  <text class="body" x="600" y="394"><tspan x="600">manipolazione albero + refresh visivo</tspan><tspan x="600" dy="19">(tutto il software a valle passa da qui)</tspan></text>
+
+  <!-- Libreria e servizi -->
+  <rect class="node" x="55" y="505" width="270" height="76"/>
+  <text class="title" x="190" y="536">LOAD / SAVE</text>
+  <text class="body" x="190" y="559">serializzazione, import, formati MathML</text>
+
+  <rect class="node" x="430" y="505" width="220" height="76" rx="38"/>
+  <text class="title" x="540" y="536">UNDO — servizio</text>
+  <text class="body" x="540" y="559">memoria degli stati (FILO)</text>
+
+  <rect class="node" x="720" y="500" width="350" height="86" rx="43"/>
+  <text class="title" x="895" y="533">SESSIONE DIDATTICA — servizio</text>
+  <text class="body" x="895" y="556">settings, gioco, suoni, contamosse</text>
+
+  <!-- Files, cilindro SVG puro -->
+  <path class="node" d="M85 650 C85 636 285 636 285 650 L285 700 C285 714 85 714 85 700 Z"/>
+  <path class="node" d="M85 650 C85 664 285 664 285 650" fill="none"/>
+  <text class="title" x="185" y="682">FILES</text>
+  <text class="body" x="185" y="702">.mmls · .mml · .prt · .set</text>
+
+  <!-- Flussi utente/input -->
+  <path class="edge" d="M600 60 L600 90"/>
+  <path class="edge" d="M510 148 C430 162 330 170 265 195"/>
+  <text class="label" x="374" y="165"><tspan x="374">eventi grezzi</tspan><tspan x="374" dy="16">(mouse, touch, tasti)</tspan></text>
+  <path class="edge" d="M335 235 L450 235"/>
+  <text class="label" x="392" y="224">intenti</text>
+  <path class="edge" d="M720 235 L855 235"/>
+  <text class="label" x="788" y="218">proprietà per nome (registro)</text>
+
+  <!-- UI ↔ API: percorso laterale per non attraversare MAIN -->
+  <path class="both" d="M720 119 C790 119 790 310 870 340"/>
+  <text class="label" x="820" y="150">legge / scrive l'albero</text>
+
+  <!-- Motore ↔ API -->
+  <path class="both" d="M1005 283 C1005 315 920 315 880 340"/>
+
+  <!-- MAIN → libreria/servizi -->
+  <path class="edge" d="M520 270 C430 300 250 455 190 505"/>
+  <path class="edge" d="M585 270 C585 355 550 445 540 505"/>
+  <text class="label" x="555" y="466">snapshot dopo ogni azione</text>
+  <path class="edge" d="M650 270 C735 320 835 440 875 500"/>
+  <text class="label" x="804" y="454">esito, celebrazione</text>
+
+  <!-- API ↔ libreria/servizi -->
+  <path class="both" d="M365 432 C310 450 245 478 215 505"/>
+  <path class="both" d="M540 432 L540 505"/>
+  <path class="both" d="M835 432 C860 455 880 478 888 500"/>
+
+  <!-- Load/Save ↔ Files -->
+  <path class="both" d="M190 581 L185 640"/>
+</svg>
